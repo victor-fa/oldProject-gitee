@@ -1,0 +1,76 @@
+#plan {
+    height: 478px;
+    width: 100%;
+    background-image: url("/assets/images/plan_background.png");
+
+    #content-container {
+        width: 640px;
+        height: 100%;
+        margin: 0 auto;
+        color: #FEFEFE;
+        text-align: center;
+
+        h2 {
+            font-size: 24px;
+            padding-top: 58px;
+            padding-bottom: 46px;
+            span {
+                color: #FFD400;
+            }
+
+        }
+
+        p {
+            font-size: 10px;
+            font-weight: 100;
+        }
+
+        #domain {
+            list-style: none;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            margin: 0;
+            padding: 0;
+
+            li {
+                width: 196px;
+                height: 196px;
+
+                padding-top: 16px;
+
+                div {
+                    width: 164px;
+                    height: 164px;
+                    margin: 0 auto;
+
+                    background-color: #FFD400;
+                    opacity: 0.9;
+                    padding: 54px;
+
+                    i {
+                        font-size: 30px;
+                        opacity: 1;
+                    }
+                    p {
+                        font-size: 14px;
+                        padding: 0px;
+                        opacity: 1;
+                    }
+                }
+            }
+
+            #education {
+                background-image: url(/assets/images/education_background.png);
+            }
+
+            #game {
+                background-image: url(/assets/images/game_background.png);
+            }
+
+            #animate {
+                background-image: url(/assets/images/animate_background.png);
+            }
+        }
+    }
+}

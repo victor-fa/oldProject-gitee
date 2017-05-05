@@ -1,0 +1,61 @@
+image: node:latest
+
+before_script:
+#  - export PIP_CACHE_DIR="pip-cache"
+  - npm install
+
+
+stages:
+    - compile
+    - test
+    - package
+    - deploy
+
+cache:
+    key: "$CI_PROJECT_NAME/$CI_BUILD_REF_NAME"
+    paths:
+        - dist/
+        - node_modules
+        - public.tar.gz
+
+compile_job:
+    stage: compile
+    script:
+        - "pwd;ls"
+        - "npm run build -- --prod"
+
+
+test_job:
+    stage: test
+    script:
+        - "ls"
+
+
+package_job:
+    stage: package
+    only:
+        - release
+        - master
+        #test ci
+        - basic
+    script:
+        - "pwd;ls"
+        - "tar czf public.tar.gz dist/"
+        - ls
+
+
+deploy_release_job:
+    stage: deploy
+    only:
+        - release
+        # test ci
+        - develop
+    script:
+        - "./script/deploy-release.sh"
+
+deploy_production_job:
+    stage: deploy
+    only:
+        - master
+    script:
+        - "./script/deploy-production.sh"
