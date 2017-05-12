@@ -8,13 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class AboutComponent implements OnInit {
 
   hideAppointment:boolean = true;
+  nowPageNumber:number = 1;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  showOrCloseAppointment() {
-    this.hideAppointment = !this.hideAppointment;
+  changePage(i:number){
+      this.nowPageNumber = i;
   }
+
 }

@@ -3,14 +3,14 @@
         <h2>主要<span>技术团队</span></h2>
         <div id="detail">
             <div id="left-part">
-                <img src="/assets/images/avator/wy.png">
+                <img [src]="nowMember.img">
             </div>
             <div id="right-part">
-                <h3>王一</h3>
-                <h4>创始人 & CEO</h4>
-                <h5>华南理工大学软件工程专业本科，伊利诺伊理工大学硕士。</h5>
+                <h3>{{ nowMember.name }}</h3>
+                <h4>{{ nowMember.position }}</h4>
+                <h5>{{ nowMember.education }}</h5>
                 <p>
-                    具有8年移动开发及项目管理经验，曾多次获得全国移动开发比赛大奖。在世界500强企业工作两年并且积累了丰富的实战经验后辞职赴美留学创业。攻读计算机硕士学位的同时从0到1组建了一支优秀的技术团队。
+                    {{ nowMember.introduction }}
                 </p>
                 <ul id="social">
                     <li><a href=""><i></i></a></li>
@@ -20,15 +20,12 @@
         </div>
 
         <ul id="member">
-            <li class="active"><img src="/assets/images/avator/wy.png" alt=""></li>
-            <li><img src="/assets/images/avator/hsf.png" alt=""></li>
-            <li><img src="/assets/images/avator/js.png" alt=""></li>
-            <li><img src="/assets/images/avator/wjj.png" alt=""></li>
-            <li><img src="/assets/images/avator/wx.png" alt=""></li>
-            <li><img src="/assets/images/avator/fl.png" alt=""></li>
+            <li *ngFor="let member of members; let i = index" [class.active]="i == nowIndex" (click)="changeMember(i)">
+                <img [src]="member.img" alt="">
+            </li>
         </ul>
     </div>
     <div id="big-name">
-        王一
+        {{ nowMember.name }}
     </div>
 </div>

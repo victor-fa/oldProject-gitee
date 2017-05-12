@@ -128,7 +128,7 @@ export class PartnerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.essences);
+		//console.log(this.essences);
 	}
 
 	changeEssence(index: number) {

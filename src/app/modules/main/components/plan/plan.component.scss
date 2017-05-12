@@ -2,6 +2,76 @@
     height: 478px;
     width: 100%;
     background-image: url("/assets/images/plan_background.png");
+    position: relative;
+    .black {
+        position: fixed;
+        display: block;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1050;
+
+        width: 100vw;
+        height: 100vh;
+
+        background-color: #000;
+
+        opacity: 0.5;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .dialog {
+        display: flex;
+        flex-direction: column;
+        width: 340px;
+        position: absolute;
+        top: 0;right: 0;bottom: 0;left: 0;
+        margin: auto;
+        justify-content: center;
+        div {
+            width: 100%;
+            height: auto;
+            background-color: #FEFEFE;
+            padding: 14px 20px 10px 20px;
+
+            hr {
+                margin: 2px 0 6px 0;
+            }
+
+            h3 {
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            p {
+                font-size: 12px;
+                margin-bottom: 6px;
+                text-align: justify;
+            }
+
+            a {
+                display: inline-block;
+                padding: 4px 14px 4px 14px;
+                text-decoration: none;
+
+                background-color: #FFD400;
+                color: black;
+
+                margin-bottom: 6px;
+            }
+
+            img {
+                width: 100%;
+                display: block;
+                margin: 0 auto;
+            }
+        }
+        z-index: 1060;
+    }
 
     #content-container {
         width: 640px;
@@ -40,6 +110,7 @@
                 padding-top: 16px;
 
                 div {
+                    display: none;
                     width: 164px;
                     height: 164px;
                     margin: 0 auto;
@@ -57,6 +128,12 @@
                         padding: 0px;
                         opacity: 1;
                     }
+                }
+            }
+
+            li:hover {
+                div {
+                    display: block;
                 }
             }
 

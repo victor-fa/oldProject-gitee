@@ -1,47 +1,57 @@
 #about {
     height: 478px;
     width: 100%;
-    display: flex;
-    background-image: url(/assets/images/about_background.png);
+    background-color: #fefefe;
 
-    #left-container {
-        width: 360px;
-        height: 100%;
-        margin-left: 168px;
-        color: black;
 
-        h2 {
-            margin-top: 107px;
-            font-size: 24px;
-        }
+    position: relative;
 
-        p {
-            font-size: 10px;
-        }
-
-        a {
-            text-decoration: none;
+    h2 {
+        margin-top: 87px;
+        font-size: 24px;
+        margin-bottom: 20px;
+        span {
             color: #FFD400;
-            font-size: 14px;
         }
+    }
 
-        a:hover {
-            text-decoration: none;
-        }
-        a:visited {
-            text-decoration: none;
-        }
+    p {
+        font-size: 10px;
+        text-align: justify;
+    }
 
-        ul {
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            width: 72px;
-            margin: 0px;
-            margin-top: 12px;
-            padding: 0px;
+    a {
+        text-decoration: none;
+        color: #FFD400;
+        font-size: 14px;
+    }
 
-            li {
+    a:hover {
+        text-decoration: none;
+    }
+    a:visited {
+        text-decoration: none;
+    }
+
+    #switcher {
+        list-style: none;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        width: 72px;
+        margin: 0px;
+        padding: 0px;
+
+        left: 168px;
+        bottom: 80px;
+        margin: auto;
+
+        li {
+            display: block;
+            width: 16px;
+            height: 16px;
+            padding: 4px;
+            div{
                 display: block;
                 width: 8px;
                 height: 8px;
@@ -49,24 +59,107 @@
                 background-color: black;
             }
 
-            .active {
+        }
+
+
+
+        li:hover {
+            div {
                 background-color: #FFD400;
             }
+
+            cursor: pointer;
+        }
+
+        .active {
+            div {
+                background-color: #FFD400;
+            }
+
         }
     }
 
-    #right-container {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            display: none;
+            height: 478px;
+        }
 
-        padding-top: 140px;
-        padding-left: 80px;
-        p {
-            font-size: 52px;
-            margin: 0px;
-            span {
-                color: #FFD400;
+        #page1 {
+            background-image: url(/assets/images/about_background.png);
+
+            #page1-left-container {
+                width: 360px;
+                height: 100%;
+                margin-left: 168px;
+                color: black;
+            }
+
+            #page1-right-container {
+
+                padding-top: 140px;
+                padding-left: 80px;
+                p {
+                    font-size: 52px;
+                    margin: 0px;
+                    span {
+                        color: #FFD400;
+                    }
+                }
             }
         }
 
+        #page2 {
+            background-image: url(/assets/images/about_background_2.png);
+            #page2-container {
+                width: 640px;
+                height: 100%;
+                margin: 0 auto;
+            }
+        }
+
+        #page3 {
+            background-image: url(/assets/images/about_background_2.png);
+            #page3-left-container {
+                width: 214px;
+                height: 100%;
+                margin-left: 168px;
+            }
+
+            #page3-right-container {
+                padding-top: 140px;
+                padding-left: 50px;
+                ul {
+                    list-style: none;
+                    width: 400px;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: space-between;
+                    li {
+                        display: block;
+
+                        p {
+                            margin-bottom: 2px;
+                            text-align: center;
+                        }
+                        img {
+                            width: 88px;
+                            height: 142px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .active {
+            display: flex;
+        }
 
     }
+
+
 }
