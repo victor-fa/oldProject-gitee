@@ -1,6 +1,6 @@
 <div id="about">
-    <ul>
-        <li id="page1" [class.active]="nowPageNumber == 1">
+    <ul id="pages">
+        <li id="page1" [@flyInOut]="nowPageNumber == 1 ? 'in' : 'out'">
             <div id="page1-left-container">
                 <h2>关于齐悟</h2>
                 <p>齐悟是人马互动科技有限公司(CentaursTech)创立的的人工智能品牌，我们致力于为企业打造智能化、差异化产品提供深度定制化语音交互技术解决方案。
@@ -16,7 +16,7 @@
             </div>
 
         </li>
-        <li id="page2" [class.active]="nowPageNumber == 2">
+        <li id="page2" [@flyInOut]="nowPageNumber == 2 ? 'in' : 'out'">
             <div id="page2-container">
                 <h2>核心<span>技术</span></h2>
                 <p>我们完全自主研发的语义识别人工智能引擎可以实现多轮人机对话及上下文理解，采用独特的偏重实例层的多层语义知识网络,支持基于图模板映射的规则归纳和知识推理。<br>
@@ -25,7 +25,7 @@
                 </p>
             </div>
         </li>
-        <li id="page3" [class.active]="nowPageNumber == 3">
+        <li id="page3" [@flyInOut]="nowPageNumber == 3 ? 'in' : 'out'">
             <div id="page3-left-container">
                 <h2>
                     <span>竞争</span>对手分析

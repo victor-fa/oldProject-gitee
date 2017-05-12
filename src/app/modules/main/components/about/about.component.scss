@@ -79,13 +79,19 @@
         }
     }
 
-    ul {
+    #pages {
         list-style: none;
+        width: 100%;
         margin: 0;
         padding: 0;
+        position: relative;
         li {
-            display: none;
+            display: flex;
+            width: 100%;
             height: 478px;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         #page1 {
@@ -141,6 +147,7 @@
                     justify-content: space-between;
                     li {
                         display: block;
+                        position: relative;
 
                         p {
                             margin-bottom: 2px;
@@ -156,7 +163,7 @@
         }
 
         .active {
-            display: flex;
+            //display: flex;
         }
 
     }
