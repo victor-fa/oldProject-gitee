@@ -35,7 +35,7 @@ export class AboutComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        let timer3s = TimerObservable.create(3000,3000);
+        let timer3s = TimerObservable.create(5000,5000);
         this.subscription3s = timer3s.subscribe(this.refresh3s.bind(this));
     }
 
@@ -44,7 +44,7 @@ export class AboutComponent implements OnInit {
     }
 
     refresh3s(t: number){
-        this.nowPageNumber = this.nowPageNumber % 3 + 1;
+        this.nowPageNumber = this.nowPageNumber % 2 + 1;
     }
 
 }

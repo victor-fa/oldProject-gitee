@@ -33,11 +33,11 @@ export class TeamComponent implements OnInit {
             img: "/assets/images/avator/hsf.png"
         },
         {
-            name: "江松",
-            position: "企业产品架构师",
-            education: "上海交通大学计算机硕士。",
-            introduction: "拥有超过15年的企业级软件产品开发背景。在欧洲和国内多家公司历任系统架构师，研发总监和研发副总裁。对企业级存储，私有云，PaaS平台产品的开发和部署拥有很深的技术理解。其负责主导开发的产品曾用于欧洲电子对撞机项目和国内大型保险和金融公司。对软件产品在保险，金融，电信等领域的落地拥有丰富的实战经验。",
-            img: "/assets/images/avator/js.png"
+            name: "鲁哲宇",
+            position: "客户端开发",
+            education: "北京交通大学软件学院本科毕业，密苏里大学计算机硕士毕业。",
+            introduction: "7年移动开发管理经验，曾在IEEE发表VR研究论文，多次获得全国软件开发大赛和算法比赛奖项。",
+            img: "/assets/images/avator/zy.png"
         },
         {
             name: "文剑钧",
