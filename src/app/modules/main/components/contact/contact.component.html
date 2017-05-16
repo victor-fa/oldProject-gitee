@@ -11,11 +11,11 @@
             </ul>
         </div>
         <div id="right-part">
-            <form action="https://formspree.io/server@centaurstech.com" method="POST">
-                <input type="text" name="name" placeholder="名字">
-                <input type="text" name="_replyto" placeholder="邮箱">
-                <textarea placeholder="信息" name="message"></textarea>
-                <button type="submit">发送</button>
+            <form>
+                <input type="text" name="name" placeholder="名字" #nameInput (keyup)="onEnterName(nameInput.value)">
+                <input type="text" name="_replyto" placeholder="邮箱" #mailtoInput (keyup)="onEnterMailto(mailtoInput.value)">
+                <textarea placeholder="信息" name="message" #contentInput (keyup)="onEnterContent(contentInput.value)"></textarea>
+                <a [attr.href]=" 'mailto:contact@centaurstech.com?subject=' + name + '&body=' + content + ' from: ' + mailto ">发送</a>
             </form>
         </div>
     </div>

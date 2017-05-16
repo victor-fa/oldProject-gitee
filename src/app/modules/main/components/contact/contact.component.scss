@@ -93,12 +93,17 @@
                     padding-left: 4px;
                 }
 
-                button {
+                a {
+                    display: block;
+                    text-decoration: none;
+                    text-align: center;
+                    line-height: 28px;
                     width: 67px;
                     height: 28px;
                     background-color: #FFD400;
                     border: 0;
                     font-size: 14px;
+                    color: black;
                 }
             }
         }
