@@ -56,7 +56,11 @@
                         text-align: center;
                         line-height: 20px;
                     }
+                    a {
+                        text-decoration: none;
+                            color: inherit;
 
+                    }
                 }
             }
         }
