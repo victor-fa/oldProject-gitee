@@ -9,12 +9,7 @@ export class PlanComponent implements OnInit {
     hideEducation: boolean = true;
     hideGame: boolean = true;
     hideAnimate: boolean = true;
-
-    features: [string] = [
-        '/assets/images/plan_feature1.png',
-        '/assets/images/plan_feature2.png',
-        '/assets/images/plan_feature3.png'
-    ];
+    hideHardware: boolean = true;
 
     nowIndex = 0;
 
@@ -39,4 +34,7 @@ export class PlanComponent implements OnInit {
         this.hideAnimate = !this.hideAnimate;
     }
 
+    showOrCloseHardware() {
+        this.hideHardware = !this.hideHardware;
+    }
 }
