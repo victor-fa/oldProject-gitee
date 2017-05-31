@@ -79,13 +79,33 @@ export class TeamComponent implements OnInit {
     nowMember:Member = this.members[this.nowIndex];
 
     constructor() {
-
     }
-    ngOnInit() {}
+
+
+
+    ngOnInit() {
+		this.checkSocialLinks();
+	}
 
     changeMember(index: number) {
 		this.nowMember = this.members[index];
 		this.nowIndex = index;
+		this.checkSocialLinks();
+	}
+
+	checkSocialLinks() {
+		// if the link is empty, make the icon hidden.
+		if (this.nowMember.linkedin == "") {
+			document.getElementById("linkedin").style.display = 'none';
+		} else {
+			document.getElementById("linkedin").style.display = 'inline';
+		}
+
+		if (this.nowMember.facebook == "") {
+			document.getElementById("facebook").style.display = 'none';
+		} else {
+			document.getElementById("facebook").style.display = 'inline';
+		}
 	}
 
 }

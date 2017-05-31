@@ -13,12 +13,11 @@
                     {{ nowMember.introduction }}
                 </p>
                 <ul id="social">
-                    <li><a [href]="nowMember.linkedin" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                    <li><a [href]="nowMember.facebook" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li id="linkedin"><a [href]="nowMember.linkedin" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    <li id="facebook"><a [href]="nowMember.facebook" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
                 </ul>
             </div>
         </div>
-
         <ul id="member">
             <li *ngFor="let member of members; let i = index" [class.active]="i == nowIndex" (click)="changeMember(i)">
                 <img [src]="member.img">
