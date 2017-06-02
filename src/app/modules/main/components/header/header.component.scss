@@ -1,117 +1,290 @@
-#header{
-    height: 478px;
-    background-image: url(/assets/images/header_background.png);
-    display: flex;
-    #left-block{
+#header {
+    /* Large */
+    @media only screen and (min-width: 415px) {
+        height: 478px;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
         display: flex;
 
-        width: 202px;
-        height: 100%;
-        margin-left: 172px;
-        background-color: #FFD400;
+        background-image: url("/assets/images/header_background.png");
 
-        #big-chewrobot-logo {
-            width: 124px;
-            height: 169px;
-            background-image: url(/assets/images/big-chewrobot-logo.png);
-            align-self: center;
-            margin: 0 auto;
+        #top-block {
+            display: none;
         }
-    }
 
-    #right-container {
-        display: flex;
-        flex-direction: column;
-
-
-        width: 463px;
-        height: 100%;
-        margin-left: 83px;
-
-        nav {
+        #left-block {
             display: flex;
-            height: 21px;
-            width: 100%;
-            margin-top: 48px;
 
-            justify-content: space-between;
-            a{
-                display: block;
-                text-decoration: none;
-                color: #fff;
-                font-size: 14px;
-                line-height: 14px;
-            }
+            width: 202px;
+            height: 100%;
 
-            a:hover {
-                text-decoration: none;
-                border-bottom: 2px solid #BBB;
-            }
+            margin-left: 172px;
+            background-color: #FFD400;
 
-            .active {
-                border-bottom: 2px solid #FFD400;
+            #chewrobot-logo-lg {
+                width: 124px;
+                height: 169px;
+                background-image: url("/assets/images/chewrobot-logo-lg.png");
+                align-self: center;
+                margin: 0 auto;
             }
         }
 
-        #content {
+        #main-container {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            height: 400px;
-            justify-content: center;
-            color: #fff;
 
-            h2 {
-                font-size: 48px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                padding-top: 0px;
-            }
+            width: 463px;
+            height: 100%;
+            margin-left: 83px;
 
-            h3 {
-                font-size: 75px;
-                line-height: 75px;
-                height: 75px;
-                color: #FFD400;
-                font-weight: 200;
-                margin-bottom: 10px;
-                margin-top:0px;
-
-                padding-top: 0px;
-                &:after{
-                    content: '';
-                    display: inline-block;
-                    padding-left: 99%;
-                }
-            }
-
-            h4 {
+            nav {
+                display: flex;
+                height: 21px;
                 width: 100%;
-                font-size: 29px;
-                font-weight: 100;
-                line-height: 29px;
-                height: 29px;
-                overflow: hidden;
-                text-align: justify;
-                padding-top: 0px;
-                margin-bottom: 8px;
-                &:after{
-                    content: '';
-                    display: inline-block;
-                    padding-left: 99%;
+                margin-top: 48px;
+
+                justify-content: space-between;
+                a {
+                    display: block;
+                    text-decoration: none;
+                    color: #fff;
+                    font-size: 14px;
+                    line-height: 14px;
+                }
+
+                a:hover {
+                    text-decoration: none;
+                    border-bottom: 2px solid #BBB;
+                }
+
+                .active {
+                    border-bottom: 2px solid #FFD400;
                 }
             }
 
-            h5 {
-                font-size: 12px;
-                font-weight: 100;
-                color: #FFFFFE;
+            #content {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 400px;
+                justify-content: center;
+                color: #fff;
+
+                h2 {
+                    font-size: 48px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                    padding-top: 0px;
+                }
+
+                h3 {
+                    font-size: 75px;
+                    line-height: 75px;
+                    height: 75px;
+                    color: #FFD400;
+                    font-weight: 200;
+                    margin-bottom: 10px;
+                    margin-top: 0px;
+
+                    padding-top: 0px;
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        padding-left: 99%;
+                    }
+                }
+
+                h4 {
+                    width: 100%;
+                    font-size: 29px;
+                    font-weight: 100;
+                    line-height: 29px;
+                    height: 29px;
+                    overflow: hidden;
+                    text-align: justify;
+                    padding-top: 0px;
+                    margin-bottom: 8px;
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        padding-left: 99%;
+                    }
+                }
+
+                h5 {
+                    font-size: 12px;
+                    font-weight: 100;
+                    color: #FFFFFE;
+                }
+
             }
-
-
 
         }
 
+    }
 
+    /* Small + Medium */
+    @media only screen and (max-width: 414px) {
+
+        background-image: url("/assets/images/header_background.png");
+        background-position: calc(50% - 50px) 50%;
+        background-repeat: no-repeat;
+
+        #top-block {
+            width: 100%;
+            height: 81px;
+
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding-left: 20px;
+            padding-right: 20px;
+
+            #chewrobot-logo-sm {
+                align-self: flex-start;
+
+                width: 70px;
+                height: 81px;
+                background-image: url("/assets/images/chewrobot-logo-sm.png");
+                align-self: center;
+                margin-right: 20px;
+            }
+
+            #slogan {
+                display: flex;
+                align-self: flex-end;
+                margin-left: 20px;
+
+                h3 {
+                    color: white;
+                    font-size: 24px;
+                    font-weight: 100;
+                    span {
+                        color: #F6CF00;
+                    }
+                }
+            }
+        }
+
+        #left-block {
+            display: none;
+        }
+
+        #main-container {
+            width: 100%;
+
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding-left: 5%;
+            padding-right: 5%;
+
+            nav {
+                height: 21px;
+                width: 100%;
+
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+
+                justify-content: space-between;
+
+                a {
+                    display: block;
+                    text-decoration: none;
+                    color: #fff;
+                    font-size: 14px;
+                    line-height: 14px;
+
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+
+                a:hover {
+                    text-decoration: none;
+                    border-bottom: 2px solid #BBB;
+                }
+
+                .active {
+                    border-bottom: 2px solid #FFD400;
+                }
+            }
+
+            #content {
+                width: 100%;
+                height: 210px;
+                color: #fff;
+
+                h2 {
+                    font-size: 36px;
+                    font-weight: bold;
+                    letter-spacing: 5px;
+
+                    margin-bottom: 10px;
+                    padding-top: 10px;
+                }
+
+                h3 {
+                    height: 55px;
+                    font-size: 48px;
+
+                    color: #FFD400;
+                    font-weight: 200;
+
+                    margin: 0px;
+                    padding: 0px;
+
+                    text-align: justify;
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        padding-left: 99%;
+                    }
+                }
+
+                h4 {
+
+                    height: 18px;
+                    font-size: 18px;
+                    font-weight: lighter;
+                    overflow: hidden;
+                    text-align: justify;
+
+                    &:after {
+                        content: '';
+                        display: inline-block;
+                        padding-left: 99%;
+                    }
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                    padding: 0px;
+                }
+
+                h5 {
+                    text-align: justify;
+                    font-size: 12px;
+                    font-weight: lighter;
+                    color: #FFFFFE;
+
+                    margin-top: 5px;
+                }
+            }
+        }
     }
 }
