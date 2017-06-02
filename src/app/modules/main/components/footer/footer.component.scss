@@ -1,25 +1,55 @@
 #footer {
-    width: 978px;
-    height: 139px;
-    background-color: #F6CF00;
+    background-color: #FFD400;
     color: #231916;
-    p {
-        display: block;
-        width: 320px;
-        margin: 0 auto;
-        padding-top: 39px;
-        font-size: 12px;
-        a {
-            color: #231916;
+    /* Large */
+    @media only screen and (min-width: 415px) {
+        width: 978px;
+        height: 139px;
+
+        p {
+            display: block;
+            width: 320px;
+            margin: 0 auto;
+            padding-top: 39px;
+            font-size: 12px;
+            a {
+                color: #231916;
+            }
+        }
+
+        #small-chewrobot-logo {
+            width: 27px;
+            height: 40px;
+            background-image: url("/assets/images/chewrobot-logo-lg.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin: 0 auto;
         }
     }
 
-    #small-chewrobot-logo {
-        width: 27px;
-        height: 40px;
-        background-image: url(/assets/images/chewrobot-logo-lg.png);
-        background-size: contain;
-        background-repeat: no-repeat;
-        margin: 0 auto;
+    /* Small + Medium */
+    @media only screen and (max-width: 414px) {
+        padding: 20px 5% 20px 5%;
+
+        p {
+            width: 320px;
+            margin: 0 auto;
+            padding-top: 0px;
+            font-size: 12px;
+            color: white;
+            a {
+                color: white;
+                text-decoration: none;
+            }
+        }
+
+        #small-chewrobot-logo {
+            width: 27px;
+            height: 40px;
+            background-image: url("/assets/images/chewrobot-logo-sm.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin: 0 auto;
+        }
     }
 }
