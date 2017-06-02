@@ -177,6 +177,12 @@
             padding: 20px 5% 20px 5%;
 
             list-style: none;
+            margin-top: 0px;
+            margin-bottom: 0px;
+
+            ul {
+                overflow: none;
+            }
 
             h2 {
                 color: black;
@@ -219,8 +225,6 @@
                     color: dimgrey;
                 }
             }
-
-
         }
         #switcher {
             display: none;
