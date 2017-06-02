@@ -30,13 +30,20 @@ export class AboutComponent implements OnInit {
 
     hideAppointment: boolean = true;
     nowPageNumber: number = 1;
+    pageWidth: number = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
     private subscription3s: Subscription;
     constructor() { }
 
     ngOnInit() {
-        let timer3s = TimerObservable.create(5000,5000);
-        this.subscription3s = timer3s.subscribe(this.refresh3s.bind(this));
+        if (this.pageWidth > 414) {
+            console.log("Large Width: " + this.pageWidth);
+            let timer3s = TimerObservable.create(5000,5000);
+            this.subscription3s = timer3s.subscribe(this.refresh3s.bind(this));
+        } else {
+            console.log("Small Width: " + this.pageWidth);
+        }
+
     }
 
     changePage(i: number) {
