@@ -51,7 +51,7 @@ export class AboutComponent implements OnInit {
     }
 
     refresh3s(t: number){
-        this.nowPageNumber = this.nowPageNumber % 2 + 1;
+        this.nowPageNumber = this.nowPageNumber % 3 + 1;
     }
 
 }
