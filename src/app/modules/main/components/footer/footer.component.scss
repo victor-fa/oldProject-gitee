@@ -53,3 +53,20 @@
         }
     }
 }
+
+
+#footer {
+    /* Large */
+    @media only screen and (min-width: 768px) {
+        #test, p {
+            color: red;
+        }
+    }
+
+    /* Small + Medium */
+    @media only screen and (min-width: 480px) {
+        #test, p {
+            color: green;
+        }
+    }
+}

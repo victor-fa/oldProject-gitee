@@ -9,6 +9,10 @@ export class FooterComponent implements OnInit {
 
     year:number = new Date().getFullYear();
 
+    // test
+    innerWidth: number = window.innerWidth;
+    width: number = screen.width;
+
     constructor() {
 
     }
