@@ -32,7 +32,6 @@
         padding: 20px 5% 20px 5%;
 
         p {
-            width: 320px;
             margin: 0 auto;
             padding-top: 0px;
             font-size: 12px;
@@ -58,14 +57,14 @@
 #footer {
     /* Large */
     @media only screen and (min-width: 768px) {
-        #test, p {
+        #test p {
             color: red;
         }
     }
 
     /* Small + Medium */
     @media only screen and (min-width: 480px) {
-        #test, p {
+        #test p {
             color: green;
         }
     }
