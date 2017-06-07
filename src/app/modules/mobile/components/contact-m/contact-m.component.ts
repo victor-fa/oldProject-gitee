@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactMComponent implements OnInit {
 
-  constructor() { }
+  name: string = "";
+  mailto: string = "";
+  content: string = "";
 
-  ngOnInit() {
+  constructor() {
+
+  }
+  ngOnInit() { }
+
+  onEnterName(value: string) {
+    this.name = value;
+    console.log(this.name);
+  }
+
+  onEnterMailto(value: string) {
+    this.mailto = value;
+  }
+
+  onEnterContent(value: string) {
+    this.content = value;
   }
 
 }
