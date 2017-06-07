@@ -1,0 +1,110 @@
+#plan-m {
+    width: 420px;
+    overflow: hidden;
+    background: url("/assets/images/plan_background.png");
+    background-position: calc(50% - 50px) 50%;
+    padding: 20px 2% 20px 2%;
+    color: #FEFEFE;
+    h2 {
+        font-size: 24px;
+        overflow: hidden;
+        span {
+            color: #FFD400;
+        }
+    }
+    p {
+        font-size: 12px;
+        font-weight: 100;
+    }
+    #plan-m-field {
+        width: 100%;
+        margin: 0 auto;
+        list-style: none;
+        padding: 0;
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            justify-content: space-between;
+        }
+        .plan-m-field-item {
+            div {
+                background-color: #FFD400;
+                width: 80px;
+                height: 80px;
+                font-size: 12px;
+                text-align: center;
+                vertical-align: middle;
+                line-height: 80px;
+                a {
+                    text-decoration: none;
+                    color: white;
+                }          
+                border: 2px solid #FEFEFE;
+                background-size: cover;
+            }
+        }
+        li {
+            text-align: center;
+            flex-grow: 1;
+
+        }
+        li:hover {
+            div {
+                border: 2px solid #FFD400;
+                a {
+                    color: #FFD400;
+                }
+            }
+        }
+
+        #education-item {
+            background-image: url("/assets/images/education_background.png");
+        }
+        #game-item {
+            background-image: url("/assets/images/game_background.png");
+        }
+        #animate-item {
+            background-image: url("/assets/images/animate_background.png");
+        }
+        #hardware-item {
+            background-image: url("/assets/images/hardware_background.png");
+        }
+    }
+}
+
+#plan-m-eg {
+    width: 420px;
+    overflow: hidden;
+    background-color: #FEFEFE;
+    padding: 20px 2% 20px 2%;
+    .dialog {
+        div {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        h3 {
+            font-size: 14px;
+        }
+        p {
+            font-size: 12px;
+        }
+        img {
+            width: 100%;
+        }
+        a {
+            display: inline-block;
+            padding: 4px 14px 4px 14px;
+            text-decoration: none;
+            background-color: #FFD400;
+            color: black;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+    }
+}
