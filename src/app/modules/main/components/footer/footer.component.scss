@@ -1,46 +1,24 @@
 #footer {
     background-color: #FFD400;
     color: #231916;
-    /* Large */
-    @media only screen and (min-width: 415px) {
-        width: 978px;
-        height: 139px;
-
-        p {
-            display: block;
-            width: 320px;
-            margin: 0 auto;
-            padding-top: 39px;
-            font-size: 12px;
-            a {
-                color: #231916;
-            }
-        }
-
-        #small-chewrobot-logo {
-            width: 27px;
-            height: 40px;
-            background-image: url("/assets/images/chewrobot-logo-lg.png");
-            background-size: contain;
-            background-repeat: no-repeat;
-            margin: 0 auto;
+    width: 978px;
+    height: 139px;
+    p {
+        display: block;
+        width: 320px;
+        margin: 0 auto;
+        padding-top: 39px;
+        font-size: 12px;
+        a {
+            color: #231916;
         }
     }
-}
-
-
-#footer {
-    /* Large */
-    @media only screen and (min-width: 768px) {
-        #test p {
-            color: red;
-        }
-    }
-
-    /* Small + Medium */
-    @media only screen and (min-width: 480px) {
-        #test p {
-            color: green;
-        }
+    #small-chewrobot-logo {
+        width: 27px;
+        height: 40px;
+        background-image: url("/assets/images/chewrobot-logo-lg.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin: 0 auto;
     }
 }
