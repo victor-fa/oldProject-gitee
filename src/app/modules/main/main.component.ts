@@ -8,6 +8,6 @@ import { Router } from '@angular/router';
 export class MainComponent implements OnInit {
     constructor(public router: Router) { }
     ngOnInit() {
-        
+        console.log("desktop verison");
     }
 }
