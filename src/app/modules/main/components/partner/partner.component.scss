@@ -2,139 +2,70 @@
     width: 100%;
     background-color: #fefefe;
 
-    /* Large */
-    @media only screen and (min-width: 415px) {
-        height: 478px;
+    height: 478px;
 
-        background-image: url(/assets/images/partner_background.png);
+    background-image: url(/assets/images/partner_background.png);
 
-        #content-container {
-            width: 640px;
-            height: 100%;
-            margin: 0 auto;
-            color: #231916;
-            text-align: center;
+    #content-container {
+        width: 640px;
+        height: 100%;
+        margin: 0 auto;
+        color: #231916;
+        text-align: center;
 
-            h2 {
-                font-size: 24px;
-                padding-top: 58px;
-                padding-bottom: 20px;
-                span {
-                    color: #FFD400;
-                }
-
+        h2 {
+            font-size: 24px;
+            padding-top: 58px;
+            padding-bottom: 20px;
+            span {
+                color: #FFD400;
             }
 
-            p {
-                font-size: 10px;
-                font-weight: 100;
-                padding-bottom: 20px;
-            }
-
-            #logos-sm {
-                display: none;
-            }
-
-            #logos-lg {
-                width: 600px;
-                height: 264px;
-                margin: 0 auto;
-                list-style: none;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                ul {
-                    list-style: none;
-                    margin: 0;padding: 0;
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    li {
-                        img {
-                            width: 90px;
-                            height: 60px;
-                            filter: grayscale(100%);
-                        }
-
-                        border: 2px solid white;
-                    }
-
-                    li:hover {
-                        border: 2px solid #DDDBDA;
-                        img {
-                            filter: grayscale(0%);
-                        }
-                    }
-                }
-            }
         }
-    }
 
-    /* Small + Medium */
-    @media only screen and (max-width: 414px) {
+        p {
+            font-size: 10px;
+            font-weight: 100;
+            padding-bottom: 20px;
+        }
 
-        //background-image: url("../img/partner_background.png");
+        #logos-sm {
+            display: none;
+        }
 
-        #content-container {
-            //width: 640px;
-            //height: 100%;
+        #logos-lg {
+            width: 600px;
+            height: 264px;
             margin: 0 auto;
-            color: #231916;
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            ul {
+                list-style: none;
+                margin: 0;padding: 0;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                li {
+                    img {
+                        width: 90px;
+                        height: 60px;
+                        filter: grayscale(100%);
+                    }
 
-            padding: 20px 5% 20px 5%;
-
-            h2 {
-                color: black;
-                overflow: hidden;
-                font-size: 24px;
-                span {
-                    color: #FFD400;
+                    border: 2px solid white;
                 }
 
-            }
-
-            p {
-                font-size: 12px;
-                //font-weight: 100;
-            }
-
-            #logos-lg {
-                display: none;
-            }
-            #logos-sm {
-                width: 100%;
-                margin: 0 auto;
-                list-style: none;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                ul {
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
-                    //width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    li {
-                        img {
-                            width: 90px;
-                            height: 60px;
-                            filter: grayscale(100%);
-                        }
-                        border: 2px solid white;
-
+                li:hover {
+                    border: 2px solid #DDDBDA;
+                    img {
+                        filter: grayscale(0%);
                     }
-                    li:hover {
-                        border: 2px solid #DDDBDA;
-                        img {
-                            filter: grayscale(0%);
-                        }
-                    }
-
                 }
             }
         }
     }
 }
+
