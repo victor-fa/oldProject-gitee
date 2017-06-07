@@ -2,88 +2,90 @@
     <div id="content-container">
         <div id="left-part">
             <h2><span>解决</span>方案</h2>
-            <p>垂直领域最智能的语音识别技术，提供全行业解决方案；<br><br>
-                个性化深度定制，降低企业试错成本；<br><br>
-                极速demo体验，短周期快上线。</p>
-            </div>
-            <div id="right-part">
-                <ul id="domain">
-                    <li id="education" (click)="showOrCloseEducation()">
-                        <div>
-                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                            <p>教育领域</p>
-                        </div>
-                    </li>
-
-                    <li id="game"  (click)="showOrCloseGame()">
-                        <div>
-                            <i class="fa fa-gamepad" aria-hidden="true"></i>
-                            <p>游戏领域</p>
-                        </div>
-                    </li>
-
-                    <li id="animate" (click)="showOrCloseAnimate()">
-                        <div>
-                            <i class="fa fa-wechat" aria-hidden="true"></i>
-                            <p>动漫领域</p>
-                        </div>
-                    </li>
-
-                    <li id="hardware" (click)="showOrCloseHardware()">
-                        <div>
-                            <i class="fa fa-television" aria-hidden="true"></i>
-                            <p>智能硬件</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <p>垂直领域最智能的语音识别技术，提供全行业解决方案；<br><br> 个性化深度定制，降低企业试错成本；
+                <br><br> 极速demo体验，短周期快上线。
+            </p>
         </div>
+        <div id="right-part">
+            <ul id="domain">
+                <li id="education" (click)="showOrCloseEducation()">
+                    <div>
+                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                        <p>教育领域</p>
+                    </div>
+                </li>
 
-        <div [class.hide]="hideEducation">
-            <div class="black" (click)="showOrCloseEducation()"></div>
-            <div id="education-dialog" class="dialog">
-                <div>
-                    <h3>教育领域</h3>
-                    <p>我们的理念是把教育智能游戏化，语音交互结合游戏的上瘾机制，打造虚拟智能教师，做到真正的寓教于乐。这是一个三赢的局面，小朋友学的开心，家长省钱省心，同时我们也能以此获得相应的利润回报。相比较传统线下教育,我们可以降低 500 倍左右的成本，拥有很强的价格优势。</p>
-                </div>
-            </div>
+                <li id="game" (click)="showOrCloseGame()">
+                    <div>
+                        <i class="fa fa-gamepad" aria-hidden="true"></i>
+                        <p>游戏领域</p>
+                    </div>
+                </li>
+
+                <li id="animate" (click)="showOrCloseAnimate()">
+                    <div>
+                        <i class="fa fa-wechat" aria-hidden="true"></i>
+                        <p>动漫领域</p>
+                    </div>
+                </li>
+
+                <li id="hardware" (click)="showOrCloseHardware()">
+                    <div>
+                        <i class="fa fa-television" aria-hidden="true"></i>
+                        <p>智能硬件</p>
+                    </div>
+                </li>
+            </ul>
         </div>
+    </div>
 
-        <div [class.hide]="hideGame">
-            <div class="black" (click)="showOrCloseGame()"></div>
-            <div id="game-dialog" class="dialog">
-                <div>
-                    <h3>游戏领域</h3>
-                    <p>我们开辟了一种全新的游戏类型——语音控制类游戏，彻底颠覆了以往的触屏控制类游戏的操作方式。同时，我们这项智能语音系统可以彻底的解放双手，结合VR/AR 技术，我们可以用语音控制代替传统的手柄控制器,可以让玩家获得完全的沉浸体验。</p>
-                    <hr>
-                    <h3>案例</h3>
-                    <p>我们自研的全球首款语音控制格斗游戏声动战士(Vocal Warrior) 可通过语音控制指令对游戏主角进行操控。</p>
-                    <a href="http://vocalwarrior.centaurstech.com/">游戏官网</a>
-                    <img src="/assets/images/game_img.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div [class.hide]="hideAnimate">
-            <div class="black" (click)="showOrCloseAnimate()"></div>
-            <div id="animate-dialog" class="dialog">
-                <div>
-                    <p>我们的技术可以让卡通形象活起来,成为一个可以跟粉丝语音互动的虚拟偶像。还可以做成相关的智能玩具，甚至创造全新的交互型广告。这样，我们的技术不但能够帮助 IP 拓展新的宣传推广渠道，还可以帮助动漫产业创造许多新类别的衍生品, 大大提升 IP 的变现能力及品牌价值。</p>
-                    <hr>
-                    <h3>案例</h3>
-                    <p>人马西西是我们研发的声动战士的虚拟偶像游戏主播，人马西西自己是处于游戏世界中，游戏中当西西面临多种选择时，这时候可以西西可以跟玩家互动让玩家来出主意，增强参与感，不同的选择会有不一样的游戏剧情或结果，以趣味休闲为主。</p>
-                    <a href="https://www.centaurstech.com/product/cc/">人马西西</a>
-                    <img src="/assets/images/animate_img.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div [class.hide]="hideHardware">
-            <div class="black" (click)="showOrCloseHardware()"></div>
-            <div id="hardware-dialog" class="dialog">
-                <div>
-                    <p>Comming Soon...</p>
-                </div>
+    <div [class.hide]="hideEducation">
+        <div class="black" (click)="showOrCloseEducation()"></div>
+        <div id="education-dialog" class="dialog">
+            <div>
+                <h3>教育领域</h3>
+                <p>我们的理念是把教育智能游戏化，语音交互结合游戏的上瘾机制，打造虚拟智能教师，做到真正的寓教于乐。这是一个三赢的局面，小朋友学的开心，家长省钱省心，同时我们也能以此获得相应的利润回报。相比较传统线下教育,我们可以降低
+                    500 倍左右的成本，拥有很强的价格优势。</p>
             </div>
         </div>
     </div>
+
+    <div [class.hide]="hideGame">
+        <div class="black" (click)="showOrCloseGame()"></div>
+        <div id="game-dialog" class="dialog">
+            <div>
+                <h3>游戏领域</h3>
+                <p>我们开辟了一种全新的游戏类型——语音控制类游戏，彻底颠覆了以往的触屏控制类游戏的操作方式。同时，我们这项智能语音系统可以彻底的解放双手，结合VR/AR 技术，我们可以用语音控制代替传统的手柄控制器,可以让玩家获得完全的沉浸体验。</p>
+                <hr>
+                <h3>案例</h3>
+                <p>我们自研的全球首款语音控制格斗游戏声动战士(Vocal Warrior) 可通过语音控制指令对游戏主角进行操控。</p>
+                <a href="http://vocalwarrior.centaurstech.com/">游戏官网</a>
+                <img src="/assets/images/game_img.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div [class.hide]="hideAnimate">
+        <div class="black" (click)="showOrCloseAnimate()"></div>
+        <div id="animate-dialog" class="dialog">
+            <div>
+                <p>我们的技术可以让卡通形象活起来,成为一个可以跟粉丝语音互动的虚拟偶像。还可以做成相关的智能玩具，甚至创造全新的交互型广告。这样，我们的技术不但能够帮助 IP 拓展新的宣传推广渠道，还可以帮助动漫产业创造许多新类别的衍生品,
+                    大大提升 IP 的变现能力及品牌价值。</p>
+                <hr>
+                <h3>案例</h3>
+                <p>人马西西是我们研发的声动战士的虚拟偶像游戏主播，人马西西自己是处于游戏世界中，游戏中当西西面临多种选择时，这时候可以西西可以跟玩家互动让玩家来出主意，增强参与感，不同的选择会有不一样的游戏剧情或结果，以趣味休闲为主。</p>
+                <a href="https://www.centaurstech.com/product/cc/">人马西西</a>
+                <img src="/assets/images/animate_img.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div [class.hide]="hideHardware">
+        <div class="black" (click)="showOrCloseHardware()"></div>
+        <div id="hardware-dialog" class="dialog">
+            <div>
+                <p>Comming Soon...</p>
+            </div>
+        </div>
+    </div>
+</div>
