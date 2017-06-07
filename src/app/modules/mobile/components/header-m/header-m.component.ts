@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderMComponent implements OnInit {
 
   constructor() { 
-    console.log("mobile header loaded.");
   }
 
   ngOnInit() {
