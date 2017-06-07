@@ -1,65 +1,53 @@
 #about-m {
-    max-width: 420px;
+    width: 420px;
     background-color: #fefefe;
     overflow: hidden;
     
     background-image: url("/assets/images/partner_background.png");
 
-    #pages {
-        padding: 20px 5% 20px 5%;
+    padding: 20px 2% 20px 2%;
 
-        list-style: none;
-        margin-top: 0px;
-        margin-bottom: 0px;
+    list-style: none;
+    margin: 0;
 
-        ul {
-            overflow: none;
-        }
+    ul {
+        overflow: none;
+    }
 
-        h2 {
-            color: black;
-            overflow: hidden;
-            font-size: 24px;
-            span {
-                color: #F6CF00;
-            }
-        }
-
-        p {
-            font-size: 12px;
-        }
-
-        #page1-right-container {
-            display: none;
-        }
-
-        #page3-right-container {
-            display: none;
-        }
-
-        #page1-left-container {
-            position: relative;
-            #product-xp {
-                position: absolute;
-                top: 0px;
-                right: 5px;
-
-                font-size: 16px;
-            }
-
-            a {
-                color: grey;
-                text-decoration: none;
-            }
-
-            a:hover {
-                text-decoration: none;
-                color: dimgrey;
-            }
+    h2 {
+        color: black;
+        overflow: hidden;
+        font-size: 24px;
+        span {
+            color: #F6CF00;
         }
     }
-    #switcher {
-        display: none;
+
+    p {
+        font-size: 12px;
+    }
+
+
+    #page1-left-container {
+        position: relative;
+        #product-xp {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+
+            font-size: 16px;
+        }
+
+        a {
+            color: grey;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: dimgrey;
+        }
     }
 }
+
 
