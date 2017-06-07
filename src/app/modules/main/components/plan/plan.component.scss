@@ -74,7 +74,7 @@
     }
 
     #content-container {
-        width: 640px;
+        width: 720px;
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
@@ -83,9 +83,10 @@
         display: flex;
 
         #left-part {
-            width: 256px;
+            width: 280px;
             height: 100%;
             padding-top: 108px;
+            padding-right: 20px;
             h2 {
                 font-size: 24px;
                 padding-top: 58px;
@@ -102,15 +103,16 @@
         }
 
         #right-part {
-            width: 384px;
+            width: 440px;
             height: 100%;
-            padding-top: 112px;
+            padding-top: 20px;
 
             #domain {
                 list-style: none;
                 display: flex;
                 width: 100%;
-                justify-content: space-between;
+                justify-content: space-flebetween;
+                flex-wrap: wrap;
                 margin: 0;
                 padding: 0;
 
@@ -120,6 +122,8 @@
 
                     padding-top: 16px;
 
+                    margin: 10px;
+
                     div {
                         display: none;
                         width: 164px;
@@ -128,7 +132,7 @@
 
                         background-color: #FFD400;
                         opacity: 0.9;
-                        padding: 54px;
+                        padding: 50px;
 
                         i {
                             font-size: 30px;
