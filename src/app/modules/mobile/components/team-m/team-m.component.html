@@ -1,3 +1,43 @@
-<p>
-  team-m works!
-</p>
+<div id="team-m">
+  <div id="content-container">
+    <h2>主要<span>技术团队</span></h2>
+    <div id="detail">
+      <div class="team-page" id="left-part" [class.hide]="hiddenLeftPage">
+        <h3>{{ nowMember.name }}</h3>
+        <h4>{{ nowMember.position }}</h4>
+        <img class="team-profile" [src]="nowMember.img">
+      </div>
+      <div class="team-page" id="right-part" [class.hide]="hiddenRightPage">
+        <h3>{{ nowMember.name }}</h3>
+        <h4>{{ nowMember.position }}</h4>
+        <h5>{{ nowMember.education }}</h5>
+        <p>
+          {{ nowMember.introduction }}
+        </p>
+        <ul id="social">
+          <li id="linkedin"><a [href]="nowMember.linkedin" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+          <li id="facebook"><a [href]="nowMember.facebook" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div id="turn-to-right-page" [class.hide]="hiddenLeftPage">
+      <img src="/assets/images/triangle-right.png" (click)="turnToRightPage()">
+    </div>
+    <div id="turn-to-left-page" [class.hide]="hiddenRightPage">
+      <img src="/assets/images/triangle-left.png" (click)="turnToLeftPage()">
+    </div>
+    <div id="big-name">
+      {{ nowMember.name }}
+    </div>
+
+    <!--<ul id="member">
+      <li *ngFor="let member of members; let i = index" [class.active]="i == nowIndex" (click)="changeMember(i)">
+        <img [src]="member.img">
+      </li>
+    </ul>-->
+  </div>
+
+</div>
