@@ -1,9 +1,6 @@
 <div id="about">
     <ul id="pages">
         <li id="page1" [@flyInOut]="nowPageNumber == 1 ? 'in' : 'out'">
-        <li id="page1" [@flyInOut]="pageWidth <= 414 ? 'in' : (nowPageNumber == 1 ? 'in' : 'out')">
-        <!-- <li id="page1" [@flyInOut]="pageWidth > 414 &amp;&amp; nowPageNumber == 1 ? 'in' : 'out'"> -->
-            <!-- <li id="page1"> -->
             <div id="page1-left-container">
                 <h2>关于<span>齐悟</span></h2>
                 <p>齐悟是人马互动科技有限公司(CentaursTech)创立的的人工智能品牌，我们致力于为企业打造智能化、差异化产品提供深度定制化语音交互技术解决方案。
@@ -15,9 +12,7 @@
                 <p>一闻千<span>悟</span></p>
             </div>
         </li>
-        <li id="page2" [@flyInOut]="pageWidth <= 414 ? 'in' : (nowPageNumber == 2 ? 'in' : 'out')">
-            <!-- <li id="page2" [@flyInOut]="(pageWidth > 415 &amp;&amp; nowPageNumber == 2) ? 'in' : 'out'"> -->
-            <!-- <li id="page2"> -->
+        <li id="page2" [@flyInOut]="nowPageNumber == 2 ? 'in' : 'out'">
             <div id="page2-container">
                 <h2>核心<span>技术</span></h2>
                 <p>技术核心是我们完全自主研发的“语义识别引擎”，处于全球领先水平。涵盖“理解、记忆、认知、推理、问答”五个关键要素，使齐悟机器人成功实现多轮人机对话。<br><br>
@@ -26,9 +21,7 @@
                 </p>
             </div>
         </li>
-        <li id="page3" [@flyInOut]="pageWidth <= 414 ? 'in' : (nowPageNumber == 3 ? 'in' : 'out')">
-        <!-- <li id="page3" [@flyInOut]="pageWidth > 414 &amp;&amp; nowPageNumber == 3 ? 'in' : 'out'"> -->
-            <!-- <li id="page3"> -->
+        <li id="page3" [@flyInOut]="nowPageNumber == 3 ? 'in' : 'out'">
             <div id="page3-left-container">
                 <h2>
                     <span>竞争</span>对手分析
