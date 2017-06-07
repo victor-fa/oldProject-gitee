@@ -13,28 +13,27 @@
             font-size: 24px;
             padding-top: 20px;
             padding-bottom: 20px;
+            position: relative;
+            z-index: 900;
             span {
                 color: #FFD400;
             }
         }
         #detail {
-            
             width: 100%;
             height: 210px; // margin-bottom: 50px;
             margin: 0 auto;
-
             .team-page {
                 position: relative;
                 margin: 0 auto;
                 z-index: 3;
             }
-
             #left-part {
                 width: 200px;
-                
                 .team-profile {
-                    width: 202px;
-                    height: 202px;
+                    width: 200px;
+                    height: 200px;
+                    box-shadow: 0 0 12px 2px black;
                 }
                 h3 {
                     font-size: 48px;
@@ -114,34 +113,36 @@
         .hide {
             display: none;
         }
-
-        
-        #member {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 620px;
-            height: 90px;
-            display: flex;
-            justify-content: space-between;
-            li {
-                display: block;
-                img {
-                    width: 90px;
+        .outter-box {
+            width: 100%;
+            overflow: scroll;
+            .inner-box {
+                #member {
+                    touch-action: pan-x pan-y !important;
+                    list-style: none;
+                    padding: 0;
+                    margin-top: 100px;
+                    width: 620px;
                     height: 90px;
+                    display: flex;
+                    justify-content: space-between;
+                    li {
+                        display: block;
+                        img {
+                            width: 90px;
+                            height: 90px;
+                        }
+                    }
+                    li:hover {
+                        cursor: pointer;
+                    }
+                    .active {
+                        img {
+                            border: 4px solid #FFD400;
+                        }
+                    }
                 }
             }
-            li:hover {
-                cursor: pointer;
-            }
-            .active {
-                img {
-                    border: 4px solid #FFD400;
-                }
-            }
-        }
-        img {
-            box-shadow: 0 0 12px 2px black;
         }
     }
     #big-name {
