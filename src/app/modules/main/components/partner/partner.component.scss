@@ -1,5 +1,7 @@
 #partner {
     width: 100%;
+    background-color: #fefefe;
+
     height: 478px;
 
     background-image: url(/assets/images/partner_background.png);
@@ -27,7 +29,11 @@
             padding-bottom: 20px;
         }
 
-        #logos {
+        #logos-sm {
+            display: none;
+        }
+
+        #logos-lg {
             width: 600px;
             height: 264px;
             margin: 0 auto;
@@ -50,8 +56,6 @@
                     }
 
                     border: 2px solid white;
-
-
                 }
 
                 li:hover {
@@ -64,3 +68,4 @@
         }
     }
 }
+

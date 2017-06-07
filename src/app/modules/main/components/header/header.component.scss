@@ -1,28 +1,38 @@
-#header{
+#header {
+    width: 100%;
+    background-color: #333333;
+    overflow: hidden;
     height: 478px;
-    background-image: url(/assets/images/header_background.png);
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
-    #left-block{
+
+    background-image: url("/assets/images/header_background.png");
+
+    #left-block {
         display: flex;
 
         width: 202px;
         height: 100%;
+
         margin-left: 172px;
         background-color: #FFD400;
 
-        #big-chewrobot-logo {
+        #chewrobot-logo-lg {
             width: 124px;
             height: 169px;
-            background-image: url(/assets/images/big-chewrobot-logo.png);
+            background-image: url("/assets/images/chewrobot-logo-lg.png");
             align-self: center;
             margin: 0 auto;
         }
     }
 
-    #right-container {
+    #main-container {
         display: flex;
         flex-direction: column;
-
 
         width: 463px;
         height: 100%;
@@ -35,7 +45,7 @@
             margin-top: 48px;
 
             justify-content: space-between;
-            a{
+            a {
                 display: block;
                 text-decoration: none;
                 color: #fff;
@@ -75,10 +85,10 @@
                 color: #FFD400;
                 font-weight: 200;
                 margin-bottom: 10px;
-                margin-top:0px;
+                margin-top: 0px;
 
                 padding-top: 0px;
-                &:after{
+                &:after {
                     content: '';
                     display: inline-block;
                     padding-left: 99%;
@@ -95,7 +105,7 @@
                 text-align: justify;
                 padding-top: 0px;
                 margin-bottom: 8px;
-                &:after{
+                &:after {
                     content: '';
                     display: inline-block;
                     padding-left: 99%;
@@ -108,10 +118,8 @@
                 color: #FFFFFE;
             }
 
-
-
         }
-
 
     }
 }
+

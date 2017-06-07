@@ -1,0 +1,66 @@
+#partner-m {
+    width: 420px;
+    background-color: #fefefe;
+
+    #content-container {
+        margin: 0 auto;
+        color: #231916;
+
+        padding: 20px 5% 20px 5%;
+
+        h2 {
+            color: black;
+            overflow: hidden;
+            font-size: 24px;
+            span {
+                color: #FFD400;
+            }
+
+        }
+
+        p {
+            font-size: 12px;
+            //font-weight: 100;
+        }
+
+        #logos-sm {
+            width: 100%;
+            margin: 0 auto;
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                
+                justify-content: space-between;
+                li {
+                    img {
+                        width: 90px;
+                        height: 60px;
+                        filter: grayscale(100%);
+                    }
+                    border: 2px solid white;
+
+                }
+                li:hover {
+                    border: 2px solid #DDDBDA;
+                    img {
+                        filter: grayscale(0%);
+                    }
+                }
+
+            }
+        }
+    }
+}
+

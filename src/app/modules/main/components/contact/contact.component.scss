@@ -1,15 +1,17 @@
 #contact {
     width: 100%;
-    height: 478px;
     background-color: #FEFEFE;
-    #content-container {
+
+    height: 478px;
+
+    #contact-container {
         width: 640px;
         height: 100%;
         margin: 0 auto;
         color: #000;
         display: flex;
 
-        #left-part {
+        #contact-left-part {
             width: 452px;
             height: 100%;
             padding-top: 108px;
@@ -56,12 +58,16 @@
                         text-align: center;
                         line-height: 20px;
                     }
+                    a {
+                        text-decoration: none;
+                        color: inherit;
 
+                    }
                 }
             }
         }
 
-        #right-part {
+        #contact-right-part {
             width: 188px;
             height: 100%;
             padding-top: 112px;
@@ -109,3 +115,4 @@
         }
     }
 }
+
