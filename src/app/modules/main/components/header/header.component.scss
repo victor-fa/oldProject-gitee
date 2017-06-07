@@ -2,131 +2,124 @@
     width: 100%;
     background-color: #333333;
     overflow: hidden;
+    height: 478px;
 
-    /* Large */
-    @media only screen and (min-width: 415px) {
-        height: 478px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
 
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
+    background-image: url("/assets/images/header_background.png");
+
+    #left-block {
         display: flex;
 
-        background-image: url("/assets/images/header_background.png");
+        width: 202px;
+        height: 100%;
 
-        #top-block {
-            display: none;
-        }
+        margin-left: 172px;
+        background-color: #FFD400;
 
-        #left-block {
-            display: flex;
-
-            width: 202px;
-            height: 100%;
-
-            margin-left: 172px;
-            background-color: #FFD400;
-
-            #chewrobot-logo-lg {
-                width: 124px;
-                height: 169px;
-                background-image: url("/assets/images/chewrobot-logo-lg.png");
-                align-self: center;
-                margin: 0 auto;
-            }
-        }
-
-        #main-container {
-            display: flex;
-            flex-direction: column;
-
-            width: 463px;
-            height: 100%;
-            margin-left: 83px;
-
-            nav {
-                display: flex;
-                height: 21px;
-                width: 100%;
-                margin-top: 48px;
-
-                justify-content: space-between;
-                a {
-                    display: block;
-                    text-decoration: none;
-                    color: #fff;
-                    font-size: 14px;
-                    line-height: 14px;
-                }
-
-                a:hover {
-                    text-decoration: none;
-                    border-bottom: 2px solid #BBB;
-                }
-
-                .active {
-                    border-bottom: 2px solid #FFD400;
-                }
-            }
-
-            #content {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                height: 400px;
-                justify-content: center;
-                color: #fff;
-
-                h2 {
-                    font-size: 48px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                    padding-top: 0px;
-                }
-
-                h3 {
-                    font-size: 75px;
-                    line-height: 75px;
-                    height: 75px;
-                    color: #FFD400;
-                    font-weight: 200;
-                    margin-bottom: 10px;
-                    margin-top: 0px;
-
-                    padding-top: 0px;
-                    &:after {
-                        content: '';
-                        display: inline-block;
-                        padding-left: 99%;
-                    }
-                }
-
-                h4 {
-                    width: 100%;
-                    font-size: 29px;
-                    font-weight: 100;
-                    line-height: 29px;
-                    height: 29px;
-                    overflow: hidden;
-                    text-align: justify;
-                    padding-top: 0px;
-                    margin-bottom: 8px;
-                    &:after {
-                        content: '';
-                        display: inline-block;
-                        padding-left: 99%;
-                    }
-                }
-
-                h5 {
-                    font-size: 12px;
-                    font-weight: 100;
-                    color: #FFFFFE;
-                }
-
-            }
-
+        #chewrobot-logo-lg {
+            width: 124px;
+            height: 169px;
+            background-image: url("/assets/images/chewrobot-logo-lg.png");
+            align-self: center;
+            margin: 0 auto;
         }
     }
+
+    #main-container {
+        display: flex;
+        flex-direction: column;
+
+        width: 463px;
+        height: 100%;
+        margin-left: 83px;
+
+        nav {
+            display: flex;
+            height: 21px;
+            width: 100%;
+            margin-top: 48px;
+
+            justify-content: space-between;
+            a {
+                display: block;
+                text-decoration: none;
+                color: #fff;
+                font-size: 14px;
+                line-height: 14px;
+            }
+
+            a:hover {
+                text-decoration: none;
+                border-bottom: 2px solid #BBB;
+            }
+
+            .active {
+                border-bottom: 2px solid #FFD400;
+            }
+        }
+
+        #content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 400px;
+            justify-content: center;
+            color: #fff;
+
+            h2 {
+                font-size: 48px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                padding-top: 0px;
+            }
+
+            h3 {
+                font-size: 75px;
+                line-height: 75px;
+                height: 75px;
+                color: #FFD400;
+                font-weight: 200;
+                margin-bottom: 10px;
+                margin-top: 0px;
+
+                padding-top: 0px;
+                &:after {
+                    content: '';
+                    display: inline-block;
+                    padding-left: 99%;
+                }
+            }
+
+            h4 {
+                width: 100%;
+                font-size: 29px;
+                font-weight: 100;
+                line-height: 29px;
+                height: 29px;
+                overflow: hidden;
+                text-align: justify;
+                padding-top: 0px;
+                margin-bottom: 8px;
+                &:after {
+                    content: '';
+                    display: inline-block;
+                    padding-left: 99%;
+                }
+            }
+
+            h5 {
+                font-size: 12px;
+                font-weight: 100;
+                color: #FFFFFE;
+            }
+
+        }
+
+    }
 }
+
