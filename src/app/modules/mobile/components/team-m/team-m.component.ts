@@ -30,7 +30,7 @@ export class TeamMComponent implements OnInit {
     },
     {
        name: "胡上峰",
-       position: "语义模块负责人",
+       position: "CTO",
        education: "北京大学计算机系学士，澳大利亚斯文本科技大学博士（自然语言处理专业）。",
        introduction: "互联网时代，在中关村创业7年，主持开发运营大型网络服务软件系统。10年前，开始转向自然语言处理领域，研发智能聊天机器人系统。赴澳大利亚斯文本科技大学，取得博士学位。在自然语言理解方向，发表多篇论文并获得美国专利授权。加入本公司前，在新加坡科技研究局，资讯通信研究院任职科学家，研究无监督自然语言语义归纳，推理等前沿课题。",
        img: "/assets/images/avator/hsf.png",
