@@ -1,19 +1,22 @@
 #plan-m {
-    width: 420px;
+    width: 100%;
     overflow: hidden;
     background: url("/assets/images/plan_background.png");
     background-position: calc(50% - 50px) 50%;
-    padding: 20px 2% 20px 2%;
+    background-size: 200%;
+    background-repeat: no-repeat;
+    padding: 5% 5% 5% 5%;
     color: #FEFEFE;
     h2 {
-        font-size: 24px;
+        font-size: 4em;
         overflow: hidden;
+        padding-bottom: 2%;
         span {
             color: #FFD400;
         }
     }
     p {
-        font-size: 12px;
+        font-size: 2em;
         font-weight: 100;
     }
     #plan-m-field {
@@ -35,34 +38,32 @@
         .plan-m-field-item {
             div {
                 background-color: #FFD400;
-                width: 80px;
-                height: 80px;
-                font-size: 12px;
+                width: 6em;
+                height: 6em;
+                font-size: 2em;
                 text-align: center;
                 vertical-align: middle;
-                line-height: 80px;
+                line-height: 6em;
                 a {
                     text-decoration: none;
                     color: white;
-                }          
-                border: 2px solid #FEFEFE;
+                }
+                border: 0.1em solid #FEFEFE;
                 background-size: cover;
             }
         }
         li {
             text-align: center;
             flex-grow: 1;
-
         }
         li:hover {
             div {
-                border: 2px solid #FFD400;
+                border: 0.1em solid #FFD400;
                 a {
                     color: #FFD400;
                 }
             }
         }
-
         #education-item {
             background-image: url("/assets/images/education_background.png");
         }
@@ -79,32 +80,31 @@
 }
 
 #plan-m-eg {
-    width: 420px;
+    width: 100%;
     overflow: hidden;
     background-color: #FEFEFE;
-    padding: 20px 2% 20px 2%;
+    padding: 5% 5% 1% 5%;
     .dialog {
         div {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-        h3 {
-            font-size: 14px;
-        }
-        p {
-            font-size: 12px;
-        }
-        img {
-            width: 100%;
-        }
-        a {
-            display: inline-block;
-            padding: 4px 14px 4px 14px;
-            text-decoration: none;
-            background-color: #FFD400;
-            color: black;
-            margin-bottom: 6px;
-            font-size: 12px;
+            margin: 0 auto;
+            h3 {
+                font-size: 2.33em;
+            }
+            p {
+                font-size: 2em;
+            }
+            a {
+                display: inline-block;
+                padding: 1% 2% 1% 2%;
+                text-decoration: none;
+                background-color: #FFD400;
+                color: black;
+                margin-bottom: 1%;
+                font-size: 2em;
+            }
+            img {
+                width: 100%;
+            }
         }
     }
 }
