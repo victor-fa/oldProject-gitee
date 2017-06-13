@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MobiGuard } from './mobi.guard';
 
-import * as $ from 'jquery';
+/* import * as $ from 'jquery'; */
 
 @NgModule({
   declarations: [
