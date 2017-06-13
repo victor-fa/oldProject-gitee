@@ -21,7 +21,6 @@ compile_job:
     stage: compile
     script:
         - "pwd;ls"
-        - "typings install dt~jquery --global --save"
         - "npm run build --prod"
 
 
