@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-header-m',
-  templateUrl: './header-m.component.html',
-  styleUrls: ['./header-m.component.scss']
+  selector: 'app-nav-m',
+  templateUrl: './nav-m.component.html',
+  styleUrls: ['./nav-m.component.scss']
 })
-export class HeaderMComponent implements OnInit {
+export class NavMComponent implements OnInit {
   activeAbout: boolean = true;
   activePlan: boolean = false;
   activePartner: boolean = false;

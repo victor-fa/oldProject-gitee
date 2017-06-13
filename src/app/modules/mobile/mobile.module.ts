@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MobileRoutingModule } from './mobile-routing.module';
 import { MobileComponent } from './mobile.component';
 
+import { NavMComponent } from './components/nav-m/nav-m.component';
 import { HeaderMComponent } from './components/header-m/header-m.component';
 import { AboutMComponent } from './components/about-m/about-m.component';
 import { PlanMComponent } from './components/plan-m/plan-m.component';
@@ -19,6 +20,7 @@ import { FooterMComponent } from './components/footer-m/footer-m.component';
     ],
     declarations: [
         MobileComponent,
+        NavMComponent,
         HeaderMComponent,
         AboutMComponent,
         PlanMComponent,

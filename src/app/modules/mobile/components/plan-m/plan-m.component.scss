@@ -84,27 +84,28 @@
     overflow: hidden;
     background-color: #FEFEFE;
     padding: 5% 5% 1% 5%;
+    .hide {
+        display: none;
+    }
     .dialog {
-        div {
-            margin: 0 auto;
-            h3 {
-                font-size: 2.33em;
-            }
-            p {
-                font-size: 2em;
-            }
-            a {
-                display: inline-block;
-                padding: 1% 2% 1% 2%;
-                text-decoration: none;
-                background-color: #FFD400;
-                color: black;
-                margin-bottom: 1%;
-                font-size: 2em;
-            }
-            img {
-                width: 100%;
-            }
+        margin: 0 auto;
+        h3 {
+            font-size: 2.33em;
+        }
+        p {
+            font-size: 2em;
+        }
+        a {
+            display: inline-block;
+            padding: 1% 2% 1% 2%;
+            text-decoration: none;
+            background-color: #FFD400;
+            color: black;
+            margin-bottom: 1%;
+            font-size: 2em;
+        }
+        img {
+            width: 100%;
         }
     }
 }
