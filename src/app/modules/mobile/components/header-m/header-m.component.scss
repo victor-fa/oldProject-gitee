@@ -68,11 +68,8 @@
                 line-height: 2.33em;
                 padding-bottom: 8%;
             }
-            a:hover {
-                text-decoration: none;
-                border-bottom: 0.1em solid #BBB;
-            }
             .active {
+                text-decoration: none;
                 border-bottom: 0.1em solid #FFD400;
             }
         }
