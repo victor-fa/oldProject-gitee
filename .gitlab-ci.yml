@@ -3,7 +3,7 @@ image: node:latest
 before_script:
 #  - export PIP_CACHE_DIR="pip-cache"
   - npm install
-
+  - typings install dt~jquery --global --save
 
 stages:
     - compile
