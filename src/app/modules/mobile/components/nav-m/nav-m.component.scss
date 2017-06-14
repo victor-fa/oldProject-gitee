@@ -1,0 +1,78 @@
+#nav-m {
+    position: fixed;
+    max-width: 978px;
+    width: 100%;
+    background-color: #333333;
+    overflow: hidden;
+    background-image: url("/assets/images/header_background.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 10;
+    #top-block {
+        width: 100%;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 5%;
+        padding-right: 5%;
+        #chewrobot-logo-sm {
+            align-self: flex-start;
+            width: 8em;
+            height: 9.26em;
+            background-image: url("/assets/images/chewrobot-logo-sm.png");
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            align-self: center;
+            margin-right: 5%;
+        }
+        #slogan {
+            display: flex;
+            align-self: flex-end;
+            margin-left: 5%;
+            h3 {
+                color: white;
+                font-size: 4em;
+                font-weight: 100;
+                span {
+                    color: #F6CF00;
+                }
+            }
+        }
+    }
+    #main-container {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 5% 5% 5% 5%;
+        nav {
+            
+            height: 3.8em;
+            width: 90%;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            justify-content: space-between;
+            a {
+                display: block;
+                text-decoration: none;
+                color: #fff;
+                font-size: 2.33em;
+                line-height: 2.33em;
+                padding-bottom: 8%;
+            }
+            .active {
+                text-decoration: none;
+                border-bottom: 0.1em solid #FFD400;
+            }
+        }
+    }
+}
