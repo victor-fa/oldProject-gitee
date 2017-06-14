@@ -1,21 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-nav-m',
   templateUrl: './nav-m.component.html',
   styleUrls: ['./nav-m.component.scss']
 })
-export class NavMComponent implements OnInit {
+export class NavMComponent implements AfterViewInit {
   activeAbout: boolean = true;
   activePlan: boolean = false;
   activePartner: boolean = false;
   activeTeam: boolean = false;
   activeContact: boolean = false;
 
+  didScroll: boolean = false;
   constructor() {
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+
+    // on scroll, let the interval function know the user has scrolled
+    $(window).scroll(function (event) {
+      this.didScroll = true;
+    });
+
+    // run hasScrolled() and reset didScroll status
+    setInterval(function () {
+      if (this.didScroll) {
+        hasScrolled();
+        this.didScroll = false;
+      }
+    }, 250);
+    function hasScrolled() {
+      $("a").css("background-color", "pink");
+    }
   }
 
   scrollTo(hash: string) {
