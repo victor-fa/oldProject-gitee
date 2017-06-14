@@ -12,12 +12,6 @@ export class NavMComponent implements AfterViewInit {
   activeTeam: boolean = false;
   activeContact: boolean = false;
 
-  // didScroll: boolean = false;
-  // lastScrollTop: number = 0;
-  // delta: number = 5;
-  // navbarHeight: number = $('header').outerHeight();
-
-
   constructor() {
   }
 
@@ -76,11 +70,7 @@ export class NavMComponent implements AfterViewInit {
   scrollTo(hash: string) {
     var navbarHeight = $('#nav-main').outerHeight();
     location.hash = "#" + hash;
-    if (hash == "about-m") {
-      window.scrollBy(0, $('#nav-m').outerHeight() * -1);
-    } else {
-      window.scrollBy(0, $('#nav-main').outerHeight() * -1);
-    }
+    window.scrollBy(0, $('#nav-main').outerHeight() * -1);
     this.activeChecker(hash);
   }
 
