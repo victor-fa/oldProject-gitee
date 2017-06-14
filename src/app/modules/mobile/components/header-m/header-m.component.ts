@@ -17,17 +17,4 @@ export class HeaderMComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  scrollTo(hash: string) {
-    location.hash = "#" + hash;
-    this.activeChecker(hash);
-  }
-
-  activeChecker(id: string) {
-    this.activeAbout = (id == 'about-m' ? true : false);
-    this.activeAbout = (id == 'plan-m' ? true : false);
-    this.activePartner = (id == 'partner-m' ? true : false);
-    this.activeTeam = (id == 'team-m' ? true : false);
-    this.activeContact = (id == 'contact-m' ? true : false);
-  }
 }
