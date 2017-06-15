@@ -3,8 +3,11 @@ image: node:latest
 before_script:
 #  - export PIP_CACHE_DIR="pip-cache"
   - npm install
-  - npm install typings 
-  - typings install dt~jquery 
+  - "npm install -g typings"
+  - "ls /usr/local/bin"
+  - "ls /usr/local/lib/node_modules/"
+  - "ls /usr/local/lib/node"
+  - "typings install dt~jquery"
 
 stages:
     - compile
