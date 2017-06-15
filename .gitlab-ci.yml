@@ -6,8 +6,7 @@ before_script:
   - "npm install -g typings"
   - "ls /usr/local/bin"
   - "ls /usr/local/lib/node_modules/"
-  - "ls /usr/local/lib/node"
-  - "typings install dt~jquery"
+  - "/usr/local/bin/typings install -g dt~jquery"
 
 stages:
     - compile
