@@ -16,6 +16,7 @@
         position: fixed;
         transition: top 0.3s ease-in-out;
         width: 100%;
+        max-width: 978px;
         height: 148px;
         display: -webkit-box;
         display: -moz-box;
@@ -56,6 +57,7 @@
         position: fixed;
         transition: top 0.2s ease-in-out;
         top: 148px;
+        max-width: 878px;
         width: 90%;
         height: 70px;
         flex-direction: column;
@@ -65,8 +67,9 @@
         margin: 0 5%;
         z-index: 402;
         nav {
-            height: 3.3em;
+            height: 70px;
             width: 100%;
+            max-width: 978px;
             display: -webkit-box;
             display: -moz-box;
             display: -ms-flexbox;
