@@ -4,8 +4,6 @@ before_script:
 #  - export PIP_CACHE_DIR="pip-cache"
   - npm install
   - "npm install -g typings"
-  - "ls /usr/local/bin"
-  - "ls /usr/local/lib/node_modules/"
   - "/usr/local/bin/typings install -g dt~jquery"
 
 stages:
