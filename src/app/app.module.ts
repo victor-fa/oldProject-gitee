@@ -8,8 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MobiGuard } from './mobi.guard';
 
-/// <reference path="../../typings/jquery.d.ts" />
-import $ from 'jquery';
+/// <reference path="../../typings/index.d.ts" />
+import * as $ from 'jquery';
 
 @NgModule({
   declarations: [
@@ -20,8 +20,7 @@ import $ from 'jquery';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    $
+    BrowserAnimationsModule
   ],
   providers: [MobiGuard],
   bootstrap: [AppComponent]
