@@ -23,9 +23,7 @@
         "../node_modules/font-awesome/css/font-awesome.css",
         "styles/app.scss"
       ],
-      "scripts": [
-        "js/jquery.min.js"
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
