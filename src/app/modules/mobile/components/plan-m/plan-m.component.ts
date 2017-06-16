@@ -21,6 +21,18 @@ export class PlanMComponent implements OnInit {
       education.style.opacity = "0";
       education.style.height = "0";
     }
+
+    var game = document.getElementById("game-dialog");
+    game.style.opacity = "0";
+    game.style.height = "0";
+
+    var animate = document.getElementById("animate-dialog");
+    animate.style.opacity = "0";
+    animate.style.height = "0";
+
+    var hardware = document.getElementById("hardware-dialog");
+    hardware.style.opacity = "0";
+    hardware.style.height = "0";
   }
 
   showOrCloseGame() {
@@ -32,6 +44,18 @@ export class PlanMComponent implements OnInit {
       game.style.opacity = "0";
       game.style.height = "0";
     }
+
+    var education = document.getElementById("education-dialog");
+    education.style.opacity = "0";
+    education.style.height = "0";
+
+    var animate = document.getElementById("animate-dialog");
+    animate.style.opacity = "0";
+    animate.style.height = "0";
+
+    var hardware = document.getElementById("hardware-dialog");
+    hardware.style.opacity = "0";
+    hardware.style.height = "0";
   }
 
   showOrCloseAnimate() {
@@ -43,9 +67,22 @@ export class PlanMComponent implements OnInit {
       animate.style.opacity = "0";
       animate.style.height = "0";
     }
+
+    var education = document.getElementById("education-dialog");
+    education.style.opacity = "0";
+    education.style.height = "0";
+
+    var game = document.getElementById("game-dialog");
+    game.style.opacity = "0";
+    game.style.height = "0";
+
+    var hardware = document.getElementById("hardware-dialog");
+    hardware.style.opacity = "0";
+    hardware.style.height = "0";
   }
 
   showOrCloseHardware() {
+    ;
     var hardware = document.getElementById("hardware-dialog");
     if (hardware.style.opacity != "1") {
       hardware.style.opacity = "1";
@@ -54,5 +91,17 @@ export class PlanMComponent implements OnInit {
       hardware.style.opacity = "0";
       hardware.style.height = "0";
     }
+
+    var education = document.getElementById("education-dialog");
+    education.style.opacity = "0";
+    education.style.height = "0";
+
+    var game = document.getElementById("game-dialog");
+    game.style.opacity = "0";
+    game.style.height = "0";
+
+    var animate = document.getElementById("animate-dialog");
+    animate.style.opacity = "0";
+    animate.style.height = "0";
   }
 }
