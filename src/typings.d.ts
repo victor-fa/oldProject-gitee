@@ -8,5 +8,5 @@ interface JQuery {
   chosen(options?: any): JQuery;
 }    
 
-// declare var jQuery: JQueryStatic;
-// declare var $: JQueryStatic;
+declare var jQuery: JQueryStatic;
+declare var $: JQueryStatic;

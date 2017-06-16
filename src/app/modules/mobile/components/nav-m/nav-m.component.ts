@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 /// <reference path="jquery.d.ts" />
-import * as $ from "jquery";
 
 @Component({
   selector: 'app-nav-m',
