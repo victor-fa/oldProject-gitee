@@ -4,6 +4,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+/// <reference path="typings/globals/jquery/index.d.ts" />
+import * as $ from 'jquery';
+
 if (environment.production) {
   enableProdMode();
 }
