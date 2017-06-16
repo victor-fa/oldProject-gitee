@@ -4,6 +4,8 @@ interface NodeModule {
   id: string;
 }
 
+/// <reference path="../typings/jquery.d.ts" />
+
 interface JQuery {
   chosen(options?: any): JQuery;
 }    

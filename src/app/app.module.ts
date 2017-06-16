@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MobiGuard } from './mobi.guard';
 
+/// <reference path="../../typings/jquery.d.ts" />
 import * as $ from 'jquery';
 
 @NgModule({
