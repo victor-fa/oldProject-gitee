@@ -24,7 +24,6 @@ export class NavMComponent implements AfterViewInit {
     var navbarHeight = $('#nav-main').outerHeight();
     var headerHeight = logoHeight + navbarHeight;
 
-    $(".main-contain").css("margin-top", headerHeight + "px");
     $('#nav-top').css("top", "0px");
 
     // on scroll, let the interval function know the user has scrolled
