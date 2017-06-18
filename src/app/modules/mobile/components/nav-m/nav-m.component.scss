@@ -1,10 +1,10 @@
 #nav-m {
-    position: fixed; 
+    position: fixed;
     transition: top 0.2s ease-in-out;
     top: 0;
     max-width: 978px;
     width: 100%;
-    height: 230px;
+    height: 270px;
     background-color: #333333;
     overflow: hidden;
     background-image: url("/assets/images/header_background.png");
@@ -17,7 +17,7 @@
         transition: top 0.3s ease-in-out;
         width: 100%;
         max-width: 978px;
-        height: 148px;
+        height: 150px;
         display: -webkit-box;
         display: -moz-box;
         display: -ms-flexbox;
@@ -31,7 +31,7 @@
         #chewrobot-logo-sm {
             align-self: flex-start;
             width: 8em;
-            height: 148px;
+            height: 150px;
             background-image: url("/assets/images/chewrobot-logo-sm.png");
             background-position: center center;
             background-size: cover;
@@ -56,10 +56,10 @@
     #nav-main {
         position: fixed;
         transition: top 0.2s ease-in-out;
-        top: 148px;
+        top: 150px;
         max-width: 878px;
         width: 90%;
-        height: 70px;
+        height: 90px;
         flex-direction: column;
         align-items: center;
         vertical-align: center;
@@ -67,7 +67,7 @@
         margin: 0 5%;
         z-index: 402;
         nav {
-            height: 70px;
+            height: 90px;
             width: 100%;
             max-width: 978px;
             display: -webkit-box;
@@ -81,9 +81,9 @@
                 display: block;
                 text-decoration: none;
                 color: #fff;
-                font-size: 2.33em;
-                line-height: 2.33em;
-                padding-bottom: 8%;
+                font-size: 2.66em;
+                line-height: 2.66em;
+                padding-bottom: 20px;
                 margin: 0 auto;
             }
             .active {
