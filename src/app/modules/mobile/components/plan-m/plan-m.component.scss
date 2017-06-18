@@ -44,12 +44,13 @@
                 text-align: center;
                 vertical-align: middle;
                 line-height: 6em;
-                a {
-                    text-decoration: none;
-                    color: white;
-                }
                 border: 0.1em solid #FEFEFE;
                 background-size: cover;
+                text-decoration: none;
+                color: #FEFEFE;
+                font-weight: 500;
+                text-shadow: 2px 2px black;
+
             }
         }
         li {
@@ -59,9 +60,7 @@
         li:hover {
             div {
                 border: 0.1em solid #FFD400;
-                a {
-                    color: #FFD400;
-                }
+                color: #FFD400;
             }
         }
         #education-item {
@@ -83,30 +82,33 @@
     width: 100%;
     overflow: hidden;
     background-color: #FEFEFE;
-    padding: 5% 5% 1% 5%;
+    margin: 0;
+    padding: 0 5% 0 5%;
     .dialog {
         transition: opacity 0.3s ease-in-out;
         opacity: 0;
         height: 0;
         overflow: hidden;
-        margin: 0 auto;
-        h3 {
-            font-size: 3em;
-        }
-        p {
-            font-size: 2.66em;
-        }
-        a {
-            display: inline-block;
-            padding: 1% 2% 1% 2%;
-            text-decoration: none;
-            background-color: #FFD400;
-            color: black;
-            margin-bottom: 1%;
-            font-size: 2.66em;
-        }
-        img {
-            width: 100%;
+        .dialog-container {
+            padding-top: 5%;
+            h3 {
+                font-size: 3em;
+            }
+            p {
+                font-size: 2.66em;
+            }
+            a {
+                display: inline-block;
+                padding: 1% 2% 1% 2%;
+                text-decoration: none;
+                background-color: #FFD400;
+                color: black;
+                margin-bottom: 1%;
+                font-size: 2.66em;
+            }
+            img {
+                width: 100%;
+            }
         }
     }
 }
