@@ -1,8 +1,18 @@
+@font-face {
+    font-family: "Lan-Ting-Hei";
+    src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
+    font-family: "Lan-Ting-Kan-Song";
+    src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
+    font-family: "Dong-Qing-Hei";
+    src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
+}
+
 #plan {
     width: 978px;
     height: 478px;
     background-image: url("/assets/images/plan_background.png");
     position: relative;
+    font-family: Dong-Qing-Hei;
     .black {
         position: fixed;
         display: block;
@@ -11,25 +21,23 @@
         bottom: 0;
         left: 0;
         z-index: 1050;
-
         width: 100vw;
         height: 100vh;
-
         background-color: #000;
-
         opacity: 0.5;
     }
-
     .hide {
         display: none;
     }
-
     .dialog {
         display: flex;
         flex-direction: column;
         width: 340px;
         position: absolute;
-        top: 0;right: 0;bottom: 0;left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         margin: auto;
         justify-content: center;
         div {
@@ -37,33 +45,36 @@
             height: auto;
             background-color: #FEFEFE;
             padding: 14px 20px 10px 20px;
-
             hr {
                 margin: 2px 0 6px 0;
             }
-
+            h2 {
+                font-size: 20px;
+                font-family: Lan-Ting-Kan-Song;
+                font-weight: bold;
+                span {
+                    color: #FFD400;
+                    font-size: 16px;
+                }
+            }
             h3 {
-                font-size: 14px;
+                font-size: 16px;
+                font-family: Lan-Ting-Kan-Song;
                 font-weight: bold;
             }
-
             p {
                 font-size: 12px;
                 margin-bottom: 6px;
                 text-align: justify;
             }
-
             a {
                 display: inline-block;
                 padding: 4px 14px 4px 14px;
                 text-decoration: none;
-
                 background-color: #FFD400;
                 color: black;
-
                 margin-bottom: 6px;
             }
-
             img {
                 width: 100%;
                 display: block;
@@ -72,16 +83,13 @@
         }
         z-index: 1060;
     }
-
     #content-container {
         width: 720px;
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
         text-align: center;
-
         display: flex;
-
         #left-part {
             width: 280px;
             height: 100%;
@@ -89,24 +97,22 @@
             padding-right: 20px;
             h2 {
                 font-size: 24px;
+                font-family: Lan-Ting-Kan-Song;
                 padding-top: 58px;
                 padding-bottom: 46px;
                 span {
                     color: #FFD400;
                 }
             }
-
             p {
-                font-size: 10px;
+                font-size: 12px;
                 font-weight: 100;
             }
         }
-
         #right-part {
             width: 440px;
             height: 100%;
             padding-top: 20px;
-
             #domain {
                 list-style: none;
                 display: flex;
@@ -115,25 +121,19 @@
                 flex-wrap: wrap;
                 margin: 0;
                 padding: 0;
-
                 li {
                     width: 196px;
                     height: 196px;
-
                     padding-top: 16px;
-
                     margin: 10px;
-
                     div {
                         display: none;
                         width: 164px;
                         height: 164px;
                         margin: 0 auto;
-
                         background-color: #FFD400;
                         opacity: 0.9;
                         padding: 50px;
-
                         i {
                             font-size: 30px;
                             opacity: 1;
@@ -145,26 +145,21 @@
                         }
                     }
                 }
-
                 li:hover {
                     cursor: pointer;
                     div {
                         display: block;
                     }
                 }
-
                 #education {
                     background-image: url(/assets/images/education_background.png);
                 }
-
                 #game {
                     background-image: url(/assets/images/game_background.png);
                 }
-
                 #animate {
                     background-image: url(/assets/images/animate_background.png);
                 }
-
                 #hardware {
                     background-image: url(/assets/images/hardware_background.png);
                 }
