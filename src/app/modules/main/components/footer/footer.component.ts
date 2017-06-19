@@ -1,42 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+/// <reference path="jquery.d.ts" />
 
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.scss']
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements AfterViewInit {
 
-    year:number = new Date().getFullYear();
+    year: number = new Date().getFullYear();
 
-    // test
-    innerWidth: number = window.innerWidth;
-    width: number = screen.width;
-    deviceType: string;
+    constructor() { }
 
-
-    constructor() {
-        if (this.detectmob()) {
-            this.deviceType = "mobile";
-        } else {
-            this.deviceType = "desktop";
-        }
-    }
-    ngOnInit() {}
-
-    detectmob() : boolean {
-     if( navigator.userAgent.match(/Android/i)
-     || navigator.userAgent.match(/webOS/i)
-     || navigator.userAgent.match(/iPhone/i)
-     || navigator.userAgent.match(/iPad/i)
-     || navigator.userAgent.match(/iPod/i)
-     || navigator.userAgent.match(/BlackBerry/i)
-     || navigator.userAgent.match(/Windows Phone/i)
-     ){
-        return true;
-      }
-     else {
-        return false;
-      }
+    ngAfterViewInit() { }
+    // scroll to target tag
+    scrollTop() {
+        window.scrollBy(0, $('body').outerHeight() * -1);
+        $('#main-container nav a').removeClass('active');
+        $('#main-container nav a:first-child').addClass('active');
     }
 }
