@@ -1,38 +1,41 @@
+@font-face {
+    font-family: "Lan-Ting-Hei";
+    src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
+    font-family: "Lan-Ting-Kan-Song";
+    src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
+    font-family: "Dong-Qing-Hei";
+    src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
+}
+
 #partner {
     width: 978px;
     background-color: #fefefe;
-
     height: 478px;
-
     background-image: url(/assets/images/partner_background.png);
-
+    font-family: Dong-Qing-Hei;
     #content-container {
         width: 640px;
         height: 100%;
         margin: 0 auto;
         color: #231916;
         text-align: center;
-
         h2 {
             font-size: 24px;
+            font-family: Lan-Ting-Kan-Song;
             padding-top: 58px;
             padding-bottom: 20px;
             span {
                 color: #FFD400;
             }
-
         }
-
         p {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 100;
             padding-bottom: 20px;
         }
-
         #logos-sm {
             display: none;
         }
-
         #logos-lg {
             width: 600px;
             height: 264px;
@@ -44,7 +47,8 @@
             justify-content: space-between;
             ul {
                 list-style: none;
-                margin: 0;padding: 0;
+                margin: 0;
+                padding: 0;
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
@@ -54,10 +58,8 @@
                         height: 60px;
                         filter: grayscale(100%);
                     }
-
                     border: 2px solid white;
                 }
-
                 li:hover {
                     border: 2px solid #DDDBDA;
                     img {
@@ -68,4 +70,3 @@
         }
     }
 }
-
