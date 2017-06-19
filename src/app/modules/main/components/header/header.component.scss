@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Lan-Ting-Hei";
+  src: url("/assets/fonts/兰亭黑.ttf") format("ttf")
+}
+@font-face {
+  font-family: "Lan-Ting-Kan-Song";
+  src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf")
+}
+
 #header {
     width: 978px;
     background-color: #333333;
@@ -74,12 +83,14 @@
             h2 {
                 font-size: 48px;
                 font-weight: bold;
+                font-family: Lan-Ting-Hei;
                 margin-bottom: 10px;
                 padding-top: 0px;
             }
 
             h3 {
                 font-size: 75px;
+                font-family: Lan-Ting-Hei;
                 line-height: 75px;
                 height: 75px;
                 color: #FFD400;
@@ -98,7 +109,7 @@
             h4 {
                 width: 100%;
                 font-size: 29px;
-                font-weight: 100;
+                font-family: Lan-Ting-Kan-Song;
                 line-height: 29px;
                 height: 29px;
                 overflow: hidden;
