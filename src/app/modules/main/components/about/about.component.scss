@@ -1,20 +1,34 @@
+@font-face {
+  font-family: "Lan-Ting-Hei";
+  src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
+
+  font-family: "Lan-Ting-Kan-Song";
+  src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
+
+  font-family: "Dong-Qing-Hei";
+  src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
+}
+
+
 #about {
     width: 978px;
     background-color: #fefefe;
     overflow: hidden;
-    height: 478px; // width: 100%;
+    height: 478px;
     background-color: #fefefe;
     position: relative;
+    font-family: Dong-Qing-Hei; 
     h2 {
         margin-top: 87px;
         font-size: 24px;
         margin-bottom: 20px;
+        font-family: Lan-Ting-Kan-Song;
         span {
             color: #FFD400;
         }
     }
     p {
-        font-size: 10px;
+        font-size: 12px;
         text-align: justify;
     }
     a {
@@ -91,6 +105,7 @@
                 padding-left: 80px;
                 p {
                     font-size: 52px;
+                    font-family: Lan-Ting-Hei;
                     margin: 0px;
                     span {
                         color: #FFD400;
