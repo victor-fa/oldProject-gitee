@@ -21,7 +21,7 @@ compile_job:
     stage: compile
     script:
         - "pwd;ls"
-        - "npm run build --prod --aot"
+        - "npm run build"
 
 test_job:
     stage: test
