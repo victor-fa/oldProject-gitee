@@ -21,7 +21,7 @@ compile_job:
     stage: compile
     script:
         - "pwd;ls"
-        - "ng build --prod --aot"
+        - "npm run build --prod --aot"
 
 test_job:
     stage: test
