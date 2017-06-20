@@ -76,10 +76,9 @@
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
-        text-align: center;
         display: flex;
         #left-part {
-            width: 280px;
+            width: 320px;
             height: 100%;
             padding-top: 108px;
             padding-right: 20px;
@@ -97,9 +96,9 @@
             }
         }
         #right-part {
-            width: 440px;
+            width: 400px;
             height: 100%;
-            padding-top: 20px;
+            padding-top: 40px;
             #domain {
                 list-style: none;
                 display: flex;
@@ -109,18 +108,19 @@
                 margin: 0;
                 padding: 0;
                 li {
-                    width: 196px;
-                    height: 196px;
+                    width: 176px;
+                    height: 176px;
                     padding-top: 16px;
                     margin: 10px;
                     div {
                         display: none;
-                        width: 164px;
-                        height: 164px;
+                        width: 144px;
+                        height: 144px;
                         margin: 0 auto;
                         background-color: #FFD400;
                         opacity: 0.9;
-                        padding: 50px;
+                        padding: 43px;
+                        text-align: center;
                         i {
                             font-size: 30px;
                             opacity: 1;
