@@ -1,18 +1,8 @@
-@font-face {
-    font-family: "Lan-Ting-Hei";
-    src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
-    font-family: "Lan-Ting-Kan-Song";
-    src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
-    font-family: "Dong-Qing-Hei";
-    src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
-}
-
 #plan {
     width: 978px;
     height: 478px;
     background-image: url("/assets/images/plan_background.png");
     position: relative;
-    font-family: Dong-Qing-Hei;
     .black {
         position: fixed;
         display: block;
@@ -50,7 +40,6 @@
             }
             h2 {
                 font-size: 20px;
-                font-family: Lan-Ting-Kan-Song;
                 font-weight: bold;
                 span {
                     color: #FFD400;
@@ -59,7 +48,6 @@
             }
             h3 {
                 font-size: 16px;
-                font-family: Lan-Ting-Kan-Song;
                 font-weight: bold;
             }
             p {
@@ -97,7 +85,6 @@
             padding-right: 20px;
             h2 {
                 font-size: 24px;
-                font-family: Lan-Ting-Kan-Song;
                 padding-top: 58px;
                 padding-bottom: 46px;
                 span {

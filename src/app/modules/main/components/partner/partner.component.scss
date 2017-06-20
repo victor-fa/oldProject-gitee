@@ -1,18 +1,8 @@
-@font-face {
-    font-family: "Lan-Ting-Hei";
-    src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
-    font-family: "Lan-Ting-Kan-Song";
-    src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
-    font-family: "Dong-Qing-Hei";
-    src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
-}
-
 #partner {
     width: 978px;
     background-color: #fefefe;
     height: 478px;
     background-image: url(/assets/images/partner_background.png);
-    font-family: Dong-Qing-Hei;
     #content-container {
         width: 640px;
         height: 100%;
@@ -21,7 +11,6 @@
         text-align: center;
         h2 {
             font-size: 24px;
-            font-family: Lan-Ting-Kan-Song;
             padding-top: 58px;
             padding-bottom: 20px;
             span {

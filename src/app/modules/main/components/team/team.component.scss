@@ -1,19 +1,9 @@
-@font-face {
-    font-family: "Lan-Ting-Hei";
-    src: url("/assets/fonts/兰亭黑.ttf") format("ttf");
-    font-family: "Lan-Ting-Kan-Song";
-    src: url("/assets/fonts/方正兰亭刊宋_GBK.ttf") format("ttf");
-    font-family: "Dong-Qing-Hei";
-    src: url("/assets/fonts/冬青黑体简体中文W3.otf") format("otf");
-}
-
 #team {
     width: 978px;
     height: 495px;
 
     background-image: url(/assets/images/team-background-grey.png);
     position: relative;
-    font-family: Dong-Qing-Hei;
 
     #content-container {
         width: 640px;
@@ -26,7 +16,6 @@
             font-size: 24px;
             padding-top: 36px;
             padding-bottom: 58px;
-            font-family: Lan-Ting-Kan-Song;
             span {
                 color: #FFD400;
             }
@@ -56,7 +45,6 @@
                 text-align: left;
                 h3 {
                     font-size: 48px;
-                    font-family: Lan-Ting-Hei;
                     padding: 0;
                     margin: 0;
                 }
@@ -133,7 +121,6 @@
         top: 65px;
         right: 20px;
         font-size: 200px;
-        font-family: Lan-Ting-Hei;
         line-height: 200px;
         height: 200px;
         color: #4D4D4D;
