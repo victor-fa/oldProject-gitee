@@ -9,7 +9,7 @@
         color: #000;
         display: flex;
         #contact-left-part {
-            width: 452px;
+            width: 402px;
             height: 100%;
             padding-top: 108px;
             h2 {
@@ -21,12 +21,13 @@
                 font-size: 18px;
                 margin: 0;
                 padding: 0;
+                font-family: "Lan-Ting-Hei";
                 a {
                     text-decoration: none;
                     color: #FFD400;
                 }
                 a:hover {
-                    color: black;
+                    color: grey;
                 }
             }
             #info {
@@ -37,6 +38,7 @@
                 flex-direction: column;
                 height: 80px;
                 justify-content: space-between;
+                font-family: "Lan-Ting-Qian-Hei";
                 li {
                     height: 20px;
                     font-size: 14px;
@@ -65,7 +67,7 @@
             }
         }
         #contact-right-part {
-            width: 188px;
+            width: 238px;
             height: 100%;
             padding-top: 112px;
             form {
