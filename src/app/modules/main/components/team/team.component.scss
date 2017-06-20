@@ -1,17 +1,14 @@
 #team {
     width: 978px;
     height: 495px;
-
     background-image: url(/assets/images/team-background-grey.png);
     position: relative;
-
     #content-container {
         width: 640px;
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
         text-align: center;
-
         h2 {
             font-size: 24px;
             padding-top: 36px;
@@ -19,49 +16,43 @@
             span {
                 color: #FFD400;
             }
-
         }
-
         #detail {
             width: 100%;
             height: 210px;
             display: flex;
-
             margin-bottom: 50px;
-
             #left-part {
                 width: 270px;
                 z-index: 3;
                 img {
                     width: 202px;
                     height: 202px;
-
                 }
             }
-
             #right-part {
                 width: 370px;
                 z-index: 99;
                 text-align: left;
                 h3 {
+                    font-family: "SimSun";
                     font-size: 48px;
                     padding: 0;
                     margin: 0;
                 }
-
                 h4 {
+                    font-family: "Dong-Qing-Hei";
                     font-size: 18px;
                     color: #FFD400;
                 }
-
                 h5 {
+                    font-family: "Lan-Ting-Qian-Hei";
                     font-size: 12px;
                     font-weight: 100;
                 }
                 p {
                     font-size: 12px;
                 }
-
                 #social {
                     list-style: none;
                     padding: 0;
@@ -69,7 +60,6 @@
                     display: flex;
                     height: 12px;
                     width: 42px;
-
                     a {
                         text-decoration: none;
                         color: inherit;
@@ -78,44 +68,34 @@
                 }
             }
         }
-
         #member {
             list-style: none;
-            padding: 0; margin: 0;
+            padding: 0;
+            margin: 0;
             width: 620px;
             height: 90px;
             display: flex;
             justify-content: space-between;
-
             li {
                 display: block;
                 img {
                     width: 90px;
                     height: 90px;
                 }
-
             }
-
             li:hover {
                 cursor: pointer;
             }
-
             .active {
                 img {
                     border: 4px solid #FFD400;
                 }
-
             }
-
-
         }
-
         img {
-            box-shadow: 0 0 12px 2px black;
+            box-shadow: 0 0 5px 3px #333333;
         }
-
     }
-
     #big-name {
         position: absolute;
         top: 65px;
@@ -125,5 +105,6 @@
         height: 200px;
         color: #4D4D4D;
         z-index: 1;
+        font-family: "SimSun";
     }
 }
