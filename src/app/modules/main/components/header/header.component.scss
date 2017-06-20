@@ -1,6 +1,3 @@
-
-
-
 #header {
     width: 978px;
     background-color: #333333;
@@ -37,6 +34,7 @@
             height: 21px;
             width: 100%;
             margin-top: 48px;
+            font-family: "Microsoft-Ya-Hei";
             justify-content: space-between;
             a {
                 display: block;
@@ -61,12 +59,14 @@
             justify-content: center;
             color: #fff;
             h2 {
+                font-family: "Lan-Ting-Te-Hei";
                 font-size: 48px;
                 margin-bottom: 10px;
                 padding-top: 0px;
             }
             h3 {
                 font-size: 75px;
+                font-family: "Lan-Ting-Qian-Hei";
                 line-height: 75px;
                 height: 75px;
                 color: #FFD400;
@@ -83,6 +83,7 @@
             h4 {
                 width: 100%;
                 font-size: 29px;
+                font-family: "Lan-Ting-Qian-Hei";
                 line-height: 29px;
                 height: 29px;
                 overflow: hidden;
