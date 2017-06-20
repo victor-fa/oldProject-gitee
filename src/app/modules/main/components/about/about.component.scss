@@ -84,13 +84,17 @@
                 width: 360px;
                 height: 100%;
                 margin-left: 168px;
-                color: black;
+                color: #231815;
+                #product-xp {
+                    color: grey;
+                }
             }
             #page1-right-container {
                 padding-top: 140px;
                 padding-left: 80px;
                 p {
                     font-size: 52px;
+                    font-family: "Microsoft-Ya-Hei";
                     margin: 0px;
                     span {
                         color: #FFD400;
@@ -138,8 +142,6 @@
                 }
             }
         }
-        .active {
-            //display: flex;
-        }
+        .active {}
     }
 }
