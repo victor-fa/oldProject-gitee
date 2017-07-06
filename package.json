@@ -8,7 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node index.js"
+    "test": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -25,3 +25,5 @@
   },
   "homepage": "https://gitlab.com/yiwangcentaurs/Chewrobot-Tool#README"
 }
+
+
