@@ -105,7 +105,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li>
-                            <i class="fa fa-dashboard"></i>  <a href="dashboard.html">控制台</a>
+                            <i class="fa fa-dashboard"></i> <a href="dashboard.html">控制台</a>
                         </li>
                         <li class="active">
                             <i class="fa fa-file"></i> 对话日志
@@ -115,6 +115,30 @@
             </div>
             <!-- /.row -->
 
+            <!-- Page Heading -->
+            <h1 class="page-header">
+                <small id="log-result-header"></small>
+            </h1>
+
+
+
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="list-group" id="log-result-context">
+                    </ul>
+                </div>
+            </div>
+
+            <div id="log-result-temp" style="display: none">
+                <li class="list-group-item">
+                    <span class="log-id">$id$</span>
+                    <span class="log-time">$timestamp$</span><br>
+                    <span class="log-action">$action$：</span>
+                    <span class="log-msg">$msg$</span>
+                </li>
+            </div>
         </div>
         <!-- /.container-fluid -->
 
@@ -129,6 +153,8 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
+
+<script src="js/qw-log.js"></script>
 
 </body>
 
