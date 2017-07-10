@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="齐悟 - 革命性语音交互技术解决方案提供商">
+    <meta name="description" content="齐悟 - 革命性语音交互技术解决方案">
     <meta name="author" content="人马互动科技有限公司">
 
     <title>齐悟 - 革命性语音交互技术解决方案提供商</title>
@@ -32,40 +32,42 @@
 </head>
 
 <body>
-<div id="container">
-    <div class="wrapper">
-        <h1>齐悟</h1>
-        <h2>革命性语音交互技术解决方案提供商</h2>
-
-        <div>
-            <button type="button" id="btn-login" class="btn btn-link active">登录</button>
-            <button type="button" id="btn-regis" class="btn btn-link">注册</button>
-        </div>
-        <form method="post" id="form-login" role="form">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="手机号或邮箱" name="uname" required>
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" placeholder="密码" name="psd" required>
-            </div>
-            <button type="submit" class="btn btn-primary">登录</button>
-        </form>
-        <form method="post" id="form-regis" role="form" hidden>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="姓名" name="name" required>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="手机号" name="mobile" required>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="电子邮箱" name="email" required>
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" placeholder="密码（不少于 6 位）" name="pwd" required>
-            </div>
-            <button type="submit" class="btn btn-primary">登录</button>
-        </form>
+<div class="wrapper">
+    <div id="login-logo">
+        <img src="img/chewrobot-logo-lg.png">
     </div>
+    <div id="login-sub">
+        <h4>革命性语音交互技术解决方案</h4>
+    </div>
+
+    <div id="login-nav">
+        <div id="btn-login" class="login-nav-btn btn btn-link active">登录</div>
+        <div id="btn-regis" class="login-nav-btn btn btn-link">注册</div>
+    </div>
+    <form method="post" id="form-login" role="form">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="手机号或邮箱" name="uname" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="密码" name="psd" required>
+        </div>
+        <button type="submit" class="login-form-btn btn btn-primary">登录</button>
+    </form>
+    <form method="post" id="form-regis" role="form" hidden>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="姓名" name="name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="手机号" name="mobile" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="电子邮箱" name="email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="密码（不少于 6 位）" name="pwd" required>
+        </div>
+        <button type="submit" class="login-form-btn btn btn-primary">注册齐悟</button>
+    </form>
 </div>
 
 <!-- jQuery -->

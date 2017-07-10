@@ -1,12 +1,59 @@
 body {
+    margin-top: 100px;
+    background-color: #EEEEEE;
+}
+
+@media(min-width:768px) {
+    body {
+        margin-top: 50px;
+    }
+}
+
+body {
     padding-top: 50px;
 }
+
 .wrapper {
-    padding: 40px 15px;
     text-align: center;
+    width: 300px;
+    margin: auto;
 }
 
 .form-group {
-    margin: 0 auto;
+    margin: 10px auto 10px auto;
     width: 100%;
+}
+
+#login-sub {
+    margin-top: 30px;
+    color: #555555;
+}
+
+#login-nav {
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.login-nav-btn {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.3em;
+    color: #cccccc;
+    margin: 5px 10px;
+}
+
+.login-nav-btn:hover {
+    text-decoration: none;
+    color: #888888;
+    border-bottom: 3px solid #888888;
+}
+
+form button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.active {
+    color: #337ab7;
+    border-bottom: 3px solid #337ab7;
 }
