@@ -69,7 +69,9 @@ $().ready(function () {
             type: 'GET',
             success: ajaxOnSuccess,
             error: function () {
-                alert("Ajax request failed, please check your internet!")
+                $('#log-alert-1').show();
+                $('#log-alert-2').show();
+
             }
         });
     };
