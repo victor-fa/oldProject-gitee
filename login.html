@@ -17,7 +17,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/qw-login.css" rel="stylesheet">
+    <link href="css/qw-login.css" type="text/css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -27,18 +27,24 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!--<![endif]&ndash;&gt;-->
 
 </head>
 
 <body>
+<div id="large-header" class="background">
+    <canvas id="demo-canvas"></canvas>
+</div>
 <div class="wrapper">
+
+
     <div id="login-logo">
         <img src="img/chewrobot-logo-lg.png">
     </div>
     <div id="login-sub">
         <h4>革命性语音交互技术解决方案</h4>
     </div>
+
 
     <div id="login-nav">
         <div id="btn-login" class="login-nav-btn btn btn-link active">登录</div>
@@ -76,6 +82,11 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
 
+<!-- Background Animation JS Dependency -->
+<script src="js/login-anim/TweenLite.min.js"></script>
+<script src="js/login-anim/EasePack.min.js"></script>
+
+<!-- Custom JavaScript -->
 <script src="js/qw-login.js"></script>
 
 </body>
