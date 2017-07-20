@@ -48,7 +48,7 @@ $().ready(function() {
         console.log("Got Respond.");
         var list = obj.transcript;
         if (list.length == 0) {
-            $("log-result-context").html('<li class="list-group-item">没有找到相关日志。</li>')
+            $("#log-result-context").html('<li class="list-group-item">没有找到相关日志。</li>')
             console.log("没有找到相关日志");
             return;
         }
@@ -84,6 +84,7 @@ $().ready(function() {
             type: 'GET',
             success: ajaxOnSuccess,
             error: function() {
+                $("#log-result-header").html('没有找到相关日志。')
                 $('#log-alert-1').show();
                 $('#log-alert-2').show();
 
