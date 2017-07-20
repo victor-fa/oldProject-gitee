@@ -73,7 +73,7 @@ $().ready(function() {
     function loadLogList() {
         console.log("Sending Request...")
 
-        $("#log-result-header").html("正在载入日志……");
+        $("#log-result-header").html("正在载入日志列表……");
         $.ajax({
             url: 'https://robot-service.centaurstech.com/api/log/list',
             headers: {
@@ -81,7 +81,7 @@ $().ready(function() {
                 "timestamp": timestamp,
                 "uid": uid,
                 "verify": verify,
-                "size": 10,
+                "size": 50,
             },
             type: 'GET',
             success: ajaxOnSuccess,
