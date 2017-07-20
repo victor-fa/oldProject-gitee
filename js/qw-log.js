@@ -3,10 +3,21 @@
  */
 
 $().ready(function() {
+
     var appkey = "qiwurobot";
+    var appsecret = "123456";
+
     var timestamp = 1;
-    var uid = "og9pHwYnwfMVSNyYD92sB7i_pZc8";
-    var verify = "2EE727EF5A91921830F8CD0BEDF68F6A";
+    var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
+    var cid = "597087ddd2239a6f46bb2137";
+
+    var search = location.search
+    if (search) {
+        uid = getParameterByName('uid')
+        cid = getParameterByName('cid')
+    }
+
+    var verify = md5(appsecret + uid + timestamp);
 
     String.prototype.temp = function(obj) {
         return this.replace(/\$\w+\$/gi, function(matches) {
@@ -62,12 +73,13 @@ $().ready(function() {
 
         $("#log-result-header").html("正在载入日志……");
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/chat/log',
+            url: 'https://robot-service.centaurstech.com/api/log/session',
             headers: {
                 "appkey": appkey,
                 "timestamp": timestamp,
                 "uid": uid,
-                "verify": verify
+                "verify": verify,
+                "cid": cid,
             },
             type: 'GET',
             success: ajaxOnSuccess,
