@@ -2,14 +2,14 @@
  * Created by yzhang on 7/9/17.
  */
 
-$().ready(function () {
+$().ready(function() {
     var appkey = "qiwurobot";
     var timestamp = 1;
-    var uid = "og9pHwRvVAGT2iltk9K934RUgTNE";
-    var verify = "919123e6bc1851865c2cecbac9342d61";
+    var uid = "og9pHwYnwfMVSNyYD92sB7i_pZc8";
+    var verify = "2EE727EF5A91921830F8CD0BEDF68F6A";
 
-    String.prototype.temp = function (obj) {
-        return this.replace(/\$\w+\$/gi, function (matches) {
+    String.prototype.temp = function(obj) {
+        return this.replace(/\$\w+\$/gi, function(matches) {
             var ret = obj[matches.replace(/\$/g, "")];
             if (ret == "") {
                 ret = "N/A";
@@ -42,14 +42,17 @@ $().ready(function () {
             return;
         }
         $("#log-result-header").html("总计" + list.length + "条日志");
-        var tempHtml = $('#log-result-temp').html();
+        var tempHtmlAsk = $('#log-result-temp-ask').html()
+        var tempHtmlAnswer = $('#log-result-temp-answer').html();
         var resObj = {};
         for (var i = 0; i < list.length; ++i) {
+            var isAsk = (list[i].action != "answer")
+
             resObj.id = i + 1;
             resObj.timestamp = parseDateTime(list[i].timestamp);
-            resObj.action = (list[i].action == "answer") ? "答" : "问";
+            resObj.action = isAsk ? "问" : "答";
             resObj.msg = list[i].msg;
-            var resHtml = tempHtml.temp(resObj);
+            var resHtml = (isAsk ? tempHtmlAsk : tempHtmlAnswer).temp(resObj);
             $("#log-result-context").append(resHtml);
         }
     }
@@ -68,7 +71,7 @@ $().ready(function () {
             },
             type: 'GET',
             success: ajaxOnSuccess,
-            error: function () {
+            error: function() {
                 $('#log-alert-1').show();
                 $('#log-alert-2').show();
 
