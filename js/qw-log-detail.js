@@ -1,17 +1,15 @@
 /**
- * Created by yzhang on 7/20/17.
- */
-/**
  * Created by yzhang on 7/9/17.
  */
 
 $().ready(function() {
 
-    var appkey = "wechat";
+    var appkey = "qiwurobot";
     var appsecret = "123456";
 
-    var timestamp = Math.floor(Date.now() / 1000);
-    var uid = "WhoIsLittleFeli";
+    var timestamp = 1;
+    var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
+    var cid = "597087ddd2239a6f46bb2137";
 
     var search = location.search
     if (search) {
@@ -29,7 +27,7 @@ $().ready(function() {
             }
             return (ret + "") == "undefined" ? matches : ret;
         });
-    }
+    };
 
     function parseDateTime(timestamp) {
         var date = new Date(timestamp);
@@ -48,50 +46,51 @@ $().ready(function() {
 
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
-        console.log(obj)
-        var seessions = obj.sessions;
-        if (seessions.length == 0) {
+        var list = obj.transcript;
+        if (list.length == 0) {
             $("#log-result-context").html('<li class="list-group-item">没有找到相关日志。</li>')
             console.log("没有找到相关日志");
             return;
         }
-        $("#log-result-header").html("总计" + seessions.length + "条日志");
-        var tempListHtmlAsk = $('#log-list-result').html()
+        $("#log-result-header").html("总计" + list.length + "条日志");
+        var tempHtmlAsk = $('#log-result-temp-ask').html()
+        var tempHtmlAnswer = $('#log-result-temp-answer').html();
         var resObj = {};
-        for (var i = 0; i < seessions.length; ++i) {
+        for (var i = 0; i < list.length; ++i) {
+            var isAsk = (list[i].action != "answer")
+
             resObj.id = i + 1;
-            resObj.timestamp = parseDateTime(seessions[i].timestamp);
-            resObj.app = seessions[i].app;
-            resObj.nickname = seessions[i].nickname;
-            resObj.uid = seessions[i].uid;
-            resObj.cid = seessions[i].cid;
-            var resHtml = tempListHtmlAsk.temp(resObj);
+            resObj.timestamp = parseDateTime(list[i].timestamp);
+            resObj.action = isAsk ? "问" : "答";
+            resObj.msg = list[i].msg;
+            var resHtml = (isAsk ? tempHtmlAsk : tempHtmlAnswer).temp(resObj);
             $("#log-result-context").append(resHtml);
         }
     }
 
-    function loadLogList() {
+    function loadLog() {
         console.log("Sending Request...")
 
-        $("#log-result-header").html("正在载入日志列表……");
+        $("#log-result-header").html("正在载入日志……");
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/log/list',
+            url: 'https://robot-service.centaurstech.com/api/log/session',
             headers: {
                 "appkey": appkey,
                 "timestamp": timestamp,
                 "uid": uid,
                 "verify": verify,
-                "size": 50,
+                "cid": cid,
             },
             type: 'GET',
             success: ajaxOnSuccess,
             error: function() {
-                $("#log-result-header").html('没有找到相关日志列表。')
+                $("#log-result-header").html('没有找到相关日志。')
                 $('#log-alert-1').show();
                 $('#log-alert-2').show();
+
             }
         });
     };
 
-    loadLogList();
+    loadLog();
 });
