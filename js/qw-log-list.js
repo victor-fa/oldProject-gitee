@@ -35,7 +35,7 @@ $().ready(function() {
         var date = new Date(timestamp);
 
         var year = date.getFullYear();
-        var month = date.getMonth();
+        var month = date.getMonth()+1;
         var dates = date.getDate();
         var hours = date.getHours();
         var minutes = "0" + date.getMinutes();
