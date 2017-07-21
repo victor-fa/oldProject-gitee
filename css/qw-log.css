@@ -4,7 +4,6 @@
 }
 
 .log-id {
-
     position: absolute;
     top: 13px;
     right: 15px;
@@ -14,6 +13,9 @@
     font-size: 30px;
     text-align: right;
 
+}
+.log-id-pound {
+    margin-right: 5px;
 }
 
 .log-time {
