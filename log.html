@@ -125,6 +125,8 @@
                 <div class="alert alert-info alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <i class="fa fa-info-circle"></i> <strong>使用遇到疑问？</strong>请联系<a href="https://www.linkedin.com/in/fangzhoulong/" class="alert-link">技术人员</a>寻求帮助！
+                    <i class="fa fa-info-circle"></i> <strong>使用遇到疑问？</strong>请联系<a
+                        href="https://www.linkedin.com/in/fangzhoulong/" class="alert-link">技术人员</a>寻求帮助！
                 </div>
             </div>
             <!-- /.log-alert -->
@@ -142,15 +144,13 @@
                 </div>
             </div>
 
-            <div id="log-list-result" style="display: none">
-                <li class="list-group-item">
-                    <a href="log-detail.html?uid=$uid$&cid=$cid$">
-                        <span class="log-id">$id$</span>
-                        <span class="log-time">$timestamp$</span><br>
-                        <span class="log-action">$app$</span>
-                        <span class="log-msg">$nickname$</span>
-                    </a>
-                </li>
+            <div id="log-list-result" class="list-group" style="display: none">
+                <a href="log-detail.html?uid=$uid$&cid=$cid$" class="list-group-item">
+                    <span class="log-id">$id$</span>
+                    <span class="log-time">$timestamp$</span><br>
+                    <span class="log-action">$app$</span>
+                    <span class="log-msg">$nickname$</span>
+                </a>
             </div>
         </div>
         <!-- /.container-fluid -->
