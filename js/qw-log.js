@@ -55,7 +55,7 @@ $().ready(function() {
             console.log("没有找到相关日志列表");
             return;
         }
-        $("#log-result-header").html("总计" + seessions.length + "条会话");
+        $("#log-result-header").html("总计" + seessions.length + "条日志列表");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
         for (var i = 0; i < seessions.length; ++i) {
