@@ -36,11 +36,13 @@ $().ready(function () {
 
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
-        if (month < 10) month = '0' + month;
         var dates = date.getDate();
         var hours = date.getHours();
         var minutes = "0" + date.getMinutes();
         var seconds = "0" + date.getSeconds();
+        if (month < 10) month = '0' + month;
+        if (dates < 10) dates = '0' + dates;
+        if (hours < 10) hours = '0' + hours;
 
         // Will display time in 10:30:23 format
         var formattedDateTime = year + '-' + month + '-' + dates + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);

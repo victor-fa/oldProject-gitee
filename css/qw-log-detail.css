@@ -1,6 +1,5 @@
 .list-group-item {
     position: relative;
-
 }
 
 .log-id {
@@ -14,6 +13,7 @@
     text-align: right;
 
 }
+
 .log-id-pound {
     margin-right: 5px;
 }
@@ -22,11 +22,17 @@
     color: #ccc;
 }
 
-.log-app {
+.log-action {
     color: #999;
 }
 
-.log-nickname {
-    color: #777;
-    font-weight: bold;
+.log-msg {
+    display: inline-block;
+    margin-right: 70px;
+    margin-top: 5px;
+    color: #666;
+}
+
+.ask {
+    background-color: #f9f9f9;
 }

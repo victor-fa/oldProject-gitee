@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/qw-dashboard.css" rel="stylesheet">
+    <link href="css/qw-log-detail.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -143,19 +144,19 @@
                 </div>
 
                 <div id="log-result-temp-ask" style="display: none">
-                    <li class="list-group-item active">
-                        <span class="log-id">$id$</span>
+                    <li class="list-group-item ask">
+                        <span class="log-id"><span class="log-id-pound">#</span>$id$</span>
+                        <span class="log-action"><i class="fa fa-question" aria-hidden="true"></i> $action$　</span>
                         <span class="log-time">$timestamp$</span><br>
-                        <span class="log-action">$action$：</span>
                         <span class="log-msg">$msg$</span>
                     </li>
                 </div>
 
                 <div id="log-result-temp-answer" style="display: none">
                     <li class="list-group-item">
-                        <span class="log-id">$id$</span>
+                        <span class="log-id"><span class="log-id-pound">#</span>$id$</span>
+                        <span class="log-action"><i class="fa fa-info" aria-hidden="true"></i> $action$　</span>
                         <span class="log-time">$timestamp$</span><br>
-                        <span class="log-action">$action$：</span>
                         <span class="log-msg">$msg$</span>
                     </li>
                 </div>

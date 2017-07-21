@@ -2,7 +2,7 @@
  * Created by yzhang on 7/9/17.
  */
 
-$().ready(function() {
+$().ready(function () {
 
     var appkey = "qiwurobot";
     var appsecret = "123456";
@@ -19,8 +19,8 @@ $().ready(function() {
 
     var verify = md5(appsecret + uid + timestamp);
 
-    String.prototype.temp = function(obj) {
-        return this.replace(/\$\w+\$/gi, function(matches) {
+    String.prototype.temp = function (obj) {
+        return this.replace(/\$\w+\$/gi, function (matches) {
             var ret = obj[matches.replace(/\$/g, "")];
             if (ret == "") {
                 ret = "N/A";
@@ -33,11 +33,14 @@ $().ready(function() {
         var date = new Date(timestamp);
 
         var year = date.getFullYear();
-        var month = date.getMonth()+1;
+        var month = date.getMonth() + 1;
         var dates = date.getDate();
         var hours = date.getHours();
         var minutes = "0" + date.getMinutes();
         var seconds = "0" + date.getSeconds();
+        if (month < 10) month = '0' + month;
+        if (dates < 10) dates = '0' + dates;
+        if (hours < 10) hours = '0' + hours;
 
         // Will display time in 10:30:23 format
         var formattedDateTime = year + '-' + month + '-' + dates + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
@@ -56,12 +59,12 @@ $().ready(function() {
         var tempHtmlAsk = $('#log-result-temp-ask').html()
         var tempHtmlAnswer = $('#log-result-temp-answer').html();
         var resObj = {};
+        var width = Math.ceil(Math.log10(list.length));
         for (var i = 0; i < list.length; ++i) {
             var isAsk = (list[i].action != "answer")
-
-            resObj.id = i + 1;
+            resObj.id = zeroFill(i + 1, width);
             resObj.timestamp = parseDateTime(list[i].timestamp);
-            resObj.action = isAsk ? "问" : "答";
+            resObj.action = isAsk ? "用户提问" : "齐悟回答";
             resObj.msg = list[i].msg;
             var resHtml = (isAsk ? tempHtmlAsk : tempHtmlAnswer).temp(resObj);
             $("#log-result-context").append(resHtml);
@@ -83,7 +86,7 @@ $().ready(function() {
             },
             type: 'GET',
             success: ajaxOnSuccess,
-            error: function() {
+            error: function () {
                 $("#log-result-header").html('没有找到相关日志。')
                 $('#log-alert-1').show();
                 $('#log-alert-2').show();
@@ -91,6 +94,15 @@ $().ready(function() {
             }
         });
     };
+
+    function zeroFill(number, width) {
+        width -= number.toString().length;
+        if (width > 0) {
+            return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
+        }
+        return number + ""; // always return a string
+    }
+
 
     loadLog();
 });
