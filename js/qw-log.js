@@ -51,11 +51,11 @@ $().ready(function() {
         console.log(obj)
         var seessions = obj.sessions;
         if (seessions.length == 0) {
-            $("#log-result-context").html('<li class="list-group-item">没有找到相关日志。</li>')
+            $("#log-result-context").html('<li class="list-group-item">没有找到相关日志列表。</li>')
             console.log("没有找到相关日志列表");
             return;
         }
-        $("#log-result-header").html("总计" + seessions.length + "条日志");
+        $("#log-result-header").html("总计" + seessions.length + "条会话");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
         for (var i = 0; i < seessions.length; ++i) {
