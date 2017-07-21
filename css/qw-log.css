@@ -1,0 +1,30 @@
+.list-group-item {
+    position: relative;
+
+}
+
+.log-id {
+
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    color: #ddd;
+
+    font-weight: bold;
+    font-size: 30px;
+    text-align: right;
+
+}
+
+.log-time {
+    color: #999;
+}
+
+.log-app {
+    color: #999;
+}
+
+.log-nickname {
+    color: #777;
+    font-weight: bold;
+}

@@ -5,10 +5,10 @@
  * Created by yzhang on 7/9/17.
  */
 
-$().ready(function() {
-
+$().ready(function () {
     var appkey = "wechat";
     var appsecret = "123456";
+    var size = 50;
 
     var timestamp = Math.floor(Date.now() / 1000);
     var uid = "WhoIsLittleFeli";
@@ -21,8 +21,8 @@ $().ready(function() {
 
     var verify = md5(appsecret + uid + timestamp);
 
-    String.prototype.temp = function(obj) {
-        return this.replace(/\$\w+\$/gi, function(matches) {
+    String.prototype.temp = function (obj) {
+        return this.replace(/\$\w+\$/gi, function (matches) {
             var ret = obj[matches.replace(/\$/g, "")];
             if (ret == "") {
                 ret = "N/A";
@@ -35,7 +35,8 @@ $().ready(function() {
         var date = new Date(timestamp);
 
         var year = date.getFullYear();
-        var month = date.getMonth()+1;
+        var month = date.getMonth() + 1;
+        if (month < 10) month = '0' + month;
         var dates = date.getDate();
         var hours = date.getHours();
         var minutes = "0" + date.getMinutes();
@@ -48,7 +49,6 @@ $().ready(function() {
 
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
-        console.log(obj)
         var seessions = obj.sessions;
         if (seessions.length == 0) {
             $("#log-result-context").html('<li class="list-group-item">没有找到相关日志列表。</li>')
@@ -58,16 +58,28 @@ $().ready(function() {
         $("#log-result-header").html("总计" + seessions.length + "条日志列表");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
+        var width = Math.ceil(Math.log10(seessions.length));
         for (var i = 0; i < seessions.length; ++i) {
-            resObj.id = i + 1;
+            resObj.id = zeroFill(i + 1, width);
             resObj.timestamp = parseDateTime(seessions[i].timestamp);
             resObj.app = seessions[i].app;
-            resObj.nickname = seessions[i].nickname;
+            resObj.nickname = (seessions[i].nickname).trim();
             resObj.uid = seessions[i].uid;
             resObj.cid = seessions[i].cid;
             var resHtml = tempListHtmlAsk.temp(resObj);
             $("#log-result-context").append(resHtml);
         }
+        addItemBg();
+    }
+
+    function zeroFill( number, width )
+    {
+        width -= number.toString().length;
+        if ( width > 0 )
+        {
+            return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+        }
+        return number + ""; // always return a string
     }
 
     function loadLogList() {
@@ -81,17 +93,27 @@ $().ready(function() {
                 "timestamp": timestamp,
                 "uid": uid,
                 "verify": verify,
-                "size": 50,
+                "size": size,
             },
             type: 'GET',
             success: ajaxOnSuccess,
-            error: function() {
+            error: function () {
                 $("#log-result-header").html('没有找到相关日志列表。')
                 $('#log-alert-1').show();
                 $('#log-alert-2').show();
             }
         });
+
     };
+
+    function addItemBg() {
+        for (var i = 0; i < size; i++) {
+            if (i % 2 == 1) {
+                var selector = '.list-group-item:nth-child(' + i + ')';
+                $(selector).css('background-color', '#f9f9f9');
+            }
+        }
+    }
 
     loadLogList();
 });
