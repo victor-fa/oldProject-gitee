@@ -143,6 +143,40 @@
                     <ul class="list-group" id="log-result-context">
                     </ul>
                 </div>
+
+
+                <ul class="pager">
+                    <li><a href="#">Previous</a></li>
+                    <li><a href="#">Next</a></li>
+                </ul>
+                <div class="form-group">
+                    <label>每页显示</label>
+                    <select class="form-control">
+                        <option>10</option>
+                        <option>30</option>
+                        <option>50</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>每页显示会话数</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="10" checked>10
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="30">30
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="50">50
+                    </label>
+                </div>
+
+
+
+                <button type="button" class="btn btn-default">第一页</button>
+                <button type="button" class="btn btn-default">上一页</button>
+                <button type="button" class="btn btn-default">下一页</button>
+                <button type="button" class="btn btn-default">搜索</button>
             </div>
 
             <div id="log-list-result" class="list-group" style="display: none">

@@ -45,14 +45,13 @@ $().ready(function () {
         if (hours < 10) hours = '0' + hours;
 
         // Will display time in 10:30:23 format
-        var formattedDateTime = year + '-' + month + '-' + dates + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        return formattedDateTime;
+        return year + '-' + month + '-' + dates + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     }
 
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
         var seessions = obj.sessions;
-        if (seessions.length == 0) {
+        if (seessions.length === 0) {
             $("#log-result-context").html('<li class="list-group-item">没有找到相关日志列表。</li>')
             console.log("没有找到相关日志列表");
             return;
@@ -85,7 +84,7 @@ $().ready(function () {
     }
 
     function loadLogList() {
-        console.log("Sending Request...")
+        console.log("Sending Request...");
 
         $("#log-result-header").html("正在载入日志列表……");
         $.ajax({
@@ -95,7 +94,7 @@ $().ready(function () {
                 "timestamp": timestamp,
                 "uid": uid,
                 "verify": verify,
-                "size": size,
+                "size": size
             },
             type: 'GET',
             success: ajaxOnSuccess,
@@ -108,9 +107,10 @@ $().ready(function () {
 
     };
 
+    // add the background colors of items
     function addItemBg() {
         for (var i = 0; i < size; i++) {
-            if (i % 2 == 1) {
+            if (i % 2 === 1) {
                 var selector = '.list-group-item:nth-child(' + i + ')';
                 $(selector).css('background-color', '#f9f9f9');
             }
