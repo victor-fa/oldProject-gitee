@@ -148,12 +148,6 @@ $().ready(function () {
             $(selector).css('background-color', function() {
                 return (i % 2 === 1) ? '#f9f9f9' : '#ffffff';
             });
-
-            // if (i % 2 === 1) {
-            //     $(selector).css('background-color', '#f9f9f9');
-            // } else {
-            //     $(selector).css('background-color', '#ffffff');
-            // }
         }
     }
 
@@ -179,8 +173,8 @@ $().ready(function () {
             loadLogList();
         });
 
-        $("#page-size").change(function () {
-            size = $("#page-size option:selected").text();
+        $("#log-page-size-select").change(function () {
+            size = $("#log-page-size-select option:selected").text();
             $("#log-prev-page").attr("disabled", "disabled");
             $("#log-next-page").attr("disabled", "disabled");
         });

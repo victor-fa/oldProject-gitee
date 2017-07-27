@@ -30,3 +30,18 @@
     color: #777;
     font-weight: bold;
 }
+
+#log-page-size {
+    display: inline-block;
+    float: right;
+    text-align: right;
+}
+
+#log-page-size select {
+    display: inline;
+    width: 50px;
+}
+
+#log-page-size label {
+    display: inline;
+}

@@ -145,22 +145,6 @@
                     </ul>
                 </div>
 
-
-
-                    <div class="form-group">
-                        <label>每页显示</label>
-                        <select class="form-control" id="page-size">
-                            <option>10</option>
-                            <option>30</option>
-                            <option>50</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-default" id="log-first-page">首页</button>
-                    <button type="button" class="btn btn-default" id="log-prev-page">上一页</button>
-                    <button type="button" class="btn btn-default" id="log-next-page">下一页</button>
-                    <button type="button" class="btn btn-default" id="log-search">搜索</button>
-
-
                 <div id="log-list-result" class="list-group" style="display: none">
                     <a href="log-detail.html?uid=$uid$&cid=$cid$" class="list-group-item">
                         <span class="log-id"><span class="log-id-pound">#</span>$id$ </span>
@@ -168,6 +152,24 @@
                         <span class="log-app">$app$</span>
                         <span class="log-nickname">　$nickname$</span>
                     </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-default" id="log-first-page">首页</button>
+                    <button type="button" class="btn btn-default" id="log-prev-page">上一页</button>
+                    <button type="button" class="btn btn-default" id="log-next-page">下一页</button>
+                    <button type="button" class="btn btn-default" id="log-search">搜索</button>
+                    <div class="form-group" id="log-page-size">
+                        <label>每页显示</label>
+                        <select class="form-control" id="log-page-size-select">
+                            <option>10</option>
+                            <option>30</option>
+                            <option>50</option>
+                        </select>
+                        <label>条</label>
+                    </div>
                 </div>
             </div>
             <!-- /.container-fluid -->
