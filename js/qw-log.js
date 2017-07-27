@@ -8,7 +8,8 @@
 $().ready(function () {
     var appkey = "wechat";
     var appsecret = "123456";
-    var size = 50;
+    var size = 10;
+    var sizeOld = size;
 
     var timestamp = Math.floor(Date.now() / 1000);
     var uid = "WhoIsLittleFeli";
@@ -19,15 +20,19 @@ $().ready(function () {
         cid = getParameterByName('cid')
     }
 
+    var timeReq = -1;
+    var timeNext = timeReq;
+    var timePrev = timeReq;
+    var pageNum = 1;
     var verify = md5(appsecret + uid + timestamp);
 
     String.prototype.temp = function (obj) {
         return this.replace(/\$\w+\$/gi, function (matches) {
             var ret = obj[matches.replace(/\$/g, "")];
-            if (ret == "") {
+            if (ret === "") {
                 ret = "N/A";
             }
-            return (ret + "") == "undefined" ? matches : ret;
+            return (ret + "") === "undefined" ? matches : ret;
         });
     }
 
@@ -50,35 +55,52 @@ $().ready(function () {
 
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
-        var seessions = obj.sessions;
-        if (seessions.length === 0) {
+        var sessions = obj.sessions;
+        if (sessions.length === 0) {
             $("#log-result-context").html('<li class="list-group-item">没有找到相关日志列表。</li>')
             console.log("没有找到相关日志列表");
             return;
         }
-        $("#log-result-header").html("总计" + seessions.length + "条日志列表");
+        $("#log-result-header").html("第" + pageNum + "页，总计" + sessions.length + "条日志列表");
+        $("#log-result-context").html("");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
-        var width = Math.ceil(Math.log10(seessions.length));
-        for (var i = 0; i < seessions.length; ++i) {
+        var width = Math.ceil(Math.log10(sessions.length));
+        timePrev = sessions[0].timestamp;
+        for (var i = 0; i < sessions.length; ++i) {
+            if (i === sessions.length - 1) {
+                timeNext = sessions[i].timestamp - 1;
+            }
             resObj.id = zeroFill(i + 1, width);
-            resObj.timestamp = parseDateTime(seessions[i].timestamp);
-            resObj.app = seessions[i].app;
-            resObj.nickname = (seessions[i].nickname).trim();
-            resObj.uid = seessions[i].uid;
-            resObj.cid = seessions[i].cid;
+            resObj.timestamp = parseDateTime(sessions[i].timestamp);
+            resObj.app = sessions[i].app;
+            resObj.nickname = (sessions[i].nickname).trim();
+            resObj.uid = sessions[i].uid;
+            resObj.cid = sessions[i].cid;
             var resHtml = tempListHtmlAsk.temp(resObj);
             $("#log-result-context").append(resHtml);
+
+        }
+        if(pageNum > 1) {
+            $("#log-prev-page").removeAttr("disabled");
+        } else {
+            $("#log-prev-page").attr("disabled", "disabled");
+        }
+        if(sessions.length == size) {
+            $("#log-next-page").removeAttr("disabled");
+        } else {
+            $("#log-next-page").attr("disabled", "disabled");
         }
         addItemBg();
+        console.log("timeReq:  " + timeReq);
+        console.log("timePrev: " + timePrev);
+        console.log("timeNext: " + timeNext);
     }
 
-    function zeroFill( number, width )
-    {
+    function zeroFill(number, width) {
         width -= number.toString().length;
-        if ( width > 0 )
-        {
-            return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+        if (width > 0) {
+            return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
         }
         return number + ""; // always return a string
     }
@@ -87,24 +109,46 @@ $().ready(function () {
         console.log("Sending Request...");
 
         $("#log-result-header").html("正在载入日志列表……");
-        $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/log/list',
-            headers: {
-                "appkey": appkey,
-                "timestamp": timestamp,
-                "uid": uid,
-                "verify": verify,
-                "size": size
-            },
-            type: 'GET',
-            success: ajaxOnSuccess,
-            error: function () {
-                $("#log-result-header").html('没有找到相关日志列表。')
-                $('#log-alert-1').show();
-                $('#log-alert-2').show();
-            }
-        });
-
+        if (timeReq <= 0) {
+            console.log("============ no time")
+            $.ajax({
+                url: 'https://robot-service.centaurstech.com/api/log/list',
+                headers: {
+                    "appkey": appkey,
+                    "timestamp": timestamp,
+                    "uid": uid,
+                    "verify": verify,
+                    "size": size
+                },
+                type: 'GET',
+                success: ajaxOnSuccess,
+                error: function () {
+                    $("#log-result-header").html('没有找到相关日志列表。')
+                    $('#log-alert-1').show();
+                    $('#log-alert-2').show();
+                }
+            });
+        } else {
+            console.log("============ has time")
+            $.ajax({
+                url: 'https://robot-service.centaurstech.com/api/log/list',
+                headers: {
+                    "appkey": appkey,
+                    "timestamp": timestamp,
+                    "uid": uid,
+                    "verify": verify,
+                    "time": timeReq,
+                    "size": size
+                },
+                type: 'GET',
+                success: ajaxOnSuccess,
+                error: function () {
+                    $("#log-result-header").html('没有找到相关日志列表。')
+                    $('#log-alert-1').show();
+                    $('#log-alert-2').show();
+                }
+            });
+        }
     };
 
     // add the background colors of items
@@ -117,5 +161,36 @@ $().ready(function () {
         }
     }
 
+    function buttonsHandler() {
+        $("#log-search").click(function () {
+            timeReq = -1;
+            pageNum = 1;
+            loadLogList();
+        });
+        $("#log-first-page").click(function () {
+            timeReq = -1;
+            pageNum = 1;
+            loadLogList();
+        });
+        $("#log-prev-page").click(function () {
+            if (pageNum <= 1) {
+                $("#log-prev-page").attr("disabled", "disabled");
+            }
+            loadLogList();
+        });
+        $("#log-next-page").click(function () {
+            timeReq = timeNext;
+            pageNum += 1;
+            loadLogList();
+        });
+
+        $( "#page-size" ).change(function() {
+            size = $("#page-size option:selected").text();
+            $("#log-prev-page").attr("disabled", "disabled");
+            $("#log-next-page").attr("disabled", "disabled");
+        });
+    }
+
     loadLogList();
+    buttonsHandler();
 });
