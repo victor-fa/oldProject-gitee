@@ -10,20 +10,21 @@ $().ready(function () {
     var appsecret = "123456";
     var size = 10;
     var sizeOld = size;
-
     var timestamp = Math.floor(Date.now() / 1000);
     var uid = "WhoIsLittleFeli";
 
-    var search = location.search
+    var search = location.search;
     if (search) {
-        uid = getParameterByName('uid')
-        cid = getParameterByName('cid')
+        uid = getParameterByName('uid');
+        cid = getParameterByName('cid');
     }
 
-    var timeReq = -1;
-    var timeNext = timeReq;
-    var timePrev = timeReq;
-    var pageNum = 1;
+    var timeReq = [];
+    timeReq[0] = -1;
+
+    var pageNum = 0;
+    var pageTotal = -1;
+
     var verify = md5(appsecret + uid + timestamp);
 
     String.prototype.temp = function (obj) {
@@ -61,15 +62,14 @@ $().ready(function () {
             console.log("没有找到相关日志列表");
             return;
         }
-        $("#log-result-header").html("第" + pageNum + "页，总计" + sessions.length + "条日志列表");
+        $("#log-result-header").html("第" + (pageNum + 1) + "页，本页" + sessions.length + "条会话列表");
         $("#log-result-context").html("");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
         var width = Math.ceil(Math.log10(sessions.length));
-        timePrev = sessions[0].timestamp;
         for (var i = 0; i < sessions.length; ++i) {
             if (i === sessions.length - 1) {
-                timeNext = sessions[i].timestamp - 1;
+                timeReq[pageNum + 1] = sessions[i].timestamp - 1;
             }
             resObj.id = zeroFill(i + 1, width);
             resObj.timestamp = parseDateTime(sessions[i].timestamp);
@@ -81,20 +81,21 @@ $().ready(function () {
             $("#log-result-context").append(resHtml);
 
         }
-        if(pageNum > 1) {
-            $("#log-prev-page").removeAttr("disabled");
-        } else {
+
+        if (pageNum <= 0) {
+            // first page
             $("#log-prev-page").attr("disabled", "disabled");
-        }
-        if(sessions.length == size) {
-            $("#log-next-page").removeAttr("disabled");
         } else {
+            $("#log-prev-page").removeAttr("disabled");
+        }
+        if (sessions.length < size) {
+            // last page
+            pageTotal = pageNum;
             $("#log-next-page").attr("disabled", "disabled");
+        } else {
+            $("#log-next-page").removeAttr("disabled");
         }
         addItemBg();
-        console.log("timeReq:  " + timeReq);
-        console.log("timePrev: " + timePrev);
-        console.log("timeNext: " + timeNext);
     }
 
     function zeroFill(number, width) {
@@ -108,9 +109,8 @@ $().ready(function () {
     function loadLogList() {
         console.log("Sending Request...");
 
-        $("#log-result-header").html("正在载入日志列表……");
-        if (timeReq <= 0) {
-            console.log("============ no time")
+        if (timeReq[pageNum] <= 0) {
+            $("#log-result-header").html("正在载入会话列表……");
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -123,13 +123,13 @@ $().ready(function () {
                 type: 'GET',
                 success: ajaxOnSuccess,
                 error: function () {
-                    $("#log-result-header").html('没有找到相关日志列表。')
+                    $("#log-result-header").html('没有找到相关会话列表。');
                     $('#log-alert-1').show();
                     $('#log-alert-2').show();
                 }
             });
         } else {
-            console.log("============ has time")
+            $("#log-result-header").html("第" + (pageNum + 1) + "页，正在更新会话列表……");
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -137,13 +137,13 @@ $().ready(function () {
                     "timestamp": timestamp,
                     "uid": uid,
                     "verify": verify,
-                    "time": timeReq,
+                    "time": timeReq[pageNum],
                     "size": size
                 },
                 type: 'GET',
                 success: ajaxOnSuccess,
                 error: function () {
-                    $("#log-result-header").html('没有找到相关日志列表。')
+                    $("#log-result-header").html('没有找到相关日志列表。');
                     $('#log-alert-1').show();
                     $('#log-alert-2').show();
                 }
@@ -163,28 +163,27 @@ $().ready(function () {
 
     function buttonsHandler() {
         $("#log-search").click(function () {
-            timeReq = -1;
-            pageNum = 1;
+            pageNum = 0;
             loadLogList();
         });
         $("#log-first-page").click(function () {
-            timeReq = -1;
-            pageNum = 1;
+            pageNum = 0;
             loadLogList();
         });
         $("#log-prev-page").click(function () {
-            if (pageNum <= 1) {
-                $("#log-prev-page").attr("disabled", "disabled");
-            }
+            (pageNum < 1) ? (pageNum = 0) : (pageNum -= 1);
             loadLogList();
         });
         $("#log-next-page").click(function () {
-            timeReq = timeNext;
-            pageNum += 1;
+            if (pageTotal !== -1 && pageNum >= pageTotal) {
+                // last page
+            } else {
+                pageNum += 1;
+            }
             loadLogList();
         });
 
-        $( "#page-size" ).change(function() {
+        $("#page-size").change(function () {
             size = $("#page-size option:selected").text();
             $("#log-prev-page").attr("disabled", "disabled");
             $("#log-next-page").attr("disabled", "disabled");
