@@ -62,11 +62,13 @@ $().ready(function () {
             console.log("没有找到相关日志列表");
             return;
         }
-        $("#log-result-header").html("第" + (pageNum + 1) + "页，本页" + sessions.length + "条会话列表");
+        $("#log-result-header").html("第" + (pageNum + 1) + "页，本页" + sessions.length + "条会话");
         $("#log-result-context").html("");
         var tempListHtmlAsk = $('#log-list-result').html()
         var resObj = {};
-        var width = Math.ceil(Math.log10(sessions.length));
+        // var width = Math.ceil(Math.log10(sessions.length));
+        var width = 2;
+        console.log("width: " + width);
         for (var i = 0; i < sessions.length; ++i) {
             if (i === sessions.length - 1) {
                 timeReq[pageNum + 1] = sessions[i].timestamp - 1;
@@ -79,22 +81,9 @@ $().ready(function () {
             resObj.cid = sessions[i].cid;
             var resHtml = tempListHtmlAsk.temp(resObj);
             $("#log-result-context").append(resHtml);
-
         }
 
-        if (pageNum <= 0) {
-            // first page
-            $("#log-prev-page").attr("disabled", "disabled");
-        } else {
-            $("#log-prev-page").removeAttr("disabled");
-        }
-        if (sessions.length < size) {
-            // last page
-            pageTotal = pageNum;
-            $("#log-next-page").attr("disabled", "disabled");
-        } else {
-            $("#log-next-page").removeAttr("disabled");
-        }
+        buttonsChecker(sessions.length);
         addItemBg();
     }
 
@@ -149,15 +138,22 @@ $().ready(function () {
                 }
             });
         }
-    };
+    }
 
     // add the background colors of items
     function addItemBg() {
-        for (var i = 0; i < size; i++) {
-            if (i % 2 === 1) {
-                var selector = '.list-group-item:nth-child(' + i + ')';
-                $(selector).css('background-color', '#f9f9f9');
-            }
+        console.log("==== add item bg ====");
+        for (var i = 1; i <= size; i++) {
+            var selector = '.list-group-item:nth-child(' + i + ')';
+            $(selector).css('background-color', function() {
+                return (i % 2 === 1) ? '#f9f9f9' : '#ffffff';
+            });
+
+            // if (i % 2 === 1) {
+            //     $(selector).css('background-color', '#f9f9f9');
+            // } else {
+            //     $(selector).css('background-color', '#ffffff');
+            // }
         }
     }
 
@@ -188,6 +184,22 @@ $().ready(function () {
             $("#log-prev-page").attr("disabled", "disabled");
             $("#log-next-page").attr("disabled", "disabled");
         });
+    }
+
+    function buttonsChecker(listLength) {
+        if (pageNum <= 0) {
+            // first page
+            $("#log-prev-page").attr("disabled", "disabled");
+        } else {
+            $("#log-prev-page").removeAttr("disabled");
+        }
+        if (listLength < size) {
+            // last page
+            pageTotal = pageNum;
+            $("#log-next-page").attr("disabled", "disabled");
+        } else {
+            $("#log-next-page").removeAttr("disabled");
+        }
     }
 
     loadLogList();
