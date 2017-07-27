@@ -99,7 +99,7 @@ $().ready(function () {
         console.log("Sending Request...");
 
         if (timeReq[pageNum] <= 0) {
-            $("#log-result-header").html("正在载入会话列表……");
+            $("#log-result-header").html('正在载入会话列表 <img src="img/loading.gif" alt="loading" width="24" display="inline"/> ');
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -118,7 +118,7 @@ $().ready(function () {
                 }
             });
         } else {
-            $("#log-result-header").html("第" + (pageNum + 1) + "页，正在更新会话列表……");
+            $("#log-result-header").html("第" + (pageNum + 1) + '页，正在更新会话列表 <img src="img/loading.gif" alt="loading" width="24" display="inline"/> ');
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -177,6 +177,8 @@ $().ready(function () {
             size = $("#log-page-size-select option:selected").text();
             $("#log-prev-page").attr("disabled", "disabled");
             $("#log-next-page").attr("disabled", "disabled");
+            pageNum = 0;
+            loadLogList();
         });
     }
 
