@@ -21,6 +21,9 @@ router.post('/register', function (req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 	var password2 = req.body.password2;
+	var phone = req.body.phone;
+	var company = req.body.company;
+	var group = 'user';
 
 	// Validation
 	req.checkBody('name', 'Name is required').notEmpty();
@@ -29,7 +32,9 @@ router.post('/register', function (req, res) {
 	req.checkBody('username', 'Username is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-
+	req.checkBody('phone', 'Phone is required').notEmpty();
+	req.checkBody('phone', 'Phone is not valid').len(11,11).isInt();
+	req.checkBody('company', 'Company is required').notEmpty();
 
 	// console.log(req.getValidationResult());
 	req.getValidationResult().then(function (result) {
@@ -40,10 +45,13 @@ router.post('/register', function (req, res) {
 		} else {
 			console.log('PASSED');
 			var newUser = new User({
+				username: username,
 				name: name,
 				email: email,
-				username: username,
 				password: password,
+				phone: phone,
+				company: company,
+				group: group
 			});
 
 			User.createUser(newUser, function (err, user) {

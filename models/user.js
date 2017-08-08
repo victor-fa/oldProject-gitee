@@ -18,6 +18,15 @@ var UserSchema = mongoose.Schema({
     },
     name: {
         type: String
+    },
+    phone: {
+        type: String
+    },
+    company: {
+        type: String
+    },
+    group: {
+        type: String
     }
 });
 

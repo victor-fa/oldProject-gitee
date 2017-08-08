@@ -2,8 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 // Get Homepage
-router.get('/', ensureAuthenticated, function(req, res) {
-	res.render('index');
+// router.get('/', ensureAuthenticated, function(req, res) {
+// 	res.render('index');
+// });
+
+// Get Homepage
+router.get('/', function(req, res) {
+	res.render('dashboard');
 });
 
 function ensureAuthenticated(req, res, next) {
