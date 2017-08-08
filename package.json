@@ -1,0 +1,39 @@
+{
+  "name": "chewrobot-tool",
+  "version": "1.0.0",
+  "description": "齐悟用户管理工具",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@gitlab.com:yiwangcentaurs/Chewrobot-Tool.git"
+  },
+  "author": {
+    "name": "Centaurs Technologies Co.",
+    "email": "contanct@centaurstech.com ",
+    "url": "https://www.centaurstech.com/"
+  },
+  "contributors": [
+    "Yuancheng Zhang"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "pug": "^2.0.0-rc.3"
+  }
+}
