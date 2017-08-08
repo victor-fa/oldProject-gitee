@@ -1,0 +1,79 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                账户信息
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-gear"></i> 账户信息
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="alert alert-success">
+        <p>
+            <strong>APPKEY: </strong> <span id="appkey">qiwurobot</span>
+            <br>
+            <strong>APPSECRET: </strong> <span id="appsecret">og9pHwRvVAGT2iltk9K934RUgTNE</span>
+        </p>
+    </div>
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>个人信息</small>
+    </h1>
+    <!-- /.row -->
+
+    <form method="post" id="form-info" role="form">
+        <div class="form-group">
+            <label for="name"><b>姓名</b></label>
+            <input type="text" class="form-control" id="name" placeholder="姓名" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="company"><b>公司名称</b></label>
+            <input type="text" class="form-control" id="company" placeholder="公司名称" name="company">
+        </div>
+        <div class="form-group">
+            <label for="mobile"><b>手机号</b></label>
+            <input type="text" class="form-control" id="mobile" placeholder="手机号" name="mobile" required>
+        </div>
+        <div class="form-group">
+            <label for="email"><b>电子邮箱</b></label>
+            <input type="text" class="form-control" id="email" placeholder="电子邮箱" name="email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">确认修改</button>
+    </form>
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>密码修改</small>
+    </h1>
+
+    <!-- /.row -->
+
+    <form method="post" id="form-pwd" role="form">
+        <div class="form-group">
+            <label for="oldPwd"><b>原始密码</b></label>
+            <input type="password" class="form-control" id="oldPwd" placeholder="原始密码" name="oldPwd" required>
+        </div>
+        <div class="form-group">
+            <label for="newPwd"><b>新密码</b></label>
+            <input type="password" class="form-control" id="newPwd" placeholder="新密码（不少于 6 位）" name="newPwd" required>
+        </div>
+        <div class="form-group">
+            <label for="newPwd2"><b>新密码确认</b></label>
+            <input type="password" class="form-control" id="newPwd2" placeholder="密码确认" name="newPwd2" required>
+        </div>
+        <button type="submit" class="btn btn-primary">确认修改</button>
+    </form>
+
+</div>
+<!-- /.container-fluid -->
