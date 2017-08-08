@@ -14,6 +14,11 @@ router.get('/login', function (req, res) {
 	res.render('login');
 });
 
+// Account
+router.get('/account', function (req, res) {
+	res.render('account');
+});
+
 // Register
 router.post('/register', function (req, res) {
 	var name = req.body.name;
@@ -51,7 +56,9 @@ router.post('/register', function (req, res) {
 				password: password,
 				phone: phone,
 				company: company,
-				group: group
+				group: group,
+				appkey: '',
+				appsecret: ''
 			});
 
 			User.createUser(newUser, function (err, user) {
