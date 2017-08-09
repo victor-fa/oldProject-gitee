@@ -39,6 +39,9 @@ var UserSchema = mongoose.Schema({
     },
     wechat_openid: {
         type: String
+    },
+    activation: {
+        type: Number, default: 0
     }
 });
 
@@ -76,4 +79,10 @@ module.exports.updateUserInfo = function(username, name, callback) {
     var user = User.findOne(query);
     user.name = name;
     User.findOneAndUpdate(query, user, callback);
+}
+
+module.exports.isUserActivated = function(user_activation) {
+    if (user_activation > 0)
+        return true
+    return false
 }

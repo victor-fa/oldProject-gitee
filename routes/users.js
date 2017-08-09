@@ -119,7 +119,11 @@ passport.use(new LocalStrategy(
 			User.comparePassword(password, user.password, function (err, isMatch) {
 				if (err) throw err;
 				if (isMatch) {
-					return done(null, user);
+					if (User.isUserActivated(user.activation)) {
+						return done(null, user);
+					} else {
+						return done(null, false, { message: '用户未激活，请联系管理员'})
+					}
 				} else {
 					return done(null, false, { message: '密码错误' });
 				}
