@@ -52,8 +52,8 @@ router.post('/register', function (req, res) {
 				phone: phone,
 				company: company,
 				group: group,
-				appkey: 'qiwurobot',
-				appsecret: 'og9pHwRvVAGT2iltk9K934RUgTNE',
+				appkey: 'wechat',
+				appsecret: '123456',
 				alertSms: 100,
 				alertEmail: 100,
 				wechat_openid: ''
