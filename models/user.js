@@ -36,6 +36,9 @@ var UserSchema = mongoose.Schema({
     },
     alertEmail: {
         type: Number
+    },
+    wechat_openid: {
+        type: String
     }
 });
 
