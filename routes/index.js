@@ -7,30 +7,25 @@ router.get('/', ensureAuthenticated, function(req, res) {
 });
 
 // Get Chart
-router.get('/chart', function(req, res) {
+router.get('/chart', ensureAuthenticated, function(req, res) {
 	res.render('chart');
 });
 
 // Get Log
-router.get('/log', function(req, res) {
+router.get('/log', ensureAuthenticated, function(req, res) {
 	res.render('log');
 });
 
 // Get Alert
-router.get('/alert', function(req, res) {
+router.get('/alert', ensureAuthenticated, function(req, res) {
 	res.render('alert');
-});
-
-// Get Account
-router.get('/', function(req, res) {
-	res.render('account');
 });
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	} else {
-		// req.flash('error_msg', 'You are not logged in');
+		req.flash('error_msg', '您没有登录');
 		res.redirect('/users/login')
 	}
 }

@@ -67,3 +67,10 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         callback(null, isMatch);
     });
 }
+
+module.exports.updateUserInfo = function(username, name, callback) {
+    var query = {username: username};
+    var user = User.findOne(query);
+    user.name = name;
+    User.findOneAndUpdate(query, user, callback);
+}
