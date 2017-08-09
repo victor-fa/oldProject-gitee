@@ -1,0 +1,45 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                登录
+            </h1>
+            <ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> 用户登录
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
+
+    <form method="post" action="/users/login" role="form">
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
