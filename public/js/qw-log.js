@@ -1,13 +1,12 @@
 /**
  * Created by yzhang on 7/20/17.
  */
-/**
- * Created by yzhang on 7/9/17.
- */
 
 $().ready(function () {
-    var appkey = "wechat";
-    var appsecret = "123456";
+    console.log(document.cookie);
+
+    var appkey = $('#appkey').html();
+    var appsecret = $('#appsecret').html();
     var size = 10;
     var sizeOld = size;
     var timestamp = Math.floor(Date.now() / 1000);
