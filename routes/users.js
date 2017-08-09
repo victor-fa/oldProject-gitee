@@ -31,15 +31,15 @@ router.post('/register', function (req, res) {
 	var group = 'user';
 
 	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('username', 'Username is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-	req.checkBody('phone', 'Phone is required').notEmpty();
-	req.checkBody('phone', 'Phone is not valid').len(11,11).isInt();
-	req.checkBody('company', 'Company is required').notEmpty();
+	req.checkBody('name', '真实姓名不能为空').notEmpty();
+	req.checkBody('email', '电子邮件不能为空').notEmpty();
+	req.checkBody('email', '不是有效的电子邮件地址').isEmail();
+	req.checkBody('username', '用户名不能为空').notEmpty();
+	req.checkBody('password', '密码不能为空').notEmpty();
+	req.checkBody('password2', '密码两次输入不一致').equals(req.body.password);
+	req.checkBody('phone', '手机号不能为空').notEmpty();
+	req.checkBody('phone', '不是有效的手机号').len(11,11).isInt();
+	req.checkBody('company', '公司名不能为空').notEmpty();
 
 	// console.log(req.getValidationResult());
 	req.getValidationResult().then(function (result) {
@@ -58,7 +58,9 @@ router.post('/register', function (req, res) {
 				company: company,
 				group: group,
 				appkey: '',
-				appsecret: ''
+				appsecret: '',
+				alertSms: 100,
+				alertEmail: 100
 			});
 
 			User.createUser(newUser, function (err, user) {
@@ -66,7 +68,7 @@ router.post('/register', function (req, res) {
 				console.log(user);
 			});
 
-			req.flash('success_msg', 'You are registered and can now login');
+			req.flash('success_msg', '注册成功，请登录');
 
 			res.redirect('/users/login');
 		}
@@ -78,7 +80,7 @@ passport.use(new LocalStrategy(
 		User.getUserByUsername(username, function (err, user) {
 			if (err) throw err;
 			if (!user) {
-				return done(null, false, { message: 'Unknow User' });
+				return done(null, false, { message: '用户名不存在' });
 			}
 
 			User.comparePassword(password, user.password, function (err, isMatch) {
@@ -86,7 +88,7 @@ passport.use(new LocalStrategy(
 				if (isMatch) {
 					return done(null, user);
 				} else {
-					return done(null, false, { message: 'Invalid password' });
+					return done(null, false, { message: '密码错误' });
 				}
 			});
 		});

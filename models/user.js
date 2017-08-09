@@ -30,6 +30,12 @@ var UserSchema = mongoose.Schema({
     },
     appsecret: {
         type: String
+    },
+    alertSms: {
+        type: Number
+    },
+    alertEmail: {
+        type: Number
     }
 });
 

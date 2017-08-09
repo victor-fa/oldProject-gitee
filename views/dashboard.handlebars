@@ -15,13 +15,22 @@
         </div>
     </div>
     <!-- /.row -->
-
-
-    <div class="alert alert-info alert-dismissable">
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <i class="fa fa-info-circle"></i> <strong>使用遇到疑问？</strong>请联系<a href="https://www.linkedin.com/in/fangzhoulong/"
-            class="alert-link">技术人员</a>寻求帮助！
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
     </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
     <!-- /.alert -->
 
     <div class="row">

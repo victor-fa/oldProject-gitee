@@ -2,12 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // Get Dashboard
-// router.get('/', ensureAuthenticated, function(req, res) {
-// 	res.render('index');
-// });
-
-// Get Dashboard
-router.get('/', function(req, res) {
+router.get('/', ensureAuthenticated, function(req, res) {
 	res.render('dashboard');
 });
 

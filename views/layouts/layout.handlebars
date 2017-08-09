@@ -46,22 +46,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-                <a class="navbar-brand" href="dashboard.html">齐悟</a>
+                <a class="navbar-brand" href="/">齐悟</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                <li class="nav navbar-nav">
-                    <a href="/users/login"> 登录</a>
-                </li>
-                <li class="nav navbar-nav">
-                    <a href="/users/register"> 注册</a>
-                </li>
-                <li class="nav navbar-nav">
-                    <a href="/users/logout"> 登出</a>
-                </li>
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 王一 <b
+                
+                {{#if user}}
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{user.name}} <b
                         class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
@@ -76,13 +68,23 @@
                         </li>
                     </ul>
                 </li>
+                {{/if}}
+             
+
+                <!--
+              <li class="nav navbar-nav">
+                    <a href="/users/logout"> 登出</a>
+                </li>
+                -->
    
             </ul>
 
 
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+    
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                    {{#if user}}
                     <li>
                         <a href="/"><i class="fa fa-fw fa-dashboard"></i> 控制台</a>
                     </li>
@@ -101,11 +103,17 @@
                     <li>
                         <a href="/users/logout"><i class="fa fa-fw fa-power-off"></i> 登出</a>
                     </li>
+                    {{else}}
+                    <li>
+                        <a href="/users/login"><i class="fa fa-sign-in" aria-hidden="true"></i> 登录</a>
+                    </li>
+                    <li>
+                        <a href="/users/register"><i class="fa fa-user" aria-hidden="true"></i> 注册</a>
+                    </li>
+                    {{/if}}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
-
-
 
         </nav>
 
