@@ -32,7 +32,7 @@
     </h1>
     <!-- /.row -->
 
-    <form method="post" id="form-info" role="form">
+    <form method="post" id="form-info" action="/users/account" role="form">
         <div class="form-group">
             <label for="name"><b>姓名</b></label>
             <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" required>
@@ -59,7 +59,7 @@
 
     <!-- /.row -->
 
-    <form method="post" id="form-pwd" role="form">
+    <form method="post" id="form-pwd" action="/users/account" role="form">
         <div class="form-group">
             <label for="oldPwd"><b>原始密码</b></label>
             <input type="password" class="form-control" id="oldPwd" placeholder="原始密码" name="oldPwd" required>
