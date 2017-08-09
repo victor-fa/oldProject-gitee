@@ -55,7 +55,8 @@ router.post('/register', function (req, res) {
 				appkey: 'qiwurobot',
 				appsecret: 'og9pHwRvVAGT2iltk9K934RUgTNE',
 				alertSms: 100,
-				alertEmail: 100
+				alertEmail: 100,
+				wechat_openid: ''
 			});
 
 			User.createUser(newUser, function (err, user) {
@@ -158,7 +159,7 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	} else {
-		req.flash('error_msg', '您没有登录');
+		// req.flash('error_msg', '您没有登录');
 		res.redirect('/users/login')
 	}
 }
