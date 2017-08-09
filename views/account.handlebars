@@ -20,9 +20,9 @@
 
     <div class="alert alert-success">
         <p>
-            <strong>APPKEY: </strong> <span id="appkey">qiwurobot</span>
+            <strong>APPKEY: </strong> <span id="appkey">{{user.appkey}}</span>
             <br>
-            <strong>APPSECRET: </strong> <span id="appsecret">og9pHwRvVAGT2iltk9K934RUgTNE</span>
+            <strong>APPSECRET: </strong> <span id="appsecret">{{user.appsecret}}</span>
         </p>
     </div>
 
@@ -35,19 +35,19 @@
     <form method="post" id="form-info" role="form">
         <div class="form-group">
             <label for="name"><b>姓名</b></label>
-            <input type="text" class="form-control" id="name" placeholder="姓名" name="name" required>
+            <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" required>
         </div>
         <div class="form-group">
             <label for="company"><b>公司名称</b></label>
-            <input type="text" class="form-control" id="company" placeholder="公司名称" name="company">
+            <input type="text" class="form-control" id="company" placeholder="{{user.company}}" name="company">
         </div>
         <div class="form-group">
             <label for="mobile"><b>手机号</b></label>
-            <input type="text" class="form-control" id="mobile" placeholder="手机号" name="mobile" required>
+            <input type="text" class="form-control" id="mobile" placeholder="{{user.phone}}" name="mobile" required>
         </div>
         <div class="form-group">
             <label for="email"><b>电子邮箱</b></label>
-            <input type="text" class="form-control" id="email" placeholder="电子邮箱" name="email" required>
+            <input type="text" class="form-control" id="email" placeholder="{{user.email}}" name="email" required>
         </div>
         <button type="submit" class="btn btn-primary">确认修改</button>
     </form>
