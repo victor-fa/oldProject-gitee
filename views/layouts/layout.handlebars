@@ -17,8 +17,9 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/css/sb-admin.css" rel="stylesheet">
-    <link href="/css/qw-dashboard.css" rel="stylesheet">
+    <link href="/css/sb-admin.css" rel="stylesheet"> {{!--
+    <link href="/css/qw-dashboard.css" rel="stylesheet"> --}} {{#each css}}
+    <link rel="stylesheet" href="/css/{{this}}" /> {{/each}}
 
     <!-- Custom Fonts -->
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -50,9 +51,9 @@
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                
+
                 {{#if user}}
-                  <li class="dropdown">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{user.name}} <b
                         class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -69,19 +70,19 @@
                     </ul>
                 </li>
                 {{/if}}
-             
+
 
                 <!--
               <li class="nav navbar-nav">
                     <a href="/users/logout"> 登出</a>
                 </li>
                 -->
-   
+
             </ul>
 
 
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-    
+
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     {{#if user}}
@@ -130,6 +131,12 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript  -->
+    {{#each js}}
+    <script src="/js/{{this}}"></script>
+    {{/each}}
+
 
 </body>
 
