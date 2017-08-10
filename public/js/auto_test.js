@@ -7,7 +7,7 @@ function auto_ask() {
         setTimeout(function() {
             $('#progress').text((ask_counter+1) + ' / ' + test_cases.length)
             ask_question(test_cases[ask_counter++], auto_ask)
-        }, 1000)
+        }, 500)
     }
 }
 
