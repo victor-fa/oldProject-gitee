@@ -72,7 +72,7 @@ $().ready(function () {
             if (i === sessions.length - 1) {
                 timeReq[pageNum + 1] = sessions[i].timestamp - 1;
             }
-            resObj.id = zeroFill(i + 1, width);
+            resObj.id = zeroFill(i + 1 + pageNum* 10, width);
             resObj.timestamp = parseDateTime(sessions[i].timestamp);
             resObj.app = sessions[i].app;
             resObj.nickname = (sessions[i].nickname).trim();
