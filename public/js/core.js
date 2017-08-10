@@ -11,6 +11,12 @@ function on_receive_answer(reply) {
 function ask_question(msg, callback) {
     on_send_question(msg)
 
+    if (msg.length <= 0) {
+        if (typeof callback == "function") {
+                    callback()
+        }
+    }
+
     var fd = new FormData()
     fd.append('appkey', appkey)
     var now = Date.now()
