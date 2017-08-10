@@ -4,10 +4,10 @@
 
 $().ready(function () {
 
-    var appkey = "qiwurobot";
-    var appsecret = "123456";
+    var appkey = $('#appkey').html();
+    var appsecret = $('#appsecret').html();
+    var timestamp = Math.floor(Date.now() / 1000);
 
-    var timestamp = 1;
     var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
     var cid = "597087ddd2239a6f46bb2137";
 
