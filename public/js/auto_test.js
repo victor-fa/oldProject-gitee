@@ -12,5 +12,5 @@ function auto_ask() {
 
 function send_hello() {
     $('#app').text(appkey)
-    ask_question('HELLO', auto_ask)
+    ask_question('你好', auto_ask)
 }
