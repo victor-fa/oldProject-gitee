@@ -18,7 +18,7 @@ router.get('/log', ensureAuthenticated, function (req, res) {
 	res.render('log', {
 		css: ['/css/qw-log.css'],
 		js: [
-			'https://robot-service.centaurstech.com/static/js/md5.min.js',
+			'/js/md5.min.js',
 			'/js/param_util.js',
 			'/js/qw-log.js'
 		]
@@ -30,7 +30,7 @@ router.get('/log-detail', ensureAuthenticated, function (req, res) {
 	res.render('log-detail', {
 		css: ['/css/qw-log-detail.css'],
 		js: [
-			'https://robot-service.centaurstech.com/static/js/md5.min.js',
+			'/js/md5.min.js',
 			'/js/param_util.js',
 			'/js/qw-log-detail.js'
 		]
@@ -41,6 +41,15 @@ router.get('/log-detail', ensureAuthenticated, function (req, res) {
 router.get('/alert', ensureAuthenticated, function (req, res) {
 	res.render('alert', {
 		css: ['/css/qw-log.css']
+	});
+});
+
+// Manual Test
+router.get('/test/manual', ensureAuthenticated, function (req, res) {
+	res.render('manual_test', {
+		css: [
+			'/css/demo_style.css'
+		]
 	});
 });
 
