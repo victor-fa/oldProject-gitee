@@ -4,7 +4,12 @@ var router = express.Router();
 // Get Dashboard
 router.get('/', ensureAuthenticated, function (req, res) {
 	res.render('dashboard', {
-		css: ['/css/qw-dashboard.css']
+		css: ['/css/qw-dashboard.css'],
+		js: [
+			'/js/md5.min.js',
+			'/js/param_util.js',
+			'/js/qw-dashboard.js'
+		]
 	});
 });
 
