@@ -18,6 +18,12 @@
     </div>
     <!-- /.row -->
 
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>接入信息</small>
+    </h1>
+    <!-- /.row -->
+
     <div class="alert alert-success">
         <p>
             <strong>APPKEY: </strong> <span id="appkey">{{user.appkey}}</span>
@@ -32,25 +38,24 @@
     </h1>
     <!-- /.row -->
 
-    <form method="post" id="form-info" action="/users/account" role="form">
+    <div class="container">
         <div class="form-group">
             <label for="name"><b>姓名</b></label>
-            <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" required>
+            <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" disabled>
         </div>
         <div class="form-group">
             <label for="company"><b>公司名称</b></label>
-            <input type="text" class="form-control" id="company" placeholder="{{user.company}}" name="company">
+            <input type="text" class="form-control" id="company" placeholder="{{user.company}}" name="company" disabled>
         </div>
         <div class="form-group">
             <label for="mobile"><b>手机号</b></label>
-            <input type="text" class="form-control" id="mobile" placeholder="{{user.phone}}" name="mobile" required>
+            <input type="text" class="form-control" id="mobile" placeholder="{{user.phone}}" name="mobile" disabled>
         </div>
         <div class="form-group">
             <label for="email"><b>电子邮箱</b></label>
-            <input type="text" class="form-control" id="email" placeholder="{{user.email}}" name="email" required>
+            <input type="text" class="form-control" id="email" placeholder="{{user.email}}" name="email" disabled>
         </div>
-        <button type="submit" class="btn btn-primary">确认修改</button>
-    </form>
+    </div>
 
     <!-- Page Heading -->
     <h1 class="page-header">
@@ -59,6 +64,7 @@
 
     <!-- /.row -->
 
+    <div class="container">
     <form method="post" id="form-pwd" action="/users/account" role="form">
         <div class="form-group">
             <label for="oldPwd"><b>原始密码</b></label>
@@ -74,6 +80,7 @@
         </div>
         <button type="submit" class="btn btn-primary">确认修改</button>
     </form>
+    </div>
 
 </div>
 <!-- /.container-fluid -->
