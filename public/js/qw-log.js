@@ -3,8 +3,6 @@
  */
 
 $().ready(function () {
-    console.log(document.cookie);
-
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
     var size = 10;
