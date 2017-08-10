@@ -11,6 +11,11 @@ $().ready(function () {
     var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
     var cid = "597087ddd2239a6f46bb2137";
 
+    $("#log-prev-page").click(function () {
+        (pageNum < 1) ? (pageNum = 0) : (pageNum -= 1);
+        loadLogList();
+    });
+
     var search = location.search
     if (search) {
         uid = getParameterByName('uid')
@@ -69,6 +74,9 @@ $().ready(function () {
             var resHtml = (isAsk ? tempHtmlAsk : tempHtmlAnswer).temp(resObj);
             $("#log-result-context").append(resHtml);
         }
+
+        download_params = 'appkey=' + appkey + '&timestamp=' + timestamp + '&uid=' + uid + '&verify=' + verify + '&cid=' + cid
+        $('#download').html('<a class=\"btn btn-primary\" href=\"/api/log/session/transcript.csv?' + download_params + '\">下载日志</a>')
     }
 
     function loadLog() {
