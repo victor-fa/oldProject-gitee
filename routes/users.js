@@ -122,7 +122,7 @@ passport.use(new LocalStrategy(
 					if (User.isUserActivated(user.activation)) {
 						return done(null, user);
 					} else {
-						return done(null, false, { message: '用户未激活，请联系管理员'})
+						return done(null, false, { message: '用户未激活，请联系对接人员'})
 					}
 				} else {
 					return done(null, false, { message: '密码错误' });
