@@ -22,8 +22,39 @@ var users = require('./routes/users');
 var app = express();
 
 // View Engine
+var hbs = exphbs.create({
+	helpers: {
+		ifCond: function (v1, operator, v2, options) {
+			switch (operator) {
+				case '==':
+					return (v1 == v2) ? options.fn(this) : options.inverse(this);
+				case '===':
+					return (v1 === v2) ? options.fn(this) : options.inverse(this);
+				case '!=':
+					return (v1 != v2) ? options.fn(this) : options.inverse(this);
+				case '!==':
+					return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+				case '<':
+					return (v1 < v2) ? options.fn(this) : options.inverse(this);
+				case '<=':
+					return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+				case '>':
+					return (v1 > v2) ? options.fn(this) : options.inverse(this);
+				case '>=':
+					return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+				case '&&':
+					return (v1 && v2) ? options.fn(this) : options.inverse(this);
+				case '||':
+					return (v1 || v2) ? options.fn(this) : options.inverse(this);
+				default:
+					return options.inverse(this);
+			}
+		}
+	},
+	defaultLayout: 'layout'
+});
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', exphbs({ defaultLayout: 'layout' }));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
