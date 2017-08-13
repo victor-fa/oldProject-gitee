@@ -23,7 +23,7 @@ var UserSchema = mongoose.Schema({
         type: String
     },
     group: {
-        type: String
+        type: Number
     },
     appkey: {
         type: String

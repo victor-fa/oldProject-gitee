@@ -24,7 +24,7 @@ router.post('/register', function (req, res) {
 	var password2 = req.body.password2;
 	var phone = req.body.phone;
 	var company = req.body.company;
-	var group = 'user';
+	var group = 0;
 
 	// Validation
 	req.checkBody('name', '真实姓名不能为空').notEmpty();
