@@ -31,6 +31,9 @@ var UserSchema = mongoose.Schema({
     appsecret: {
         type: String
     },
+    testcases: {
+        type: String
+    },
     alertSms: {
         type: Number
     },
@@ -75,14 +78,30 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 }
 
 module.exports.updateUserInfo = function(username, name, callback) {
-    var query = {username: username};
-    var user = User.findOne(query);
-    user.name = name;
-    User.findOneAndUpdate(query, user, callback);
+    var query = {username: username}
+    User.findOneAndUpdate(query, {
+        name: name
+    }, callback)
+}
+
+module.exports.updateTestcases = function(username, testcases, callback) {
+    var query = {username: username}
+    User.findOneAndUpdate(query, {
+        testcases: testcases
+    }, callback)
 }
 
 module.exports.isUserActivated = function(user_activation) {
     if (user_activation > 0)
         return true
     return false
+}
+
+module.exports.ensureAuthenticated = function(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	} else {
+		// req.flash('error_msg', '您没有登录');
+		res.redirect('/users/login')
+	}
 }
