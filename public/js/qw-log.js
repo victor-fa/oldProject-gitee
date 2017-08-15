@@ -1,7 +1,3 @@
-/**
- * Created by yzhang on 7/20/17.
- */
-
 $().ready(function () {
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();

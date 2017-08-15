@@ -23,7 +23,7 @@ var UserSchema = mongoose.Schema({
         type: String
     },
     group: {
-        type: String
+        type: Number
     },
     appkey: {
         type: String
@@ -51,9 +51,9 @@ var UserSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', UserSchema);
 
 // Create the user
-module.exports.createUser = function(newUser, callback) {
-    bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(newUser.password, salt, function(err, hash) {
+module.exports.createUser = function (newUser, callback) {
+    bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(newUser.password, salt, function (err, hash) {
             // Store hash in your password DB
             newUser.password = hash;
             newUser.save(callback);
@@ -61,18 +61,21 @@ module.exports.createUser = function(newUser, callback) {
     });
 }
 
-module.exports.getUserByUsername = function(username, callback) {
-    var query = {username: username};
+// Get user by username
+module.exports.getUserByUsername = function (username, callback) {
+    var query = { username: username };
     User.findOne(query, callback);
 }
 
-module.exports.getUserById = function(id, callback) {
+// Get user By user id
+module.exports.getUserById = function (id, callback) {
     User.findById(id, callback);
 }
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-        if(err) throw err;
+// Check the password
+module.exports.comparePassword = function (candidatePassword, hash, callback) {
+    bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
+        if (err) throw err;
         callback(null, isMatch);
     });
 }
@@ -91,10 +94,33 @@ module.exports.updateTestcases = function(username, testcases, callback) {
     }, callback)
 }
 
-module.exports.isUserActivated = function(user_activation) {
+// Check user activation status
+module.exports.isUserActivated = function (user_activation) {
     if (user_activation > 0)
-        return true
-    return false
+        return true;
+    return false;
+}
+
+// List all inactive users
+module.exports.listInactiveUsers = function (callback) {
+    var query = { activation: 0 };
+    var users = User.find(query, callback);
+}
+
+// List all users
+module.exports.listAllUsers = function (callback) {
+    var query = {};
+    var users = User.find(query, callback);
+}
+
+// Update user active
+module.exports.updateUserActive = function (id, active, callback) {
+    var query = { _id: id };
+    if (active === 0) {
+        User.findOneAndUpdate(query, { active: 1 }, callback);
+    } else {
+        User.findOneAndUpdate(query, { active: 0 }, callback);
+    }
 }
 
 module.exports.ensureAuthenticated = function(req, res, next) {

@@ -1,0 +1,12 @@
+.qw-users {
+    margin: 5px;
+}
+.qw-users-list {
+    margin: 5px;
+}
+.qw-active-text {
+    color: green
+}
+.qw-inactive-text {
+    color: red
+} 
