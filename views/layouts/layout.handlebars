@@ -58,7 +58,7 @@
                         class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="/alert"><i class="fa fa-fw fa-bell"></i> 提醒设置</a>
+                            <a href="/users/alert"><i class="fa fa-fw fa-bell"></i> 提醒设置</a>
                         </li>
                         <li>
                             <a href="/users/account"><i class="fa fa-fw fa-gear"></i> 账户信息</a>
@@ -84,23 +84,23 @@
                     </li>
                     {{#ifCond user.group '>=' 4}} {{!-- Manager and Admin Only --}}
                     <li>
-                        <a href="/users/auth"><i class="fa fa-user-plus" aria-hidden="true"></i> 用户审核</a>
+                        <a href="/admin/manage"><i class="fa fa-user-plus" aria-hidden="true"></i> 用户审核</a>
                     </li>
                     {{/ifCond}}
                     <li>
                         <a href="/chart"><i class="fa fa-fw fa-bar-chart-o" aria-hidden="true"></i> 趋势图</a>
                     </li>
                     <li>
-                        <a href="/log"><i class="fa fa-fw fa-file" aria-hidden="true"></i> 对话日志</a>
-                    </li>
-                    <li>
-                        <a href="/alert"><i class="fa fa-fw fa-bell" aria-hidden="true"></i> 提醒设置</a>
+                        <a href="/log/log"><i class="fa fa-fw fa-file" aria-hidden="true"></i> 对话日志</a>
                     </li>
                     <li>
                         <a href="/test/manual"><i class="fa fa-fw fa-gear" aria-hidden="true"></i> 手动测试</a>
                     </li>
                     <li>
                         <a href="/test/config"><i class="fa fa-fw fa-gear" aria-hidden="true"></i> 自动测试</a>
+                    </li>
+                    <li>
+                        <a href="/users/alert"><i class="fa fa-fw fa-bell" aria-hidden="true"></i> 提醒设置</a>
                     </li>
                     <li>
                         <a href="/users/account"><i class="fa fa-fw fa-gear" aria-hidden="true"></i> 账户信息</a>

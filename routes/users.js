@@ -7,7 +7,7 @@ var RouterIndex = require('./index');
 
 // Login
 router.get('/login', function (req, res) {
-	res.render('login');
+	res.render('users/login');
 });
 
 // Login
@@ -24,7 +24,7 @@ router.post('/login',
 
 // Register
 router.get('/register', function (req, res) {
-	res.render('register');
+	res.render('users/register');
 });
 
 // Register
@@ -51,7 +51,7 @@ router.post('/register', function (req, res) {
 
 	req.getValidationResult().then(function (result) {
 		if (!result.isEmpty()) {
-			res.render('register', {
+			res.render('users/register', {
 				errors: result.array()
 			});
 		} else {
@@ -91,12 +91,12 @@ router.get('/logout', function (req, res, next) {
 });
 
 // Account
-router.get('/account', ensureAuthenticated, function (req, res) {
-	res.render('account');
+router.get('/account', User.ensureAuthenticated, function (req, res) {
+	res.render('users/account');
 });
 
 // Account change info
-router.post('/account', ensureAuthenticated, function (req, res) {
+router.post('/account', User.ensureAuthenticated, function (req, res) {
 	var name = req.body.name;
 	var compnay = req.body.company;
 	var phone = req.body.phone;
@@ -107,7 +107,7 @@ router.post('/account', ensureAuthenticated, function (req, res) {
 
 	req.getValidationResult().then(function (result) {
 		if (!result.isEmpty()) {
-			res.render('/account', {
+			res.render('users/account', {
 				errors: result.array()
 			});
 		} else {
@@ -124,33 +124,10 @@ router.post('/account', ensureAuthenticated, function (req, res) {
 		}
 	});
 
-	res.render('account');
+	res.render('users/account');
 });
 
-// List All Users
-router.get('/auth', ensureAuthenticated, function (req, res) {
-	User.listAllUsers(function (err, users) {
-		if (err) {
-			throw err;
-		}
-		res.render('auth', { 
-			users,
-			css: ['/css/qw-auth.css'],
-			js: ['/js/qw-auth.js']
-		});
-	});
-});
 
-// Active or inactive user
-router.post('/auth', ensureAuthenticated, function (req, res) {
-	var id = req.body.id;
-	var active = req.body.active;
-	console.log(`_id = ${id} \n act = ${active}`);
-
-	res.json({
-		retcode: 0
-	})
-});
 
 passport.use(new LocalStrategy(
 	function (username, password, done) {
@@ -176,6 +153,13 @@ passport.use(new LocalStrategy(
 	}
 ));
 
+// Alert SMS or Email
+router.get('/alert', User.ensureAuthenticated, function (req, res) {
+	res.render('users/alert', {
+		css: ['/css/qw-log.css']
+	});
+});
+
 passport.serializeUser(function (user, done) {
 	done(null, user.id);
 });
@@ -185,14 +169,5 @@ passport.deserializeUser(function (id, done) {
 		done(err, user);
 	});
 });
-
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	} else {
-		// req.flash('error_msg', '您没有登录');
-		res.redirect('/users/login')
-	}
-}
 
 module.exports = router;
