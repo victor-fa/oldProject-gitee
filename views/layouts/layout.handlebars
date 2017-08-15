@@ -78,26 +78,33 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {{#if user}}
+                    {{#if user}} {{#ifCond user.group '>=' 4}} {{!-- Manager and Admin Only --}}
+                    <li>
+                        <a data-toggle="collapse" data-target="#qw-admin-tool"><i class="fa fa-fw fa-paper-plane"></i> 管理员 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="qw-admin-tool" class="collapse">
+                            <li>
+                                <a href="/admin/manage"><i class="fa fa-user-plus" aria-hidden="true"></i> 用户审核</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-fw fa-cubes" aria-hidden="true"></i> APP管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{/ifCond}}
                     <li>
                         <a href="/"><i class="fa fa-fw fa-dashboard" aria-hidden="true"></i> 控制台</a>
                     </li>
-                    {{#ifCond user.group '>=' 4}} {{!-- Manager and Admin Only --}}
-                    <li>
-                        <a href="/admin/manage"><i class="fa fa-user-plus" aria-hidden="true"></i> 用户审核</a>
-                    </li>
-                    {{/ifCond}}
                     <li>
                         <a href="/chart"><i class="fa fa-fw fa-bar-chart-o" aria-hidden="true"></i> 趋势图</a>
                     </li>
                     <li>
-                        <a href="/log/log"><i class="fa fa-fw fa-file" aria-hidden="true"></i> 对话日志</a>
+                        <a href="/log/log"><i class="fa fa-fw fa-comments-o" aria-hidden="true"></i> 对话日志</a>
                     </li>
                     <li>
-                        <a href="/test/manual"><i class="fa fa-fw fa-gear" aria-hidden="true"></i> 手动测试</a>
+                        <a href="/test/manual"><i class="fa fa-fw fa-file" aria-hidden="true"></i> 手动测试</a>
                     </li>
                     <li>
-                        <a href="/test/config"><i class="fa fa-fw fa-gear" aria-hidden="true"></i> 自动测试</a>
+                        <a href="/test/config"><i class="fa fa-fw fa-file-text" aria-hidden="true"></i> 自动测试</a>
                     </li>
                     <li>
                         <a href="/users/alert"><i class="fa fa-fw fa-bell" aria-hidden="true"></i> 提醒设置</a>

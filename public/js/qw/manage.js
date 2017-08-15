@@ -1,5 +1,6 @@
 $().ready(function () {
-
+    $('#qw-admin-tool').addClass('in');
+    
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
         console.log(obj)
