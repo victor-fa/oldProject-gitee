@@ -5,14 +5,26 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 var RouterIndex = require('./index');
 
-// Register
-router.get('/register', function (req, res) {
-	res.render('register');
-});
-
 // Login
 router.get('/login', function (req, res) {
 	res.render('login');
+});
+
+// Login
+router.post('/login',
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/users/login',
+		failureFlash: true
+	}),
+	function (req, res) {
+		res.redirect('/');
+	}
+);
+
+// Register
+router.get('/register', function (req, res) {
+	res.render('register');
 });
 
 // Register
@@ -71,6 +83,13 @@ router.post('/register', function (req, res) {
 	});
 });
 
+// Logout
+router.get('/logout', function (req, res, next) {
+	req.logout();
+	req.flash('success_msg', '成功登出');
+	res.redirect('/users/login');
+});
+
 // Account
 router.get('/account', ensureAuthenticated, function (req, res) {
 	res.render('account');
@@ -108,6 +127,33 @@ router.post('/account', ensureAuthenticated, function (req, res) {
 	res.render('account');
 });
 
+// List All Users
+router.get('/auth', ensureAuthenticated, function (req, res) {
+	User.listAllUsers(function (err, users) {
+		if (err) {
+			throw err;
+		}
+		res.render('auth', { 
+			users,
+			css: ['/css/qw-auth.css'],
+			js: ['/js/qw-auth.js']
+		});
+	});
+});
+
+// Active or inactive user
+router.post('/auth', ensureAuthenticated, function (req, res) {
+	var id = req.body.id;
+	var active = req.body.active;
+	console.log(`_id = ${id} \n act = ${active}`);
+
+		res.render('auth', { 
+			users,
+			css: ['/css/qw-auth.css']
+		});
+
+});
+
 passport.use(new LocalStrategy(
 	function (username, password, done) {
 		User.getUserByUsername(username, function (err, user) {
@@ -122,7 +168,7 @@ passport.use(new LocalStrategy(
 					if (User.isUserActivated(user.activation)) {
 						return done(null, user);
 					} else {
-						return done(null, false, { message: '用户未激活，请联系对接人员'})
+						return done(null, false, { message: '用户未激活，请联系对接人员' })
 					}
 				} else {
 					return done(null, false, { message: '密码错误' });
@@ -140,23 +186,6 @@ passport.deserializeUser(function (id, done) {
 	User.getUserById(id, function (err, user) {
 		done(err, user);
 	});
-});
-
-router.post('/login',
-	passport.authenticate('local', {
-		successRedirect: '/',
-		failureRedirect: '/users/login',
-		failureFlash: true
-	}),
-	function (req, res) {
-		res.redirect('/');
-	}
-);
-
-router.get('/logout', function (req, res, next) {
-	req.logout();
-	req.flash('success_msg', '成功登出');
-	res.redirect('/users/login');
 });
 
 function ensureAuthenticated(req, res, next) {

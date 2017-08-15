@@ -18,7 +18,7 @@ router.get('/chart', ensureAuthenticated, function (req, res) {
 	res.render('chart');
 });
 
-// Get Log
+// Log List
 router.get('/log', ensureAuthenticated, function (req, res) {
 	res.render('log', {
 		css: ['/css/qw-log.css'],
@@ -30,7 +30,7 @@ router.get('/log', ensureAuthenticated, function (req, res) {
 	});
 });
 
-// Get Log
+// Log Detail
 router.get('/log-detail', ensureAuthenticated, function (req, res) {
 	res.render('log-detail', {
 		css: ['/css/qw-log-detail.css'],
@@ -42,7 +42,7 @@ router.get('/log-detail', ensureAuthenticated, function (req, res) {
 	});
 });
 
-// Get Alert
+// Alert SMS or Email
 router.get('/alert', ensureAuthenticated, function (req, res) {
 	res.render('alert', {
 		css: ['/css/qw-log.css']
