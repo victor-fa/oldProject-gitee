@@ -1,0 +1,56 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                用户审核
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-user-plus"></i> 用户审核
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        {{#if users}} {{#each users}}
+        <div class="col-sm-6">
+            <div class="qw-users">
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#{{this._id}}">{{this.username}}</button>                
+                {{#ifCond this.activation '==' 0}}<button type="button" id="{{this._id}}0" class="btn btn-xs btn-danger qw-inactive">未激活</button>{{/ifCond}}
+                {{#ifCond this.activation '!=' 0}}<button type="button" id="{{this._id}}1" class="btn btn-xs btn-success qw-active">已激活</button>{{/ifCond}}
+                {{#if this.appkey}}{{else}}
+                <button type="button" class="btn btn-xs btn-warning">无appkey</button> {{/if}}
+                {{#if this.appsecret}} {{else}}
+                <button type="button" class="btn btn-xs btn-warning">无appsecret</button> {{/if}}
+                <div id="{{this._id}}" class="collapse qw-users-list">
+                    <p>用户名： {{this.username}}</p>
+                    <p>组别： {{this.group}}</p>
+                    <p>激活状态： 
+                        {{#ifCond this.activation '==' 0}}<span class="qw-inactive-text">未激活</span>{{/ifCond}} 
+                        {{#ifCond this.activation '!=' 0}}<span class="qw-inactive-text">已激活</span>{{/ifCond}}
+                    </p>
+                    <p>姓名： {{this.name}}</p>
+                    <p>公司： {{this.company}}</p>
+                    <p>电子邮箱： {{this.email}}</p>
+                    <p>手机号： {{this.phone}}</p>
+                    <p>微信ID： {{this.wechat_openid}}</p>
+                    <p>短信提醒： {{this.alertSms}}</p>
+                    <p>邮件提醒： {{this.alertEmail}}</p>
+                    <p>appkey： {{this.appkey}}</p>
+                    <p>appsecret： {{this.appsecret}}</p>
+                    <p>_id：{{this._id}}</p>
+                </div>
+            </div>
+        </div>
+        {{/each}} {{else}}
+        <p>没有用户</p>
+        {{/if}}
+    </div>
+</div>
+<!-- /.container-fluid -->
