@@ -2,10 +2,10 @@ $().ready(function () {
 
     function ajaxOnSuccess(obj) {
         console.log("Got Respond.");
-
+        console.log(obj)
     }
 
-    function activeUser(id, active) {
+    function active_user(id, active) {
         console.log("Sending Request...");
         $.ajax({
             url: '/users/auth',
@@ -16,15 +16,16 @@ $().ready(function () {
             type: 'POST',
             success: ajaxOnSuccess,
             error: function () {
+                alert('change user activation status failed')
             }
         });
     }
 
-    $('.qw-inactive').click(function (e) {
-        console.log(e)
-        var id = $(this).attr('id');
-        var activeStatus = id.substr(id.length - 2, id.length - 1);
-        id = id.substr(0, id.length - 2);
-        activeUser(id, activeStatus);
+    $('.active-btn > div').on('click', function () {
+        console.log('hello')
+        var id = $(this).attr('id')
+        var activeStatus = $(this).attr('status-code') == 'active' ? true : false
+        console.log('id:' + id + ' status:' + activeStatus)
+        active_user(id, activeStatus);
     });
 });

@@ -22,8 +22,16 @@
         <div class="col-sm-6">
             <div class="qw-users">
                 <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#{{this._id}}">{{this.username}}</button>                
-                {{#ifCond this.activation '==' 0}}<button type="button" id="{{this._id}}0" class="btn btn-xs btn-danger qw-inactive">未激活</button>{{/ifCond}}
-                {{#ifCond this.activation '!=' 0}}<button type="button" id="{{this._id}}1" class="btn btn-xs btn-success qw-active">已激活</button>{{/ifCond}}
+                {{#ifCond this.activation '==' 0}}
+                <div class="active-btn">
+                    <div id="{{this._id}}" status-code="inactive" class="btn btn-xs btn-danger">未激活</div>
+                </div>
+                {{/ifCond}}
+                {{#ifCond this.activation '!=' 0}}
+                <div class="active-btn">
+                    <div id="{{this._id}}" status-code="active" class="btn btn-xs btn-success">已激活</div>
+                </div>
+                {{/ifCond}}
                 {{#if this.appkey}}{{else}}
                 <button type="button" class="btn btn-xs btn-warning">无appkey</button> {{/if}}
                 {{#if this.appsecret}} {{else}}

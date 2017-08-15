@@ -147,11 +147,9 @@ router.post('/auth', ensureAuthenticated, function (req, res) {
 	var active = req.body.active;
 	console.log(`_id = ${id} \n act = ${active}`);
 
-		res.render('auth', { 
-			users,
-			css: ['/css/qw-auth.css']
-		});
-
+	res.json({
+		retcode: 0
+	})
 });
 
 passport.use(new LocalStrategy(
