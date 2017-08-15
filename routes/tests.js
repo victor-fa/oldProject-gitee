@@ -6,7 +6,7 @@ var User = require('../models/user')
 router.get('/manual', User.ensureAuthenticated, function (req, res) {
 	res.render('test/manual_test', {
 		css: [
-			'/css/demo_style.css'
+			'/css/qw/demo_style.css'
 		]
 	})
 })
