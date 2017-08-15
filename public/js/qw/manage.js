@@ -8,7 +8,7 @@ $().ready(function () {
     function active_user(id, active) {
         console.log("Sending Request...");
         $.ajax({
-            url: '/users/auth',
+            url: '/admin/manage',
             body: {
                 "id": id,
                 "active": active

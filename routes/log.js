@@ -5,11 +5,11 @@ var User = require('../models/user');
 // Log List
 router.get('/log', User.ensureAuthenticated, function (req, res) {
 	res.render('log/log', {
-		css: ['/css/qw-log.css'],
+		css: ['/css/qw/log.css'],
 		js: [
-			'/js/md5.min.js',
-			'/js/param_util.js',
-			'/js/qw-log.js'
+			'/js/util/md5.min.js',
+			'/js/util/param_util.js',
+			'/js/qw/log.js'
 		]
 	});
 });
@@ -17,11 +17,11 @@ router.get('/log', User.ensureAuthenticated, function (req, res) {
 // Log Detail
 router.get('/log-detail', User.ensureAuthenticated, function (req, res) {
 	res.render('log/log-detail', {
-		css: ['/css/qw-log-detail.css'],
+		css: ['/css/qw/log-detail.css'],
 		js: [
-			'/js/md5.min.js',
-			'/js/param_util.js',
-			'/js/qw-log-detail.js'
+			'/js/util/md5.min.js',
+			'/js/util/param_util.js',
+			'/js/qw/log-detail.js'
 		]
 	});
 });

@@ -156,7 +156,7 @@ passport.use(new LocalStrategy(
 // Alert SMS or Email
 router.get('/alert', User.ensureAuthenticated, function (req, res) {
 	res.render('users/alert', {
-		css: ['/css/qw-log.css']
+		css: ['/css/qw/alert.css']
 	});
 });
 

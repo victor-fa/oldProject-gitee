@@ -10,8 +10,8 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 		}
 		res.render('admin/manage', { 
 			users,
-			css: ['/css/qw-manage.css'],
-			js: ['/js/qw-manage.js']
+			css: ['/css/qw/manage.css'],
+			js: ['/js/qw/manage.js']
 		});
 	});
 });

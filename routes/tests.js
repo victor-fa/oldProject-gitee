@@ -25,7 +25,7 @@ router.post('/auto', User.ensureAuthenticated, function (req, res) {
 
 		res.render('test/auto_test', {
 			css: [
-				'/css/demo_style.css'
+				'/css/qw/demo_style.css'
 			],
 			testcases: testcases
 		})
