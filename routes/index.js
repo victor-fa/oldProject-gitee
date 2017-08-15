@@ -49,35 +49,6 @@ router.get('/alert', ensureAuthenticated, function (req, res) {
 	});
 });
 
-// Manual Test
-router.get('/test/manual', ensureAuthenticated, function (req, res) {
-	res.render('manual_test', {
-		css: [
-			'/css/demo_style.css'
-		]
-	});
-});
-
-// Auto Test Configuration
-router.get('/test/config', ensureAuthenticated, function (req, res) {
-	res.render('auto_test_config');
-});
-
-
-// Auto Test
-router.post('/test/auto', ensureAuthenticated, function (req, res) {
-	var testcase = req.body.testcase
-
-	var testcases = testcase.split("\r\n")
-
-	res.render('auto_test', {
-		css: [
-			'/css/demo_style.css'
-		],
-		testcases: testcases
-	});
-});
-
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
