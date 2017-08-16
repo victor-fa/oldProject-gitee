@@ -22,7 +22,7 @@ $().ready(function () {
         $.ajax({
             url: '/admin/manage/api/active',
             type: 'POST',
-            body: {
+            data: {
                 "id": id,
                 "active": active
             },
