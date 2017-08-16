@@ -29,10 +29,11 @@ router.post('/manage/api/load', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: active or inactive user
-router.post('/manage/api/active', User.ensureAuthenticated, function (req, res) {
+router.post('/manage/api/active', function (req, res) {
+	console.log(req.body);
 	var id = req.body.id;
 	var active = req.body.active;
-	console.log(`_id = ${id} \n act = ${active}`);
+	console.log(`id = ${id} \n act = ${active}`);
 	User.updateUserActive(id, active, function (err) {
 		if (err) {
 			throw err;
