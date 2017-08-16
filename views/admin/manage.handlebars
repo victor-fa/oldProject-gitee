@@ -4,61 +4,51 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                用户审核
+                用户管理
             </h1>
             <ol class="breadcrumb">
                 <li>
                     <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-user-plus"></i> 用户审核
+                    <i class="fa fa-user-plus"></i> 用户管理
                 </li>
             </ol>
         </div>
     </div>
 
-    <div class="row">
-        {{#if users}} {{#each users}}
+    <div class="row" id="user-list-result">
+    </div>
+
+    <div id="manage-list-result-temp" style="display:none">
         <div class="col-sm-6">
-            <div class="qw-users">
-                <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#{{this._id}}">{{this.username}}</button>                
-                {{#ifCond this.activation '==' 0}}
-                <div class="active-btn">
-                    <div id="{{this._id}}" status-code="inactive" class="btn btn-xs btn-danger">未激活</div>
-                </div>
-                {{/ifCond}}
-                {{#ifCond this.activation '!=' 0}}
-                <div class="active-btn">
-                    <div id="{{this._id}}" status-code="active" class="btn btn-xs btn-success">已激活</div>
-                </div>
-                {{/ifCond}}
-                {{#if this.appkey}}{{else}}
-                <button type="button" class="btn btn-xs btn-warning">无appkey</button> {{/if}}
-                {{#if this.appsecret}} {{else}}
-                <button type="button" class="btn btn-xs btn-warning">无appsecret</button> {{/if}}
-                <div id="{{this._id}}" class="collapse qw-users-list">
-                    <p>用户名： {{this.username}}</p>
-                    <p>组别： {{this.group}}</p>
-                    <p>激活状态： 
-                        {{#ifCond this.activation '==' 0}}<span class="qw-inactive-text">未激活</span>{{/ifCond}} 
-                        {{#ifCond this.activation '!=' 0}}<span class="qw-inactive-text">已激活</span>{{/ifCond}}
-                    </p>
-                    <p>姓名： {{this.name}}</p>
-                    <p>公司： {{this.company}}</p>
-                    <p>电子邮箱： {{this.email}}</p>
-                    <p>手机号： {{this.phone}}</p>
-                    <p>微信ID： {{this.wechat_openid}}</p>
-                    <p>短信提醒： {{this.alertSms}}</p>
-                    <p>邮件提醒： {{this.alertEmail}}</p>
-                    <p>appkey： {{this.appkey}}</p>
-                    <p>appsecret： {{this.appsecret}}</p>
-                    <p>_id：{{this._id}}</p>
-                </div>
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#user-$_id$">$username$</button>
+            <div class="active-btn">
+                <div id="" status-code="inactive" class="btn btn-xs btn-danger">未激活</div>
+            </div>
+            <div class="active-btn">
+                <div id="" status-code="active" class="btn btn-xs btn-success">已激活</div>
+            </div>
+            <button type="button" class="btn btn-xs btn-warning">无appkey</button>
+            <button type="button" class="btn btn-xs btn-warning">无appsecret</button>
+            <div id="user-$_id$" class="collapse qw-users-list">
+                <p>用户名： $username$</p>
+                <p>组别： $group$</p>
+                <p>激活状态： $active$</p>
+                <p>姓名： $name$</p>
+                <p>公司： $company$</p>
+                <p>电子邮箱： $email$</p>
+                <p>手机号： $phone$</p>
+                <p>微信ID： $wechat_openid$</p>
+                <p>短信提醒： $alertSms$</p>
+                <p>邮件提醒： $alertEmail$</p>
+                <p>appkey： $appkey$</p>
+                <p>appsecret： $appsecret$</p>
+                <p>_id：$_id$</p>
             </div>
         </div>
-        {{/each}} {{else}}
-        <p>没有用户</p>
-        {{/if}}
     </div>
+    <p>没有用户</p>
+
 </div>
 <!-- /.container-fluid -->

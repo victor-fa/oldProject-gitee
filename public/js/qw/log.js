@@ -57,7 +57,7 @@ $().ready(function () {
         }
         $("#log-result-header").html("第" + (pageNum + 1) + "页，本页" + sessions.length + "条会话");
         $("#log-result-context").html("");
-        var tempListHtmlAsk = $('#log-list-result').html()
+        var tempListHtmlAsk = $('#log-list-result-temp').html()
         var resObj = {};
         // var width = Math.ceil(Math.log10(sessions.length));
         var width = 2;
