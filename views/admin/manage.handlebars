@@ -4,14 +4,14 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                用户审核
+                用户管理
             </h1>
             <ol class="breadcrumb">
                 <li>
                     <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-user-plus"></i> 用户审核
+                    <i class="fa fa-user-plus"></i> 用户管理
                 </li>
             </ol>
         </div>
@@ -20,8 +20,8 @@
     <div class="row">
         {{#if users}} {{#each users}}
         <div class="col-sm-6">
-            <div class="qw-users">
-                <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#{{this._id}}">{{this.username}}</button>                
+            <div class="admit-users">
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#user-{{this._id}}">{{this.username}}</button>                
                 {{#ifCond this.activation '==' 0}}
                 <div class="active-btn">
                     <div id="{{this._id}}" status-code="inactive" class="btn btn-xs btn-danger">未激活</div>
@@ -36,7 +36,7 @@
                 <button type="button" class="btn btn-xs btn-warning">无appkey</button> {{/if}}
                 {{#if this.appsecret}} {{else}}
                 <button type="button" class="btn btn-xs btn-warning">无appsecret</button> {{/if}}
-                <div id="{{this._id}}" class="collapse qw-users-list">
+                <div id="user-{{this._id}}" class="collapse qw-users-list">
                     <p>用户名： {{this.username}}</p>
                     <p>组别： {{this.group}}</p>
                     <p>激活状态： 
