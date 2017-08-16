@@ -37,7 +37,7 @@ $().ready(function () {
         console.log("Sending Request...");
         $.ajax({
             url: '/admin/manage/api/load',
-            type: 'POST',
+            type: 'GET',
             success: loadAjaxOnSuccess,
             error: function () {
                 alert('change user activation status failed')

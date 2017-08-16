@@ -19,7 +19,7 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: list all users
-router.post('/manage/api/load', User.ensureAuthenticated, function (req, res) {
+router.get('/manage/api/load', User.ensureAuthenticated, function (req, res) {
 	User.listAllUsers(function (err, users) {
 		if (err) {
 			throw err;
