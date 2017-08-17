@@ -11,40 +11,34 @@ $().ready(function () {
         });
     }
 
-    function ajaxOnSuccess(obj) {
+    function activateAjaxOnSuccess(obj) {
         console.log("Got Respond.");
-        console.log(obj)
+        $('#user-list-result').html('');
+        loadAllUser();
     }
 
-    function active_user(id, active) {
+    function activateUser(id, activate) {
         console.log("Sending Request...");
+        console.log(`id: ${id} \tactivate: ${activate}`);
         $.ajax({
-            url: '/admin/manage/api/active',
-            body: {
-                "id": id,
-                "active": active
-            },
+            url: '/admin/manage/api/activate',
             type: 'POST',
-            success: ajaxOnSuccess,
+            data: {
+                "id": id,
+                "activate": activate
+            },
+            success: activateAjaxOnSuccess,
             error: function () {
                 alert('change user activation status failed')
             }
         });
     }
 
-    // $('.active-btn > div').on('click', function () {
-    //     console.log('hello')
-    //     var id = $(this).attr('id')
-    //     var activeStatus = $(this).attr('status-code') == 'active' ? true : false
-    //     console.log('id:' + id + ' status:' + activeStatus)
-    //     active_user(id, activeStatus);
-    // });
-
     function loadAllUser() {
         console.log("Sending Request...");
         $.ajax({
             url: '/admin/manage/api/load',
-            type: 'POST',
+            type: 'GET',
             success: loadAjaxOnSuccess,
             error: function () {
                 alert('change user activation status failed')
@@ -63,7 +57,14 @@ $().ready(function () {
             resObj.name = obj[i].name;
             resObj.phone = obj[i].phone;
             resObj.email = obj[i].email;
-            resObj.active = obj[i].activation;
+            resObj.statusCode = obj[i].activation;
+            if (obj[i].activation === 1) {
+                resObj.active = "已激活";
+                resObj.buttonType = 'success';
+            } else {
+                resObj.active = "未激活";
+                resObj.buttonType = 'danger';
+            }
             resObj.group = obj[i].group;
             resObj.company = obj[i].company;
             resObj.wechat_openid = obj[i].wechat_openid;
@@ -72,10 +73,17 @@ $().ready(function () {
             resObj.appkey = obj[i].appkey;
             resObj.appsecret = obj[i].appsecret;
             var resHtml = tempUserListHtml.temp(resObj);
-            console.log(resHtml);
             $('#user-list-result').append(resHtml);
         }
     }
 
     loadAllUser();
+
+    $(document).on('click', '.btn-active-status', function () {
+        console.log('hello');
+        var id = $(this).attr('id');
+        var activateStatus = $(this).attr('status-code');
+        console.log('id:' + id + ' status:' + activateStatus);
+        activateUser(id, activateStatus);
+    });
 });
