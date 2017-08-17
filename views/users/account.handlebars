@@ -38,7 +38,7 @@
     </h1>
     <!-- /.row -->
 
-    <div class="container">
+    <div>
         <div class="form-group">
             <label for="name"><b>姓名</b></label>
             <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" disabled>
@@ -64,22 +64,22 @@
 
     <!-- /.row -->
 
-    <div class="container">
-    <form method="post" id="form-pwd" action="/users/account" role="form">
-        <div class="form-group">
-            <label for="oldPwd"><b>原始密码</b></label>
-            <input type="password" class="form-control" id="oldPwd" placeholder="原始密码" name="oldPwd" required>
-        </div>
-        <div class="form-group">
-            <label for="newPwd"><b>新密码</b></label>
-            <input type="password" class="form-control" id="newPwd" placeholder="新密码（不少于 6 位）" name="newPwd" required>
-        </div>
-        <div class="form-group">
-            <label for="newPwd2"><b>新密码确认</b></label>
-            <input type="password" class="form-control" id="newPwd2" placeholder="密码确认" name="newPwd2" required>
-        </div>
-        <button type="submit" class="btn btn-primary">确认修改</button>
-    </form>
+    <div>
+        <form method="post" id="form-pwd" action="/users/account" role="form">
+            <div class="form-group">
+                <label for="oldPwd"><b>原始密码</b></label>
+                <input type="password" class="form-control" id="oldPwd" placeholder="原始密码" name="oldPwd" required>
+            </div>
+            <div class="form-group">
+                <label for="newPwd"><b>新密码</b></label>
+                <input type="password" class="form-control" id="newPwd" placeholder="新密码（不少于 6 位）" name="newPwd" required>
+            </div>
+            <div class="form-group">
+                <label for="newPwd2"><b>新密码确认</b></label>
+                <input type="password" class="form-control" id="newPwd2" placeholder="密码确认" name="newPwd2" required>
+            </div>
+            <button type="submit" class="btn btn-primary">确认修改</button>
+        </form>
     </div>
 
 </div>
