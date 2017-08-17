@@ -11,22 +11,23 @@ $().ready(function () {
         });
     }
 
-    function ajaxOnSuccess(obj) {
+    function activateAjaxOnSuccess(obj) {
         console.log("Got Respond.");
+        $('#user-list-result').html('');
         loadAllUser();
     }
 
-    function active_user(id, active) {
+    function activateUser(id, activate) {
         console.log("Sending Request...");
-        console.log(`id: ${id} \tactive: ${active}`);
+        console.log(`id: ${id} \tactivate: ${activate}`);
         $.ajax({
-            url: '/admin/manage/api/active',
+            url: '/admin/manage/api/activate',
             type: 'POST',
             data: {
                 "id": id,
-                "active": active
+                "activate": activate
             },
-            success: ajaxOnSuccess,
+            success: activateAjaxOnSuccess,
             error: function () {
                 alert('change user activation status failed')
             }
@@ -81,8 +82,8 @@ $().ready(function () {
     $(document).on('click', '.btn-active-status', function () {
         console.log('hello');
         var id = $(this).attr('id');
-        var activeStatus = $(this).attr('status-code');
-        console.log('id:' + id + ' status:' + activeStatus);
-        active_user(id, activeStatus);
+        var activateStatus = $(this).attr('status-code');
+        console.log('id:' + id + ' status:' + activateStatus);
+        activateUser(id, activateStatus);
     });
 });

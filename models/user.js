@@ -80,15 +80,15 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
     });
 }
 
-module.exports.updateUserInfo = function(username, name, callback) {
-    var query = {username: username}
+module.exports.updateUserInfo = function (username, name, callback) {
+    var query = { username: username }
     User.findOneAndUpdate(query, {
         name: name
     }, callback)
 }
 
-module.exports.updateTestcases = function(username, testcases, callback) {
-    var query = {username: username}
+module.exports.updateTestcases = function (username, testcases, callback) {
+    var query = { username: username }
     User.findOneAndUpdate(query, {
         testcases: testcases
     }, callback)
@@ -114,20 +114,22 @@ module.exports.listAllUsers = function (callback) {
 }
 
 // Update user active
-module.exports.updateUserActive = function (id, active, callback) {
+module.exports.updateUserActive = function (id, activate, callback) {
     var query = { _id: id };
-    if (active === 0) {
-        User.findOneAndUpdate(query, { active: 1 }, callback);
+    console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
+    console.log(`mongoDB: id: ${typeof(id)} \tactivate: ${typeof(activate)}`);
+    if (activate == 0) {
+        User.findOneAndUpdate(query, { activation: 1 }, callback);
     } else {
-        User.findOneAndUpdate(query, { active: 0 }, callback);
+        User.findOneAndUpdate(query, { activation: 0 }, callback);
     }
 }
 
-module.exports.ensureAuthenticated = function(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	} else {
-		// req.flash('error_msg', '您没有登录');
-		res.redirect('/users/login')
-	}
+module.exports.ensureAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        // req.flash('error_msg', '您没有登录');
+        res.redirect('/users/login')
+    }
 }
