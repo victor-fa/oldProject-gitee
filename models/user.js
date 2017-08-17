@@ -31,6 +31,7 @@ var UserSchema = mongoose.Schema({
     appsecret: {
         type: String
     },
+    applist: [appItemSchema],
     testcases: {
         type: String
     },
@@ -44,7 +45,17 @@ var UserSchema = mongoose.Schema({
         type: String
     },
     activation: {
-        type: Number, default: 0
+        type: Number,
+        default: 0
+    }
+});
+
+var appItemSchema = new mongoose.Schema({
+    appkey: {
+        type: String
+    },
+    appsecret: {
+        type: String
     }
 });
 
@@ -117,7 +128,7 @@ module.exports.listAllUsers = function (callback) {
 module.exports.updateUserActive = function (id, activate, callback) {
     var query = { _id: id };
     console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
-    console.log(`mongoDB: id: ${typeof(id)} \tactivate: ${typeof(activate)}`);
+    console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
     if (activate == 0) {
         User.findOneAndUpdate(query, { activation: 1 }, callback);
     } else {
