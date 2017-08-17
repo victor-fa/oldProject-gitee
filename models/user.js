@@ -31,7 +31,14 @@ var UserSchema = mongoose.Schema({
     appsecret: {
         type: String
     },
-    applist: [appItemSchema],
+    applist: [{
+        appkey: {
+            type: String,
+        },
+        appsecret: {
+            type: String
+        }
+    }],
     testcases: {
         type: String
     },
@@ -47,15 +54,6 @@ var UserSchema = mongoose.Schema({
     activation: {
         type: Number,
         default: 0
-    }
-});
-
-var appItemSchema = new mongoose.Schema({
-    appkey: {
-        type: String
-    },
-    appsecret: {
-        type: String
     }
 });
 
