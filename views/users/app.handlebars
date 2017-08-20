@@ -53,13 +53,17 @@
         <div class="col-sm-12">
             <ul class="list-group" id="app-list">
                 {{#each user.applist}}
-                <a href="#" class="list-group-item">
+                <a class="list-group-item app-list-item" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}">
                 <strong>APP# <span class="app-index">{{@index}}</span></strong><br>
                 <strong>APPKEY: </strong> <span class="app-appkey">{{this.appkey}}</span><br>
                 <strong>APPSECRET: </strong> <span class="app-appsecret">{{this.appsecret}}</span>
                 </a> {{/each}}
             </ul>
         </div>
+    </div>
+
+    <div style="display:none">
+        <span id="user-id">{{user._id}}</span>
     </div>
 </div>
 <!-- /.container-fluid -->
