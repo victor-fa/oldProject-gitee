@@ -146,7 +146,7 @@ module.exports.ensureAuthenticated = function (req, res, next) {
 
 // Change current 'appkey' and 'appsecret'
 module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
-    var query = { _id = id };
+    var query = { _id: id };
     User.findOneAndUpdate(query, {
         appkey: appkey,
         appsecret: appsecret
