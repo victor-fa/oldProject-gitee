@@ -128,7 +128,36 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 	res.render('users/account');
 });
 
+// Appication management
+router.get('/app', User.ensureAuthenticated, function (req, res){
+	res.render('users/app', {
+		js: ['/js/qw/app.js']
+	});
+});
 
+// API: link appkey and appsecret
+router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
+	var id = req.body.id
+	var appkey = req.body.appkey;
+	var appsecret = req.body.appsecret;
+	console.log(`server: id = ${id} \nserver: appkey = ${appkey} \nserver: appsecret = ${appsecret}`);
+	User.setCurrApp(id, appkey, appsecret, function (err) {
+		if (err) {
+			throw err;
+			// err alert
+			/* ... */
+
+			// send err res
+			res.json({
+				retcode: 1,
+				msg: err
+			})
+		}
+		res.json({
+			retcode: 0
+		})
+	});
+});
 
 passport.use(new LocalStrategy(
 	function (username, password, done) {
