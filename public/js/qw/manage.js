@@ -13,6 +13,7 @@ $().ready(function () {
 
     function activateAjaxOnSuccess(obj) {
         console.log("Got Respond.");
+        $('#manage-alert-0').show();
         $('#user-list-result').html('');
         loadAllUser();
     }
@@ -29,7 +30,8 @@ $().ready(function () {
             },
             success: activateAjaxOnSuccess,
             error: function () {
-                alert('change user activation status failed')
+                $('#manage-alert-1').show();
+                $('#manage-alert-2').show();
             }
         });
     }
@@ -41,7 +43,8 @@ $().ready(function () {
             type: 'GET',
             success: loadAjaxOnSuccess,
             error: function () {
-                alert('change user activation status failed')
+                $('#manage-alert-1').show();
+                $('#manage-alert-2').show();
             }
         });
     }
