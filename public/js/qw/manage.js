@@ -13,6 +13,7 @@ $().ready(function () {
 
     function activateAjaxOnSuccess(obj) {
         console.log("Got Respond.");
+        $('#manage-alert-0').show();
         $('#user-list-result').html('');
         loadAllUser();
     }
@@ -29,7 +30,8 @@ $().ready(function () {
             },
             success: activateAjaxOnSuccess,
             error: function () {
-                alert('change user activation status failed')
+                $('#manage-alert-1').show();
+                $('#manage-alert-2').show();
             }
         });
     }
@@ -41,7 +43,8 @@ $().ready(function () {
             type: 'GET',
             success: loadAjaxOnSuccess,
             error: function () {
-                alert('change user activation status failed')
+                $('#manage-alert-1').show();
+                $('#manage-alert-2').show();
             }
         });
     }
@@ -60,10 +63,10 @@ $().ready(function () {
             resObj.statusCode = obj[i].activation;
             if (obj[i].activation === 1) {
                 resObj.active = "已激活";
-                resObj.buttonType = 'success';
+                resObj.buttonTypeActivate = 'success';
             } else {
                 resObj.active = "未激活";
-                resObj.buttonType = 'danger';
+                resObj.buttonTypeActivate = 'danger';
             }
             resObj.group = obj[i].group;
             resObj.company = obj[i].company;
@@ -72,6 +75,22 @@ $().ready(function () {
             resObj.alertEmail = obj[i].alertEmail;
             resObj.appkey = obj[i].appkey;
             resObj.appsecret = obj[i].appsecret;
+            resObj.applist = obj[i].applist;
+            resObj.appnum = obj[i].applist.length;
+            resObj.applistHtml = '';
+            if (resObj.appnum > 0 ) {
+                resObj.buttonTypeAppnum = "info";
+                var tempAppListHtml = $('#user-app-list-temp-1').html();
+                var resAppListObj = {};
+                for(var j = 0; j < resObj.appnum; ++j) {
+                    resAppListObj.appkey = obj[i].applist[j].appkey;
+                    resAppListObj.appsecret = obj[i].applist[j].appsecret;
+                    resObj.applistHtml += tempAppListHtml.temp(resAppListObj);
+                }
+            } else {
+                resObj.buttonTypeAppnum = "danger";
+                resObj.applistHtml = $('#user-app-list-temp-0').html();
+            }
             var resHtml = tempUserListHtml.temp(resObj);
             $('#user-list-result').append(resHtml);
         }

@@ -5,6 +5,7 @@
         <div class="col-lg-12">
             <h1 class="page-header">
                 用户管理
+                <small>列表</small>
             </h1>
             <ol class="breadcrumb">
                 <li>
@@ -17,31 +18,100 @@
         </div>
     </div>
 
-    <div class="row" id="user-list-result">
+    <div id="manage-alert-0" hidden>
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-check" aria-hidden="true"></i> 激活状态修改成功。
+        </div>
     </div>
+    <div id="manage-alert-1" hidden>
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-close"></i> AJAX请求失败，请检查网络。
+        </div>
+    </div>
+    <div id="manage-alert-2" hidden>
+        <div class="alert alert-info alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-info-circle"></i> <strong>使用遇到疑问？</strong>请联系<a href="https://www.linkedin.com/in/fangzhoulong/"
+                class="alert-link">技术人员</a>寻求帮助！
+        </div>
+    </div>
+    <!-- /.alert -->
 
-    <div id="manage-list-result-temp" style="display:none">
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#user-$_id$">$username$</button>
-            <a id="$_id$" status-code="$statusCode$" class="btn btn-xs btn-$buttonType$ btn-active-status">$active$</a>
-            <div id="user-$_id$" class="collapse qw-users-list">
-                <p>用户名： $username$</p>
-                <p>组别： $group$</p>
-                <p>激活状态： $active$</p>
-                <p>姓名： $name$</p>
-                <p>公司： $company$</p>
-                <p>电子邮箱： $email$</p>
-                <p>手机号： $phone$</p>
-                <p>微信ID： $wechat_openid$</p>
-                <p>短信提醒： $alertSms$</p>
-                <p>邮件提醒： $alertEmail$</p>
-                <p>appkey： $appkey$</p>
-                <p>appsecret： $appsecret$</p>
-                <p>_id：$_id$</p>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="list-group" id="user-list-result"></ul>
+        </div>
+
+        <div id="manage-list-result-temp" class="list-group" style="display:none">
+            <li class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    <span data-toggle="collapse" data-target="#user-$_id$"><i class="fa fa-address-card-o" aria-hidden="true"></i></span>
+                    <a class="list-group-item-heading-username" data-toggle="collapse" data-target="#user-$_id$">$username$</a>
+                    <span class="list-group-item-heading-right">
+                        <span class="btn btn-xs btn-$buttonTypeAppnum$" data-toggle="collapse" data-target="#user-apps-$_id$">$appnum$个APP</span>
+                    <span id="$_id$" status-code="$statusCode$" class="btn btn-xs btn-$buttonTypeActivate$ btn-active-status">$active$</span>
+                    <a href="#" class="btn btn-xs btn-warning"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
+                    </span>
+                </h4>
+                <p class="list-group-item-apps">
+                    <div id="user-apps-$_id$" class="collapse qw-users-app-list">
+                        <hr> $applistHtml$
+                    </div>
+                </p>
+                <p class="list-group-item-text">
+                    <div id="user-$_id$" class="collapse qw-users-list">
+                        <hr>
+                        <p>数据库ID：<span class="list-group-item-text-data">$_id$</span></p>
+                        <hr>
+                        <p>用户名： <span class="list-group-item-text-data">$username$</span></p>
+                        <hr>
+                        <p>组别： <span class="list-group-item-text-data">$group$</span></p>
+                        <hr>
+                        <p>激活状态： <span class="list-group-item-text-data">$active$</span></p>
+                        <hr>
+                        <p>姓名： <span class="list-group-item-text-data">$name$</span></p>
+                        <hr>
+                        <p>公司： <span class="list-group-item-text-data">$company$</span></p>
+                        <hr>
+                        <p>电子邮箱： <span class="list-group-item-text-data">$email$</span></p>
+                        <hr>
+                        <p>手机号： <span class="list-group-item-text-data">$phone$</span></p>
+                        <hr>
+                        <p>微信ID： <span class="list-group-item-text-data">$wechat_openid$</span></p>
+                        <hr>
+                        <p>短信提醒： <span class="list-group-item-text-data">$alertSms$</span></p>
+                        <hr>
+                        <p>邮件提醒： <span class="list-group-item-text-data">$alertEmail$</span></p>
+                        <hr>
+                        <p>APPKEY： <span class="list-group-item-text-data">$appkey$</span></p>
+                        <hr>
+                        <p>APPSECRET： <span class="list-group-item-text-data">$appsecret$</span></p>
+                        <hr>
+                    </div>
+                </p>
+
+            </li>
+        </div>
+
+        <div id="user-app-list-temp-0" style="display:none">
+            <div class="alert alert-danger">
+                <p>
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> 没有相关APP，请点击 <i class="fa fa-share-square-o"
+                        aria-hidden="true"></i> 进入 “用户详情” 页面，添加APP。
+                </p>
+            </div>
+        </div>
+        <div id="user-app-list-temp-1" style="display:none">
+            <div class="alert alert-success">
+                <p>
+                    <strong>APPKEY: </strong> <span class="user-app-list-data">$appkey$</span>
+                    <br>
+                    <strong>APPSECRET: </strong> <span class="user-app-list-data">$appsecret$</span>
+                </p>
             </div>
         </div>
     </div>
-    <p>没有用户</p>
-
 </div>
 <!-- /.container-fluid -->
