@@ -8,18 +8,18 @@ $().ready(function () {
     var appsecret = $('#appsecret').html();
     var timestamp = Math.floor(Date.now() / 1000);
 
-    var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
-    var cid = "597087ddd2239a6f46bb2137";
+    var uid = "unknowUID";
+    var cid = "unknowCID";
 
     $("#log-prev-page").click(function () {
         (pageNum < 1) ? (pageNum = 0) : (pageNum -= 1);
         loadLogList();
     });
 
-    var search = location.search
+    var search = location.search;
     if (search) {
-        uid = getParameterByName('uid')
-        cid = getParameterByName('cid')
+        uid = getParameterByName('uid');
+        cid = getParameterByName('cid');
     }
 
     var verify = md5(appsecret + uid + timestamp);
