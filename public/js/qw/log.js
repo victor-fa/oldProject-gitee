@@ -10,6 +10,7 @@ $().ready(function () {
     if (search) {
         uid = getParameterByName('uid');
         cid = getParameterByName('cid');
+        console.log(`uid: ${uid} \tcid: ${cid}`);
     }
 
     var timeReq = [];
@@ -92,7 +93,7 @@ $().ready(function () {
         console.log("Sending Request...");
 
         if (timeReq[pageNum] <= 0) {
-            $("#log-result-header").html('正在载入会话列表 <img src="img/loading.gif" alt="loading" width="24" display="inline"/> ');
+            $("#log-result-header").html('正在载入会话列表 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/> ');
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {

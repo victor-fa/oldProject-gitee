@@ -82,7 +82,7 @@ $().ready(function () {
     function loadLog() {
         console.log("Sending Request...")
 
-        $("#log-result-header").html('正在载入日志 <img src="img/loading.gif" alt="loading" width="24" display="inline"/>');
+        $("#log-result-header").html('正在载入日志 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/>');
         $.ajax({
             url: 'https://robot-service.centaurstech.com/api/log/session',
             headers: {
