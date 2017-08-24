@@ -6,12 +6,12 @@ var User = require('../models/user');
 router.get('/manage', User.ensureAuthenticated, function (req, res) {
 	var id = req.query.id; // $_GET["id"]
 	if (id) {
-		User.getUserById(id, function(err, aUser) {
+		User.getUserById(id, function (err, aUser) {
 			if (err) {
 				req.flash('error_msg', '用户信息加载失败：' + err);
 				res.redirect('/admin/manage');
 			}
-			var render_para = {}			
+			var render_para = {}
 			render_para.css = ['/css/qw/manage.css'];
 			render_para.js = ['/js/qw/manage-detail.js'];
 			if (aUser.activate === 0) {
@@ -47,7 +47,7 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: list all users
-router.get('/manage/api/load', User.ensureAuthenticated, function (req, res) {	
+router.get('/manage/api/load', User.ensureAuthenticated, function (req, res) {
 	User.listAllUsers(function (err, users) {
 		if (err) {
 			// throw err;
@@ -79,21 +79,55 @@ router.post('/manage/api/activate', User.ensureAuthenticated, function (req, res
 	});
 });
 
-// API: add new APP or update APP
+// API: add new APP
 router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) {
 	var id = req.body.id;
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
 	console.log(`id: ${id} \tappkey: ${appkey} \tappsecret: ${appsecret}`);
-	User.addApp(id, appkey, appsecret, function(err) {
-		if (err) {
-			req.flash('error_msg', '添加／修改APP失败：' + err);
-		} else {
-			req.flash('success_msg', '添加／修改APP成功。');
-		}
-		res.redirect('/admin/manage?id='+id);
-	});
+	if (!id) {
+		req.flash('error_msg', '添加APP失败：用户不存在。');
+		res.redirect('/admin/manage');
+	} else if (!appkey) {
+		req.flash('error_msg', '添加APP失败：APPKEY不存在。');
+		res.redirect('/admin/manage?id=' + id);
+	} else if (!appsecret) {
+		req.flash('error_msg', '添加APP失败：APPSECRET不存在。');
+		res.redirect('/admin/manage?id=' + id);
+	} else {
+		User.addApp(id, appkey, appsecret, function (err) {
+			if (err) {
+				req.flash('error_msg', '添加APP失败：' + err);
+			} else {
+				req.flash('success_msg', '添加APP成功。');
+			}
+			res.redirect('/admin/manage?id=' + id);
+		});
+	}
 
+});
+
+// API: remove APP
+router.get('/manage/api/removeapp', function (req, res) {
+	var id = req.query.id;
+	var appkey = req.query.appkey;
+	// console.log(`id: ${id} \tappkey: ${appkey}`);
+	if (!id) {
+		req.flash('error_msg', '删除APP失败，用户不存在。');
+		res.redirect('/admin/manage');
+	} else if (!appkey) {
+		req.flash('error_msg', '删除APP失败，APPKEY不存在。');
+		res.redirect('/admin/manage?id=' + id);
+	} else {
+		User.removeApp(id, appkey, function (err) {
+			if (err) {
+				req.flash('error_msg', '删除APP失败：' + err);
+			} else {
+				req.flash('success_msg', '删除APP成功。');
+			}
+			res.redirect('/admin/manage?id=' + id);
+		});
+	}
 });
 
 module.exports = router;

@@ -71,6 +71,17 @@ a:hover {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.list-group-item-apps {
-    /* padding-top: 20px; */
+.list-group-item-text-data {
+    padding-left: 10px;
+    width: 50%;
+}
+
+.user-app-list-item {
+    position: relative;
+}
+
+.user-app-list-item-remove {
+    position: absolute;
+    top: 8px;
+    right: 10px;
 }

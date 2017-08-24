@@ -126,8 +126,8 @@ module.exports.listAllUsers = function (callback) {
 // Update user active
 module.exports.updateUserActive = function (id, activate, callback) {
     var query = { _id: id };
-    console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
-    console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
+    // console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
+    // console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
     if (activate == 0) {
         User.findOneAndUpdate(query, { activation: 1 }, callback);
     } else {
@@ -157,7 +157,7 @@ module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
 // Add or update a 'appkey' and 'appsecret' in a user's 'applist'
 module.exports.addApp = function (id, appkey, appsecret, callback) {
     var query = { _id: id };
-    User.findOne(query, function(err, user){
+    User.findOne(query, function (err, user) {
         if (err) {
             callback(err);
         }
@@ -181,4 +181,28 @@ module.exports.addApp = function (id, appkey, appsecret, callback) {
             }, callback);
         }
     });
+}
+
+// Remove 'appkey' and 'appsecret' from 'applist' or current 'appkey & appsecret'
+module.exports.removeApp = function (id, appkey, callback) {
+    var query = { _id: id };
+    User.findOne(query, function (err, user) {
+        if (err) {
+            callback(err);
+        }
+        if (user.appkey == appkey) {
+            user.appkey = '';
+            user.appsecret = '';
+        }
+        for (var i = 0; i < user.applist.length; ++i) {
+            if (user.applist[i].appkey == appkey) {
+                user.applist.splice(i, 1);
+            }
+        }
+        User.findOneAndUpdate(query, {
+            appkey: user.appkey,
+            appsecret: user.appsecret,
+            applist: user.applist
+        }, callback);
+    })
 }
