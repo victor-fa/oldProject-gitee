@@ -6,4 +6,39 @@ $().ready(function () {
         $(this).attr('href', href);
         console.log(href);
     });
+
+    function activateAjaxOnSuccess(obj) {
+        console.log("Got Respond.");
+        $('#manage-alert-0').show();
+        $('#user-list-result').html('');
+        location.reload();
+    }
+
+    function activateUser(id, activate) {
+        console.log("Sending Request...");
+        console.log(`id: ${id} \tactivate: ${activate}`);
+        $.ajax({
+            url: '/admin/manage/api/activate',
+            type: 'POST',
+            data: {
+                "id": id,
+                "activate": activate
+            },
+            success: activateAjaxOnSuccess,
+            error: function () {
+                $('#manage-alert-1').show();
+                $('#manage-alert-2').show();
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-active-status', function () {
+        console.log('hello');
+        var id = $(this).attr('id');
+        var activateStatus = $(this).attr('status-code');
+        console.log('id:' + id + ' status:' + activateStatus);
+        activateUser(id, activateStatus);
+    });
+
+    
 });
