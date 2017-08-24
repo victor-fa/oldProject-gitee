@@ -14,7 +14,7 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 			var render_para = {}
 			render_para.css = ['/css/qw/manage.css'];
 			render_para.js = ['/js/qw/manage-detail.js'];
-			if (aUser.activate === 0) {
+			if (aUser.activation === 0) {
 				aUser.active = '未激活';
 				aUser.buttonTypeActivate = 'danger';
 			} else {
@@ -108,7 +108,7 @@ router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) 
 });
 
 // API: remove APP
-router.get('/manage/api/removeapp', function (req, res) {
+router.get('/manage/api/removeapp', User.ensureAuthenticated, function (req, res) {
 	var id = req.query.id;
 	var appkey = req.query.appkey;
 	// console.log(`id: ${id} \tappkey: ${appkey}`);
