@@ -75,6 +75,24 @@
                             </div>
                         </div>
 
+                        {{#if aUser.appkey}}
+                        <div class="alert alert-success user-app-list-item-current">
+                            <p>
+                                当前使用的APP
+                                <br>
+                                <strong>APPKEY: </strong> <span class="user-app-list-data">{{aUser.appkey}}</span>
+                                <br>
+                                <strong>APPSECRET: </strong> <span class="user-app-list-data">{{aUser.appsecret}}</span>
+                            </p>
+                        </div>
+                        {{else}}
+                        <div class="alert alert-danger user-app-list-item-current">
+                            <p>
+                                当前用户没有在使用任何APP。
+                            </p>
+                        </div>
+                        {{/if}}
+
                         <div class="list-group-item-apps">
                             {{#each aUser.applist}}
                             <div class="alert alert-info user-app-list-item">
@@ -83,7 +101,9 @@
                                     <br>
                                     <strong>APPSECRET: </strong> <span class="user-app-list-data">{{this.appsecret}}</span>
                                 </p>
-                                <div class="user-app-list-item-remove"><a href="/admin/manage/api/removeapp?appkey={{this.appkey}}"><i class="fa fa-times fa-4x" aria-hidden="true"></i></a></div>
+                                <div class="user-app-list-item-right">
+                                    <a href="/admin/manage/api/removeapp?appkey={{this.appkey}}" class="user-app-list-item-remove"><i class="fa fa-times fa-4x" aria-hidden="true"></i></a>
+                                </div>
                             </div>{{/each}}
                         </div>
 
@@ -123,7 +143,7 @@
             </div>
         </div>
 
-        <div style="display: none">   
+        <div style="display: none">
             <div id="user-id">{{aUser._id}}</div>
         </div>
     </div>
