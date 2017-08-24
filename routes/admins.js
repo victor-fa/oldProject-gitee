@@ -62,21 +62,33 @@ router.post('/manage/api/activate', User.ensureAuthenticated, function (req, res
 	var id = req.body.id;
 	var activate = req.body.activate;
 	// console.log(`server: id = ${id} \tactivate = ${activate}`);
-	User.updateUserActive(id, activate, function (err) {
-		if (err) {
-			// throw err;
-			req.flash('error_msg', '用户激活状态修改失败：' + err);
-
-			// send err res
-			res.json({
-				retcode: 1,
-				msg: err
-			})
-		}
+	if (!id) {
 		res.json({
-			retcode: 0
-		})
-	});
+			retcode: 1,
+			msg: '没有用户ID'
+		});
+	} else if (!activate) {
+		res.json({
+			retcode: 2,
+			msg: '没有激活状态'
+		});
+	} else {
+		User.updateUserActive(id, activate, function (err) {
+			if (err) {
+				// throw err;
+				req.flash('error_msg', '用户激活状态修改失败：' + err);
+	
+				// send err res
+				res.json({
+					retcode: 3,
+					msg: err
+				})
+			}
+			res.json({
+				retcode: 0
+			})
+		});
+	}
 });
 
 // API: add new APP

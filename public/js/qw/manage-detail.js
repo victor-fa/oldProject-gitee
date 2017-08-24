@@ -9,14 +9,12 @@ $().ready(function () {
 
     function activateAjaxOnSuccess(obj) {
         console.log("Got Respond.");
-        $('#manage-alert-0').show();
-        $('#user-list-result').html('');
         location.reload();
     }
 
     function activateUser(id, activate) {
         console.log("Sending Request...");
-        console.log(`id: ${id} \tactivate: ${activate}`);
+        // console.log(`id: ${id} \tactivate: ${activate}`);
         $.ajax({
             url: '/admin/manage/api/activate',
             type: 'POST',
@@ -26,8 +24,7 @@ $().ready(function () {
             },
             success: activateAjaxOnSuccess,
             error: function () {
-                $('#manage-alert-1').show();
-                $('#manage-alert-2').show();
+                // err alert
             }
         });
     }
