@@ -37,7 +37,8 @@ var UserSchema = mongoose.Schema({
         },
         appsecret: {
             type: String
-        }
+        },
+        _id: false
     }],
     testcases: {
         type: String
@@ -151,4 +152,33 @@ module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
         appkey: appkey,
         appsecret: appsecret
     }, callback);
+}
+
+// Add or update a 'appkey' and 'appsecret' in a user's 'applist'
+module.exports.addApp = function (id, appkey, appsecret, callback) {
+    var query = { _id: id };
+    User.findOne(query, function(err, user){
+        if (err) {
+            callback(err);
+        }
+        var exists = false;
+        for (var i = 0; i < user.applist.length; ++i) {
+            if (user.applist[i].appkey == appkey) {
+                exists = true;
+                break;
+            }
+        }
+        if (exists) {
+            callback("相关APPKEY已存在。");
+        } else {
+            User.findOneAndUpdate(query, {
+                $addToSet: {
+                    applist: {
+                        appkey: appkey,
+                        appsecret: appsecret
+                    }
+                }
+            }, callback);
+        }
+    });
 }

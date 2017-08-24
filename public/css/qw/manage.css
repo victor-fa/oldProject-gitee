@@ -26,6 +26,14 @@ a:hover {
     font-weight: bold;
 }
 
+.list-group-item-detail {
+    position: relative;
+}
+
+.list-group-item-detail-single {
+    margin-top: 20px;
+}
+
 .list-group-item-heading-username {
     display: inline-block;
     padding-top: 8px;
@@ -38,6 +46,10 @@ a:hover {
     position: absolute;
     top: 4px;
     right: 0px;
+}
+
+.qw-users-list {
+    position: relative;
 }
 
 .qw-users-list p {
@@ -57,4 +69,8 @@ a:hover {
     position: absolute;
     left: 150px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.list-group-item-apps {
+    /* padding-top: 20px; */
 }
