@@ -143,9 +143,8 @@ router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
 	console.log(`server: id = ${id} \nserver: appkey = ${appkey} \nserver: appsecret = ${appsecret}`);
 	User.setCurrApp(id, appkey, appsecret, function (err) {
 		if (err) {
-			throw err;
-			// err alert
-			/* ... */
+			// throw err
+			req.flash('error_msg', 'APP关联失败。');
 
 			// send err res
 			res.json({
