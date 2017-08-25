@@ -20,7 +20,7 @@
 
     <!-- Page Heading -->
     <h1 class="page-header">
-        <small>当前使用APP信息</small>
+        <small>当前APP接入信息</small>
     </h1>
     <!-- /.row -->
 
@@ -39,7 +39,6 @@
             <br>
             <strong>APPSECRET: </strong> <span id="appsecret">{{#if user.appsecret}}{{user.appsecret}}{{else}}无{{/if}}</span>
         </p>
-        请在列表关联APP，或联系管理员。
     </div>
     {{/ifCond}}
 
@@ -47,10 +46,17 @@
     <h1 class="page-header">
         <small>可选APP列表</small>
     </h1>
+
+    <div class="alert alert-info">
+        <p>
+            <i class="fa fa-info-circle"></i> 请在列表关联APP，或联系管理员。
+        </p>
+    </div>
+
     <!-- /.row -->
-    <p>点击列表，关联相关APP</p>
     <div class="row">
         <div class="col-sm-12">
+
             <ul class="list-group" id="app-list">
                 {{#each user.applist}}
                 <a class="list-group-item app-list-item" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}">

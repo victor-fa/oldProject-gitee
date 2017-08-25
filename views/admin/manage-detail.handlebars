@@ -75,11 +75,12 @@
                             </div>
                         </div>
 
+                        <h1 class="page-header">
+                            <small>当前APP接入信息</small>
+                        </h1>
                         {{#if aUser.appkey}}
                         <div class="alert alert-success user-app-list-item-current">
                             <p>
-                                当前使用的APP
-                                <br>
                                 <strong>APPKEY: </strong> <span class="user-app-list-data">{{aUser.appkey}}</span>
                                 <br>
                                 <strong>APPSECRET: </strong> <span class="user-app-list-data">{{aUser.appsecret}}</span>
@@ -93,6 +94,9 @@
                         </div>
                         {{/if}}
 
+                        <h1 class="page-header">
+                            <small>可选APP列表</small>
+                        </h1>
                         <div class="list-group-item-apps">
                             {{#each aUser.applist}}
                             <div class="alert alert-info user-app-list-item">
@@ -107,6 +111,9 @@
                             </div>{{/each}}
                         </div>
 
+                        <h1 class="page-header">
+                            <small>用户基本信息</small>
+                        </h1>
                         <div class="list-group-item-text">
                             <div id="user-$_id$" class="qw-users-list">
                                 <hr>
