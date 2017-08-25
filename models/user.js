@@ -172,14 +172,28 @@ module.exports.addApp = function (id, appkey, appsecret, callback) {
         if (exists) {
             callback("相关APPKEY已存在。");
         } else {
-            User.findOneAndUpdate(query, {
-                $addToSet: {
-                    applist: {
-                        appkey: appkey,
-                        appsecret: appsecret
+            if (user.appkey) {
+                User.findOneAndUpdate(query, {
+                    $addToSet: {
+                        applist: {
+                            appkey: appkey,
+                            appsecret: appsecret
+                        }
                     }
-                }
-            }, callback);
+                }, callback);
+            } else {
+                // current app is empty
+                User.findOneAndUpdate(query, {
+                    appkey: appkey,
+                    appsecret: appsecret,
+                    $addToSet: {
+                        applist: {
+                            appkey: appkey,
+                            appsecret: appsecret
+                        }
+                    }
+                }, callback);
+            }
         }
     });
 }

@@ -96,7 +96,7 @@ router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) 
 	var id = req.body.id;
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
-	console.log(`id: ${id} \tappkey: ${appkey} \tappsecret: ${appsecret}`);
+	// console.log(`id: ${id} \tappkey: ${appkey} \tappsecret: ${appsecret}`);
 	if (!id) {
 		req.flash('error_msg', '添加APP失败：用户不存在。');
 		res.redirect('/admin/manage');
