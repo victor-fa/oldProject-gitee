@@ -44,8 +44,9 @@ router.post('/register', function (req, res) {
 	req.checkBody('email', '电子邮件不能为空').notEmpty();
 	req.checkBody('email', '不是有效的电子邮件地址').isEmail();
 	req.checkBody('username', '用户名不能为空').notEmpty();
-	req.checkBody('username', '用户名不能为空').len(8, 32);
+	req.checkBody('username', '用户名为6到32位').len(6, 32);
 	req.checkBody('password', '密码不能为空').notEmpty();
+	req.checkBody('password', '密码长度为8到32位').len(8, 32);
 	req.checkBody('password2', '密码两次输入不一致').equals(req.body.password);
 	req.checkBody('phone', '手机号不能为空').notEmpty();
 	req.checkBody('phone', '不是有效的手机号').len(11, 11).isInt();
@@ -58,30 +59,44 @@ router.post('/register', function (req, res) {
 				user_info
 			});
 		} else {
-			console.log('PASSED');
-			var newUser = new User({
-				username: user_info.username,
-				name: user_info.name,
-				email: user_info.email,
-				phone: user_info.phone,
-				company: user_info.company,
-				group: group,
-				appkey: '',
-				appsecret: '',
-				applist: [],
-				alertSms: 100,
-				alertEmail: 100,
-				wechat_openid: ''
+			User.getUserByUsername(user_info.username, function (err, user) {
+				if (err) {
+					res.render('users/register', {
+						errors: [{ msg: '注册错误：' + err }],
+						user_info
+					});
+				} else if (user) {
+					res.render('users/register', {
+						errors: [{ msg: '用户已存在' }],
+						user_info
+					});
+				} else {
+					console.log('PASSED');
+					var newUser = new User({
+						username: user_info.username,
+						name: user_info.name,
+						email: user_info.email,
+						password: password,
+						phone: user_info.phone,
+						company: user_info.company,
+						group: group,
+						appkey: '',
+						appsecret: '',
+						applist: [],
+						alertSms: 100,
+						alertEmail: 100,
+						wechat_openid: ''
+					});
+
+					User.createUser(newUser, function (err, user) {
+						if (err) throw err;
+						console.log(user);
+					});
+
+					req.flash('success_msg', '注册成功，请登录');
+					res.redirect('/users/login');
+				}
 			});
-
-			User.createUser(newUser, function (err, user) {
-				if (err) throw err;
-				console.log(user);
-			});
-
-			req.flash('success_msg', '注册成功，请登录');
-
-			res.redirect('/users/login');
 		}
 	});
 });
@@ -135,7 +150,7 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 });
 
 // Appication management
-router.get('/app', User.ensureAuthenticated, function (req, res){
+router.get('/app', User.ensureAuthenticated, function (req, res) {
 	res.render('users/app', {
 		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js']
@@ -165,6 +180,13 @@ router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
 	});
 });
 
+// Alert SMS or Email
+router.get('/alert', User.ensureAuthenticated, function (req, res) {
+	res.render('users/alert', {
+		css: ['/css/qw/alert.css']
+	});
+});
+
 passport.use(new LocalStrategy(
 	function (username, password, done) {
 		User.getUserByUsername(username, function (err, user) {
@@ -177,7 +199,7 @@ passport.use(new LocalStrategy(
 
 			User.comparePassword(password, user.password, function (err, isMatch) {
 				if (err) {
-					return done(null, false, { message: err })
+					return done(null, false, { message: '登陆错误：' + err })
 				}
 				if (isMatch) {
 					if (User.isUserActivated(user.activation)) {
@@ -192,13 +214,6 @@ passport.use(new LocalStrategy(
 		});
 	}
 ));
-
-// Alert SMS or Email
-router.get('/alert', User.ensureAuthenticated, function (req, res) {
-	res.render('users/alert', {
-		css: ['/css/qw/alert.css']
-	});
-});
 
 passport.serializeUser(function (user, done) {
 	done(null, user.id);
