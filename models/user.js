@@ -5,7 +5,8 @@ var bcrypt = require('bcryptjs');
 var UserSchema = mongoose.Schema({
     username: {
         type: String,
-        index: true
+        index: true,
+        unique: true
     },
     password: {
         type: String
@@ -37,7 +38,8 @@ var UserSchema = mongoose.Schema({
         },
         appsecret: {
             type: String
-        }
+        },
+        _id: false
     }],
     testcases: {
         type: String
@@ -125,8 +127,8 @@ module.exports.listAllUsers = function (callback) {
 // Update user active
 module.exports.updateUserActive = function (id, activate, callback) {
     var query = { _id: id };
-    console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
-    console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
+    // console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
+    // console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
     if (activate == 0) {
         User.findOneAndUpdate(query, { activation: 1 }, callback);
     } else {
@@ -151,4 +153,71 @@ module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
         appkey: appkey,
         appsecret: appsecret
     }, callback);
+}
+
+// Add or update a 'appkey' and 'appsecret' in a user's 'applist'
+module.exports.addApp = function (id, appkey, appsecret, callback) {
+    var query = { _id: id };
+    User.findOne(query, function (err, user) {
+        if (err) {
+            callback(err);
+        }
+        var exists = false;
+        for (var i = 0; i < user.applist.length; ++i) {
+            if (user.applist[i].appkey == appkey) {
+                exists = true;
+                break;
+            }
+        }
+        if (exists) {
+            callback("相关APPKEY已存在。");
+        } else {
+            if (user.appkey) {
+                User.findOneAndUpdate(query, {
+                    $addToSet: {
+                        applist: {
+                            appkey: appkey,
+                            appsecret: appsecret
+                        }
+                    }
+                }, callback);
+            } else {
+                // current app is empty
+                User.findOneAndUpdate(query, {
+                    appkey: appkey,
+                    appsecret: appsecret,
+                    $addToSet: {
+                        applist: {
+                            appkey: appkey,
+                            appsecret: appsecret
+                        }
+                    }
+                }, callback);
+            }
+        }
+    });
+}
+
+// Remove 'appkey' and 'appsecret' from 'applist' or current 'appkey & appsecret'
+module.exports.removeApp = function (id, appkey, callback) {
+    var query = { _id: id };
+    User.findOne(query, function (err, user) {
+        if (err) {
+            callback(err);
+        }
+        if (user.appkey == appkey) {
+            user.appkey = '';
+            user.appsecret = '';
+        }
+        for (var i = 0; i < user.applist.length; ++i) {
+            if (user.applist[i].appkey == appkey) {
+                user.applist.splice(i, 1);
+            }
+        }
+        User.findOneAndUpdate(query, {
+            appkey: user.appkey,
+            appsecret: user.appsecret,
+            applist: user.applist
+        }, callback);
+    })
 }

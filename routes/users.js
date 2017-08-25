@@ -131,6 +131,7 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 // Appication management
 router.get('/app', User.ensureAuthenticated, function (req, res){
 	res.render('users/app', {
+		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js']
 	});
 });
@@ -143,9 +144,8 @@ router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
 	console.log(`server: id = ${id} \nserver: appkey = ${appkey} \nserver: appsecret = ${appsecret}`);
 	User.setCurrApp(id, appkey, appsecret, function (err) {
 		if (err) {
-			throw err;
-			// err alert
-			/* ... */
+			// throw err
+			req.flash('error_msg', 'APP关联失败。');
 
 			// send err res
 			res.json({

@@ -18,6 +18,23 @@
         </div>
     </div>
 
+    <!-- Alert -->
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
     <div id="manage-alert-0" hidden>
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -52,16 +69,19 @@
                     <span class="list-group-item-heading-right">
                         <span class="btn btn-xs btn-$buttonTypeAppnum$" data-toggle="collapse" data-target="#user-apps-$_id$">$appnum$个APP</span>
                     <span id="$_id$" status-code="$statusCode$" class="btn btn-xs btn-$buttonTypeActivate$ btn-active-status">$active$</span>
-                    <a href="#" class="btn btn-xs btn-warning"><i class="fa fa-share-square-o" aria-hidden="true"></i></a>
+                    <a href="/admin/manage?id=$_id$" class="btn btn-xs btn-warning">修改 <i class="fa fa-share-square-o" aria-hidden="true"></i></a>
                     </span>
                 </h4>
-                <p class="list-group-item-apps">
-                    <div id="user-apps-$_id$" class="collapse qw-users-app-list">
-                        <hr> $applistHtml$
+
+                <div class="list-group-item-detail">
+
+                    <div class="list-group-item-apps">
+                        <div id="user-apps-$_id$" class="collapse qw-users-app-list">
+                            <hr> $applistHtml$
+                        </div>
                     </div>
-                </p>
-                <p class="list-group-item-text">
-                    <div id="user-$_id$" class="collapse qw-users-list">
+
+                    <div id="user-$_id$" class="collapse list-group-item-text qw-users-list">
                         <hr>
                         <p>数据库ID：<span class="list-group-item-text-data">$_id$</span></p>
                         <hr>
@@ -89,9 +109,9 @@
                         <hr>
                         <p>APPSECRET： <span class="list-group-item-text-data">$appsecret$</span></p>
                         <hr>
-                    </div>
-                </p>
 
+                    </div>
+                </div>
             </li>
         </div>
 
@@ -104,7 +124,7 @@
             </div>
         </div>
         <div id="user-app-list-temp-1" style="display:none">
-            <div class="alert alert-success">
+            <div class="alert alert-info user-app-list-item">
                 <p>
                     <strong>APPKEY: </strong> <span class="user-app-list-data">$appkey$</span>
                     <br>

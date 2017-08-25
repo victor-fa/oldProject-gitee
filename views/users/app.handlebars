@@ -20,16 +20,16 @@
 
     <!-- Page Heading -->
     <h1 class="page-header">
-        <small>当前使用APP信息</small>
+        <small>当前APP接入信息</small>
     </h1>
     <!-- /.row -->
 
     {{#ifCond user.appkey '&&' user.appsecret}}
-    <div class="alert alert-success">
+    <div class="alert alert-success app-list-item-frame">
         <p>
-            <strong>APPKEY: </strong> <span id="appkey">{{user.appkey}}</span>
+            <strong>APPKEY: </strong> <span id="appkey" class="app-list-item-left">{{user.appkey}}</span>
             <br>
-            <strong>APPSECRET: </strong> <span id="appsecret">{{user.appsecret}}</span>
+            <strong>APPSECRET: </strong> <span id="appsecret" class="app-list-item-left">{{user.appsecret}}</span>
         </p>
     </div>
     {{else}}
@@ -39,7 +39,6 @@
             <br>
             <strong>APPSECRET: </strong> <span id="appsecret">{{#if user.appsecret}}{{user.appsecret}}{{else}}无{{/if}}</span>
         </p>
-        请在列表关联APP，或联系管理员。
     </div>
     {{/ifCond}}
 
@@ -47,16 +46,24 @@
     <h1 class="page-header">
         <small>可选APP列表</small>
     </h1>
+
+    <div class="alert alert-info alert-dismissable">
+        <p>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-info-circle"></i> 请点击下列APP进行关联。如有问题请联系管理员。
+        </p>
+    </div>
+
     <!-- /.row -->
-    <p>点击列表，关联相关APP</p>
     <div class="row">
         <div class="col-sm-12">
+
             <ul class="list-group" id="app-list">
                 {{#each user.applist}}
-                <a class="list-group-item app-list-item" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}">
-                <strong>APP# <span class="app-index">{{@index}}</span></strong><br>
-                <strong>APPKEY: </strong> <span class="app-appkey">{{this.appkey}}</span><br>
-                <strong>APPSECRET: </strong> <span class="app-appsecret">{{this.appsecret}}</span>
+                <a class="list-group-item app-list-item app-list-item-frame" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}">
+                <span class="app-index"># {{@index}}</span>
+                <strong>APPKEY: </strong> <span class="app-list-item-left app-appkey">{{this.appkey}}</span><br>
+                <strong>APPSECRET: </strong> <span class="app-list-item-left app-appsecret">{{this.appsecret}}</span>
                 </a> {{/each}}
             </ul>
         </div>

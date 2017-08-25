@@ -1,25 +1,21 @@
-/**
- * Created by yzhang on 7/9/17.
- */
-
 $().ready(function () {
 
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
     var timestamp = Math.floor(Date.now() / 1000);
 
-    var uid = "og9pHwQplkCRcaLTglCwxmK_C_wk";
-    var cid = "597087ddd2239a6f46bb2137";
+    var uid = "unknowUID";
+    var cid = "unknowCID";
 
     $("#log-prev-page").click(function () {
         (pageNum < 1) ? (pageNum = 0) : (pageNum -= 1);
         loadLogList();
     });
 
-    var search = location.search
+    var search = location.search;
     if (search) {
-        uid = getParameterByName('uid')
-        cid = getParameterByName('cid')
+        uid = getParameterByName('uid');
+        cid = getParameterByName('cid');
     }
 
     var verify = md5(appsecret + uid + timestamp);
@@ -82,7 +78,7 @@ $().ready(function () {
     function loadLog() {
         console.log("Sending Request...")
 
-        $("#log-result-header").html('正在载入日志 <img src="img/loading.gif" alt="loading" width="24" display="inline"/>');
+        $("#log-result-header").html('正在载入日志 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/>');
         $.ajax({
             url: 'https://robot-service.centaurstech.com/api/log/session',
             headers: {

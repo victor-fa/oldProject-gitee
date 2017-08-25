@@ -26,6 +26,14 @@ a:hover {
     font-weight: bold;
 }
 
+.list-group-item-detail {
+    position: relative;
+}
+
+.list-group-item-detail-single {
+    margin-top: 20px;
+}
+
 .list-group-item-heading-username {
     display: inline-block;
     padding-top: 8px;
@@ -40,6 +48,10 @@ a:hover {
     right: 0px;
 }
 
+.qw-users-list {
+    position: relative;
+}
+
 .qw-users-list p {
     color: #999999;
 }
@@ -48,13 +60,28 @@ a:hover {
     display: inline-block;
     position: absolute;
     color: #777777;
-    left: 150px;
+    left: 130px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .user-app-list-data {
     display: inline-block;
     position: absolute;
-    left: 150px;
+    left: 130px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.list-group-item-text-data {
+    padding-left: 10px;
+    width: 50%;
+}
+
+.user-app-list-item {
+    position: relative;
+}
+
+.user-app-list-item-right {
+    position: absolute;
+    top: 8px;
+    right: 10px;
 }

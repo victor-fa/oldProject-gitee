@@ -1,16 +1,11 @@
 $().ready(function () {
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
+    var uid = $('#uid').html();    
+    
     var size = 10;
     var sizeOld = size;
     var timestamp = Math.floor(Date.now() / 1000);
-    var uid = "WhoIsLittleFeli";
-
-    var search = location.search;
-    if (search) {
-        uid = getParameterByName('uid');
-        cid = getParameterByName('cid');
-    }
 
     var timeReq = [];
     timeReq[0] = -1;
@@ -61,7 +56,6 @@ $().ready(function () {
         var resObj = {};
         // var width = Math.ceil(Math.log10(sessions.length));
         var width = 2;
-        console.log("width: " + width);
         for (var i = 0; i < sessions.length; ++i) {
             if (i === sessions.length - 1) {
                 timeReq[pageNum + 1] = sessions[i].timestamp - 1;
@@ -92,7 +86,7 @@ $().ready(function () {
         console.log("Sending Request...");
 
         if (timeReq[pageNum] <= 0) {
-            $("#log-result-header").html('正在载入会话列表 <img src="img/loading.gif" alt="loading" width="24" display="inline"/> ');
+            $("#log-result-header").html('正在载入会话列表 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/> ');
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -111,7 +105,7 @@ $().ready(function () {
                 }
             });
         } else {
-            $("#log-result-header").html("第" + (pageNum + 1) + '页，正在更新会话列表 <img src="img/loading.gif" alt="loading" width="24" display="inline"/> ');
+            $("#log-result-header").html("第" + (pageNum + 1) + '页，正在更新会话列表 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/> ');
             $.ajax({
                 url: 'https://robot-service.centaurstech.com/api/log/list',
                 headers: {
@@ -135,7 +129,6 @@ $().ready(function () {
 
     // add the background colors of items
     function addItemBg() {
-        console.log("==== add item bg ====");
         for (var i = 1; i <= size; i++) {
             var selector = '.list-group-item:nth-child(' + i + ')';
             $(selector).css('background-color', function() {
