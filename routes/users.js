@@ -93,7 +93,9 @@ router.get('/logout', function (req, res, next) {
 
 // Account
 router.get('/account', User.ensureAuthenticated, function (req, res) {
-	res.render('users/account');
+	res.render('users/account', {
+		css: ['/css/qw/account.css']
+	});
 });
 
 // Account change info
@@ -125,7 +127,9 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 		}
 	});
 
-	res.render('users/account');
+	res.render('users/account', {
+		css: ['/css/qw/account.css']
+	});
 });
 
 // Appication management
