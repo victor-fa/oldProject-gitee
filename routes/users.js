@@ -131,6 +131,7 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 // Appication management
 router.get('/app', User.ensureAuthenticated, function (req, res){
 	res.render('users/app', {
+		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js']
 	});
 });
