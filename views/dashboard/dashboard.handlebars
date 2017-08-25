@@ -15,7 +15,6 @@
         </div>
     </div>
     <!-- /.row -->
-
     {{#if success_msg}}
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -30,6 +29,12 @@
     <div class="alert alert-danger alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
+    {{#if user.appkey}}{{else}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> 当前用户没有APP对接信息，请在“APP管理”中进行关联，或联系管理员。
     </div>
     {{/if}}
     <!-- /.alert -->
