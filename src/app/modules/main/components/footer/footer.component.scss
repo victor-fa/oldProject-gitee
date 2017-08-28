@@ -1,25 +1,22 @@
 #footer {
-    width: 978px;
-    background-color: #FFD400;
-    color: #231916;
-    width: 978px;
-    height: 139px;
-    p {
-        display: block;
-        width: 380px;
+    background-image: url(/assets/img/footer_bg.png);
+    height: 182px;
+    #footer-context {
+        width: 1000px;
+        height: 100%;
         margin: 0 auto;
-        padding-top: 39px;
+        font-family: "Microsoft-Ya-Hei";
         font-size: 12px;
-        a {
-            color: #231916;
+        color: #ffffff;
+        text-align: center;
+        #footer-brand-logo {
+            height: 80px;
+            margin-top: 38px;
+            margin-bottom: 18px;
         }
-    }
-    #small-chewrobot-logo {
-        width: 27px;
-        height: 40px;
-        background-image: url("/assets/images/chewrobot-logo-lg.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        margin: 0 auto;
-    }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    } 
 }
