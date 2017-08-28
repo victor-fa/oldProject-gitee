@@ -1,97 +1,51 @@
 #header {
-    width: 978px;
-    background-color: #333333;
-    overflow: hidden;
-    height: 478px;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    background-image: url("/assets/images/header_background.png");
-    #left-block {
-        display: flex;
-        width: 202px;
+    height: 80px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    background-color: blueviolet;
+    margin: 0 auto;
+    #header-context {
+        position: relative;
+        width: 1000px;
         height: 100%;
-        margin-left: 172px;
-        background-color: #FFD400;
-        #chewrobot-logo-lg {
-            width: 124px;
-            height: 169px;
-            background-image: url("/assets/images/chewrobot-logo-lg.png");
-            align-self: center;
-            margin: 0 auto;
-        }
-    }
-    #main-container {
-        display: flex;
-        flex-direction: column;
-        width: 463px;
-        height: 100%;
-        margin-left: 83px;
-        nav {
-            display: flex;
-            height: 21px;
-            width: 100%;
-            margin-top: 48px;
-            font-family: "Microsoft-Ya-Hei";
-            justify-content: space-between;
-            a {
-                display: block;
-                text-decoration: none;
-                color: #fff;
-                font-size: 12px;
-                line-height: 14px;
-            }
-            a:hover {
-                text-decoration: none;
-                border-bottom: 2px solid #BBB;
-            }
-            .active {
-                border-bottom: 2px solid #FFD400;
+        margin: 0 auto;
+        background-color: lime;
+        #header-brand-logo {
+            display: inline-block;
+            margin: 15px 15px;
+            img {
+                height: 46px;
             }
         }
-        #content {
-            display: flex;
-            flex-direction: column;
-            width: 363px;
-            height: 355px;
-            justify-content: center;
-            color: #fff;
-            h2 {
-                font-family: "Lan-Ting-Te-Hei";
-                font-size: 42px;
-                margin-bottom: 10px;
-                padding-top: 0px;
-                              letter-spacing: 12px;
-            }
-            h3 {
-                font-size: 55px;
-                font-family: "Lan-Ting-Qian-Hei";
-                font-weight: lighter;
-                line-height: 55px;
-                height: 55px;
-                color: #FFD400;
-                margin-bottom: 15px;
-                margin-top: 0;
-                padding-top: 0;
-                padding-bottom: 0;
-                letter-spacing: 5px;
-            }
-            h4 {
-                width: 393px;
-                font-size: 24px;
-                font-family: "Lan-Ting-Qian-Hei";
-                line-height: 24px;
-                height: 24px;
-                overflow: hidden;
-                padding-top: 0px;
-                letter-spacing: 31px;
-            }
-            h5 {
-                font-size: 12px;
-                font-weight: 100;
-                color: #FFFFFE;
+        #header-nav-bar {
+            display: inline;
+            position: absolute;
+            left: 170px;
+            ul {
+                font-size: 14px;
+                font-weight: 500px;
+                font-family: "Microsoft-Ya-Hei";
+                li {
+                    display: inline-block;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    margin-top: 15px;
+                    #lang-switch {
+                        margin-left: 30px;
+                    }
+                    a {
+                        color: #000000;
+                        text-decoration: none;
+                    }
+                    a:hover {
+
+                        color: gold;
+                    }
+                    .active {
+                        color: gold;
+                    }
+                }   
             }
         }
     }
