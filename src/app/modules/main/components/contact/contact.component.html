@@ -1,24 +1,23 @@
 <div id="contact">
     <div id="contact-container">
-        <div id="contact-container">
-            <div id="contact-left-part">
-                <h2>联系我们</h2>
-                <h3><a href="http://www.centaurstech.com/" target="_blank">CENTAURS TECHNOLOGIES CO., LTD</a></h3>
-                <h3><a href="http://www.centaurstech.com/" target="_blank">深圳市人马互动科技有限公司</a></h3>
-                <ul id="info">
-                    <li><i class="fa fa-envelope-o" aria-hidden="true"></i>　contact@qiwu.ai</li>
-                    <li><i class="fa fa-home" aria-hidden="true"></i>　深圳 · 广州 · 上海 · 北京 · 绍兴 · 芝加哥</li>
-                    <li><i class="fa fa-globe" aria-hidden="true"></i><a href="http://qiwu.ai/">　qiwu.ai</a></li>
-                </ul>
-            </div>
-            <div id="contact-right-part">
-                <form>
-                    <input type="text" name="name" placeholder=" 昵 称" #nameInput (keyup)="onEnterName(nameInput.value)">
-                    <input type="text" name="_replyto" placeholder=" 邮 箱" #mailtoInput (keyup)="onEnterMailto(mailtoInput.value)">
-                    <textarea placeholder=" 信 息" name="message" #contentInput (keyup)="onEnterContent(contentInput.value)"></textarea>
-                    <a [attr.href]=" 'mailto:contact@qiwu.ai?subject=' + name + '&body=' + content + ' from: ' + mailto ">发送</a>
-                </form>
-            </div>
+        <div id="contact-left-part">
+            <h2>联 系 我 们</h2>
+            <form>
+                <input type="text" name="name" placeholder="名字" #nameInput (keyup)="onEnterName(nameInput.value)">
+                <input type="text" name="_replyto" placeholder="邮箱" #mailtoInput (keyup)="onEnterMailto(mailtoInput.value)">
+                <textarea placeholder="内容" name="message" #contentInput (keyup)="onEnterContent(contentInput.value)" rows="5"></textarea>
+                <button><a [attr.href]=" 'mailto:contact@qiwu.ai?subject=' + name + '&body=' + content + ' from: ' + mailto ">发送</a></button>
+            </form>
+        </div>
+        <div id="contact-right-part">
+            <ul id="contact-info">
+                <li><span>联系方式：</span></li>
+                <li><a href="http://www.centaurstech.com/" target="_blank">深圳市人马互动科技有限公司</a></li>
+                <li><a href="http://www.centaurstech.com/" target="_blank">Centaurs Technologies Co., Ltd.</a></li>
+                <li><span>电话：</span>38375170</li>
+                <li><span>地址：</span>深圳、上海、绍兴、芝加哥</li>
+                <li><span>邮箱：</span>contact@qiwu.ai</li>
+            </ul>
         </div>
     </div>
 </div>
