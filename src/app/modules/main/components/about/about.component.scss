@@ -1,147 +1,67 @@
 #about {
-    width: 978px;
-    background-color: #fefefe;
-    overflow: hidden;
-    height: 478px;
-    background-color: #fefefe;
-    position: relative;
-    h2 {
-        margin-top: 87px;
-        font-size: 24px;
-        margin-bottom: 20px;
-        span {
-            color: #FFD400;
-        }
-    }
-    p {
-        font-size: 12px;
-        text-align: justify;
-    }
-    a {
-        text-decoration: none;
-        color: #FFD400;
-        font-size: 14px;
-    }
-    a:hover {
-        text-decoration: none;
-    }
-    a:visited {
-        text-decoration: none;
-    }
-    #switcher {
-        list-style: none;
-        position: absolute;
-        display: flex;
-        justify-content: space-between;
-        width: 72px;
-        margin: 0px;
-        padding: 0px;
-        left: 168px;
-        bottom: 80px;
-        margin: auto;
-        li {
-            display: block;
-            width: 16px;
-            height: 16px;
-            padding: 4px;
-            div {
-                display: block;
-                width: 8px;
-                height: 8px;
-                border-radius: 4px;
-                background-color: black;
-            }
-        }
-        li:hover {
-            div {
-                background-color: #FFD400;
-            }
-            cursor: pointer;
-        }
-        .active {
-            div {
-                background-color: #FFD400;
-            }
-        }
-    }
-    #pages {
-        list-style: none;
-        width: 100%;
-        margin: 0;
-        padding: 0;
+    height: 694px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    margin: 0 auto;
+    background-image: url(/assets/img/about_bg.png);
+    background-position: center;
+    #about-container {
         position: relative;
-        li {
-            display: flex;
-            width: 100%;
-            height: 478px;
+        width: 1000px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 80px 90px;
+        #about-robot {
             position: absolute;
-            top: 0;
-            left: 0;
+            z-index: 1;
+            top: 165px;
+            left: 50px;
+            box-shadow: 5px 5px 30px #cccccc;
         }
-        #page1 {
-            background-image: url(/assets/images/about_background.png);
-            #page1-left-container {
-                width: 360px;
-                height: 100%;
-                margin-left: 168px;
-                color: #231815;
-                #product-xp {
-                    color: grey;
-                }
+        #about-info {
+            position: absolute;
+            top: 90px;
+            left: 330px;
+            width: 630px;
+            height: 550px;
+            padding: 70px 70px 70px 125px;
+            overflow: hidden;
+            background-color: #ffffff;
+            box-shadow: 5px 5px 20px #cccccc;
+            #about-brand-logo {
+                width: 46px;
             }
-            #page1-right-container {
-                padding-top: 140px;
-                padding-left: 80px;
-                p {
-                    font-size: 52px;
-                    font-family: "Microsoft-Ya-Hei";
-                    margin: 0px;
-                    span {
-                        color: #FFD400;
-                    }
-                }
+            #about-info-bg {
+                position: absolute;
+                top: -40px;
+                right: 30px;
+                width: 240px;
             }
-        }
-        #page2 {
-            background-image: url(/assets/images/about_background_2.png);
-            #page2-container {
-                width: 640px;
-                height: 100%;
-                margin: 0 auto;
+            h3 {
+                font-size: 33px;
+                font-weight: bold;
+                margin-top: 15px;
+                margin-bottom: 30px;
             }
-        }
-        #page3 {
-            background-image: url(/assets/images/about_background_2.png);
-            #page3-left-container {
-                width: 214px;
-                height: 100%;
-                margin-left: 168px;
+            p {
+                color: gray;
+                font-size: 12px;
+                line-height: 22px;
             }
-            #page3-right-container {
-                padding-top: 140px;
-                padding-left: 50px;
-                ul {
-                    list-style: none;
-                    width: 400px;
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    justify-content: space-between;
-                    li {
-                        display: block;
-                        position: relative;
-                        p {
-                            margin-bottom: 2px;
-                            text-align: center;
-                        }
-                        img {
-                            width: 88px;
-                            height: 142px;
-                        }
-                    }
+            button {
+                font-size: 20px;
+                color: gold;
+                border: solid 2px gold;
+                word-spacing: 80px;
+                margin-top: 30px;
+                padding: 3px 15px;
+                background-color: #ffffff;
+                a {
+                    text-decoration: none;
+                    color: inherit;
                 }
             }
         }
-        .active {}
     }
 }

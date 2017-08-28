@@ -1,61 +1,13 @@
 <div id="about">
-    <ul id="pages">
-        <li id="page1" [@flyInOut]="nowPageNumber == 1 ? 'in' : 'out'">
-            <div id="page1-left-container">
-                <h2>关于<span>齐悟</span></h2>
-                <p>齐悟是人马互动科技有限公司(CentaursTech)创立的人工智能品牌，我们致力于为企业打造智能化、差异化产品提供深度定制化语音交互技术解决方案。
-                    <br><br>齐悟机器人涵盖语音识别、语义识别、语音合成和嵌入式硬件模组，齐悟给客户提供的是完善的一站式语音交互技术解决方案。我们完全自主研发的语义识别引擎技术可以实现上下文语义理解及推理，能处理复杂的业务逻辑，技术处于全球领先水平，目前齐悟主要服务于是文化创意产业，我们能根据合作企业实际业务需求做个性化定制，帮助其大幅降低企业人力成本，提升企业产品价值，用创新的黑科技结合企业的资源优势实现共赢。</p>
-                <a id="product-xp" href="https://www.centaurstech.com/product/qw/" target="_blank">体验产品</a>
-            </div>
-            <div id="page1-right-container">
-                <p>见贤思<span>齐</span></p>
-                <p>一闻千<span>悟</span></p>
-            </div>
-        </li>
-        <li id="page2" [@flyInOut]="nowPageNumber == 2 ? 'in' : 'out'">
-            <div id="page2-container">
-                <h2>核心<span>技术</span></h2>
-                <p>技术核心是我们完全自主研发的“语义识别引擎”，处于全球领先水平。涵盖“理解、记忆、认知、推理、问答”五个关键要素，使齐悟机器人成功实现多轮人机对话。<br><br>
-                    在对话中，齐悟机器人对知识的组织和处理方式更接近人类,它通过使用机器学习、深度学习、神经网络学习等前沿技术创造出全新的知识表达模型,通过记忆用户输入的知识并推理出新的复杂逻辑关系。拥有分析、理解、记忆、推理、表达的完整流程，通过多轮对话交互帮助用户解决实际业务问题。其中上下文理解采用独特的偏重实例层多层语义知识网络，支持基于图模板映射的规则归纳和推理知识。<br><br>
-                    目前市面上90%以上的是一问一答机器人，我们的产品与之有着本质的区别。能达到这样技术水平的公司只有谷歌和IBM，我们与他们的区别在于：巨头做的都是通用解决方案，而我们可以针对不同的公司的需求个性化定制对应的技术解决方案，这是我们全球独有的技术服务优势。
-                </p>
-            </div>
-        </li>
-        <li id="page3" [@flyInOut]="nowPageNumber == 3 ? 'in' : 'out'">
-            <div id="page3-left-container">
-                <h2>
-                    <span>竞争</span>对手分析
-                </h2>
-                <p>
-                    我们的齐悟机器人与号称是中文语境下智能度最高的机器人大脑—图*机器人、*度、微*小冰、科大*飞等国内外竞争对手在多轮对话方面的表现做了横向技术对比，我们的引擎在记忆、推理等功能方面的对比结果完胜。目前我们已在中美两国申请多项发明专利，经过10多年的自然语言处理领域的技术沉淀，拥有很高的技术壁垒。
-                </p>
-            </div>
-            <div id="page3-right-container">
-                <ul>
-                    <li id="md">
-                        <p>*度</p>
-                        <img src="/assets/images/robot-screenshots/md.png" alt="*度">
-                    </li>
-                    <li id="tm">
-                        <p>图*</p>
-                        <img src="/assets/images/robot-screenshots/tm.png" alt="图*">
-                    </li>
-                    <li id="wm">
-                        <p>微*</p>
-                        <img src="/assets/images/robot-screenshots/wm.png" alt="微*">
-                    </li>
-                    <li id="qw">
-                        <p>齐悟</p>
-                        <img src="/assets/images/robot-screenshots/qw.png" alt="齐悟">
-                    </li>
-                </ul>
-            </div>
-        </li>
-    </ul>
-    <ul id="switcher">
-        <li *ngFor="let i of [1,2]" [class.active]="i == nowPageNumber" (click)="changePage(i)">
-            <div>
-            </div>
-        </li>
-    </ul>
+    <div id="about-container">
+        <img src="/assets/img/about_robot.png" id="about-robot">
+        <div id="about-info">
+            <img src="/assets/img/about_brand_logo.png" id="about-brand-logo">
+            <h3>关 于 齐 悟</h3>
+            <p>齐悟是人马互动科技有限公司(CentaursTech)创立的的人工智能品牌，我们致力于为企业打造智能化、差异化产品提供深度定制化语音交互技术解决方案。</p>
+            <p>齐悟机器人涵盖语音识别、语义识别、语音合成和嵌入式硬件模组，齐悟给客户提供的是完善的一站式语音交互技术解决方案。我们完全自主研发的语义识别引擎技术可以实现上下文语义理解及推理，能处理复杂的业务逻辑，技术处于全球领先水平，目前齐悟主要服务于是文化创意产业，我们能根据合作企业实际业务需求做个性化定制，帮助其大幅降低企业人力成本，提升企业产品价值，用创新的黑科技结合企业的资源优势实现共赢。</p>
+            <button><a href="#" download="齐悟宣传册">宣传册下载</a></button>
+            <img src="/assets/img/about_brand_logo_bg.png" id="about-info-bg">
+        </div>
+    </div>
 </div>
