@@ -24,15 +24,15 @@
     <form method="post" action="/users/register" role="form">
         <div class="form-group">
             <label for="">用户名</label><span style="color: red">*</span>
-            <input type="text" class="form-control" placeholder="Username" name="username">
+            <input type="text" class="form-control" placeholder="Username" name="username" value="{{user_info.username}}">
         </div>
         <div class="form-group">
             <label for="">真实姓名</label><span style="color: red">*</span>
-            <input type="text" class="form-control" placeholder="Name" name="name">
+            <input type="text" class="form-control" placeholder="Name" name="name" value="{{user_info.name}}">
         </div>
         <div class="form-group">
             <label for="">电子邮箱</label><span style="color: red">*</span>
-            <input type="text" class="form-control" placeholder="Email" name="email">
+            <input type="text" class="form-control" placeholder="Email" name="email" value="{{user_info.email}}">
         </div>
         <div class="form-group">
             <label for="">密码</label><span style="color: red">*</span>
@@ -44,11 +44,11 @@
         </div>
         <div class="form-group">
             <label for="">联系电话</label><span style="color: red">*</span>
-            <input type="text" class="form-control" placeholder="Phone" name="phone">
+            <input type="text" class="form-control" placeholder="Phone" name="phone" value="{{user_info.phone}}">
         </div>
         <div class="form-group">
             <label for="">公司名称</label><span style="color: red">*</span>
-            <input type="text" class="form-control" placeholder="Company" name="company">
+            <input type="text" class="form-control" placeholder="Company" name="company" value="{{user_info.company}}">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>

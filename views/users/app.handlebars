@@ -33,11 +33,11 @@
         </p>
     </div>
     {{else}}
-    <div class="alert alert-danger">
+    <div class="alert alert-danger app-list-item-frame">
         <p>
-            <strong>APPKEY: </strong> <span id="appkey">{{#if user.appkey}}{{user.appkey}}{{else}}无{{/if}}</span>
+            <strong>APPKEY: </strong> <span id="appkey" class="app-list-item-left">{{#if user.appkey}}{{user.appkey}}{{else}}无{{/if}}</span>
             <br>
-            <strong>APPSECRET: </strong> <span id="appsecret">{{#if user.appsecret}}{{user.appsecret}}{{else}}无{{/if}}</span>
+            <strong>APPSECRET: </strong> <span id="appsecret" class="app-list-item-left">{{#if user.appsecret}}{{user.appsecret}}{{else}}无{{/if}}</span>
         </p>
     </div>
     {{/ifCond}}

@@ -18,13 +18,26 @@
         </div>
     </div>
     <!-- /.row -->
-
+    {{#if user.appkey}}
     <div id="log-alert-0">
-        <div class="alert alert-info">
+        <div class="alert alert-info alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <i class="fa fa-info-circle"></i> 点击即可查看对话详情
         </div>
     </div>
+    <div id="log-alert-1" hidden>
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-close"></i> AJAX请求失败，请检查APP接入信息和网络连接。
+        </div>
+    </div>
+    {{else}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> 当前用户没有APP对接信息，请在“APP管理”中进行关联，或联系管理员。
+    </div>
+    {{/if}}
+
     <div id="log-alert-1" hidden>
         <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
