@@ -1,0 +1,85 @@
+#career {
+    height: 701px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    margin: 0 auto;
+    background-image: url(/assets/img/career_bg_1.png);
+    background-position: center;
+    #career-container {
+        position: relative;
+        width: 1000px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 100px 60px;
+        color: lightgray;
+        #career-title {
+            margin-top: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            h2 {
+                font-size: 33px;
+                font-weight: bold;
+                color: #ffffff;
+                padding-bottom: 20px;
+            }
+            small {
+                font-size: 14px;
+            }
+        }
+        #career-info {
+            font-size: 18px;
+            #career-job-position {
+                width: 500px;
+                select {
+                    width: 100%;
+                    border: none;
+                    border-radius: 0px;
+                    -webkit-appearance: none;
+                    -webkit-border-radius: 0px;
+                    outline: none;
+                    padding: 10px 25px;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    color: lightgray;
+                    .career-job-position-profix {
+                        color: yellow;
+                    }
+                    option {
+                        color: lightgray;
+                        span {
+                            color: white;
+                        }
+                    }
+                }
+            }
+            #career-job-detail {
+                position: relative;
+                margin-top: 20px;
+                padding: 30px 25px 20px 25px;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: lightgray;
+                font-weight: 100;
+                line-height: 35px;
+                h5 {
+                    color: #ffffff;
+                }
+                #career-job-qual {
+                    ul {
+                        list-style-position: inside;
+                        padding-left: 0;                        
+                    }
+                }
+                #career-job-right {
+                    position: absolute;
+                    top: 18px;
+                    left: 530px;
+                    line-height: 50px;
+                    h5,
+                    p {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+}
