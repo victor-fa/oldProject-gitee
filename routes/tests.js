@@ -18,7 +18,7 @@ router.get('/config', User.ensureAuthenticated, function (req, res) {
 
 // Auto Test
 router.post('/auto', User.ensureAuthenticated, function (req, res) {
-	var testcase_str = req.body.testcase
+	var testcase_str = req.body.testcase.trim()
 
 	User.updateTestcases(req.user.username, testcase_str, function() {
 		var testcases = testcase_str.split("\r\n")
