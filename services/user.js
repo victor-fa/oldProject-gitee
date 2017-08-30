@@ -1,5 +1,5 @@
 var User = require('../models/user');
-var UserGroup = require('../models/user_group');
+var GroupPolicy = require('../services/group_policy')
 var bcrypt = require('bcryptjs');
 var url = require('url')
 
@@ -14,15 +14,6 @@ module.exports.ensureAuthenticated = function (req, res, next) {
         req.flash('error_msg', '由于会话过期，请重新登陆后继续操作');
         var s_url = encodeURIComponent(req.protocol + '://' + req.headers.host + req.originalUrl)
         res.redirect('/users/login?s_url=' + s_url)
-    }
-}
-
-module.exports.ensureManagerPrivilege = (req, res, next) => {
-    var user = res.locals.user
-    if (user && user.group >= UserGroup.MANAGER) {
-        return next()
-    } else {
-        res.redirect('/')
     }
 }
 
@@ -178,8 +169,4 @@ module.exports.removeApp = function (id, appkey, callback) {
             applist: user.applist
         }, callback);
     })
-}
-
-module.exports.getUserGroupName = function (user_group) {
-    return UserGroup[user_group]
 }
