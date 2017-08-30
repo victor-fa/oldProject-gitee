@@ -2,7 +2,7 @@ var UserGroup = require('../models/user_group')
 
 module.exports.ensureManagerPrivilege = (req, res, next) => {
     var user = res.locals.user
-    if (user && GroupPolicy.accessToManagePanel(user.group)) {
+    if (user && module.exports.accessToManagePanel(user.group)) {
         return next()
     } else {
         res.redirect('/')
