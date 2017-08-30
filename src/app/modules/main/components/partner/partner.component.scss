@@ -1,58 +1,65 @@
 #partner {
-    width: 978px;
-    background-color: #fefefe;
-    height: 478px;
-    background-image: url(/assets/images/partner_background.png);
-    #content-container {
-        width: 640px;
+    height: 696px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    margin: 0 auto;
+    background-image: url(/assets/img/partner_bg.png);
+    background-position: center;
+    #partner-container {
+        width: 1000px;
         height: 100%;
-        margin: 0 auto;
-        color: #231916;
+        margin: 0 auto; // background-color: maroon;
         text-align: center;
-        h2 {
-            font-size: 24px;
-            padding-top: 58px;
-            padding-bottom: 20px;
-            span {
-                color: #FFD400;
-            }
+        padding: 100px 50px;
+        text-align: center;
+        h3 {
+            font-size: 33px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 30px;
         }
         p {
+            color: gray;
             font-size: 12px;
-            font-weight: 100;
             padding-bottom: 20px;
         }
-        #logos-sm {
-            display: none;
-        }
-        #logos-lg {
-            width: 600px;
-            height: 264px;
-            margin: 0 auto;
+        #partner-logos {
+            width: 900px;
+            height: 360px;
+            margin: 0;
             list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            ul {
-                list-style: none;
+            background-color: #ffffff;
+            padding-top: 10px;
+            padding-left: 0;
+            li {
+                display: inline-block;
                 margin: 0;
                 padding: 0;
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                li {
-                    img {
-                        width: 90px;
+                text-align: center;
+                ul {
+                    list-style: none;
+                    margin: 10px auto;
+                    padding: 0;
+                    width: 100%;
+                    li {
+                        display: inline-block;
+                        width: 140px;
                         height: 60px;
-                        filter: grayscale(100%);
+                        overflow: hidden;
+                        img {
+                            width: 140px;
+                            height: 90px;
+                            margin: -20px 0 0 -4px;                            
+                            filter: grayscale(100%);
+                        }
+                        border: 5px solid white;
                     }
-                    border: 2px solid white;
-                }
-                li:hover {
-                    border: 2px solid #DDDBDA;
-                    img {
-                        filter: grayscale(0%);
+                    li:hover {
+                        border: 5px solid gold;
+                        img {
+                            filter: grayscale(0%);
+                        }
                     }
                 }
             }
