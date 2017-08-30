@@ -80,7 +80,7 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {{#if user}} {{#ifCond user.group '>=' 4}} {{!-- Manager and Admin Only --}}
+                    {{#if user}} {{#if show_manage_panel}} {{!-- Manager and Admin Only --}}
                     <li>
                         <a data-toggle="collapse" data-target="#qw-admin-tool"><i class="fa fa-fw fa-paper-plane"></i> 管理员 <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="qw-admin-tool" class="collapse">
@@ -89,7 +89,7 @@
                             </li>
                         </ul>
                     </li>
-                    {{/ifCond}}
+                    {{/if}}
                     <li>
                         <a href="/"><i class="fa fa-fw fa-dashboard" aria-hidden="true"></i> 控制台</a>
                     </li>

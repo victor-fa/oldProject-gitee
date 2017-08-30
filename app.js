@@ -15,6 +15,9 @@ mongoose.connect('mongodb://localhost/chewtool', {
 });
 var db = mongoose.connection;
 
+var UserService = require('./services/user')
+var UserGroupPolicy = require('./services/group_policy')
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var tests = require('./routes/tests')
@@ -106,14 +109,16 @@ app.use(function (req, res, next) {
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');	// for passport for
 	res.locals.user = req.user || null;
+	if (res.locals.user)
+		res.locals.show_manage_panel = UserGroupPolicy.accessToManagePanel(res.locals.user.group)
 	next();
 });
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/test', tests);
-app.use('/log', logs);
-app.use('/admin', admins);
+app.use('/test', UserService.ensureAuthenticated, tests);
+app.use('/log', UserService.ensureAuthenticated, logs);
+app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 
 // Set Port
 app.set('port', (process.env.PORT || 10010));

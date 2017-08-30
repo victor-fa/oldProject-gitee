@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var UserService = require('../services/user')
 
 // Get Dashboard
-router.get('/', User.ensureAuthenticated, function (req, res) {
+router.get('/', UserService.ensureAuthenticated, function (req, res) {
 	res.render('dashboard/dashboard', {
 		css: ['/css/qw/dashboard.css'],
 		js: [
@@ -15,7 +15,7 @@ router.get('/', User.ensureAuthenticated, function (req, res) {
 });
 
 // Get Chart
-router.get('/chart', User.ensureAuthenticated, function (req, res) {
+router.get('/chart', UserService.ensureAuthenticated, function (req, res) {
 	res.render('dashboard/chart');
 });
 
