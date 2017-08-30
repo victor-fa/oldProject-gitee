@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var UserService = require('../services/user')
+var UserGroupPolicy = require('../services/group_policy')
 
 // Manage
-router.get('/manage', User.ensureAuthenticated, function (req, res) {
+router.get('/manage', function (req, res) {
 	var id = req.query.id; // $_GET["id"]
 	if (id) {
-		User.getUserById(id, function (err, aUser) {
+		UserService.getUserById(id, function (err, aUser) {
 			if (err) {
 				req.flash('error_msg', '用户信息加载失败：' + err);
 				res.redirect('/admin/manage');
@@ -27,10 +28,11 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 				aUser.buttonTypeAppnum = 'danger';
 			}
 			render_para.aUser = aUser;
+			render_para.user_groupname = UserGroupPolicy.getUserGroupName(aUser.group)
 			res.render('admin/manage-detail', render_para);
 		});
 	} else {
-		User.listAllUsers(function (err, users) {
+		UserService.listAllUsers(function (err, users) {
 			if (err) {
 				req.flash('error_msg', '用户列表加载失败：' + err);
 			}
@@ -47,8 +49,8 @@ router.get('/manage', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: list all users
-router.get('/manage/api/load', User.ensureAuthenticated, function (req, res) {
-	User.listAllUsers(function (err, users) {
+router.get('/manage/api/load', function (req, res) {
+	UserService.listAllUsers(function (err, users) {
 		if (err) {
 			// throw err;
 			req.flash('error_msg', '用户列表加载失败：' + err);
@@ -58,7 +60,7 @@ router.get('/manage/api/load', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: active or inactive user
-router.post('/manage/api/activate', User.ensureAuthenticated, function (req, res) {
+router.post('/manage/api/activate', function (req, res) {
 	var id = req.body.id;
 	var activate = req.body.activate;
 	// console.log(`server: id = ${id} \tactivate = ${activate}`);
@@ -73,7 +75,7 @@ router.post('/manage/api/activate', User.ensureAuthenticated, function (req, res
 			msg: '没有激活状态'
 		});
 	} else {
-		User.updateUserActive(id, activate, function (err) {
+		UserService.updateUserActive(id, activate, function (err) {
 			if (err) {
 				// throw err;
 				req.flash('error_msg', '用户激活状态修改失败：' + err);
@@ -92,7 +94,7 @@ router.post('/manage/api/activate', User.ensureAuthenticated, function (req, res
 });
 
 // API: add new APP
-router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) {
+router.post('/manage/api/addapp', function (req, res) {
 	var id = req.body.id;
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
@@ -107,7 +109,7 @@ router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) 
 		req.flash('error_msg', '添加APP失败：APPSECRET不存在。');
 		res.redirect('/admin/manage?id=' + id);
 	} else {
-		User.addApp(id, appkey, appsecret, function (err) {
+		UserService.addApp(id, appkey, appsecret, function (err) {
 			if (err) {
 				req.flash('error_msg', '添加APP失败：' + err);
 			} else {
@@ -120,7 +122,7 @@ router.post('/manage/api/addapp', User.ensureAuthenticated, function (req, res) 
 });
 
 // API: remove APP
-router.get('/manage/api/removeapp', User.ensureAuthenticated, function (req, res) {
+router.get('/manage/api/removeapp', function (req, res) {
 	var id = req.query.id;
 	var appkey = req.query.appkey;
 	// console.log(`id: ${id} \tappkey: ${appkey}`);
@@ -131,7 +133,7 @@ router.get('/manage/api/removeapp', User.ensureAuthenticated, function (req, res
 		req.flash('error_msg', '删除APP失败，APPKEY不存在。');
 		res.redirect('/admin/manage?id=' + id);
 	} else {
-		User.removeApp(id, appkey, function (err) {
+		UserService.removeApp(id, appkey, function (err) {
 			if (err) {
 				req.flash('error_msg', '删除APP失败：' + err);
 			} else {
