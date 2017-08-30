@@ -32,6 +32,7 @@
     {{/if}}
 
     <form method="post" action="/users/login" role="form">
+        <input type="hidden" name="s_url" value="{{s_url}}">
         <div class="form-group">
             <label for="username">用户名</label>
             <input type="text" class="form-control" id="username" name="username" placeholder="Username">

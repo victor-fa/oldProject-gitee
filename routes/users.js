@@ -2,22 +2,30 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/user');
+var User = require('../models/user')
+var UserService = require('../services/user')
+var UserGroup = require('../models/user_group')
 var RouterIndex = require('./index');
 
 // Login
 router.get('/login', function (req, res) {
-	res.render('users/login');
+	res.render('users/login', {
+		s_url: req.query.s_url
+	});
 });
 
 // Login
 router.post('/login',
 	passport.authenticate('local', {
-		successRedirect: '/',
 		failureRedirect: '/users/login',
-		failureFlash: true
+		failureFlash: true,
 	}),
 	function (req, res) {
+		var s_url = req.body.s_url
+		if (s_url) {
+			res.redirect(s_url);
+			return
+		}
 		res.redirect('/');
 	}
 );
@@ -37,7 +45,7 @@ router.post('/register', function (req, res) {
 	user_info.company = req.body.company;
 	password = req.body.password;
 	password2 = req.body.password2;
-	group = 0;
+	group = UserGroup.GUEST;
 
 	// Validation
 	req.checkBody('name', '真实姓名不能为空').notEmpty();
@@ -59,7 +67,7 @@ router.post('/register', function (req, res) {
 				user_info
 			});
 		} else {
-			User.getUserByUsername(user_info.username, function (err, user) {
+			UserService.getUserByUsername(user_info.username, function (err, user) {
 				if (err) {
 					res.render('users/register', {
 						errors: [{ msg: '注册错误：' + err }],
@@ -88,7 +96,7 @@ router.post('/register', function (req, res) {
 						wechat_openid: ''
 					});
 
-					User.createUser(newUser, function (err, user) {
+					UserService.createUser(newUser, function (err, user) {
 						if (err) throw err;
 						console.log(user);
 					});
@@ -109,14 +117,14 @@ router.get('/logout', function (req, res, next) {
 });
 
 // Account
-router.get('/account', User.ensureAuthenticated, function (req, res) {
+router.get('/account', UserService.ensureAuthenticated, function (req, res) {
 	res.render('users/account', {
 		css: ['/css/qw/account.css']
 	});
 });
 
 // Account change info
-router.post('/account', User.ensureAuthenticated, function (req, res) {
+router.post('/account', UserService.ensureAuthenticated, function (req, res) {
 	var name = req.body.name;
 	var compnay = req.body.company;
 	var phone = req.body.phone;
@@ -133,7 +141,7 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 		} else {
 			console.log('UPDATE');
 
-			User.updateUserInfo(user.username, name, function (err, user) {
+			UserService.updateUserInfo(user.username, name, function (err, user) {
 				if (err) throw err;
 				console.log(user.name);
 			});
@@ -150,7 +158,7 @@ router.post('/account', User.ensureAuthenticated, function (req, res) {
 });
 
 // Appication management
-router.get('/app', User.ensureAuthenticated, function (req, res) {
+router.get('/app', UserService.ensureAuthenticated, function (req, res) {
 	res.render('users/app', {
 		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js']
@@ -158,12 +166,12 @@ router.get('/app', User.ensureAuthenticated, function (req, res) {
 });
 
 // API: link appkey and appsecret
-router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
+router.post('/app/api/link', UserService.ensureAuthenticated, function (req, res) {
 	var id = req.body.id
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
 	console.log(`server: id = ${id} \nserver: appkey = ${appkey} \nserver: appsecret = ${appsecret}`);
-	User.setCurrApp(id, appkey, appsecret, function (err) {
+	UserService.setCurrApp(id, appkey, appsecret, function (err) {
 		if (err) {
 			// throw err
 			req.flash('error_msg', 'APP关联失败。');
@@ -181,7 +189,7 @@ router.post('/app/api/link', User.ensureAuthenticated, function (req, res) {
 });
 
 // Alert SMS or Email
-router.get('/alert', User.ensureAuthenticated, function (req, res) {
+router.get('/alert', UserService.ensureAuthenticated, function (req, res) {
 	res.render('users/alert', {
 		css: ['/css/qw/alert.css']
 	});
@@ -189,7 +197,7 @@ router.get('/alert', User.ensureAuthenticated, function (req, res) {
 
 passport.use(new LocalStrategy(
 	function (username, password, done) {
-		User.getUserByUsername(username, function (err, user) {
+		UserService.getUserByUsername(username, function (err, user) {
 			if (err) {
 				return done(null, false, { message: err });
 			}
@@ -197,12 +205,12 @@ passport.use(new LocalStrategy(
 				return done(null, false, { message: '用户不存在' });
 			}
 
-			User.comparePassword(password, user.password, function (err, isMatch) {
+			UserService.comparePassword(password, user.password, function (err, isMatch) {
 				if (err) {
 					return done(null, false, { message: '登陆错误：' + err })
 				}
 				if (isMatch) {
-					if (User.isUserActivated(user.activation)) {
+					if (UserService.isUserActivated(user.activation)) {
 						return done(null, user);
 					} else {
 						return done(null, false, { message: '用户未激活，请联系对接人员' })
@@ -220,7 +228,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-	User.getUserById(id, function (err, user) {
+	UserService.getUserById(id, function (err, user) {
 		done(err, user);
 	});
 });
