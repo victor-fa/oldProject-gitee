@@ -7,83 +7,51 @@
     background-image: url(/assets/img/product_bg.png);
     background-position: center;
     #product-container {
-        width: 720px;
+        width: 1000px;
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
-        display: flex;
-        #left-part {
-            width: 320px;
-            height: 100%;
-            padding-top: 108px;
-            padding-right: 20px;
-            h2 {
-                font-size: 24px;
-                padding-top: 58px;
-                padding-bottom: 46px;
-                span {
-                    color: #FFD400;
-                }
-            }
-            p {
-                font-size: 12px;
-                font-weight: 100;
-            }
+        text-align: center;
+        padding-top: 75px;
+        h3 {
+            font-size: 33px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 30px;
         }
-        #right-part {
-            width: 400px;
-            height: 100%;
-            padding-top: 40px;
-            #domain {
-                list-style: none;
-                display: flex;
-                width: 100%;
-                justify-content: space-flebetween;
-                flex-wrap: wrap;
-                margin: 0;
-                padding: 0;
-                li {
-                    width: 176px;
-                    height: 176px;
-                    padding-top: 16px;
-                    margin: 10px;
-                    div {
-                        display: none;
-                        width: 144px;
-                        height: 144px;
-                        margin: 0 auto;
-                        background-color: #FFD400;
-                        opacity: 0.9;
-                        padding: 43px;
-                        text-align: center;
-                        i {
-                            font-size: 30px;
-                            opacity: 1;
+        p {
+            color: gray;
+            font-size: 12px;
+            padding-bottom: 20px;
+        }
+        #product-menu {
+            margin-top: 75px;
+            width: 100%;
+            list-style: none;
+            padding-left: 0;
+            li {
+                display: inline-block;
+                ul {
+                    list-style: none;
+                    margin: 10px 0 60px 0;
+                    padding-left: 0;
+                    li {
+                        display: inline-block;
+                        width: 97px;
+                        height: 140px;
+                        margin: 0 45px 0 45px;
+                        .product-menu-icon {
+                            border-radius: 50%;
+                            background-color: rgba(255, 255, 255, 0.1);
+                            width: 97px;
+                            height: 97px;
+                            img {}
                         }
-                        p {
-                            font-size: 14px;
-                            padding: 0px;
-                            opacity: 1;
+                        .product-menu-title {
+                            margin-top: 10px;
+                            font-size: 12px;
                         }
                     }
-                }
-                li:hover {
-                    cursor: pointer;
-                    div {
-                        display: block;
-                    }
-                }
-                #education {
-                    background-image: url(/assets/images/education_background.png);
-                }
-                #game {
-                    background-image: url(/assets/images/game_background.png);
-                }
-                #animate {
-                    background-image: url(/assets/images/animate_background.png);
-                }
-                #hardware {
-                    background-image: url(/assets/images/hardware_background.png);
                 }
             }
         }
