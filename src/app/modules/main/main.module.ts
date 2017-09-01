@@ -5,13 +5,15 @@ import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
 
-import { PartnerComponent } from './components/partner/partner.component';
 import { HeaderComponent } from "./components/header/header.component";
-import { FooterComponent } from "app/modules/main/components/footer/footer.component";
+import { HomeComponent } from "./components/home/home.component";
+import { TechComponent } from "app/modules/main/components/tech/tech.component";
+import { ProductComponent } from "app/modules/main/components/product/product.component";
+import { PartnerComponent } from './components/partner/partner.component';
 import { AboutComponent } from "app/modules/main/components/about/about.component";
-import { PlanComponent } from "app/modules/main/components/plan/plan.component";
-import { TeamComponent } from "app/modules/main/components/team/team.component";
+import { CareerComponent } from "app/modules/main/components/career/career.component";
 import { ContactComponent } from "app/modules/main/components/contact/contact.component";
+import { FooterComponent } from "app/modules/main/components/footer/footer.component";
 
 
 
@@ -22,13 +24,16 @@ import { ContactComponent } from "app/modules/main/components/contact/contact.co
     ],
     declarations: [
         MainComponent,
+
         HeaderComponent,
-        FooterComponent,
-        AboutComponent,
-        PlanComponent,
+        HomeComponent,
+        TechComponent,
+        ProductComponent,
         PartnerComponent,
-        TeamComponent,
-        ContactComponent
+        AboutComponent,
+        CareerComponent,
+        ContactComponent,
+        FooterComponent
     ],
     providers: [
     ]
