@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-plan',
-    templateUrl: './plan.component.html',
-    styleUrls: ['./plan.component.scss']
+    selector: 'app-product',
+    templateUrl: './product.component.html',
+    styleUrls: ['./product.component.scss']
 })
-export class PlanComponent implements OnInit {
+export class ProductComponent implements OnInit {
     hideEducation: boolean = true;
     hideGame: boolean = true;
     hideAnimate: boolean = true;
