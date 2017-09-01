@@ -1,0 +1,79 @@
+<div id="tech">
+    <div id="tech-container">
+        <div id="tech-left">
+            <h3>核 心 技 术 优 势</h3>
+            <p>我们完全自主研发的语义识别人工智能引擎可以实现多轮人机对话及上下文理解，采用独特的偏重实例层的多层语义知识网络,支持基于图模板映射的规则归纳和知识推理。</p>
+            <ul id="tech-menu">
+                <li class="tech-menu-outter">
+                    <ul>
+                        <li class="tech-menu-inner tech-menu-active">
+                            <img src="/assets/img/tech_icons/tech_icon1_w.png" alt="精准数据">
+                            <p>精准数据</p>
+                        </li>
+                        <li class="tech-menu-inner">
+                            <img src="/assets/img/tech_icons/tech_icon2_w.png" alt="复杂逻辑">
+                            <p>复杂逻辑</p>
+                        </li>
+                        <li class="tech-menu-inner">
+                            <img src="/assets/img/tech_icons/tech_icon3_w.png" alt="敏捷开发">
+                            <p>敏捷开发</p>
+                        </li>
+                    </ul>
+                </li>
+                <li class="tech-menu-outter">
+                    <ul>
+                        <li class="tech-menu-inner">
+                            <img src="/assets/img/tech_icons/tech_icon4_w.png" alt="定制化">
+                            <p>定制化</p>
+                        </li>
+                        <li class="tech-menu-inner">
+                            <img src="/assets/img/tech_icons/tech_icon5_w.png" alt="自主逻辑">
+                            <p>自主逻辑</p>
+                        </li>
+                        <li class="tech-menu-inner">
+                            <img src="/assets/img/tech_icons/tech_icon6_w.png" alt="成本优势">
+                            <p>成本优势</p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="tech-right">
+            <div id="tech-detail">
+                <h4>{{nowTech.title}}</h4>
+                <h5>{{nowTech.sub}}</h5>
+                <p>{{nowTech.desp}}</p>
+            </div>
+            <img id="tech-right-logo" src="/assets/img/brand_logo_gold.png">
+        </div>
+
+        <div id="tech-delete" style="display:none">
+            <h2>主要<span>技术团队</span></h2>
+            <div id="detail">
+                <div id="left-part">
+                    <img [src]="nowMember.img">
+                </div>
+                <div id="right-part">
+                    <h3>{{ nowMember.name }}</h3>
+                    <h4>{{ nowMember.position }}</h4>
+                    <h5>{{ nowMember.education }}</h5>
+                    <p>
+                        {{ nowMember.introduction }}
+                    </p>
+                    <ul id="social">
+                        <li id="linkedin"><a [href]="nowMember.linkedin" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li id="facebook"><a [href]="nowMember.facebook" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <ul id="member">
+                <li *ngFor="let member of members; let i = index" [class.active]="i == nowIndex" (click)="changeMember(i)">
+                    <img [src]="member.img">
+                </li>
+            </ul>
+        </div>
+
+
+
+    </div>
+</div>

@@ -1,0 +1,204 @@
+#tech {
+    height: 697px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    margin: 0 auto;
+    background-image: url(/assets/img/tech_bg_1.png);
+    background-position: center;
+    #tech-container {
+        position: relative;
+        width: 1000px;
+        height: 100%;
+        margin: 0 auto;
+        #tech-left {
+            position: absolute;
+            top: 75px;
+            left: 53px;
+            width: 450px;
+            height: 486px;
+            padding: 60px 30px 0 60px;
+            background-color: gold;
+            box-shadow: 5px 5px 50px #cccccc; // opacity: 0.2;
+            z-index: 1;
+            h3 {
+                font-size: 33px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 12px;
+                line-height: 23px;
+            }
+            #tech-menu {
+                width: 358px;
+                height: 230px;
+                margin-top: 30px;
+                padding-left: 0;
+                list-style-type: none;
+                .tech-menu-outter {
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                    ul {
+                        list-style-type: none;
+                        padding-left: 0;
+                        .tech-menu-inner {
+                            display: inline-block;
+                            width: 116px;
+                            height: 115px;
+                            margin: 0;
+                            outline: 2px solid gold;
+                            text-align: center;
+                            img {
+                                display: inline-block;
+                                padding-top: 20px;
+                                width: 64px;
+                                padding: 0;
+                            }
+                            P {
+                                margin: 0;
+                                font-size: 12px;
+                                line-height: 12px;
+                                color: #ffffff;
+                                font-weight: lighter;
+                            }
+                        }
+                        .tech-menu-active {
+                            display: inline-block;
+                            outline: 2px solid white;
+                            
+                            img {
+                                filter: invert(100%);
+                                padding-top: 15px;
+                            }
+                            p {
+                                color: black;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #tech-right {
+            position: absolute;
+            top: 175px;
+            left: 457px;
+            width: 493px;
+            height: 450px;
+            background-color: #ffffff;
+            box-shadow: 5px 5px 50px #cccccc;
+            #tech-detail {
+                padding: 64px 80px 30px 105px;
+                h4 {
+                    font-size: 24px;
+                    margin-bottom: 20px;
+                }
+                h5 {
+                    font-size: 14px;
+                    line-height: 23px;
+                    margin-bottom: 20px;
+                }
+                p {
+                    font-size: 12px;
+                    line-height: 23px;
+                    color: gray;
+                }
+            }
+            #tech-right-logo {
+                position: absolute;
+                width: 46px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        #tech-delete {
+            h2 {
+                font-size: 24px;
+                padding-top: 36px;
+                padding-bottom: 58px;
+                span {
+                    color: #FFD400;
+                }
+            }
+            #detail {
+                width: 100%;
+                height: 210px;
+                display: flex;
+                margin-bottom: 50px;
+                #left-part {
+                    width: 270px;
+                    z-index: 3;
+                    img {
+                        width: 202px;
+                        height: 202px;
+                    }
+                }
+                #right-part {
+                    width: 370px;
+                    z-index: 99;
+                    text-align: left;
+                    h3 {
+                        font-family: "SimSun";
+                        font-size: 48px;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    h4 {
+                        font-family: "Dong-Qing-Hei";
+                        font-size: 18px;
+                        color: #FFD400;
+                    }
+                    h5 {
+                        font-family: "Lan-Ting-Qian-Hei";
+                        font-size: 12px;
+                        font-weight: 100;
+                    }
+                    p {
+                        font-size: 12px;
+                    }
+                    #social {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        display: flex;
+                        height: 12px;
+                        width: 42px;
+                        a {
+                            text-decoration: none;
+                            color: inherit;
+                            padding-right: 50px;
+                        }
+                    }
+                }
+            }
+            #member {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width: 620px;
+                height: 90px;
+                display: flex;
+                justify-content: space-between;
+                li {
+                    display: block;
+                    img {
+                        width: 90px;
+                        height: 90px;
+                    }
+                }
+                li:hover {
+                    cursor: pointer;
+                }
+                .active {
+                    img {
+                        border: 4px solid #FFD400;
+                    }
+                }
+            }
+            img {
+                box-shadow: 0 0 5px 3px #333333;
+            }
+        }
+    }
+}
