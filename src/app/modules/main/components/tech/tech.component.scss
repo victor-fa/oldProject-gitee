@@ -32,21 +32,25 @@
                 word-spacing: -2px;
             }
             #tech-menu {
-                width: 358px;
+                width: 345px;
                 height: 230px;
                 margin-top: 30px;
                 padding-left: 0;
                 list-style-type: none;
                 .tech-menu-inner {
                     display: inline-block;
-                    width: 116px;
+                    width: 115px;
                     height: 115px;
                     margin: 0;
-                    outline: 2px solid gold;
+                    // outline: 2px solid gold;
+                    -webkit-box-shadow:inset 0px 0px 0px 2px gold;
+                    -moz-box-shadow:inset 0px 0px 0px 2px gold;
+                    box-shadow:inset 0px 0px 0px 2px gold;
+
                     text-align: center;
                     img {
                         display: inline-block;
-                        padding-top: 20px;
+                        margin-top: 15px;
                         width: 64px;
                         padding: 0;
                     }
@@ -60,10 +64,12 @@
                 }
                 .tech-menu-active {
                     display: inline-block;
-                    outline: 2px solid white;
+                    // outline: 2px solid white;
+                    -webkit-box-shadow:inset 0px 0px 0px 2px #ffffff;
+                    -moz-box-shadow:inset 0px 0px 0px 2px #ffffff;
+                    box-shadow:inset 0px 0px 0px 2px #ffffff;
                     img {
                         filter: invert(100%);
-                        padding-top: 15px;
                     }
                     p {
                         color: black;
