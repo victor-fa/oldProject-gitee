@@ -9,12 +9,10 @@ import { Component, AfterViewInit } from '@angular/core';
 export class HeaderComponent implements AfterViewInit {
     constructor() {}
 
-    ngAfterViewInit() {
-        $(document).ready(function () {
-            $('#main-container nav a').click(function (e) {
-                $('#main-container nav a').removeClass('active');
-                var $parent = $(this).addClass('active');
-            });
-        });
+    ngAfterViewInit() {}
+
+    changeActive(index: number) {
+        $('#header-nav-bar ul li').removeClass('active');
+        $(`#header-nav-bar ul li:nth-child(${index})`).addClass('active');
     }
 }
