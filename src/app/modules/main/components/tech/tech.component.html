@@ -4,40 +4,9 @@
             <h3>核 心 技 术 优 势</h3>
             <p>我们完全自主研发的语义识别人工智能引擎可以实现多轮人机对话及上下文理解，采用独特的偏重实例层的多层语义知识网络,支持基于图模板映射的规则归纳和知识推理。</p>
             <ul id="tech-menu">
-                <li class="tech-menu-outter">
-                    <ul>
-                        <!-- <li class="tech-menu-inner tech-menu-active">
-                            <img src="/assets/img/tech_icons/tech_icon1_w.png" alt="精准数据">
-                            <p>精准数据</p>
-                        </li>
-                        <li class="tech-menu-inner">
-                            <img src="/assets/img/tech_icons/tech_icon2_w.png" alt="复杂逻辑">
-                            <p>复杂逻辑</p>
-                        </li>
-                        <li class="tech-menu-inner">
-                            <img src="/assets/img/tech_icons/tech_icon3_w.png" alt="敏捷开发">
-                            <p>敏捷开发</p>
-                        </li> -->
-                        <li *ngFor="let tech of technologies; let i = index" [class.active]="i == nowIndex" class="tech-menu-inner" (click)="changeTech(i)">
-                                <img [src]="tech.icon">
-                        </li>
-                    </ul>
-                </li>
-                <li class="tech-menu-outter">
-                    <ul>
-                        <li class="tech-menu-inner">
-                            <img src="/assets/img/tech_icons/tech_icon4_w.png" alt="定制化">
-                            <p>定制化</p>
-                        </li>
-                        <li class="tech-menu-inner">
-                            <img src="/assets/img/tech_icons/tech_icon5_w.png" alt="自主逻辑">
-                            <p>自主逻辑</p>
-                        </li>
-                        <li class="tech-menu-inner">
-                            <img src="/assets/img/tech_icons/tech_icon6_w.png" alt="成本优势">
-                            <p>成本优势</p>
-                        </li>
-                    </ul>
+                <li *ngFor="let tech of technologies; let i = index" [class.tech-menu-active]="i == nowIndex" class="tech-menu-inner" (click)="changeTech(i)">
+                    <img [src]="tech.icon" [alt]="tech.name">
+                    <p>{{tech.name}}</p>
                 </li>
             </ul>
         </div>
