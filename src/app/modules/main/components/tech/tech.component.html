@@ -6,7 +6,7 @@
             <ul id="tech-menu">
                 <li class="tech-menu-outter">
                     <ul>
-                        <li class="tech-menu-inner tech-menu-active">
+                        <!-- <li class="tech-menu-inner tech-menu-active">
                             <img src="/assets/img/tech_icons/tech_icon1_w.png" alt="精准数据">
                             <p>精准数据</p>
                         </li>
@@ -17,6 +17,9 @@
                         <li class="tech-menu-inner">
                             <img src="/assets/img/tech_icons/tech_icon3_w.png" alt="敏捷开发">
                             <p>敏捷开发</p>
+                        </li> -->
+                        <li *ngFor="let tech of technologies; let i = index" [class.active]="i == nowIndex" class="tech-menu-inner" (click)="changeTech(i)">
+                                <img [src]="tech.icon">
                         </li>
                     </ul>
                 </li>
