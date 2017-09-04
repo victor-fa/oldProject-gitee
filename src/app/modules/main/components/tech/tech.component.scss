@@ -42,10 +42,6 @@
                     width: 115px;
                     height: 115px;
                     margin: 0;
-                    // outline: 2px solid gold;
-                    -webkit-box-shadow:inset 0px 0px 0px 2px gold;
-                    -moz-box-shadow:inset 0px 0px 0px 2px gold;
-                    box-shadow:inset 0px 0px 0px 2px gold;
 
                     text-align: center;
                     img {
@@ -64,7 +60,6 @@
                 }
                 .tech-menu-active {
                     display: inline-block;
-                    // outline: 2px solid white;
                     -webkit-box-shadow:inset 0px 0px 0px 2px #ffffff;
                     -moz-box-shadow:inset 0px 0px 0px 2px #ffffff;
                     box-shadow:inset 0px 0px 0px 2px #ffffff;
