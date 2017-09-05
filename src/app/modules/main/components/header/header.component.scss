@@ -22,6 +22,7 @@
             left: 170px;
             ul {
                 font-size: 14px;
+                display: inline;
                 li {
                     display: inline-block;
                     text-decoration: none;
@@ -32,15 +33,6 @@
                         font-weight: lighter;
                         text-decoration: none;
                     }
-                    &:hover {
-                        font-weight: 900;
-                        color: #000000;
-                        border-bottom: gold solid 2px;
-                    }
-                    .lang-active {
-                        font-weight: 900;
-                        color: #000000;
-                    }
                 }
                 .active {
                     a {
@@ -48,9 +40,25 @@
                         color: #000000;
                     }
                 }
-                #lang-switch {
-                    margin-left: 30px;
+            }
+            #header-nav-left {
+                li {
+                    &:hover {
+                        font-weight: 900;
+                        color: #000000;
+                        border-bottom: gold solid 2px;
+                    }
                 }
+            }
+            #header-nav-right {
+                margin-left: -10px;
+                li {
+                    .lang-active {
+                        font-weight: 900;
+                        color: #000000;
+                    }
+                }
+                #lang-switch {}
             }
         }
     }

@@ -4,7 +4,7 @@
             <a href="#"><img src="/assets/img/header_brand_logo.png" alt="brand_logo"></a>
         </div>
         <div id="header-nav-bar">
-            <ul>
+            <ul id="header-nav-left">
                 <li (click)="changeActive(1)" class="active"><a href="#home">首页</a></li>
                 <li (click)="changeActive(2)" class="header-nav-item"><a href="#tech">核心技术</a></li>
                 <li (click)="changeActive(3)" class="header-nav-item"><a href="#product">产品方案</a></li>
@@ -12,6 +12,8 @@
                 <li (click)="changeActive(5)" class="header-nav-item"><a href="#about">关于齐悟</a></li>
                 <li (click)="changeActive(6)" class="header-nav-item"><a href="#career">加入齐悟</a></li>
                 <li (click)="changeActive(7)" class="header-nav-item"><a href="#contact">联系我们</a></li>
+            </ul>
+            <ul id="header-nav-right">
                 <li><a class="lang-active" href="#" id="lang-switch">中</a> | <a href="#">En</a></li>
             </ul>
         </div>
