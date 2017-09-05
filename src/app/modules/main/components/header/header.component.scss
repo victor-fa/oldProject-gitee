@@ -26,39 +26,38 @@
                 li {
                     display: inline-block;
                     text-decoration: none;
-                    padding: 10px 20px;
                     margin-top: 15px;
                     a {
                         color: #333333;
                         font-weight: lighter;
                         text-decoration: none;
                     }
-                }
-                .active {
-                    a {
-                        font-weight: 900;
-                        color: #000000;
-                    }
-                }
-            }
-            #header-nav-left {
-                li {
                     &:hover {
                         font-weight: 900;
                         color: #000000;
                         border-bottom: gold solid 2px;
                     }
-                }
-            }
-            #header-nav-right {
-                margin-left: -10px;
-                li {
                     .lang-active {
                         font-weight: 900;
                         color: #000000;
                     }
                 }
-                #lang-switch {}
+                .active,
+                .lang-active {
+                    a {
+                        font-weight: 900;
+                        color: #000000;
+                    }
+                }
+                .header-nav-item {
+                    padding: 10px 20px;
+                }
+                .header-nav-lang {
+                    padding: 10px 1px;
+                }
+                #header-nav-split {
+                    margin-left: 50px;
+                }
             }
         }
     }

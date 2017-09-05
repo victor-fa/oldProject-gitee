@@ -5,16 +5,16 @@
         </div>
         <div id="header-nav-bar">
             <ul id="header-nav-left">
-                <li (click)="changeActive(1)" class="active"><a href="#home">首页</a></li>
+                <li (click)="changeActive(1)" class="header-nav-item active"><a href="#home">首页</a></li>
                 <li (click)="changeActive(2)" class="header-nav-item"><a href="#tech">核心技术</a></li>
                 <li (click)="changeActive(3)" class="header-nav-item"><a href="#product">产品方案</a></li>
                 <li (click)="changeActive(4)" class="header-nav-item"><a href="#partner">合作客户</a></li>
                 <li (click)="changeActive(5)" class="header-nav-item"><a href="#about">关于齐悟</a></li>
                 <li (click)="changeActive(6)" class="header-nav-item"><a href="#career">加入齐悟</a></li>
                 <li (click)="changeActive(7)" class="header-nav-item"><a href="#contact">联系我们</a></li>
-            </ul>
-            <ul id="header-nav-right">
-                <li><a class="lang-active" href="#" id="lang-switch">中</a> | <a href="#">En</a></li>
+                <li class="header-nav-lang lang-active" id="header-nav-split"><a href="#">中</a></li>
+                <li>/</li>
+                <li class="header-nav-lang"><a href="#">En</a></li>
             </ul>
         </div>
     </div>
