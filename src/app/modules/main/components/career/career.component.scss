@@ -22,6 +22,7 @@
                 font-weight: bold;
                 color: #ffffff;
                 padding-bottom: 20px;
+                margin: 0;
             }
             small {
                 font-size: 14px;
@@ -29,30 +30,54 @@
         }
         #career-info {
             font-size: 18px;
-            #career-job-position {
+            position: relative;
+            .career-job-position-profix {
+                color: #ffffff;
+            }
+            div {
+                color: lightgray;
+                span {
+                    color: white;
+                }
+            }
+            #career-job-selected {
+                position: relative;
                 width: 500px;
-                select {
-                    width: 100%;
-                    border: none;
-                    border-radius: 0px;
-                    -webkit-appearance: none;
-                    -webkit-border-radius: 0px;
-                    outline: none;
-                    padding: 10px 25px;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    color: lightgray;
-                    .career-job-position-profix {
-                        color: yellow;
-                    }
-                    option {
-                        color: lightgray;
-                        span {
-                            color: white;
+                padding: 10px 25px;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: lightgray;
+                #career-caret-down {
+                    position: absolute;
+                    right: 15px;
+                    color: gold;
+                }
+            }
+            #career-job-menu {
+                position: absolute;
+                width: 500px;
+                margin-top: 20px;
+                z-index: 2;
+                ul {
+                    padding-left: 0;
+                    list-style-type: none;
+                    li {
+                        padding: 10px 25px;
+                        border: solid 1px #ffffff;
+                        margin-bottom: 3px;
+                        background-color: rgba(9, 37, 59, 0.8);
+
+                        &:hover {
+                            background-color: gold;
+                            color: black;
+                            span {
+                                color: black;
+                            }
                         }
                     }
                 }
             }
             #career-job-detail {
+                font-size: 18px;
                 position: relative;
                 margin-top: 20px;
                 padding: 30px 25px 20px 25px;
@@ -61,12 +86,13 @@
                 font-weight: 100;
                 line-height: 35px;
                 h5 {
+                    font-size: 18px;
                     color: #ffffff;
                 }
                 #career-job-qual {
                     ul {
                         list-style-position: inside;
-                        padding-left: 0;                        
+                        padding-left: 0;
                     }
                 }
                 #career-job-right {
