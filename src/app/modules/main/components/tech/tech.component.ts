@@ -1,15 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface Member {
-    name: string;
-    position: string;
-    education: string;
-    introduction: string;
-    img: string;
-    linkedin: string;
-    facebook: string;
-}
-
 export interface Technology {
     title: string;
     sub: string;
