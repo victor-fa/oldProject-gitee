@@ -13,9 +13,12 @@
         padding: 80px 90px;
         background-color: #ffffff;
         #contact-left-part {
-            h2 {
-                font-size: 33px;
-                font-weight: bold;
+            h3 {
+                font-size: 34px;
+                font-weight: 400;
+                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                letter-spacing: 6px;
+                margin: 0;
             }
             input,
             textarea,
@@ -76,7 +79,7 @@
                     margin-top: 12px;
                 }
             }
-            
+
         }
     }
 }
