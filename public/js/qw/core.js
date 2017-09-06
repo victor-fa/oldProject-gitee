@@ -38,7 +38,7 @@ function ask_question(msg, callback) {
                 on_receive_answer(data.msg)
 
                 if (data.data != undefined)
-                    console.log('Extra data:\n' + data.data)
+                    console.log('Extra data:\n' + JSON.stringify(data.data))
 
                 if (typeof callback == "function") {
                     callback()
