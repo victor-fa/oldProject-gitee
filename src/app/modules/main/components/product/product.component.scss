@@ -74,15 +74,14 @@
         height: 100%;
         margin: 0 auto;
         color: #FEFEFE;
-        text-align: center; // padding-top: 75px;
+        text-align: center;
         #product-s-menu {
             position: absolute;
             bottom: 0;
             width: 100%;
             list-style: none;
             margin: 0;
-            padding-left: 0;
-            background-color: navy; // background-color: rgb(5, 28, 43);
+            padding-left: 0; // background-color: rgb(5, 28, 43);
             li {
                 display: inline-block;
                 padding: 18px 11px;
@@ -127,6 +126,44 @@
                 line {
                     stroke: gold;
                     stroke-width: 2;
+                }
+            }
+        }
+        #product-s-page-conainer {
+            position: relative;
+            margin: 0 50px;
+            padding-top: 90px;
+            #product-s-logo {
+                position: absolute;
+                left: 0;
+                top: 75px;
+            }
+            #product-s-main {
+                margin: 0 118px;
+                height: 520px;
+                overflow: scroll;
+                text-align: left;
+                #product-s-main-title {
+                    h2 {
+                        margin: 0 0 20px 0;
+                        font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                        font-size: 55px;
+                        font-weight: 200;
+                        letter-spacing: 8px;
+                    }
+                    p {
+                        font-size: 18px;
+                        color: gray;
+                        margin: 0 0 25px 0;
+                        letter-spacing: 3px;
+                    }
+                }
+                #product-s-main-body {
+                    p {
+                        font-size: 14px;
+                        line-height: 26px;
+                        letter-spacing: 1px;
+                    }
                 }
             }
         }
