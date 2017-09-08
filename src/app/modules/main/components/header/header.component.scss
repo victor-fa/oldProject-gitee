@@ -9,6 +9,8 @@
         width: 1000px;
         height: 100%;
         margin: 0 auto;
+        -webkit-animation-duration: 1s;
+        -moz-animation-duration: 1s;
         #header-brand-logo {
             display: inline-block;
             margin: 15px 15px;
@@ -27,7 +29,7 @@
                     display: inline-block;
                     text-decoration: none;
                     text-align: center;
-                    margin-top: 15px;
+                    margin-top: 17px;
                     a {
                         color: #333333;
                         font-weight: lighter;
