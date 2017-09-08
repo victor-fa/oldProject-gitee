@@ -69,9 +69,11 @@
                     box-shadow:inset 0px 0px 0px 2px #ffffff;
                     img {
                         filter: invert(100%);
+                        animation-iteration-count: 0;
                     }
                     p {
                         color: black;
+                        animation-iteration-count: 0;
                     }
                 }
             }
