@@ -18,7 +18,7 @@
     <div id="product-s-container">
         <ul id="product-s-menu">
             <li *ngFor="let prod of products; let i = index;" (click)="clickProdSingleItem(i)">
-                <div class="product-s-menu-icon">
+                <div class="product-s-menu-icon" [class.product-s-menu-active]="i == nowIndex">
                     <img [src]="prod.icon" [alt]="prod.name">
                 </div>
             </li>

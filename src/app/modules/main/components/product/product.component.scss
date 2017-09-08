@@ -88,6 +88,12 @@
                         width: 40px;
                     }
                 }
+                .product-s-menu-active {
+                    background-color: gold;
+                    img {
+                        filter: invert(100%);
+                    }
+                }
             }
         }
         .product-s-turn-page {
