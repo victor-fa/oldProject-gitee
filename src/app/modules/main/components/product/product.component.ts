@@ -77,7 +77,7 @@ export class ProductComponent implements AfterViewInit {
             title: '智能客服',
             sub: '量身定制7*24小时智能客服，飞速响应，降低80%人力成本。',
             desc: [
-                '齐悟与全国最大的游戏发行商一起展开了针对智能客服方面的合作。结合了齐悟的核心技术优势以及乐逗游戏客服需求，合力打造了一个满足客户定制化需求的技术解决方案。这个智能客服将根据客户需求可以放入不同的通用入口，比如微信公众号，线上平台以及电话客服。这个技术解决方案展现了我们的技术亮点主要在于我们前期可以不需要通过数据收集，标记等一系列的复杂过程，只需要客户提供客服运作的标准流程以及需求，齐悟通过运用核心算法技术将用户讲的一句话变成一个“知识表达模型”从而进行模糊匹配，相比一般的关键字匹配更加精准智能的理解用户的问题， 最终给出用户需要的解答。后期齐悟将通过机器学习来不断优化整个客服系统的智能化，与此同时，也将收集有用的用户数据去解决用户更深层的客服需求。'，
+                '齐悟与全国最大的游戏发行商一起展开了针对智能客服方面的合作。结合了齐悟的核心技术优势以及乐逗游戏客服需求，合力打造了一个满足客户定制化需求的技术解决方案。这个智能客服将根据客户需求可以放入不同的通用入口，比如微信公众号，线上平台以及电话客服。这个技术解决方案展现了我们的技术亮点主要在于我们前期可以不需要通过数据收集，标记等一系列的复杂过程，只需要客户提供客服运作的标准流程以及需求，齐悟通过运用核心算法技术将用户讲的一句话变成一个“知识表达模型”从而进行模糊匹配，相比一般的关键字匹配更加精准智能的理解用户的问题， 最终给出用户需要的解答。后期齐悟将通过机器学习来不断优化整个客服系统的智能化，与此同时，也将收集有用的用户数据去解决用户更深层的客服需求。',
                 '智能客服将为合作企业大大降低客服成本，并且能够满足全天候无间断的客服需求，让用户有更好的客服体验感，从而大大提高用户忠诚度以及提升企业的核心价值竞争力。这也是体现了齐悟的核心目标——为企业创造更多的价值，最终实现双方合作的共赢。'
             ],
             name: '智能客服',
@@ -157,6 +157,7 @@ export class ProductComponent implements AfterViewInit {
             icon: '/assets/img/product_icons/ad_w.png'
         }
     ];
+    nowProd: Product = this.products[this.nowIndex];
 
     constructor() { }
 
@@ -177,15 +178,27 @@ export class ProductComponent implements AfterViewInit {
         }
     }
 
-    clickProdItem(i: number): void {
+    clickProdItem(index: number): void {
         $('#product-s').show();
         $('#product').hide();
         if ($('#product-s').is(':visible')) {
             window.scrollTo(0, $('#product-s').offset().top);
         }
+        this.clickProdSingleItem(index);
     }
 
-    clickProdSingleItem(i: number): void {
+    clickProdSingleItem(index: number): void {
+        this.nowProd = this.products[index];
+        this.nowIndex = index;
+    }
 
+    prevPage(): void {
+        let i = (this.nowIndex + this.products.length - 1) % (this.products.length);
+        this.clickProdSingleItem(i);
+    }
+
+    nextPage(): void {
+        let i = (this.nowIndex + 1) % (this.products.length);
+        this.clickProdSingleItem(i);
     }
 }

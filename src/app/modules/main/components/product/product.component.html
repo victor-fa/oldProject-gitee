@@ -3,125 +3,12 @@
         <h3>产品方案</h3>
         <p>提供的是垂直领域最智能的语义识别技术，同时根据客户的需求去提供完全定制化的解决方案。</p>
         <ul id="product-menu">
-
-            <li (click)="clickProdItem(1)">
+            <li *ngFor="let prod of products; let i = index" (click)="clickProdItem(i)">
                 <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/money_w.png" alt="智能金融">
+                    <img [src]="prod.icon" [alt]="prod.name">
                 </div>
                 <div class="product-menu-title">
-                    智能金融
-                </div>
-            </li>
-            <li (click)="clickProdItem(2)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/helper_w.png" alt="智能助手">
-                </div>
-                <div class="product-menu-title">
-                    智能助手
-                </div>
-            </li>
-            <li (click)="clickProdItem(3)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/doctor_w.png" alt="智慧医疗">
-                </div>
-                <div class="product-menu-title">
-                    智慧医疗
-                </div>
-            </li>
-            <li (click)="clickProdItem(4)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/edu_w.png" alt="智慧教育">
-                </div>
-                <div class="product-menu-title">
-                    智慧教育
-                </div>
-            </li>
-            <li (click)="clickProdItem(5)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/gov_w.png" alt="智慧政务">
-                </div>
-                <div class="product-menu-title">
-                    智慧政务
-                </div>
-            </li>
-            <li (click)="clickProdItem(6)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/car_w.png" alt="智能汽车">
-                </div>
-                <div class="product-menu-title">
-                    智能汽车
-                </div>
-            </li>
-            <li (click)="clickProdItem(7)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/cservice_w.png" alt="智能客服">
-                </div>
-                <div class="product-menu-title">
-                    智能客服
-                </div>
-            </li>
-            <li (click)="clickProdItem(8)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/hard_w.png" alt="智能硬件">
-                </div>
-                <div class="product-menu-title">
-                    智能硬件
-                </div>
-            </li>
-            <li (click)="clickProdItem(9)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/apt_w.png" alt="智能家居">
-                </div>
-                <div class="product-menu-title">
-                    智能家居
-                </div>
-            </li>
-            <li (click)="clickProdItem(10)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/robot_w.png" alt="智能机器人">
-                </div>
-                <div class="product-menu-title">
-                    智能机器人
-                </div>
-            </li>
-            <li (click)="clickProdItem(11)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/travel_w.png" alt="智能旅游">
-                </div>
-                <div class="product-menu-title">
-                    智能旅游
-                </div>
-            </li>
-            <li (click)="clickProdItem(12)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/law_w.png" alt="智能法律">
-                </div>
-                <div class="product-menu-title">
-                    智能法律
-                </div>
-            </li>
-            <li (click)="clickProdItem(13)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/voicegame_w.png" alt="语音游戏">
-                </div>
-                <div class="product-menu-title">
-                    语音游戏
-                </div>
-            </li>
-            <li (click)="clickProdItem(14)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/idol_w.png" alt="虚拟偶像">
-                </div>
-                <div class="product-menu-title">
-                    虚拟偶像
-                </div>
-            </li>
-            <li (click)="clickProdItem(15)">
-                <div class="product-menu-icon">
-                    <img src="/assets/img/product_icons/ad_w.png" alt="交互广告">
-                </div>
-                <div class="product-menu-title">
-                    交互广告
+                    {{prod.name}}
                 </div>
             </li>
         </ul>
@@ -130,89 +17,19 @@
 <div id="product-s" hidden>
     <div id="product-s-container">
         <ul id="product-s-menu">
-            <li (click)="clickProdSingleItem(1)">
+            <li *ngFor="let prod of products; let i = index;" (click)="clickProdSingleItem(i)">
                 <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/money_w.png" alt="智能金融">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(2)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/helper_w.png" alt="智能助手">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(3)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/doctor_w.png" alt="智慧医疗">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(4)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/edu_w.png" alt="智慧教育">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(5)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/gov_w.png" alt="智慧政务">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(6)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/car_w.png" alt="智能汽车">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(7)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/cservice_w.png" alt="智能客服">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(8)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/hard_w.png" alt="智能硬件">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(9)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/apt_w.png" alt="智能家居">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(10)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/robot_w.png" alt="智能机器人">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(11)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/travel_w.png" alt="智能旅游">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(12)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/law_w.png" alt="智能法律">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(13)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/voicegame_w.png" alt="语音游戏">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(14)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/idol_w.png" alt="虚拟偶像">
-                </div>
-            </li>
-            <li (click)="clickProdSingleItem(15)">
-                <div class="product-s-menu-icon">
-                    <img src="/assets/img/product_icons/ad_w.png" alt="交互广告">
+                    <img [src]="prod.icon" [alt]="prod.name">
                 </div>
             </li>
         </ul>
-        <div id="product-s-turn-left" class="product-s-turn-page">
+        <div id="product-s-turn-left" class="product-s-turn-page" (click)="prevPage()">
             <svg width="30" height="60">
                 <line x1="30" y1="0" x2="0" y2="30" />
                 <line x1="30" y1="60" x2="0" y2="30" />
             </svg>
         </div>
-        <div id="product-s-turn-right" class="product-s-turn-page">
+        <div id="product-s-turn-right" class="product-s-turn-page" (click)="nextPage()">
             <svg width="30" height="60">
                 <line x1="0" y1="0" x2="30" y2="30" />
                 <line x1="0" y1="60" x2="30" y2="30" />
@@ -220,23 +37,20 @@
         </div>
         <div id="product-s-page-conainer">
             <div id="product-s-logo">
-                <img src="/assets/img/product_icons/money_w.png" alt="智能金融">
+                <img [src]="nowProd.icon" [alt]="nowProd.name">
             </div>
             <div id="product-s-main">
                 <div id="product-s-main-title">
                     <h2>
-                        智能金融
+                        {{nowProd.title}}
                     </h2>
                     <p>
-                        量身定制7*24小时智能客服，飞速响应，降低80%人力成本。
+                        {{nowProd.sub}}
                     </p>
                 </div>
                 <div id="product-s-main-body">
-                    <p>
-                        齐悟与全国最大的游戏发行商一起展开了针对智能客服方面的合作。结合了齐悟的核心技术优势以及乐逗游戏客服需求，合力打造了一个满足客户定制化需求的技术解决方案。这个智能客服将根据客户需求可以放入不同的通用入口，比如微信公众号，线上平台以及电话客服。这个技术解决方案展现了我们的技术亮点主要在于我们前期可以不需要通过数据收集，标记等一系列的复杂过程，只需要客户提供客服运作的标准流程以及需求，齐悟通过运用核心算法技术将用户讲的一句话变成一个“知识表达模型”从而进行模糊匹配，相比一般的关键字匹配更加精准智能的理解用户的问题，最终给出用户需要的解答。后期齐悟将通过机器学习来不断优化整个客服系统的智能化，与此同时，也将收集有用的用户数据去解决用户更深层的客服需求。
-                    </p>
-                    <p>
-                        智能客服将为合作企业大大降低客服成本，并且能够满足全天候无间断的客服需求，让用户有更好的客服体验感，从而大大提高用户忠诚度以及提升企业的核心价值竞争力。这也是体现了齐悟的核心目标-为企业创造更多的价值，最终实现双方合作的共赢。
+                    <p *ngFor="let p of nowProd.desc;">
+                        {{p}}
                     </p>
                 </div>
             </div>
