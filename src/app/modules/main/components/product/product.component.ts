@@ -162,7 +162,6 @@ export class ProductComponent implements AfterViewInit {
     constructor() { }
 
     ngAfterViewInit() {
-
         window.onscroll = function (e) {
             if ($('#product-s').is(':visible')) {
                 const pageTop = $(window).scrollTop();
@@ -176,6 +175,12 @@ export class ProductComponent implements AfterViewInit {
                 }
             }
         }
+
+        $('.product-menu-item').hover(function () {
+            $(this).addClass('animated bounce');
+        }, function () {
+            $(this).removeClass('animated bounce');
+        });
     }
 
     clickProdItem(index: number): void {
