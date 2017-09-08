@@ -13,10 +13,10 @@ export class ProductComponent implements AfterViewInit {
 
         window.onscroll = function (e) {
             if ($('#product-s').is(':visible')) {
-                var pageTop = $(window).scrollTop();
-                var pageBottom = pageTop + $(window).height();
-                var prodSingleTop = $('#product-s').offset().top;
-                var prodSingleBottom = prodSingleTop + $('#product-s').height();
+                const pageTop = $(window).scrollTop();
+                const pageBottom = pageTop + $(window).height();
+                const prodSingleTop = $('#product-s').offset().top;
+                const prodSingleBottom = prodSingleTop + $('#product-s').height();
                 // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
                 if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
                     $('#product-s').hide();
