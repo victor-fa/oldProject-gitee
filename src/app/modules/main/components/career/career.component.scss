@@ -68,7 +68,7 @@
                         padding: 10px 25px;
                         border: solid 1px #ffffff;
                         margin-bottom: 3px;
-                        background-color: rgba(9, 37, 59, 0.8);
+                        background-color: rgba(9, 37, 59, 0.9);
                         &:hover {
                             background-color: gold;
                             color: black;
@@ -79,12 +79,14 @@
                     }
                 }
             }
-            #career-job-detail {
-                font-size: 18px;
+            #career-job-info {
                 position: relative;
+                height: 350px;
+                overflow: scroll;
                 margin-top: 20px;
                 padding: 30px 25px 20px 25px;
                 background-color: rgba(255, 255, 255, 0.1);
+                font-size: 18px;
                 color: lightgray;
                 font-weight: 100;
                 line-height: 35px;
@@ -92,15 +94,15 @@
                     font-size: 18px;
                     color: #ffffff;
                 }
-                #career-job-qual {
-                    ul {
-                        list-style-position: inside;
-                        padding-left: 0;
-                    }
+                #career-job-resp {
+                    width: 470px;
+                }
+                #career-job-detail {
+                    width: 830px;
                 }
                 #career-job-right {
                     position: absolute;
-                    top: 18px;
+                    top: 23px;
                     left: 530px;
                     line-height: 50px;
                     h5,
