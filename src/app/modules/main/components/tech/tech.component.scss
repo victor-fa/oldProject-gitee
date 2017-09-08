@@ -51,6 +51,7 @@
                         margin-top: 15px;
                         width: 64px;
                         padding: 0;
+                        animation-iteration-count: infinite;
                     }
                     P {
                         margin: 0;
@@ -58,6 +59,7 @@
                         line-height: 12px;
                         color: #ffffff;
                         font-weight: lighter;
+                        animation-iteration-count: infinite;
                     }
                 }
                 .tech-menu-active {

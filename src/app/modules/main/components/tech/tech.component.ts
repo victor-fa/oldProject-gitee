@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 
 export interface Technology {
     title: string;
@@ -14,7 +14,7 @@ export interface Technology {
     styleUrls: ['./tech.component.scss']
 })
 
-export class TechComponent {
+export class TechComponent implements AfterViewInit {
     nowIndex = 0;
 
     technologies: [Technology] = [
@@ -64,6 +64,16 @@ export class TechComponent {
     nowTech: Technology = this.technologies[this.nowIndex];
 
     constructor() {
+    }
+
+    ngAfterViewInit() {
+        $('.tech-menu-inner').hover(function () {
+            $(this).children('img').addClass('animated bounce');
+            $(this).children('p').addClass('animated bounce');
+        }, function () {
+            $(this).children('img').removeClass('animated bounce');
+            $(this).children('p').removeClass('animated bounce');
+        });
     }
 
     changeTech(index: number) {
