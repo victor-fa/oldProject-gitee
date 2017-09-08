@@ -20,7 +20,6 @@
             letter-spacing: 6px;
             margin-top: 15px;
             margin-bottom: 30px;
-
         }
         p {
             color: gray;
@@ -60,6 +59,7 @@
         }
     }
 }
+
 #product-s {
     height: 709px;
     width: 100%;
@@ -69,6 +69,66 @@
     background-image: url(/assets/img/product_slide_bg.png);
     background-position: center;
     #product-s-container {
-
+        position: relative;
+        width: 1000px;
+        height: 100%;
+        margin: 0 auto;
+        color: #FEFEFE;
+        text-align: center; // padding-top: 75px;
+        #product-s-menu {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding-left: 0;
+            background-color: navy; // background-color: rgb(5, 28, 43);
+            li {
+                display: inline-block;
+                padding: 18px 11px;
+                .product-s-menu-icon {
+                    border-radius: 50%;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    width: 40px;
+                    height: 40px;
+                    img {
+                        width: 40px;
+                    }
+                }
+            }
+        }
+        .product-s-turn-page {
+            position: absolute;
+            margin: 300px 0 0 0;
+            padding: 0;
+            width: 30px;
+            height: 60px;
+            svg {
+                width: 30;
+                height: 60;
+                line {
+                    stroke: rgb(255, 255, 255);
+                    stroke-width: 2;
+                }
+            }
+        }
+        #product-s-turn-left {
+            left: 0;
+            &:hover {
+                line {
+                    stroke: gold;
+                    stroke-width: 2;
+                }
+            }
+        }
+        #product-s-turn-right {
+            right: 0;
+            &:hover {
+                line {
+                    stroke: gold;
+                    stroke-width: 2;
+                }
+            }
+        }
     }
 }

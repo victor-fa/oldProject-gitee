@@ -33,4 +33,8 @@ export class ProductComponent implements AfterViewInit {
             window.scrollTo(0, $('#product-s').offset().top);
         }
     }
+
+    clickProdSingleItem(i: number): void {
+
+    }
 }
