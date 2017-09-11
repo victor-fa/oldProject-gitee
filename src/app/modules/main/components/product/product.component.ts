@@ -181,6 +181,12 @@ export class ProductComponent implements AfterViewInit {
         }, function () {
             $(this).removeClass('animated bounce');
         });
+
+        $('.product-s-menu-icon').hover(function () {
+            $(this).addClass('animated pulse');
+        }, function () {
+            $(this).removeClass('animated pulse');
+        });
     }
 
     clickProdItem(index: number): void {
