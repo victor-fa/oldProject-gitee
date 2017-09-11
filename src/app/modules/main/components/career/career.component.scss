@@ -85,7 +85,8 @@
             #career-job-info {
                 position: relative;
                 height: 350px;
-                overflow: scroll;
+                overflow-y: scroll;
+                overflow-x: hidden;
                 margin-top: 20px;
                 padding: 30px 25px 20px 25px;
                 background-color: rgba(255, 255, 255, 0.1);
