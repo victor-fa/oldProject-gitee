@@ -21,7 +21,7 @@
         #header-nav-bar {
             display: inline;
             position: absolute;
-            left: 170px;
+            left: 120px;
             ul {
                 font-size: 14px;
                 display: inline;
@@ -54,12 +54,13 @@
                 }
                 .header-nav-item {
                     padding: 10px 20px;
+                    letter-spacing: 2px;
                 }
                 .header-nav-lang {
                     padding: 10px 1px;
                 }
                 #header-nav-split {
-                    margin-left: 50px;
+                    margin-left: 45px;
                 }
             }
         }
