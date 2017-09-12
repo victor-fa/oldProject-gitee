@@ -36,7 +36,8 @@
         }
         #career-info {
             height: 450px;
-            font-size: 18px;
+            font-size: 16px;
+            letter-spacing: 3px;
             position: relative;
             .career-job-position-profix {
                 color: #ffffff;
@@ -90,12 +91,14 @@
                 margin-top: 20px;
                 padding: 30px 25px 20px 25px;
                 background-color: rgba(255, 255, 255, 0.1);
-                font-size: 18px;
+                font-size: 16px;
                 color: lightgray;
                 font-weight: 100;
                 line-height: 35px;
+                letter-spacing: 2px;
                 h5 {
-                    font-size: 18px;
+                    font-size: 16px;
+                    letter-spacing: 3px;;
                     color: #ffffff;
                 }
                 #career-job-resp {
@@ -108,7 +111,8 @@
         }
         #career-hr {
             padding-left: 25px;
-            font-size: 18px;
+            font-size: 16px;
+            letter-spacing: 3px;
             a {
                 color: gold;
                 text-decoration: none;
