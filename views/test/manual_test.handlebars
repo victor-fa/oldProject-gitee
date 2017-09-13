@@ -16,6 +16,11 @@
                         <span class="input-i">@</span>
                         <input type="text" class="chat-input" placeholder="你是谁">
                     </div>
+                    <div class="data-area">
+                        <div class="input-area-container">
+                            <textarea class="chat-data" disabled>附加数据</textarea>
+                        </div>
+                    </div>
                 </div>
                 <div>
                 </div>
@@ -64,6 +69,10 @@
 			<div class="qw-message-content">' + reply + '</div>\
 		</li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+    }
+
+    function on_recieve_data(data) {
+        $(".chat-data").text(JSON.stringify(data, null, 4))
     }
 
     function send_hello() {

@@ -8,6 +8,10 @@ function on_receive_answer(reply) {
     console.log('robot answer: ' + reply)
 }
 
+function on_recieve_data(data) {
+    console.log('Extra data:\n' + JSON.stringify(data))
+}
+
 function ask_question(msg, callback) {
     on_send_question(msg)
 
@@ -37,8 +41,8 @@ function ask_question(msg, callback) {
             if (data.msg != "") {
                 on_receive_answer(data.msg)
 
-                if (data.data != undefined)
-                    console.log('Extra data:\n' + JSON.stringify(data.data))
+                if (typeof data.data != "undefined")
+                    on_recieve_data(data.data)
 
                 if (typeof callback == "function") {
                     callback()
