@@ -4,7 +4,7 @@ $().ready(function () {
     var username = $('#username').html();
     var timestamp = Math.floor(Date.now() / 1000);
 
-    var verify = md5(appsecret + timestamp + username);
+    var verify = md5(appsecret + username + timestamp);
 
     String.prototype.temp = function (obj) {
         return this.replace(/\$\w+\$/gi, function (matches) {
@@ -34,7 +34,8 @@ $().ready(function () {
     }
 
     function ajaxOnSuccess(obj) {
-        console.log("Got Respond.");
+        console.log("Got Response.:\n" + JSON.stringify(obj, null, 4));
+        obj = obj.msg
 
         var satisfaction = obj.satisfaction;
         var solved = obj.solved;
@@ -63,7 +64,7 @@ $().ready(function () {
         
         // Panels
         $('#dash-question').html(questions);
-        $('#dash-peak').html(peak);
+        $('#dash-peak').html(Math.round(questions/sessions*100)/100);
         $('#dash-users').html(users);
         $('#dash-sessions').html(sessions);
 
@@ -109,8 +110,8 @@ $().ready(function () {
         console.log(verify);
 
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/statics',
-            body: {
+            url: 'http://localhost/api/statics',
+            data: {
                 "appkey": appkey,
                 "timestamp": timestamp,
                 "username": username,
