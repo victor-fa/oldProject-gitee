@@ -110,7 +110,7 @@ $().ready(function () {
         console.log(verify);
 
         $.ajax({
-            url: 'http://localhost/api/statics',
+            url: 'https://robot-service.centaurstech.com/api/statics',
             data: {
                 "appkey": appkey,
                 "timestamp": timestamp,
