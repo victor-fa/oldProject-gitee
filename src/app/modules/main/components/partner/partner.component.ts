@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-partner',
@@ -6,9 +6,5 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./partner.component.scss']
 })
 export class PartnerComponent {
-
-    constructor() {
-
-    }
-
+    constructor() {}
 }
