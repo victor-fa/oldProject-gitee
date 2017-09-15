@@ -5,16 +5,16 @@
         </div>
         <div id="header-nav-bar">
             <ul id="header-nav-left">
-                <li (click)="changeActive(1)" class="header-nav-item active"><a href="#home">首页</a></li>
-                <li (click)="changeActive(2)" class="header-nav-item"><a href="#tech">核心技术</a></li>
-                <li (click)="changeActive(3)" class="header-nav-item"><a href="#product">产品方案</a></li>
-                <li (click)="changeActive(4)" class="header-nav-item"><a href="#partner">合作客户</a></li>
-                <li (click)="changeActive(5)" class="header-nav-item"><a href="#about">关于齐悟</a></li>
-                <li (click)="changeActive(6)" class="header-nav-item"><a href="#career">加入齐悟</a></li>
-                <li (click)="changeActive(7)" class="header-nav-item"><a href="#contact">联系我们</a></li>
-                <li class="header-nav-lang lang-active" id="header-nav-split"><a href="#">中</a></li>
+                <li (click)="changeActive(1)" class="header-nav-item active"><a href="#home">{{nowHeader.home}}</a></li>
+                <li (click)="changeActive(2)" class="header-nav-item"><a href="#tech">{{nowHeader.tech}}</a></li>
+                <li (click)="changeActive(3)" class="header-nav-item"><a href="#product">{{nowHeader.product}}</a></li>
+                <li (click)="changeActive(4)" class="header-nav-item"><a href="#partner">{{nowHeader.partner}}</a></li>
+                <li (click)="changeActive(5)" class="header-nav-item"><a href="#about">{{nowHeader.about}}</a></li>
+                <li (click)="changeActive(6)" class="header-nav-item"><a href="#career">{{nowHeader.career}}</a></li>
+                <li (click)="changeActive(7)" class="header-nav-item"><a href="#contact">{{nowHeader.contact}}</a></li>
+                <li (click)="changeLanguage('zh')" class="header-nav-lang" id="header-nav-zh" [class.lang-active]="language == 'zh'"><a href="#">中</a></li>
                 <li>/</li>
-                <li class="header-nav-lang"><a href="#">En</a></li>
+                <li (click)="changeLanguage('en')" class="header-nav-lang" id="header-nav-en" [class.lang-active]="language == 'en'"><a href="#">En</a></li>
             </ul>
         </div>
     </div>
