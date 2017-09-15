@@ -14,7 +14,7 @@ export class PartnerComponent implements AfterViewInit {
             const partnerTop = $('#partner').offset().top;
             const partnerBottom = partnerTop + $('#partner').height();
             const partnerWidth = $('#partner').width();
-            console.log(`${pageTop}, ${pageBottom}; ${partnerTop}, ${partnerBottom}; ${pageWidth}, ${partnerWidth};`);
+            // console.log(`${pageTop}, ${pageBottom}; ${partnerTop}, ${partnerBottom}; ${pageWidth}, ${partnerWidth};`);
             if (!((pageTop > partnerBottom) || (pageBottom < partnerTop))) {
                 $('#partner-bg-left').css('top', (pageTop - partnerTop) / 8 + 80 + 'px');
                 $('#partner-bg-right').css('top', (pageTop - partnerTop) / -4 + 80 + 'px');
@@ -27,7 +27,6 @@ export class PartnerComponent implements AfterViewInit {
                 if (bg_img_y < 0) { bg_img_y = 0; }
                 if (bg_img_y > 100) { bg_img_y = 100; }
                 $('#partner').css('background-position', bg_img_x + '% ' + bg_img_y + '%');
-                console.log($('#partner').css('backgroundPosition'));
             }
         }
     }
