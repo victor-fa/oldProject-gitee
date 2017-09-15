@@ -33,6 +33,7 @@
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "node-gallery":"1.1.0"
   }
 }
