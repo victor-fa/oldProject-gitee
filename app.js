@@ -24,6 +24,7 @@ var tests = require('./routes/tests')
 var logs = require('./routes/log');
 var admins = require('./routes/admins')
 var gallery = require('./routes/gallery')
+var image = require('./routes/image')
 
 // Init App
 var app = express();
@@ -110,8 +111,10 @@ app.use(function (req, res, next) {
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');	// for passport for
 	res.locals.user = req.user || null;
-	if (res.locals.user)
+	if (res.locals.user) {
 		res.locals.show_manage_panel = UserGroupPolicy.accessToManagePanel(res.locals.user.group)
+		res.locals.show_image_panel = UserGroupPolicy.accessToImagePanel(res.locals.user.group)
+	}
 	next();
 });
 
@@ -121,6 +124,7 @@ app.use('/test', UserService.ensureAuthenticated, tests);
 app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery)
+app.use('/image',  UserService.ensureAuthenticated, image)
 
 // Set Port
 app.set('port', (process.env.PORT || 10010));
