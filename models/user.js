@@ -31,6 +31,9 @@ var UserSchema = mongoose.Schema({
     appsecret: {
         type: String
     },
+    albums: [{
+        type: String
+    }],
     applist: [{
         appkey: {
             type: String,
@@ -56,6 +59,8 @@ var UserSchema = mongoose.Schema({
         type: Number,
         default: 0
     }
+}, {
+    timestamps: true
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
