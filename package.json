@@ -29,6 +29,7 @@
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
+    "ngx-cookie-service": "^1.0.9",
     "rx": "^4.1.0",
     "rxjs": "^5.0.1",
     "types": "^0.1.1",
