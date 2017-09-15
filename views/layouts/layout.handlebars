@@ -80,12 +80,26 @@
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    {{#if user}} {{#if show_manage_panel}} {{!-- Manager and Admin Only --}}
+                {{#if user}}
+                    {{#if show_manage_panel}} {{!-- Manager and Admin Only --}}
                     <li>
                         <a data-toggle="collapse" data-target="#qw-admin-tool"><i class="fa fa-fw fa-paper-plane"></i> 管理员 <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="qw-admin-tool" class="collapse">
                             <li>
                                 <a href="/admin/manage"><i class="fa fa-user-plus" aria-hidden="true"></i> 用户管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{/if}}
+                    {{#if show_image_panel}} {{!-- Manager and Admin Only --}}
+                    <li>
+                        <a data-toggle="collapse" data-target="#qw-image-tool"><i class="fa fa-fw fa-paper-plane"></i> 图片管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="qw-image-tool" class="collapse">
+                            <li>
+                                <a href="/image/album"><i class="fa fa-user-plus" aria-hidden="true"></i> 相册管理 </a>
+                            </li>
+                            <li>
+                                <a href="/image/upload"><i class="fa fa-user-plus" aria-hidden="true"></i> 上传图片 </a>
                             </li>
                         </ul>
                     </li>
@@ -117,14 +131,14 @@
                     <li>
                         <a href="/users/logout"><i class="fa fa-fw fa-power-off" aria-hidden="true"></i> 登出</a>
                     </li>
-                    {{else}}
+                {{else}}
                     <li>
                         <a href="/users/login"><i class="fa fa-sign-in" aria-hidden="true"></i> 登录</a>
                     </li>
                     <li>
                         <a href="/users/register"><i class="fa fa-user" aria-hidden="true"></i> 新用户</a>
                     </li>
-                    {{/if}}
+                {{/if}}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
