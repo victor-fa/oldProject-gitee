@@ -32,7 +32,8 @@ var UserSchema = mongoose.Schema({
         type: String
     },
     albums: [{
-        type: String
+        type: String,
+        default: []
     }],
     applist: [{
         appkey: {
