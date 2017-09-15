@@ -5,11 +5,13 @@
     min-width: 1000px;
     max-width: 1600px;
     margin: 0 auto;
+    overflow: hidden;
+    background-color: magenta;
     background-image: url(/assets/img/partner_bg_long.png);
-    background-position: center;
-    background-attachment: fixed;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-position: 50% 50%;
+    // background-attachment: fixed;
+    // background-size: cover;
     .partner-bg-brand {
         position: absolute;
         width: 300px;
