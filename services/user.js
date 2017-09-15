@@ -104,6 +104,25 @@ module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
     }, callback);
 }
 
+module.exports.addAlbum = function (id, album, callback) {
+    var query = { _id: id }
+    User.findOne(query, function (err, user) {
+        if (err) {
+            callback(err);
+        }
+        user = user.toObject()
+        if ('albums' in user && user.albums.indexOf(album) != -1) {
+            callback("相册已存在");
+        } else {
+            User.findOneAndUpdate(query, {
+                $addToSet: {
+                    albums: album
+                }
+            }, callback);
+        }
+    })
+}
+
 // Add or update a 'appkey' and 'appsecret' in a user's 'applist'
 module.exports.addApp = function (id, appkey, appsecret, callback) {
     var query = { _id: id };
