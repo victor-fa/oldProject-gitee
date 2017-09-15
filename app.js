@@ -23,6 +23,7 @@ var users = require('./routes/users');
 var tests = require('./routes/tests')
 var logs = require('./routes/log');
 var admins = require('./routes/admins')
+var gallery = require('./routes/gallery')
 
 // Init App
 var app = express();
@@ -119,6 +120,7 @@ app.use('/users', users);
 app.use('/test', UserService.ensureAuthenticated, tests);
 app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
+app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery)
 
 // Set Port
 app.set('port', (process.env.PORT || 10010));
