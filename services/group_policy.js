@@ -9,8 +9,28 @@ module.exports.ensureManagerPrivilege = (req, res, next) => {
     }
 }
 
+module.exports.accessToGallery = (req, res, next) => {
+    var user = res.locals.user
+    var root_uri = '/gallery/'
+    if (user.group >= UserGroup.MANAGER)
+        return next()
+    var album = req.originalUrl.replace(root_uri, '')
+    if (album.indexOf('/') != -1)
+        album = album.substring(0, album.indexOf('/'))
+    if (user.albums.indexOf(album) != -1)
+        return next()
+    req.flash('error_msg', '您没有访问该相册的权限')
+    res.redirect('/image/album')
+}
+
 module.exports.accessToManagePanel = (group) => {
     if (group >= UserGroup.MANAGER)
+        return true
+    return false
+} 
+
+module.exports.accessToImagePanel = (group) => {
+    if (group >= UserGroup.EDITOR)
         return true
     return false
 } 
