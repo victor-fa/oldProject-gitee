@@ -18,7 +18,7 @@ function save_image(path, name, album, up_wechat, callback) {
     var request = require("request");
     
     var options = { method: 'POST',
-      url: 'http://localhost/api/chat/image',
+      url: 'https://robot-service.centaurstech.com/api/chat/image',
       headers: 
        { 'content-type': 'application/json' },
       body: 
