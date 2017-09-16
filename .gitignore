@@ -65,3 +65,4 @@ data/
 run_mongo.bat
 run_mongodb.bat
 launch.json
+resources/
