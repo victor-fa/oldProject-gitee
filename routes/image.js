@@ -76,9 +76,16 @@ router.post('/upload', function(req, res) {
     })
 })
 
-router.post('/album/create', function(req, res) {
+const regex = /^[a-zA-Z0-9]*$/g;
+
+router.post('/album', function(req, res) {
     var id = req.user._id;
     var album_name = req.body.album_name
+
+    if (!album_name.match(regex)) {
+        req.flash('error_msg', '相册名只能包含英文字符和数字！');
+        return res.redirect('/image/album')
+    }
 
     if (req.user.albums.length >= 5) {
         req.flash('error_msg', '每个用户最多只能创建5个相册');
