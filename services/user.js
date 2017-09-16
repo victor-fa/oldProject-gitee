@@ -8,7 +8,7 @@ module.exports.ensureAuthenticated = function (req, res, next) {
     // var url_parts = url.parse(req.originalUrl);
     // console.log(req.originalUrl)
     // console.log(url_parts)
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || req.originalUrl.endsWith('.jpg')) {
         return next();
     } else {
         req.flash('error_msg', '由于会话过期，请重新登陆后继续操作');

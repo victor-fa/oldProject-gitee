@@ -10,13 +10,18 @@ module.exports.ensureManagerPrivilege = (req, res, next) => {
 }
 
 module.exports.accessToGallery = (req, res, next) => {
-    var user = res.locals.user
     var root_uri = '/gallery/'
+    var album = req.originalUrl.replace(root_uri, '')
+    if (album.indexOf('gallery.css') != -1 || req.originalUrl.endsWith('.jpg')) {
+        return next()
+    }
+    
+    var user = res.locals.user
     if (user.group >= UserGroup.MANAGER)
         return next()
-    var album = req.originalUrl.replace(root_uri, '')
     if (album.indexOf('/') != -1)
         album = album.substring(0, album.indexOf('/'))
+    album = album.replace(user.username + "_", "")
     if (user.albums.indexOf(album) != -1)
         return next()
     req.flash('error_msg', '您没有访问该相册的权限')
