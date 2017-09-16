@@ -26,6 +26,8 @@ var admins = require('./routes/admins')
 var gallery = require('./routes/gallery')
 var image = require('./routes/image')
 
+const fileUpload = require('express-fileupload');
+
 // Init App
 var app = express();
 
@@ -69,6 +71,9 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser());
+app.use(fileUpload({
+	safeFileNames: /.+(\.(jpg|jpeg)(\?tn=(1|0))?)$/i
+}));
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));

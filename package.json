@@ -25,15 +25,17 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
+    "express-fileupload": "0.2.0",
     "express-handlebars": "^3.0.0",
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
     "mongodb": "*",
     "mongoose": "*",
+    "node-gallery": "1.1.0",
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
-    "node-gallery":"1.1.0"
+    "uuid": ""
   }
 }
