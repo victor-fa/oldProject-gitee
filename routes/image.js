@@ -4,6 +4,7 @@ var UserService = require('../services/user')
 var fs = require('fs');
 var album_dir = './resources/albums/';
 var uuid = require('uuid')
+const path = require("path")
 
 router.get('/album', function(req, res) {
     res.render('image/album')
@@ -12,6 +13,28 @@ router.get('/album', function(req, res) {
 router.get('/upload', function(req, res) {
     res.render('image/upload')
 })
+
+function save_image(path, name, album, up_wechat, callback) {
+    var request = require("request");
+    
+    var options = { method: 'POST',
+      url: 'https://robot-service.centaurstech.com/api/chat/image',
+      headers: 
+       { 'postman-token': '1ef36295-42c5-94d1-2916-ae2ef4b71285',
+         'cache-control': 'no-cache',
+         'content-type': 'application/json' },
+      body: 
+       { path: path,
+         name: name,
+         album: album,
+         up_wechat: up_wechat },
+      json: true };
+    
+    request(options, function (error, response, body) {
+      if (error) throw callback(error);
+    });
+    
+}
 
 router.post('/upload', function(req, res) {
     var user = req.user
@@ -25,23 +48,35 @@ router.post('/upload', function(req, res) {
 
     up_wechat = (typeof up_wechat != 'undefined' && up_wechat) ? true : false
 
-    
     let imageFile = req.files.picture
-    var dir = album_dir + req.user.username + '_' + album_name
+    var album = req.user.username + '_' + album_name
     var filename = uuid()
     var filetype = ".jpg" //imageFile.name
     filetype = filetype.substring(filetype.lastIndexOf('.'))
 
+    var path_to_image = album_dir + album + '/' + filename + filetype
+
     // Use the mv() method to place the file somewhere on your server
-    imageFile.mv(dir + '/' + filename + filetype, function(err) {
+    imageFile.mv(path_to_image, function(err) {
         if (err){
-            req.flash('error_msg', '文件上传失败')
-        } else {
-            req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加：&nbsp; &nbsp; &nbsp; 圖' + filename)
+            req.flash('error_msg', '文件上传失败：' + err)
+            return res.redirect('/image/upload')
+        } else {            
+            var absolute_path = path.resolve(path_to_image)
+            console.log(absolute_path)
+
+            save_image(absolute_path, filename + filetype, album, up_wechat, function (err) {
+                req.flash('error_msg', '文件上传失败：' + err)
+                if (err){
+                    req.flash('error_msg', '文件上传失败：' + err)
+                } else {
+                    req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加：&nbsp; &nbsp; &nbsp; 圖' + filename)
+                }
+
+                return res.redirect('/image/upload')
+            })
         }
-    
-        res.redirect('/image/upload')
-    });
+    })
 })
 
 router.post('/album/create', function(req, res) {
