@@ -67,7 +67,7 @@ router.post('/upload', function(req, res) {
                 if (err){
                     req.flash('error_msg', '文件上传失败：' + err)
                 } else {
-                    req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加： 圖' + filename)
+                    req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加： 啚' + filename)
                 }
 
                 return res.redirect('/image/upload')
