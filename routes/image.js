@@ -18,11 +18,9 @@ function save_image(path, name, album, up_wechat, callback) {
     var request = require("request");
     
     var options = { method: 'POST',
-      url: 'https://robot-service.centaurstech.com/api/chat/image',
+      url: 'http://localhost/api/chat/image',
       headers: 
-       { 'postman-token': '1ef36295-42c5-94d1-2916-ae2ef4b71285',
-         'cache-control': 'no-cache',
-         'content-type': 'application/json' },
+       { 'content-type': 'application/json' },
       body: 
        { path: path,
          name: name,
@@ -31,9 +29,9 @@ function save_image(path, name, album, up_wechat, callback) {
       json: true };
     
     request(options, function (error, response, body) {
-      if (error) throw callback(error);
-    });
-    
+      if (error) callback(error)
+      callback()
+    })
 }
 
 router.post('/upload', function(req, res) {
@@ -65,12 +63,11 @@ router.post('/upload', function(req, res) {
             var absolute_path = path.resolve(path_to_image)
             console.log(absolute_path)
 
-            save_image(absolute_path, filename + filetype, album, up_wechat, function (err) {
-                req.flash('error_msg', '文件上传失败：' + err)
+            save_image(absolute_path, filename, album, up_wechat, function (err) {
                 if (err){
                     req.flash('error_msg', '文件上传失败：' + err)
                 } else {
-                    req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加：&nbsp; &nbsp; &nbsp; 圖' + filename)
+                    req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加： 圖' + filename)
                 }
 
                 return res.redirect('/image/upload')

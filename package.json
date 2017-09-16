@@ -36,6 +36,7 @@
     "passport": "*",
     "passport-http": "*",
     "passport-local": "*",
+    "request": "^2.81.0",
     "uuid": ""
   }
 }
