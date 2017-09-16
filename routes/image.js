@@ -20,6 +20,11 @@ router.post('/upload', function(req, res) {
         req.flash('error_msg', '您没有选择要上传的文件')
         res.redirect('/image/upload')
     }
+
+    var up_wechat = req.body.up_wechat
+
+    up_wechat = (typeof up_wechat != 'undefined' && up_wechat) ? true : false
+
     
     let imageFile = req.files.picture
     var dir = album_dir + req.user.username + '_' + album_name
@@ -32,7 +37,7 @@ router.post('/upload', function(req, res) {
         if (err){
             req.flash('error_msg', '文件上传失败')
         } else {
-            req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加：  \n圖' + filename)
+            req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加：&nbsp; &nbsp; &nbsp; 圖' + filename)
         }
     
         res.redirect('/image/upload')

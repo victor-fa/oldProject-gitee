@@ -39,14 +39,24 @@
     <!-- /.row -->
     <div class="row">
         <form ref='uploadForm' action="/image/upload" method="POST" encType="multipart/form-data">
-            <label class="col-sm-2 control-label">Album</label>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">相册</label>
             <select class="form-control" name="album_name" id="album_name">
                 {{#each user.albums}}<option value="{{this}}">{{this}}
                 </option>{{/each}}
             </select>
-            <label class="col-sm-2 control-label">Picture</label>
-            <input class="form-control" type="file" name="picture" id="picture"><br>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">图片</label>
+            <input class="form-control" type="file" name="picture" id="picture">
+            <label class="checkbox-inline"></label>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="up_wechat" value="true" />上传到微信
+        </div>
+        <div class="form-group">
             <input class="btn btn-primary" type="submit" value="Upload">
+        </div>
         </form>
     </div>
 </div>
