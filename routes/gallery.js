@@ -15,7 +15,7 @@ var gallery = require('node-gallery')
 router.get('*', gallery({
 	staticFiles : 'resources/albums',
 	urlRoot : 'gallery', 
-	title : 'Example Gallery',
+	title : 'Images',
 //	render: false
 }), function(req, res, next) {
 	res.send(req.data)
