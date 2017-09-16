@@ -16,13 +16,36 @@
         </div>
     </div>
     <!-- /.row -->
+
+    <!-- Alert -->
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> <span>{{success_msg}}</span>
+    </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
+    <!-- /.alert -->
+
     <!-- /.row -->
     <div class="row">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form ref='uploadForm' action="/image/upload" method="POST" encType="multipart/form-data">
             <label class="col-sm-2 control-label">Album</label>
-            <input class="form-control" type="password" name="password" id="password"><br>
+            <select class="form-control" name="album_name" id="album_name">
+                {{#each user.albums}}<option value="{{this}}">{{this}}
+                </option>{{/each}}
+            </select>
             <label class="col-sm-2 control-label">Picture</label>
-            <input class="form-control" type="file" name="keywords" id="keywords"><br>
+            <input class="form-control" type="file" name="picture" id="picture"><br>
             <input class="btn btn-primary" type="submit" value="Upload">
         </form>
     </div>
