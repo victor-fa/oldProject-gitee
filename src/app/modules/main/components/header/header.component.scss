@@ -19,9 +19,10 @@
             }
         }
         #header-nav-bar {
-            display: inline;
+            display: inline-block;
             position: absolute;
-            left: 120px;
+            left: 140px;
+            width: 860px;
             ul {
                 font-size: 14px;
                 display: inline;
@@ -52,15 +53,36 @@
                         color: #000000;
                     }
                 }
-                .header-nav-item {
-                    padding: 10px 20px;
-                    letter-spacing: 2px;
-                }
                 .header-nav-lang {
                     padding: 10px 1px;
                 }
+                .header-nav-item {
+                    padding: 10px 20px;
+                }
                 #header-nav-zh {
-                    margin-left: 45px;
+                    position: absolute;
+                    right: 55px;
+                }
+                #header-nav-split {
+                    position: absolute;
+                    right: 40px;
+                    &:hover {
+                        border-bottom: none;
+                    }
+                }
+                #header-nav-en {
+                    position: absolute;
+                    right: 15px;
+                }
+            }
+            .header-nav-zh {
+                .header-nav-item {
+                    letter-spacing: 2px;
+                }
+            }
+            .header-nav-en {
+                .header-nav-item {
+                    letter-spacing: 0;
                 }
             }
         }
