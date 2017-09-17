@@ -33,12 +33,12 @@ export class HeaderComponent implements OnInit {
         },
         {
             home: 'Home',
-            tech: 'Tech',
-            product: 'Product',
-            partner: 'Partner',
+            tech: 'Techologies',
+            product: 'Products',
+            partner: 'Partners',
             about: 'About',
-            career: 'Career',
-            contact: 'Contact'
+            career: 'Careers',
+            contact: 'Contact Us'
         }
     ];
 
