@@ -9,8 +9,6 @@
     background-image: url(/assets/img/partner_bg_long.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    // background-attachment: fixed;
-    // background-size: cover;
     .partner-bg-brand {
         position: absolute;
         width: 300px;
@@ -33,6 +31,7 @@
         text-align: center;
         padding: 100px 50px;
         text-align: center;
+        z-index: 2;
         h3 {
             font-size: 34px;
             font-weight: 400;
@@ -47,42 +46,42 @@
             padding-bottom: 20px;
         }
         #partner-logos {
+            position: relative;
             width: 900px;
             height: 360px;
             margin: 0;
             list-style: none;
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 1);
             padding-top: 10px;
             padding-left: 0;
+            z-index: 10;
             li {
                 display: inline-block;
                 margin: 0;
                 padding: 0;
                 text-align: center;
-                ul {
-                    list-style: none;
-                    margin: 10px auto;
-                    padding: 0;
-                    width: 100%;
-                    li {
-                        display: inline-block;
-                        width: 140px;
-                        height: 60px;
-                        overflow: hidden;
-                        img {
-                            width: 140px;
-                            height: 90px;
-                            margin: -20px 0 0 -4px;
-                            filter: grayscale(100%);
-                        }
-                        border: 5px solid white;
-                    }
-                    li:hover {
-                        border: 5px solid gold;
-                        img {
-                            filter: grayscale(0%);
-                        }
-                    }
+                list-style: none;
+                margin: 10px auto;
+                padding: 0;
+                width: 100%;
+                display: inline-block;
+                width: 140px;
+                height: 60px;
+                overflow: hidden;
+                z-index: 100;
+                background-color: #ffffff;
+                img {
+                    width: 140px;
+                    height: 90px;
+                    margin: -20px 0 0 -4px;
+                    z-index: 10;
+                }
+                border: 5px solid white;
+            }
+            li:hover {
+                border: 5px solid gold;
+                img {
+                    filter: grayscale(0%);
                 }
             }
         }
