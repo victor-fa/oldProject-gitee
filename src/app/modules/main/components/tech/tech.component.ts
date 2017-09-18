@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface TechnologySingle {
@@ -21,8 +21,8 @@ interface Technology {
     styleUrls: ['./tech.component.scss']
 })
 
-export class TechComponent implements AfterViewInit {
-    language = 'UNKNOWN';
+export class TechComponent implements AfterViewChecked {
+    language = 'UNKNOWN'; AfterViewChecked
     langIndex = 0;
     nowIndex = 0;
 
@@ -138,7 +138,7 @@ export class TechComponent implements AfterViewInit {
         this.nowTechSingle = this.nowTech.pages[this.nowIndex];
     }
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         $('.tech-menu-inner').hover(function () {
             $(this).children('img').addClass('animated bounce');
             $(this).children('p').addClass('animated bounce');
