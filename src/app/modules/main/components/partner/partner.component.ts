@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface Partner {
@@ -10,7 +10,7 @@ interface Partner {
     templateUrl: './partner.component.html',
     styleUrls: ['./partner.component.scss']
 })
-export class PartnerComponent implements AfterViewInit {
+export class PartnerComponent implements AfterViewChecked {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -33,7 +33,7 @@ export class PartnerComponent implements AfterViewInit {
         this.nowPartner = this.partners[this.langIndex];
     }
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         window.onscroll = function (e) {
             const pageTop = $(window).scrollTop();
             const pageBottom = pageTop + $(window).height();
