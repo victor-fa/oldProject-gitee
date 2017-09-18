@@ -24,7 +24,7 @@ export class HomeComponent {
             h3: '解决方案提供商'
         },
         {
-            h1: 'REVOLUTIONARY',
+            h1: '',
             h2: 'VOICE INTERACTIVE TECHNOLOGY',
             h3: 'PRACTICAL RESOLUTION PROVIDER'
         }

@@ -1,5 +1,5 @@
 <div id="home">
-    <div id="home-container" class="animated zoomIn">
+    <div id="home-container" class="animated zoomIn" [class.home-container-zh]="language == 'zh'" [class.home-container-en]="language == 'en'">
         <div id="home-line-1">
             {{nowHome.h1}}
         </div>
