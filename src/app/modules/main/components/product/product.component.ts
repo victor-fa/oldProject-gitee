@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface ProductSingle {
@@ -21,7 +21,7 @@ interface Product {
     styleUrls: ['./product.component.scss']
 })
 
-export class ProductComponent implements AfterViewInit {
+export class ProductComponent implements AfterViewChecked {
     language = 'UNKNOWN';
     langIndex = 0;
     nowIndex = 0;
@@ -327,7 +327,7 @@ export class ProductComponent implements AfterViewInit {
         this.nowProdSingle = this.nowProd.pages[this.nowIndex];
     }
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         window.onscroll = function (e) {
             if ($('#product-s').is(':visible')) {
                 const pageTop = $(window).scrollTop();
@@ -336,11 +336,13 @@ export class ProductComponent implements AfterViewInit {
                 const prodSingleBottom = prodSingleTop + $('#product-s').height();
                 // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
                 if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
+                    // out of screen
                     $('#product-s').hide();
                     $('#product').show();
+                    console.log('hh');
                 }
             }
-        }
+        };
 
         $('.product-menu-item').hover(function () {
             $(this).addClass('animated bounce');
