@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface Contact {
@@ -35,7 +35,7 @@ interface Contact {
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.scss']
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -107,12 +107,5 @@ export class ContactComponent implements OnInit {
             this.langIndex = 0;
         }
         this.nowContact = this.contacts[this.langIndex];
-    }
-
-    ngOnInit() {
-        if (!this.cookieService.get('lang')) {
-            this.cookieService.set('lang', 'zh');
-        }
-        this.language = this.cookieService.get('lang');
     }
 }

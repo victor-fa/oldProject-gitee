@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface Partner {
@@ -10,7 +10,7 @@ interface Partner {
     templateUrl: './partner.component.html',
     styleUrls: ['./partner.component.scss']
 })
-export class PartnerComponent implements OnInit, AfterViewInit {
+export class PartnerComponent implements AfterViewInit {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -31,13 +31,6 @@ export class PartnerComponent implements OnInit, AfterViewInit {
             this.langIndex = 0;
         }
         this.nowPartner = this.partners[this.langIndex];
-    }
-
-    ngOnInit() {
-        if (!this.cookieService.get('lang')) {
-            this.cookieService.set('lang', 'zh');
-        }
-        this.language = this.cookieService.get('lang');
     }
 
     ngAfterViewInit() {

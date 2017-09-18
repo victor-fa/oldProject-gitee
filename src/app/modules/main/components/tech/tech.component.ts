@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface TechnologySingle {
@@ -21,7 +21,7 @@ interface Technology {
     styleUrls: ['./tech.component.scss']
 })
 
-export class TechComponent implements OnInit, AfterViewInit {
+export class TechComponent implements AfterViewInit {
     language = 'UNKNOWN';
     langIndex = 0;
     nowIndex = 0;
@@ -136,13 +136,6 @@ export class TechComponent implements OnInit, AfterViewInit {
         }
         this.nowTech = this.technologies[this.langIndex];
         this.nowTechSingle = this.nowTech.pages[this.nowIndex];
-    }
-
-    ngOnInit() {
-        if (!this.cookieService.get('lang')) {
-            this.cookieService.set('lang', 'zh');
-        }
-        this.language = this.cookieService.get('lang');
     }
 
     ngAfterViewInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface Home {
@@ -12,7 +12,7 @@ interface Home {
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -38,12 +38,5 @@ export class HomeComponent implements OnInit {
             this.langIndex = 0;
         }
         this.nowHome = this.homes[this.langIndex];
-    }
-
-    ngOnInit() {
-        if (!this.cookieService.get('lang')) {
-            this.cookieService.set('lang', 'zh');
-        }
-        this.language = this.cookieService.get('lang');
     }
 }
