@@ -22,7 +22,7 @@ interface Technology {
 })
 
 export class TechComponent implements AfterViewChecked {
-    language = 'UNKNOWN'; AfterViewChecked
+    language = 'UNKNOWN';
     langIndex = 0;
     nowIndex = 0;
 
@@ -83,43 +83,43 @@ export class TechComponent implements AfterViewChecked {
             pages: [
                 {
                     title: 'Accurate Data',
-                    sub: 'We can pinpoint user information with related data analyzed by Chewbot.',
+                    sub: 'We can pinpoint user information with related data analyzed by Chewrobot.',
                     desc: 'For instance, a person is playing an online game. All the related game status information such as progress, item purchased, gaming efficiency, can all be obtained to assess and predict the person’s future choices. Most gaming company have those information but lack of means to process. Similar, the person could reach symptoms or certain remedies online. The search engine can have those vague pieces of information, but we are able to gather more specific details because our user will key in those personally. Further more, we can comprehend those data and gives a more specific feedbacks for users.',
                     name: 'Accurate Data',
                     icon: '/assets/img/tech_icons/tech_icon1_w.png'
                 },
                 {
                     title: 'Support for Complex Business Logic',
-                    sub: 'Chewbot have revolutionized voice interactive technology though integration of voice recognition, semantic interpretation and speech synthesis.',
+                    sub: 'Chewrobot have revolutionized voice interactive technology though integration of voice recognition, semantic interpretation and speech synthesis.',
                     desc: 'Currently all well known interactive robot, Siri, Alexa, XiaoIce, are all random chat majored with a little functional services provided. We can provide fully customizable resolution to our client, with the ability to process unique business logic, such as travel booking, order delivery and shopping all through conversation.',
                     name: 'Complex Logic',
                     icon: '/assets/img/tech_icons/tech_icon2_w.png'
                 },
                 {
                     title: 'Agile Development',
-                    sub: 'Chewbot utilize innovative smart algorithm improve more than hundred times than traditional means. Faster development, realtime update.',
+                    sub: 'Chewrobot utilize innovative smart algorithm improve more than hundred times than traditional means. Faster development, realtime update.',
                     desc: 'Most smart service company needs more than 4 month to create an demo for their customer, where we only needs less than a week to present a more compelling result. we can deploy our service quicker and more suitable by the needs of the customer.',
                     name: 'Agile Development',
                     icon: '/assets/img/tech_icons/tech_icon3_w.png'
                 },
                 {
                     title: 'Fully Customizable',
-                    sub: '人工智能巨头的技术有各自的先进性，但是极少会针对中小企业提供深度定制服务。',
+                    sub: 'Chewrobot can be fully customized according to different demands.',
                     desc: 'Google, Amazon and Apple have developed their AI system suitable for their own enterprise rather for any other companies. We can provide customizable AI for small business across all field. ',
                     name: 'Customization',
                     icon: '/assets/img/tech_icons/tech_icon4_w.png'
                 },
                 {
                     title: 'Self-developed Engine',
-                    sub: '齐悟机器人在记忆、推理等功能完胜国内外一线竞争对手。',
-                    desc: '齐悟的引擎已经开发了10多年，可以轻松实现快速定制，更重要的是开发费用相比竞争对手更低，而且迭代速度快，版本更新灵活，具有绝对的竞争优势。齐悟技术的核心是采用独特的偏重实例层的多层语义知识网络，基于图模板映射的规则归纳和知识推理，从而实现多轮人机对话及上下文语义理解。',
+                    sub: 'Chewrobot is superior than most competitors in deduction and memorization function',
+                    desc: 'Chewrobot engine has been developed for more than 10 years. With frequent update and high focus on logic deduction, we have built competitive advantage. The core technology of the engine utilize weighted multi-layer knowledge web and induction/deduction logic with projection modeling process.',
                     name: 'Engine',
                     icon: '/assets/img/tech_icons/tech_icon5_w.png'
                 },
                 {
                     title: 'More for Client',
                     sub: 'Standarized process, less training cost, faster into production.',
-                    desc: 'Contrast to the traditional AI training methods which needs large amount of data with manually marked, Chewbot requires only business logic which actual human use to handle cases. This not only greatly decrease the cost of time and money, also make Chewbot forming its own learning logic path. The entire process is easy to alter in order to increase or remove service.',
+                    desc: 'Contrast to the traditional AI training methods which needs large amount of data with manually marked, Chewrobot requires only business logic which actual human use to handle cases. This not only greatly decrease the cost of time and money, also make Chewrobot forming its own learning logic path. The entire process is easy to alter in order to increase or remove service.',
                     name: 'Price',
                     icon: '/assets/img/tech_icons/tech_icon6_w.png'
                 }
