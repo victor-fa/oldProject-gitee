@@ -89,7 +89,7 @@ export class ContactComponent {
                 },
                 addr: {
                     l1: 'Address ',
-                    l2: '深圳市南山区留学生创业大厦2007室'
+                    l2: 'Overseas Student Venture Mansion, Unit 2007, Shen Zhen'
                 },
                 email: {
                     l1: 'Email ',
