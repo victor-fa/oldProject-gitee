@@ -1,12 +1,13 @@
 import { Component, AfterViewInit } from '@angular/core';
 
-export interface Product {
+interface Product {
     title: string;
     sub: string;
     desc: [string];
     name: string;
     icon: string;
 }
+
 
 @Component({
     selector: 'app-product',
