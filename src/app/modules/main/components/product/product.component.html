@@ -1,9 +1,9 @@
 <div id="product">
     <div id="product-container">
-        <h3>产品方案</h3>
-        <p>提供的是垂直领域最智能的语义识别技术，同时根据客户的需求去提供完全定制化的解决方案。</p>
+        <h3>{{nowProd.title}}</h3>
+        <p>{{nowProd.sub}}</p>
         <ul id="product-menu">
-            <li *ngFor="let prod of products; let i = index" (click)="clickProdItem(i)" class="product-menu-item">
+            <li *ngFor="let prod of nowProd.pages; let i = index" (click)="clickProdItem(i)" class="product-menu-item">
                 <div class="product-menu-icon">
                     <img [src]="prod.icon" [alt]="prod.name">
                 </div>
@@ -17,7 +17,7 @@
 <div id="product-s" hidden>
     <div id="product-s-container">
         <ul id="product-s-menu">
-            <li *ngFor="let prod of products; let i = index;" (click)="clickProdSingleItem(i)">
+            <li *ngFor="let prod of nowProd.pages; let i = index;" (click)="clickProdSingleItem(i)">
                 <div class="product-s-menu-icon" [class.product-s-menu-active]="i == nowIndex">
                     <img [src]="prod.icon" [alt]="prod.name">
                 </div>
@@ -37,19 +37,19 @@
         </div>
         <div id="product-s-page-conainer">
             <div id="product-s-logo">
-                <img [src]="nowProd.icon" [alt]="nowProd.name">
+                <img [src]="nowProdSingle.icon" [alt]="nowProdSingle.name">
             </div>
             <div id="product-s-main">
                 <div id="product-s-main-title">
                     <h2>
-                        {{nowProd.title}}
+                        {{nowProdSingle.title}}
                     </h2>
                     <p>
-                        {{nowProd.sub}}
+                        {{nowProdSingle.sub}}
                     </p>
                 </div>
                 <div id="product-s-main-body">
-                    <p *ngFor="let p of nowProd.desc;">
+                    <p *ngFor="let p of nowProdSingle.desc;">
                         {{p}}
                     </p>
                 </div>

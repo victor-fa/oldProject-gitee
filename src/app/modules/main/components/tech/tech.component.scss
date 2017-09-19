@@ -24,22 +24,9 @@
             background-color: gold;
             box-shadow: 5px 5px 50px #cccccc; // opacity: 0.2;
             z-index: 1;
-            h3 {
-                font-size: 34px;
-                font-weight: 400;
-                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-                letter-spacing: 6px;
-                margin-bottom: 20px;
-            }
-            p {
-                font-size: 12px;
-                line-height: 23px;
-                letter-spacing: 1px;
-            }
             #tech-menu {
                 width: 345px;
                 height: 230px;
-                margin-top: 30px;
                 padding-left: 0;
                 list-style-type: none;
                 .tech-menu-inner {
@@ -47,7 +34,6 @@
                     width: 115px;
                     height: 115px;
                     margin: 0;
-
                     text-align: center;
                     img {
                         display: inline-block;
@@ -62,6 +48,7 @@
                         line-height: 12px;
                         color: #ffffff;
                         font-weight: lighter;
+                        text-align: center;
                         animation-iteration-count: infinite;
                     }
                 }
@@ -81,6 +68,37 @@
                 }
             }
         }
+        .tech-left-zh {
+            font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+            h3 {
+                font-size: 34px;
+                font-weight: 400;
+                letter-spacing: 6px;
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 12px;
+                line-height: 23px;
+                letter-spacing: 1px;
+            }
+            #tech-menu {
+                margin-top:30px;
+            }
+        }
+        .tech-left-en {
+            h3 {
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 12px;
+                text-align: justify;
+            }
+            #tech-menu {
+                margin-top:20px;
+            }
+        }
         #tech-right {
             position: absolute;
             top: 175px;
@@ -91,6 +109,15 @@
             box-shadow: 5px 5px 50px #cccccc;
             #tech-detail {
                 padding: 64px 80px 30px 105px;
+            }
+            #tech-right-logo {
+                position: absolute;
+                width: 46px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .tech-detail-zh {
+                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
                 h4 {
                     font-size: 24px;
                     margin-bottom: 20px;
@@ -109,11 +136,21 @@
                     letter-spacing: 2px;
                 }
             }
-            #tech-right-logo {
-                position: absolute;
-                width: 46px;
-                bottom: 20px;
-                right: 20px;
+            .tech-detail-en {
+                h4 {
+                    font-size: 24px;
+                    font-weight: 400;
+                    margin-bottom: 20px;
+                }
+                h5 {
+                    font-size: 14px;
+                    margin-bottom: 20px;
+                }
+                p {
+                    font-size: 12px;
+                    text-align: justify;
+                    color: gray;
+                }
             }
         }
     }
