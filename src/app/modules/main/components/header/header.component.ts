@@ -17,7 +17,7 @@ interface Header {
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-    language = 'UNKNOWN';
+    language = 'zh';
     langIndex = 0;
 
     nowHeader: Header;
