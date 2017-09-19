@@ -1,35 +1,35 @@
 <div id="career">
     <div id="career-container">
         <div id="career-title">
-            <h3>加入齐悟</h3>
-            <small>加入齐悟，创造人工智能的未来。</small>
+            <h3>{{nowJob.title}}</h3>
+            <small>{{nowJob.sub}}</small>
         </div>
         <div id="career-info">
             <div id="career-job-selected" (click)="selectJob()">
-                <span class="career-job-position-profix">职位： </span>{{nowJob.title}}
+                <span class="career-job-position-profix">{{nowJob.texts[0]}} </span>{{nowJobSingle.title}}
                 <span id="career-caret-down"><i class="fa fa-caret-down" aria-hidden="true"></i></span>
             </div>
 
             <div id="career-job-menu" [hidden]="!isShowJobMenu">
                 <ul>
-                    <li *ngFor="let job of jobs; let i = index" (click)="clickJobMenu(i)">
-                        <span class="career-job-position-profix">职位： </span>{{job.title}}
+                    <li *ngFor="let job of nowJob.pages; let i = index" (click)="clickJobMenu(i)">
+                        <span class="career-job-position-profix">{{nowJob.texts[1]}} </span>{{job.title}}
                     </li>
                 </ul>
             </div>
             <div id="career-job-info">
                 <div id="career-job-resp">
-                    <h5>工作职责：</h5>
-                    <ul *ngFor="let description of nowJob.desc;">
+                    <h5>{{nowJob.texts[2]}}</h5>
+                    <ul *ngFor="let description of nowJobSingle.desc;">
                         <li>
                             {{description}}
                         </li>
                     </ul>
                 </div>
                 <div id="career-job-detail">
-                    <h5>职位要求：</h5>
+                    <h5>{{nowJob.texts[3]}}</h5>
                     <ul>
-                        <li *ngFor="let detail of nowJob.details;">
+                        <li *ngFor="let detail of nowJobSingle.details;">
                             {{detail}}
                         </li>
                     </ul>
@@ -38,7 +38,7 @@
         </div>
         <div id="career-hr">
             <p>
-                如果你对以上任一职位感兴趣，请你提供详细丰富的个人简历，请发送至：<br>
+                {{nowJob.texts[4]}}<br>
                 <a href="mailto:hr@qiwu.ai?Subject=求职" target="_top">hr@qiwu.ai</a>
             </p>
         </div>
