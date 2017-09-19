@@ -136,7 +136,7 @@ export class CareerComponent {
                         'Develop AI processing algorithm with senior engineer'
                     ],
                     details: [
-                        'MS/BS in Computer Science / Mathematics, related discipline, or comparable experience',
+                        'MS/BS in Computer Science/Maths, related discipline, or comparable experience',
                         'Interested in NLP',
                         'Excellent in Java and Python',
                         '2+ years experience with NLP system in Java/Python',
