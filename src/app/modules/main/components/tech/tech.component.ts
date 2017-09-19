@@ -22,7 +22,7 @@ interface Technology {
 })
 
 export class TechComponent implements AfterViewChecked {
-    language = 'UNKNOWN';
+    language = 'zh';
     langIndex = 0;
     nowIndex = 0;
 
