@@ -172,7 +172,7 @@ export class ProductComponent implements AfterViewChecked {
                 }
             ]
         }, {
-            title: 'Products',
+            title: 'PRODUCTS',
             sub: '提供的是垂直领域最智能的语义识别技术，同时根据客户的需求去提供完全定制化的解决方案。',
             pages: [
                 {
