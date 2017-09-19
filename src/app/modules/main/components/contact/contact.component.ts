@@ -78,21 +78,21 @@ export class ContactComponent {
                 submit: 'Submit'
             },
             right: {
-                title: 'Information',
+                title: 'Infomation',
                 company: {
-                    zh: '深圳市人马互动科技有限公司',
+                    zh: '',
                     en: 'Centaurs Technologies Co., Ltd.'
                 },
                 tel: {
-                    l1: 'Telephone ',
+                    l1: '',
                     l2: '0755-86968772'
                 },
                 addr: {
-                    l1: 'Address ',
+                    l1: '',
                     l2: 'Overseas Student Venture Mansion, Unit 2007, Shen Zhen'
                 },
                 email: {
-                    l1: 'Email ',
+                    l1: '',
                     l2: 'contact@qiwu.ai'
                 }
             }

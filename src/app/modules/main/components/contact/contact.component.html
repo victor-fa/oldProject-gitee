@@ -1,6 +1,6 @@
 <div id="contact">
     <div id="contact-container">
-        <div id="contact-left-part">
+        <div id="contact-left-part" [class.contact-left-zh]="language==='zh'" [class.contact-left-en]="language==='en'">
             <h3>{{nowContact.title}}</h3>
             <form id="contact-send-email" action="mailto:contact@qiwu.ai" method="post" enctype="text/plain">
                 <input type="text" name="name" [placeholder]="nowContact.left.name">
@@ -9,14 +9,14 @@
                 <button type="submit" form="contact-send-email" value="Submit">{{nowContact.left.submit}}</button>
             </form>
         </div>
-        <div id="contact-right-part">
+        <div id="contact-right-part" [class.contact-right-zh]="language==='zh'" [class.contact-right-en]="language==='en'">
             <ul id="contact-info">
                 <li><span>{{nowContact.right.title}}</span></li>
                 <li><a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.zh}}</a></li>
-                <li><a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.en}}</a></li>
-                <li><span>{{nowContact.right.tel.l1}}</span>{{nowContact.right.tel.l2}}</li>
-                <li><span>{{nowContact.right.addr.l1}}</span>{{nowContact.right.addr.l2}}</li>
-                <li><span>{{nowContact.right.email.l1}}</span>{{nowContact.right.email.l2}}</li>
+                <li><i *ngIf="language==='en'" class="fa fa-building" aria-hidden="true"></i> <a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.en}}</a></li>
+                <li><i *ngIf="language==='en'" class="fa fa-phone" aria-hidden="true"></i> <span>{{nowContact.right.tel.l1}}</span>{{nowContact.right.tel.l2}}</li>
+                <li><i *ngIf="language==='en'" class="fa fa-envelope-o" aria-hidden="true"></i> <span>{{nowContact.right.email.l1}}</span>{{nowContact.right.email.l2}}</li>
+                <li><i *ngIf="language==='en'" class="fa fa-location-arrow" aria-hidden="true"></i> <span>{{nowContact.right.addr.l1}}</span>{{nowContact.right.addr.l2}}</li>
             </ul>
         </div>
     </div>
