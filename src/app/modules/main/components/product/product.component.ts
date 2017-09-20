@@ -353,7 +353,6 @@ export class ProductComponent implements AfterViewChecked {
                 // out of screen
                 $('#product-s').hide();
                 $('#product').show();
-                console.log('hh');
             }
         }
     }
