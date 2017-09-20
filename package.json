@@ -35,6 +35,7 @@
     "types": "^0.1.1",
     "typescript": "^2.3.3",
     "typings": "^2.1.1",
+    "webpack-sources": "^1.0.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
