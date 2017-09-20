@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component, AfterViewChecked, HostListener } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface ProductSingle {
@@ -328,22 +328,6 @@ export class ProductComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
-        window.onscroll = function (e) {
-            if ($('#product-s').is(':visible')) {
-                const pageTop = $(window).scrollTop();
-                const pageBottom = pageTop + $(window).height();
-                const prodSingleTop = $('#product-s').offset().top;
-                const prodSingleBottom = prodSingleTop + $('#product-s').height();
-                // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
-                if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
-                    // out of screen
-                    $('#product-s').hide();
-                    $('#product').show();
-                    console.log('hh');
-                }
-            }
-        };
-
         $('.product-menu-item').hover(function () {
             $(this).addClass('animated bounce');
         }, function () {
@@ -355,6 +339,23 @@ export class ProductComponent implements AfterViewChecked {
         }, function () {
             $(this).removeClass('animated pulse');
         });
+    }
+
+    @HostListener("window:scroll", [])
+    onWindowScroll() {
+        if ($('#product-s').is(':visible')) {
+            const pageTop = $(window).scrollTop();
+            const pageBottom = pageTop + $(window).height();
+            const prodSingleTop = $('#product-s').offset().top;
+            const prodSingleBottom = prodSingleTop + $('#product-s').height();
+            // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
+            if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
+                // out of screen
+                $('#product-s').hide();
+                $('#product').show();
+                console.log('hh');
+            }
+        }
     }
 
     clickProdItem(index: number): void {
