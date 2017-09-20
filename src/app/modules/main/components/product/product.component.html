@@ -1,7 +1,7 @@
 <div id="product">
-    <div id="product-container">
+    <div id="product-container" [class.product-container-zh]="language==='zh'" [class.product-container-en]="language==='en'">
         <h3>{{nowProd.title}}</h3>
-        <p>{{nowProd.sub}}</p>
+        <small>{{nowProd.sub}}</small>
         <ul id="product-menu">
             <li *ngFor="let prod of nowProd.pages; let i = index" (click)="clickProdItem(i)" class="product-menu-item">
                 <div class="product-menu-icon">
