@@ -123,11 +123,12 @@
         .contact-right-en {
             ul {
                 li {
-                    i {
-                        width: 20px;
+                    .contact-info-li-prefix {
+                        display: inline-block;
+                        width: 45px;
                     }
                     #contact-info-addr-2 {
-                        padding-left: 24px;
+                        padding-left: 45px;
                     }
                 }
             }

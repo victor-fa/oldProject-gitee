@@ -80,22 +80,22 @@ export class ContactComponent {
                 submit: 'Submit'
             },
             right: {
-                title: 'Infomation',
+                title: 'Infomation:',
                 company: {
                     zh: '',
                     en: 'Centaurs Technologies Co., Ltd.'
                 },
                 tel: {
-                    l1: '',
-                    l2: '0755-86968772'
+                    l1: 'Tel:',
+                    l2: '(+86)755-86968772'
                 },
                 addr: {
-                    l1: '',
+                    l1: 'Addr:',
                     l2: 'Overseas Student Venture Mansion,',
                     l3: 'Unit 2007, Shen Zhen'
                 },
                 email: {
-                    l1: '',
+                    l1: 'Email:',
                     l2: 'contact@qiwu.ai'
                 }
             }
