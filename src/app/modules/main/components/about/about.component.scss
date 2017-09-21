@@ -15,12 +15,20 @@
         height: 100%;
         margin: 0 auto;
         padding: 80px 90px;
-        #about-robot {
+        #about-left-pic {
             position: absolute;
             z-index: 1;
             top: 165px;
             left: 50px;
             box-shadow: 5px 5px 30px #cccccc;
+        }
+        #about-left-brand-logo {
+            position: absolute;
+            top: 180px;
+            left: 70px;
+            width: 46px;
+            filter: brightness(0%) invert(100%);
+            z-index: 2;
         }
         #about-info {
             position: absolute;
