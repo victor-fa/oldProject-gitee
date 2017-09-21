@@ -23,6 +23,7 @@
                 padding: 8px 10px;
                 border: none;
                 outline: none;
+                line-height: 20px;
                 &::-webkit-input-placeholder {
                     /* Chrome/Opera/Safari */
                     color: lightgrey;
@@ -74,7 +75,8 @@
             textarea,
             button {
                 font-size: 14px;
-                letter-spacing: 4px;
+                font-weight: lighter;
+                letter-spacing: 2px;
             }
         }
         .contact-left-en {
@@ -98,7 +100,7 @@
             #contact-info {
                 list-style: none;
                 color: grey;
-                span {
+                .contact-info-li-prefix {
                     font-weight: bold;
                     color: #000000;
                 }
@@ -117,14 +119,15 @@
                 }
             }
         }
-        .contact-right-zh {
-
-        }
+        .contact-right-zh {}
         .contact-right-en {
             ul {
                 li {
                     i {
                         width: 20px;
+                    }
+                    #contact-info-addr-2 {
+                        padding-left: 24px;
                     }
                 }
             }

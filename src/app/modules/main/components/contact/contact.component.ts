@@ -22,6 +22,7 @@ interface Contact {
         addr: {
             l1: string;
             l2: string;
+            l3: string;
         }
         email: {
             l1: string;
@@ -61,7 +62,8 @@ export class ContactComponent {
                 },
                 addr: {
                     l1: '地址：',
-                    l2: '深圳市南山区留学生创业大厦2007室'
+                    l2: '深圳市南山区留学生创业大厦2007室',
+                    l3: ''
                 },
                 email: {
                     l1: '邮箱：',
@@ -89,7 +91,8 @@ export class ContactComponent {
                 },
                 addr: {
                     l1: '',
-                    l2: 'Overseas Student Venture Mansion, Unit 2007, Shen Zhen'
+                    l2: 'Overseas Student Venture Mansion,',
+                    l3: 'Unit 2007, Shen Zhen'
                 },
                 email: {
                     l1: '',
