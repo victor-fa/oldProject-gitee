@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
+import { HomeTitleZhComponent } from "./title-zh/title-zh.component";
+import { HomeTitleEnComponent } from "./title-en/title-en.component";
 interface Home {
     h1: string;
     h2: string;

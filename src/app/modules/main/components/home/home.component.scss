@@ -16,40 +16,4 @@
         animation-duration: 1s;
         // animation-delay: 1s;
     }
-    .home-container-zh {
-        font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-        #home-line-1 {
-            margin: 105px 0 0 0;
-            padding: 0;
-            font-size: 42px;
-            font-weight: 200;
-            letter-spacing: 6px;
-        }
-        #home-line-2 {
-            margin: -15px 0 0 0;
-            padding: 0 0 0 4px;
-            font-size: 52px;
-            letter-spacing: 6px;
-        }
-        #home-line-3 {
-            margin: -5px 0 0 0;
-            padding: 0 0 0 20px;
-            font-size: 31px;
-            font-weight: 200;
-            letter-spacing: 21px;
-        }
-    }
-    .home-container-en {
-        font-family: Arial, Helvetica, sans-serif;
-        #home-line-1 {
-            margin: 120px 0 0 0;
-            font-size: 36px;
-        }
-        #home-line-2 {
-            font-size: 36px;
-        }
-        #home-line-3 {
-            font-size: 36px;
-        }
-    }
 }
