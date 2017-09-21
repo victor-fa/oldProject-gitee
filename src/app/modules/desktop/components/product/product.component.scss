@@ -24,7 +24,6 @@
             color: lightgray;
             font-size: 12px;
             padding-bottom: 20px;
-            letter-spacing: 2px;
         }
         #product-menu {
             margin-top: 75px;
@@ -60,12 +59,18 @@
             font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
             letter-spacing: 6px;
         }
+        small {
+            letter-spacing: 2px;
+        }
     }
     .product-container-en {
         h3 {
             font-size: 28px;
             font-weight: 600;
             letter-spacing: 2px;
+        }
+        small {
+            letter-spacing: 1px;
         }
     }
 }

@@ -27,7 +27,6 @@
             }
             small {
                 font-size: 12px;
-                letter-spacing: 2px;
             }
         }
         .career-title-zh {
@@ -37,12 +36,18 @@
                 font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
                 letter-spacing: 6px;
             }
+            small {
+                letter-spacing: 2px;
+            }
         }
         .career-title-en {
             h3 {
                 font-size: 28px;
                 font-weight: 600;
                 letter-spacing: 2px;
+            }
+            small {
+                letter-spacing: 1px;
             }
         }
         #career-info {
