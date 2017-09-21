@@ -1,13 +1,13 @@
 <div id="home">
-    <div id="home-container" class="animated zoomIn">
+    <div id="home-container" [class.home-container-zh]="language == 'zh'" [class.home-container-en]="language == 'en'">
         <div id="home-line-1">
-            革命性
+            {{nowHome.h1}}
         </div>
         <div id="home-line-2">
-            语音交互技术
+            {{nowHome.h2}}
         </div>
         <div id="home-line-3">
-            解决方案提供商
+            {{nowHome.h3}}
         </div>
     </div>
 </div>

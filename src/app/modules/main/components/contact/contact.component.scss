@@ -13,10 +13,6 @@
         background-color: #ffffff;
         #contact-left-part {
             h3 {
-                font-size: 34px;
-                font-weight: 400;
-                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-                letter-spacing: 6px;
                 margin: 0;
             }
             input,
@@ -25,8 +21,6 @@
                 display: block;
                 margin-top: 20px;
                 padding: 8px 10px;
-                font-size: 14px;
-                letter-spacing: 4px;
                 border: none;
                 outline: none;
                 &::-webkit-input-placeholder {
@@ -69,11 +63,38 @@
                 }
             }
         }
+        .contact-left-zh {
+            h3 {
+                font-size: 34px;
+                font-weight: 400;
+                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                letter-spacing: 6px;
+            }
+            input,
+            textarea,
+            button {
+                font-size: 14px;
+                letter-spacing: 4px;
+            }
+        }
+        .contact-left-en {
+            h3 {
+                font-size: 28px;
+                font-weight: 600;
+                letter-spacing: 2px;
+            }
+            input,
+            textarea,
+            button {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+        }
         #contact-right-part {
             position: absolute;
-            left: 650px;
             top: 86px;
             font-size: 14px;
+            left: 600px;
             #contact-info {
                 list-style: none;
                 color: grey;
@@ -93,6 +114,18 @@
                 }
                 li:nth-child(4) {
                     margin-top: 12px;
+                }
+            }
+        }
+        .contact-right-zh {
+
+        }
+        .contact-right-en {
+            ul {
+                li {
+                    i {
+                        width: 20px;
+                    }
                 }
             }
         }
