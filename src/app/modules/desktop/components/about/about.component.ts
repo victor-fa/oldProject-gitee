@@ -34,7 +34,7 @@ export class AboutComponent implements AfterViewInit {
 
     picIndex: number = 0;
     pictures: [string] = [
-        '/assets/img/about_pic1.jpg',
+        '/assets/img/about_pic5.jpg',
         '/assets/img/about_pic2.jpg',
         '/assets/img/about_pic3.jpg',
         '/assets/img/about_pic4.jpg'
