@@ -7,8 +7,8 @@ import { MainComponent } from './main.component';
 
 import { HeaderComponent } from "./components/header/header.component";
 import { HomeComponent } from "./components/home/home.component";
-import { HomeTitleZhComponent } from "./components/home/title-zh/title-zh.component";
-import { HomeTitleEnComponent } from "./components/home/title-en/title-en.component";
+import { HomeTitleZhComponent } from "./components/home/title/title-zh.component";
+import { HomeTitleEnComponent } from "./components/home/title/title-en.component";
 import { TechComponent } from "app/modules/main/components/tech/tech.component";
 import { ProductComponent } from "app/modules/main/components/product/product.component";
 import { PartnerComponent } from './components/partner/partner.component';
