@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface About {
@@ -12,8 +12,7 @@ interface About {
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.scss']
 })
-
-export class AboutComponent {
+export class AboutComponent implements AfterViewInit {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -33,6 +32,15 @@ export class AboutComponent {
         }
     ];
 
+    picIndex: number = 0;
+    pictures: [string] = [
+        '/assets/img/about_pic1.jpg',
+        '/assets/img/about_pic2.jpg',
+        '/assets/img/about_pic3.jpg',
+        '/assets/img/about_pic4.jpg'
+    ];
+    nowPic: string;
+
     constructor(private cookieService: CookieService) {
         this.language = this.cookieService.get('lang');
         if (this.language === 'en') {
@@ -41,5 +49,18 @@ export class AboutComponent {
             this.langIndex = 0;
         }
         this.nowAbout = this.abouts[this.langIndex];
+        this.nowPic = this.pictures[this.picIndex];
+    }
+
+    ngAfterViewInit() {
+        this.changePicLeft();
+    }
+
+    changePicLeft() {
+        setTimeout(() => {
+            this.picIndex = (this.picIndex + 1) % (this.pictures.length);
+            this.nowPic = this.pictures[this.picIndex];
+            this.changePicLeft();
+        }, 2000);
     }
 }
