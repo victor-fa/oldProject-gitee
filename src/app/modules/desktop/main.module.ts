@@ -9,13 +9,13 @@ import { HeaderComponent } from "./components/header/header.component";
 import { HomeComponent } from "./components/home/home.component";
 import { HomeTitleZhComponent } from "./components/home/title/title-zh.component";
 import { HomeTitleEnComponent } from "./components/home/title/title-en.component";
-import { TechComponent } from "app/modules/main/components/tech/tech.component";
-import { ProductComponent } from "app/modules/main/components/product/product.component";
+import { TechComponent } from "./components/tech/tech.component";
+import { ProductComponent } from "./components/product/product.component";
 import { PartnerComponent } from './components/partner/partner.component';
-import { AboutComponent } from "app/modules/main/components/about/about.component";
-import { CareerComponent } from "app/modules/main/components/career/career.component";
-import { ContactComponent } from "app/modules/main/components/contact/contact.component";
-import { FooterComponent } from "app/modules/main/components/footer/footer.component";
+import { AboutComponent } from "./components/about/about.component";
+import { CareerComponent } from "./components/career/career.component";
+import { ContactComponent } from "./components/contact/contact.component";
+import { FooterComponent } from "./components/footer/footer.component";
 
 
 
