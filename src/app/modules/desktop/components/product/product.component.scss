@@ -43,6 +43,12 @@
                     background-color: rgba(255, 255, 255, 0.1);
                     width: 97px;
                     height: 97px;
+                    &:hover {
+                        background-color: gold;
+                        img {
+                            filter: invert(100%);
+                        }
+                    }
                 }
                 .product-menu-title {
                     margin-top: 10px;
