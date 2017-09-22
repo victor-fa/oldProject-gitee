@@ -4,61 +4,61 @@
     min-width: 1000px;
     max-width: 1600px;
     margin: 0 auto;
-    background-image: url(/assets/img/home_bg.png);
+    background-image: url(/assets/img/home_bg_long.png);
     background-position: center;
     #home-container {
+        position: relative;
         width: 1000px;
         height: 100%;
         margin: 0 auto;
         text-align: center;
         color: #ffffff;
-        padding: 59px;
-        overflow: cover;
-
-        // from here
+        padding: 100px;
+        overflow: cover; // from here
         $duration: 10s;
         $ease: ease-in-out;
-        .holder {
-            width: 500px;
-            height: 250px;
-            margin: 0 auto;
-            position: relative;
-            .circle {
-                border-radius: 100% 100% 0 0;
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                transform-origin: bottom center;
-            }
-            @for $i from 1 through 16 {
-                .circle:nth-child(#{$i}) {
-                    $size: 0;
-                    @if($i > 1) {
+        #home-bg-anim {
+            position: absolute;
+            top: 59px;
+            left: 250px;
+            .holder {
+                width: 500px;
+                height: 250px;
+                margin: 0 auto;
+                position: relative;
+                .circle {
+                    border-radius: 100% 100% 0 0;
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    transform-origin: bottom center;
+                }
+                @for $i from 1 through 32 {
+                    .circle:nth-child(#{$i}) {
                         $size: 31px * ($i - 1);
-                        border: 13px solid rgba(255, 255, 255, 0.2);;
+                        border: 13px solid rgba(255 / $i, 255, 255, 0.001 * $i);
+                        border-bottom: none;
+                        border-radius: $size $size 0 0;
+                        width: $size;
+                        height: $size / 2;
+                        z-index: 32 - $i;
+                        animation: circle-#{$i} $duration infinite $ease;
                     }
-                    @else {
-                        $size: 25px;
-                        background-color: rgba(255, 255, 255, 0.2);
+                    @keyframes circle-#{$i} {
+                        0% {
+                            transform: translateX(-50%) rotate(0deg);
+                        }
+                        100% {
+                            @if ($i % 2==0) {
+                                transform: translateX(-50%) rotate(-($i * 360deg));
+                            }
+                            @else {
+                                transform: translateX(-50%) rotate(($i * 360deg));
+                            }
+                        }
                     }
-                    border-bottom:none;
-                    border-radius:$size $size 0 0;
-                    width:$size;
-                    height:$size / 2;
-                    z-index: 16 - $i;
-                    // animation: circle-#{$i} $duration infinite $ease;
                 }
-                /*
-                @keyframes circle-#{$i} {
-                    0% {
-                        transform: translateX(-50%) rotate(0deg);
-                    }
-                    100% {
-                        transform: translateX(-50%) rotate(-($i * 360deg));
-                    }
-                }
-                */
             }
         }
     }
