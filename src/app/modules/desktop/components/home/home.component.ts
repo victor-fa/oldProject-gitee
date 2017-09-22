@@ -19,6 +19,8 @@ export class HomeComponent {
     language = 'zh';
 
     constructor(private cookieService: CookieService) {
-        this.language = this.cookieService.get('lang');
+        if (this.cookieService.get('lang')) {
+            this.language = this.cookieService.get('lang');
+        }
     }
 }
