@@ -16,17 +16,18 @@
         color: #ffffff;
         padding: 100px;
         $duration: 10s;
+        $max: 40;
         $ease: ease-in;
         #home-bg-anim {
             position: absolute;
             top: 59px;
             left: 250px;
-            .holder {
+            .home-holder {
                 width: 500px;
                 height: 250px;
                 margin: 0 auto;
                 position: relative;
-                .circle {
+                .home-circle {
                     border-radius: 100% 100% 0 0;
                     position: absolute;
                     bottom: 0;
@@ -34,15 +35,23 @@
                     transform: translateX(-50%);
                     transform-origin: bottom center;
                 }
-                @for $i from 1 through 40 {
-                    .circle:nth-child(#{$i}) {
+                @for $i from 1 through $max {
+                    .home-circle:nth-child(#{$i}) {
                         $size: 31px * ($i - 1);
-                        border: 13px solid rgba(255 / $i, 255, 255, 0.001 * $i);
+                        @if ($i==1) {
+                            border: none;
+                        }
+                        @else if ($i > 30) {
+                            border: 13px dashed rgba(255 / $i, 255, 255, 0.06 - 0.003 * ($i - 30));
+                        }
+                        @else {
+                            border: 13px dashed rgba(255 / $i, 255, 255, 0.002 * $i);
+                        }
                         border-bottom: none;
                         border-radius: $size $size 0 0;
                         width: $size;
                         height: $size / 2;
-                        z-index: 40 - $i;
+                        z-index: $max - $i;
                         animation: circle-#{$i} $duration infinite $ease;
                     }
                     @keyframes circle-#{$i} {
