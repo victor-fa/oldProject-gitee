@@ -4,6 +4,7 @@
     min-width: 1000px;
     max-width: 1600px;
     margin: 0 auto;
+    overflow: hidden;
     background-image: url(/assets/img/home_bg_long.png);
     background-position: center;
     #home-container {
@@ -14,9 +15,8 @@
         text-align: center;
         color: #ffffff;
         padding: 100px;
-        overflow: cover; // from here
         $duration: 10s;
-        $ease: ease-in-out;
+        $ease: ease-in;
         #home-bg-anim {
             position: absolute;
             top: 59px;
@@ -34,7 +34,7 @@
                     transform: translateX(-50%);
                     transform-origin: bottom center;
                 }
-                @for $i from 1 through 32 {
+                @for $i from 1 through 40 {
                     .circle:nth-child(#{$i}) {
                         $size: 31px * ($i - 1);
                         border: 13px solid rgba(255 / $i, 255, 255, 0.001 * $i);
@@ -42,7 +42,7 @@
                         border-radius: $size $size 0 0;
                         width: $size;
                         height: $size / 2;
-                        z-index: 32 - $i;
+                        z-index: 40 - $i;
                         animation: circle-#{$i} $duration infinite $ease;
                     }
                     @keyframes circle-#{$i} {
