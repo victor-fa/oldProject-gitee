@@ -9,6 +9,7 @@ const routes: Routes = [
         canActivate: [MobiGuard],
     },
     { path: 'm', loadChildren: './modules/mobile/mobile.module#MobileModule' },
+    { path: 'test', loadChildren: './modules/test/test.module#TestModule' },
     { path: 'not-found', loadChildren: './modules/not-found/not-found.module#NotFoundModule' },
     { path: '**', redirectTo: 'not-found' }
 ];

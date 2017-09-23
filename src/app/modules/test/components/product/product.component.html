@@ -1,0 +1,59 @@
+<div id="product">
+    <div id="product-container" [class.product-container-zh]="language==='zh'" [class.product-container-en]="language==='en'">
+        <h3>{{nowProd.title}}</h3>
+        <small>{{nowProd.sub}}</small>
+        <ul id="product-menu">
+            <li *ngFor="let prod of nowProd.pages; let i = index" (click)="clickProdItem(i)" class="product-menu-item">
+                <div class="product-menu-icon">
+                    <img [src]="prod.icon" [alt]="prod.name">
+                </div>
+                <div class="product-menu-title">
+                    {{prod.name}}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="product-s" hidden>
+    <div id="product-s-container">
+        <ul id="product-s-menu">
+            <li *ngFor="let prod of nowProd.pages; let i = index;" (click)="clickProdSingleItem(i)">
+                <div class="product-s-menu-icon" [class.product-s-menu-active]="i == nowIndex">
+                    <img [src]="prod.icon" [alt]="prod.name">
+                </div>
+            </li>
+        </ul>
+        <div id="product-s-turn-left" class="product-s-turn-page" (click)="prevPage()">
+            <svg width="30" height="60">
+                <line x1="30" y1="0" x2="0" y2="30" />
+                <line x1="30" y1="60" x2="0" y2="30" />
+            </svg>
+        </div>
+        <div id="product-s-turn-right" class="product-s-turn-page" (click)="nextPage()">
+            <svg width="30" height="60">
+                <line x1="0" y1="0" x2="30" y2="30" />
+                <line x1="0" y1="60" x2="30" y2="30" />
+            </svg>
+        </div>
+        <div id="product-s-page-conainer">
+            <div id="product-s-logo">
+                <img [src]="nowProdSingle.icon" [alt]="nowProdSingle.name">
+            </div>
+            <div id="product-s-main">
+                <div id="product-s-main-title">
+                    <h2>
+                        {{nowProdSingle.title}}
+                    </h2>
+                    <p>
+                        {{nowProdSingle.sub}}
+                    </p>
+                </div>
+                <div id="product-s-main-body">
+                    <p *ngFor="let p of nowProdSingle.desc;">
+                        {{p}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
