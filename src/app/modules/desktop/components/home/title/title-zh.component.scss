@@ -1,5 +1,12 @@
 #home-title {
     font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+    position: relative;
+    z-index: 100;
+    transition: all 0.4s ease-in;
+    &:hover {
+        transform: scale(1.1);
+        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    }
     #home-line-1 {
         margin: 105px 0 0 0;
         padding: 0;
