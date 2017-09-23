@@ -16,8 +16,8 @@
         color: #ffffff;
         padding: 100px;
         $duration: 10s;
-        $max: 40;
-        $ease: ease-in;
+        $max: 20;
+        $ease: linear;
         #home-bg-anim {
             position: absolute;
             top: 59px;
@@ -37,15 +37,15 @@
                 }
                 @for $i from 1 through $max {
                     .home-circle:nth-child(#{$i}) {
-                        $size: 31px * ($i - 1);
+                        $size: 50px * ($i - 1);
                         @if ($i==1) {
                             border: none;
                         }
-                        @else if ($i > 30) {
-                            border: 13px dashed rgba(255 / $i, 255, 255, 0.06 - 0.003 * ($i - 30));
+                        @else if ($i > 15) {
+                            border: #{30-$i}px dashed rgba(255/$i, 255, 255, 0.04);
                         }
                         @else {
-                            border: 13px dashed rgba(255 / $i, 255, 255, 0.002 * $i);
+                            border: #{$i+3}px dashed rgba(255 / $i, 255, 255, 0.002 * $i);
                         }
                         border-bottom: none;
                         border-radius: $size $size 0 0;
