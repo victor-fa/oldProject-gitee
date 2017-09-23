@@ -6,6 +6,9 @@
     &:hover {
         transform: scale(1.1);
         text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        img {
+            opacity: 0.8;
+        }
     }
     #home-line-1 {
         margin: 120px 0 0 0;
@@ -16,5 +19,12 @@
     }
     #home-line-3 {
         font-size: 36px;
+    }
+    img {
+        position: absolute;
+        top: 55px;
+        left: -400px;
+        opacity: 0;
+        transition: opacity 0.8s ease-in-out;
     }
 }
