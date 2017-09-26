@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var UserService = require('../services/user')
-var fs = require('fs');
+const fs = require('fs');
 var album_dir = './resources/albums/';
 var uuid = require('uuid')
 const path = require("path")
@@ -69,6 +69,7 @@ router.post('/upload', function(req, res) {
             save_image(absolute_path, filename, album, up_wechat, function (err) {
                 if (err){
                     req.flash('error_msg', '文件上传失败：' + err)
+                    fs.unlink(absolute_path)
                 } else {
                     req.flash('success_msg', '文件上传成功！文件ID为：' + filename + ' 请在引擎回复末尾添加： 啚' + filename)
                 }
