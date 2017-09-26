@@ -29,7 +29,10 @@ function save_image(path, name, album, up_wechat, callback) {
       json: true };
     
     request(options, function (error, response, body) {
-      if (error) callback(error)
+      if (error) {
+        callback(error)
+        return
+      }
       callback()
     })
 }
