@@ -16,8 +16,10 @@ router.get('*', gallery({
 	staticFiles : 'resources/albums',
 	urlRoot : 'gallery', 
 	title : 'Images',
-//	render: false
+	render: false
 }), function(req, res, next) {
+	// console.log(req.data)
+	// res.render('image/delete.handlebars',req.html)
 	res.send(req.data)
 })
 

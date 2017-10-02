@@ -3,14 +3,14 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">
-                上传图片
+                删除图片
             </h1>
             <ol class="breadcrumb">
                 <li>
                     <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
                 </li>
                 <li class="active">
-                    <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> 上传图片
+                    <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> 删除图片
                 </li>
             </ol>
         </div>
@@ -48,13 +48,9 @@
                 {{/each}}
             </select>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">图片</label>
-            <input class="form-control" type="file" name="picture" id="picture">
-            <label class="checkbox-inline"></label>
-        </div>
-        <div class="form-group">
-            <input type="checkbox" name="up_wechat" value="true" />上传到微信
+        <div id="image-list-container">
+            {{!-- <label class="col-sm-2 control-label">图片列表</label> --}}
+            
         </div>
         <div class="form-group">
             <input class="btn btn-primary" type="submit" value="Upload">
@@ -62,3 +58,8 @@
         </form>
     </div>
 </div>
+
+<script>
+    var username = "{{username}}"
+
+</script>
