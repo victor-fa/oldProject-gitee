@@ -33,7 +33,4 @@
     src: url("/assets/fonts/方正兰亭纤黑_GBK.ttf") format("truetype");
 }
 
-@font-face {
-    font-family: "Roboto";
-    src: url("https://fonts.googleapis.com/css?family=Roboto");
-}
+@import url('https://fonts.googleapis.com/css?family=Roboto');
