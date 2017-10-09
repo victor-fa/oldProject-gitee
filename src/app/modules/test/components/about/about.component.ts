@@ -46,8 +46,8 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
     nowPic: string;
 
-    private _sWidth: number;
-    private _sHeight: number;
+    public _sWidth: number;
+    public _sHeight: number;
     private ctx: CanvasRenderingContext2D;
     private running: boolean;
     private dotNumber: number;
