@@ -9,12 +9,25 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
+    position: relative;
+    canvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        // background-color: rgba(255,255,255,0.1);
+        background-image: '/assets/img/brand_logo_gold.png';
+        // z-index: 1;
+    }
     #about-container {
         position: relative;
         width: 1000px;
         height: 100%;
         margin: 0 auto;
         padding: 80px 90px;
+
         #about-left-pic {
             position: absolute;
             z-index: 1;

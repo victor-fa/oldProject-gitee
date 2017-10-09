@@ -71,6 +71,7 @@
                     }
                 }
                 #header-nav-en {
+                    font-family: 'Roboto', sans-serif;
                     position: absolute;
                     right: 15px;
                 }
@@ -81,8 +82,9 @@
                 }
             }
             .header-nav-en {
+                font-family: 'Roboto', sans-serif;
                 .header-nav-item {
-                    letter-spacing: 0;
+                    letter-spacing: 1;
                 }
             }
         }

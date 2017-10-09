@@ -50,10 +50,16 @@
                         }
                     }
                 }
-                .product-menu-title {
+                .product-menu-title-zh {
                     margin-top: 10px;
                     font-size: 12px;
                     letter-spacing: 3px;
+                }
+                .product-menu-title-en {
+                    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+                    margin-top: 10px;
+                    font-size: 12px;
+                    letter-spacing: 1px;
                 }
             }
         }
@@ -70,6 +76,7 @@
         }
     }
     .product-container-en {
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
         h3 {
             font-size: 28px;
             font-weight: 600;

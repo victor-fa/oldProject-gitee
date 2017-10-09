@@ -7,7 +7,7 @@
                 <div class="product-menu-icon">
                     <img [src]="prod.icon" [alt]="prod.name">
                 </div>
-                <div class="product-menu-title">
+                <div [class.product-menu-title-zh]="language == 'zh'" [class.product-menu-title-en]="language == 'en'">
                     {{prod.name}}
                 </div>
             </li>
