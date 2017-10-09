@@ -33,23 +33,21 @@
                     margin-top: 17px;
                     a {
                         color: #333333;
-                        font-weight: lighter;
+
                         text-decoration: none;
                     }
                     &:hover {
-                        font-weight: 900;
                         color: #000000;
                         border-bottom: gold solid 2px;
                     }
                     .lang-active {
-                        font-weight: 900;
                         color: #000000;
                     }
                 }
                 .active,
                 .lang-active {
                     a {
-                        font-weight: 900;
+                        font-weight: 700;
                         color: #000000;
                     }
                 }
@@ -71,7 +69,8 @@
                     }
                 }
                 #header-nav-en {
-                    font-family: 'Roboto', sans-serif;
+                    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+                    font-weight: 300;
                     position: absolute;
                     right: 15px;
                 }
@@ -79,11 +78,13 @@
             .header-nav-zh {
                 .header-nav-item {
                     letter-spacing: 2px;
+                    font-weight: lighter;
                 }
             }
             .header-nav-en {
-                font-family: 'Roboto', sans-serif;
+                font-family: 'Roboto', Arial, Helvetica, sans-serif;
                 .header-nav-item {
+                    font-weight: 300;
                     letter-spacing: 1;
                 }
             }
