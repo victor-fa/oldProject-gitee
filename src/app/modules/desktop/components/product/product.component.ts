@@ -202,7 +202,7 @@ export class ProductComponent implements AfterViewChecked {
                             img: ['/assets/img/product_cases/vi_cc_01.png'],
                             link: [{
                                 ref: 'https://www.centaurstech.com/product/cc/',
-                                name: 'CC'
+                                name: '醋醋官网'
                             }],
                             video: []
                         }
@@ -382,7 +382,7 @@ export class ProductComponent implements AfterViewChecked {
                             img: ['/assets/img/product_cases/vi_cc_01.png'],
                             link: [{
                                 ref: 'https://www.centaurstech.com/product/cc/',
-                                name: 'CC'
+                                name: 'CuCu'
                             }],
                             video: []
                         }
