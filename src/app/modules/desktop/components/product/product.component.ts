@@ -195,7 +195,18 @@ export class ProductComponent implements AfterViewChecked {
                         '直播向来都是泛娱乐领域最火热的传播渠道，最有话题性的IP虚拟直播将会把这个热度再升一级，虚拟偶像“醋醋”的出现，是来自音熊联萌以及齐悟智能大脑的完美结合。这个将双方的优势结合，为虚拟IP形象配上了一个智能“大脑”让虚拟偶像活起来。虚拟偶像的展现场景可以是2D或者是3D场面，可以结合直播平台与粉丝互动，来真实演绎专属于粉丝的剧情走向和推动。同时也可以在游戏中加入更多的互动环节，让粉丝来决定主播该怎么玩这个游戏。利用齐悟的多轮对话技术能让粉丝与虚拟偶像的互动更加有趣味性，有更多的互动火花爆发。虚拟偶像的应用场景不仅限于直播平台上的一对多互动，更可以一对一的互动，也可以在游戏场景中与粉丝互动一起娱乐，更充满趣味性和娱乐性。也可以在线上教育中寓教于乐，让学习不再枯燥，同时还大大地降低了家教费用，让您足不出户，随时随地都可以学习。',
                         '虚拟偶像的变现价值具有十分大的潜力，粉丝可以在直播过程中与偶像互动，赠送礼品或者红包。也可以选择付费单聊，与偶像“零距离”接触。更可以通过在直播过程中的广告植入来扩大宣传和产品广告有效性。这将是最大的盈利点来覆盖成本，获得共赢。同时虚拟偶像能够迅速渗入到粉丝的生活各个方面，打造专属IP衍生品将带来二次收益。虚拟偶像将会是二次元的时代的成功产品，齐悟大脑将让虚拟偶像“醋醋”走进现实，走入千万粉丝的心中，为生活创造更多的欢乐，让生活有更多的色彩。'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/vi_cc_01.png'],
+                            link: [{
+                                ref: 'https://www.centaurstech.com/product/cc/',
+                                name: 'CC'
+                            }],
+                            video: []
+                        }
+                    ],
                     name: '虚拟偶像',
                     icon: '/assets/img/product_icons/idol_w.png'
                 },
@@ -364,7 +375,18 @@ export class ProductComponent implements AfterViewChecked {
                         'Online streaming is one of the most potent channel of media now. Once we combine the virtual IP with steaming we can quickly developed a “hot-spot” on the media. Virtual Idol can be either 2D or 3D when live streaming. It can also interactive with viewers on comments, of in game actions and etc.',
                         'Virtual Idol is a high potential product. It can profit from streaming bonus, view counts or interactive advertisements. It will not only help IP holder generate more revenue form its product also increase the products exposure to reinforce the holder’s reputation. The virtual idol broadcasting would no doubt leads the live streaming industry into a new era.'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/vi_cc_01.png'],
+                            link: [{
+                                ref: 'https://www.centaurstech.com/product/cc/',
+                                name: 'CC'
+                            }],
+                            video: []
+                        }
+                    ],
                     name: 'Virtual Idol',
                     icon: '/assets/img/product_icons/idol_w.png'
                 },
