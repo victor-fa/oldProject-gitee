@@ -215,6 +215,26 @@
                         letter-spacing: 1px;
                     }
                 }
+                .product-s-case {
+                    h5 {
+                        font-size: 18px;
+                    }
+                    .product-s-case-link {
+                        margin: 40px 0;
+                        a {
+                            display: inline-block;
+                            padding: 5px 15px;
+                            color: gray;
+                            background-color: gold;
+                        }
+                    }
+                    .product-s-case-img {
+                        margin: 40px 0;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
             }
         }
     }
