@@ -53,6 +53,20 @@
                         {{p}}
                     </p>
                 </div>
+                <div *ngFor="let c of nowProdSingle.case;" class="product-s-case">
+                    <h5 *ngFor="let ch of c.h;">
+                        {{ch}}
+                    </h5>
+                    <p *ngFor="let cp of c.p;">
+                        {{cp}}
+                    </p>
+                    <div class="product-s-case-link">
+                        <a [href]="cl.ref" *ngFor="let cl of c.link;" target='_blank'>{{cl.name}}</a>
+                    </div>
+                    <div class="product-s-case-img">
+                        <img *ngFor="let cimg of c.img;" [src]='cimg' />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
