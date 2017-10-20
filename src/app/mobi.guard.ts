@@ -7,15 +7,16 @@ export class MobiGuard implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        this.router.navigate(['/m']);    // remove later
 
         // if the device is a mobile, redirect to mobile layout
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            this.router.navigate(['/m']);
-            console.log("redirect to mobile version")
+            // this.router.navigate(['/m']);
+            console.log('redirect to mobile version')
             return false;
         }
 
-        console.log("current in desktop version")
+        console.log('current in desktop version')
         return true;
     }
 }
