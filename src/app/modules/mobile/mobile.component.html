@@ -1,8 +1,23 @@
-<app-nav-m></app-nav-m>
+<!-- <app-nav-m></app-nav-m>
 <app-header-m></app-header-m>
 <app-about-m></app-about-m>
 <app-plan-m></app-plan-m>
 <app-partner-m></app-partner-m>
 <app-team-m></app-team-m>
 <app-contact-m></app-contact-m>
-<app-footer-m></app-footer-m>
+<app-footer-m></app-footer-m> -->
+
+
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav class="example-sidenav">
+        Jolly good!
+    </mat-sidenav>
+
+    <div class="example-sidenav-content">
+        <button type="button" mat-button (click)="sidenav.open()">
+            Open sidenav
+        </button>
+    </div>
+
+</mat-sidenav-container>
+

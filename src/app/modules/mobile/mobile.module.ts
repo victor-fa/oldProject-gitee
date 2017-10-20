@@ -13,10 +13,14 @@ import { TeamMComponent } from './components/team-m/team-m.component';
 import { ContactMComponent } from './components/contact-m/contact-m.component';
 import { FooterMComponent } from './components/footer-m/footer-m.component';
 
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSidenavModule } from '@angular/material';
+
 @NgModule({
     imports: [
         CommonModule,
         MobileRoutingModule,
+        MatSidenavModule,
     ],
     declarations: [
         MobileComponent,
@@ -27,7 +31,7 @@ import { FooterMComponent } from './components/footer-m/footer-m.component';
         PartnerMComponent,
         TeamMComponent,
         ContactMComponent,
-        FooterMComponent
+        FooterMComponent,
     ],
     providers: [
     ]
