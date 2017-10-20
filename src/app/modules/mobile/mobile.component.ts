@@ -8,6 +8,6 @@ import { Router } from '@angular/router';
 export class MobileComponent implements OnInit {
     constructor(public router: Router) { }
     ngOnInit() {
-        console.log("mobile version");
+        console.log('mobile version');
     }
 }
