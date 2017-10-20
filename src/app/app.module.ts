@@ -2,12 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MobiGuard } from './mobi.guard';
 import { CookieService } from 'ngx-cookie-service';
+
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 /// <reference path="../jquery.d.ts" />
 import * as $ from 'jquery';
@@ -21,7 +22,7 @@ import * as $ from 'jquery';
         FormsModule,
         HttpModule,
         AppRoutingModule,
-        BrowserAnimationsModule
+        NoopAnimationsModule
     ],
     providers: [
         MobiGuard,
