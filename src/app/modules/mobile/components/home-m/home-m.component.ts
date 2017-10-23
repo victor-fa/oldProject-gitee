@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
-export interface HomeM {
+export interface Home {
     h1: string;
     h2: string;
     h3: string;
@@ -16,8 +16,8 @@ export class HomeMComponent {
     language = 'zh';
     langIndex = 0;
 
-    nowHomeM: HomeM;
-    homeMs: [HomeM] = [ {
+    nowHome: Home;
+    homes: [Home] = [ {
         h1: '革命性',
         h2: '语音交互技术',
         h3: '解决方案提供商'
@@ -35,6 +35,6 @@ export class HomeMComponent {
         } else {
             this.langIndex = 0;
         }
-        this.nowHomeM = this.homeMs[this.langIndex];
+        this.nowHome = this.homes[this.langIndex];
     }
 }
