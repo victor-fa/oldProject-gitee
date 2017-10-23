@@ -12,6 +12,7 @@ import { PartnerMComponent } from './components/partner-m/partner-m.component';
 import { TeamMComponent } from './components/team-m/team-m.component';
 import { ContactMComponent } from './components/contact-m/contact-m.component';
 import { FooterMComponent } from './components/footer-m/footer-m.component';
+import { HomeMComponent } from './components/home-m/home-m.component';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material';
@@ -32,6 +33,8 @@ import { MatSidenavModule } from '@angular/material';
         TeamMComponent,
         ContactMComponent,
         FooterMComponent,
+
+        HomeMComponent
     ],
     providers: [
     ]

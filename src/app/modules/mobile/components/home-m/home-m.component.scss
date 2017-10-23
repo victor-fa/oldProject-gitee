@@ -1,0 +1,22 @@
+#home-m {
+    height: 619px;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1600px;
+    margin: 0 auto;
+    overflow: hidden;
+    background-image: url(/assets/img/home_bg_long.png);
+    background-position: center;
+    #home-container {
+        position: relative;
+        width: 1000px;
+        height: 100%;
+        margin: 0 auto;
+        text-align: center;
+        color: #ffffff;
+        padding: 100px;
+        $duration: 10s;
+        $max: 20;
+        $ease: linear;
+    }
+}
