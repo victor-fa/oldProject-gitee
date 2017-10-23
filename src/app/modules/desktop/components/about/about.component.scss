@@ -63,15 +63,18 @@
             }
         }
         .about-info-zh {
+            font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
             h3 {
                 font-size: 34px;
                 font-weight: 400;
-                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
                 letter-spacing: 6px;
                 margin-top: 15px;
                 margin-bottom: 30px;
             }
             p {
+                font-size: 12px;
+                line-height: 23px;
+                color: gray;
                 letter-spacing: 2px;
             }
         }
