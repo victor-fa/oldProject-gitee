@@ -55,9 +55,11 @@
             height: 450px;
             font-size: 14px;
             letter-spacing: 3px;
+            font-size: 12px;
             position: relative;
             .career-job-position-profix {
                 color: #ffffff;
+                font-size: 14px;
             }
             div {
                 color: lightgray;
@@ -113,20 +115,15 @@
                 font-weight: 100;
                 line-height: 35px;
                 letter-spacing: 2px;
-                &::-webkit-scrollbar-track
-                {
-                    box-shadow: inset 0 0 6px rgba(0,0,0,0);
+                &::-webkit-scrollbar-track {
+                    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
                     background-color: rgba(245, 245, 245, 0);
                 }
-
-                &::-webkit-scrollbar
-                {
+                &::-webkit-scrollbar {
                     width: 10px;
                     background-color: rgba(245, 245, 245, 0);
                 }
-
-                &::-webkit-scrollbar-thumb
-                {
+                &::-webkit-scrollbar-thumb {
                     background-color: rgba(245, 245, 245, 0.1);
                 }
                 h5 {
@@ -137,18 +134,23 @@
                 }
                 #career-job-resp {
                     width: 830px;
+                    ul li {
+                        font-size: 12px;
+                    }
                 }
                 #career-job-detail {
                     width: 830px;
+                    ul li {
+                        font-size: 12px;
+                    }
                 }
             }
-
         }
         .career-info-zh {}
         .career-info-en {
             font-family: 'Roboto', Arial, Helvetica, sans-serif;
             letter-spacing: -2px;
-            color:firebrick;
+            color: firebrick;
             .career-job-position-profix {
                 color: #ffffff;
             }
@@ -196,7 +198,7 @@
             #career-job-info {
                 letter-spacing: 1px;
                 h5 {
-
+                    font-size: 14px;
                 }
                 #career-job-resp {
                     letter-spacing: 1px;
