@@ -68,6 +68,8 @@ module.exports.updateTestcases = function (username, testcases, callback) {
 module.exports.isUserActivated = function (user_activation) {
     if (user_activation > 0)
         return true;
+    //========================================================= Test Code ==============================================
+    return true;
     return false;
 }
 
@@ -165,6 +167,7 @@ module.exports.addApp = function (id, appkey, appsecret, callback) {
         }
     });
 }
+
 
 // Remove 'appkey' and 'appsecret' from 'applist' or current 'appkey & appsecret'
 module.exports.removeApp = function (id, appkey, callback) {
