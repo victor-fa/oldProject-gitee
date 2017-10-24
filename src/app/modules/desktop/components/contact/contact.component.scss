@@ -98,6 +98,7 @@
             top: 86px;
             font-size: 14px;
             left: 600px;
+            letter-spacing: 1px;
             #contact-info {
                 list-style: none;
                 color: grey;
@@ -106,13 +107,24 @@
                     color: #000000;
                 }
                 li {
+                    line-height: 20px;
                     margin-bottom: 2px;
+                    font-size: 12px;
+                    font-weight: 100;
+                    span {
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
                     a {
                         text-decoration: none;
                         color: inherit;
                     }
                     #contact-info-blank {
                         margin-top: 3px;
+                    }
+                    #contact-info-addr-2 {
+                        font-size: 12px;
+                        font-weight: 100;
                     }
                 }
                 li:nth-child(4) {
@@ -127,10 +139,10 @@
                 li {
                     .contact-info-li-prefix {
                         display: inline-block;
-                        width: 45px;
+                        width: 50px;
                     }
                     #contact-info-addr-2 {
-                        padding-left: 45px;
+                        padding-left: 50px;
                     }
                 }
             }
