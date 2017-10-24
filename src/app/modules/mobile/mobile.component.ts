@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./mobile.component.scss']
 })
 export class MobileComponent implements OnInit {
-    constructor(public router: Router) { }
+
     ngOnInit() {
         console.log('mobile version');
     }
