@@ -1,2 +1,39 @@
 <div id="header-m">
+    <div id="header-m-brand">
+        <img src="/assets/img/brand_logo_mobile.png">
+    </div>
+    <div id="header-m-menu-open" (click)="openSideNav()">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div id="header-m-nav-left">
+        <ul>
+            <li (click)="closeSideNav()" id="header-m-menu-close">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </li>
+            <li>
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                <a href="#">核心技术</a>
+            </li>
+            <li>
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                <a href="#">产品方案</a>
+            </li>
+            <li>
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <a href="#">合作客户</a>
+            </li>
+            <li>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <a href="#">关于齐悟</a>
+            </li>
+            <li>
+                <i class="fa fa-briefcase" aria-hidden="true"></i>
+                <a href="#">加入齐悟</a>
+            </li>
+            <li>
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                <a href="#">联系我们</a>
+            </li>
+        </ul>
+    </div>
 </div>
