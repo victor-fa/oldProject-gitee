@@ -14,16 +14,10 @@ import { FooterMComponent } from './components/footer-m/footer-m.component';
 import { HomeMComponent } from './components/home-m/home-m.component';
 import { TechMComponent } from './components/tech-m/tech-m.component';
 
-import { MatSidenavModule, MatIconModule, MatButtonModule, MatMenuModule } from '@angular/material';
-
 @NgModule({
     imports: [
         CommonModule,
         MobileRoutingModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule
     ],
     declarations: [
         MobileComponent,

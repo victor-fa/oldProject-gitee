@@ -8,8 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { MobiGuard } from './mobi.guard';
 import { CookieService } from 'ngx-cookie-service';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 /// <reference path="../jquery.d.ts" />
 import * as $ from 'jquery';
 
@@ -22,7 +20,6 @@ import * as $ from 'jquery';
         FormsModule,
         HttpModule,
         AppRoutingModule,
-        NoopAnimationsModule
     ],
     providers: [
         MobiGuard,
