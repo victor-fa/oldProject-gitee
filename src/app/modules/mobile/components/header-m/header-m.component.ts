@@ -6,12 +6,17 @@ import { Component } from '@angular/core';
     styleUrls: ['./header-m.component.scss']
 })
 export class HeaderMComponent {
+    showSideNav:boolean;
+
+    constructor() {
+        this.showSideNav = false;
+    }
     openSideNav() {
-        $('#header-m-nav-left').show();
+        this.showSideNav = true;
     }
 
     closeSideNav() {
-        $('#header-m-nav-left').hide();
-        // console.log(12341234);
+        // $('#header-m-nav-left').hide();
+        console.log(66666);
     }
 }

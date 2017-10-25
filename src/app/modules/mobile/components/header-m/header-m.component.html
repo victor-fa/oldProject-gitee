@@ -1,11 +1,11 @@
 <div id="header-m">
     <div id="header-m-brand">
-        <img src="/assets/img/brand_logo_mobile.png">
+        <img src="/assets/img/brand_logo_mob.png">
     </div>
     <div id="header-m-menu-open" (click)="openSideNav()">
         <i class="fa fa-bars" aria-hidden="true"></i>
     </div>
-    <div id="header-m-nav-left">
+    <div id="header-m-nav-left" [hidden]="!showSideNav">
         <ul>
             <li (click)="closeSideNav()" id="header-m-menu-close">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>

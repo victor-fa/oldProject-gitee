@@ -1,20 +1,30 @@
 #home-m {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
+    width: 100vw;
+    height: calc(100vw / 852 * 619);
+    margin-top: calc( 8rem + 1vh * 2);
     overflow: hidden;
-    background-image: url(/assets/img/home_bg_long.png);
+    background-image: url(/assets/img/home_bg_mob.png);
     background-position: center;
+    background-size: cover;
     #home-container {
         position: relative;
-        width: 1000px;
+        width: 100vw;
         height: 100%;
         margin: 0 auto;
         text-align: center;
+        padding-top: 12.4vh;
         color: #ffffff;
-        padding: 100px;
-        $duration: 10s;
-        $max: 20;
-        $ease: linear;
+        font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+        #home-line-1 {
+            font-size: 5rem;
+            font-weight: 100;
+        }
+        #home-line-2 {
+            font-size: 6rem;
+        }
+        #home-line-3 {
+            font-size: 4rem;
+            font-weight: 100;
+        }
     }
 }
