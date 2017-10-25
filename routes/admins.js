@@ -3,6 +3,11 @@ var router = express.Router();
 var UserService = require('../services/user')
 var UserGroupPolicy = require('../services/group_policy')
 
+var APIPath = '/api/admin/apps?';
+var iconv = require("iconv-lite");
+
+var md5 = require('../public/js/util/md5.min')
+var http = require('https')
 // Manage
 router.get('/manage', function (req, res) {
 	var id = req.query.id; // $_GET["id"]
@@ -93,29 +98,29 @@ router.post('/manage/api/activate', function (req, res) {
 	}
 });
 
+
+
+
 // API: add new APP
 router.post('/manage/api/addapp', function (req, res) {
+	var ids = req.body.checkItem;
 	var id = req.body.id;
-	var appkey = req.body.appkey;
-	var appsecret = req.body.appsecret;
-	// console.log(`id: ${id} \tappkey: ${appkey} \tappsecret: ${appsecret}`);
 	if (!id) {
 		req.flash('error_msg', '添加APP失败：用户不存在。');
 		res.redirect('/admin/manage');
-	} else if (!appkey) {
-		req.flash('error_msg', '添加APP失败：APPKEY不存在。');
-		res.redirect('/admin/manage?id=' + id);
-	} else if (!appsecret) {
-		req.flash('error_msg', '添加APP失败：APPSECRET不存在。');
+	} else if (!ids) {
+		req.flash('error_msg', '添加APP失败：没有app选中。');
 		res.redirect('/admin/manage?id=' + id);
 	} else {
-		UserService.addApp(id, appkey, appsecret, function (err) {
+
+		var idsval = eval('(' + ids + ')');
+		UserService.addApp(id, idsval.appkey, idsval.appsecret, function (err) {
 			if (err) {
-				req.flash('error_msg', '添加APP失败：' + err);
+				req.flash('error_msg', '添加APP失败：' + err );
 			} else {
 				req.flash('success_msg', '添加APP成功。');
 			}
-			res.redirect('/admin/manage?id=' + id);
+                res.redirect('/admin/manage?id=' + id);
 		});
 	}
 
@@ -125,7 +130,6 @@ router.post('/manage/api/addapp', function (req, res) {
 router.get('/manage/api/removeapp', function (req, res) {
 	var id = req.query.id;
 	var appkey = req.query.appkey;
-	// console.log(`id: ${id} \tappkey: ${appkey}`);
 	if (!id) {
 		req.flash('error_msg', '删除APP失败，用户不存在。');
 		res.redirect('/admin/manage');
@@ -143,5 +147,48 @@ router.get('/manage/api/removeapp', function (req, res) {
 		});
 	}
 });
+
+
+// API: List apps infos
+router.get('/manage/api/listappinfors',function (req,res) {
+    var time = (new Date()).getTime();
+    var secretStr = time + ' MANAGEMENT_SALT';
+    var secret = md5(secretStr);
+
+    // secret = '6f781e191f1d5c8d410318ffce406ae7';
+	console.log(secret);
+
+    var urlPath = APIPath + 'time=' + time + '&secret=' + secret;
+    console.log(urlPath);
+	getAppsKeysAndScrets(urlPath,function (msg){
+		res.end(msg);
+	});
+});
+
+
+
+function getAppsKeysAndScrets(urlpath,callbackfunciton){
+    http.get("https://robot-service.centaurstech.com" + urlpath, function(res) {
+        var datas = [];
+        var size = 0;
+        res.on('data', function (data) {
+            datas.push(data);
+            size += data.length;
+        });
+        res.on("end", function () {
+            var buff = Buffer.concat(datas, size);
+            var result = iconv.decode(buff, "utf8");//转码//var result = buff.toString();//不需要转编码,直接tostring
+            callbackfunciton(result);
+        });
+
+    }).on('error', function(e) {
+        callbackfunciton(e.message + " error");
+    });
+
+}
+
+
+
+
 
 module.exports = router;
