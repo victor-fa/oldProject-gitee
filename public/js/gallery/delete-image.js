@@ -14,17 +14,20 @@ $().ready(function () {
         var image_list_html = $('#image-list-container').html()
         $('#image-list-container').html("")  // set to empty
         // console.log("the html is"+image_list_html)
-        var host_address = "http://localhost:10010/"
+        var host_address = "../"
 
         for(photo in image_list){
             console.log("the file name is "+ image_list[photo].path)
-            var actual_file_path = host_address+image_list[photo].src.replace(/\\/g,'\/')
+            // var actual_file_path = host_address+image_list[photo].src.replace(/\\/g,'\/')
+            var actual_file_path = host_address+image_list[photo].src
+            console.log("actual file path is " + actual_file_path)
             var image_item = "<image width = 100 height = 100 src = '" + actual_file_path+ "'></image>"
             
             console.log(image_item)
             // $('#image-container').append(image_item)
+            var file_name_html = "<p>"+image_list[photo].name+"</p>"
             var button_html = "<input type = 'submit' class = 'delete_button' name='delete_btn' value='删除'/>" +"<input type = 'hidden' name='album_name' value = "+ obj.name+"/>" +"<input type = 'hidden' name='file_name' value = " +image_list[photo].name + "/>"+ "<input type = 'hidden' name='file_path' value = " +image_list[photo].path+"/>" 
-            var div_html ="<div width=100 height = 150 class='image-container' > <form class = 'delete-form' method= 'POST' action= ' /image/delete' encType='multipart/form-data'  >" + image_item + button_html + "</form></div>"
+            var div_html ="<div width=100 height = 150 class='image-container' > <form class = 'delete-form' method= 'POST' action= ' /image/delete' encType='multipart/form-data'  >" + image_item + file_name_html +button_html + "</form></div>"
             $('#image-list-container').append(div_html)
             
             // $('.delete_button').click(function(e){
