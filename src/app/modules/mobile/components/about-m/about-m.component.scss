@@ -1,44 +1,69 @@
 #about-m {
-    width: 100%;
-    background-color: #fefefe;
-    overflow: hidden;
-    background-image: url("/assets/images/partner_background.png");
-    padding: 5% 5% 1% 5%;
-    list-style: none;
-    margin: 0;
-    ul {
-        overflow: none;
-    }
-    h2 {
-        color: black;
-        overflow: hidden;
-        font-size: 4em;
-        padding-bottom: 2%;
-        span {
-            color: #F6CF00;
-        }
-    }
-    p {
-        font-size: 2.66em;
-    }
-    .about-page {
+    width: 100vw;
+    margin: 0 auto;
+    background-image: url(/assets/img/about_bg_long.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    #about-container {
+        --padding-a: 8vw;
+        --padding-b: 8vw;
         position: relative;
-        #about-product-xp {
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 2.67em;
+        margin: 0 auto;
+        padding-bottom: calc(var(--padding-a));
+        #about-info {
+            position: relative;
+            top: calc(var(--padding-a));
+            left: calc(var(--padding-a));
+            margin-bottom: calc(var(--padding-a));
+            width: calc(100vw - var(--padding-a) * 2);
+            padding: calc(var(--padding-b));
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 5px 5px 50px #cccccc;
+            z-index: 1;
+            #about-info-bg {
+                position: absolute;
+                top: -40px;
+                right: 30px;
+                width: 240px;
+            }
+            p {
+                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                font-size: 3rem;
+                font-weight: 100;
+                line-height: 6rem;
+                letter-spacing: 1px;
+                margin-bottom: calc(var(--padding-b) * 0.5);
+            }
         }
-        a {
-            color: grey;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: none;
-            color: dimgrey;
-        }
-    }
-    #about-page-2 {
-        margin-top: 5%;
+        // .about-info-zh {
+        //     font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+        //     h3 {
+        //         font-size: 34px;
+        //         font-weight: 400;
+        //         letter-spacing: 6px;
+        //         margin-top: 15px;
+        //         margin-bottom: 30px;
+        //     }
+        //     p {
+        //         font-size: 12px;
+        //         line-height: 23px;
+        //         color: gray;
+        //         letter-spacing: 2px;
+        //     }
+        // }
+        // .about-info-en {
+        //     font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        //     h3 {
+        //         font-size: 28px;
+        //         font-weight: 600;
+        //         margin-bottom: 20px;
+        //     }
+        //     p {
+        //         font-size: 12px;
+        //         font-weight: 100;
+        //         letter-spacing: 0px;
+        //     }
+        // }
     }
 }
