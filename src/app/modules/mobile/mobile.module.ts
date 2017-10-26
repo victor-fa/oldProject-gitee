@@ -13,6 +13,7 @@ import { ContactMComponent } from './components/contact-m/contact-m.component';
 import { FooterMComponent } from './components/footer-m/footer-m.component';
 import { HomeMComponent } from './components/home-m/home-m.component';
 import { TechMComponent } from './components/tech-m/tech-m.component';
+import { ProductMComponent } from './components/product-m/product-m.component';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { TechMComponent } from './components/tech-m/tech-m.component';
         FooterMComponent,
 
         HomeMComponent,
-        TechMComponent
+        TechMComponent,
+        ProductMComponent
     ],
     providers: [
     ]
