@@ -13,13 +13,11 @@
         text-align: center;
         padding: calc(var(--padding-a)) calc(var(--padding-a) * 0.5);
         #product-menu {
-            width: 100%;
             list-style: none;
             padding: 0;
             .product-menu-item {
                 --item-size: calc((100vw - var(--padding-a) * 2) / 3);
                 display: inline-block;
-                list-style: none;
                 width: calc(var(--item-size));
                 height: calc(var(--item-size));
                 margin-bottom: calc(var(--item-size) * 0.3);
