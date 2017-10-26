@@ -1,9 +1,11 @@
 <div id="about-m">
     <div id="about-container">
-           <div id="about-info" [class.about-info-zh]="language == 'zh'" [class.about-info-en]="language == 'en'">
-            <!-- <img src="/assets/img/brand_logo_gold.png" id="about-brand-logo"> -->
+        <div id="about-info" [class.about-info-zh]="language == 'zh'" [class.about-info-en]="language == 'en'">
             <p>{{nowAbout.sub}}</p>
             <p>{{nowAbout.desc}}</p>
+            <div id="about-brand-logo">
+                <img src="/assets/img/brand_logo_mob_2.png">
+            </div>
         </div>
     </div>
 </div>

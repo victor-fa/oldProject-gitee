@@ -21,12 +21,6 @@
             background-color: rgba(255, 255, 255, 1);
             box-shadow: 5px 5px 50px #cccccc;
             z-index: 1;
-            #about-info-bg {
-                position: absolute;
-                top: -40px;
-                right: 30px;
-                width: 240px;
-            }
             p {
                 font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
                 font-size: 3rem;
@@ -35,35 +29,14 @@
                 letter-spacing: 1px;
                 margin-bottom: calc(var(--padding-b) * 0.5);
             }
+            #about-brand-logo {
+                position: relative;
+                margin: 0 auto;
+                text-align: center;
+                img {
+                    width: 30vw;
+                }
+            }
         }
-        // .about-info-zh {
-        //     font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-        //     h3 {
-        //         font-size: 34px;
-        //         font-weight: 400;
-        //         letter-spacing: 6px;
-        //         margin-top: 15px;
-        //         margin-bottom: 30px;
-        //     }
-        //     p {
-        //         font-size: 12px;
-        //         line-height: 23px;
-        //         color: gray;
-        //         letter-spacing: 2px;
-        //     }
-        // }
-        // .about-info-en {
-        //     font-family: 'Roboto', Arial, Helvetica, sans-serif;
-        //     h3 {
-        //         font-size: 28px;
-        //         font-weight: 600;
-        //         margin-bottom: 20px;
-        //     }
-        //     p {
-        //         font-size: 12px;
-        //         font-weight: 100;
-        //         letter-spacing: 0px;
-        //     }
-        // }
     }
 }
