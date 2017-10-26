@@ -16,8 +16,6 @@ export class AboutComponent implements AfterViewInit {
     language = 'UNKNOWN';
     langIndex = 0;
 
-    year: number = new Date().getFullYear();
-
     nowAbout: About;
     abouts: [About] = [
         {
