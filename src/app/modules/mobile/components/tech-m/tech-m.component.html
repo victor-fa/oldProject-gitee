@@ -1,6 +1,6 @@
-<div id="tech">
+<div id="tech-m">
     <div id="tech-container">
-        <div id="tech-left" [class.tech-left-zh]="language == 'zh'" [class.tech-left-en]="language == 'en'">
+        <div id="tech-main" [class.tech-left-zh]="language == 'zh'" [class.tech-left-en]="language == 'en'">
             <h3>{{nowTech.mainTitle}}</h3>
             <p>{{nowTech.mainSub}}</p>
             <ul id="tech-menu">
@@ -10,13 +10,13 @@
                 </li>
             </ul>
         </div>
-        <div id="tech-right">
+        <!-- <div id="tech-right">
             <div id="tech-detail" [class.tech-detail-zh]="language == 'zh'" [class.tech-detail-en]="language == 'en'">
                 <h4>{{nowTechSingle.title}}</h4>
                 <h5>{{nowTechSingle.sub}}</h5>
                 <p>{{nowTechSingle.desc}}</p>
             </div>
             <img id="tech-right-logo" src="/assets/img/brand_logo_gold.png">
-        </div>
+        </div> -->
     </div>
 </div>

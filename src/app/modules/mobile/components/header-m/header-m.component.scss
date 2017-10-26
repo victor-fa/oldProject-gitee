@@ -6,6 +6,7 @@
     width: 100vw !important;
     height: calc( 8rem + 1vh * 2);
     background-color: mediumaquamarine;
+    z-index: 20;
     #header-m-brand {
         margin: 1vh calc((100vw - 8rem * 3) / 2);
         img {
