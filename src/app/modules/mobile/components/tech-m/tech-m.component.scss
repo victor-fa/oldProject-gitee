@@ -3,17 +3,17 @@
     margin: 0 auto;
     background-image: url(/assets/img/tech_bg_long.png);
     background-position: center;
-    background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     #tech-container {
+        --padding-a: 8vw;
+        --padding-b: 5vw;
         position: relative;
         height: 100%;
         margin: 0 auto;
+        padding-bottom: calc(var(--padding-a));
         #tech-main {
             position: relative;
-            --padding-a: 8vw;
-            --padding-b: 5vw;
             top: calc(var(--padding-a));
             left: calc(var(--padding-a));
             margin-bottom: calc(var(--padding-a));
@@ -63,7 +63,6 @@
                 }
             }
         }
-        /*
         .tech-left-zh {
             font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
             h3 {
@@ -96,6 +95,7 @@
                 margin-top:20px;
             }
         }
+        /*
         #tech-right {
             position: absolute;
             top: 175px;
