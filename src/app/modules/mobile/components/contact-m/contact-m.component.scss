@@ -1,67 +1,53 @@
 #contact-m {
-    width: 100%;
-    background-color: #FEFEFE;
-    padding: 5% 5% 1% 5%;
+    width: 100vw;
+    margin: 0 auto;
+    background-color: #888888;
     #contact-container {
-        #contact-left-part {
-            h2 {
-                font-size: 4em;
-                color: black;
-                margin: 0 0 5% 0;
+        --padding-a: 8vw;
+        height: 100%;
+        margin: 0;
+        color: #111111;
+        text-align: center;
+        padding: calc(var(--padding-a));
+        ul#contact-info {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            background-color: rgba(255, 255, 255, 1);
+            li {
+                --item-size: calc(100vw - var(--padding-a) * 2.2);
+                display: inline-block;
+                width: calc(var(--item-size));
+                text-align: center;
+                margin: 0;
+                padding: 0;
+                display: inline-block;
                 overflow: hidden;
-            }
-            h3 {
-                font-size: 3em;
-                color: #FFD400;
-                margin: 1% 0 3% 0;
-                padding: 0;
-            }
-            #info {
-                list-style: none;
-                padding: 0;
-                margin: 1% 0 1% 0;
-                li {
-                    font-size: 2.33em;
-                    padding: 0;
-                    margin: 0;
-                    i {
-                        margin-right: 1%;
-                    }
-                    a {
-                        text-decoration: none;
-                        color: inherit;
-                    }
+                background-color: rgb(190, 85, 190);
+                h5 {
+                    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                    font-size: 3.4rem;
+                    font-weight: 100;
+                    line-height: 6rem;
+                    letter-spacing: 1px;
+                    margin-bottom: calc(var(--padding-b) * 0.5);
+                }
+                p {
+                    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                    font-size: 3rem;
+                    font-weight: 100;
+                    line-height: 6rem;
+                    letter-spacing: 1px;
+                    margin-bottom: calc(var(--padding-b) * 0.5);
                 }
             }
         }
-        #contact-form {
-            margin: 2% 0 3% 0;
-            form {
-                input {
-                    width: 100%; 
-                    border: 0;
-                    background-color: #EEEEEE;
-                    font-size: 2em;
-                    padding: 1% 3% 1% 3%;
-                    margin-bottom: 2%;
-                }
-                textarea {
-                    width: 100%;
-                    border: 0;
-                    background-color: #EEEEEE;
-                    resize: none;
-                    font-size: 2em;
-                    padding: 1% 3% 1% 3%;
-                    margin-bottom: 2%;
-                }
-                a {
-                    text-decoration: none;
-                    text-align: center;
-                    background-color: #FFD400;
-                    font-size: 2.33em;
-                    padding: 1% 8% 1% 8%;
-                    color: black;
-                }
+        #contact-brand-logo {
+            position: relative;
+            margin: 0 auto;
+            text-align: center;
+            img {
+                width: 30vw;
             }
         }
     }
