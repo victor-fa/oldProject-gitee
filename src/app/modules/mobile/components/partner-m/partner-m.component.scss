@@ -1,53 +1,34 @@
 #partner-m {
-    width: 100%;
-    background-color: #fefefe;
-    #content-container {
-        width: 100%;
-        margin: 0 auto;
-        color: #231916;
-        padding: 5% 5% 1% 5%;
-        h2 {
-            color: black;
-            overflow: hidden;
-            font-size: 4em;
-            padding-bottom: 2%;
-            span {
-                color: #FFD400;
-            }
-        }
-        p {
-            font-size: 2.66em;
-        }
-        #logos-sm {
-            width: 100%;
-            margin: 0 auto;
-            list-style: none;
+    width: 100vw;
+    margin: 0 auto;
+    background-image: url(/assets/img/partner_bg_long.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    #partner-container {
+        --padding-a: 8vw;
+        height: 100%;
+        margin: 0;
+        color: #FEFEFE;
+        text-align: center;
+        padding: calc(var(--padding-a));
+        ul#partner-logos {
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            ul {
-                list-style: none;
+            margin: 0;
+            list-style: none;
+            background-color: rgba(255, 255, 255, 1);
+            li {
+                --item-size: calc((100vw - var(--padding-a) * 2.2) / 2);
+                display: inline-block;
+                width: calc(var(--item-size));
+                text-align: center;
                 margin: 0;
-                padding: 1%;
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                justify-content: space-between;
-                li {
-                    img {
-                        width: 100%;
-                        filter: grayscale(100%);
-                    }
-                    border: 0.5em solid #fefefe;
-                }
-                li:hover {
-                    border: 0.5em solid #DDDBDA;
-                    img {
-                        filter: grayscale(0%);
-                    }
+                padding: 0;
+                display: inline-block;
+                overflow: hidden;
+                background-color: rgba(255, 255, 255, 1);
+                img {
+                    width: calc(var(--item-size) * 0.75);
                 }
             }
         }
