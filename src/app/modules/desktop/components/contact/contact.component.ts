@@ -43,7 +43,7 @@ export class ContactComponent implements AfterViewChecked {
     nowContact: Contact;
     contacts: [Contact] = [
         {
-            title: '联系我们',
+            title: '商务合作',
             left: {
                 name: '名字',
                 email: '邮箱',
