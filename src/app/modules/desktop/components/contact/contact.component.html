@@ -11,13 +11,36 @@
         </div>
         <div id="contact-right-part" [class.contact-right-zh]="language==='zh'" [class.contact-right-en]="language==='en'">
             <ul id="contact-info">
-                <li><span class="contact-info-li-prefix">{{nowContact.right.title}}</span></li>
-                <li><a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.zh}}</a></li>
-                <li><a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.en}}</a></li>
-                <li><span class="contact-info-li-prefix">{{nowContact.right.tel.l1}}</span>{{nowContact.right.tel.l2}}</li>
-                <li><span class="contact-info-li-prefix">{{nowContact.right.email.l1}}</span>{{nowContact.right.email.l2}}</li>
-                <li><span class="contact-info-li-prefix">{{nowContact.right.addr.l1}}</span>{{nowContact.right.addr.l2}} <br><span id="contact-info-addr-2">{{nowContact.right.addr.l3}}</span> </li>
+                <li>
+                    <span class="contact-info-li-prefix">{{nowContact.right.title}}</span>
+                </li>
+                <li>
+                    <a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.zh}}</a>
+                </li>
+                <li>
+                    <a href="http://www.centaurstech.com/" target="_blank">{{nowContact.right.company.en}}</a>
+                </li>
+                <li>
+                    <span class="contact-info-li-prefix">{{nowContact.right.tel.l1}}</span>{{nowContact.right.tel.l2}}</li>
+                <li>
+                    <span class="contact-info-li-prefix">{{nowContact.right.email.l1}}</span>{{nowContact.right.email.l2}}</li>
+                <li>
+                    <span class="contact-info-li-prefix">{{nowContact.right.addr.l1}}</span>{{nowContact.right.addr.l2}}
+                    <br>
+                    <span id="contact-info-addr-2">{{nowContact.right.addr.l3}}</span>
+                </li>
+                <li>
+                    <a href="http://weibo.com/p/1006066360988232/home?from=page_100606&mod=TAB#place" id="contact-weibo" target="_blank">
+                        <i class="fa fa-weibo" aria-hidden="true"></i>
+                    </a>
+                    <span id="contact-wechat">
+                        <i class="fa fa-weixin" aria-hidden="true"></i>
+                    </span>
+                </li>
             </ul>
+        </div>
+        <div id="contact-wechat-barcode" style="display: none;">
+            <img src="/assets/img/wechat_barcode.jpeg" alt="WeChat">
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface Contact {
@@ -36,7 +36,7 @@ interface Contact {
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.scss']
 })
-export class ContactComponent {
+export class ContactComponent implements AfterViewChecked {
     language = 'UNKNOWN';
     langIndex = 0;
 
@@ -110,5 +110,13 @@ export class ContactComponent {
             this.langIndex = 0;
         }
         this.nowContact = this.contacts[this.langIndex];
+    }
+
+    ngAfterViewChecked() {
+        $('#contact-wechat').hover(function () {
+            $('#contact-wechat-barcode').show();
+        }, function () {
+            $('#contact-wechat-barcode').hide();
+        });
     }
 }
