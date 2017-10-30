@@ -73,7 +73,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/helper.png'],
+                            img: ['/assets/img/product_cases/helper_cn.png'],
                             link: [],
                             video: []
                         }
@@ -92,7 +92,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/medical.jpeg'],
+                            img: ['/assets/img/product_cases/medical_cn.jpeg'],
                             link: [],
                             video: []
                         }
@@ -166,7 +166,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/customer.jpeg'],
+                            img: ['/assets/img/product_cases/customer_cn.jpeg'],
                             link: [],
                             video: []
                         }
@@ -185,7 +185,7 @@ export class ProductComponent implements AfterViewChecked {
                             h: [],
                             p: [],
                             img: ['/assets/img/product_cases/hardware_1.jpg',
-                                '/assets/img/product_cases/hardware_2.jpg'],
+                                '/assets/img/product_cases/hardware_2_cn.jpg'],
                             link: [],
                             video: []
                         }
@@ -344,7 +344,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/helper.png'],
+                            img: ['/assets/img/product_cases/helper_en.png'],
                             link: [],
                             video: []
                         }
@@ -363,7 +363,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/medical.jpeg'],
+                            img: ['/assets/img/product_cases/medical_en.jpeg'],
                             link: [],
                             video: []
                         }
@@ -437,7 +437,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/customer.jpeg'],
+                            img: ['/assets/img/product_cases/customer_en.jpeg'],
                             link: [],
                             video: []
                         }
@@ -456,7 +456,7 @@ export class ProductComponent implements AfterViewChecked {
                             h: [],
                             p: [],
                             img: ['/assets/img/product_cases/hardware_1.jpg',
-                                '/assets/img/product_cases/hardware_2.jpg'],
+                                '/assets/img/product_cases/hardware_2_en.jpg'],
                             link: [],
                             video: []
                         }
