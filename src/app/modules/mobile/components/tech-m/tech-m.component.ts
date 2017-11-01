@@ -99,7 +99,7 @@ export class TechMComponent implements AfterViewChecked {
                     title: 'Agile Development',
                     sub: 'Chewrobot utilize innovative smart algorithm improve more than hundred times than traditional means. Faster development, realtime update.',
                     desc: 'Most smart service company needs more than 4 month to create an demo for their customer, where we only needs less than a week to present a more compelling result. we can deploy our service quicker and more suitable by the needs of the customer.',
-                    name: 'Agile Development',
+                    name: 'Agile Dev',
                     icon: '/assets/img/tech_icons/tech_icon3_w.png'
                 },
                 {
