@@ -64,34 +64,68 @@
         }
         .tech-left-zh {
             font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-            h3 {
-                font-size: 34px;
-                font-weight: 400;
-                letter-spacing: 6px;
-                margin-bottom: 20px;
-            }
-            p {
-                font-size: 12px;
-                line-height: 23px;
-                letter-spacing: 1px;
-            }
-            #tech-menu {
-                margin-top:30px;
-            }
         }
         .tech-left-en {
             font-family: 'Roboto', Arial, Helvetica, sans-serif;
-            h3 {
-                font-size: 28px;
-                font-weight: 600;
-                margin-bottom: 20px;
+        }
+        #tech-carousel {
+            position: fixed;
+            top: calc(8rem + 1vh * 2);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            #tech-carousel-inner {
+                position: relative;
+                height: calc(100vh - (var(--padding-b) * 4) - (8rem + 1vh * 2));
+                z-index: 11;
+                margin: calc(var(--padding-b) * 2) calc(var(--padding-b));
+                padding: calc(var(--padding-b) * 3) calc(var(--padding-b)* 1.5);
+                background-color: pink;
+                #tech-detail {
+                    font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                    h4 {
+                        font-size: 6rem;
+                        letter-spacing: 4px;
+                        margin-bottom: calc(var(--padding-b));
+                    }
+                    h5 {
+                        font-size: 3.4rem;
+                        font-weight: 100;
+                        line-height: 6rem;
+                        letter-spacing: 2px;
+                        margin-bottom: calc(var(--padding-b));
+                        color: black;
+                    }
+                    p {
+                        font-size: 3.4rem;
+                        font-weight: 100;
+                        line-height: 6rem;
+                        color: gray;
+                        letter-spacing: 2px;
+                    }
+                }
+                #tech-switch {
+                    position: absolute;
+                    bottom: 0;
+                    font-size: 8rem;
+                    color: gold;
+                    text-align: center;
+                    margin: 0 auto;
+                    li {
+                        float: left;
+                        padding: 1vw;
+                    }
+                }
             }
-            p {
-                font-size: 12px;
-                font-weight: 100;
-            }
-            #tech-menu {
-                margin-top:20px;
+            #tech-detail-bg {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: white;
+                opacity: 0.8;
             }
         }
         /*

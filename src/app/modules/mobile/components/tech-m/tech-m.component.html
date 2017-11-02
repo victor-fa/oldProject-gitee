@@ -10,13 +10,21 @@
                 </li>
             </ul>
         </div>
-        <!-- <div id="tech-right">
-            <div id="tech-detail" [class.tech-detail-zh]="language == 'zh'" [class.tech-detail-en]="language == 'en'">
-                <h4>{{nowTechSingle.title}}</h4>
-                <h5>{{nowTechSingle.sub}}</h5>
-                <p>{{nowTechSingle.desc}}</p>
+        <div id="tech-carousel">
+            <div id="tech-carousel-inner">
+                <div id="tech-detail" [class.tech-detail-zh]="language == 'zh'" [class.tech-detail-en]="language == 'en'">
+                    <h4>{{nowTechSingle.title}}</h4>
+                    <h5>{{nowTechSingle.sub}}</h5>
+                    <p>{{nowTechSingle.desc}}</p>
+                </div>
+                <div id="tech-switch">
+                    <ul>
+                        <li *ngFor="let tech of nowTech.pages; let i = index" [class.tech-switch-active]="i == nowIndex">　</li>
+                    </ul>
+                </div>
             </div>
-            <img id="tech-right-logo" src="/assets/img/brand_logo_gold.png">
-        </div> -->
+            <!-- <img id="tech-right-logo" src="/assets/img/brand_logo_gold.png"> -->
+            <!-- <div id="tech-detail-bg"></div> -->
+        </div>
     </div>
 </div>
