@@ -416,56 +416,5 @@ export class ProductMComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
-        $('.product-menu-item').hover(function () {
-            $(this).addClass('animated bounce');
-        }, function () {
-            $(this).removeClass('animated bounce');
-        });
-
-        $('.product-s-menu-icon').hover(function () {
-            $(this).addClass('animated pulse');
-        }, function () {
-            $(this).removeClass('animated pulse');
-        });
-    }
-
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        if ($('#product-s').is(':visible')) {
-            const pageTop = $(window).scrollTop();
-            const pageBottom = pageTop + $(window).height();
-            const prodSingleTop = $('#product-s').offset().top;
-            const prodSingleBottom = prodSingleTop + $('#product-s').height();
-            // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
-            if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
-                // out of screen
-                $('#product-s').hide();
-                $('#product').show();
-            }
-        }
-    }
-
-    clickProdItem(index: number): void {
-        $('#product-s').show();
-        $('#product').hide();
-        if ($('#product-s').is(':visible')) {
-            window.scrollTo(0, $('#product-s').offset().top);
-        }
-        this.clickProdSingleItem(index);
-    }
-
-    clickProdSingleItem(index: number): void {
-        this.nowProdSingle = this.nowProd.pages[index];
-        this.nowIndex = index;
-    }
-
-    prevPage(): void {
-        const i = (this.nowIndex + this.nowProd.pages.length - 1) % (this.nowProd.pages.length);
-        this.clickProdSingleItem(i);
-    }
-
-    nextPage(): void {
-        const i = (this.nowIndex + 1) % (this.nowProd.pages.length);
-        this.clickProdSingleItem(i);
     }
 }
