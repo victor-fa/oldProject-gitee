@@ -81,16 +81,18 @@
                 z-index: 11;
                 margin: calc(var(--padding-b) * 2) calc(var(--padding-b));
                 padding: calc(var(--padding-b) * 3) calc(var(--padding-b)* 1.5);
-                background-color: pink;
+                background-color: white;
+                box-shadow: 0 0 50px 3vw rgba(0, 0, 0, 0.4);
                 #tech-detail {
                     font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
                     h4 {
-                        font-size: 6rem;
+                        font-size: 7rem;
+                        font-weight: 400;
                         letter-spacing: 4px;
                         margin-bottom: calc(var(--padding-b));
                     }
                     h5 {
-                        font-size: 3.4rem;
+                        font-size: 3.6rem;
                         font-weight: 100;
                         line-height: 6rem;
                         letter-spacing: 2px;
@@ -98,7 +100,7 @@
                         color: black;
                     }
                     p {
-                        font-size: 3.4rem;
+                        font-size: 3.6rem;
                         font-weight: 100;
                         line-height: 6rem;
                         color: gray;
@@ -106,16 +108,29 @@
                     }
                 }
                 #tech-switch {
+                    --padding-c: 10vw; // offset
                     position: absolute;
-                    bottom: 0;
+                    left: calc((100vw - 56vw) / 2 - var(--padding-b) + var(--padding-c));
+                    bottom: calc(var(--padding-b) * 2);
                     font-size: 8rem;
                     color: gold;
                     text-align: center;
+                    width: 56vw;
                     margin: 0 auto;
                     li {
                         float: left;
-                        padding: 1vw;
+                        opacity: 0.5;
+                        width: 8vw;
                     }
+                    .tech-switch-active {
+                        opacity: 1;
+                    }
+                }
+                img#tech-right-logo {
+                    position: absolute;
+                    height: 10rem;
+                    top: calc(var(--padding-b) * 2.8);
+                    right: calc(var(--padding-b) * 2);
                 }
             }
             #tech-detail-bg {
@@ -124,68 +139,9 @@
                 bottom: 0;
                 left: 0;
                 right: 0;
-                background-color: white;
-                opacity: 0.8;
+                background-color: gold;
+                opacity: 0.5;
             }
         }
-        /*
-        #tech-right {
-            position: absolute;
-            top: 175px;
-            left: 457px;
-            width: 493px;
-            height: 450px;
-            background-color: #ffffff;
-            box-shadow: 5px 5px 50px #cccccc;
-            #tech-detail {
-                padding: 64px 80px 30px 105px;
-            }
-            #tech-right-logo {
-                position: absolute;
-                width: 46px;
-                bottom: 20px;
-                right: 20px;
-            }
-            .tech-detail-zh {
-                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
-                h4 {
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                    letter-spacing: 4px;
-                }
-                h5 {
-                    font-size: 14px;
-                    line-height: 23px;
-                    margin-bottom: 20px;
-                    letter-spacing: 2px;
-                }
-                p {
-                    font-size: 12px;
-                    line-height: 23px;
-                    color: gray;
-                    letter-spacing: 2px;
-                }
-            }
-            .tech-detail-en {
-                font-family: 'Roboto', Arial, Helvetica, sans-serif;
-                h4 {
-                    font-size: 24px;
-                    font-weight: 400;
-                    margin-bottom: 20px;
-                }
-                h5 {
-                    font-size: 12px;
-                    font-weight: 400;
-                    margin-bottom: 20px;
-                    line-height:17px;
-                }
-                p {
-                    font-size: 12px;
-                    font-weight: 100;
-                    letter-spacing: 0px;
-                }
-            }
-        }
-        */
     }
 }
