@@ -40,6 +40,7 @@ import { Service } from './service'
         AboutMComponent,
         ContactMComponent,
         CareerMComponent,
+        HomeMComponent
     ],
     providers: [
         Service

@@ -5,7 +5,7 @@
     right: 0;
     width: 100vw !important;
     height: calc( 8rem + 1vh * 2);
-    background-color: mediumaquamarine;
+    background-color: #fefefe;
     z-index: 20;
     #header-m-brand {
         margin: 1vh calc((100vw - 8rem * 3) / 2);
@@ -53,6 +53,7 @@
                     letter-spacing: 0.3rem;
                     margin-left: 5vw;
                     text-decoration: none;
+                    color: black;
                 }
             }
             #header-m-menu-close i {
