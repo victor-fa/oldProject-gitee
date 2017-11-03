@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { MobileRoutingModule } from './mobile-routing.module';
 import { MobileComponent } from './mobile.component';
 
 import { HeaderMComponent } from './components/header-m/header-m.component';
