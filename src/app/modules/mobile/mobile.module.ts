@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MobileRoutingModule } from './mobile-routing.module';
@@ -13,6 +13,8 @@ import { HomeMComponent } from './components/home-m/home-m.component';
 import { TechMComponent } from './components/tech-m/tech-m.component';
 import { ProductMComponent } from './components/product-m/product-m.component';
 
+import { Service } from './service'
+
 @NgModule({
     imports: [
         CommonModule,
@@ -20,18 +22,27 @@ import { ProductMComponent } from './components/product-m/product-m.component';
     ],
     declarations: [
         MobileComponent,
+
         HeaderMComponent,
         AboutMComponent,
         PartnerMComponent,
-        TeamMComponent,
         ContactMComponent,
         CareerMComponent,
-
         HomeMComponent,
         TechMComponent,
         ProductMComponent
     ],
+    entryComponents: [
+        MobileComponent,
+        TechMComponent,
+        ProductMComponent,
+        PartnerMComponent,
+        AboutMComponent,
+        ContactMComponent,
+        CareerMComponent,
+    ],
     providers: [
+        Service
     ]
 })
 export class MobileModule { }

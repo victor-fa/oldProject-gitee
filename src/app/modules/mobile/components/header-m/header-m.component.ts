@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MobileComponent} from "../../mobile.component";
 
 @Component({
     selector: 'app-header-m',
@@ -6,7 +7,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./header-m.component.scss']
 })
 export class HeaderMComponent {
-    constructor() {}
+    mc: MobileComponent;
+    constructor(mc: MobileComponent) {
+        this.mc = mc;
+    }
 
     openSideNav() {
         $('#header-m-nav-left').css('transform', 'translate(0)');
@@ -14,5 +18,9 @@ export class HeaderMComponent {
 
     closeSideNav() {
         $('#header-m-nav-left').css('transform', 'translate(-67vw)');
+    }
+
+    changeMain(cp: string) {
+        this.mc.loadComponent(cp);
     }
 }
