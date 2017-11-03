@@ -15,10 +15,22 @@ import { HomeMComponent } from './components/home-m/home-m.component';
 import { TechMComponent } from './components/tech-m/tech-m.component';
 import { ProductMComponent } from './components/product-m/product-m.component';
 
+import { Routes, RouterModule } from '@angular/router';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: MobileComponent
+    },{
+        path: 'prod',
+        component:ProductMComponent
+    }
+];
+
 @NgModule({
     imports: [
         CommonModule,
-        MobileRoutingModule,
+        RouterModule.forChild(routes)
     ],
     declarations: [
         MobileComponent,
@@ -34,7 +46,13 @@ import { ProductMComponent } from './components/product-m/product-m.component';
         TechMComponent,
         ProductMComponent
     ],
+    entryComponents: [
+        HomeMComponent,
+        ProductMComponent
+    ],
     providers: [
     ]
 })
 export class MobileModule { }
+
+
