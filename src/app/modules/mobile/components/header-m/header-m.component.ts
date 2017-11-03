@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MobileComponent} from "../../mobile.component";
+import { MobileComponent } from "../../mobile.component";
 
 @Component({
     selector: 'app-header-m',
@@ -22,5 +22,6 @@ export class HeaderMComponent {
 
     changeMain(cp: string) {
         this.mc.loadComponent(cp);
+        this.closeSideNav();
     }
 }
