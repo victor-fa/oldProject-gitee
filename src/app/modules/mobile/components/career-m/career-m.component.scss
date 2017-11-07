@@ -1,7 +1,8 @@
 #career-m {
     width: 100vw;
     margin: 0 auto;
-    margin-top: calc( 8rem + 1vh * 2);
+    margin-top: calc(8rem + 1vh * 2);
+    min-height: calc(100vh - (8rem + 1vh * 2));
     background-image: url(/assets/img/career_bg_long.png);
     background-position: center;
     background-repeat: no-repeat;
@@ -191,7 +192,7 @@
         */
         #career-hr {
             margin-top: calc(var(--padding-a));
-            text-align: center;
+            text-align: left;
             font-size: 3rem;
             a {
                 color: gold;
