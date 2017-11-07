@@ -78,6 +78,7 @@
     --padding-a: 8vw;
     --item-size: calc((100vw - var(--padding-a) * 2) / 3);
     width: 100vw;
+    min-height: 100vh;
     margin: 0 auto;
     background-image: url(/assets/img/product_slide_bg.png);
     background-position: center;

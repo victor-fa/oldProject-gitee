@@ -12,13 +12,13 @@
         </ul>
     </div>
 </div>
-<div id="product-s" hidden>
+<div id="product-s">
     <div id="product-s-container">
         <div id="product-s-page-conainer">
             <div id="product-s-logo">
                 <img [src]="nowProdSingle.icon" [alt]="nowProdSingle.name">
             </div>
-            <div id="product-s-close">
+            <div id="product-s-close" (click)="closeProdSingle()">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </div>
             <div id="product-s-main-title">

@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface ProductSingleCase {
@@ -33,7 +33,7 @@ interface Product {
     styleUrls: ['./product-m.component.scss']
 })
 
-export class ProductMComponent implements AfterViewChecked {
+export class ProductMComponent implements OnInit {
     language = 'zh';
     langIndex = 0;
     nowIndex = 0;
@@ -415,6 +415,23 @@ export class ProductMComponent implements AfterViewChecked {
         this.nowProdSingle = this.nowProd.pages[this.nowIndex];
     }
 
-    ngAfterViewChecked() {
+    ngOnInit() {
+        $('#product-s').hide();
+    }
+
+    clickProdItem(index: number): void {
+        $('#product-s').show();
+        $('#product-m').hide();
+        this.clickProdSingleItem(index);
+    }
+
+    clickProdSingleItem(index: number): void {
+        this.nowProdSingle = this.nowProd.pages[index];
+        this.nowIndex = index;
+    }
+
+    closeProdSingle() {
+        $('#product-m').show();
+        $('#product-s').hide();
     }
 }
