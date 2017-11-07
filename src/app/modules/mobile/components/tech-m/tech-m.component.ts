@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 interface TechnologySingle {
@@ -21,7 +21,7 @@ interface Technology {
     styleUrls: ['./tech-m.component.scss']
 })
 
-export class TechMComponent implements AfterViewChecked {
+export class TechMComponent implements OnInit {
     language = 'zh';
     langIndex = 0;
     nowIndex = 0;
@@ -138,18 +138,51 @@ export class TechMComponent implements AfterViewChecked {
         this.nowTechSingle = this.nowTech.pages[this.nowIndex];
     }
 
-    ngAfterViewChecked() {
-        $('.tech-menu-inner').hover(function () {
-            $(this).children('img').addClass('animated bounce');
-            $(this).children('p').addClass('animated bounce');
-        }, function () {
-            $(this).children('img').removeClass('animated bounce');
-            $(this).children('p').removeClass('animated bounce');
-        });
+    ngOnInit() {
+        $('#tech-carousel').hide();
     }
 
     changeTech(index: number) {
+
         this.nowTechSingle = this.nowTech.pages[index];
         this.nowIndex = index;
+    }
+
+    changeTechAndShow(index: number) {
+        $('#tech-carousel').show();
+        this.changeTech(index);
+    }
+
+    SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+    x: number = 50;
+    y: number = 50;
+
+    swipe(action: any = this.SWIPE_ACTION.RIGHT): void {
+        // next
+        if (action === this.SWIPE_ACTION.RIGHT) {
+            let i = (this.nowIndex + 1) % this.nowTech.pages.length;
+            this.changeTech(i);
+        }
+        // previous
+        if (action === this.SWIPE_ACTION.LEFT) {
+            let i = (this.nowIndex + this.nowTech.pages.length - 1) % this.nowTech.pages.length;
+            this.changeTech(i);
+        }
+    }
+
+    startX: number = 0;
+    startY: number = 0;
+
+    onPanStart(event: any): void {
+        //   this.startX = this.x;
+        this.startY = this.y;
+    }
+    onPan(event: any): void {
+        event.preventDefault();
+        // this.x = this.startX + event.deltaX;
+        // this.y = this.startY + event.deltaY;
+        if (event.deltaY < -150 || event.deltaY > 150) {
+            $('#tech-carousel').hide();
+        }
     }
 }
