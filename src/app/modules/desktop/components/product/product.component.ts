@@ -55,7 +55,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/fin.jpeg'],
+                            img: ['/assets/img/product_cases/fin.jpg'],
                             link: [],
                             video: []
                         }
@@ -73,7 +73,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/helper_cn.png'],
+                            img: ['/assets/img/product_cases/helper_cn.jpg'],
                             link: [],
                             video: []
                         }
@@ -92,7 +92,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/medical_cn.jpeg'],
+                            img: ['/assets/img/product_cases/medical_cn.jpg'],
                             link: [],
                             video: []
                         }
@@ -110,8 +110,8 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/edu_1.jpeg',
-                                '/assets/img/product_cases/edu_2.jpeg'],
+                            img: ['/assets/img/product_cases/edu_1.jpg',
+                                '/assets/img/product_cases/edu_2.jpg'],
                             link: [],
                             video: []
                         }
@@ -166,7 +166,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/customer_cn.jpeg'],
+                            img: ['/assets/img/product_cases/customer_cn.jpg'],
                             link: [],
                             video: []
                         }
@@ -199,7 +199,15 @@ export class ProductComponent implements AfterViewChecked {
                     desc: [
                         '现代人对已家居的舒适追求日益见增，家居的智能化已经开始深入人们的生活，让更多人可以在家享受舒适的生活同时通过智能化来提升生活水准。随着生活节奏的加快，智能家具系统将把信息多元化和安全更融入到日常的生活中。让使用者拥有舒适的居住环境的同时也为他们节省宝贵的时间。更能提高家中能源的转化率。齐悟智能家居控制系统是以家居住宅楼智能控制为核心，依托云服务平台，利用互联网技术，网络通信技术，安全防范技术，自动控制技术以及结合我们的语音交互核心技术与家庭生活相关的设施集成，构建高效的住宅设施与家庭日程事务的管理系统。全方位的信息交换功能，优化了人们的生活方式和居住环境，帮助用户有效的安排时间，节约各种能源，实现家电，照明，窗帘，门禁，监控防盗设备的本地和远程控制。构造个全智能，智慧化的家居空间。'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/home.jpg'],
+                            link: [],
+                            video: []
+                        }
+                    ],
                     name: '智能家居',
                     icon: '/assets/img/product_icons/apt_w.png'
                 },
@@ -214,7 +222,7 @@ export class ProductComponent implements AfterViewChecked {
                             h: [],
                             p: [],
                             img: ['/assets/img/product_cases/robot_1.jpg',
-                                '/assets/img/product_cases/robot_2.jpeg'],
+                                '/assets/img/product_cases/robot_2.jpg'],
                             link: [],
                             video: []
                         }
@@ -228,7 +236,15 @@ export class ProductComponent implements AfterViewChecked {
                     desc: [
                         '随着传统旅游业的转型需求，智能旅游成为了一个新的行业转折点。智能旅游是基于云计算、物联网等新技术，通过互联网，借助便携设备，主动感知旅游资源、旅游经济、旅游活动、旅游者等方面的信息。齐悟的语音交互技术解决方案能带给智慧旅游一个全新的交互方式，不再需要通过网络各种搜寻，可以让用户用语音提出需求，齐悟机器人自主分析客户的需要，提供最有效的旅游资讯，同时还能根据用户的需求，去为您量身打造合适的旅游路线规划，同时根据过往用户习惯帮你预定机票，酒店。还可以结合VR以及AR技术，让旅游更充满科技现代感与趣味体验感。同时旅游行业上下游企业可以通过齐悟收集到的信息去更精准的分析用户习惯以及掌握用户的爱好设计出更加人性化，个性化的旅游产品。从而让传统的旅游企业可以打破传统的行业瓶颈，给用户打造更加细分化“导航”“导游”“导览”“导购”等一条龙服务。智慧旅游将是从传统的旅游消费方式向现代的旅游消费方式转变的“推手”。虽然旅游消费的内容还是传统的吃住行游购娱，但是我们可以通过人工智能的技术优势去广泛实现消费模式向新型态的转变。'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/trip.jpg'],
+                            link: [],
+                            video: []
+                        }
+                    ],
                     name: '智能旅游',
                     icon: '/assets/img/product_icons/travel_w.png'
                 },
@@ -260,7 +276,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/game_vw_01.png'],
+                            img: ['/assets/img/product_cases/game_vw_01.jpg'],
                             link: [{
                                 ref: 'http://vocalwarrior.centaurstech.com/',
                                 name: '游戏官网'
@@ -282,7 +298,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/vi_cc_01.png'],
+                            img: ['/assets/img/product_cases/vi_cc_01.jpg'],
                             link: [{
                                 ref: 'https://www.centaurstech.com/product/cc/',
                                 name: 'CC官网'
@@ -303,7 +319,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/ad.png'],
+                            img: ['/assets/img/product_cases/ad.jpg'],
                             link: [],
                             video: []
                         }
@@ -326,7 +342,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/fin.jpeg'],
+                            img: ['/assets/img/product_cases/fin.jpg'],
                             link: [],
                             video: []
                         }
@@ -344,7 +360,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/helper_en.png'],
+                            img: ['/assets/img/product_cases/helper_en.jpg'],
                             link: [],
                             video: []
                         }
@@ -363,7 +379,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/medical_en.jpeg'],
+                            img: ['/assets/img/product_cases/medical_en.jpg'],
                             link: [],
                             video: []
                         }
@@ -381,8 +397,8 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/edu_1.jpeg',
-                                '/assets/img/product_cases/edu_2.jpeg'],
+                            img: ['/assets/img/product_cases/edu_1.jpg',
+                                '/assets/img/product_cases/edu_2.jpg'],
                             link: [],
                             video: []
                         }
@@ -437,7 +453,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/customer_en.jpeg'],
+                            img: ['/assets/img/product_cases/customer_en.jpg'],
                             link: [],
                             video: []
                         }
@@ -470,7 +486,15 @@ export class ProductComponent implements AfterViewChecked {
                     desc: [
                         'Now a days, people trying to make more comfortable out of their living. The most effective way of achieving so is to increase the ability of the compliances. we can provide resolution for all manufactures who wishes to make their product the most intelligent and advance. With the ability of voice interaction, cloud computing and utilization improving, Smart compliance will redefine what home really means.'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/home.jpg'],
+                            link: [],
+                            video: []
+                        }
+                    ],
                     name: 'Smart Home',
                     icon: '/assets/img/product_icons/apt_w.png'
                 },
@@ -485,7 +509,7 @@ export class ProductComponent implements AfterViewChecked {
                             h: [],
                             p: [],
                             img: ['/assets/img/product_cases/robot_1.jpg',
-                                '/assets/img/product_cases/robot_2.jpeg'],
+                                '/assets/img/product_cases/robot_2.jpg'],
                             link: [],
                             video: []
                         }
@@ -499,7 +523,15 @@ export class ProductComponent implements AfterViewChecked {
                     desc: [
                         'Chewbot is your personal concierge. From booking to shopping, only build for you. We can provide our customer with latest travel news and help the customer planning their trips. We can also make all arrangements just while the customer making the plan.'
                     ],
-                    case: [],
+                    case: [
+                        {
+                            h: [],
+                            p: [],
+                            img: ['/assets/img/product_cases/trip.jpg'],
+                            link: [],
+                            video: []
+                        }
+                    ],
                     name: 'Smart Travel',
                     icon: '/assets/img/product_icons/travel_w.png'
                 },
@@ -531,7 +563,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/game_vw_01.png'],
+                            img: ['/assets/img/product_cases/game_vw_01.jpg'],
                             link: [{
                                 ref: 'http://vocalwarrior.centaurstech.com/',
                                 name: 'Voical Warrior'
@@ -553,7 +585,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/vi_cc_01.png'],
+                            img: ['/assets/img/product_cases/vi_cc_01.jpg'],
                             link: [{
                                 ref: 'https://www.centaurstech.com/product/cc/',
                                 name: ' CC '
@@ -574,7 +606,7 @@ export class ProductComponent implements AfterViewChecked {
                         {
                             h: [],
                             p: [],
-                            img: ['/assets/img/product_cases/ad.png'],
+                            img: ['/assets/img/product_cases/ad.jpg'],
                             link: [],
                             video: []
                         }
