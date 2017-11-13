@@ -45,3 +45,7 @@
 #log-page-size label {
     display: inline;
 }
+
+#log-page-size-select {
+    min-width: 70px !important;
+}
