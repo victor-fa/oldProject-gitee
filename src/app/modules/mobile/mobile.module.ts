@@ -13,7 +13,7 @@ import { HomeMComponent } from './components/home-m/home-m.component';
 import { TechMComponent } from './components/tech-m/tech-m.component';
 import { ProductMComponent } from './components/product-m/product-m.component';
 
-import { Service } from './service'
+// import { Service } from './service'
 
 @NgModule({
     imports: [
@@ -32,18 +32,6 @@ import { Service } from './service'
         TechMComponent,
         ProductMComponent
     ],
-    entryComponents: [
-        MobileComponent,
-        TechMComponent,
-        ProductMComponent,
-        PartnerMComponent,
-        AboutMComponent,
-        ContactMComponent,
-        CareerMComponent,
-        HomeMComponent
-    ],
-    providers: [
-        Service
-    ]
+    providers: []
 })
 export class MobileModule { }
