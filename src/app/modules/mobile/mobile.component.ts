@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 
-import { Service } from './service';
+// import { Service } from './service';
 
 @Component({
     selector: 'app-mobile',
@@ -8,6 +8,7 @@ import { Service } from './service';
     styleUrls: ['./mobile.component.scss']
 })
 export class MobileComponent implements OnInit {
+    /*
     service: Service;
 
     constructor(service: Service, viewContainerRef: ViewContainerRef) {
@@ -15,13 +16,14 @@ export class MobileComponent implements OnInit {
         this.service.setRootViewContainerRef(viewContainerRef)
         this.service.addDynamicComponent('tech')
     }
+    */
 
     ngOnInit() {
         console.log('mobile version');
     }
 
     loadComponent(component: string) {
-        this.service.addDynamicComponent(component);
+        // this.service.addDynamicComponent(component);
         console.log(component);
     }
 }

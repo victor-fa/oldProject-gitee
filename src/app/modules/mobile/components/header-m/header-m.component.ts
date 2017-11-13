@@ -7,10 +7,6 @@ import { MobileComponent } from "../../mobile.component";
     styleUrls: ['./header-m.component.scss']
 })
 export class HeaderMComponent {
-    mc: MobileComponent;
-    constructor(mc: MobileComponent) {
-        this.mc = mc;
-    }
 
     openSideNav() {
         $('#header-m-nav-left').css('transform', 'translate(0)');
@@ -21,7 +17,8 @@ export class HeaderMComponent {
     }
 
     changeMain(cp: string) {
-        this.mc.loadComponent(cp);
-        this.closeSideNav();
+        // this.mc.loadComponent(cp);
+        // this.closeSideNav();
+        console.log(cp)
     }
 }
