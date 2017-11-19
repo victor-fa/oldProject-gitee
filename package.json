@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+git@gitlab.com:yiwangcentaurs/Chewrobot-Tool.git"
+    "url": "https://gitlab.com/yiwangcentaurs/Chewrobot-Tool"
   },
   "author": {
     "name": "Centaurs Technologies Co.",
-    "email": "contanct@centaurstech.com ",
+    "email": "contanct@centaurstech.com",
     "url": "https://www.centaurstech.com/"
   },
   "contributors": [
