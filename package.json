@@ -39,6 +39,7 @@
     "passport-http": "*",
     "passport-local": "*",
     "request": "^2.81.0",
+    "centaurs-test-plugin": "git+https://github.com/yiwangcentaurs/centaurs-test-plugin.git",    
     "uuid": ""
   }
 }
