@@ -1,30 +1,32 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var expressValidator = require('express-validator');
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local'), Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+var express = require('express'),
+	path = require('path'),
+	cookieParser = require('cookie-parser'),
+	bodyParser = require('body-parser'),
+	exphbs = require('express-handlebars'),
+	expressValidator = require('express-validator'),
+	flash = require('connect-flash'),
+	session = require('express-session'),
+	passport = require('passport'),
+	LocalStrategy = require('passport-local'), Strategy,
+	port = process.env.PORT || 10010;	
+
+var mongo = require('mongodb'),
+	mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/chewtool', {
 	useMongoClient: true,
 });
 var db = mongoose.connection;
 
-var UserService = require('./services/user')
-var UserGroupPolicy = require('./services/group_policy')
+var UserService = require('./services/user'),
+	UserGroupPolicy = require('./services/group_policy')
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var tests = require('./routes/tests')
-var logs = require('./routes/log');
-var admins = require('./routes/admins')
-var gallery = require('./routes/gallery')
-var image = require('./routes/image')
+var routes = require('./routes/index'),
+	users = require('./routes/users'),
+	tests = require('./routes/tests'),
+	logs = require('./routes/log'),
+	admins = require('./routes/admins'),
+	gallery = require('./routes/gallery'),
+	image = require('./routes/image')
 
 const fileUpload = require('express-fileupload');
 
@@ -63,6 +65,7 @@ var hbs = exphbs.create({
 	},
 	defaultLayout: 'layout'
 });
+
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
