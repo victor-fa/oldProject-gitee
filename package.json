@@ -12,11 +12,13 @@
   },
   "author": {
     "name": "Centaurs Technologies Co.",
-    "email": "contanct@centaurstech.com ",
+    "email": "contanct@centaurstech.com",
     "url": "https://www.centaurstech.com/"
   },
   "contributors": [
-    "Yuancheng Zhang"
+    "Yuancheng Zhang",
+    "Fangzhou Long",
+    "Jiawei Sun"
   ],
   "license": "ISC",
   "dependencies": {
