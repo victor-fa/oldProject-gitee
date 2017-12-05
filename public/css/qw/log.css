@@ -1,6 +1,5 @@
 .list-group-item {
     position: relative;
-
 }
 
 .log-id {
@@ -8,12 +7,11 @@
     top: 13px;
     right: 15px;
     color: #ddd;
-
     font-weight: bold;
     font-size: 30px;
     text-align: right;
-
 }
+
 .log-id-pound {
     margin-right: 5px;
 }
@@ -47,5 +45,5 @@
 }
 
 #log-page-size-select {
-    min-width: 70px !important;
+    min-width: 80px;
 }
