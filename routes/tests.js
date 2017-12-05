@@ -3,21 +3,27 @@ var router = express.Router()
 var UserService = require('../services/user')
 
 // Manual Test
-router.get('/manual', function (req, res) {
+router.get('/manual', function (req, res, next) {
 	res.render('test/manual_test', {
 		css: [
 			'/css/qw/demo_style.css'
 		]
 	})
+	if (next) {
+        next();
+    }
 })
 
 // Auto Test Configuration
-router.get('/config', function (req, res) {
+router.get('/config', function (req, res, next) {
 	res.render('test/auto_test_config')
+	if (next) {
+        next();
+    }
 });
 
 // Auto Test
-router.post('/auto', function (req, res) {
+router.post('/auto', function (req, res, next) {
 	var testcase_str = req.body.testcase.trim()
 
 	UserService.updateTestcases(req.user.username, testcase_str, function() {
@@ -30,7 +36,9 @@ router.post('/auto', function (req, res) {
 			testcases: testcases
 		})
 	})
-	
+	if (next) {
+        next();
+    }
 })
 
 module.exports = router

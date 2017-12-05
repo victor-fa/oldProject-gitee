@@ -8,7 +8,7 @@ var UserGroup = require('../models/user_group')
 var RouterIndex = require('./index');
 
 // Login
-router.get('/login', function (req, res) {
+router.get('/login', function (req, res, next) {
 	res.render('users/login', {
 		s_url: req.query.s_url
 	});
@@ -31,12 +31,12 @@ router.post('/login',
 );
 
 // Register
-router.get('/register', function (req, res) {
+router.get('/register', function (req, res, next) {
 	res.render('users/register');
 });
 
 // Register
-router.post('/register', function (req, res) {
+router.post('/register', function (req, res, next) {
 	var user_info = {};
 	user_info.name = req.body.name;
 	user_info.email = req.body.email;
@@ -117,14 +117,14 @@ router.get('/logout', function (req, res, next) {
 });
 
 // Account
-router.get('/account', UserService.ensureAuthenticated, function (req, res) {
+router.get('/account', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('users/account', {
 		css: ['/css/qw/account.css']
 	});
 });
 
 // Account change info
-router.post('/account', UserService.ensureAuthenticated, function (req, res) {
+router.post('/account', UserService.ensureAuthenticated, function (req, res, next) {
 	var name = req.body.name;
 	var compnay = req.body.company;
 	var phone = req.body.phone;
@@ -158,7 +158,7 @@ router.post('/account', UserService.ensureAuthenticated, function (req, res) {
 });
 
 // Appication management
-router.get('/app', UserService.ensureAuthenticated, function (req, res) {
+router.get('/app', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('users/app', {
 		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js']
@@ -166,7 +166,7 @@ router.get('/app', UserService.ensureAuthenticated, function (req, res) {
 });
 
 // API: link appkey and appsecret
-router.post('/app/api/link', UserService.ensureAuthenticated, function (req, res) {
+router.post('/app/api/link', UserService.ensureAuthenticated, function (req, res, next) {
 	var id = req.body.id
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
@@ -189,7 +189,7 @@ router.post('/app/api/link', UserService.ensureAuthenticated, function (req, res
 });
 
 // Alert SMS or Email
-router.get('/alert', UserService.ensureAuthenticated, function (req, res) {
+router.get('/alert', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('users/alert', {
 		css: ['/css/qw/alert.css']
 	});

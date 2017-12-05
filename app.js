@@ -7,7 +7,8 @@ var express = require('express'),
 	flash = require('connect-flash'),
 	session = require('express-session'),
 	passport = require('passport'),
-	LocalStrategy = require('passport-local'), Strategy,
+	LocalStrategy = require('passport-local'), Strategy,    
+	plugin = require("centaurs-test-plugin"),
 	port = process.env.PORT || 10010;	
 
 var mongo = require('mongodb'),
@@ -126,17 +127,31 @@ app.use(function (req, res, next) {
 	next();
 });
 
+// Plugin: start API request timer
+app.use(plugin.timer.start);
+
+// Routes
 app.use('/', routes);
 app.use('/users', users);
 app.use('/test', UserService.ensureAuthenticated, tests);
 app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery)
-app.use('/image',  UserService.ensureAuthenticated, image)
+app.use('/image', UserService.ensureAuthenticated, image)
+
+// Plugin: stop API request timer
+app.use(plugin.timer.stop);
 
 // Set Port
-app.set('port', (process.env.PORT || 10010));
+app.set('port', port);
+
+// Plugin: catch exceptions
+plugin.catchErr();
 
 app.listen(app.get('port'), function () {
-	console.log('Server started on port ' + app.get('port'));
+	console.log('Server started on port ' + port);
+	// Plugin: show configurations
+	plugin.showConfig();
+	// Plugin: send system usage to monitor once per minute 
+    plugin.sysCheck(60);
 });

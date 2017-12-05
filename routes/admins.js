@@ -4,7 +4,7 @@ var UserService = require('../services/user')
 var UserGroupPolicy = require('../services/group_policy')
 
 // Manage
-router.get('/manage', function (req, res) {
+router.get('/manage', function (req, res, next) {
 	var id = req.query.id; // $_GET["id"]
 	if (id) {
 		UserService.getUserById(id, function (err, aUser) {
@@ -46,10 +46,13 @@ router.get('/manage', function (req, res) {
 
 		});
 	}
+	if (next) {
+        next();
+    }
 });
 
 // API: list all users
-router.get('/manage/api/load', function (req, res) {
+router.get('/manage/api/load', function (req, res, next) {
 	UserService.listAllUsers(function (err, users) {
 		if (err) {
 			// throw err;
@@ -57,10 +60,13 @@ router.get('/manage/api/load', function (req, res) {
 		}
 		res.json(users);
 	});
+	if (next) {
+        next();
+    }
 });
 
 // API: active or inactive user
-router.post('/manage/api/activate', function (req, res) {
+router.post('/manage/api/activate', function (req, res, next) {
 	var id = req.body.id;
 	var activate = req.body.activate;
 	// console.log(`server: id = ${id} \tactivate = ${activate}`);
@@ -91,10 +97,13 @@ router.post('/manage/api/activate', function (req, res) {
 			})
 		});
 	}
+	if (next) {
+        next();
+    }
 });
 
 // API: add new APP
-router.post('/manage/api/addapp', function (req, res) {
+router.post('/manage/api/addapp', function (req, res, next) {
 	var id = req.body.id;
 	var appkey = req.body.appkey;
 	var appsecret = req.body.appsecret;
@@ -118,11 +127,13 @@ router.post('/manage/api/addapp', function (req, res) {
 			res.redirect('/admin/manage?id=' + id);
 		});
 	}
-
+	if (next) {
+        next();
+    }
 });
 
 // API: remove APP
-router.get('/manage/api/removeapp', function (req, res) {
+router.get('/manage/api/removeapp', function (req, res, next) {
 	var id = req.query.id;
 	var appkey = req.query.appkey;
 	// console.log(`id: ${id} \tappkey: ${appkey}`);
@@ -142,6 +153,9 @@ router.get('/manage/api/removeapp', function (req, res) {
 			res.redirect('/admin/manage?id=' + id);
 		});
 	}
+	if (next) {
+        next();
+    }
 });
 
 module.exports = router;

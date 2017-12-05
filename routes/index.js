@@ -3,7 +3,7 @@ var router = express.Router();
 var UserService = require('../services/user')
 
 // Get Dashboard
-router.get('/', UserService.ensureAuthenticated, function (req, res) {
+router.get('/', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('dashboard/dashboard', {
 		css: ['/css/qw/dashboard.css'],
 		js: [
@@ -12,11 +12,17 @@ router.get('/', UserService.ensureAuthenticated, function (req, res) {
 			'/js/qw/dashboard.js'
 		]
 	});
+	if (next) {
+        next();
+    }
 });
 
 // Get Chart
-router.get('/chart', UserService.ensureAuthenticated, function (req, res) {
+router.get('/chart', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('dashboard/chart');
+	if (next) {
+        next();
+    }
 });
 
 module.exports = router;

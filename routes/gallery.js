@@ -21,6 +21,9 @@ router.get('*', gallery({
 	// console.log(req.data)
 	// res.render('image/delete.handlebars',req.html)
 	res.send(req.data)
+	if (next) {
+        next();
+    }
 })
 
 module.exports = router
