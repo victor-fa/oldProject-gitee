@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
             let d: number;
 
             p.setup = () => {
-                canvas = p.createCanvas(819, 819);
+                canvas = p.createCanvas(1000, 1000);
                 p.pixelDensity(1); // Set 1 because it's too slow on firefox
                 //pixelDensity(displayDensity());
                 canvas.parent('home-bg-anim-p5');
