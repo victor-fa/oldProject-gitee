@@ -43,3 +43,5 @@ testem.log
 Thumbs.db
 
 public.tar.gz
+
+package-lock.json
