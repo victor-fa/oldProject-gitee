@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
                 p.pixelDensity(1); // Set 1 because it's too slow on firefox
                 //pixelDensity(displayDensity());
                 canvas.parent('home-bg-anim-p5');
-                n = 100;
+                n = 150;
                 constellation = [];
                 for (var i = 0; i < n; i++) {
                     constellation.push(new Star());
