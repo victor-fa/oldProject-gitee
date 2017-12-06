@@ -21,6 +21,7 @@ export interface HomeTitle {
 })
 export class HomeComponent implements OnInit {
     language = 'zh';
+    p5js: p5;
 
     constructor(private cookieService: CookieService) {
         if (this.cookieService.get('lang')) {
@@ -28,10 +29,8 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    c: any;
-
     ngOnInit() {
-        const s = (p) => {
+        const p5_opt = (p) => {
 
             let canvas;
             let constellation = [];
@@ -78,6 +77,6 @@ export class HomeComponent implements OnInit {
 
             }
         }
-        this.c = new p5(s);
+        this.p5js = new p5(p5_opt);
     }
 }
