@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
             let constellation: Array<Star>;
             let n: number;
             let d: number;
+            let stroke_color: Object;
 
             p.setup = () => {
                 canvas = p.createCanvas(1000, 1000);
@@ -48,12 +49,11 @@ export class HomeComponent implements OnInit {
                     constellation.push(new Star());
                 }
                 p.strokeWeight(.75);
-                p.stroke('#FFFFFF');
+                stroke_color = p.color('rgba(255,255,255,0.4)');
+                p.stroke(stroke_color);
             }
 
             p.draw = () => {
-                // p.background(255, 0, 255, 1);
-                // p.background('#FFFF00');
                 p.clear();
 
                 for (var i = 0; i < constellation.length; i++) {
