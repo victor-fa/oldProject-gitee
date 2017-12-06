@@ -15,60 +15,10 @@
         text-align: center;
         color: #ffffff;
         padding: 100px;
-        $duration: 10s;
-        $max: 20;
-        $ease: linear;
-        #home-bg-anim {
+        #home-bg-anim-p5 {
             position: absolute;
-            top: 59px;
-            left: 250px;
-            .home-holder {
-                width: 500px;
-                height: 250px;
-                margin: 0 auto;
-                position: relative;
-                .home-circle {
-                    border-radius: 100% 100% 0 0;
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    transform-origin: bottom center;
-                }
-                @for $i from 1 through $max {
-                    .home-circle:nth-child(#{$i}) {
-                        $size: 50px * ($i - 1);
-                        @if ($i==1) {
-                            border: none;
-                        }
-                        @else if ($i > 15) {
-                            border: #{30-$i}px dashed rgba(255/$i, 255, 255, 0.04);
-                        }
-                        @else {
-                            border: #{$i+3}px dashed rgba(255 / $i, 255, 255, 0.002 * $i);
-                        }
-                        border-bottom: none;
-                        border-radius: $size $size 0 0;
-                        width: $size;
-                        height: $size / 2;
-                        z-index: $max - $i;
-                        animation: circle-#{$i} $duration infinite $ease;
-                    }
-                    @keyframes circle-#{$i} {
-                        0% {
-                            transform: translateX(-50%) rotate(0deg);
-                        }
-                        100% {
-                            @if ($i % 2==0) {
-                                transform: translateX(-50%) rotate(-($i * 360deg));
-                            }
-                            @else {
-                                transform: translateX(-50%) rotate(($i * 360deg));
-                            }
-                        }
-                    }
-                }
-            }
+            top: -100px;
+            left: 90.5px;
         }
     }
 }

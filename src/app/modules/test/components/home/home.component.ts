@@ -38,22 +38,23 @@ export class HomeComponent implements OnInit {
             let d: number;
 
             p.setup = () => {
-                canvas = p.createCanvas(500, 500);
+                canvas = p.createCanvas(819, 819);
                 p.pixelDensity(1); // Set 1 because it's too slow on firefox
                 //pixelDensity(displayDensity());
-                canvas.parent('equalizer');
+                canvas.parent('home-bg-anim-p5');
                 n = 100;
                 constellation = [];
                 for (var i = 0; i < n; i++) {
                     constellation.push(new Star());
                 }
                 p.strokeWeight(.75);
-                p.stroke('#0000FF');
+                p.stroke('#FFFFFF');
             }
 
             p.draw = () => {
                 // p.background(255, 0, 255, 1);
-                p.background('#FFFFFF');
+                // p.background('#FFFF00');
+                p.clear();
 
                 for (var i = 0; i < constellation.length; i++) {
                     constellation[i].update();
