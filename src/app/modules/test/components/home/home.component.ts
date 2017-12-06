@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
+        // ref: https://www.openprocessing.org/sketch/434620
         const p5_opt = (p) => {
             let width: number = 1000;
             let height: number = 619;
