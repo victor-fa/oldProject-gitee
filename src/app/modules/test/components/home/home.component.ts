@@ -44,20 +44,21 @@ export class HomeComponent implements OnInit {
                 canvas.parent('equalizer');
                 let n = 20;
 
-                for (var i = 0; i <= n; i++) {
-                    // constellation.push(new Star());
+                for (var i = 0; i < n; i++) {
+                    constellation.push(new Star());
                 }
                 p.strokeWeight(.75);
                 p.stroke('#0000FF');
+                console.log(constellation);
             }
 
             p.draw = () => {
                 p.background(255, 0, 255, 1);
                 for (let k = 0; k < constellation.length; k++) {
-                    // constellation[k].update();
+                    constellation[k].update();
                     // p.ellipse(constellation[k].x, constellation[k].y, 80, 80);
                 }
-                p.ellipse(p.mouseX, p.mouseY, 80, 80);
+                // p.ellipse(p.mouseX, p.mouseY, 80, 80);
                 /*
                 // background('#000000');
                 p.background('#FF00FF');
@@ -74,7 +75,49 @@ export class HomeComponent implements OnInit {
                     }
                 }
                 */
+            }
 
+            class Star {
+                width: number;
+                height: number;
+                x: number;
+                y: number;
+                a: number;
+                r: number;
+                loc: p5.Vector;
+                speed: p5.Vector;
+                bam: p5.Vector;
+                m;
+
+                /*
+                this.a = random(5 * TAU); // "5*TAU" => render will be more homogeneous
+                this.r = random(width * .2, width * .25); // first position will looks like a donut
+                this.loc = createVector(width / 2 + sin(this.a) * this.r, height / 2 + cos(this.a) * this.r);
+                this.speed = createVector();
+                this.speed = p5.Vector.random2D();
+                //this.speed.random2D();
+                this.bam = createVector();
+                this.m;
+                */
+
+                constructor() {
+                    this.width = 1000;
+                    this.height = 619;
+                    this.a = p.random(5 * p.TAU); // "5*TAU" => render will be more homogeneous
+                    this.r = p.random(this.width * .2, this.width * .25); // first position will looks like a donut
+                    this.loc = p.createVector(this.width / 2 + p.sin(this.a) * this.r, p.height / 2 + p.cos(this.a) * this.r);
+                    // this.speed = p.createVector();
+                    this.speed = p5.Vector.random2D();
+                    //this.speed.random2D();
+                    this.bam = p.createVector();
+                    this.m;
+                }
+                update() {
+                    this.x += 20;
+                    this.y += 15;
+                    this.x %= 1000;
+                    this.y %= 619;
+                }
             }
         }
         this.p5js = new p5(p5_opt);
