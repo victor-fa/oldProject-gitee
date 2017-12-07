@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
                     constellation.push(new Star());
                 }
                 p.strokeWeight(.75);
-                stroke_color = p.color('rgba(255,255,255,0.4)');
+                stroke_color = p.color('rgba(255,255,255,0.2)');
                 p.stroke(stroke_color);
             }
 
