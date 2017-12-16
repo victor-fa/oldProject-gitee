@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // Log List
-router.get('/log', function (req, res) {
+router.get('/log', function (req, res, next) {
 	res.render('log/log', {
 		css: ['/css/qw/log.css'],
 		js: [
@@ -14,7 +14,7 @@ router.get('/log', function (req, res) {
 });
 
 // Log Detail
-router.get('/log-detail', function (req, res) {
+router.get('/log-detail', function (req, res, next) {
 	res.render('log/log-detail', {
 		css: ['/css/qw/log-detail.css'],
 		js: [

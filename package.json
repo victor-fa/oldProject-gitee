@@ -8,15 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+git@gitlab.com:yiwangcentaurs/Chewrobot-Tool.git"
+    "url": "https://gitlab.com/yiwangcentaurs/Chewrobot-Tool"
   },
   "author": {
     "name": "Centaurs Technologies Co.",
-    "email": "contanct@centaurstech.com ",
+    "email": "contanct@centaurstech.com",
     "url": "https://www.centaurstech.com/"
   },
   "contributors": [
-    "Yuancheng Zhang"
+    "Yuancheng Zhang",
+    "Fangzhou Long",
+    "Jiawei Sun"
   ],
   "license": "ISC",
   "dependencies": {
@@ -37,6 +39,7 @@
     "passport-http": "*",
     "passport-local": "*",
     "request": "^2.81.0",
+    "centaurs-test-plugin": "git+https://github.com/yiwangcentaurs/centaurs-test-plugin.git",    
     "uuid": ""
   }
 }

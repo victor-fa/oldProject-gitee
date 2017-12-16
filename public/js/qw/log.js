@@ -43,6 +43,7 @@ $().ready(function () {
     }
 
     function ajaxOnSuccess(obj) {
+        setButtonDisabled(false);
         console.log("Got Respond.");
         var sessions = obj.sessions;
         if (sessions.length === 0) {
@@ -60,7 +61,7 @@ $().ready(function () {
             if (i === sessions.length - 1) {
                 timeReq[pageNum + 1] = sessions[i].timestamp - 1;
             }
-            resObj.id = zeroFill(i + 1 + pageNum* 10, width);
+            resObj.id = zeroFill(i + 1 + pageNum * 10, width);
             resObj.timestamp = parseDateTime(sessions[i].timestamp);
             resObj.app = sessions[i].app;
             resObj.nickname = (sessions[i].nickname).trim();
@@ -83,6 +84,8 @@ $().ready(function () {
     }
 
     function loadLogList() {
+        setButtonDisabled(true);
+
         console.log("Sending Request...");
 
         if (timeReq[pageNum] <= 0) {
@@ -135,6 +138,14 @@ $().ready(function () {
                 return (i % 2 === 1) ? '#f9f9f9' : '#ffffff';
             });
         }
+    }
+
+    // set button availability
+    function setButtonDisabled(flag) {
+        $("#log-search").prop("disabled", flag);
+        $("#log-first-page").prop("disabled", flag);
+        $("#log-prev-page").prop("disabled", flag);
+        $("#log-next-page").prop("disabled", flag);
     }
 
     function buttonsHandler() {

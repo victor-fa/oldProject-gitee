@@ -1,4 +1,5 @@
 # Logs
+package-lock.json
 logs
 *.log
 npm-debug.log*
@@ -66,3 +67,10 @@ run_mongo.bat
 run_mongodb.bat
 launch.json
 resources/
+
+# Configuration
+config/
+package-lock.json
+
+# Auto generated PDF file
+README.pdf

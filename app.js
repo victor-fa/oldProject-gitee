@@ -1,30 +1,33 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var expressValidator = require('express-validator');
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local'), Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
+var express = require('express'),
+	path = require('path'),
+	cookieParser = require('cookie-parser'),
+	bodyParser = require('body-parser'),
+	exphbs = require('express-handlebars'),
+	expressValidator = require('express-validator'),
+	flash = require('connect-flash'),
+	session = require('express-session'),
+	passport = require('passport'),
+	LocalStrategy = require('passport-local'), Strategy,    
+	plugin = require("centaurs-test-plugin"),
+	port = process.env.PORT || 10010;	
+
+var mongo = require('mongodb'),
+	mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/chewtool', {
 	useMongoClient: true,
 });
 var db = mongoose.connection;
 
-var UserService = require('./services/user')
-var UserGroupPolicy = require('./services/group_policy')
+var UserService = require('./services/user'),
+	UserGroupPolicy = require('./services/group_policy')
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var tests = require('./routes/tests')
-var logs = require('./routes/log');
-var admins = require('./routes/admins')
-var gallery = require('./routes/gallery')
-var image = require('./routes/image')
+var routes = require('./routes/index'),
+	users = require('./routes/users'),
+	tests = require('./routes/tests'),
+	logs = require('./routes/log'),
+	admins = require('./routes/admins'),
+	gallery = require('./routes/gallery'),
+	image = require('./routes/image')
 
 const fileUpload = require('express-fileupload');
 
@@ -63,6 +66,7 @@ var hbs = exphbs.create({
 	},
 	defaultLayout: 'layout'
 });
+
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -123,17 +127,31 @@ app.use(function (req, res, next) {
 	next();
 });
 
+// Plugin: start API request timer
+app.use(plugin.timer.start);
+
+// Routes
 app.use('/', routes);
 app.use('/users', users);
 app.use('/test', UserService.ensureAuthenticated, tests);
 app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery)
-app.use('/image',  UserService.ensureAuthenticated, image)
+app.use('/image', UserService.ensureAuthenticated, image)
+
+// Plugin: stop API request timer
+app.use(plugin.timer.stop);
 
 // Set Port
-app.set('port', (process.env.PORT || 10010));
+app.set('port', port);
+
+// Plugin: catch exceptions
+plugin.catchErr();
 
 app.listen(app.get('port'), function () {
-	console.log('Server started on port ' + app.get('port'));
+	console.log('Server started on port ' + port);
+	// Plugin: show configurations
+	plugin.showConfig();
+	// Plugin: send system usage to monitor once per minute 
+    plugin.sysCheck(60);
 });

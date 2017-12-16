@@ -10,21 +10,29 @@ const path = require("path")
 
 
 
-router.get('/album', function(req, res) {
+router.get('/album', function (req, res, next) {
     res.render('image/album')
+    if (next) {
+        next();
+    }
 })
 
-router.get('/upload', function(req, res) {
+router.get('/upload', function (req, res, next) {
     res.render('image/upload')
+    if (next) {
+        next();
+    }
 })
-router.get('/delete', function(req,res){
+router.get('/delete', function (req, res, next) {
     res.render('image/delete',{
         js: [
             '/js/gallery/delete-image.js'
         ],
         username: req.user.username
     })
-    
+    if (next) {
+        next();
+    }
 })
 function save_image(path, name, album, up_wechat, callback) {
     var request = require("request");
@@ -79,7 +87,7 @@ function delete_image(absolute_path,file_name,album_name,up_wechat,callback){
     })
 
 }
-router.post('/upload', function(req, res) {
+router.post('/upload', function (req, res, next) {
     var user = req.user
     var album_name = req.body.album_name
     if (!req.files) {
@@ -120,11 +128,14 @@ router.post('/upload', function(req, res) {
             })
         }
     })
+    if (next) {
+        next();
+    }
 })
 
 const regex = /^[a-zA-Z0-9]*$/g;
 
-router.post('/album', function(req, res) {
+router.post('/album', function (req, res, next) {
     var id = req.user._id;
     var album_name = req.body.album_name
 
@@ -148,9 +159,12 @@ router.post('/album', function(req, res) {
         }
         res.redirect('/image/album')
     })
+    if (next) {
+        next();
+    }
 })
 
-router.post('/delete',function(req,res){
+router.post('/delete', function (req, res, next) {
     console.log(req.body)
     var user = req.user
     var album_name = req.body.album_name
@@ -180,6 +194,9 @@ router.post('/delete',function(req,res){
     //first delete the database and then delete the file on the server. 
     // send post request to robot server/ get success return value and 
     // fs.unlink (absolute file path)
+    if (next) {
+        next();
+    }
 })
 
 module.exports = router
