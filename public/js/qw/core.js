@@ -12,6 +12,9 @@ function on_recieve_data(data) {
     console.log('Extra data:\n' + JSON.stringify(data))
 }
 
+function on_receive_error(statusCode){
+    alert("信息输入错误！服务器返回代码:" + statusCode)
+}
 function ask_question(msg, callback) {
     on_send_question(msg)
 
@@ -52,6 +55,7 @@ function ask_question(msg, callback) {
         error: function(xhr, ajaxOptions, thrownError) {
             console.log("Status: " + xhr.status)
             console.log(thrownError)
+            on_receive_error(xhr.status)
 
         },
     })

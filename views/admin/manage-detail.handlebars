@@ -57,22 +57,25 @@
 
                     <div class="list-group-item-detail list-group-item-detail-single">
                         <div id="user-app-add" class="collapse">
-                            <div class="alert alert-success user-app-list-item">
-                                <form method="post" action="/admin/manage/api/addapp" role="form">
-                                    <div class="form-group">
-                                        <label for="new-appkey">APPKEY</label>
-                                        <input class="list-group-item-text-data" type="text" class="form-control" id="new-appkey" name="appkey" placeholder="APPKEY">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="new-appsecret">APPSECRET</label>
-                                        <input class="list-group-item-text-data" type="text" class="form-control" id="new-appsecret" name="appsecret" placeholder="APPSECRET">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" name="id" value="{{aUser._id}}">
-                                    </div>
-                                    <button type="submit" class="btn btn-sm btn-warning">添加</button>
-                                </form>
-                            </div>
+                            <!--添加列表在这里-->
+                            <form method="post" id="appkeySelected" action="/admin/manage/api/addapp" role="form">
+                                <table class="table table-bordered table-hover" id = "appselectedtable">
+                                    <thead>
+                                    <tr>
+                                        <th></th>>
+                                        <th>Name</th>
+                                        <th>Robot</th>
+                                        <th>AppKey</th>
+                                        <th hidden="hidden">AppSecret</th>
+                                        <th hidden="hidden">Id</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id = "inforslist">
+                                    </tbody>
+                                </table>
+                                <input type="hidden" name="id" value="{{aUser._id}}">
+                                <button type="submit" class="btn btn-default">添加</button>
+                            </form>
                         </div>
 
                         <h1 class="page-header">
