@@ -150,6 +150,7 @@ plugin.catchErr();
 
 app.listen(app.get('port'), function () {
 	console.log('Server started on port ' + port);
+	plugin.set('app_name', 'chewrobot-tool');
 	// Plugin: show configurations
 	plugin.showConfig();
 	// Plugin: send system usage to monitor once per minute 
