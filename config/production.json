@@ -1,0 +1,13 @@
+{
+	"email": {
+		"username": "monitor@qiwu.ai",
+		"password": "P6RKGyhpSTbpMb2xKhLbE44zQujKZERv",
+		"domain": "smtp.exmail.qq.com"
+	},
+	"plugin": {
+		"host": "47.88.77.157",
+		"port": 10021,
+		"app_name": "chewrobot-tool"
+	},
+	"debug": true
+}
