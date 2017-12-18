@@ -69,7 +69,6 @@ launch.json
 resources/
 
 # Configuration
-config/
 package-lock.json
 
 # Auto generated PDF file
