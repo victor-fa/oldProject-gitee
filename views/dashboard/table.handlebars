@@ -1,62 +1,289 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    .container_use {
+        width: 100%;
+    }
+</style>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Monitor Server Dashboard</title>
-	<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://fengyu.moe/scripts/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
 
-</head>
+<div class="container">
+    <h1>统计图</h1>
+</div>
 
-<body>
+<div class="container container_use">
+    <div class="row justify-content-md-center">
+        <div class="div_use col-md-4">
+            <span><p> 触达率 </p><p id = "SendRatio"> </p></span>
+        </div>
+        <div class="div_use col-md-4">
+            <span><p> 点击率 </p><p id = "ClickRatio"> </p></span>
+        </div>
+        
+    </div>
 
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark indigo fixed-top">
-			<div class="container">
-				<a class="navbar-brand" href="#">Monitor Server</a>
-				<!-- Collapse button -->
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-				 aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+    <br>
+    <br>
+    <div class="row justify-content-md-center">
+        <div class="div_use col-md-4">
+            <canvas id="HourlyPrivateUseChart"></canvas>
+        </div>
+        <div class="div_use col-md-4">
+            <canvas id="HourlyGroupUseChart"></canvas>
+        </div>
+        <div class="div_use col-md-4">
+            <canvas id="HourlyDiscussionUseChart"></canvas>
+        </div>
+    </div>
+</div>
 
-				<!-- Collapsible content -->
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<div class="container">
+    <canvas id="MinutelyStatusChart"></canvas>
+</div>
+<canvas id="HourlyStatusChart" width="1200" height="600"></canvas> 
 
-					<!-- Links -->
-					<ul class="navbar-nav mr-auto">
-						<!-- Dropdown -->
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="navbar-app-list-head" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">App List</a>
-							<div class="dropdown-menu dropdown-primary" aria-labelledby="navbar-app-list-head" id="navbar-app-list-items">
-							</div>
-						</li>
-					</ul>
-					<!-- Links -->
-				</div>
-				<!-- Collapsible content -->
-			</div>
-		</nav>
-	</header>
 
-	<canvas id="lineChart"></canvas>
-
-	<footer class="page-footer blue center-on-small-only unique-color-dark pt-0">
-
-		<div class="footer-copyright">
-			<div class="container-fluid">
-				© 2017
-				<a href="https://www.centaurstech.com/"> Centaurs Technologies Co. Ltd </a>
-				All Rights Reserved.
-			</div>
-		</div>
-
-	</footer>
+<br>
+<br>
 
 
 
-</body>
+<script>
 
-</html>
+    Date.prototype.addDays = function(days){
+        var dat = new Date(this.valueOf());
+        dat.setDate(dat.getDate() + days);
+        return dat;
+    }
+    Date.prototype.subDays = function(days){
+        var dat = new Date(this.valueOf());
+        dat.setDate(dat.getDate() - days);
+        return dat; 
+    }
+    function load_x_data(){
+        let xDayRange = []
+        for(i=0;i<30;i++){
+            let date_obj = new Date()
+            date_obj = date_obj.subDays(i)
+            let date_str = date_obj.toISOString()
+            let x_date = date_str.substring(0,date_str.indexOf('T'))
+            console.log("handled date str is " + x_date)
+            xDayRange.unshift(x_date)
+        }
+        return xDayRange
+    }
+    function load_dau_y_data(appkey){
+        let date_obj = new Date()
+        let date_str = date_obj.toISOString()
+        var post_obj = {
+            appkey: appkey,
+            end_date: date_str.substring(0,date_str.indexOf('T'))
+        }
+        console.log("the post object is ")
+        console.log(post_obj)
+        $.ajax({
+            url: 'http://localhost:80/api/chat/statistic/dau',
+            type: 'POST',
+            crossDomain: true,
+            data: post_obj,
+            success: function(respond_data){
+                finished_load_data(respond_data)
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    function finished_load_data(respond_data){
+        console.log("the respond is ")
+        console.log(respond_data)
+        
+        respond_obj = respond_data
+        let yActiveRange = respond_obj.data
+
+        let xDayRange = load_x_data()
+        
+        var ctxMinutelyStatusChart = $("#MinutelyStatusChart");
+        var dataMinutelyStatusChart = {
+            labels: xDayRange,
+            datasets: [{
+                label: "每日活跃数",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: yActiveRange,
+                spanGaps: false,
+            }]
+        };
+
+        var minutelyStatusChartObject = new Chart(ctxMinutelyStatusChart, {
+            type: 'line',
+            data: dataMinutelyStatusChart,
+            options: {
+                hover: {
+                    // Overrides the global setting
+                    mode: 'index',
+                    responsive: true,
+                    scaleFontSize: 70,
+                    scaleShowGridLines: true, // �Ƿ���ʾ����
+                },
+                /*scales: {
+                    yAxes: [{ type: 'linear', position: 'left', ticks: {min: 0, max:100}}]
+                }*/
+            }
+        });
+    }
+    function load_mau_x_data(){
+        let xDayRange = []
+        for(i=0;i<12;i++){
+            let date_obj = new Date()
+            date_obj = date_obj.subDays(i * 30)
+            let date_str = date_obj.toISOString()
+            let x_date = date_str.substring(0,date_str.indexOf('T'))
+            console.log("handled date str is " + x_date)
+            xDayRange.unshift(x_date)
+        }
+        return xDayRange
+    }
+    function load_mau_y_data(appkey){
+        let date_obj = new Date()
+        let date_str = date_obj.toISOString()
+        var post_obj = {
+            appkey: appkey,
+            end_date: date_str.substring(0,date_str.indexOf('T'))
+        }
+        console.log("the post object is ")
+        console.log(post_obj)
+        $.ajax({
+            url: 'http://localhost:80/api/chat/statistic/mau',
+            type: 'POST',
+            crossDomain: true,
+            data: post_obj,
+            success: function(respond_data){
+                finished_load_mau_data(respond_data)
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    function finished_load_mau_data(respond_data){
+        console.log("the respond is ")
+        console.log(respond_data)
+        var ctxHourlyStatusChart = $("#HourlyStatusChart");
+        var xHourlyStatusChart = [];
+        let xDayRange = load_mau_x_data()
+        var yHourlyStatusChart = respond_data.data;
+        var dataHourlyStatusChart = {
+            labels: xDayRange,
+            datasets: [{
+                label: "月活跃统计图",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "rgba(75,192,192,0.4)",
+                borderColor: "rgba(75,192,192,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(75,192,192,1)",
+                pointBackgroundColor: "#fff",
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: yHourlyStatusChart,
+                spanGaps: false,
+            }]
+        };
+
+
+        var hourlyStatusChartObject = new Chart(ctxHourlyStatusChart, {
+            type: 'line',
+            data: dataHourlyStatusChart,
+            options: {
+                hover: {
+                    // Overrides the global setting
+                    mode: 'index',
+                    responsive: true,
+                    scaleFontSize: 70,
+                    scaleShowGridLines: true, // �Ƿ���ʾ����
+                }
+            }
+        });
+
+    }
+    function load_send_and_click_ratio(appkey){
+        var post_obj = {
+            appkey: appkey,
+        }
+        $.ajax({
+            url: 'http://localhost:80/api/chat/onlineCelerity/send_ratio',
+            type: 'POST',
+            crossDomain: true,
+            data: post_obj,
+            success: function(respond_data){
+                show_send_ratio(respond_data)
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+
+        $.ajax({
+            url: 'http://localhost:80/api/chat/onlineCelerity/click_ratio',
+            type: 'POST',
+            crossDomain: true,
+            data: post_obj,
+            success: function(respond_data){
+                show_click_ratio(respond_data)
+            },
+            error: function(err){
+                console.log(err)
+            }
+        })
+    }
+    function show_send_ratio(respond_data){
+        console.log("receive send ratio data")
+        var send_ratio_html = $("#SendRatio")
+        send_ratio_html.html(respond_data.data)
+    }
+    function show_click_ratio(respond_data){
+        var send_ratio_html = $("#ClickRatio")
+        send_ratio_html.html(respond_data.data)
+    }
+    $(document).ready(function() {
+       
+        load_dau_y_data('qiwurobot')
+        
+
+        load_mau_y_data('qiwurobot')
+
+        load_send_and_click_ratio('qiwurobot')
+
+
+
+      
+
+
+    });
+</script>
+

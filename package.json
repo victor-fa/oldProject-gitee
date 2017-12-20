@@ -32,6 +32,7 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "mdbootstrap": "^4.4.3",
     "mongodb": "*",
     "mongoose": "*",
     "node-gallery": "1.1.0",
