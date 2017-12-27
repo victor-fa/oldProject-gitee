@@ -45,7 +45,7 @@ router.post('/register', function (req, res, next) {
 	user_info.company = req.body.company;
 	password = req.body.password;
 	password2 = req.body.password2;
-	group = UserGroup.ADMIN;
+	group = UserGroup.USER;
 
 	// Validation
 	req.checkBody('name', '真实姓名不能为空').notEmpty();
