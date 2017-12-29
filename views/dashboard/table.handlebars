@@ -83,7 +83,7 @@
         console.log("the post object is ")
         console.log(post_obj)
         $.ajax({
-            url: 'http://localhost:80/api/chat/statistic/dau',
+            url: 'https://robot-service.centaurstech.com/api/chat/statistic/dau',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -170,7 +170,7 @@
         console.log("the post object is ")
         console.log(post_obj)
         $.ajax({
-            url: 'http://localhost:80/api/chat/statistic/mau',
+            url: 'https://robot-service.centaurstech.com/api/chat/statistic/mau',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -236,7 +236,7 @@
             appkey: appkey,
         }
         $.ajax({
-            url: 'http://localhost:80/api/chat/onlineCelerity/send_ratio',
+            url: 'https://robot-service.centaurstech.com/api/chat/onlineCelerity/send_ratio',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -249,7 +249,7 @@
         })
 
         $.ajax({
-            url: 'http://localhost:80/api/chat/onlineCelerity/click_ratio',
+            url: 'https://robot-service.centaurstech.com/api/chat/onlineCelerity/click_ratio',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -274,7 +274,6 @@
        
         load_dau_y_data('qiwurobot')
         
-
         load_mau_y_data('qiwurobot')
 
         load_send_and_click_ratio('qiwurobot')
