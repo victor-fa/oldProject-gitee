@@ -25,4 +25,25 @@ router.get('/chart', UserService.ensureAuthenticated, function (req, res, next) 
     }
 });
 
+// Get Table
+// router.get('/table',UserService.ensureAuthenticated, function(req,res,next){
+// 	res.render('dashboard/table',{
+// 		css:[
+// 			'/css/util/bootstrap4.css',
+// 			'/css/util/mdb.min.css',
+// 		],
+// 		js:[
+// 			'/js/util/jquery-3.2.1.min.js',
+// 			'/js/util/popper.min.js',
+// 			'/js/util/bootstrap4.min.js',
+// 			'/js/util/mdb.min.js',
+// 			'/js/qw/table.js'
+// 		]
+
+// 	})
+// })
+
+router.get('/table',UserService.ensureAuthenticated, function(req,res,next){
+	res.render('dashboard/table')
+})
 module.exports = router;
