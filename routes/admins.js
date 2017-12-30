@@ -111,7 +111,7 @@ router.post('/manage/api/activate', function (req, res, next) {
 
 
 // API: add new APP
-router.post('/manage/api/addapp', function (req, res) {
+router.post('/manage/api/addapp', function (req, res, next) {
 	var ids = req.body.checkItem;
 	var id = req.body.id;
 	if (!id) {

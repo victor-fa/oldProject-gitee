@@ -60,7 +60,7 @@
 
             <ul class="list-group" id="app-list">
                 {{#each user.applist}}
-                <a class="list-group-item app-list-item app-list-item-frame" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}">
+                <a  class="list-group-item app-list-item app-list-item-frame" style="cursor:pointer" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}" onclick="alert('切换到{{this.appkey}}');">
                 <span class="app-index"># {{@index}}</span>
                 <strong>APPKEY: </strong> <span class="app-list-item-left app-appkey">{{this.appkey}}</span><br>
                 <strong>APPSECRET: </strong> <span class="app-list-item-left app-appsecret">{{this.appsecret}}</span>
