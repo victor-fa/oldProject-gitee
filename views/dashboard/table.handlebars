@@ -272,11 +272,13 @@
     }
     $(document).ready(function() {
        
-        load_dau_y_data('qiwurobot')
-        
-        load_mau_y_data('qiwurobot')
+        var app_key = '{{user.appkey}}'
 
-        load_send_and_click_ratio('qiwurobot')
+        load_dau_y_data(app_key)
+        
+        load_mau_y_data(app_key)
+
+        load_send_and_click_ratio(app_key)
 
 
 
