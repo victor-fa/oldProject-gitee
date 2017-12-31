@@ -23,7 +23,7 @@
         
     </div>
 
-    <br>
+    {{!-- <br>
     <br>
     <div class="row justify-content-md-center">
         <div class="div_use col-md-4">
@@ -35,13 +35,14 @@
         <div class="div_use col-md-4">
             <canvas id="HourlyDiscussionUseChart"></canvas>
         </div>
-    </div>
+    </div> --}}
 </div>
 
 <div class="container">
     <canvas id="MinutelyStatusChart"></canvas>
+    <canvas id="HourlyStatusChart" width="1200" height="600"></canvas> 
 </div>
-<canvas id="HourlyStatusChart" width="1200" height="600"></canvas> 
+
 
 
 <br>
@@ -50,7 +51,6 @@
 
 
 <script>
-
     Date.prototype.addDays = function(days){
         var dat = new Date(this.valueOf());
         dat.setDate(dat.getDate() + days);
@@ -279,10 +279,6 @@
         load_mau_y_data(app_key)
 
         load_send_and_click_ratio(app_key)
-
-
-
-      
 
 
     });
