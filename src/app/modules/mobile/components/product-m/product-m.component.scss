@@ -133,6 +133,12 @@
                     margin-bottom: calc(var(--item-size) * 0.3);
                 }
             }
+            .product-s-case {
+                img {
+                    width: 100%;
+                    margin-bottom: 5rem;
+                }
+            }
         }
     }
 }
