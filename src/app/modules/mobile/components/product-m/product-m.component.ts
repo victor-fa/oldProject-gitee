@@ -629,6 +629,22 @@ export class ProductMComponent implements OnInit {
         this.nowProdSingle = this.nowProd.pages[this.nowIndex];
     }
 
+    @HostListener('window:scroll', [])
+    onWindowScroll() {
+        if ($('#product-s').is(':visible')) {
+            const pageTop = $(window).scrollTop();
+            const pageBottom = pageTop + $(window).height();
+            const prodSingleTop = $('#product-s').offset().top;
+            const prodSingleBottom = prodSingleTop + $('#product-s').height();
+            // console.log(`${pageTop}, ${pageBottom}; ${prodSingleTop}, ${prodSingleBottom};`);
+            if ((pageTop > prodSingleBottom) || (pageBottom < prodSingleTop)) {
+                // out of screen
+                $('#product-s').hide();
+                $('#product-m').show();
+            }
+        }
+    }
+
     ngOnInit() {
         $('#product-s').hide();
     }
