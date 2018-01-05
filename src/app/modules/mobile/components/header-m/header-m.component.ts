@@ -17,8 +17,10 @@ export class HeaderMComponent {
     }
 
     changeMain(cp: string) {
-        // this.mc.loadComponent(cp);
-        // this.closeSideNav();
-        console.log(cp)
+        var id: string = "#" + cp;
+        $('html, body').animate({
+            scrollTop: $(id).offset().top
+        }, 1000);
+        this.closeSideNav();
     }
 }
