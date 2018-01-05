@@ -180,10 +180,14 @@ export class TechMComponent implements OnInit {
     }
     onPan(event: any): void {
         event.preventDefault();
-        // this.x = this.startX + event.deltaX;
-        // this.y = this.startY + event.deltaY;
+        /*
         if (event.deltaY < -150 || event.deltaY > 150) {
-            $('#tech-carousel').hide();
+            this.closePan();
         }
+        */
+    }
+
+    closePan() {
+        $('#tech-carousel').hide();
     }
 }

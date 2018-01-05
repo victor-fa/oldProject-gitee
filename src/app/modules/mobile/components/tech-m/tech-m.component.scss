@@ -112,7 +112,7 @@
                     --padding-c: 10vw; // offset
                     position: absolute;
                     left: calc((100vw - 56vw) / 2 - var(--padding-b) + var(--padding-c));
-                    bottom: calc(var(--padding-b) * 2);
+                    bottom: calc(var(--padding-b) * 1);
                     font-size: 8rem;
                     color: gold;
                     text-align: center;
@@ -127,11 +127,13 @@
                         opacity: 1;
                     }
                 }
-                img#tech-right-logo {
+                div#tech-close {
                     position: absolute;
-                    height: 10rem;
-                    top: calc(var(--padding-b) * 2.8);
-                    right: calc(var(--padding-b) * 2);
+                    top: calc(var(--padding-b) * 1);
+                    right: calc(var(--padding-b) * 1);
+                    font-size: 7rem;
+                    color:lightgray;
+                    padding: 1.2rem;
                 }
             }
             #tech-detail-bg {

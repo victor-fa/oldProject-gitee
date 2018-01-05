@@ -24,7 +24,9 @@
                         <li *ngFor="let tech of nowTech.pages; let i = index" [class.tech-switch-active]="i == nowIndex">　</li>
                     </ul>
                 </div>
-                <img id="tech-right-logo" src="/assets/img/brand_logo_gold.png">
+                <div id="tech-close" (click)="closePan()">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </div>
             </div>
         </div>
     </div>
