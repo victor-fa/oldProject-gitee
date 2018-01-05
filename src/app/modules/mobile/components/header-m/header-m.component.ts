@@ -17,7 +17,7 @@ export class HeaderMComponent {
     }
 
     changeMain(cp: string) {
-        var id: string = "#" + cp;
+        let id: string = "#" + cp;
         $('html, body').animate({
             scrollTop: $(id).offset().top
         }, 1000);
