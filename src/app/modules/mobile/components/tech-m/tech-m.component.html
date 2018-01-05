@@ -21,7 +21,7 @@
                 </div>
                 <div id="tech-switch">
                     <ul>
-                        <li *ngFor="let tech of nowTech.pages; let i = index" [class.tech-switch-active]="i == nowIndex">　</li>
+                        <li *ngFor="let tech of nowTech.pages; let i = index" [class.tech-switch-active]="i == nowIndex" (click)="changeTechAndShow(i)">　</li>
                     </ul>
                 </div>
                 <div id="tech-close" (click)="closePan()">
