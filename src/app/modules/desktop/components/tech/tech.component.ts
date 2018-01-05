@@ -53,8 +53,8 @@ export class TechComponent implements AfterViewChecked {
                 {
                     title: '敏捷开发',
                     sub: '齐悟运用革命性智能算法提高百倍以上的开发效率，快速迭代，试试更新。',
-                    desc: '国内大多数智能客服公司做一个demo需要花4个月时间，我们只需要3天就可以做出效果更好的demo，一周即可做出成品，能够快速测试投产，并且根据客户需求反馈随时进行动态调整。' +
-                        '在产品的开发及迭代快速的泛娱乐领域，齐悟智能客服具有独特的开发模式和很强的应变能力。',
+                    desc: '国内大多数智能客服公司做一个demo需要花几个月时间，我们只需要一周就可以做出效果更好的demo，能够快速测试投产，并且根据客户需求反馈随时进行动态调整。' +
+                        '在产品的开发及迭代快速的泛娱乐领域，齐悟具有快速完成产品交付的优势。',
                     name: '敏捷开发',
                     icon: '/assets/img/tech_icons/tech_icon3_w.png'
                 },
@@ -105,7 +105,7 @@ export class TechComponent implements AfterViewChecked {
                 {
                     title: 'Agile Development',
                     sub: 'Chewrobot utilize innovative smart algorithm improve more than hundred times than traditional means. Faster development, realtime update.',
-                    desc: 'Most smart service company needs more than 4 month to create an demo for their customer, where we only needs less than a week to present a more compelling result. we can deploy our service quicker and more suitable by the needs of the customer.',
+                    desc: 'Most smart service company needs several months to create an demo for their customer, where we only needs less than a week to present a more compelling result. we can deploy our service quicker and more suitable by the needs of the customer.',
                     name: 'Agile Development',
                     icon: '/assets/img/tech_icons/tech_icon3_w.png'
                 },
