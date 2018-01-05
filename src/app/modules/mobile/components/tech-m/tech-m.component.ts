@@ -175,16 +175,13 @@ export class TechMComponent implements OnInit {
     startY: number = 0;
 
     onPanStart(event: any): void {
-        //   this.startX = this.x;
         this.startY = this.y;
     }
     onPan(event: any): void {
         event.preventDefault();
-        /*
         if (event.deltaY < -150 || event.deltaY > 150) {
             this.closePan();
         }
-        */
     }
 
     closePan() {
