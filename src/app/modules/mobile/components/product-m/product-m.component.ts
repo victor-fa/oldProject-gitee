@@ -434,44 +434,4 @@ export class ProductMComponent implements OnInit {
         $('#product-m').show();
         $('#product-s').hide();
     }
-
-    changeProd(index: number) {
-        this.clickProdSingleItem(index);
-    }
-
-    changeTechAndShow(index: number) {
-        $('#product-m').show();
-        $('#product-s').hide();
-        this.changeProd(index);
-    }
-
-    SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
-    x: number = 50;
-    y: number = 50;
-
-    swipe(action: any = this.SWIPE_ACTION.RIGHT): void {
-        // next
-        if (action === this.SWIPE_ACTION.RIGHT) {
-            let i = (this.nowIndex + 1) % this.nowProd.pages.length;
-            this.changeProd(i);
-        }
-        // previous
-        if (action === this.SWIPE_ACTION.LEFT) {
-            let i = (this.nowIndex + this.nowProd.pages.length - 1) % this.nowProd.pages.length;
-            this.changeProd(i);
-        }
-    }
-
-    startX: number = 0;
-    startY: number = 0;
-
-    onPanStart(event: any): void {
-        this.startY = this.y;
-    }
-    onPan(event: any): void {
-        event.preventDefault();
-        if (event.deltaY < -150 || event.deltaY > 150) {
-            this.closeProdSingle();
-        }
-    }
 }
