@@ -1,14 +1,15 @@
 #partner {
     position: relative;
-    height: 696px;
+    height: 703px;
     width: 100%;
     min-width: 1000px;
     max-width: 1600px;
     margin: 0 auto;
     overflow: hidden;
-    background-image: url(/assets/img/partner_bg_long.png);
+    background-image: url(/assets/img/partner_bg_2.png);
     background-repeat: no-repeat;
-    background-position: 50% 50%;
+    // background-position: 50% 50%;
+    background-position: center;
     .partner-bg-brand {
         position: absolute;
         width: 300px;
