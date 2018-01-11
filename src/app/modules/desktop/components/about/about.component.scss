@@ -36,7 +36,7 @@
             left: 330px;
             width: 630px;
             height: 550px;
-            padding: 70px 70px 70px 125px;
+            padding: 60px 70px 70px 125px;
             overflow: hidden;
             background-color: #ffffff;
             box-shadow: 5px 5px 20px #cccccc;
@@ -48,6 +48,7 @@
                 top: -40px;
                 right: 30px;
                 width: 240px;
+                z-index: 1;
             }
             h3 {
                 color: black;
@@ -57,9 +58,11 @@
                 z-index: 2;
             }
             p {
+                position: relative;
                 color: gray;
                 font-size: 12px;
                 line-height: 23px;
+                z-index: 2;
             }
         }
         .about-info-zh {
