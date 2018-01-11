@@ -43,11 +43,11 @@
             }
             input {
                 width: 460px;
-                box-shadow: 5px 5px 20px #cccccc;
+                box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
             }
             textarea {
                 width: 100%;
-                box-shadow: 5px 5px 20px #cccccc;
+                box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
             }
             button {
                 width: 100%;
