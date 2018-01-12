@@ -7,7 +7,9 @@ var APIPath = '/api/admin/apps?';
 var iconv = require("iconv-lite");
 
 var md5 = require('../public/js/util/md5.min')
-var http = require('https')
+var http = require('http')
+var https = require('https')
+
 // Manage
 router.get('/manage', function (req, res, next) {
 	var id = req.query.id; // $_GET["id"]
@@ -178,11 +180,99 @@ router.get('/manage/api/listappinfors',function (req,res) {
 		res.end(msg);
 	});
 });
+// app manage  page
+router.get('/manage/api/appmanage', function (req, res, next) {
+	res.render('admin/app-manage', {
+		
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['/js/qw/applist.js']
+	});
+	if(next){
+		next();
+	}
+});
+// add Appication to DB page
+router.get('/manage/api/app-add', function (req, res, next) {
+	res.render('admin/app-add', {
+		
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['http://code.jquery.com/jquery-latest.js'],
+		js: ['/js/qw/get_robot_list.js']
+	});
+});
 
+// add Appication to DB
+router.post('/manage/api/app-add', function (req, res, next) {
+	var app_info = {};
+	app_info.appname = req.body.appname;
+	app_info.appkey = req.body.appkey;
+	app_info.robot = req.body.robot;
+	
+	console.log('req.body.robot:'+req.body.robot);
+	
+	req.checkBody('appname', 'appName不能为空').notEmpty();
+	req.checkBody('appkey', 'appkey不能为空').notEmpty();
+	req.checkBody('robot', 'robot不能为空').notEmpty();
+	
+	req.getValidationResult().then(function (result) {
+		if (!result.isEmpty()) {
+			res.render('admin/app-add', {
+				errors: result.array(),
+				app_info,
+				css: ['/css/qw/app.css'],
+				js: ['/js/qw/app.js'],
+				js: ['http://code.jquery.com/jquery-latest.js'],
+				js: ['/js/qw/get_robot_list.js']
+			});
+		} else {
+			//UserService.getAppByname(app_info.name, function (err, app) {
+				// if (err) {
+					// res.render('/manage/api/app-add', {
+						// errors: [{ msg: '添加APP错误：' + err }],
+						// app_info
+					// });
+				// } else if (app) {
+					// res.render('/manage/api/app-add', {
+						// errors: [{ msg: 'app已存在' }],
+						// app_info
+					// });
+				// });
 
+					// req.flash('success_msg', '添加app成功');
+				// }
+			//});
+			var attr='name='+app_info.appname+'&appkey='+app_info.appkey+'&robot='+app_info.robot;
+			addAppToDB(attr,function (msg){
+				console.log(1);
+				req.flash('success_msg', '添加app成功');
+				res.redirect('/admin/manage/api/app-add');
+				//res.render('admin/app-add');
+				console.log(2);
+			});
+			 
+		}
+	});
+	if(next){
+		next();
+	}
+});
+
+function addAppToDB(attr,callbackfunciton){
+    //http.get("http://localhost" + '/api/admin/add-app?'+ attr, function(res) {
+	https.get("https://robot-service.centaurstech.com" + '/api/admin/add-app?'+ attr, function(res) {
+		callbackfunciton('success');
+        
+    }).on('error', function(e) {
+
+        callbackfunciton(e.message + " error");
+    });
+
+}
 
 function getAppsKeysAndScrets(urlpath,callbackfunciton){
-    http.get("https://robot-service.centaurstech.com" + urlpath, function(res) {
+    https.get("https://robot-service.centaurstech.com" + urlpath, function(res) {
         var datas = [];
         var size = 0;
         res.on('data', function (data) {
