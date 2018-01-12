@@ -62,9 +62,9 @@ $().ready(function () {
             var valdatastr = JSON.stringify(valdata);
             var re = '<tr>';
             re += '<td><input type=\"radio\" name=\"checkItem\" value=' + valdatastr + ' /></td>';
-            re += '<td>' + appinfors[item].name + '</td>';
-            re += '<td>' + appinfors[item].robot + '</td>';
             re += '<td>' + appinfors[item].appkey + '</td>';
+			re += '<td>' + appinfors[item].name + '</td>';
+            re += '<td>' + appinfors[item].robot + '</td>';
             re += '<td  hidden=\"hidden\">' + appinfors[item].appsecret + '</td>';
             re += '<td  hidden=\"hidden\">' + appinfors[item].id+ '</td>';
             re += '</tr>';
