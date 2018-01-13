@@ -146,6 +146,7 @@ export class TechComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
+        /*
         $('.tech-menu-inner').hover(function () {
             $(this).children('img').addClass('animated bounce');
             $(this).children('p').addClass('animated bounce');
@@ -153,6 +154,7 @@ export class TechComponent implements AfterViewChecked {
             $(this).children('img').removeClass('animated bounce');
             $(this).children('p').removeClass('animated bounce');
         });
+        */
     }
 
     changeTech(index: number) {
