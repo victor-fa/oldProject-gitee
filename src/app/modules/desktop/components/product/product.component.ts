@@ -630,11 +630,13 @@ export class ProductComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
+        /*
         $('.product-menu-item').hover(function () {
             $(this).addClass('animated bounce');
         }, function () {
             $(this).removeClass('animated bounce');
         });
+        */
 
         $('.product-s-menu-icon').hover(function () {
             $(this).addClass('animated pulse');

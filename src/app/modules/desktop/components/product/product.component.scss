@@ -45,7 +45,23 @@
                     height: 97px;
                     margin: auto;
                     margin-bottom: 20px;
+                    animation-iteration-count: infinite;
+                    animation-duration: 2s;
+                    @keyframes bounce {
+                        0%, 100% {
+                            -webkit-transform: translateY(0);
+                            -ms-transform:     translateY(0);
+                            transform:         translateY(0);
+                        }
+                        50% {
+                            -webkit-transform: translateY(-15px);
+                            -ms-transform:     translateY(-15px);
+                            transform:         translateY(-15px);
+                        }
+                    }
                     &:hover {
+                        animation-name: bounce;
+                        -moz-animation-name: bounce;
                         background-color: gold;
                         img {
                             filter: invert(100%);
