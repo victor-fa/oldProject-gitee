@@ -54,11 +54,11 @@
                         padding: 0;
                         animation-iteration-count: infinite;
                         animation-duration: 2s;
-                    }
-                    img:hover {
-                        cursor: pointer;
-                        animation-name: bounce;
-                        -moz-animation-name: bounce;
+                        &:hover {
+                            cursor: pointer;
+                            animation-name: bounce;
+                            -moz-animation-name: bounce;
+                        }
                     }
                     P {
                         margin: 0;
