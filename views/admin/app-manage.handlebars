@@ -1,0 +1,74 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                App管理
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-plane"></i> <a href="/">管理员 </a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-wrench"></i> <a href="/admin/manage">app管理</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /. Page Heading -->
+
+
+    <!-- Alert -->
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
+    <!-- /.alert -->
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="manage-user-info" class="list-group">
+                <li class="list-group-item">                  
+                    <div class="list-group-item-detail list-group-item-detail-single">
+                        <div id="user-app-add" class="collapse in">
+                            <!--添加列表在这里-->
+                            <form  id="appkeySelected" role="form">
+                                <table class="table table-bordered table-hover" id = "appselectedtable">
+                                    <thead>
+                                    <tr>
+                                        
+                                        <th>AppKey</th>
+										<th>Name</th>
+										<th>Robot</th>
+                                        <th hidden="hidden">AppSecret</th>
+                                        <th hidden="hidden">Id</th>
+										<th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id = "inforslist">
+                                    </tbody>
+                                </table>
+							</form>
+                            <a href="/admin/manage/api/app-add" class="btn btn-xs btn-success"> <i class="fa fa-plus-circle"> </i> 添加app</a>
+                        </div>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
