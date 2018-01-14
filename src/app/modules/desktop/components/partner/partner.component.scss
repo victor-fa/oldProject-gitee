@@ -36,7 +36,7 @@
         .partner-title-zh {
             font-size: 34px;
             font-weight: 400;
-            font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+            font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei" !important;
             letter-spacing: 6px;
             margin-top: 15px;
             margin-bottom: 30px;
@@ -44,7 +44,7 @@
         .partner-title-en {
             font-size: 28px;
             font-weight: 600;
-            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
             margin-bottom: 20px;
             letter-spacing: 2px;
         }

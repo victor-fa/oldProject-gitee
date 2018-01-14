@@ -33,7 +33,7 @@
             h3 {
                 font-size: 34px;
                 font-weight: 400;
-                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
+                font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei" !important;
                 letter-spacing: 6px;
             }
             small {
@@ -44,7 +44,7 @@
             h3 {
                 font-size: 28px;
                 font-weight: 600;
-                font-family: 'Roboto', Arial, Helvetica, sans-serif;
+                font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
                 letter-spacing: 2px;
             }
             small {
@@ -147,7 +147,7 @@
         }
         .career-info-zh {}
         .career-info-en {
-            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
             letter-spacing: -2px;
             .career-job-position-profix {
                 color: #ffffff;
@@ -218,7 +218,7 @@
             letter-spacing: 3px;
         }
         .career-hr-en {
-            font-family: 'Roboto', Arial, Helvetica, sans-serif;
+            font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
             letter-spacing: 1px;
         }
     }
