@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                APP管理
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> APP修改
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+	
+	{{#if errors}} {{#each errors}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
+    </div>
+    {{/each}} {{/if}}
+	{{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}}
+
+    <form method="post" action="/admin/manage/api/alterapp" role="form">
+        <div class="form-group">
+            <label for="appname">Name</label>
+            <input type="text" class="form-control" id="appname" name="appname" value="{{appinfo.name}}">
+        </div>
+		<div class="form-group">
+            <label for="appkey">AppKey</label>
+            <input type="text" class="form-control" id="appkey" name="appkey" value="{{appinfo.appkey}}">
+        </div>
+       
+            <input  type="hidden" class="form-control" id="appsecret" name="appsecret" value="{{appinfo.appsecret}}" ></input>
+
+		<div class="form-group" >
+            <label for="username">Robot</label>
+            <select class="form-control" id="robot" name="robot" >
+			  <option value="">{{appinfo.robot}}</option>
+			</select>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+    
+</div>
+<!-- /.container-fluid -->

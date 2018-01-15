@@ -1,6 +1,6 @@
 		$.ajax( {
 				  type: 'post',
-				  url: 'http://127.0.0.1/api/admin/serverlist',
+				  url: 'https://robot-service.centaurstech.com/api/admin/serverlist',
 				  dataType: 'JSON',
  
 				  success: function(data){
