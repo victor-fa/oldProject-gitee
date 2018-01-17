@@ -67,7 +67,7 @@ $().ready(function () {
             re += '<td  hidden=\"hidden\">' + appinfors[item].appsecret + '</td>';
             re += '<td  hidden=\"hidden\">' + appinfors[item].id+ '</td>';
 			re += '<td><a href="/admin/manage/api/alterapp?appsecret=' + appinfors[item].appsecret + '" class="btn btn-xs btn-warning">修改 <i class="fa fa-share-square-o"></i></a> ' 
-            re += '<a href="/admin/manage/api/deleteapp?appsecret=' + appinfors[item].appsecret + '" class="btn btn-xs btn-danger"> <i class="fa fa-minus-circle"> </i> 删除</a></td>'
+            re += '<a href="/admin/manage/api/deleteapp?appsecret=' + appinfors[item].appsecret + '" class="btn btn-xs btn-danger disabled hidden"> <i class="fa fa-minus-circle"> </i> 删除</a></td>'
 			re += '</tr>';
 
             tpl += re;

@@ -192,8 +192,77 @@ router.get('/manage/api/appmanage', function (req, res, next) {
 		next();
 	}
 });
+//delete app
+router.get('/manage/api/deleteapp', function (req, res, next) {
+	var secret = req.query.appsecret;
+	var attr = 'secret='+ secret;
+	delAppBySrt(attr);
+	res.render('admin/app-manage', {
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['/js/qw/applist.js']
+	});
+	if(next){
+		next();
+	}
+});
+//update app
+router.get('/manage/api/alterapp', function (req, res) {
+	var secret = req.query.appsecret;
+	var attr = 'secret='+ secret
+	getAppBySecret(attr,function (msg){
+		var transferedJsonData =  eval('(' + msg+ ')');
+        var appinfo = transferedJsonData['data'];
+		res.render('admin/app-update', {
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['http://code.jquery.com/jquery-latest.js'],
+		js: ['/js/qw/get_robot_list.js'],
+		appinfo: appinfo
+		});
+		
+	});
+	
+	
+});
+//update app
+router.post('/manage/api/alterapp', function (req, res, next) {
+	var app_info = {};
+	app_info.appname = req.body.appname;
+	app_info.appkey = req.body.appkey;
+	app_info.robot = req.body.robot;
+	app_info.appsecret = req.body.appsecret;
+	
+	console.log('req.body.robot:'+req.body.robot);
+	
+	req.checkBody('appname', 'appName不能为空').notEmpty();
+	req.checkBody('appkey', 'appkey不能为空').notEmpty();
+	req.checkBody('robot', 'robot不能为空').notEmpty();
+	
+	req.getValidationResult().then(function (result) {
+		if (!result.isEmpty()) {
+			res.render('admin/app-update', {
+				errors: result.array(),
+				app_info,
+				css: ['/css/qw/app.css'],
+				js: ['/js/qw/app.js'],
+				js: ['http://code.jquery.com/jquery-latest.js'],
+				js: ['/js/qw/get_robot_list.js']
+			});
+		} else {
+			var attr='name='+app_info.appname+'&appkey='+app_info.appkey+'&robot='+app_info.robot+'&secret='+app_info.appsecret;
+			msg = updateApp(attr);
+			req.flash('success_msg', '修改app成功');
+			res.redirect('/admin/manage/api/appmanage');
+			 
+		}
+	});
+	if(next){
+		next();
+	}
+});
 // add Appication to DB page
-router.get('/manage/api/app-add', function (req, res, next) {
+router.get('/manage/api/app-add', function (req, res) {
 	res.render('admin/app-add', {
 		
 		css: ['/css/qw/app.css'],
@@ -201,6 +270,7 @@ router.get('/manage/api/app-add', function (req, res, next) {
 		js: ['http://code.jquery.com/jquery-latest.js'],
 		js: ['/js/qw/get_robot_list.js']
 	});
+	
 });
 
 // add Appication to DB
@@ -245,11 +315,9 @@ router.post('/manage/api/app-add', function (req, res, next) {
 			//});
 			var attr='name='+app_info.appname+'&appkey='+app_info.appkey+'&robot='+app_info.robot;
 			addAppToDB(attr,function (msg){
-				console.log(1);
 				req.flash('success_msg', '添加app成功');
 				res.redirect('/admin/manage/api/app-add');
 				//res.render('admin/app-add');
-				console.log(2);
 			});
 			 
 		}
@@ -271,7 +339,48 @@ function addAppToDB(attr,callbackfunciton){
 
 }
 
+function delAppBySrt(attr){
+	//http.get("http://localhost" + '/api/admin/del-app?'+ attr
+	https.get("https://robot-service.centaurstech.com" + '/api/admin/del-app?'+ attr
+	).on('error', function(e) {
+
+        return e.message
+    });
+}
+
+function updateApp(attr,callbackfunciton){
+	//http.get("http://localhost" + '/api/admin/alt-app?'+ attr
+	https.get("https://robot-service.centaurstech.com" + '/api/admin/alt-app?'+ attr
+	).on('error', function(e) {
+
+        return (e.message + " error");
+    });
+}
+
+function getAppBySecret(attr,callbackfunciton){
+	//http.get("http://localhost" + '/api/admin/get-app?'+ attr, function(res) {
+	https.get("https://robot-service.centaurstech.com" + '/api/admin/get-app?'+ attr, function(res) {
+		var datas = [];
+        var size = 0;
+		console.log('get2');
+        res.on('data', function (data) {
+            datas.push(data);
+            size += data.length;
+        });
+        res.on("end", function () {
+            var buff = Buffer.concat(datas, size); 
+            var result = iconv.decode(buff, "utf8");//转码//var result = buff.toString();//不需要转编码,直接tostring
+            callbackfunciton(result);
+        });
+        
+    }).on('error', function(e) {
+
+        callbackfunciton(e.message + " error");
+    });
+}
+
 function getAppsKeysAndScrets(urlpath,callbackfunciton){
+	//http.get("http://localhost" + urlpath, function(res) {
     https.get("https://robot-service.centaurstech.com" + urlpath, function(res) {
         var datas = [];
         var size = 0;
@@ -280,7 +389,7 @@ function getAppsKeysAndScrets(urlpath,callbackfunciton){
             size += data.length;
         });
         res.on("end", function () {
-            var buff = Buffer.concat(datas, size);
+            var buff = Buffer.concat(datas, size); 
             var result = iconv.decode(buff, "utf8");//转码//var result = buff.toString();//不需要转编码,直接tostring
             callbackfunciton(result);
         });
