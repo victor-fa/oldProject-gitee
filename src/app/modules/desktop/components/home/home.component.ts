@@ -119,5 +119,23 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.p5js = new p5(this.p5_opt);
+        console.log(this.p5js);
+    }
+
+    @HostListener('window:scroll', [])
+    onWindowScroll() {
+        this.p5js.noLoop();
+        const pageTop = $(window).scrollTop();
+        const pageBottom = pageTop + $(window).height();
+        const homeTop = $('#home').offset().top;
+        const homeBottom = homeTop + $('#home').height();
+        console.log(`${pageTop}, ${pageBottom}; ${homeTop}, ${homeBottom};`);
+        if ((pageTop > homeBottom) || (pageBottom < homeTop)) {
+            // console.log('out');
+            this.p5js.noLoop();
+        } else {
+            // console.log('in');
+            this.p5js.loop();
+        }
     }
 }
