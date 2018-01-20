@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     // 粒子效果提供 by [设计部]马斯特(Site Ma)
     // ref: https://www.openprocessing.org/sketch/434620
     p5_opt = (p) => {
-        let fps = 15;
+        let fps = 20;
         let width: number = 1000;
         let height: number = 619;
         let canvas: p5.Renderer2D;
@@ -119,23 +119,27 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.p5js = new p5(this.p5_opt);
-        console.log(this.p5js);
+        // console.log(this.p5js);
     }
 
-    @HostListener('window:scroll', [])
-    onWindowScroll() {
-        this.p5js.noLoop();
+    @HostListener('window:scroll', []) onWindowScroll() {
+        if (this.p5js._loop) {
+            this.p5js.noLoop();
+        }
         const pageTop = $(window).scrollTop();
         const pageBottom = pageTop + $(window).height();
         const homeTop = $('#home').offset().top;
         const homeBottom = homeTop + $('#home').height();
-        console.log(`${pageTop}, ${pageBottom}; ${homeTop}, ${homeBottom};`);
+        // console.log(`${pageTop}, ${pageBottom}; ${homeTop}, ${homeBottom};`);
         if ((pageTop > homeBottom) || (pageBottom < homeTop)) {
             // console.log('out');
-            this.p5js.noLoop();
         } else {
             // console.log('in');
-            this.p5js.loop();
+            setTimeout(() => {
+                if (!this.p5js._loop) {
+                    this.p5js.loop();
+                }
+            }, 1000);
         }
     }
 }
