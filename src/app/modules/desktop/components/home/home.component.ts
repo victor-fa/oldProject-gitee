@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
     // 粒子效果提供 by [设计部]马斯特(Site Ma)
     // ref: https://www.openprocessing.org/sketch/434620
     p5_opt = (p) => {
+        let fps = 15;
         let width: number = 1000;
         let height: number = 619;
         let canvas: p5.Renderer2D;
@@ -46,8 +47,7 @@ export class HomeComponent implements OnInit {
             stroke_color = p.color('rgba(255,255,255,0.2)');
             p.stroke(stroke_color);
             p.background(0);
-            p.frameRate(15); // 1 FPS
-
+            p.frameRate(fps);
         }
 
         p.draw = () => {
