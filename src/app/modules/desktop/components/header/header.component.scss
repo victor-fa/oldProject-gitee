@@ -1,9 +1,12 @@
 #header {
+    position: fixed;
     height: 80px;
     width: 100%;
     min-width: 1000px;
     max-width: 1600px;
     margin: 0 auto;
+    background-color: white;
+    z-index: 30;
     #header-container {
         position: relative;
         width: 1000px;
