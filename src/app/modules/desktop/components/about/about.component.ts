@@ -34,8 +34,9 @@ export class AboutComponent implements AfterViewInit {
     pictures: [string] = [
         '/assets/img/about_pic5.jpg',
         '/assets/img/about_pic2.jpg',
-        '/assets/img/about_pic3.jpg',
-        '/assets/img/about_pic4.jpg'
+        '/assets/img/about_pic4.jpg',
+        '/assets/img/about_pic6.jpg',
+        '/assets/img/about_pic7.jpg'
     ];
     nowPic: string;
 
