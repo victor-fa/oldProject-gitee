@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 var url = require('url')
 
 // Check user is loged in
-module.exports.ensureAuthenticated = function (req, res, next) {
+module.exports.ensureAuthenticated = function(req, res, next) {
     // var url_parts = url.parse(req.originalUrl);
     // console.log(req.originalUrl)
     // console.log(url_parts)
@@ -18,9 +18,9 @@ module.exports.ensureAuthenticated = function (req, res, next) {
 }
 
 // Create the user
-module.exports.createUser = function (newUser, callback) {
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(newUser.password, salt, function (err, hash) {
+module.exports.createUser = function(newUser, callback) {
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newUser.password, salt, function(err, hash) {
             // Store hash in your password DB
             newUser.password = hash;
             newUser.save(callback);
@@ -29,19 +29,19 @@ module.exports.createUser = function (newUser, callback) {
 }
 
 // Get user by username
-module.exports.getUserByUsername = function (username, callback) {
+module.exports.getUserByUsername = function(username, callback) {
     var query = { username: username };
     User.findOne(query, callback);
 }
 
 // Get user By user id
-module.exports.getUserById = function (id, callback) {
+module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
 // Check the password
-module.exports.comparePassword = function (candidatePassword, hash, callback) {
-    bcrypt.compare(candidatePassword, hash, function (err, isMatch) {
+module.exports.comparePassword = function(candidatePassword, hash, callback) {
+    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
         if (err) {
             callback(err, false);
         } else {
@@ -50,14 +50,14 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
     });
 }
 
-module.exports.updateUserInfo = function (username, name, callback) {
+module.exports.updateUserInfo = function(username, name, callback) {
     var query = { username: username }
     User.findOneAndUpdate(query, {
         name: name
     }, callback)
 }
 
-module.exports.updateTestcases = function (username, testcases, callback) {
+module.exports.updateTestcases = function(username, testcases, callback) {
     var query = { username: username }
     User.findOneAndUpdate(query, {
         testcases: testcases
@@ -65,28 +65,26 @@ module.exports.updateTestcases = function (username, testcases, callback) {
 }
 
 // Check user activation status
-module.exports.isUserActivated = function (user_activation) {
+module.exports.isUserActivated = function(user_activation) {
     if (user_activation > 0)
         return true;
-    //========================================================= Test Code ==============================================
-    return true;
     return false;
 }
 
 // List all inactive users
-module.exports.listInactiveUsers = function (callback) {
+module.exports.listInactiveUsers = function(callback) {
     var query = { activation: 0 };
     var users = User.find(query, callback);
 }
 
 // List all users
-module.exports.listAllUsers = function (callback) {
+module.exports.listAllUsers = function(callback) {
     var query = {};
     var users = User.find(query, callback);
 }
 
 // Update user active
-module.exports.updateUserActive = function (id, activate, callback) {
+module.exports.updateUserActive = function(id, activate, callback) {
     var query = { _id: id };
     // console.log(`mongoDB: id = ${id} \tactivate = ${activate}`);
     // console.log(`mongoDB: id: ${typeof (id)} \tactivate: ${typeof (activate)}`);
@@ -98,7 +96,7 @@ module.exports.updateUserActive = function (id, activate, callback) {
 }
 
 // Change current 'appkey' and 'appsecret'
-module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
+module.exports.setCurrApp = function(id, appkey, appsecret, callback) {
     var query = { _id: id };
     User.findOneAndUpdate(query, {
         appkey: appkey,
@@ -106,9 +104,9 @@ module.exports.setCurrApp = function (id, appkey, appsecret, callback) {
     }, callback);
 }
 
-module.exports.addAlbum = function (id, album, callback) {
+module.exports.addAlbum = function(id, album, callback) {
     var query = { _id: id }
-    User.findOne(query, function (err, user) {
+    User.findOne(query, function(err, user) {
         if (err) {
             callback(err);
         }
@@ -126,9 +124,9 @@ module.exports.addAlbum = function (id, album, callback) {
 }
 
 // Add or update a 'appkey' and 'appsecret' in a user's 'applist'
-module.exports.addApp = function (id, appkey, appsecret, callback) {
+module.exports.addApp = function(id, appkey, appsecret, callback) {
     var query = { _id: id };
-    User.findOne(query, function (err, user) {
+    User.findOne(query, function(err, user) {
         if (err) {
             callback(err);
         }
@@ -170,9 +168,9 @@ module.exports.addApp = function (id, appkey, appsecret, callback) {
 
 
 // Remove 'appkey' and 'appsecret' from 'applist' or current 'appkey & appsecret'
-module.exports.removeApp = function (id, appkey, callback) {
+module.exports.removeApp = function(id, appkey, callback) {
     var query = { _id: id };
-    User.findOne(query, function (err, user) {
+    User.findOne(query, function(err, user) {
         if (err) {
             callback(err);
         }
