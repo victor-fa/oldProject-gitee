@@ -22,8 +22,28 @@ router.get('/login', function (req, res, next) {
 });
 
 // Login
-router.post('/login',
-	passport.authenticate('local', {
+router.post('/login',function(req,res,next){
+	var user_info={
+		username:req.body.username,
+		password:req.body.password
+	};
+	var vcode=req.body.vcode;
+	var error_msg="";
+	if(!vcode||!vcode.trim()){
+		error_msg="验证码不能为空";
+	}else if(vcode!=req.session.captcha){
+		error_msg="验证码错误";
+	}
+	if(error_msg){
+		res.render('users/login', {
+			errors:[{msg:error_msg}],
+			user_info:user_info,
+			js: ['/js/qw/vcode.js']
+		});
+		return;
+	}
+	next();
+},passport.authenticate('local', {
 		failureRedirect: '/users/login',
 		failureFlash: true,
 	}),
@@ -45,9 +65,10 @@ router.get('/vcode',function(req,res,next){
         size: 4,// 验证码长度
         ignoreChars: '0o1i', // 验证码字符中排除 0o1i
 		noise: 2, // 干扰线条的数量
-		fontSize:26,
+		fontSize:30,
 		//color:true,
-		height: 40,
+		height: 34,
+		width:120
 		//background:"#333"
     }
     var captcha = svgCaptcha.create(codeConfig);
@@ -56,18 +77,6 @@ router.get('/vcode',function(req,res,next){
         img:captcha.data
     }
 	res.send(codeData);
-});
-
-//check verification code
-router.post('/check_vcode',function(req,res,next){
-	var vcode=req.body.vcode;
-	var msg={};
-	if(vcode==req.session.captcha){
-		msg.status="success";
-	}else{
-		msg.status="failure";
-	}
-	res.send(msg);
 });
 
 // Register
@@ -90,7 +99,6 @@ router.post('/register', function (req, res, next) {
 	password2 = req.body.password2;
 	group = UserGroup.GUEST;
 
-
 	// Validation
 	req.checkBody('name', '真实姓名不能为空').notEmpty();
 	req.checkBody('email', '电子邮件不能为空').notEmpty();
@@ -104,13 +112,15 @@ router.post('/register', function (req, res, next) {
 	//req.checkBody('phone', '不是有效的手机号').len(11, 11).isInt();
 	req.checkBody('company', '公司名不能为空').notEmpty();
 	req.checkBody('phone','不是有效的手机号').matches(phoneNumberReg);
+	req.checkBody('vcode','验证码不能为空').notEmpty();
+	req.checkBody('vcode','验证码错误').equals(req.session.captcha);
 	
 
 	req.getValidationResult().then(function (result) {
 		if (!result.isEmpty()) {
 			res.render('users/register', {
 				errors: result.array(),
-				user_info,
+				user_info:user_info,
 				js: ['/js/qw/vcode.js']
 			});
 		} else {
@@ -118,13 +128,13 @@ router.post('/register', function (req, res, next) {
 				if (err) {
 					res.render('users/register', {
 						errors: [{ msg: '注册错误：' + err }],
-						user_info,
+						user_info:user_info,
 						js: ['/js/qw/vcode.js']
 					});
 				} else if (user) {
 					res.render('users/register', {
 						errors: [{ msg: '用户已存在' }],
-						user_info,
+						user_info:user_info,
 						js: ['/js/qw/vcode.js']
 					});
 				} else {
@@ -174,8 +184,13 @@ router.get('/activate_by_email',function(req,res,next){
 			if(error){
 				console.log("/activate_by_email:"+error);
 				res.send("参数错误，激活失败！");
+			}else{
+				console.log("用户:"+username+"激活成功！");
+				res.send("激活成功！");
 			}
 		})
+	}else{
+		res.send("参数错误，激活失败！")
 	}
 });
 
@@ -210,6 +225,8 @@ router.post('/account', UserService.ensureAuthenticated, function (req, res, nex
 	req.checkBody('newPwd', '新密码不能为空').notEmpty();
 	req.checkBody('newPwd', '新密码长度为8到32位').len(8, 32);
 	req.checkBody('newPwd2', '新密码两次输入不一致').equals(newPwd);
+	req.checkBody('vcode','验证码不能为空').notEmpty();
+	req.checkBody('vcode','验证码错误').equals(req.session.captcha);
 
 	req.getValidationResult().then(function (result) {
 		if (!result.isEmpty()) {
@@ -272,7 +289,6 @@ router.post('/app/api/link', UserService.ensureAuthenticated, function (req, res
 		if (err) {
 			// throw err
 			req.flash('error_msg', 'APP关联失败。');
-
 			// send err res
 			res.json({
 				retcode: 1,
@@ -301,7 +317,6 @@ passport.use(new LocalStrategy(
 			if (!user) {
 				return done(null, false, { message: '用户不存在' });
 			}
-
 			UserService.comparePassword(password, user.password, function (err, isMatch) {
 				if (err) {
 					return done(null, false, { message: '登陆错误：' + err })
