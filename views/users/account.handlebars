@@ -63,10 +63,6 @@
     </h1>
 
     <!-- /.row -->
-    <div class="alert alert-danger alert-dismissable hidden" id="vcode_false_warning">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span class="vcode_warning_content"></span>
-    </div>
     {{#if success_msg}}
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -83,6 +79,12 @@
         <i class="fa fa-info" aria-hidden="true"></i> {{error}}
     </div>
     {{/if}}
+    {{#if errors}} {{#each errors}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
+    </div>
+    {{/each}} {{/if}}
     <div>
         <form method="post" id="form-pwd" action="/users/account" role="form">
             <div class="form-group">
@@ -99,15 +101,15 @@
             </div>
             <div class="form-group">
                 <label for="vcode_parent">验证码</label>
-                <div id="vcode_parent" style="width:30%;display: flex;align-items:center;justify-content: space-between;">
-                    <div style="width:45%;float:left;">
+                <div  id="vcode_parent" style="display: flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;">
+                    <div class="col-md-2" style="padding-left:0px;min-width:150px;">
                         <input type="text" class="form-control" id="vcode" name="vcode" placeholder="Vcode">
                     </div>
-                    <div style="width:45%;float:left;display: flex;align-items: center;" id="vcode_container">
+                    <div class="col-md-4" style="display: flex;align-items: center;padding-left:0px;" id="vcode_container">
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary clearfix" id="btn_submit">确认修改</button>
+            <button type="submit" class="btn btn-primary clearfix" id="btn_submit">确认修改</button>
         </form>
     </div>
 
