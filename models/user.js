@@ -59,6 +59,9 @@ var UserSchema = mongoose.Schema({
     activation: {
         type: Number,
         default: 0
+    },
+    mailActivationHash:{
+        type:String
     }
 }, {
     timestamps: true

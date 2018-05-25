@@ -44,6 +44,7 @@ router.get('/chart', UserService.ensureAuthenticated, function (req, res, next) 
 // })
 
 router.get('/table',UserService.ensureAuthenticated, function(req,res,next){
-	res.render('dashboard/table')
-})
+	res.redirect("http://analytics.chewrobot.com");
+	//res.render('dashboard/table')
+});
 module.exports = router;

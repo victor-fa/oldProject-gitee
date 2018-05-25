@@ -13,7 +13,10 @@
         </div>
     </div>
     <!-- /.row -->
-
+    <div class="alert alert-danger alert-dismissable hidden" id="vcode_false_warning">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span class="vcode_warning_content"></span>
+    </div>
     {{#if errors}} {{#each errors}}
     <div class="alert alert-danger alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -50,6 +53,16 @@
             <label for="">公司名称</label><span style="color: red">*</span>
             <input type="text" class="form-control" placeholder="Company" name="company" value="{{user_info.company}}">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div class="form-group">
+            <label for="vcode_parent">验证码</label>
+            <div id="vcode_parent" style="width:30%;display: flex;align-items:center;justify-content: space-between;">
+                <div style="width:45%;float:left;">
+                    <input type="text" class="form-control" id="vcode" name="vcode" placeholder="Vcode">
+                </div>
+                <div style="width:45%;float:left;display: flex;align-items: center;" id="vcode_container">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-default clearfix" id="btn_submit">Submit</button>
     </form>
 </div>

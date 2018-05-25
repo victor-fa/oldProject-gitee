@@ -4,7 +4,7 @@
 				  dataType: 'JSON',
  
 				  success: function(data){
-							build_dropdown( objKeySort(data), $( '#robot' ), '请选择...' );//填充表单
+							build_dropdown( objKeySort(data), $( '#robot_radio_container' ));//填充表单
 							},
 				 } );
 			
@@ -20,12 +20,29 @@
 
                 }
                 return newObj; //返回排好序的新对象
-            }	
-		 var build_dropdown = function( data, element, defaultText ){
-								  element.empty().append( '<option value="">' + defaultText + '</option>' );
+			}	
+			
+		String.prototype.temp = function (obj) {
+			return this.replace(/\$\w+\$/gi, function (matches) {
+				var ret = obj[matches.replace(/\$/g, "")];
+				if (ret === "") {
+					ret = "N/A";
+				}
+				return (ret + "") === "undefined" ? matches : ret;
+			});
+		}
+		 var build_dropdown = function( data, element){
+								   var currentKey=$("#robot").val().trim();
+								   var tempRadioTemplate=$("#temp_radio_template").html();
+								   var tempRadioTemplateChecked=$("#temp_radio_template_checked").html();
+								  element.empty();
 								  if( data ){
-								   $.each( data, function( key, value ){
-										element.append( '<option value="' + key + '">' + value + '</option>' );
-									   } );
+									$.each(data, function( key, value ){
+											var obj={
+												value:value
+											};
+											var radioHtml=(key==currentKey?tempRadioTemplateChecked:tempRadioTemplate).temp(obj);
+											element.append(radioHtml);
+										});
 									}
 								}

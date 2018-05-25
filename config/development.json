@@ -4,10 +4,16 @@
 		"password": "xxxxxxxxx",
 		"domain": "smtp.xxx.com"
 	},
+	"activation_email": {
+		"username": "xxxx",
+		"password": "xxxx",
+		"domain": "smtp.exmail.qq.com"
+	},
 	"plugin": {
 		"host": "localhost",
 		"port": 10021,
 		"app_name": "chewrobot-tool"
 	},
+	"deploy_domain_name":"xxxxxx",
 	"debug": true
 }

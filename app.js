@@ -7,7 +7,7 @@ var express = require('express'),
 	flash = require('connect-flash'),
 	session = require('express-session'),
 	passport = require('passport'),
-	LocalStrategy = require('passport-local'), Strategy,    
+	LocalStrategy = require('passport-local').Strategy,    
 	plugin = require("centaurs-test-plugin"),
 	port = process.env.PORT || 10010;	
 
@@ -127,6 +127,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
+
 // Plugin: start API request timer
 app.use(plugin.timer.start);
 
@@ -136,8 +137,8 @@ app.use('/users', users);
 app.use('/test', UserService.ensureAuthenticated, tests);
 app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
-app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery)
-app.use('/image', UserService.ensureAuthenticated, image)
+app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
+app.use('/image', UserService.ensureAuthenticated, image);
 
 // Plugin: stop API request timer
 app.use(plugin.timer.stop);
