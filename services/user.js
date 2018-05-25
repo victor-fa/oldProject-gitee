@@ -1,7 +1,8 @@
 var User = require('../models/user');
 var GroupPolicy = require('../services/group_policy')
+var UserGroup = require('../models/user_group');
 var bcrypt = require('bcryptjs');
-var url = require('url')
+var url = require('url');
 
 // Check user is loged in
 module.exports.ensureAuthenticated = function(req, res, next) {
@@ -19,6 +20,7 @@ module.exports.ensureAuthenticated = function(req, res, next) {
 
 // Create the user
 module.exports.createUser = function(newUser, callback) {
+    //生成用戶密碼
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newUser.password, salt, function(err, hash) {
             // Store hash in your password DB
@@ -27,6 +29,21 @@ module.exports.createUser = function(newUser, callback) {
         });
     });
 }
+
+module.exports.activateUserByEmail=function(username,hash,callback){
+    var query={username:username,mailActivationHash:hash};
+    User.findOneAndUpdate(query,{
+        group:UserGroup.USER
+    },callback);
+}
+
+// Check user email check status 
+module.exports.isUserCheckByEmail = function(group) {
+    if (group == UserGroup.GUEST)
+        return false;
+    return true;
+}
+
 
 // Get user by username
 module.exports.getUserByUsername = function(username, callback) {
@@ -55,6 +72,17 @@ module.exports.updateUserInfo = function(username, name, callback) {
     User.findOneAndUpdate(query, {
         name: name
     }, callback)
+}
+
+module.exports.updateUserPwd = function(id, password, callback) {
+    var query = { _id: id };
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+            User.findOneAndUpdate(query,{
+                password:hash
+            },callback);
+        });
+    });
 }
 
 module.exports.updateTestcases = function(username, testcases, callback) {
