@@ -4,10 +4,16 @@
 		"password": "P6RKGyhpSTbpMb2xKhLbE44zQujKZERv",
 		"domain": "smtp.exmail.qq.com"
 	},
+	"activation_email": {
+		"username": "tongchengtang@qiwu.ai",
+		"password": "TTC12345ttc",
+		"domain": "smtp.exmail.qq.com"
+	},
 	"plugin": {
 		"host": "47.88.77.157",
 		"port": 10021,
 		"app_name": "chewrobot-tool"
 	},
+	"deploy_domain_name":"robot-service.centaurstech.com",
 	"debug": true
 }
