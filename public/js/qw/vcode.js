@@ -10,7 +10,7 @@ $().ready(function(){
     //初始化或者刷新验证码
     function initVcode(){
         $.ajax({
-            url:"http://robot-service.centaurstech.com/users/vcode",
+            url:"//robot-service.centaurstech.com/users/vcode",
             success:function(data){
                 if(data&&data.img){
                     $("#vcode_container").html(data.img);
@@ -55,7 +55,7 @@ $().ready(function(){
             var _self=$(this);
             //校验
             $.ajax({
-                url:"http://robot-service.centaurstech.com/users/check_vcode",
+                url:"//robot-service.centaurstech.com/users/check_vcode",
                 method:"POST",
                 data:{vcode:$("#vcode").val()},
                 success:function(data){
