@@ -29,7 +29,7 @@
         <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
     </div>
     {{/if}}
-
+    
     <form method="post" action="/admin/manage/api/alterapp" role="form">
         <div class="form-group">
             <label for="appname">Name</label>
@@ -42,15 +42,52 @@
        
             <input  type="hidden" class="form-control" id="appsecret" name="appsecret" value="{{appinfo.appsecret}}" ></input>
 
-		<div class="form-group" >
-            <label for="username">Robot</label>
-            <select class="form-control" id="robot" name="robot" >
-			  <option value="">{{appinfo.robot}}</option>
-			</select>
+        <div class="form-group hidden">
+            <label for="">Robot</label>
+            <div class="radio-container" style="padding-left:5%;">
+                <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" value="1" name="fruit">Apple
+                    </label>
+                </div>
+                <div class="radio">
+                    <label class="radio-inline">
+                        <input type="radio" value="2" name="fruit">Banana
+                    </label>
+                </div>
+                
+                <div class="radio">
+                    <label class="radio-inline"> 
+                        <input type="radio" value="3" name="fruit">Cucumber
+                    </label>
+                </div>
+            </div>
         </div>
-
+		<div class="form-group">
+            <label for="">Robot</label>
+            <div id="robot_radio_container" style="padding-left:5%;background-color:cornsilk">
+                <input type="hidden" id="robot" value="{{appinfo.robot}}">
+            </div>
+        </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
+
+    <div id="temp_radio_template" class="hidden">
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" value="$value$" name="robot">$value$
+            </label>
+        </div>
+    </div>
+    <div id="temp_radio_template_checked" class="hidden">
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" value="$value$" name="robot" checked>$value$
+            </label>
+        </div>
+    </div>
+    
+    
 
     
 </div>
