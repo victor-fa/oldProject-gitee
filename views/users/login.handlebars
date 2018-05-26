@@ -35,7 +35,7 @@
         <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
     </div>
     {{/each}} {{/if}}
-
+    <input type="hidden" value="{{img}}" id="temp_img">
     <form method="post" action="/users/login" role="form">
         <input type="hidden" name="s_url" value="{{s_url}}">
         <div class="form-group">
@@ -48,11 +48,11 @@
         </div>
         <div class="form-group">
             <label for="vcode_parent">验证码</label>
-            <div id="vcode_parent" style="width:30%;display: flex;align-items:center;justify-content: space-between;">
-                <div style="width:45%;float:left;">
+            <div  id="vcode_parent" style="display: flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;">
+                <div class="col-md-2" style="padding-left:0px;min-width:150px;">
                     <input type="text" class="form-control" id="vcode" name="vcode" placeholder="Vcode">
                 </div>
-                <div style="width:45%;float:left;display: flex;align-items: center;" id="vcode_container">
+                <div class="col-md-4" style="display: flex;align-items: center;padding-left:0px;" id="vcode_container">
                 </div>
             </div>
         </div>
