@@ -1,8 +1,8 @@
-$().ready(function () {
+$().ready(function() {
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
-    var uid = $('#uid').html();    
-    
+    var uid = $('#uid').html();
+
     var size = 10;
     var sizeOld = size;
     var timestamp = Math.floor(Date.now() / 1000);
@@ -15,8 +15,8 @@ $().ready(function () {
 
     var verify = md5(appsecret + uid + timestamp);
 
-    String.prototype.temp = function (obj) {
-        return this.replace(/\$\w+\$/gi, function (matches) {
+    String.prototype.temp = function(obj) {
+        return this.replace(/\$\w+\$/gi, function(matches) {
             var ret = obj[matches.replace(/\$/g, "")];
             if (ret === "") {
                 ret = "N/A";
@@ -64,7 +64,7 @@ $().ready(function () {
             resObj.id = zeroFill(i + 1 + pageNum * 10, width);
             resObj.timestamp = parseDateTime(sessions[i].timestamp);
             resObj.app = sessions[i].app;
-            resObj.nickname = (sessions[i].nickname).trim();
+            resObj.nickname = sessions[i].nickname != "" && (sessions[i].nickname).trim() || sessions[i].uid;
             resObj.uid = sessions[i].uid;
             resObj.cid = sessions[i].cid;
             var resHtml = tempListHtmlAsk.temp(resObj);
@@ -101,7 +101,7 @@ $().ready(function () {
                 },
                 type: 'GET',
                 success: ajaxOnSuccess,
-                error: function () {
+                error: function() {
                     $("#log-result-header").html('没有找到相关会话列表。');
                     $('#log-alert-1').show();
                     $('#log-alert-2').show();
@@ -121,7 +121,7 @@ $().ready(function () {
                 },
                 type: 'GET',
                 success: ajaxOnSuccess,
-                error: function () {
+                error: function() {
                     $("#log-result-header").html('没有找到相关日志列表。');
                     $('#log-alert-1').show();
                     $('#log-alert-2').show();
@@ -149,19 +149,19 @@ $().ready(function () {
     }
 
     function buttonsHandler() {
-        $("#log-search").click(function () {
+        $("#log-search").click(function() {
             pageNum = 0;
             loadLogList();
         });
-        $("#log-first-page").click(function () {
+        $("#log-first-page").click(function() {
             pageNum = 0;
             loadLogList();
         });
-        $("#log-prev-page").click(function () {
+        $("#log-prev-page").click(function() {
             (pageNum < 1) ? (pageNum = 0) : (pageNum -= 1);
             loadLogList();
         });
-        $("#log-next-page").click(function () {
+        $("#log-next-page").click(function() {
             if (pageTotal !== -1 && pageNum >= pageTotal) {
                 // last page
             } else {
@@ -170,7 +170,7 @@ $().ready(function () {
             loadLogList();
         });
 
-        $("#log-page-size-select").change(function () {
+        $("#log-page-size-select").change(function() {
             size = $("#log-page-size-select option:selected").text();
             $("#log-prev-page").attr("disabled", "disabled");
             $("#log-next-page").attr("disabled", "disabled");
