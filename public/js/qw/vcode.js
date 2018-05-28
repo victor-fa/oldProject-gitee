@@ -1,16 +1,29 @@
 $().ready(function(){
+    //var deploy_domain_name="robot-service.centaurstech.com";
+    //var deploy_domain_name="localhost:10010";
     init();
-
+    
     //页面初始化
     function init(){
+        //updateVcode();
+        if($(".alert.alert-danger.alert-dismissable").length>=0){
+            $(".container-fluid form")[0].scrollIntoView();
+        }
         initVcode();
         bindEvents();
     }
-
-    //初始化或者刷新验证码
+    
+    //初始化
     function initVcode(){
+        $("#vcode_container").html($("#temp_img").val());
+        $("#vcode_container").children(":first").css('border','1px solid #ccc');
+    }
+
+    //刷新验证码
+    function updateVcode(){
         $.ajax({
-            url:"//robot-service.centaurstech.com/users/vcode",
+            url:"https://robot-service.centaurstech.com/users/vcode",
+            //url:"http://localhost:10010/users/vcode",
             success:function(data){
                 if(data&&data.img){
                     $("#vcode_container").html(data.img);
@@ -23,57 +36,14 @@ $().ready(function(){
         });
     }
 
-    //验证码错误后操作
-    function vcodeErrorOperate(error_msg){
-        initVcode();
-        if($("#vcode_false_warning").hasClass('hidden')){
-            $("#vcode_false_warning").removeClass('hidden');
-        }
-        $("#vcode_false_warning").find(".vcode_warning_content").text(error_msg);
-        $("#vcode").val("");
-        //$("#vcode_false_warning").focus();
-        var mainContainer=$("#page-warpper");
-        if(!$("#vcode_false_warning").hasClass("hidden")){
-            mainContainer.animate({
-                scrollTop: $("#vcode_false_warning").offset().top
-            }, 1000);
-        }
-        
-    }
-
     //事件绑定
     function bindEvents(){
         $("#vcode_container").on('click',function(event){
-            initVcode();
-        });
-        $("#btn_submit").on('click',function(event){
-            $(".alert.alert-dismissable").addClass("hidden");
-            if(!$("#vcode").val().trim()){
-                vcodeErrorOperate("请输入验证码");
-                return;
-            }
-            var _self=$(this);
-            //校验
-            $.ajax({
-                url:"//robot-service.centaurstech.com/users/check_vcode",
-                method:"POST",
-                data:{vcode:$("#vcode").val()},
-                success:function(data){
-                    if(data&&data.status=="success"){
-                        _self.closest('form').submit();
-                    }else{
-                        vcodeErrorOperate("验证码错误，请重新输入");
-                    }
-                },
-                error:function(data){
-                    vcodeErrorOperate("验证码错误，请重新输入");
-                }
-            })
-            //
+            updateVcode();
         });
         $("#vcode").on('keyup',function(event){
             if(event.keyCode==13){
-                $("#btn_submit").click();
+                $(this).closest('form').submit();
             }
         })
     }
