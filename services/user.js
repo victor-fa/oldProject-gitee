@@ -25,7 +25,7 @@ module.exports.checkVcode=function(req,res,params,callback){
 	var error_msg="";
 	if(!vcode||!vcode.trim()){
 		error_msg="验证码不能为空";
-	}else if(vcode!=req.session.captcha){
+	}else if(vcode.toLowerCase()!=req.session.captcha){
 		error_msg="验证码错误";
     }
     if(error_msg){
