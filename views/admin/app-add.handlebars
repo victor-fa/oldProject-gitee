@@ -44,11 +44,11 @@
             <label for="appsecret">AppSecret</label>
             <input type="password" class="form-control" id="appsecret" name="appsecret" placeholder="Appsecret">
         </div -->
-		<div class="form-group" >
-            <label for="username">Robot</label>
-            <select class="form-control" id="robot" name="robot" >
-			  <option value="">请选择...</option>
-			</select>
+		<div class="form-group">
+            <label for="">Robot</label>
+            <div id="robot_radio_container" style="padding-left:5%;background-color:cornsilk">
+                <input type="hidden" id="robot" value="{{appinfo.robot}}">
+            </div>
         </div>
 
         <button type="submit" class="btn btn-default">Submit</button>
