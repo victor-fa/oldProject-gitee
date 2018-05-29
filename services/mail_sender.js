@@ -18,7 +18,7 @@ module.exports.sendEmail =function(params){
     var transporter = nodemailer.createTransport(smtp);
     
     var content_prefix="激活链接\n";
-    var content_body="http://"+config.get('deploy_domain_name')+"/users/activate_by_email?user="+params.user_info.username+"&h_id="+encodeURIComponent(params.user_info.hash);
+    var content_body="https://"+config.get('deploy_domain_name')+"/users/activate_by_email?user="+params.user_info.username+"&h_id="+encodeURIComponent(params.user_info.hash);
     var title=params.title||"齐悟后台系统注册帐号激活";
     var content=params.content||(content_prefix+content_body);
 

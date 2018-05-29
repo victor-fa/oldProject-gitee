@@ -3,6 +3,7 @@ var GroupPolicy = require('../services/group_policy')
 var UserGroup = require('../models/user_group');
 var bcrypt = require('bcryptjs');
 var url = require('url');
+var VcodeCreator=require('./vcode_creator');
 
 // Check user is loged in
 module.exports.ensureAuthenticated = function(req, res, next) {
@@ -17,6 +18,29 @@ module.exports.ensureAuthenticated = function(req, res, next) {
         res.redirect('/users/login?s_url=' + s_url)
     }
 }
+
+//check verification code
+module.exports.checkVcode=function(req,res,params,callback){
+	var vcode=req.body.vcode;
+	var error_msg="";
+	if(!vcode||!vcode.trim()){
+		error_msg="验证码不能为空";
+	}else if(vcode!=req.session.captcha){
+		error_msg="验证码错误";
+    }
+    if(error_msg){
+		var vcode=VcodeCreator.createVcode();
+        req.session.captcha=vcode.codeText;
+        Object.assign(params,{img:vcode.codeData,errors:[{msg:error_msg}]})
+		res.render(params.url, params);
+		return;
+	}else{
+        callback();
+    }
+}
+
+
+
 
 // Create the user
 module.exports.createUser = function(newUser, callback) {
