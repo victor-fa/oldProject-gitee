@@ -11,7 +11,7 @@ stages:
     - deploy
 
 cache:
-    key: "$CI_PROJECT_NAME_$CI_BUILD_REF_NAME"
+    key: "$CI_PROJECT_NAME\\$CI_BUILD_REF_NAME"
     paths:
         - dist/
         - node_modules
