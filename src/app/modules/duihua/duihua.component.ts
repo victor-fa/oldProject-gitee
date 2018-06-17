@@ -8,14 +8,21 @@ import {Md5} from 'ts-md5/dist/md5';
 })
 export class DuihuaComponent implements OnInit {
 
-    bot_endpoint:string = 'https://robot-service.centaurstech.com/api/chat';
+    bot_endpoint:string;
 
-    appkey:string = 'sample-duihua';
-    appsecret:string = '546588913f3c83600757b12a2a690c0d';
+    appkey:string;
+    appsecret:string;
 
-    nickname:string = '小朋友';
+    nickname:string;
 
     uid:string;
+
+    constructor() {
+        this.bot_endpoint = 'https://robot-service.centaurstech.com/api/chat';
+        this.appkey = 'sample-duihua';
+        this.appsecret = '546588913f3c83600757b12a2a690c0d';
+        this.nickname = '小朋友';
+    }
 
     setCookie(cname, cvalue, exdays) {
         var d = new Date();
