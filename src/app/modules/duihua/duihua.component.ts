@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Md5} from 'ts-md5/dist/md5';
+import {md5} from './md5';
 
 @Component({
     selector: 'app-duihua',
@@ -58,7 +58,7 @@ export class DuihuaComponent implements OnInit {
         var now = Date.now()
         fd.append('timestamp', now.toString())
         fd.append('uid', this.uid)
-        var hash, temp = Md5.hashAsciiStr(this.appsecret + this.uid + now)
+        let hash = md5(this.appsecret + this.uid + now)
         fd.append('verify', hash)
         fd.append('msg', msg)
         fd.append('nickname', this.nickname)
