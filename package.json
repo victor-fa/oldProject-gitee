@@ -33,11 +33,12 @@
         "p5": "^0.5.16",
         "rx": "^4.1.0",
         "rxjs": "^5.4.3",
+        "ts-md5": "^1.2.4",
         "types": "^0.1.1",
+        "typescript": "^2.3.4",
         "typings": "^2.1.1",
         "update": "^0.7.4",
-        "zone.js": "^0.8.18",
-        "typescript": "^2.3.4"
+        "zone.js": "^0.8.18"
     },
     "devDependencies": {
         "@angular/cli": "^1.4.5",
