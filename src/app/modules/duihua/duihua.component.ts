@@ -55,6 +55,8 @@ export class DuihuaComponent implements OnInit {
         fd.append('verify', hash)
         fd.append('msg', msg)
         fd.append('nickname', this.nickname)
+
+        var that = this
     
         $.ajax({
             url: this.bot_endpoint,
@@ -64,16 +66,16 @@ export class DuihuaComponent implements OnInit {
             contentType: false,
             success: function(data, status) {
                 if (data.msg != "") {
-                    this.on_receive_answer(data.msg)
+                    that.on_receive_answer(data.msg)
     
-                    if (typeof data.data != "undefined")
-                        this.on_recieve_data(data.data)
+                if (typeof data.data != "undefined")
+                    that.on_recieve_data(data.data)
                 }
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 console.log("Status: " + xhr.status)
                 console.log(thrownError)
-                this.on_receive_error(xhr.status)
+                that.on_receive_error(xhr.status)
     
             },
         })
