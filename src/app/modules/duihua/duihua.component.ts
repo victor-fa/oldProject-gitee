@@ -4,7 +4,7 @@ import {md5} from './md5';
 @Component({
     selector: 'app-duihua',
     templateUrl: './duihua.component.html',
-    styleUrls: ['duihua.component.scss']
+    styleUrls: ['./duihua.component.scss']
 })
 export class DuihuaComponent implements OnInit {
 
