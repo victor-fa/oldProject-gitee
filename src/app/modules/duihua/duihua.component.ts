@@ -90,7 +90,7 @@ export class DuihuaComponent implements OnInit {
 
     on_send_question(ask) {
         $('<li class="me-message">\
-            <span class="me-message-content">' + ask + '</span>\
+            <span class="me-message-content">我：' + ask + '</span>\
         </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
@@ -104,7 +104,7 @@ export class DuihuaComponent implements OnInit {
         reply = this.replace_all(reply, '\n', '<br />')
         $('<li class="qw-message">\
             <div class="qw-avator"></div>\
-            <div class="qw-message-content">' + reply + '</div>\
+            <div class="qw-message-content">小悟：' + reply + '</div>\
         </li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }
