@@ -1,21 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import {Md5} from 'ts-md5/dist/md5';
+import {md5} from './md5';
 
 @Component({
     selector: 'app-duihua',
     templateUrl: './duihua.component.html',
-    styleUrls: ['duihua.component.scss']
+    styleUrls: ['./duihua.component.css']
 })
 export class DuihuaComponent implements OnInit {
 
-    bot_endpoint:string = 'https://robot-service.centaurstech.com/api/chat';
+    bot_endpoint:string;
 
-    appkey:string = 'sample-duihua';
-    appsecret:string = '546588913f3c83600757b12a2a690c0d';
+    appkey:string;
+    appsecret:string;
 
-    nickname:string = '小朋友';
+    nickname:string;
 
     uid:string;
+
+    constructor() {
+        this.bot_endpoint = 'https://robot-service.centaurstech.com/api/chat';
+        this.appkey = 'sample-duihua';
+        this.appsecret = '546588913f3c83600757b12a2a690c0d';
+        this.nickname = '小朋友';
+    }
 
     setCookie(cname, cvalue, exdays) {
         var d = new Date();
@@ -51,7 +58,7 @@ export class DuihuaComponent implements OnInit {
         var now = Date.now()
         fd.append('timestamp', now.toString())
         fd.append('uid', this.uid)
-        var hash, temp = Md5.hashAsciiStr(this.appsecret + this.uid + now)
+        let hash = md5(this.appsecret + this.uid + now)
         fd.append('verify', hash)
         fd.append('msg', msg)
         fd.append('nickname', this.nickname)
@@ -83,7 +90,7 @@ export class DuihuaComponent implements OnInit {
 
     on_send_question(ask) {
         $('<li class="me-message">\
-            <span class="me-message-content">' + ask + '</span>\
+            <span class="me-message-content">我：' + ask + '</span>\
         </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
@@ -97,7 +104,7 @@ export class DuihuaComponent implements OnInit {
         reply = this.replace_all(reply, '\n', '<br />')
         $('<li class="qw-message">\
             <div class="qw-avator"></div>\
-            <div class="qw-message-content">' + reply + '</div>\
+            <div class="qw-message-content">小悟：' + reply + '</div>\
         </li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }

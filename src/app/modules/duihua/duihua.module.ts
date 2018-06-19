@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { DuihuaComponent } from './duihua.component';
 import { DuihuaRoutingModule } from './duihua-routing.module';
 
 @NgModule({
     imports: [
+        CommonModule,
         DuihuaRoutingModule,
-        RouterModule
     ],
     declarations: [DuihuaComponent]
 })
