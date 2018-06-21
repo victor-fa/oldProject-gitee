@@ -3,15 +3,15 @@ import { CookieService } from 'ngx-cookie-service';
 
 interface JobSingle {
     title: string;
-    desc: [string];
-    details: [string];
+    desc: string[];
+    details: string[];
 }
 
 interface Job {
     title: string;
     sub: string;
-    texts: [string];
-    pages: [JobSingle];
+    texts: string[];
+    pages: JobSingle[];
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class CareerMComponent {
 
     nowJob: Job;
     nowJobSingle: JobSingle;
-    jobs: [Job] = [
+    jobs: Job[] = [
         {
             title: '加入齐悟',
             sub: '加入齐悟，创造人工智能的未来。',

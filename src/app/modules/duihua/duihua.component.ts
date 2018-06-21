@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {md5} from './md5';
 
 @Component({
     selector: 'app-duihua',
     templateUrl: './duihua.component.html',
-    styleUrls: ['./duihua.component.css']
+    styleUrls: ['./duihua.component.scss']
 })
 export class DuihuaComponent implements OnInit {
+    @Input()
+    items: any[] = [];
 
     bot_endpoint:string;
 
@@ -89,8 +91,8 @@ export class DuihuaComponent implements OnInit {
     }
 
     on_send_question(ask) {
-        $('<li class="me-message">\
-            <span class="me-message-content">我：' + ask + '</span>\
+        $('<li _ngcontent-c1 class="me-message">\
+            <span _ngcontent-c1 class="me-message-content">' + ask + '</span>\
         </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
@@ -102,9 +104,9 @@ export class DuihuaComponent implements OnInit {
 
     on_receive_answer(reply) {
         reply = this.replace_all(reply, '\n', '<br />')
-        $('<li class="qw-message">\
-            <div class="qw-avator"></div>\
-            <div class="qw-message-content">小悟：' + reply + '</div>\
+        $('<li _ngcontent-c1 class="qw-message">\
+            <div _ngcontent-c1 class="qw-avator"></div>\
+            <div _ngcontent-c1 class="qw-message-content">' + reply + '</div>\
         </li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }
@@ -114,7 +116,7 @@ export class DuihuaComponent implements OnInit {
     }
 
     send_hello() {
-        this.ask_question('你好')
+        this.ask_question('你是谁呀')
     }
 
     ngOnInit(): void {

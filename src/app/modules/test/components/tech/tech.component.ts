@@ -12,7 +12,7 @@ interface TechnologySingle {
 interface Technology {
     mainTitle: string;
     mainSub: string;
-    pages: [TechnologySingle];
+    pages: TechnologySingle[];
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class TechComponent implements AfterViewChecked {
 
     nowTech: Technology;
     nowTechSingle: TechnologySingle;
-    technologies: [Technology] = [
+    technologies: Technology[] = [
         {
             mainTitle: '核心技术优势',
             mainSub: '我们完全自主研发的语义识别人工智能引擎可以实现多轮人机对话及上下文理解，采用独特的偏重实例层的多层语义知识网络，支持基于图模板映射的规则归纳和知识推理。',

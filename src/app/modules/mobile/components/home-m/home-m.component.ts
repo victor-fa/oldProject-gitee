@@ -17,7 +17,7 @@ export class HomeMComponent {
     langIndex = 0;
 
     nowHome: Home;
-    homes: [Home] = [ {
+    homes: Home[] = [ {
         h1: '革命性',
         h2: '语音交互技术',
         h3: '解决方案提供商'
