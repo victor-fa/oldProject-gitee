@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 interface ProductSingle {
     title: string;
     sub: string;
-    desc: [string];
+    desc: string[];
     name: string;
     icon: string;
 }
@@ -12,7 +12,7 @@ interface ProductSingle {
 interface Product {
     title: string;
     sub: string;
-    pages: [ProductSingle];
+    pages: ProductSingle[];
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class ProductComponent implements AfterViewChecked {
 
     nowProd: Product;
     nowProdSingle: ProductSingle;
-    products: [Product] = [
+    products: Product[] = [
         {
             title: '产品方案',
             sub: '提供的是垂直领域最智能的语义识别技术，同时根据客户的需求去提供完全定制化的解决方案。',

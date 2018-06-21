@@ -41,7 +41,7 @@ export class ContactComponent {
     langIndex = 0;
 
     nowContact: Contact;
-    contacts: [Contact] = [
+    contacts: Contact[] = [
         {
             title: '联系我们',
             left: {

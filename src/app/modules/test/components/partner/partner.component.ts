@@ -15,7 +15,7 @@ export class PartnerComponent {
     langIndex = 0;
 
     nowPartner: Partner;
-    partners: [Partner] = [
+    partners: Partner[] = [
         {
             title: '合作客户'
         },

@@ -19,7 +19,7 @@ export class FooterComponent {
     year: number = new Date().getFullYear();
 
     nowFooter: Footer;
-    footers: [Footer] = [
+    footers: Footer[] = [
         {
             brand: '深圳市人马互动科技有限公司',
             certificate: '粤ICP备16128928号'

@@ -41,7 +41,7 @@ export class ContactComponent implements AfterViewChecked {
     langIndex = 0;
 
     nowContact: Contact;
-    contacts: [Contact] = [
+    contacts: Contact[] = [
         {
             title: '商务合作',
             left: {

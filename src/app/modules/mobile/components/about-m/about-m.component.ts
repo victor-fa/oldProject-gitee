@@ -18,7 +18,7 @@ export class AboutMComponent {
     langIndex = 0;
 
     nowAbout: About;
-    abouts: [About] = [
+    abouts: About[] = [
         {
             title: '关于齐悟',
             sub: '齐悟是人马互动科技有限公司(CentaursTech)创立的的人工智能品牌，我们致力于为企业打造智能化、差异化产品提供深度定制化语音交互技术解决方案。',

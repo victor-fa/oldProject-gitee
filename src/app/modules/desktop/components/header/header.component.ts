@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
     langIndex = 0;
 
     nowHeader: Header;
-    headers: [Header] = [
+    headers: [Header, Header] = [
         {
             home: '首页',
             tech: '核心技术',
