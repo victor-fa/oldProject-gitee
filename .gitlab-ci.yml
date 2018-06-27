@@ -20,7 +20,7 @@ compile_job:
     stage: compile
     script:
         - "pwd;ls"
-        - "npm install typescript@'>=2.1.0 <2.4.0'"
+        - "npm install typescript@'>=2.7.2 <2.9.0'"
         - "npm rebuild node-sass"
         - "npm run build"
 
