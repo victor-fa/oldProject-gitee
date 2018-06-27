@@ -1,6 +1,7 @@
 # 齐悟产品官网
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+Was updated to Angular CLI 6.1.0 in July 2018.
 
 ## Development server
 
