@@ -116,5 +116,21 @@ $().ready(function () {
         });
     }
 
+    // function resetPwd_method(username){
+    //     $.ajax({
+    //         url: '/admin/manage/api/reset',
+    //         type: 'GET',
+    //         data: {
+    //             "username": username
+    //         },
+    //         success: function(data){
+    //             alert("密码已发送到用户邮箱，重置后为："+data);
+    //         },
+    //         error: function () {
+    //             alert("重置失败");
+    //         }
+    //     });
+    // }
+
     initializeCheckBoxTableData();
 });

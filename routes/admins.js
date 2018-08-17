@@ -9,7 +9,9 @@ var iconv = require("iconv-lite");
 var md5 = require('../public/js/util/md5.min')
 var http = require('http')
 var https = require('https')
+var bcrypt = require('bcryptjs');
 
+var sendPwd = require("../services/mail_sender_pwd")
 // Manage
 router.get('/manage', function (req, res, next) {
 	var id = req.query.id; // $_GET["id"]
@@ -21,7 +23,9 @@ router.get('/manage', function (req, res, next) {
 			}
 			var render_para = {}
 			render_para.css = ['/css/qw/manage.css'];
-			render_para.js = ['/js/qw/manage-detail.js'];
+			render_para.js = ['/js/qw/manage-detail.js',
+			'/js/qw/resetPassword.js'
+		];
 			if (aUser.activation === 0) {
 				aUser.active = '未激活';
 				aUser.buttonTypeActivate = 'danger';
@@ -70,6 +74,44 @@ router.get('/manage/api/load', function (req, res, next) {
 	if (next) {
         next();
     }
+});
+
+//API: 重置用户密码
+router.get('/manage/api/reset', function (req, res, next) {
+	var username = req.param("username");
+	var pwdStr = ['1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q',
+		'r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',
+		'T','U','V','W','X','Y','Z'];
+	var newPwd="";
+	for(var i = 0;i < 12; i++){
+		var str = pwdStr[Math.floor(Math.random()*pwdStr.length)];
+		newPwd = newPwd+str;
+	}
+	console.log("新密码为："+newPwd);
+	UserService.getUserByUsername(username,function (err,user){
+		if (err) {
+			// throw err;
+			req.flash('error_msg', '该用户不存在：' + err);
+		}
+		sendPwd.sendEmailPwd(user.email,newPwd);
+		bcrypt.genSalt(10, function(err, salt) {
+			bcrypt.hash(newPwd, salt, function(err, hash) {
+				// Store hash in your password DB
+				user.password = hash;
+				user.save(callback);
+			});
+		});
+		res.json({"pwd":newPwd});
+	});
+	
+	var callback=function(error, info){
+        if(error){
+            console.log(error)
+            console.log("数据库密码修改失败");
+            return;
+        }
+        console.log('Message sent: ' + info.response);
+    };
 });
 
 // API: active or inactive user

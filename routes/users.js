@@ -11,7 +11,7 @@ var UserService = require('../services/user');
 var UserGroup = require('../models/user_group');
 var RouterIndex = require('./index');
 var VcodeCreator=require('../services/vcode_creator');
-
+var sendPwd = require("../services/mail_sender_pwd");
 // Login
 router.get('/login', function (req, res, next) {
 	var vcode=VcodeCreator.createVcode();
@@ -19,7 +19,10 @@ router.get('/login', function (req, res, next) {
 	res.render('users/login', {
 		img:vcode.codeData,
 		s_url: req.query.s_url,
-		js: ['/js/qw/vcode.js']
+		js: ['/js/qw/vcode.js',
+		'/js/qw/resetPassword.js'
+	]
+
 	});
 });
 
@@ -32,7 +35,9 @@ router.post('/login',function(req,res,next){
 	var params={
 		url:'users/login',
 		user_info:user_info,
-		js: ['/js/qw/vcode.js']
+		js: ['/js/qw/vcode.js',
+		'/js/qw/resetPassword.js'
+	]
 	};
 	UserService.checkVcode(req,res,params,next);
 },passport.authenticate('local', {
@@ -50,6 +55,43 @@ router.post('/login',function(req,res,next){
 		res.redirect('/');
 	}
 );
+
+//API: 重置用户密码
+router.get('/resetPwd', function (req, res, next) {
+	var username = req.param("username");
+	var pwdStr = ['1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q',
+		'r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',
+		'T','U','V','W','X','Y','Z'];
+	var newPwd="";
+	for(var i = 0;i < 12; i++){
+		var str = pwdStr[Math.floor(Math.random()*pwdStr.length)];
+		newPwd = newPwd+str;
+	}
+	console.log("新密码为："+newPwd);
+	UserService.getUserByUsername(username,function (err,user){
+		if (err) {
+			// throw err;
+			req.flash('error_msg', '该用户不存在：' + err);
+		}
+		sendPwd.sendEmailPwd(user.email,newPwd);
+		bcrypt.genSalt(10, function(err, salt) {
+			bcrypt.hash(newPwd, salt, function(err, hash) {
+				// Store hash in your password DB
+				user.password = hash;
+				user.save(callback);
+			});
+		});
+		var callback=function(error, info){
+			if(error){
+				console.log(error)
+				console.log("数据库密码修改失败");
+				return;
+			}
+			console.log('Message sent: ' + info.response);
+		res.json({"info":1});
+		};
+	});
+});
 
 //get verification code
 router.get('/vcode',function(req,res,next){
