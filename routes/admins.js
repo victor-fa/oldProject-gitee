@@ -11,7 +11,7 @@ var http = require('http')
 var https = require('https')
 var bcrypt = require('bcryptjs');
 
-var sendPwd = require("../services/mail_sender_pwd")
+var rp = require('request-promise');
 // Manage
 router.get('/manage', function (req, res, next) {
 	var id = req.query.id; // $_GET["id"]
@@ -79,39 +79,48 @@ router.get('/manage/api/load', function (req, res, next) {
 //API: 重置用户密码
 router.get('/manage/api/reset', function (req, res, next) {
 	var username = req.param("username");
-	var pwdStr = ['1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q',
-		'r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',
-		'T','U','V','W','X','Y','Z'];
-	var newPwd="";
-	for(var i = 0;i < 12; i++){
-		var str = pwdStr[Math.floor(Math.random()*pwdStr.length)];
-		newPwd = newPwd+str;
-	}
-	console.log("新密码为："+newPwd);
-	UserService.getUserByUsername(username,function (err,user){
-		if (err) {
-			// throw err;
-			req.flash('error_msg', '该用户不存在：' + err);
+	var newPwd = UserService.resertPwd(username);
+	res.json({"pwd":newPwd});
+	if (next) {
+        next();
+    }
+});
+
+// API:调用第三方接口获取验证码
+router.get('/manage/api/getfakecode',function(req, res, next){
+	var phone = req.param("phone");
+	var b = new Buffer(phone);
+	var s = b.toString('base64');
+	var opt = {
+		uri:'http://account-center-test.chewrobot.com:6667/api/admin/sms/fake',
+		method:'GET',
+		headers:{
+			"Content-Type": 'application/x-www-form-urlencoded',
+			"Authorization":"Basic "+s 
 		}
-		sendPwd.sendEmailPwd(user.email,newPwd);
-		bcrypt.genSalt(10, function(err, salt) {
-			bcrypt.hash(newPwd, salt, function(err, hash) {
-				// Store hash in your password DB
-				user.password = hash;
-				user.save(callback);
-			});
-		});
-		res.json({"pwd":newPwd});
+    }
+    rp(opt).then(function(result){
+		
+		var str = {
+			code : JSON.parse(result).message
+		}
+		
+        res.send(str);
+    });
+});
+
+// API:转发到获取验证码页面
+router.get('/manage/api/codemanage',function(req, res, next){
+	res.render('admin/manage-fakecode', {
+		
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['/js/qw/applist.js'],
+		js: ['/js/qw/get_fakecode.js']
 	});
-	
-	var callback=function(error, info){
-        if(error){
-            console.log(error)
-            console.log("数据库密码修改失败");
-            return;
-        }
-        console.log('Message sent: ' + info.response);
-    };
+	if (next) {
+        next();
+    }
 });
 
 // API: active or inactive user
