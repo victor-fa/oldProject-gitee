@@ -5,6 +5,7 @@ var bcrypt = require('bcryptjs');
 var url = require('url');
 var VcodeCreator=require('./vcode_creator');
 
+var sendPwd = require("../services/mail_sender")
 // Check user is loged in
 module.exports.ensureAuthenticated = function(req, res, next) {
     // var url_parts = url.parse(req.originalUrl);
@@ -241,4 +242,48 @@ module.exports.removeApp = function(id, appkey, callback) {
             applist: user.applist
         }, callback);
     })
+}
+
+module.exports.resertPwd = function(username){
+	var pwdStr = ['1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q',
+		'r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',
+		'T','U','V','W','X','Y','Z'];
+	var newPwd="";
+	for(var i = 0;i < 12; i++){
+		var str = pwdStr[Math.floor(Math.random()*pwdStr.length)];
+		newPwd = newPwd+str;
+	}
+    console.log("新密码为："+newPwd);
+    var query = { username: username };
+    User.findOne(query,function (err,user){
+        if (err) {
+            // throw err;
+            return newPwd = "1";
+        };   
+        var params={
+            title:"齐悟后台系统密码重置",
+            content:"您的新密码为："+newPwd,
+            user_info:{
+            email:user.email,
+            username:user.username
+            }
+        };
+		sendPwd.sendEmail(params);
+		bcrypt.genSalt(10, function(err, salt) {
+			bcrypt.hash(newPwd, salt, function(err, hash) {
+				// Store hash in your password DB
+				user.password = hash;
+				user.save(callback);
+			});
+		});
+	});
+    return newPwd;
+	var callback=function(error, info){
+        if(error){
+            console.log(error)
+            console.log("数据库密码修改失败");
+            return;
+        }
+        console.log('Message sent: ' + info.response);
+    };
 }

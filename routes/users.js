@@ -11,7 +11,6 @@ var UserService = require('../services/user');
 var UserGroup = require('../models/user_group');
 var RouterIndex = require('./index');
 var VcodeCreator=require('../services/vcode_creator');
-
 // Login
 router.get('/login', function (req, res, next) {
 	var vcode=VcodeCreator.createVcode();
@@ -19,7 +18,10 @@ router.get('/login', function (req, res, next) {
 	res.render('users/login', {
 		img:vcode.codeData,
 		s_url: req.query.s_url,
-		js: ['/js/qw/vcode.js']
+		js: ['/js/qw/vcode.js',
+		'/js/qw/resetPassword.js'
+	]
+
 	});
 });
 
@@ -32,7 +34,9 @@ router.post('/login',function(req,res,next){
 	var params={
 		url:'users/login',
 		user_info:user_info,
-		js: ['/js/qw/vcode.js']
+		js: ['/js/qw/vcode.js',
+		'/js/qw/resetPassword.js'
+	]
 	};
 	UserService.checkVcode(req,res,params,next);
 },passport.authenticate('local', {
@@ -50,6 +54,13 @@ router.post('/login',function(req,res,next){
 		res.redirect('/');
 	}
 );
+
+//API: 重置用户密码
+router.get('/resetPwd', function (req, res, next) {
+	var username = req.param("username");
+	var newPwd = UserService.resertPwd(username);
+	res.json({"pwd":newPwd});
+});
 
 //get verification code
 router.get('/vcode',function(req,res,next){

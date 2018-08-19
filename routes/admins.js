@@ -9,7 +9,9 @@ var iconv = require("iconv-lite");
 var md5 = require('../public/js/util/md5.min')
 var http = require('http')
 var https = require('https')
+var bcrypt = require('bcryptjs');
 
+var rp = require('request-promise');
 // Manage
 router.get('/manage', function (req, res, next) {
 	var id = req.query.id; // $_GET["id"]
@@ -21,7 +23,9 @@ router.get('/manage', function (req, res, next) {
 			}
 			var render_para = {}
 			render_para.css = ['/css/qw/manage.css'];
-			render_para.js = ['/js/qw/manage-detail.js'];
+			render_para.js = ['/js/qw/manage-detail.js',
+			'/js/qw/resetPassword.js'
+		];
 			if (aUser.activation === 0) {
 				aUser.active = '未激活';
 				aUser.buttonTypeActivate = 'danger';
@@ -66,6 +70,53 @@ router.get('/manage/api/load', function (req, res, next) {
 			req.flash('error_msg', '用户列表加载失败：' + err);
 		}
 		res.json(users);
+	});
+	if (next) {
+        next();
+    }
+});
+
+//API: 重置用户密码
+router.get('/manage/api/reset', function (req, res, next) {
+	var username = req.param("username");
+	var newPwd = UserService.resertPwd(username);
+	res.json({"pwd":newPwd});
+	if (next) {
+        next();
+    }
+});
+
+// API:调用第三方接口获取验证码
+router.get('/manage/api/getfakecode',function(req, res, next){
+	var phone = req.param("phone");
+	var b = new Buffer(phone);
+	var s = b.toString('base64');
+	var opt = {
+		uri:'http://account-center-test.chewrobot.com:6667/api/admin/sms/fake',
+		method:'GET',
+		headers:{
+			"Content-Type": 'application/x-www-form-urlencoded',
+			"Authorization":"Basic "+s 
+		}
+    }
+    rp(opt).then(function(result){
+		
+		var str = {
+			code : JSON.parse(result).message
+		}
+		
+        res.send(str);
+    });
+});
+
+// API:转发到获取验证码页面
+router.get('/manage/api/codemanage',function(req, res, next){
+	res.render('admin/manage-fakecode', {
+		
+		css: ['/css/qw/app.css'],
+		js: ['/js/qw/app.js'],
+		js: ['/js/qw/applist.js'],
+		js: ['/js/qw/get_fakecode.js']
 	});
 	if (next) {
         next();

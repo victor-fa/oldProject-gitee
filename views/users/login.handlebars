@@ -57,5 +57,45 @@
             </div>
         </div>
         <button type="submit" class="btn btn-default clearfix" id="btn_submit">Submit</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">忘记密码？</button>
+        <!-- 模态框 -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">密码重置</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    需重置密码的账号:<input id="resetPwd"/><button type="button" class="btn btn-primary">重置</button>
+                    <br/><span id="pwd_span"></span>
+                </div>
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
+{{!-- <script>
+    function resetPwd_user(){
+        var username = $("#resetPwd").val();
+        $.ajax({
+            url: '/admin/manage/api/reset',
+            type: 'GET',
+            data: {
+                "username": username
+            },
+            success: function(data){
+                alert("密码已发送到您的邮箱，请注意查收！"+data.pwd);
+            },
+            error: function () {
+                alert("重置失败！！！");
+            }
+        });
+    }
+</script> --}}
