@@ -62,7 +62,7 @@
 
     function on_send_question(ask) {
         $('<li class="me-message">\
-	        <span class="me-message-content">' + new Date().toISOString() 
+	        <span class="me-message-content">' + new Date().toLocaleString() 
                 + '<br>' + ask + '</span>\
 	    </li>').appendTo(".chat-list");
 
@@ -75,7 +75,7 @@
         reply = reply.replaceAll('\n', '<br />')
         $('<li class="qw-message">\
 			<div class="qw-avator"></div>\
-			<div class="qw-message-content">' + new Date().toISOString() 
+			<div class="qw-message-content">' + new Date().toLocaleString() 
                 + ' - ' + (new Date().getTime() - sendTime)
                 + '<br>' + reply + '</div>\
 		</li>').appendTo(".chat-list");
