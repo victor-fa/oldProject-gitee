@@ -58,19 +58,26 @@
 
 <!-- Overrides on_send_question and on_receive_answer functions in demo.js -->
 <script>
+    var sendTime = 0;
+
     function on_send_question(ask) {
         $('<li class="me-message">\
-	        <span class="me-message-content">' + ask + '</span>\
+	        <span class="me-message-content">' + new Date().toISOString() 
+                + '<br>' + ask + '</span>\
 	    </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+
+        sendTime = new Date().getTime();
     }
 
     function on_receive_answer(reply) {
         reply = reply.replaceAll('\n', '<br />')
         $('<li class="qw-message">\
 			<div class="qw-avator"></div>\
-			<div class="qw-message-content">' + reply + '</div>\
+			<div class="qw-message-content">' + new Date().toISOString() 
+                + ' - ' + (new Date().getTime() - sendTime)
+                + '<br>' + reply + '</div>\
 		</li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }
