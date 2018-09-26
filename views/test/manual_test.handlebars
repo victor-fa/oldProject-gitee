@@ -1,6 +1,7 @@
 <div class="container-fluid">
 <div id="qw_dialog_box">
     <div class="container">
+        <button onclick="randomUid()"> Reset Dialogue </button>
         <div class="dialog_window">
             <div class="row">
                 <div class="col-md-7">
@@ -46,10 +47,14 @@
 
     var nickname = '{{user.name}}'
 
-    var uid = getCookie('uid')
-    if (uid == '') {
+    function randomUid() {
         uid = Math.random() + ''
         setCookie('uid', uid, 100)
+    }
+
+    var uid = getCookie('uid')
+    if (uid == '') {
+        randomUid()
     }
 </script>
 
