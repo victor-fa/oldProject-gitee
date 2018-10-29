@@ -27,7 +27,8 @@ var routes = require('./routes/index'),
 	logs = require('./routes/log'),
 	admins = require('./routes/admins'),
 	gallery = require('./routes/gallery'),
-	image = require('./routes/image')
+	image = require('./routes/image'),
+	getCount = require('./routes/download');
 
 const fileUpload = require('express-fileupload');
 
@@ -139,6 +140,7 @@ app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
 app.use('/image', UserService.ensureAuthenticated, image);
+app.use('/api/download', getCount);
 
 // Plugin: stop API request timer
 app.use(plugin.timer.stop);
