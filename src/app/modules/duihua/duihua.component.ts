@@ -29,7 +29,7 @@ export class DuihuaComponent implements OnInit {
     constructor(
     ) {
         this.bot_endpoint = 'https://robot-service.centaurstech.com/api/chat';
-        this.bot_download = 'https://robot-service.centaurstech.com/api/download';
+        this.bot_download = 'https://robot-service.centaurstech.com/download';
         this.win7Url = 'http://app.qiwu.ai/v071918_WordInput_windows7_10.zip';
         this.win10Url = 'http://app.qiwu.ai/v0806_LongSpeechInput_windows10.zip';
         this.appkey = 'sample-duihua';
