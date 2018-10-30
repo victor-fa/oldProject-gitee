@@ -1,30 +1,27 @@
-<div class="container-fluid">
 <div id="qw_dialog_box">
-    <div class="container">
-        <button onclick="randomUid()"> Reset Dialogue </button>
-        <div class="dialog_window">
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="scroll-chat-box">
-                        <ul class="chat-list">
-                        </ul>
-                    </div>
-                    <div class="input-box">
-                        <span class="input-i">@</span>
-                        <input type="text" class="chat-input" placeholder="你是谁">
-                    </div>
+    <button type="button" class="btn btn-success" style="position: absolute;left: 307px;top: 63px;" onclick="randomUid()">
+        Reset Dialogue </button>
+    <div class="dialog_window">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="scroll-chat-box">
+                    <ul class="chat-list">
+                    </ul>
                 </div>
-                <div class="col-md-5" id="qiwu-logo">
-                    <div class="data-area">
-                        <div class="input-area-container">
-                            <textarea class="chat-data" disabled>附加数据</textarea>
-                        </div>
+                <div class="input-box">
+                    <span class="input-i">@</span>
+                    <input type="text" class="chat-input" placeholder="你是谁">
+                </div>
+            </div>
+            <div class="col-md-5" id="qiwu-logo">
+                <div class="data-area">
+                    <div class="input-area-container">
+                        <textarea class="chat-data" disabled>附加数据</textarea>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- CDN -->
@@ -67,8 +64,8 @@
 
     function on_send_question(ask) {
         $('<li class="me-message">\
-	        <span class="me-message-content">' + new Date().toLocaleString() 
-                + '<br>' + ask + '</span>\
+	        <span class="me-message-content">' + new Date().toLocaleString()
+            + '<br>' + ask + '</span>\
 	    </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
@@ -80,9 +77,9 @@
         reply = reply.replaceAll('\n', '<br />')
         $('<li class="qw-message">\
 			<div class="qw-avator"></div>\
-			<div class="qw-message-content">' + new Date().toLocaleString() 
-                + ' - ' + (new Date().getTime() - sendTime)
-                + '<br>' + reply + '</div>\
+			<div class="qw-message-content">' + new Date().toLocaleString()
+            + ' - ' + (new Date().getTime() - sendTime)
+            + '<br>' + reply + '</div>\
 		</li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }
@@ -98,7 +95,7 @@
 
 <!-- Add listener to input box and send HELLO when page is ready -->
 <script>
-    $(".chat-input").keydown(function(e) {
+    $(".chat-input").keydown(function (e) {
         if (e.keyCode == 13) {
             var question = $(".chat-input").val();
             $(".chat-input").val("");
@@ -107,9 +104,7 @@
         }
     })
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         send_hello()
     })
 </script>
-
-

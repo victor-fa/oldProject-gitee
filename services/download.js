@@ -24,6 +24,7 @@ var dbData = {
         const updates = {countForWin7: toCount+1};
         downloadModel.update(conditions, updates, {multi: true}, (err) => {
             if(err) return console.log(err);
+            callback('OK');
         })
     },
     updateCountForWin10: function(name, toCount, callback){
@@ -31,6 +32,7 @@ var dbData = {
         const updates = {countForWin10: toCount+1};
         downloadModel.update(conditions, updates, {multi: true}, (err) => {
             if(err) return console.log(err);
+            callback('OK');
         })
     }
 }
