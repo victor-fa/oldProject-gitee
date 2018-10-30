@@ -32,8 +32,8 @@ export class DuihuaComponent implements OnInit {
         this.bot_download = 'https://robot-service.centaurstech.com/download';
         this.win7Url = 'http://app.qiwu.ai/v071918_WordInput_windows7_10.zip';
         this.win10Url = 'http://app.qiwu.ai/v0806_LongSpeechInput_windows10.zip';
-        this.appkey = 'sample-duihua';
-        this.appsecret = '546588913f3c83600757b12a2a690c0d';
+        this.appkey = 'ios-3dmonkey-freechat';
+        this.appsecret = '1faa681b094be97a8107c13c9c58de86';
         this.nickname = '小朋友';
     }
 
@@ -88,8 +88,8 @@ export class DuihuaComponent implements OnInit {
     addCountForWin7() {
         $.ajax({
             url: this.bot_download + '/addCountForWin7',
-            // url: 'http://localhost:3000/addCountForWin7',
             type: 'GET',
+            dataType: 'jsonp',
             success: function (data, status) {
                 console.log(data);
             },
@@ -102,8 +102,8 @@ export class DuihuaComponent implements OnInit {
     addCountForWin10() {
         $.ajax({
             url: this.bot_download + '/addCountForWin10',
-            // url: 'http://localhost:3000/addCountForWin10',
             type: 'GET',
+            dataType: 'jsonp',
             success: function (data, status) {
                 console.log(data);
             },
@@ -118,11 +118,12 @@ export class DuihuaComponent implements OnInit {
         let win10 = 0;
         $.ajax({
             url: this.bot_download + '/getCount',
-            // url: 'http://localhost:3000/getCount',
             type: 'GET',
+            dataType: 'jsonp',
             success: function (data, status) {
                 win7 = win7 + data[0].countForWin7;
                 win10 = win10 + data[0].countForWin10;
+                console.log(data[0]);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log('error');
@@ -131,7 +132,7 @@ export class DuihuaComponent implements OnInit {
         setTimeout(() => {
             this.win7 = win7;
             this.win10 = win10;
-        }, 500);
+        }, 3000);
     }
 
     public saveExcel(data: Response, name: string) {
