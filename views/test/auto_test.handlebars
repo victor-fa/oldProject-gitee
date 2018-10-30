@@ -1,33 +1,27 @@
 <div class="container-fluid">
-    <div id="cc_intro">
-        <div class="container">
-            <div class="row" id="title">
-                <h2>图形化自动测试工具</h2>
-                <span id="app">test</span>
+    <div class="row" id="title" style="padding-left: 15px;">
+        <h2>图形化自动测试工具</h2>
+        <span id="app">test</span>
 
-                进度: <span id="progress">0/0</span>
-            </div>
-        </div>
+        进度: <span id="progress">0/0</span>
     </div>
     <div id="qw_dialog_box">
-        <div class="container">
-            <div class="dialog_window">
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="scroll-chat-box">
-                            <ul class="chat-list">
-                            </ul>
-                        </div>
-                        <div class="input-box">
-                            <span class="input-i">@</span>
-                            <input type="text" class="chat-input" placeholder="你是谁">
-                        </div>
+        <div class="dialog_window">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="scroll-chat-box">
+                        <ul class="chat-list">
+                        </ul>
                     </div>
-                    <div class="col-md-5" id="qiwu-logo">
-                        <div class="data-area">
-                            <div class="input-area-container">
-                                <textarea class="chat-data" disabled>附加数据</textarea>
-                            </div>
+                    <div class="input-box">
+                        <span class="input-i">@</span>
+                        <input type="text" class="chat-input" placeholder="你是谁">
+                    </div>
+                </div>
+                <div class="col-md-5" id="qiwu-logo">
+                    <div class="data-area">
+                        <div class="input-area-container">
+                            <textarea class="chat-data" disabled>附加数据</textarea>
                         </div>
                     </div>
                 </div>
@@ -36,77 +30,97 @@
     </div>
 </div>
 
-<!-- CDN -->
-<script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
-<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- CDN -->
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
-<!-- MD5 util -->
-<script type="text/javascript" src="/js/util/md5.min.js"></script>
+    <!-- Cookie factory -->
+    <script type="text/javascript" src="/js/util/cookie_factory.js"></script>
 
-<!-- String replaceAll util -->
-<script type="text/javascript" src="/js/util/string_util.js"></script>
+    <!-- MD5 util -->
+    <script type="text/javascript" src="/js/util/md5.min.js"></script>
 
-<script>
-    // App information
-    var appkey = '{{user.appkey}}'
-    var appsecret = '{{user.appsecret}}'
+    <!-- String replaceAll util -->
+    <script type="text/javascript" src="/js/util/string_util.js"></script>
 
-    var nickname = '{{user.name}}'
-    var uid = Math.random() + ''
-</script>
+    <script>
+        // App information
+        var appkey = '{{user.appkey}}'
+        var appsecret = '{{user.appsecret}}'
 
-<!-- Core function script -->
-<script type="text/javascript" src="/js/qw/core.js"></script>
+        var nickname = '{{user.name}}'
+        var uid = Math.random() + ''
+        var tempArr = [];
+    </script>
 
-<!-- Overrides on_send_question and on_receive_answer functions in demo.js -->
-<script>
-    function on_send_question(ask) {
-        $('<li class="me-message">\
-	        <span class="me-message-content">' + ask + '</span>\
-	    </li>').appendTo(".chat-list");
+    <!-- Core function script -->
+    <script type="text/javascript" src="/js/qw/core.js"></script>
 
-        $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
-    }
+    <!-- Overrides on_send_question and on_receive_answer functions in demo.js -->
+    <script>
+        function on_send_question(ask) {
+            if (ask === '&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;') {
+                setCookie('uid', uid, 100)  // Reset Dialogue
+                $('<li class="me-message" style="display:none;">\
+                <span class="me-message-content"></span>\
+            </li>').appendTo(".chat-list"); // hide ask when '======'
+                tempArr.push('1');
+            } else {
+                $('<li class="me-message">\
+                <span class="me-message-content">' + ask + '</span>\
+            </li>').appendTo(".chat-list");
 
-    function on_receive_answer(reply) {
-        reply = reply.replaceAll('\n', '<br />')
-        $('<li class="qw-message">\
-			<div class="qw-avator"></div>\
-			<div class="qw-message-content">' + reply + '</div>\
-		</li>').appendTo(".chat-list");
-        $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
-    }
-
-    function send_hello() {
-        ask_question('你好')
-    }
-</script>
-
-<!-- Auto test script -->
-<script type="text/javascript" src="/js/qw/auto_test.js"></script>
-
-<!-- Add listener to input box and send HELLO when page is ready -->
-<script>
-    var test_cases = [
-        {{#each testcases}}
-        '{{this}}',
-        {{/each}}
-    ]
-
-    $(".chat-input").keydown(function(e) {
-        if (e.keyCode == 13) {
-            var question = $(".chat-input").val();
-            $(".chat-input").val("");
-
-            ask_question(question)
+                $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+                tempArr.push('0');
+            }
         }
-    })
 
-    $(document).ready(function() {
-        send_hello()
-    })
-</script>
+        function on_receive_answer(reply) {
+            if (tempArr.pop() === '1') {
+                $('<li class="qw-message" style="display:none;">\
+                <div class="qw-avator"></div>\
+                <div class="qw-message-content"></div>\
+            </li>').appendTo(".chat-list"); // hide reply when '======'
+            } else {
+                reply = reply.replaceAll('\n', '<br />')
+                $('<li class="qw-message">\
+                <div class="qw-avator"></div>\
+                <div class="qw-message-content">' + reply + '</div>\
+            </li>').appendTo(".chat-list");
+                $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+            }
+        }
+
+        function send_hello() {
+            ask_question('你好')
+        }
+    </script>
+
+    <!-- Auto test script -->
+    <script type="text/javascript" src="/js/qw/auto_test.js"></script>
+
+    <!-- Add listener to input box and send HELLO when page is ready -->
+    <script>
+        var test_cases = [
+            {{#each testcases}}
+            '{{this}}',
+            {{/each}}
+        ]
+
+        $(".chat-input").keydown(function (e) {
+            if (e.keyCode == 13) {
+                var question = $(".chat-input").val();
+                $(".chat-input").val("");
+
+                ask_question(question)
+            }
+        })
+
+        $(document).ready(function () {
+            send_hello()
+        })
+    </script>
 
 
 
-</html>
+    </html>
