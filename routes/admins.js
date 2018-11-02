@@ -190,6 +190,24 @@ router.post('/manage/api/addapp', function (req, res, next) {
     }
 });
 
+// API: updateApp byApp
+router.get('/manage/api/updateAppByApp', function (req, res, next) {
+	var appkey = 'zhihuishenghuo-chat-test';	// 旧的
+	var newappkey = 'zhihuishenghuo-chat-test1';	// 新的
+	UserService.updateAppByApp(appkey, newappkey, function (err, users) {
+		if (err) {
+			// req.flash(err)
+			res.json({"msg":err});
+		} else {
+			// req.flash(users)
+			res.json({"msg": 'OK'});
+		}
+	});
+	if (next) {
+        next();
+    }
+});
+
 // API: remove APP
 router.get('/manage/api/removeapp', function (req, res, next) {
 	var id = req.query.id;
@@ -273,8 +291,6 @@ router.get('/manage/api/alterapp', function (req, res) {
 		});
 		
 	});
-	
-	
 });
 //update app
 router.post('/manage/api/alterapp', function (req, res, next) {
@@ -282,6 +298,7 @@ router.post('/manage/api/alterapp', function (req, res, next) {
 	app_info.appname = req.body.appname;
 	app_info.appkey = req.body.appkey;
 	app_info.robot = req.body.robot;
+	app_info.oldAppKey = req.body.oldAppKey;
 	app_info.appsecret = req.body.appsecret;
 	
 	console.log('req.body.robot:'+req.body.robot);
@@ -304,8 +321,12 @@ router.post('/manage/api/alterapp', function (req, res, next) {
 			var attr='name='+app_info.appname+'&appkey='+app_info.appkey+'&robot='+app_info.robot+'&secret='+app_info.appsecret;
 			msg = updateApp(attr);
 			req.flash('success_msg', '修改app成功');
+			
+			// 修改AppKey自身的同时修改User表对应的所有appkey
+			UserService.updateAppByApp(app_info.oldAppKey, app_info.appkey, function (err, users) {
+				err ? console.log(err) : console.log('uedate User appkey Success!');
+			});
 			res.redirect('/admin/manage/api/appmanage');
-			 
 		}
 	});
 	if(next){
@@ -376,6 +397,16 @@ router.post('/manage/api/app-add', function (req, res, next) {
 	if(next){
 		next();
 	}
+});
+
+// API:转发到测试管理页面
+router.get('/manage/api/testcases',function(req, res, next){
+	res.render('admin/testcases-maneage', {
+		css: ['/css/qw/app.css']
+	});
+	if (next) {
+        next();
+    }
 });
 
 function addAppToDB(attr,callbackfunciton){

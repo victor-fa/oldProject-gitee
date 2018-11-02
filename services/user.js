@@ -81,6 +81,27 @@ module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
 }
 
+// Get user by APPKEY
+module.exports.updateAppByApp = function(appkey, newappkey, callback) {
+    var query = {};
+    var users = User.find(query, function(err, user) {
+        if (err) {
+            callback(err);
+        }
+        for (var i = 0; i < user.length; ++i) {
+            if (user[i]) {
+                for (var j = 0; j < user[i].applist.length; ++j) {
+                    if (user[i].applist[j].appkey == appkey) {
+                        user[i].applist[j].appkey = newappkey;
+                        user[i].save(callback);
+                        break;
+                    }
+                }
+            }
+        }
+    });
+}
+
 // Check the password
 module.exports.comparePassword = function(candidatePassword, hash, callback) {
     bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
