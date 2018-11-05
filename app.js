@@ -140,7 +140,7 @@ app.use('/log', UserService.ensureAuthenticated, logs);
 app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManagerPrivilege, admins);
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
 app.use('/image', UserService.ensureAuthenticated, image);
-app.use('/api/download', getCount);
+app.use('/download', getCount);
 
 // Plugin: stop API request timer
 app.use(plugin.timer.stop);
