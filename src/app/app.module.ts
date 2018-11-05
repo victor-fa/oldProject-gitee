@@ -10,10 +10,12 @@ import { CookieService } from 'ngx-cookie-service';
 
 /// <reference path="../jquery.d.ts" />
 import * as $ from 'jquery';
+import { NewPageComponent } from './new-page/new-page.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        NewPageComponent
     ],
     imports: [
         BrowserModule,
