@@ -89,7 +89,6 @@ export class DuihuaComponent implements OnInit {
         $.ajax({
             url: this.bot_download + '/addCountForWin7',
             type: 'GET',
-            dataType: 'jsonp',
             success: function (data, status) {
                 console.log(data);
             },
@@ -103,7 +102,6 @@ export class DuihuaComponent implements OnInit {
         $.ajax({
             url: this.bot_download + '/addCountForWin10',
             type: 'GET',
-            dataType: 'jsonp',
             success: function (data, status) {
                 console.log(data);
             },
@@ -114,25 +112,25 @@ export class DuihuaComponent implements OnInit {
     }
 
     getCount() {
-        let win7 = 0;
-        let win10 = 0;
+        let tempWin7 = 0;
+        let tempWin10 = 0;
         $.ajax({
             url: this.bot_download + '/getCount',
             type: 'GET',
-            dataType: 'jsonp',
             success: function (data, status) {
-                win7 = win7 + data[0].countForWin7;
-                win10 = win10 + data[0].countForWin10;
+                tempWin7 = data[0].countForWin7;
+                tempWin10 = data[0].countForWin10;
                 console.log(data[0]);
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr + '===' + ajaxOptions + '===' + thrownError + '===');
                 console.log('error');
             },
         })
         setTimeout(() => {
-            this.win7 = win7;
-            this.win10 = win10;
-        }, 3000);
+            this.win7 = tempWin7;
+            this.win10 = tempWin10;
+        }, 2000);
     }
 
     public saveExcel(data: Response, name: string) {
