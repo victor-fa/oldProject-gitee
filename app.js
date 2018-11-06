@@ -117,6 +117,7 @@ app.use(flash());
 
 // Global Vars
 app.use(function (req, res, next) {
+	res.locals.success_title = req.flash('success_title');
 	res.locals.success_msg = req.flash('success_msg');
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');	// for passport for

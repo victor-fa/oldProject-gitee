@@ -33,6 +33,7 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "json2yaml": "^1.1.0",
     "mdbootstrap": "^4.4.3",
     "mongodb": "*",
     "mongoose": "*",

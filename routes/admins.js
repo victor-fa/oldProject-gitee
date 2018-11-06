@@ -10,6 +10,10 @@ var md5 = require('../public/js/util/md5.min')
 var http = require('http')
 var https = require('https')
 var bcrypt = require('bcryptjs');
+var yml_upload_dir = './public/cases/upload/';
+var yml_new_dir = './public/cases/new/';
+var myDate = new Date();
+const fs = require('fs');
 
 var rp = require('request-promise');
 // Manage
@@ -81,6 +85,27 @@ router.get('/manage/api/reset', function (req, res, next) {
 	var username = req.param("username");
 	var newPwd = UserService.resertPwd(username);
 	res.json({"pwd":newPwd});
+	if (next) {
+        next();
+    }
+});
+
+// API:转发到上传配置页面
+router.get('/manage/api/upload',function(req, res, next){
+	res.render('admin/cases-upload', {
+		css: ['/css/qw/app.css']
+	});
+	if (next) {
+        next();
+    }
+});
+
+
+// API:转发到新建配置页面
+router.get('/manage/api/new',function(req, res, next){
+	res.render('admin/cases-new', {
+		css: ['/css/qw/app.css']
+	});
 	if (next) {
         next();
     }
@@ -324,7 +349,7 @@ router.post('/manage/api/alterapp', function (req, res, next) {
 			
 			// 修改AppKey自身的同时修改User表对应的所有appkey
 			UserService.updateAppByApp(app_info.oldAppKey, app_info.appkey, function (err, users) {
-				err ? console.log(err) : console.log('uedate User appkey Success!');
+				err ? console.log(err) : console.log('update User appkey Success!');
 			});
 			res.redirect('/admin/manage/api/appmanage');
 		}
@@ -397,16 +422,6 @@ router.post('/manage/api/app-add', function (req, res, next) {
 	if(next){
 		next();
 	}
-});
-
-// API:转发到测试管理页面
-router.get('/manage/api/testcases',function(req, res, next){
-	res.render('admin/testcases-maneage', {
-		css: ['/css/qw/app.css']
-	});
-	if (next) {
-        next();
-    }
 });
 
 function addAppToDB(attr,callbackfunciton){
@@ -482,8 +497,363 @@ function getAppsKeysAndScrets(urlpath,callbackfunciton){
 
 }
 
+/* 配置文件上传开始 */
+/**
+ * delete file
+ * @param {*} ymlName 
+ * @param {*} flag 
+ */
+function deleteYMLFile(ymlName, flag) {
+	const yml_dir = flag === 'upload' ? yml_upload_dir : yml_new_dir ;
+	fs.unlink(yml_dir + ymlName, function(error){
+		if(error){
+			console.log(error);
+			return false;
+		}
+		console.log('删除文件成功');
+	})
+}
+
+function deleteYMLFile(ymlName, flag) {
+	const yml_dir = flag === 'upload' ? yml_upload_dir : yml_new_dir ;
+	fs.unlink(yml_dir + ymlName, function(error){
+		if(error){
+			console.log(error);
+			return false;
+		}
+		console.log('删除文件成功');
+	})
+}
+
+/**
+ * exe python about QiwuGrader
+ * @param {*} ymlName 
+ * @param {*} flag 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function execYMLFile(ymlName, flag, req, res, next) {
+	var exec = require('child_process').exec;
+	const yml_dir = flag === 'upload' ? yml_upload_dir : yml_new_dir;
+	const redirectURL = flag === 'upload' ? '/admin/manage/api/upload' : '/admin/manage/api/new';
+	var arg1 = yml_dir + ymlName;
+	var iconv = require('iconv-lite');
+	exec('python D:/workspace/QiwuGrader/app.py ' + arg1 + ' ' , function(error, stdout, stderr){	// ' ' + arg2 + 
+		if (error) {
+			deleteYMLFile(ymlName, flag);
+			req.flash('error_msg', '分析结果失败：' + error);
+			return res.redirect(redirectURL);
+		}
+		console.log("==========" + stderr);
+		if (stderr.indexOf('ERROR') != -1 ) {
+			deleteYMLFile(ymlName, flag);
+			req.flash('error_msg', '配置测试失败：' + stderr);
+			return res.redirect(redirectURL);
+		}
+		if (stderr.indexOf('grade:') === -1 ) {
+			deleteYMLFile(ymlName, flag);
+			req.flash('error_msg', '配置测试失败：' + stderr);
+			return res.redirect(redirectURL);
+		}
+		const cruxArr = stderr.substring(stderr.indexOf('grade:')+6, stderr.indexOf('time:')).split('/');
+		const molecule = cruxArr[0].replace(/^\s+|\s+$/g,"");	// 分子，去空格
+		const denominator = cruxArr[1].replace(/^\s+|\s+$/g,"");	// 分母，去空格
+		stderr=stderr.replace(/\n/g, "<br>");
+		var result = iconv.decode(stderr, 'UTF-8');
+		req.flash('success_msg', result);
+		req.flash('success_title', '配置测试成功，请下拉到最下面看结果');
+		return res.redirect(redirectURL);
+	});
+}
+
+/**
+ * upload file
+ */
+router.post('/cases/uploadyml', function (req, res, next) {
+	// JSON.stringify()
+	let ymlFileName = '';
+	let casesFile = req.files.ymlFile;
+	if (JSON.stringify(req.files) !== '{}') {
+		ymlFileName = req.files.ymlFile.name;
+	} else {
+        req.flash('error_msg', '您没有选择要上传的文件');
+		return res.redirect('/admin/manage/api/upload');
+	}
+	if (ymlFileName.substr(ymlFileName.length-4, 4) !== '.yml') {
+        req.flash('error_msg', '您上传的不是yml文件！');
+        return res.redirect('/admin/manage/api/upload');
+	}
+	var path_to_yml = yml_upload_dir + ymlFileName;
+
+    casesFile.mv(path_to_yml, function(err) {
+        if (err){
+            req.flash('error_msg', '文件上传失败：' + err);
+            return res.redirect('/admin/manage/api/upload');
+		} 
+		else {
+			execYMLFile(ymlFileName, 'upload', req, res, next);
+        }
+    })
+    if (next) {
+        next();
+    }
+})
+/* 配置文件上传结束 */
 
 
+/* 在线测试配置文件开始 */
+/**
+ * 提交表单
+ */
+router.post('/cases/newcases', function (req, res, next) {
+	console.log('=========' + JSON.stringify(req.body));
+	reqString = JSON.stringify(req.body);
+	var YAML = require('json2yaml');
+	var questionCount = 0;
+	var answerCount = 0;
+	const serverJson = {};	// 服务参数
+	const serverKey = [];	// 服务参数key
+	const serverValue = [];	// 服务参数value
+	const optionsJson = {};	// 测试参数
+	const optionsKey = [];	// 测试参数key
+	const optionsValue = [];	// 测试参数value
+	const outputJson = {};	// 输出参数
+	const outputKey = [];	// 输出参数key
+	const outputValue = [];	// 输出参数value
+	const usernames = [];	// 测试用户名参数
+	const requestJson = {};	// 请求参数
+	const requestKey = [];	// 请求参数key
+	const requestValue = [];	// 请求参数value
+	const replacementJson = {};	// 后处理替换参数
+	const replacementKey = [];	// 后处理替换参数key
+	const replacementValue = [];	// 后处理替换参数key
+	const questionsJson = {};	// 提问参数
+	const answersJson = {};	// 回复参数
+	
+	// 遍历json对象并对号入座
+	for(var item in req.body){ 
+		if(item.substring(0, item.indexOf('serverKey.')+10) == 'serverKey.'){	// 服务器参数
+			serverKey.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('server.')+7) == 'server.'){	// 服务器参数
+			serverValue.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('testKey.')+8) == 'testKey.'){	// 测试参数key
+			optionsKey.push(req.body[item]);
+        } else if(item.substring(0, item.indexOf('test.')+5) == 'test.'){	// 测试参数value
+			optionsValue.push(req.body[item]);
+        } else if(item.substring(0, item.indexOf('outputKey.')+10) == 'outputKey.'){	// 输出参数key
+			outputKey.push(req.body[item]);
+        } else if(item.substring(0, item.indexOf('output.')+7) == 'output.'){	// 输出参数value
+			outputValue.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('usernames.')+10) == 'usernames.'){	// 测试用户名参数
+			usernames.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('requestKey.')+11) == 'requestKey.'){	// 请求参数key
+			requestKey.push(req.body[item]);
+        } else if(item.substring(0, item.indexOf('request.')+8) == 'request.'){	// 请求参数value
+			requestValue.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('replacementKey.')+15) == 'replacementKey.'){	// 后处理替换参数key
+			replacementKey.push(req.body[item]);
+        } else if(item.substring(0, item.indexOf('replacement.')+12) == 'replacement.'){	// 后处理替换参数value
+			replacementValue.push(req.body[item]);
+		} else if(item.substring(0, item.indexOf('question.')+9) == 'question.'){	// 提问
+			createJson(item.substring(item.indexOf('question.')+9, item.length), "questions", req.body[item]);
+			questionCount += 1;
+		} else if(item.substring(0, item.indexOf('answerSingle.')+13) == 'answerSingle.'){	// 回答 单选
+			createJson(item.substring(item.indexOf('answerSingle.')+13, item.length), "answerSingle", req.body[item]);
+			answerCount += 1;
+		} else if(item.substring(0, item.indexOf('answerMulti.')+12) == 'answerMulti.'){	// 回答 多选
+			createJson(item.substring(item.indexOf('answerMulti.')+12, item.length), "answerMulti", req.body[item]);
+			answerCount += 1;
+		} else if(item.substring(0, item.indexOf('answerRegex.')+12) == 'answerRegex.'){	// 回答 正则
+			createJson(item.substring(item.indexOf('answerRegex.')+12, item.length), "answerRegex", req.body[item]);
+			answerCount += 1;
+        }
+	}
 
+	// 服务器参数
+	if (serverKey.length > 0) {
+		if (serverKey.length == serverValue.length) {
+			for (var i = 0; i < serverKey.length; i ++) {
+				createJson(serverKey[i], "server", serverValue[i]);
+			}
+		} else {
+			throwErrorForUndefined('请检查 服务器参数 的key与value是否有输入为空', req, res);
+		}
+	}
+
+	// 操作输出参数
+	if (outputKey.length > 0) {
+		if (outputKey.length == outputValue.length) {
+			for (var i = 0; i < outputKey.length; i ++) {
+				createJson(outputKey[i], "output", outputValue[i]);
+			}
+		} else {
+			throwErrorForUndefined('请检查 输出参数 的key与value是否有输入为空', req, res);
+		}
+	}
+
+	// 操作测试参数
+	if (optionsKey.length > 0) {
+		if (optionsKey.length == optionsValue.length) {
+			for (var i = 0; i < optionsKey.length; i ++) {
+				createJson(optionsKey[i], "test", optionsValue[i]);
+			}
+		} else {
+			throwErrorForUndefined('请检查 测试参数 的key与value是否有输入为空', req, res);
+		}
+	}
+
+	// 请求参数
+	if (requestKey.length > 0) {
+		if (requestKey.length == requestValue.length) {
+			for (var i = 0; i < requestKey.length; i ++) {
+				createJson(requestKey[i], "request", requestValue[i]);
+			}
+		} else {
+			throwErrorForUndefined('请检查 请求参数 的key与value是否有输入为空', req, res);
+		}
+	}
+
+	// 后处理替换参数
+	if (replacementKey.length > 0) {
+		if (replacementKey.length == replacementValue.length) {
+			for (var i = 0; i < replacementKey.length; i ++) {
+				createJson(replacementKey[i], "replacement", replacementValue[i]);
+			}
+		} else {
+			throwErrorForUndefined('请检查 后处理替换参数 的key与value是否有输入为空', req, res);
+		}
+	}
+
+	// 检查提问与回答的数量是否一致
+	questionCount !== answerCount ? throwErrorForUndefined('提问与回答的条数没对应上！', req, res) : 1 ;
+	
+	// 基本骨架
+	const jsonObj = {
+		'type': req.body.type,
+		'name': req.body.name,
+		'comment': req.body.comment,
+		'id': req.body.fileId,
+		'author': req.body.author,
+		'engine': req.body.engine,
+		'username': req.body.username,
+		'welcome': req.body.welcome,
+		'ending': req.body.ending,
+		'survey': req.body.survey,
+		'static_chatkey': req.body.static_chatkey,
+		'nickname': req.body.nickname,
+		'server' : serverJson,
+		'options' : optionsJson,
+		'output': outputJson,
+		'usernames': usernames,
+		'request': requestJson,
+		'post-replacement': replacementJson,
+		'questions': questionsJson,
+		'answers': answersJson
+	}
+
+	/* 删除空的key value 开始 */
+	req.body.type === "" ? createJson("type", "finalJson") : 1 ;	// 测试类型
+	req.body.name === "" ? createJson("name", "finalJson") : 1 ;	// 服务名称
+	req.body.comment === "" ? createJson("comment", "finalJson") : 1 ;	// 服务介绍
+	req.body.fileId === "" ? createJson("id", "finalJson") : 1 ;	// 文件名
+	req.body.author === "" ? createJson("author", "finalJson") : 1 ;	// 服务负责人
+	req.body.engine === "" ? createJson("engine", "finalJson") : 1 ;	// 服务器代号
+	req.body.username === "" ? createJson("username", "finalJson") : 1 ;	// 机器人用户名
+	req.body.welcome === "" ? createJson("welcome", "finalJson") : 1 ;	// 欢迎词
+	req.body.ending === "" ? createJson("ending", "finalJson") : 1 ;	// 结束语
+	req.body.survey === "" ? createJson("survey", "finalJson") : 1 ;	// 检测满意度的结束语
+	req.body.static_chatkey === "" ? createJson("static_chatkey", "finalJson") : 1 ;	// 对于同一个用户的不同会话是否使用固定的chat_key
+	req.body.nickname === "" ? createJson("nickname", "finalJson") : 1 ;	// 替换微信昵称/用户昵称
+
+	reqString.indexOf('serverKey.') == -1 ? createJson("server", "finalJson") : 1 ;	// 服务器参数
+	reqString.indexOf('testKey.') == -1 ? createJson("options", "finalJson") : 1 ;	// 测试参数
+	reqString.indexOf('outputKey.') == -1 ? createJson("output", "finalJson") : 1 ;	// 输出参数
+	reqString.indexOf('usernames.') == -1 ? createJson("usernames", "finalJson") : 1 ;	// 测试用户名参数
+	reqString.indexOf('request.') == -1 ? createJson("request", "finalJson") : 1 ;	// 请求参数
+	reqString.indexOf('replacementKey.') == -1 ? createJson("post-replacement", "finalJson") : 1 ;	// 后处理替换
+	reqString.indexOf('question.') == -1 ? createJson("questions", "finalJson") : 1 ;	// 提问参数
+	reqString.indexOf('answerSingle.') == -1 || reqString.indexOf('answerMulti.') == -1 
+			|| reqString.indexOf('answerRegex.') == -1 ? 1 : createJson("answers", "finalJson");	// 提问参数
+	/* 删除空的key value 结束 */
+
+	ymlText = YAML.stringify(jsonObj).replace(/\"/g, "");	// 将json转换成yml
+	ymlText = ymlText.replace(/\\/g, "\"");	// 针对form串做处理
+	
+	const ymlName = "ymlFile-" + myDate.getFullYear() + '-' 
+		+ (myDate.getMonth() + 1) + '-' + myDate.getDate() + '_' 
+		+ myDate.getHours() + '-' + myDate.getMinutes() + '-' 
+		+ myDate.getSeconds() + ".yml";
+	var path_to_yml = yml_new_dir + ymlName;
+	fs.writeFile(path_to_yml, ymlText, function (err) {
+        if (err){
+            req.flash('error_msg', '文件生成失败：' + err);
+		} else {
+			execYMLFile(ymlName, 'new', req, res, next);
+		}
+	});
+
+	/**
+	 * 针对动态添加的数据进行处理
+	 * @param {*} prop 
+	 * @param {*} flag 
+	 * @param {*} val 
+	 */
+	function createJson(prop, flag, val) {
+		if (flag === 'server') {
+			typeof val === "undefined" ? delete serverJson[prop] : serverJson[prop] = val;
+		} else if (flag === 'questions') {
+			typeof val === "undefined" ? delete questionsJson[prop] : questionsJson[prop] = val;
+		} else if (flag === 'answerSingle') {
+			answersJson[prop] = val;
+		} else if (flag === 'answerMulti') {
+			let multiArr = [];
+			let multi = {};
+			if (val.indexOf('&') != -1) {
+				multiArr = val.split("&");	// 数组
+				multi['multi'] = multiArr;	// 默认key为multi
+				answersJson[prop] = multi;
+			} else {
+				answersJson[prop] = val;
+			}
+		} else if (flag === 'answerRegex') {
+			let multi = {};
+			multi['regex'] = val;	// 默认key为multi
+			answersJson[prop] = multi;
+		} else if (flag === 'request') {
+			typeof val === "undefined" ? delete requestJson[prop] : requestJson[prop] = val;
+		} else if (flag === 'test') {
+			typeof val === "undefined" ? delete optionsJson[prop] : optionsJson[prop] = val;
+		} else if (flag === 'output') {
+			typeof val === "undefined" ? delete outputJson[prop] : outputJson[prop] = val;
+		} else if (flag === 'finalJson') {
+			typeof val === "undefined" ? delete jsonObj[prop] : jsonObj[prop] = val;
+		} else if (flag === 'replacement') {
+			let replacementArr = [];
+			let replaceKye = {};
+			if (val.indexOf('&') != -1) {
+				replacementArr = val.split("&");	// 数组
+				replacementJson[prop] = replacementArr;
+			} else {
+				replacementJson[prop] = val;
+			}
+		}
+	}
+	
+    if (next) {
+        next();
+    }
+})
+
+/**
+ * throwout error
+ * @param {*} req 
+ * @param {*} res 
+ */
+function throwErrorForUndefined(content, req, res) {
+	req.flash('error_msg', content);
+	return res.redirect('/admin/manage/api/new');
+}
+/* 在线测试配置文件结束 */
 
 module.exports = router;
