@@ -601,7 +601,6 @@ router.post('/cases/uploadyml', function (req, res, next) {
 })
 /* 配置文件上传结束 */
 
-
 /* 在线测试配置文件开始 */
 /**
  * 提交表单
@@ -671,59 +670,22 @@ router.post('/cases/newcases', function (req, res, next) {
 	}
 
 	// 服务器参数
-	if (serverKey.length > 0) {
-		if (serverKey.length == serverValue.length) {
-			for (var i = 0; i < serverKey.length; i ++) {
-				createJson(serverKey[i], "server", serverValue[i]);
-			}
-		} else {
-			throwErrorForUndefined('请检查 服务器参数 的key与value是否有输入为空', req, res);
-		}
-	}
+	compareKeyWithValue(serverKey, serverValue, "server", "请检查 服务器参数 的key与value是否有输入为空", req, res);
 
 	// 操作输出参数
-	if (outputKey.length > 0) {
-		if (outputKey.length == outputValue.length) {
-			for (var i = 0; i < outputKey.length; i ++) {
-				createJson(outputKey[i], "output", outputValue[i]);
-			}
-		} else {
-			throwErrorForUndefined('请检查 输出参数 的key与value是否有输入为空', req, res);
-		}
-	}
+	compareKeyWithValue(outputKey, outputValue, "output", "请检查 输出参数 的key与value是否有输入为空", req, res);
 
 	// 操作测试参数
-	if (optionsKey.length > 0) {
-		if (optionsKey.length == optionsValue.length) {
-			for (var i = 0; i < optionsKey.length; i ++) {
-				createJson(optionsKey[i], "test", optionsValue[i]);
-			}
-		} else {
-			throwErrorForUndefined('请检查 测试参数 的key与value是否有输入为空', req, res);
-		}
-	}
+	compareKeyWithValue(optionsKey, optionsValue, "test", "请检查 测试参数 的key与value是否有输入为空", req, res);
 
 	// 请求参数
-	if (requestKey.length > 0) {
-		if (requestKey.length == requestValue.length) {
-			for (var i = 0; i < requestKey.length; i ++) {
-				createJson(requestKey[i], "request", requestValue[i]);
-			}
-		} else {
-			throwErrorForUndefined('请检查 请求参数 的key与value是否有输入为空', req, res);
-		}
-	}
+	compareKeyWithValue(requestKey, requestValue, "request", "请检查 请求参数 的key与value是否有输入为空", req, res);
 
 	// 后处理替换参数
-	if (replacementKey.length > 0) {
-		if (replacementKey.length == replacementValue.length) {
-			for (var i = 0; i < replacementKey.length; i ++) {
-				createJson(replacementKey[i], "replacement", replacementValue[i]);
-			}
-		} else {
-			throwErrorForUndefined('请检查 后处理替换参数 的key与value是否有输入为空', req, res);
-		}
-	}
+	compareKeyWithValue(replacementKey, replacementValue, "replacement", "请检查 后处理替换参数 的key与value是否有输入为空", req, res);
+
+	// 处理需要测试的用户
+	const usernamesResult = usernames.length > 1 ? usernames : usernames[0];
 
 	// 检查提问与回答的数量是否一致
 	questionCount !== answerCount ? throwErrorForUndefined('提问与回答的条数没对应上！', req, res) : 1 ;
@@ -745,7 +707,7 @@ router.post('/cases/newcases', function (req, res, next) {
 		'server' : serverJson,
 		'options' : optionsJson,
 		'output': outputJson,
-		'usernames': usernames,
+		'usernames': usernamesResult,
 		'request': requestJson,
 		'post-replacement': replacementJson,
 		'questions': questionsJson,
@@ -774,11 +736,19 @@ router.post('/cases/newcases', function (req, res, next) {
 	reqString.indexOf('replacementKey.') == -1 ? createJson("post-replacement", "finalJson") : 1 ;	// 后处理替换
 	reqString.indexOf('question.') == -1 ? createJson("questions", "finalJson") : 1 ;	// 提问参数
 	reqString.indexOf('answerSingle.') == -1 || reqString.indexOf('answerMulti.') == -1 
-			|| reqString.indexOf('answerRegex.') == -1 ? 1 : createJson("answers", "finalJson");	// 提问参数
+			|| reqString.indexOf('answerRegex.') == -1 ? createJson("answers", "finalJson") : 1 ;	// 提问参数
 	/* 删除空的key value 结束 */
+
+	// 抛出未填写任何字段的异常
+	if (JSON.stringify(jsonObj) === '{}') {
+		throwErrorForUndefined('您未填写任何字段！', req, res);
+		return;
+	}
 
 	ymlText = YAML.stringify(jsonObj).replace(/\"/g, "");	// 将json转换成yml
 	ymlText = ymlText.replace(/\\/g, "\"");	// 针对form串做处理
+
+	console.log("===================" + ymlText);
 	
 	const ymlName = "ymlFile-" + myDate.getFullYear() + '-' 
 		+ (myDate.getMonth() + 1) + '-' + myDate.getDate() + '_' 
@@ -809,13 +779,9 @@ router.post('/cases/newcases', function (req, res, next) {
 		} else if (flag === 'answerMulti') {
 			let multiArr = [];
 			let multi = {};
-			if (val.indexOf('&') != -1) {
-				multiArr = val.split("&");	// 数组
-				multi['multi'] = multiArr;	// 默认key为multi
-				answersJson[prop] = multi;
-			} else {
-				answersJson[prop] = val;
-			}
+			multiArr = val.split("&");	// 数组
+			multi['multi'] = multiArr;	// 默认key为multi
+			answersJson[prop] = multi;
 		} else if (flag === 'answerRegex') {
 			let multi = {};
 			multi['regex'] = val;	// 默认key为multi
@@ -831,11 +797,28 @@ router.post('/cases/newcases', function (req, res, next) {
 		} else if (flag === 'replacement') {
 			let replacementArr = [];
 			let replaceKye = {};
-			if (val.indexOf('&') != -1) {
-				replacementArr = val.split("&");	// 数组
-				replacementJson[prop] = replacementArr;
+			replacementArr = val.split("&");	// 数组
+			replacementJson[prop] = replacementArr;
+		}
+	}
+	
+	/**
+	 * 封装key value比较的方法
+	 * @param {*} keyArr 
+	 * @param {*} valueArr 
+	 * @param {*} flag 
+	 * @param {*} notify 
+	 * @param {*} req 
+	 * @param {*} res 
+	 */
+	function compareKeyWithValue(keyArr, valueArr, flag, notify, req, res) {
+		if (keyArr.length > 0) {
+			if (keyArr.length == valueArr.length) {
+				for (var i = 0; i < keyArr.length; i ++) {
+					createJson(keyArr[i], flag, valueArr[i]);
+				}
 			} else {
-				replacementJson[prop] = val;
+				throwErrorForUndefined(notify, req, res);
 			}
 		}
 	}
@@ -854,6 +837,7 @@ function throwErrorForUndefined(content, req, res) {
 	req.flash('error_msg', content);
 	return res.redirect('/admin/manage/api/new');
 }
+
 /* 在线测试配置文件结束 */
 
 module.exports = router;
