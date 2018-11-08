@@ -25,6 +25,7 @@ export class UserComponent implements OnInit {
     private modalService: NzModalService,
     private localizationService: LocalizationService,
   ) {
+    this.commonService.nav[1].active = true;
   }
 
   ngOnInit() {

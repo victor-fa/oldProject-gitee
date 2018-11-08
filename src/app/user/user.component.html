@@ -34,7 +34,7 @@
             </div>
           <!-- </form> -->
 
-          <nz-table #rowSelectionTable [nzData]="data" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+          <nz-table #rowSelectionTable [nzData]="data" [nzScroll]="{x:'2000px'}" (nzCurrentPageDataChange)="currentPageDataChange($event)"
             (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
             <thead>
               <tr>

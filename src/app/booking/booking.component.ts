@@ -25,6 +25,7 @@ export class BookingComponent implements OnInit {
     private modalService: NzModalService,
     private localizationService: LocalizationService,
   ) {
+    this.commonService.nav[0].active = true;
   }
 
   ngOnInit() {

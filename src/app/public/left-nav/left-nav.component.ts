@@ -1,8 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/public/service/common.service';
 import { CookiesService } from '../service/cookies.service';
 import { LocalizationService } from '../service/localization.service';
-import { flatten } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-left-nav',
