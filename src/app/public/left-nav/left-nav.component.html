@@ -1,0 +1,52 @@
+<!-- 顶部 -->
+<div class="top_nav">
+  <ul nz-menu [nzMode]="'horizontal'">
+    <li nz-menu-item class="left_panel">
+      <a class="common-button" routerLink="/booking" routerLinkActive="active">
+        <img src="/assets/images/qiwu_logo.png" class="qiwu_logo" alt="">
+      </a>
+    </li>
+    <li nz-menu-item class="right_panle">
+      <nz-dropdown [nzPlacement]="'bottomRight'">
+        <a nz-dropdown>
+          <img src="/assets/images/person_logo.png" class="person_logo" alt="">
+          <strong *ngIf="userName">{{userName}}</strong>
+        </a>
+        <ul nz-menu>
+          <li nz-menu-item (click)="cancellation()">
+            <a>注销</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+    </li>
+    <li nz-menu-item class="right_panle"><i class="anticon anticon-question-circle-o"></i></li>
+  </ul>
+</div>
+
+<!-- 左侧 -->
+<div class="left_nav">
+  <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="isCollapsed">
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''"
+      [ngClass]="{'active_panel': commonService.nav[0].active}">
+      <a class="common-button" routerLink="/booking" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>订票管理</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[1].active}">
+      <a class="common-button" routerLink="/user" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-appstore-o"></i>
+          <span>用户管理</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
+      <span title>
+        <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="isCollapsed" [class.anticon-menu-fold]="!isCollapsed"></i>
+      </span>
+    </li>
+  </ul>
+</div>

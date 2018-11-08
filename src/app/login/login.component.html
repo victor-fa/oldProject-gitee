@@ -1,0 +1,75 @@
+<!-- 顶部 -->
+<div class="top_nav">
+  <ul nz-menu [nzMode]="'horizontal'">
+    <li nz-menu-item class="left_panel">
+      <a class="common-button" routerLink="/booking" routerLinkActive="active">
+        <img src="/assets/images/qiwu_logo.png" class="qiwu_logo" alt="">
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="login">
+  <div class="login_panel">
+    <div class="center">
+      <div class="title_panel">账号密码登录</div>
+      <div nz-row class="cell_panel">
+        <div nz-col nzSpan="2">
+        </div>
+        <div nz-col nzSpan="20">
+          <hr>
+        </div>
+        <div nz-col nzSpan="2">
+        </div>
+      </div>
+      <form nz-form [formGroup]="loginForm">
+        <div nz-row class="cell_panel">
+          <div nz-col nzSpan="2">
+          </div>
+          <div nz-col nzSpan="20">
+            <label nz-form-item>
+              <div nz-form-control nzHasFeedback>
+                <input nz-input formControlName="userName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="登录账号" nzSize="default">
+                <div nz-form-explain style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('mobile')" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">请输入注册时的手机号！</div>
+              </div>
+            </label>
+          </div>
+          <div nz-col nzSpan="2">
+          </div>
+        </div>
+        <div nz-row class="cell_panel">
+          <div nz-col nzSpan="2">
+          </div>
+          <div nz-col nzSpan="20">
+            <label nz-form-item>
+              <div nz-form-control nzHasFeedback>
+                <input nz-input formControlName="password" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="请输入登录密码" type="password" nzSize="default" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">
+                <div nz-form-explain style="color: red" *ngIf="getFormControl('password').dirty&&getFormControl('password').value === ''">请输入密码！</div>
+              </div>
+            </label>
+          </div>
+          <div nz-col nzSpan="2">
+          </div>
+        </div>
+      </form>
+      <div nz-row class="cell_panel">
+        <div nz-col nzSpan="2">
+        </div>
+        <div nz-col nzSpan="20">
+          <label nz-checkbox [(ngModel)]="checked">记住我</label>
+          <span style="float: right;color: #1890ff" nzTitle="忘记密码请联系管理员找回或重置密码，管理员忘记密码可拨打齐悟智能外呼服务热线0755-86968772" nzPlacement="top" nz-tooltip>忘记密码</span>
+        </div>
+        <div nz-col nzSpan="2">
+        </div>
+      </div>
+      <div nz-row class="cell_panel">
+        <div nz-col nzSpan="2">
+        </div>
+        <div nz-col nzSpan="20">
+          <button nz-button nzType="primary" nzBlock (click)="onSubmit($event, loginForm)">登录</button>
+        </div>
+        <div nz-col nzSpan="2">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

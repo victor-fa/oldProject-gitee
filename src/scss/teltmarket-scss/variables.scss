@@ -1,0 +1,25 @@
+// 卡片的内容去除
+.ant-card-body {
+  display: none!important;
+}
+
+// 分页功能定制：底部增加空间
+.ant-card-head {
+  padding: 0px 24px 15px 24px!important;
+}
+
+// 字体靠右
+.right_alignment {
+  text-align: right;
+}
+
+// 字间距调整（针对文字较长）
+.spacing {
+  letter-spacing: -1px;
+}
+
+// 全局的progress，适应弹框出来无法识别的情况
+.ant-progress-text {
+  color: burlywood;
+}
+

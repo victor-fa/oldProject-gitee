@@ -1,0 +1,31 @@
+.booking {
+  position: absolute;
+  top: 70px;
+  left: 240px;
+  padding: 10px;
+  width: calc(100% - 240px);
+  height: calc(100% - 70px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  .search_panel {
+    margin-bottom: 10px;
+
+    .span_down {
+      line-height: 30px;
+    }
+
+    .tiaozheng {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #d9d9d9;
+    }
+  }
+
+
+
+  .ant-table-tbody>tr>td,
+  .ant-table-thead>tr>th {
+    padding: 10px !important;
+  }
+}
