@@ -22,10 +22,30 @@
                   nzSize="default">
               </div>
 
-              <div nz-col nzSpan="1">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                用户状态：
+              </div>
+              <div nz-col nzSpan="2">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'-无-'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'正常'" [nzValue]="'正常'"></nz-option>
+                  <nz-option required [nzLabel]="'未激活'" [nzValue]="'未激活'"></nz-option>
+                  <nz-option required [nzLabel]="'黑名单'" [nzValue]="'黑名单'"></nz-option>
+                </nz-select>
               </div>
 
-              <div nz-col nzSpan="1">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                是否拉黑：
+              </div>
+              <div nz-col nzSpan="2">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'-无-'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'是'" [nzValue]="'是'"></nz-option>
+                  <nz-option required [nzLabel]="'否'" [nzValue]="'否'"></nz-option>
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="6">
               </div>
 
               <div nz-col nzSpan="2">
@@ -78,7 +98,8 @@
                 <td>{{data.contactsPhone}}</td>
                 <td>{{data.ageType}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data)" style="margin-right: 10px;">发送验证码</button>
+                  <button nz-button nzType="primary" (click)="showSendMsgModal(data)" style="margin-right: 10px;">发送验证码</button>
+                  <button nz-button nzType="primary" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
                 </td>
               </tr>
             </tbody>

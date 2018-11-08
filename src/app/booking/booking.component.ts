@@ -18,6 +18,8 @@ export class BookingComponent implements OnInit {
   displayData = [];
   allChecked = false;
   indeterminate = false;
+  isUserInfoVisible = false;
+  isModifyVisible = false;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -32,6 +34,7 @@ export class BookingComponent implements OnInit {
     this.loadData();
   }
 
+  /* 加载信息 */
   private loadData(): void {
     this.data = [{
       status: '未支付',
@@ -42,6 +45,24 @@ export class BookingComponent implements OnInit {
       username: '齐小悟',
       remarks: '备注'
     }];
+  }
+
+  /* 展示用户信息 */
+  showUserInfo(): void {
+    this.isUserInfoVisible = true;
+  }
+
+  hideUserInfo(): void {
+    this.isUserInfoVisible = false;
+  }
+
+  /* 展示修改弹框 */
+  showModifyModal(data): void {
+    this.isModifyVisible = true;
+  }
+
+  hideModifyModal(): void {
+    this.isModifyVisible = false;
   }
 
   // 主面板分页表单

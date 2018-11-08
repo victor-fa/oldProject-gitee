@@ -53,6 +53,26 @@ export class UserComponent implements OnInit {
     }];
   }
 
+  /* 展示拉入黑名单 */
+  showBlacklistModal(data): void {
+    this.modalService.confirm({
+      nzTitle: '提示',
+      nzContent: '确定将该用户拉入黑名单吗？',
+      nzOkText: '确定',
+      nzOnOk: () => 1
+    });
+  }
+
+  /* 发送验证码 */
+  showSendMsgModal(data): void {
+    this.modalService.confirm({
+      nzTitle: '提示',
+      nzContent: '确定发送验证码给该用户吗？',
+      nzOkText: '确定',
+      nzOnOk: () => 1
+    });
+  }
+
   // 主面板分页表单
   currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
     this.displayData = $event;
