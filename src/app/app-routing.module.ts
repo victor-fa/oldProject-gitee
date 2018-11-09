@@ -12,6 +12,7 @@ const routes: Routes = [
     { path: 'test', loadChildren: './modules/test/test.module#TestModule' },
     { path: 'not-found', loadChildren: './modules/not-found/not-found.module#NotFoundModule' },
     { path: 'duihua', loadChildren: './modules/duihua/duihua.module#DuihuaModule' },
+    { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
     { path: '**', redirectTo: 'not-found' }
 ];
 

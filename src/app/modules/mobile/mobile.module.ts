@@ -22,7 +22,6 @@ import { ProductMComponent } from './components/product-m/product-m.component';
     ],
     declarations: [
         MobileComponent,
-
         HeaderMComponent,
         AboutMComponent,
         PartnerMComponent,
@@ -30,7 +29,7 @@ import { ProductMComponent } from './components/product-m/product-m.component';
         CareerMComponent,
         HomeMComponent,
         TechMComponent,
-        ProductMComponent
+        ProductMComponent,
     ],
     providers: []
 })
