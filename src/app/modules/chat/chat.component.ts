@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { md5 } from './md5';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { log } from 'util';
+import { md5 } from '../duihua/md5';
+import { Observable } from 'rxjs';
 
 @Component({
-    selector: 'app-duihua',
-    templateUrl: './duihua.component.html',
-    styleUrls: ['./duihua.component.scss']
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.css']
 })
-export class DuihuaComponent implements OnInit {
+export class ChatComponent implements OnInit {
     @Input()
     items: any[] = [];
 
@@ -15,16 +16,18 @@ export class DuihuaComponent implements OnInit {
     bot_download: string;
     win7Url: string;
     win10Url: string;
-
     appkey: string;
     appsecret: string;
-
     nickname: string;
-
     uid: string;
-
     win7 = 0;
     win10 = 0;
+
+    @ViewChild('mainScreen') elementView: ElementRef;
+    viewHeight: number;
+    morethan400 = false;    // 124
+    morethan720 = false;    // 50
+    morethan1024 = false;   // 25
 
     constructor(
     ) {
@@ -32,24 +35,24 @@ export class DuihuaComponent implements OnInit {
         this.bot_download = 'https://robot-service.centaurstech.com/download';
         this.win7Url = 'http://app.qiwu.ai/v071918_WordInput_windows7_10.zip';
         this.win10Url = 'http://app.qiwu.ai/v0806_LongSpeechInput_windows10.zip';
-        this.appkey = 'ios-3dmonkey-freechat';
-        this.appsecret = '1faa681b094be97a8107c13c9c58de86';
+        this.appkey = 'zhihuishenghuo-pro-web';
+        this.appsecret = '065e75a666034566711ca55b33e3cf37';
         this.nickname = '小朋友';
     }
 
     ngOnInit(): void {
         this.uid = this.getCookie('uid')
-        if (this.uid == '') {
+        if (this.uid === '') {
             this.uid = Math.random() + ''
             this.setCookie('uid', this.uid, 100)
         }
 
-        var that = this
+        const that = this
 
-        $(".chat-input").keydown(function (e) {
+        $('.chat-input').keydown(function (e) {
             if (e.keyCode == 13) {
-                var question = $(".chat-input").val();
-                $(".chat-input").val("");
+                const question = $('.chat-input').val();
+                $('.chat-input').val('');
 
                 that.ask_question(question)
             }
@@ -57,7 +60,31 @@ export class DuihuaComponent implements OnInit {
 
         this.getCount();
 
+        // this.viewHeight = this.elementView.nativeElement.offsetWidth;
+        this.viewHeight = window.screen.width;
+        this.changeHeight(this.viewHeight);
+
         this.send_hello()
+    }
+
+    changeHeight(viewHeight): void {
+        console.log(viewHeight);
+        if (viewHeight < 450) {
+            this.heightToFalse();
+            this.morethan400 = true;
+        } else if (viewHeight < 720) {
+            this.heightToFalse();
+            this.morethan720 = true;
+        } else {
+            this.heightToFalse();
+            this.morethan1024 = true;
+        }
+    }
+
+    heightToFalse() {
+        this.morethan400 = false;
+        this.morethan720 = false;
+        this.morethan1024 = false;
     }
 
     setCookie(cname, cvalue, exdays) {

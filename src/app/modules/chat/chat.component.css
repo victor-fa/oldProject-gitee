@@ -1,0 +1,193 @@
+* {
+    padding: 0;
+}
+
+body {
+    font-size: 100%;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+#qw_dialog_box {
+    background-color: #8DC63F;
+    background-image: linear-gradient(90deg, #35424f, #242d39);
+    height: 100%;
+    text-align: center;
+}
+
+.container {
+    width: 930px;
+}
+
+p {
+    word-wrap: break-word;
+}
+
+.dialog_window {
+    background-color: #F4F7FD;
+    background-image: linear-gradient(-90deg, #35424f, #242d39);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+.dialog_window .col-md-4 {
+    text-align: center;
+}
+
+.dialog_window .qw_qr {
+    width: 100px;
+    height: 100px;
+    margin-top: 100px;
+}
+
+.scroll-chat-box {
+    width: 100%;
+    /* height: 124rem; */
+    background-color: #F4F7FD;
+    padding: 15px;
+    padding-right: 2px;
+}
+
+.input-box {
+    height: 82px;
+    // border-radius: 26px;
+    background-color: #FFD403;
+    // margin-top: 20px;
+    line-height: 82px;
+    text-align: left;
+}
+
+.data-area {
+    height: 650px;
+    // border-radius: 26px;
+    background-color: white;
+    margin-top: 20px;
+    line-height: 52px;
+}
+
+.input-area-container {
+    padding-top: 10px;
+    margin: 10px;
+    height: 98%;
+}
+
+.input-i {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    border-top-left-radius: 26px;
+    border-bottom-left-radius: 26px;
+    background-color: #ffd403;
+    color: white;
+}
+
+.chat-input {
+    height: 100%;
+    border: 0;
+    width: 80%;
+    font-size: 250%;
+    padding-left: 40px;
+}
+
+.chat-data {
+    line-height: 1.1;
+    height: 100%;
+    border: 0;
+    width: 100%;
+}
+
+.chat-list {
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    overflow-y: scroll;
+}
+
+.qw-message {
+    text-align: left;
+    min-height: 63px;
+}
+
+.me-message {
+    text-align: right;
+}
+
+.qw-avator {
+    // display: block;
+    display: none;
+    float: left;
+    width: 63px;
+    height: 63px;
+    background-image: url(/assets/img/qw_avatar.webp);
+}
+
+
+.qw-message-content {
+    display: inline-block;
+    max-width: 480px;
+    margin: 7px;
+    min-height: 43px;
+    border-radius: 12px;
+    background-color: #ffd403;
+    padding: 12px;
+    font-size: 250%;
+}
+
+.me-message-content {
+    display: inline-block;
+    margin: 7px;
+    min-height: 43px;
+    border-radius: 12px;
+    background-color: white;
+    padding: 12px;
+    font-size: 250%;
+}
+
+@media screen and (max-width: 780px) {
+    #cc_intro {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #title {
+        text-align: center;
+    }
+
+    .container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    #qiwu-logo {
+        display: none;
+    }
+
+    .input-i {
+        width: 30px;
+    }
+
+    .dialog_window {
+        padding: 20px;
+        width: 100%;
+        border-radius: 10px;
+        margin: 0;
+    }
+
+    .qw-avator {
+        width: 40px;
+        height: 40px;
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    }
+
+}
+
+.qw-message-content-error {
+    background-color: #f2dede;
+}
+
