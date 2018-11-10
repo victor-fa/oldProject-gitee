@@ -1,5 +1,7 @@
 export interface IResponse<T> {
-  code: string;
-  msg: string;
-  data: T;
+  status: number;
+  retcode: number;
+  message: string;
+  payload: any;
+  timestamp: number;
 }

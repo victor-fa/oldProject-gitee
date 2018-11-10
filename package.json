@@ -24,6 +24,7 @@
     "core-js": "^2.5.4",
     "echarts": "^4.2.0-rc.1",
     "fingerprintjs2": "^1.8.0",
+    "js-base64": "^2.4.9",
     "ng-zorro-antd": "^1.6.0",
     "node-sass": "^4.9.0",
     "rxjs": "^6.2.1",

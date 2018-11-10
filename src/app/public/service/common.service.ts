@@ -23,20 +23,6 @@ export class CommonService {
     { active: false },
     { active: false }
   ];
-  permission = {
-    personal: false,
-    reset: false,
-    monitor: false,
-    number: false,
-    template: false,
-    outbound: false,
-    examine: false,
-    material: false,
-    datareport: false,
-    account: false,
-    role: false,
-    conversation: false,
-  };
 
   constructor(
     private _httpClient: HttpClient,
@@ -47,75 +33,10 @@ export class CommonService {
     this.list.push(str);
   }
 
-  havePermission(): void {
-    const flag = this.localizationService.getPermission.split(',');
-    flag.forEach(item => {
-      if (item === '个人资料') {
-        this.permission.personal = true;
-      } else if (item === '重置密码') {
-        this.permission.reset = true;
-      } else if (item === '首页监控') {
-        this.permission.monitor = true;
-      } else if (item === '号码管理') {
-        this.permission.number = true;
-      } else if (item === '模板管理') {
-        this.permission.template = true;
-      } else if (item === '外呼任务') {
-        this.permission.outbound = true;
-      } else if (item === '任务审核') {
-        this.permission.examine = true;
-      } else if (item === '员工列表') {
-        this.permission.account = true;
-      } else if (item === '角色列表') {
-        this.permission.role = true;
-      } else if (item === '会话记录') {
-        this.permission.conversation = true;
-      }
-    });
-  }
-
-  closePermission(): void {
-    this.permission.personal = false;
-    this.permission.reset = false;
-    this.permission.monitor = false;
-    this.permission.number = false;
-    this.permission.template = false;
-    this.permission.outbound = false;
-    this.permission.examine = false;
-    this.permission.material = false;
-    this.permission.datareport = false;
-    this.permission.account = false;
-    this.permission.role = false;
-    this.permission.conversation = false;
-  }
-
   menuNativeToFalse(): void {
     this.nav.forEach(item => {
       item.active = false;
     });
-  }
-
-  // 获取相对时间，格式为yyyy-mm-dd
-  getBeforeDate(time) {
-    const n = time;
-    const d = new Date();
-    let year = d.getFullYear();
-    let mon = d.getMonth() + 1;
-    let day = d.getDate();
-    if (day <= n) {
-      if (mon > 1) {
-        mon = mon - 1;
-      } else {
-        year = year - 1;
-        mon = 12;
-      }
-    }
-    d.setDate(d.getDate() - n);
-    year = d.getFullYear();
-    mon = d.getMonth() + 1;
-    day = d.getDate();
-    const s = year + '-' + (mon < 10 ? ('0' + mon) : mon) + '-' + (day < 10 ? ('0' + day) : day);
-    return s;
   }
 
   // 验证有效的手机号
@@ -126,34 +47,6 @@ export class CommonService {
     } else if (!MOBILE_REGEXP.test(control.value)) {
       return { error: true, mobile: true };
     }
-  }
-
-  // 验证手机号是否存在
-  // _phoneNumAsyncValidator = (control: FormControl): any => {
-  //   return this.queryPhone(control.value);
-  // }
-
-  // 注册查询，判断不存在
-  queryPhone(phoneNumber: string): Observable<{ error: boolean, existent: boolean }> {
-  //   const _url = `${this.appconfig.remoteServiceBaseUrl}/user/mobile/?user_phone=${phoneNumber}`;
-  //   const _options = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //     })
-  //   };
-  //   return this._httpClient
-  //     .get<StatusModel>(_url, _options)
-  //     .flatMap((res: StatusModel) => {
-  //       if (res.code === '0000') {
-  //         return Observable.of(null);
-  //       } else if (res.code === '0001') {
-  //         // 手机号不存在
-  //         this._notifyService.warning(res.msg);
-  //         return Observable.of({ error: true, existent: true });
-  //       } else {
-          return Observable.of(null);
-  //       }
-  //     })
   }
 
   /**

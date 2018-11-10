@@ -4,91 +4,72 @@
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="index2">
         <nz-tab nzTitle="用户管理">
-          <!-- <form> -->
+          <form [formGroup]="searchForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                用户名：
+                <!-- 用户名： -->
+                用户ID：
               </div>
-              <div nz-col nzSpan="2">
-                <input nz-input maxlength="10" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入用户名"
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="userName" maxlength="10" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入用户名"
                   nzSize="default">
               </div>
 
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 手机号：
               </div>
-              <div nz-col nzSpan="2">
-                <input nz-input maxlength="10" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入手机号"
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="phoneNum" maxlength="11" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入手机号"
                   nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                用户状态：
-              </div>
-              <div nz-col nzSpan="2">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'-无-'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'正常'" [nzValue]="'正常'"></nz-option>
-                  <nz-option required [nzLabel]="'未激活'" [nzValue]="'未激活'"></nz-option>
-                  <nz-option required [nzLabel]="'黑名单'" [nzValue]="'黑名单'"></nz-option>
-                </nz-select>
-              </div>
-
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                是否拉黑：
-              </div>
-              <div nz-col nzSpan="2">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'-无-'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'是'" [nzValue]="'是'"></nz-option>
-                  <nz-option required [nzLabel]="'否'" [nzValue]="'否'"></nz-option>
-                </nz-select>
-              </div>
-
-              <div nz-col nzSpan="6">
+              <div nz-col nzSpan="12">
               </div>
 
               <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="doSearch($event, searchForm)"><i class="anticon anticon-search"></i>查询</button>
+                <button nz-button nzType="primary" (click)="doSearch($event)"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
-          <!-- </form> -->
+          </form>
 
-          <nz-table #rowSelectionTable [nzData]="data" [nzScroll]="{x:'2000px'}" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+          <!--  [nzScroll]="{x:'2000px'}" -->
+          <nz-table #rowSelectionTable [nzData]="data" (nzCurrentPageDataChange)="currentPageDataChange($event)"
             (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
             <thead>
               <tr>
                 <th>序号</th>
                 <th>用户名</th>
+                <th>用户ID</th>
                 <th>是否拉黑</th>
                 <th>在系统状态</th><!-- 1.正常 = 成功登录过齐悟前端产品 2.未激活 = 请求了验证码，但是没有登录成功过 3.黑名单 = 被拉入了黑名单 -->
                 <th>短信验证码请求次数</th>
                 <th>第一次注册时间</th>
                 <th>上次登录时间</th>
                 <th>手机号</th>
-                <th>性别</th>
+                <!-- <th>性别</th>
                 <th>中文姓名</th>
                 <th>姓</th>
                 <th>名</th>
-                <th>证件类型</th><!-- 1身份证;2护照;3台湾通行证;4港澳通行证;5港澳往返内地通行证;6台湾往返内地通行证;7军官证;8士兵证 -->
+                <th>证件类型</th>   身份证;2护照;3台湾通行证;4港澳通行证;5港澳往返内地通行证;6台湾往返内地通行证;7军官证;8士兵证
                 <th>证件号</th>
                 <th>出生年月日</th>
                 <th>联系人电话</th>
-                <th>联系人年龄段类型</th>
+                <th>联系人年龄段类型</th> -->
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.username}}</td>
-                <td>{{data.isBlackList}}</td>
-                <td>{{data.systemStatus}}</td>
-                <td>{{data.msgTime}}</td>
-                <td>{{data.firstRegisterDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{data.lastLoginDate | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{data.mobileNumber}}</td>
-                <td>{{data.sex}}</td>
+                <td>{{data.nickName}}</td>
+                <td>{{data.userId}}</td>
+                <td>{{data.locked}}</td>
+                <td>{{data.status}}</td>
+                <td>{{data.sentCount}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm' }}</td>
+                <td>{{data.updateTime | date:'yyyy-MM-dd HH:mm' }}</td>
+                <td>{{data.userPhone}}</td>
+                <!-- <td>{{data.sex}}</td>
                 <td>{{data.CName}}</td>
                 <td>{{data.laseName}}</td>
                 <td>{{data.name}}</td>
@@ -96,14 +77,43 @@
                 <td>{{data.iDNumber}}</td>
                 <td>{{data.birthday | date:'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{data.contactsPhone}}</td>
-                <td>{{data.ageType}}</td>
+                <td>{{data.ageType}}</td> -->
                 <td>
-                  <button nz-button nzType="primary" (click)="showSendMsgModal(data)" style="margin-right: 10px;">发送验证码</button>
                   <button nz-button nzType="primary" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
                 </td>
               </tr>
             </tbody>
           </nz-table>
+        </nz-tab>
+
+
+
+
+        <nz-tab nzTitle="发送短信">
+
+          <form [formGroup]="sendMsgForm">
+            <div nz-row>
+              <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br><br><br></div>
+            </div>
+            <div nz-row class="search_panel">
+
+              <div nz-col nzSpan="6"></div>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                手机号：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="11" formControlName="phoneNum" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="输入手机号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="showSendMsgModal()"><i class="anticon anticon-message"></i>发送</button>
+              </div>
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
+            </div>
+          </form>
 
         </nz-tab>
       </nz-tabset>

@@ -22,7 +22,6 @@ export class LeftNavComponent implements OnInit {
     if (this.localizationService.getUserName) {
       this.userName = this.localizationService.getUserName;
     }
-    this.commonService.havePermission();  // 获取权限
   }
 
   toggleCollapsed(): void {

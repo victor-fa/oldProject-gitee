@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   appconfig: {
       // remoteBaseUrl: 'http://服务器ip/api/v1', // remoteUrl：请求远程服务器API
-      remoteBaseUrl: 'http://aliyun-sz2.chewrobot.com:46000/api/v1' // remoteUrl：请求远程服务器API
+      remoteBaseUrl: 'http://lxwork.vipgz1.idcfengye.com/api/admin' // remoteUrl：请求远程服务器API
   }
 };
 

@@ -34,45 +34,45 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit($event, { value, valid }): void {
-    $event.preventDefault();
-    let salt = '';
-    this.userService.getPublicSalt().subscribe(res => {
-      salt = res.data;
-    });
-    // tslint:disable-next-line:forin
-    for (const key in this.loginForm.controls) {
-      this.loginForm.controls[key].markAsDirty();
-    }
-    // 验证不通过，则不请求API
-    if (!valid) { return; }
-    this.login.userName = this.loginForm.controls['userName'].value;
-    this.login.password = Md5.hashStr(Md5.hashStr(this.loginForm.controls['password'].value + salt).toString() + salt).toString();
-    this.userService.login(this.login)
-      .subscribe(res => {
-        if (res.data) {
-          // 登录成功，直接跳转
-          this.message.create('success', '登录成功');
-          this.localizationService.setLocalization = 'isLogin';
-          this.localizationService.setUserName = res.data.user.userName;
-          this.localizationService.setUid = res.data.user.uid;
-          // this.localizationService.setCompany = res.data.user.department;
-          this.localizationService.setPermission = res.data.user.perms.toString();
-          setTimeout(() => {
-            this.router.navigateByUrl('booking');
-          }, 2000);
-        } else if (res.code === '262') {
-          this.message.create('error', res.msg);
-        } else {
-          this.localizationService.setLocalization = '';
-          this.localizationService.setUserName = '';
-          this.localizationService.setUid = '';
-          // this.localizationService.setCompany = '';
-          this.localizationService.setPermission = '';
-          this.message.create('error', res.msg);
-        }
-      });
-  }
+  // onSubmit($event, { value, valid }): void {
+  //   $event.preventDefault();
+  //   let salt = '';
+  //   this.userService.getPublicSalt().subscribe(res => {
+  //     salt = res.data;
+  //   });
+  //   // tslint:disable-next-line:forin
+  //   for (const key in this.loginForm.controls) {
+  //     this.loginForm.controls[key].markAsDirty();
+  //   }
+  //   // 验证不通过，则不请求API
+  //   if (!valid) { return; }
+  //   this.login.userName = this.loginForm.controls['userName'].value;
+  //   this.login.password = Md5.hashStr(Md5.hashStr(this.loginForm.controls['password'].value + salt).toString() + salt).toString();
+  //   this.userService.login(this.login)
+  //     .subscribe(res => {
+  //       if (res.data) {
+  //         // 登录成功，直接跳转
+  //         this.message.create('success', '登录成功');
+  //         this.localizationService.setLocalization = 'isLogin';
+  //         this.localizationService.setUserName = res.data.user.userName;
+  //         this.localizationService.setUid = res.data.user.uid;
+  //         // this.localizationService.setCompany = res.data.user.department;
+  //         this.localizationService.setPermission = res.data.user.perms.toString();
+  //         setTimeout(() => {
+  //           this.router.navigateByUrl('booking');
+  //         }, 2000);
+  //       } else if (res.code === '262') {
+  //         this.message.create('error', res.msg);
+  //       } else {
+  //         this.localizationService.setLocalization = '';
+  //         this.localizationService.setUserName = '';
+  //         this.localizationService.setUid = '';
+  //         // this.localizationService.setCompany = '';
+  //         this.localizationService.setPermission = '';
+  //         this.message.create('error', res.msg);
+  //       }
+  //     });
+  // }
 
   getFormControl = (name) => {
     return this.loginForm.controls[name];
