@@ -539,7 +539,7 @@ function execYMLFile(ymlName, flag, req, res, next) {
 	const redirectURL = flag === 'upload' ? '/admin/manage/api/upload' : '/admin/manage/api/new';
 	var arg1 = yml_dir + ymlName;
 	var iconv = require('iconv-lite');
-	exec('python D:/workspace/QiwuGrader/app.py ' + arg1 + ' ' , function(error, stdout, stderr){	// ' ' + arg2 + 
+	exec('python ../QiwuGrader/app.py ' + arg1 + ' ' , function(error, stdout, stderr){	// ' ' + arg2 + 
 		if (error) {
 			deleteYMLFile(ymlName, flag);
 			req.flash('error_msg', '分析结果失败：' + error);
