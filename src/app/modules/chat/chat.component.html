@@ -8,7 +8,7 @@
                             <p style="line-height:84px;">与 小悟 聊天中</p>
                         </div>
                         <div style="background: rgba(230,230,230,1);height: 1px;"></div>
-                        <div class="scroll-chat-box" [ngStyle]="{'height': morethan400 ? '124rem' : morethan720 ? '50rem' : morethan1024 ? '25rem' : '124rem'}">
+                        <div class="scroll-chat-box" [ngStyle]="{'height': morethan400 ? '124rem' : morethan720 ? '62rem' : morethan1024 ? '37rem' : '124rem'}">
                             <ul class="chat-list">
                                 <!-- <li *ngFor="let item of items" class="chat-list">
                                     {{ item.title }}
@@ -18,7 +18,9 @@
                         <div class="input-box">
                             <!-- <span class="input-i">@</span> -->
                             <input type="text" class="chat-input" placeholder="你是谁">
-                            <img src="/assets/images/panel_icon_send@2x.png" draggable="false" style="margin-left: 55px;">
+                            <div style="display: contents;" class="chat-submit" (click)="submitMsg()">
+                                <img src="/assets/images/panel_icon_send@2x.png" draggable="false" style="padding: 2rem 7rem;">
+                            </div>
                         </div>
                     </div>
                 </div>
