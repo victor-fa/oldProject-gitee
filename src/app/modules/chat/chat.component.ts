@@ -68,7 +68,6 @@ export class ChatComponent implements OnInit {
     }
 
     changeHeight(viewHeight): void {
-        console.log(viewHeight);
         if (viewHeight < 450) {
             this.heightToFalse();
             this.morethan400 = true;
@@ -226,8 +225,10 @@ export class ChatComponent implements OnInit {
     }
 
     on_send_question(ask) {
+        const fontSize = this.morethan400 ? '250%' : this.morethan720 ? '160%' : this.morethan1024 ? '160%' : '160%';
         $('<li _ngcontent-c1 class="me-message">\
-            <span _ngcontent-c1 class="me-message-content">' + ask + '</span>\
+            <span _ngcontent-c1 class="me-message-content"\
+            style="font-size: ' + fontSize + '">' + ask + '</span>\
         </li>').appendTo(".chat-list");
 
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
@@ -239,9 +240,11 @@ export class ChatComponent implements OnInit {
 
     on_receive_answer(reply) {
         reply = this.replace_all(reply, '\n', '<br />')
+        const fontSize = this.morethan400 ? '250%' : this.morethan720 ? '160%' : this.morethan1024 ? '160%' : '160%';
         $('<li _ngcontent-c1 class="qw-message">\
             <div _ngcontent-c1 class="qw-avator"></div>\
-            <div _ngcontent-c1 class="qw-message-content">' + reply + '</div>\
+            <div _ngcontent-c1 class="qw-message-content"\
+             style="font-size: ' + fontSize + '">' + reply + '</div>\
         </li>').appendTo(".chat-list");
         $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
     }
