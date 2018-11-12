@@ -26,6 +26,7 @@ export class UserComponent implements OnInit {
   sendMsgForm: FormGroup;  // 发送短信表单
   sendMsgItem = new SendMsgInput();
   infoId = '';
+  sendScreenHeight = '';
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -41,6 +42,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.sendScreenHeight = (window.screen.height - 524) + 'px';
   }
 
   /**
@@ -128,9 +130,17 @@ export class UserComponent implements OnInit {
 
   /* 显示发送提示 */
   showSendMsgModal(): void {
+    const phoneNum = this.sendMsgForm.controls['phoneNum'].value;
+    if (phoneNum === '') {
+      this.modalService.error({
+        nzTitle: '提示',
+        nzContent: '请填写手机号'
+      });
+      return;
+    }
     this.modalService.confirm({
       nzTitle: '提示',
-      nzContent: '确定发送验证码给该用户吗？',
+      nzContent: '确定发送验证码给该手机号：' + phoneNum + '的用户吗？',
       nzOkText: '确定',
       nzOnOk: () => this.doSendMsg()
     });
@@ -140,9 +150,14 @@ export class UserComponent implements OnInit {
   doSendMsg(): void {
     const Base64 = require('js-base64').Base64;
     const phoneNum = 'Basic ' + Base64.encode(this.sendMsgForm.controls['phoneNum'].value);
-    console.log(phoneNum);
     this.userService.sendMsg(phoneNum).subscribe(res => {
-      if (res.retcode === 10000) {
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '获取成功',
+          nzContent: '验证码为： ' + res.message,
+          nzOkText: '知道了',
+        });
+      } else {
         this.modalService.error({
           nzTitle: '提示',
           nzContent: res.message

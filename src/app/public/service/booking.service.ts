@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
@@ -40,6 +40,9 @@ export class BookingService extends AppServiceBase {
   updateBookingInfo(updateType, orderId): Observable<IResponse<any>> {
     const url = this.fullUrl(bookingApiUrls.orderDetail);
     const body = `updateType=${updateType}&orderId=${orderId}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+    };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }

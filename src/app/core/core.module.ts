@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'rxjs/add/observable/combineLatest';
@@ -31,6 +31,7 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/withLatestFrom';
 import { AppRoutingModule } from '../app.routing';
 import { throwIfAlreadyLoaded } from './module-import-guard';
+import { AuthInterceptor } from '../public/service/auth-interceptor.service';
 
 
 @NgModule({
@@ -49,6 +50,11 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
             provide: 'APP_CONFIG',
             useValue: 'APP_CONFIG', // 临时
         },
+        // {
+        //     provide: HTTP_INTERCEPTORS,
+        //     useClass: AuthInterceptor,
+        //     multi: true
+        // },
     ]
 })
 

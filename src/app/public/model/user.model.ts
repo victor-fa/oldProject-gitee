@@ -49,11 +49,13 @@ export class LoginItemInput implements ILoginItemInput {
 export interface ILoginItemOutput {
   sessionId: string;
   user: ILoginUser;
+  token: string;
 }
 
 export class LoginItemOutput implements ILoginItemOutput {
   sessionId: string;
   user: ILoginUser;
+  token: string;
 }
 
 export interface ILoginUser {

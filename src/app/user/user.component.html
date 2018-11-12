@@ -32,7 +32,6 @@
             </div>
           </form>
 
-          <!--  [nzScroll]="{x:'2000px'}" -->
           <nz-table #rowSelectionTable [nzData]="data" (nzCurrentPageDataChange)="currentPageDataChange($event)"
             (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
             <thead>
@@ -42,19 +41,10 @@
                 <th>用户ID</th>
                 <th>是否拉黑</th>
                 <th>在系统状态</th><!-- 1.正常 = 成功登录过齐悟前端产品 2.未激活 = 请求了验证码，但是没有登录成功过 3.黑名单 = 被拉入了黑名单 -->
-                <th>短信验证码请求次数</th>
+                <th>短信请求次数</th>
                 <th>第一次注册时间</th>
                 <th>上次登录时间</th>
                 <th>手机号</th>
-                <!-- <th>性别</th>
-                <th>中文姓名</th>
-                <th>姓</th>
-                <th>名</th>
-                <th>证件类型</th>   身份证;2护照;3台湾通行证;4港澳通行证;5港澳往返内地通行证;6台湾往返内地通行证;7军官证;8士兵证
-                <th>证件号</th>
-                <th>出生年月日</th>
-                <th>联系人电话</th>
-                <th>联系人年龄段类型</th> -->
                 <th>操作</th>
               </tr>
             </thead>
@@ -69,15 +59,6 @@
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{data.updateTime | date:'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{data.userPhone}}</td>
-                <!-- <td>{{data.sex}}</td>
-                <td>{{data.CName}}</td>
-                <td>{{data.laseName}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.iDType}}</td>
-                <td>{{data.iDNumber}}</td>
-                <td>{{data.birthday | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{data.contactsPhone}}</td>
-                <td>{{data.ageType}}</td> -->
                 <td>
                   <button nz-button nzType="primary" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
                 </td>
@@ -87,16 +68,12 @@
         </nz-tab>
 
 
-
-
         <nz-tab nzTitle="发送短信">
-
           <form [formGroup]="sendMsgForm">
             <div nz-row>
-              <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br><br><br></div>
+              <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br></div>
             </div>
             <div nz-row class="search_panel">
-
               <div nz-col nzSpan="6"></div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 手机号：
@@ -110,11 +87,8 @@
                 <button nz-button nzType="primary" (click)="showSendMsgModal()"><i class="anticon anticon-message"></i>发送</button>
               </div>
             </div>
-            <div nz-row>
-                <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
-            </div>
+            <div nz-row [ngStyle]="{'height': sendScreenHeight}"></div>
           </form>
-
         </nz-tab>
       </nz-tabset>
     </nz-card-tab>

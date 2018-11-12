@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   login = new LoginItemInput();
-  checked = true;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,

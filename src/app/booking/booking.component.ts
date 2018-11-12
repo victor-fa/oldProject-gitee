@@ -3,7 +3,7 @@ import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonService } from '../public/service/common.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { LocalizationService } from '../public/service/localization.service';
 import { UserService } from '../public/service/user.service';
 import { BookingService } from '../public/service/booking.service';
@@ -23,14 +23,19 @@ export class BookingComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   isBookingDetailVisible = false;
+  isExternalDetailVisible = false;
   isModifyVisible = false;
   orderId = '';
+  orderStatus = '';
   searchForm: FormGroup;  // 查询表单
   searchItem = new SearchBookingInput();
   modifyForm: FormGroup;  // 修改表单
   modifyItem = new ModifyBookingInput();
   isFlightOrder = false;
   isHotelOrder = false;
+  isTrainOrder = false;
+  total = 0;
+  pageIndex = 1;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -39,6 +44,7 @@ export class BookingComponent implements OnInit {
     private localizationService: LocalizationService,
     private userService: UserService,
     private bookingService: BookingService,
+    private notification: NzNotificationService,
   ) {
     this.commonService.nav[0].active = true;
     this._initSearchForm();
@@ -53,6 +59,8 @@ export class BookingComponent implements OnInit {
   private loadData(): void {
     this.bookingService.getBookingList().subscribe(res => {
       this.data = JSON.parse(res.payload);
+      this.total = JSON.parse(res.payload).total;
+      console.log(this.total);
     });
   }
 
@@ -104,6 +112,7 @@ export class BookingComponent implements OnInit {
   /* 展示订单详情 */
   showBookingDetail(data): void {
     this.orderId = data.orderId;
+    this.orderStatus = data.state;
     this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
       if (res.retcode === 0) {
         console.log(JSON.parse(res.payload));
@@ -111,11 +120,19 @@ export class BookingComponent implements OnInit {
           this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
           this.isFlightOrder = true;
           this.isHotelOrder = false;
+          this.isTrainOrder = false;
         }
         if (JSON.parse(res.payload).hotelOrder) {
           this.dataDetail = JSON.parse(res.payload).hotelOrder;
           this.isFlightOrder = false;
           this.isHotelOrder = true;
+          this.isTrainOrder = false;
+        }
+        if (JSON.parse(res.payload).trainOrderReturn) {
+          this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
+          this.isFlightOrder = false;
+          this.isHotelOrder = false;
+          this.isTrainOrder = true;
         }
         console.log(this.dataDetail);
       } else {
@@ -128,6 +145,199 @@ export class BookingComponent implements OnInit {
     this.isBookingDetailVisible = true;
   }
 
+  /* 展示供应商订单详情 */
+  showExternal(flag, data): void {
+    this.bookingService.getBookingDetail(flag, data).subscribe(res => {
+      if (res.retcode === 0) {
+        console.log(JSON.parse(res.payload));
+        let externalDetail = [];
+        if (JSON.parse(res.payload).flightOrderReturn) {
+          externalDetail = JSON.parse(res.payload).flightOrderReturn;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).flightOrderReturn.flight_order_passengers.length; i++) {
+            forItem = '\'<br>乘客\'' + (i + 1) + '\'姓名：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].name +
+            '\'<br>乘客\'' + (i + 1) + '\'属性：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].age_type +
+            '\'<br>乘客\'' + (i + 1) + '\'生日：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].birthday +
+            '\'<br>乘客\'' + (i + 1) + '\'证件号：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].card_no +
+            '\'<br>乘客\'' + (i + 1) + '\'性别：\'' + this.getSex(JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].sex);
+          }
+          this.notification.blank('供应商订单详情',
+            '订单数量：' + JSON.parse(res.payload).flightOrderReturn.amount +
+            '<br>目的机场位置：' + JSON.parse(res.payload).flightOrderReturn.arr_airport +
+            '<br>目的城市：' + JSON.parse(res.payload).flightOrderReturn.arr_city +
+            '<br>到达时间：' + JSON.parse(res.payload).flightOrderReturn.arr_time +
+            '<br>机票类型：' + JSON.parse(res.payload).flightOrderReturn.cabin_type +
+            '<br>联系人：' + JSON.parse(res.payload).flightOrderReturn.contact +
+            '<br>联系人电话：' + JSON.parse(res.payload).flightOrderReturn.contact_mobile +
+            '<br>始发机场：' + JSON.parse(res.payload).flightOrderReturn.dept_airport +
+            '<br>始发城市：' + JSON.parse(res.payload).flightOrderReturn.dept_city +
+            '<br>始发时间：' + JSON.parse(res.payload).flightOrderReturn.dept_time +
+            '<br>所在航班：' + JSON.parse(res.payload).flightOrderReturn.flight_com +
+            forItem +
+            '<br>旅程时间：' + JSON.parse(res.payload).flightOrderReturn.flight_times +
+            '<br>航班类型：' + JSON.parse(res.payload).flightOrderReturn.flight_type +
+            '<br>企业管家编号：' + JSON.parse(res.payload).flightOrderReturn.no +
+            '<br>订单价格：' + JSON.parse(res.payload).flightOrderReturn.order_amount +
+            '<br>订单类型：' + JSON.parse(res.payload).flightOrderReturn.order_type +
+            '<br>备注：' + JSON.parse(res.payload).flightOrderReturn.order_type,
+            { nzDuration: 0 });
+        }
+        if (JSON.parse(res.payload).hotelOrder) {
+          externalDetail = JSON.parse(res.payload).hotelOrder;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).hotelOrder.customers.length; i++) {
+            forItem = '\'<br>入住成员\'' + (i + 1) + '\'：\'' + JSON.parse(res.payload).hotelOrder.customers[i].name;
+          }
+          this.notification.blank('供应商订单详情',
+            '到达时间：' + JSON.parse(res.payload).hotelOrder.arrival_date +
+            '<br>是否可取消：' + this.getAllowed(JSON.parse(res.payload).hotelOrder.allowed) +
+            '<br>最晚到达时间：' + JSON.parse(res.payload).hotelOrder.cancel_policy.time_limit +
+            '<br>联系人电话：' + JSON.parse(res.payload).hotelOrder.contact_mobile +
+            '<br>联系人姓名：' + JSON.parse(res.payload).hotelOrder.contact_name +
+            '<br>订单创建时间：' + JSON.parse(res.payload).hotelOrder.createAt +
+            forItem +
+            '<br>离开时间：' + JSON.parse(res.payload).hotelOrder.departure_date +
+            '<br>订单价格：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.order_amount +
+            '<br>酒店订单编号：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.no +
+            '<br>酒店订单状态：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.state_name +
+            '<br>酒店订单创建时间：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.created_at +
+            '<br>酒店所在城市：' + JSON.parse(res.payload).hotelOrder.hotel_city +
+            '<br>酒店编号：' + JSON.parse(res.payload).hotelOrder.hotel_id +
+            '<br>酒店名称：' + JSON.parse(res.payload).hotelOrder.hotel_name +
+            '<br>酒店评价：' + JSON.parse(res.payload).hotelOrder.hotel_score + '分' +
+            '<br>最晚到达时间：' + JSON.parse(res.payload).hotelOrder.latest_arrival_time +
+            '<br>房间类型：' + JSON.parse(res.payload).hotelOrder.order_room.bed_type +
+            '<br>房间容纳人数：' + JSON.parse(res.payload).hotelOrder.order_room.capacity + '人' +
+            '<br>房间小孩人数：' + JSON.parse(res.payload).hotelOrder.order_room.children + '人' +
+            '<br>房间是否有早餐：' + JSON.parse(res.payload).hotelOrder.order_room.meal +
+            '<br>房间规格：' + JSON.parse(res.payload).hotelOrder.order_room.rate_type_name +
+            '<br>房间占地面积：' + JSON.parse(res.payload).hotelOrder.order_room.roomArea +
+            '<br>房间特色：' + JSON.parse(res.payload).hotelOrder.order_room.room_type_name +
+            '<br>酒店所在区：' + JSON.parse(res.payload).hotelOrder.peripheral_information +
+            '<br>预订房间数量：' + JSON.parse(res.payload).hotelOrder.room_nums +
+            '<br>信息来源：' + JSON.parse(res.payload).hotelOrder.stars_level + '星级' +
+            '<br>酒店星级：' + JSON.parse(res.payload).hotelOrder.source +
+            '<br>用户边海鸥：' + JSON.parse(res.payload).hotelOrder.userId,
+            { nzDuration: 0 });
+        }
+        if (JSON.parse(res.payload).trainOrderReturn) {
+          externalDetail = JSON.parse(res.payload).trainOrderReturn;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).trainOrderReturn.service_order.tickets.length; i++) {
+            forItem = '\'<br>车票\'' + (i + 1) + '\'退款价：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].estimate_refund_price +
+            '\'<br>车票\'' + (i + 1) + '\'变更价格：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].estimate_refund_service_charge +
+            '\'<br>车票\'' + (i + 1) + '\'编号：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].id +
+            '\'<br>车票\'' + (i + 1) + '\'价格：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].price +
+            '\'<br>车票\'' + (i + 1) + '\'退款费用：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].refund_price +
+            '\'<br>车票\'' + (i + 1) + '\'退款服务费：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].refund_service_charge +
+            '\'<br>车票\'' + (i + 1) + '\'状态：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].state_name +
+            '\'<br>乘客\'' + (i + 1) + '\'生日：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.birthday +
+            '\'<br>乘客\'' + (i + 1) + '\'编号：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.id_no +
+            '\'<br>乘客\'' + (i + 1) + '\'身份证：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.id_type_name +
+            '\'<br>乘客\'' + (i + 1) + '\'姓名：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.name +
+            '\'<br>乘客\'' + (i + 1) + '\'类型：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.passenger_type_name +
+            '\'<br>乘客\'' + (i + 1) + '\'是否退款：\'' +
+             this.getRefund(JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.refund) +
+            '\'<br>乘客\'' + (i + 1) + '\'性别：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.sex_name;
+          }
+          this.notification.blank('供应商订单详情',
+            '订单创建时间：' + JSON.parse(res.payload).trainOrderReturn.created_at +
+            '<br>订单编号：' + this.getAllowed(JSON.parse(res.payload).trainOrderReturn.no) +
+            '<br>到达时间：' + JSON.parse(res.payload).trainOrderReturn.service_order.arrival_at +
+            '<br>到达城市：' + JSON.parse(res.payload).trainOrderReturn.service_order.arrival_city_name +
+            '<br>变更差价：' + JSON.parse(res.payload).trainOrderReturn.service_order.change_price_diff +
+            '<br>变更服务价格：' + JSON.parse(res.payload).trainOrderReturn.service_order.change_service_charge +
+            '<br>联系人电话：' + JSON.parse(res.payload).trainOrderReturn.service_order.contact_mobile +
+            '<br>联系人姓名：' + JSON.parse(res.payload).trainOrderReturn.service_order.contacts +
+            '<br>出发时间：' + JSON.parse(res.payload).trainOrderReturn.service_order.departure_at +
+            '<br>出发城市：' + JSON.parse(res.payload).trainOrderReturn.service_order.departure_city_name +
+            '<br>出发站台：' + JSON.parse(res.payload).trainOrderReturn.service_order.from_station +
+            '<br>到达站台：' + JSON.parse(res.payload).trainOrderReturn.service_order.to_station +
+            '<br>火车编号：' + JSON.parse(res.payload).trainOrderReturn.service_order.train_no +
+            forItem +
+            '<br>订单情况：' + JSON.parse(res.payload).trainOrderReturn.state_name,
+            { nzDuration: 0 });
+        }
+        console.log(externalDetail);
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+    this.isExternalDetailVisible = true;
+  }
+
+  getRefund(refund): string {
+    return refund = true ? '是' : '否' ;
+  }
+
+  getAllowed(allowed): string {
+    return allowed = true ? '可以取消' : '不可取消' ;
+  }
+
+  getSex(sex): string {
+    return sex = 1 ? '男' : '女' ;
+  }
+
+/*
+  getStatusName(name): string {
+    console.log(name);
+    let status = '';
+    switch (name) {
+      case 0:
+        status = '待支付';
+        break;
+      case 1:
+        status = '出票中';
+        break;
+      case 2:
+        status = '待出行';
+        break;
+      case 3:
+        status = '已出行';
+        break;
+      case 4:
+        status = '出票失败';
+        break;
+      case 5:
+        status = '退款中';
+        break;
+      case 6:
+        status = '已退款';
+        break;
+      case 7:
+        status = '已取消';
+        break;
+      case 8:
+        status = '交易关闭';
+        break;
+      case 9:
+        status = '改签中';
+        break;
+      case 10:
+        status = '占座中';
+        break;
+      case 11:
+        status = '取消中';
+        break;
+      case 12:
+        status = '退票中';
+        break;
+      default:
+        break;
+    }
+    console.log(status);
+    return status;
+  }
+ */
+
   hideBookingDetail(): void {
     this.isBookingDetailVisible = false;
   }
@@ -135,7 +345,17 @@ export class BookingComponent implements OnInit {
   /* 展示修改弹框 */
   doModify(): void {
     this.bookingService.updateBookingInfo(this.modifyForm.controls['updateType'].value, this.orderId).subscribe(res => {
-      console.log(res);
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '修改成功',
+          nzContent: res.message
+        });
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
     });
   }
 

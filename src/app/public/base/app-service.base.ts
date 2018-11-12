@@ -16,9 +16,7 @@ export abstract class AppServiceBase {
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',
-      // 'Content-Type': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      // 'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
     })
   };
 
