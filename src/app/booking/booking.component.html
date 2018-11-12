@@ -33,7 +33,7 @@
               </div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="type">
-                  <nz-option [nzLabel]="'-无-'" [nzValue]="''"></nz-option>
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
                   <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
                   <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
                   <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
@@ -59,13 +59,12 @@
 
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="doSearch($event, searchForm)"><i class="anticon anticon-search"></i>查询</button>
+                <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
           </form>
 
-          <nz-table #rowSelectionTable [nzData]="data.orders" (nzCurrentPageDataChange)="currentPageDataChange($event)"
-            (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()" [nzSimple]="true">
+          <nz-table #rowSelectionTable [nzData]="data.orders" [nzSimple]="true" [nzShowPagination]="false">
             <thead>
               <tr>
                 <th>序号</th>
@@ -81,7 +80,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td>{{i+1}}{{data.total}}</td>
+                <td>{{i+1}}</td>
                 <td *ngIf="data.state === 0">待支付</td>
                 <td *ngIf="data.state === 1">出票中</td>
                 <td *ngIf="data.state === 2">待出行</td>
@@ -111,6 +110,14 @@
               </tr>
             </tbody>
           </nz-table>
+          <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="18"></div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== 1"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === 1"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== allSize"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === allSize"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div>
         </nz-tab>
 
         <!-- 弹框 —— 信息 —— 订单详情 -->

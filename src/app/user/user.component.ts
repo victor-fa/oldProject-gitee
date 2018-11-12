@@ -18,7 +18,6 @@ export class UserComponent implements OnInit {
 
   data: IUserInfoItemOutput[];
   displayData = [];
-  allChecked = false;
   indeterminate = false;
   phoneNum = '';
   searchForm: FormGroup;  // 查询表单
@@ -27,6 +26,13 @@ export class UserComponent implements OnInit {
   sendMsgItem = new SendMsgInput();
   infoId = '';
   sendScreenHeight = '';
+  lastId = 0;
+  nextId = 0;
+  total = 0;
+  allSize = 0;
+  changePage = 1;
+  doLast = false;
+  doNext = false;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -49,14 +55,45 @@ export class UserComponent implements OnInit {
    * 查询全部
    */
   private loadData(): void {
-    this.userService.getUserInfoList(0).subscribe(res => {
+    let lastId = 0;
+    if (this.doLast) {
+      lastId = this.lastId;
+    }
+    if (this.doNext) {
+      lastId = this.nextId;
+    }
+    this.userService.getUserInfoList(this.lastId).subscribe(res => {
       if (res.status === 200) {
         this.data = JSON.parse(res.payload).users;
+        this.total = JSON.parse(res.payload).total;
+        this.allSize = JSON.parse(res.payload).allSize;
+        this.nextId = this.data[0].userId;  // 最前面的userId
+        this.lastId = this.data[this.data.length - 1].userId;  // 最前面的userId
         this.data.forEach(item => {
           item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
         });
       }
     });
+    this.doLast = false;
+    this.doNext = false;
+  }
+
+  /**
+   * 上一页
+   */
+  lastPage(): void {
+    this.changePage -= 1;
+    this.doSearch();
+    this.doLast = true;
+  }
+
+  /**
+   * 下一页
+   */
+  nextPage(): void {
+    this.changePage += 1;
+    this.doSearch();
+    this.doNext = true;
   }
 
   /**
@@ -81,8 +118,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  doSearch(e) {
-    e.preventDefault();
+  doSearch() {
     this.searchItem.userName = this.searchForm.controls['userName'].value;
     this.searchItem.phoneNum = this.searchForm.controls['phoneNum'].value;
     if (this.searchItem.userName === '' && this.searchItem.phoneNum === '') {
@@ -171,18 +207,4 @@ export class UserComponent implements OnInit {
       phoneNum: [''],
     });
   }
-
-  // 主面板分页表单
-  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
-    this.displayData = $event;
-    this.refreshStatus();
-  }
-
-  refreshStatus(): void {
-    const allChecked = this.displayData.filter(value => !value.disabled).every(value => value.checked === true);
-    const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
 }

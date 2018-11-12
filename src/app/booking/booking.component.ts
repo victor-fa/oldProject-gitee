@@ -34,8 +34,13 @@ export class BookingComponent implements OnInit {
   isFlightOrder = false;
   isHotelOrder = false;
   isTrainOrder = false;
+  lastId = 0;
+  nextId = 0;
   total = 0;
-  pageIndex = 1;
+  allSize = 0;
+  changePage = 1;
+  doLast = false;
+  doNext = false;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -57,11 +62,22 @@ export class BookingComponent implements OnInit {
 
   /* 加载信息 */
   private loadData(): void {
+    let lastId = 0;
+    if (this.doLast) {
+      lastId = this.lastId;
+    }
+    if (this.doNext) {
+      lastId = this.nextId;
+    }
     this.bookingService.getBookingList().subscribe(res => {
       this.data = JSON.parse(res.payload);
       this.total = JSON.parse(res.payload).total;
-      console.log(this.total);
+      this.allSize = JSON.parse(res.payload).allSize;
+      this.nextId = this.data[0].userId;  // 最前面的userId
+      this.lastId = this.data[this.data.length - 1].userId;  // 最前面的userId
     });
+    this.doLast = false;
+    this.doNext = false;
   }
 
   /* 加载信息 */
@@ -71,8 +87,25 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  doSearch(e) {
-    e.preventDefault();
+  /**
+   * 上一页
+   */
+  lastPage(): void {
+    this.changePage -= 1;
+    this.doSearch();
+    this.doLast = true;
+  }
+
+  /**
+   * 下一页
+   */
+  nextPage(): void {
+    this.changePage += 1;
+    this.doSearch();
+    this.doNext = true;
+  }
+
+  doSearch() {
     this.searchItem.date = this.datePipe.transform(this.searchForm.controls['date'].value, 'yyyy-MM-dd');
     this.searchItem.type = this.searchForm.controls['type'].value;
     this.searchItem.status = this.searchForm.controls['status'].value;

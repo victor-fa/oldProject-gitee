@@ -27,13 +27,12 @@
               </div>
 
               <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="doSearch($event)"><i class="anticon anticon-search"></i>查询</button>
+                <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
           </form>
 
-          <nz-table #rowSelectionTable [nzData]="data" (nzCurrentPageDataChange)="currentPageDataChange($event)"
-            (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+          <nz-table #rowSelectionTable [nzData]="data" [nzSimple]="true" [nzShowPagination]="false">
             <thead>
               <tr>
                 <th>序号</th>
@@ -60,11 +59,20 @@
                 <td>{{data.updateTime | date:'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{data.userPhone}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
+                  <button nz-button nzType="primary" *ngIf="data.locked !== '已拉黑'" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
+                  <button nz-button nzType="primary" *ngIf="data.locked === '已拉黑'" disabled style="margin-right: 10px;">拉黑</button>
                 </td>
               </tr>
             </tbody>
           </nz-table>
+          <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="18"></div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== 1"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === 1"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== allSize"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === allSize"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div>
         </nz-tab>
 
 
