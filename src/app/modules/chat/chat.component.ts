@@ -50,7 +50,7 @@ export class ChatComponent implements OnInit {
         const that = this
 
         $('.chat-input').keydown(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 const question = $('.chat-input').val();
                 $('.chat-input').val('');
 
@@ -65,6 +65,13 @@ export class ChatComponent implements OnInit {
         this.changeHeight(this.viewHeight);
 
         this.send_hello()
+    }
+
+    submitMsg(): void {
+        console.log('123');
+        const question = $('.chat-input').val();
+        $('.chat-input').val('');
+        this.ask_question(question)
     }
 
     changeHeight(viewHeight): void {
