@@ -33,7 +33,6 @@ export class SendMsgInput {
   phoneNum: string;
 }
 
-
 /** 登录账号 */
 export interface ILoginItemInput {
   userName: string;
@@ -43,41 +42,4 @@ export interface ILoginItemInput {
 export class LoginItemInput implements ILoginItemInput {
   userName: string;
   password: string;
-}
-
-/** 登录账号输出 */
-export interface ILoginItemOutput {
-  sessionId: string;
-  user: ILoginUser;
-  token: string;
-}
-
-export class LoginItemOutput implements ILoginItemOutput {
-  sessionId: string;
-  user: ILoginUser;
-  token: string;
-}
-
-export interface ILoginUser {
-  created: string;
-  department: string;
-  nick: string;
-  perms: string[];
-  pwdPlaintext: string;
-  roles: string[];
-  root: boolean;
-  uid: string;
-  userName: string;
-}
-
-export class LoginUser implements ILoginUser {
-  created: string;
-  department: string;
-  nick: string;
-  perms: string[];
-  pwdPlaintext: string;
-  roles: string[];
-  root: boolean;
-  uid: string;
-  userName: string;
 }

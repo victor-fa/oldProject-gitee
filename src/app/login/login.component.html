@@ -28,8 +28,10 @@
           <div nz-col nzSpan="20">
             <label nz-form-item>
               <div nz-form-control nzHasFeedback>
-                <input nz-input formControlName="userName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="登录账号" nzSize="default">
-                <div nz-form-explain style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('mobile')" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">请输入注册时的手机号！</div>
+                <input nz-input formControlName="userName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="手机号" nzSize="default">
+                <div nz-form-explain maxlength="11" style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('mobile')"
+                  (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">不符合手机格式要求！</div>
+                <div nz-form-explain maxlength="16" style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').value === ''">请输入手机号！</div>
               </div>
             </label>
           </div>
@@ -42,8 +44,8 @@
           <div nz-col nzSpan="20">
             <label nz-form-item>
               <div nz-form-control nzHasFeedback>
-                <input nz-input formControlName="password" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="请输入登录密码" type="password" nzSize="default" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">
-                <div nz-form-explain style="color: red" *ngIf="getFormControl('password').dirty&&getFormControl('password').value === ''">请输入密码！</div>
+                <input nz-input formControlName="password" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="登录密码" type="password" nzSize="default" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">
+                <div nz-form-explain maxlength="16" style="color: red" *ngIf="getFormControl('password').dirty&&getFormControl('password').value === ''">请输入密码！</div>
               </div>
             </label>
           </div>
@@ -51,6 +53,7 @@
           </div>
         </div>
       </form>
+      <div id="resultInfo" style="display: none;"></div>
       <div nz-row class="cell_panel">
         <div nz-col nzSpan="2">
         </div>

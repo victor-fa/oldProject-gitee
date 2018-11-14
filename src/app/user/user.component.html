@@ -36,7 +36,7 @@
             <thead>
               <tr>
                 <th>序号</th>
-                <th>用户名</th>
+                <th>昵称</th>
                 <th>用户ID</th>
                 <th>是否拉黑</th>
                 <th>在系统状态</th><!-- 1.正常 = 成功登录过齐悟前端产品 2.未激活 = 请求了验证码，但是没有登录成功过 3.黑名单 = 被拉入了黑名单 -->
@@ -61,6 +61,7 @@
                 <td>
                   <button nz-button nzType="primary" *ngIf="data.locked !== '已拉黑'" (click)="showBlacklistModal(data)" style="margin-right: 10px;">拉黑</button>
                   <button nz-button nzType="primary" *ngIf="data.locked === '已拉黑'" disabled style="margin-right: 10px;">拉黑</button>
+                  <button nz-button nzType="primary" (click)="showUserInfo(data)" style="margin-right: 10px;">查看详情</button>
                 </td>
               </tr>
             </tbody>

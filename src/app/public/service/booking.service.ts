@@ -18,15 +18,27 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有订单列表 */
-  getBookingList(sortType?, sortKey?): Observable<IResponse<any>> {
+  getBookingList(flag, id, sortType?, sortKey?): Observable<IResponse<any>> {
     let url;
-    if (!sortType) {
-      url = this.fullUrl(bookingApiUrls.orderList) + '?pageSize=10';
-    } else {
-      url = this.fullUrl(bookingApiUrls.orderList) + '?pageSize=10' + '&sortType=' + sortType + '&sortKey=' + sortKey;
+    if (flag === '') {
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey);
+    } else if (flag === 'last') {
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey) + '&lastId=' + id;
+    } else if (flag === 'first') {
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey) + '&firstId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
+  }
+
+  getBiikingListUrl(sortType, sortKey): string {
+    let url = '';
+    if (!sortType) {
+      url = '?pageSize=10';
+    } else {
+      url = '?pageSize=10' + '&sortType=' + sortType + '&sortKey=' + sortKey;
+    }
+    return url;
   }
 
   /** 获取订单详情 */

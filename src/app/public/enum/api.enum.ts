@@ -5,9 +5,11 @@
 /** 用户模块 */
 export enum userApiUrls {
   /** 获取全部账号 */
-  users = '/user/userInfo',
+  users = '/user/info',
+  /** 获取账号详情 */
+  userContact = '/user/contact/list',
   /** 登录账号 */
-  login = '/users/login',
+  login = '/token ',
   /** 获取加密用的盐 */
   publicSalt = '/users/publicSalt',
   /** 发送伪验证码 */

@@ -16,26 +16,26 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-        const token = this._cookiesService.getToken();
-        const authToken = token ? token : '';
-        const authReq = req.clone({
-            headers: req.headers.set('Authorization', authToken)
-        });
+      const token = this._cookiesService.getToken();
+      const authToken = token ? token : '';
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', authToken)
+      });
 
-        return next.handle(authReq).do(
-            event => { },
-            (res: HttpErrorResponse) => {
-                if (res.status && res.status === 403) {
-                    // 没有Token/Token过期，用户未登录情况，do this...
-                    this.modalService.confirm({
-                      nzTitle: '提示',
-                      nzContent: '用户未登录'
-                    });
-                    this._cookiesService.clearToken();
-                    this.router.navigate(['/auth/login']);
-                    return;
-                }
-            }
-        );
+      return next.handle(authReq).do(
+        event => { },
+        (res: HttpErrorResponse) => {
+          if (res.status && res.status === 403) {
+            // 没有Token/Token过期，用户未登录情况，do this...
+            this.modalService.confirm({
+              nzTitle: '提示',
+              nzContent: '用户未登录'
+            });
+            this._cookiesService.clearToken();
+            this.router.navigateByUrl('booking');
+            return;
+          }
+        }
+      );
     }
 }

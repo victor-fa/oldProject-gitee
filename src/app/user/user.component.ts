@@ -3,7 +3,7 @@ import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CommonService } from '../public/service/common.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { LocalizationService } from '../public/service/localization.service';
 import { UserService } from '../public/service/user.service';
 import { IUserInfoItemOutput, UserSearchInput, SendMsgInput } from '../public/model/user.model';
@@ -27,12 +27,12 @@ export class UserComponent implements OnInit {
   infoId = '';
   sendScreenHeight = '';
   lastId = 0;
-  nextId = 0;
+  firstId = 0;
   total = 0;
   allSize = 0;
   changePage = 1;
   doLast = false;
-  doNext = false;
+  doFirst = false;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -40,6 +40,7 @@ export class UserComponent implements OnInit {
     private modalService: NzModalService,
     private localizationService: LocalizationService,
     private userService: UserService,
+    private notification: NzNotificationService,
   ) {
     this.commonService.nav[1].active = true;
     this._initSearchForm();
@@ -55,45 +56,37 @@ export class UserComponent implements OnInit {
    * 查询全部
    */
   private loadData(): void {
-    let lastId = 0;
+    let id = 0;
+    let flag = '';
     if (this.doLast) {
-      lastId = this.lastId;
+      id = this.lastId;
+      flag = 'last';
     }
-    if (this.doNext) {
-      lastId = this.nextId;
+    if (this.doFirst) {
+      id = this.firstId;
+      flag = 'first';
     }
-    this.userService.getUserInfoList(this.lastId).subscribe(res => {
-      if (res.status === 200) {
-        this.data = JSON.parse(res.payload).users;
-        this.total = JSON.parse(res.payload).total;
-        this.allSize = JSON.parse(res.payload).allSize;
-        this.nextId = this.data[0].userId;  // 最前面的userId
-        this.lastId = this.data[this.data.length - 1].userId;  // 最前面的userId
-        this.data.forEach(item => {
-          item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
+    this.userService.getUserInfoList(flag, id).subscribe(res => {
+      if (res.payload !== '') {
+        if (res.status === 200) {
+          this.data = JSON.parse(res.payload).users;
+          this.total = JSON.parse(res.payload).total;
+          this.allSize = JSON.parse(res.payload).allSize;
+          this.firstId = JSON.parse(res.payload).users[0].userId;  // 最前面的userId
+          this.lastId = JSON.parse(res.payload).users[JSON.parse(res.payload).users.length - 1].userId;  // 最后面的userId
+          this.data.forEach(item => {
+            item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
+          });
+        }
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
         });
       }
     });
     this.doLast = false;
-    this.doNext = false;
-  }
-
-  /**
-   * 上一页
-   */
-  lastPage(): void {
-    this.changePage -= 1;
-    this.doSearch();
-    this.doLast = true;
-  }
-
-  /**
-   * 下一页
-   */
-  nextPage(): void {
-    this.changePage += 1;
-    this.doSearch();
-    this.doNext = true;
+    this.doFirst = false;
   }
 
   /**
@@ -102,7 +95,17 @@ export class UserComponent implements OnInit {
    * @param userName
    */
   private loadDataByUserName(type, userName): void {
-    this.userService.getUserInfoListByType(type, userName).subscribe(res => {
+    let id = 0;
+    let flag = '';
+    if (this.doLast) {
+      id = this.lastId;
+      flag = 'last';
+    }
+    if (this.doFirst) {
+      id = this.firstId;
+      flag = 'first';
+    }
+    this.userService.getUserInfoListByType(flag, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = [];
@@ -116,6 +119,65 @@ export class UserComponent implements OnInit {
         });
       }
     });
+    this.doLast = false;
+    this.doFirst = false;
+  }
+
+  /**
+   * 上一页
+   */
+  lastPage(): void {
+    this.changePage -= 1;
+    this.doFirst = true;
+    this.doSearch();
+  }
+
+  /**
+   * 下一页
+   */
+  nextPage(): void {
+    this.changePage += 1;
+    this.doLast = true;
+    this.doSearch();
+  }
+
+  showUserInfo(data): void {
+    this.userService.getUserInfo(data.userId).subscribe(res => {
+      if (res.retcode === 0) {
+        if (res.payload !== '') {
+          let forItem = '';
+          if (JSON.parse(res.payload).length > 0) {
+            for (let i = 0; i < JSON.parse(res.payload).length; i++) {
+              forItem += '<br>联系人' +
+              (i + 1) + '姓名：' + JSON.parse(res.payload)[i].CName +
+              '<br>联系人' + (i + 1) + '证件号：' + JSON.parse(res.payload)[i].IDNumber +
+              '<br>联系人' + (i + 1) + '生日：' + JSON.parse(res.payload)[i].birthday +
+              '<br>联系人' + (i + 1) + '电话：' + JSON.parse(res.payload)[i].contactPhone +
+              '<br>联系人' + (i + 1) + '属性：' + JSON.parse(res.payload)[i].ageType +
+              '<br>联系人' + (i + 1) + '性别：' + this.getSex(JSON.parse(res.payload)[i].sex) + '<br>';
+            }
+            this.modalService.info({
+              nzTitle: '常用联系人',
+              nzContent: forItem
+            });
+          } else {
+            this.modalService.info({
+              nzTitle: '提示',
+              nzContent: '当前用户无常用联系人'
+            });
+          }
+        }
+      } else {
+        this.modalService.info({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+  }
+
+  getSex(sex): string {
+    return sex = 0 ? '男' : '女' ;
   }
 
   doSearch() {

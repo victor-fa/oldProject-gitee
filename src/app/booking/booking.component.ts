@@ -35,12 +35,12 @@ export class BookingComponent implements OnInit {
   isHotelOrder = false;
   isTrainOrder = false;
   lastId = 0;
-  nextId = 0;
+  firstId = 0;
   total = 0;
   allSize = 0;
   changePage = 1;
   doLast = false;
-  doNext = false;
+  doFirst = false;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
@@ -60,31 +60,66 @@ export class BookingComponent implements OnInit {
     this.loadData();
   }
 
-  /* 加载信息 */
+  /**
+   * 查询全部
+   */
   private loadData(): void {
-    let lastId = 0;
+    let id = 0;
+    let flag = '';
     if (this.doLast) {
-      lastId = this.lastId;
+      id = this.lastId;
+      flag = 'last';
     }
-    if (this.doNext) {
-      lastId = this.nextId;
+    if (this.doFirst) {
+      id = this.firstId;
+      flag = 'first';
     }
-    this.bookingService.getBookingList().subscribe(res => {
-      this.data = JSON.parse(res.payload);
-      this.total = JSON.parse(res.payload).total;
-      this.allSize = JSON.parse(res.payload).allSize;
-      this.nextId = this.data[0].userId;  // 最前面的userId
-      this.lastId = this.data[this.data.length - 1].userId;  // 最前面的userId
+    this.bookingService.getBookingList(flag, id).subscribe(res => {
+      if (res.retcode === 0) {
+        if (res.payload !== '') {
+          this.data = JSON.parse(res.payload);
+          this.total = JSON.parse(res.payload).total;
+          this.allSize = JSON.parse(res.payload).allSize;
+          this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+          this.lastId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+        }
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
     });
     this.doLast = false;
-    this.doNext = false;
+    this.doFirst = false;
   }
 
   /* 加载信息 */
   private loadDataByKey(sortType, sortKey): void {
-    this.bookingService.getBookingList(sortType, sortKey).subscribe(res => {
-      this.data = JSON.parse(res.payload);
+    let id = 0;
+    let flag = '';
+    if (this.doLast) {
+      id = this.lastId;
+      flag = 'last';
+    }
+    if (this.doFirst) {
+      id = this.firstId;
+      flag = 'first';
+    }
+    this.bookingService.getBookingList(flag, id, sortType, sortKey).subscribe(res => {
+      if (res.retcode === 0) {
+        if (res.payload !== '') {
+          this.data = JSON.parse(res.payload);
+        }
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
     });
+    this.doLast = false;
+    this.doFirst = false;
   }
 
   /**
@@ -92,8 +127,8 @@ export class BookingComponent implements OnInit {
    */
   lastPage(): void {
     this.changePage -= 1;
+    this.doFirst = true;
     this.doSearch();
-    this.doLast = true;
   }
 
   /**
@@ -101,8 +136,8 @@ export class BookingComponent implements OnInit {
    */
   nextPage(): void {
     this.changePage += 1;
+    this.doLast = true;
     this.doSearch();
-    this.doNext = true;
   }
 
   doSearch() {
