@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { LocalizationService } from './localization.service';
 
 @Injectable({
   providedIn: 'root'  // 必须添加，放在根部分
@@ -26,7 +25,6 @@ export class CommonService {
 
   constructor(
     private _httpClient: HttpClient,
-    public localizationService: LocalizationService,
   ) { }
 
   append(str: any) {

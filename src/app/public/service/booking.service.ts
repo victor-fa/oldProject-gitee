@@ -18,25 +18,25 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有订单列表 */
-  getBookingList(flag, id, sortType?, sortKey?): Observable<IResponse<any>> {
+  getBookingList(pageSize, flag, id, sortType?, sortKey?): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey);
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey);
     } else if (flag === 'last') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey) + '&lastId=' + id;
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey) + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBiikingListUrl(sortType, sortKey) + '&firstId=' + id;
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey) + '&firstId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
-  getBiikingListUrl(sortType, sortKey): string {
+  getBookingListUrl(pageSize, sortType, sortKey): string {
     let url = '';
     if (!sortType) {
-      url = '?pageSize=10';
+      url = '?pageSize=' + pageSize;
     } else {
-      url = '?pageSize=10' + '&sortType=' + sortType + '&sortKey=' + sortKey;
+      url = '?pageSize=' + pageSize + '&sortType=' + sortType + '&sortKey=' + sortKey;
     }
     return url;
   }

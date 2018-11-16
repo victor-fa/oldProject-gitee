@@ -10,16 +10,15 @@
       <nz-dropdown [nzPlacement]="'bottomRight'">
         <a nz-dropdown>
           <img src="/assets/images/person_logo.png" class="person_logo" alt="">
-          <strong *ngIf="userName">{{userName}}</strong>
+          <strong>管理员</strong>
         </a>
         <ul nz-menu>
           <li nz-menu-item (click)="cancellation()">
-            <a>注销</a>
+            <a>注销/退出</a>
           </li>
         </ul>
       </nz-dropdown>
     </li>
-    <li nz-menu-item class="right_panle"><i class="anticon anticon-question-circle-o"></i></li>
   </ul>
 </div>
 

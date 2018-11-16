@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonService } from './common.service';
-import { CookiesService } from './cookies.service';
-import { AppSessionService } from './app.session.service';
 import { AppRouteGuard } from '../auth/auth.router.guard';
 import { UserService } from './user.service';
 
@@ -12,8 +10,6 @@ export class ServicesModule {
       ngModule: ServicesModule,
       providers: [
         CommonService,
-        CookiesService,
-        AppSessionService,
         AppRouteGuard,
         UserService,
       ]

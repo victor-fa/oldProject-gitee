@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { CookiesService } from '../service/cookies.service';
 import { AppSessionService } from '../service/app.session.service';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class AppRouteGuard implements CanActivate, CanActivateChild {
   constructor(
     private _router: Router,
     private _sessionService: AppSessionService,
-    private _cookiesService: CookiesService,
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

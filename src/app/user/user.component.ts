@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { registerLocaleData, DatePipe } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd';
+import { IUserInfoItemOutput, SendMsgInput, UserSearchInput } from '../public/model/user.model';
 import { CommonService } from '../public/service/common.service';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { LocalizationService } from '../public/service/localization.service';
 import { UserService } from '../public/service/user.service';
-import { IUserInfoItemOutput, UserSearchInput, SendMsgInput } from '../public/model/user.model';
 registerLocaleData(zh);
 
 @Component({
@@ -33,14 +32,12 @@ export class UserComponent implements OnInit {
   changePage = 1;
   doLast = false;
   doFirst = false;
+  pageSize = 10;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
-    private datePipe: DatePipe,
     private modalService: NzModalService,
-    private localizationService: LocalizationService,
     private userService: UserService,
-    private notification: NzNotificationService,
   ) {
     this.commonService.nav[1].active = true;
     this._initSearchForm();
@@ -66,7 +63,7 @@ export class UserComponent implements OnInit {
       id = this.firstId;
       flag = 'first';
     }
-    this.userService.getUserInfoList(flag, id).subscribe(res => {
+    this.userService.getUserInfoList(this.pageSize, flag, id).subscribe(res => {
       if (res.payload !== '') {
         if (res.status === 200) {
           this.data = JSON.parse(res.payload).users;
@@ -105,7 +102,7 @@ export class UserComponent implements OnInit {
       id = this.firstId;
       flag = 'first';
     }
-    this.userService.getUserInfoListByType(flag, id, type, userName).subscribe(res => {
+    this.userService.getUserInfoListByType(this.pageSize, flag, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = [];
@@ -151,9 +148,9 @@ export class UserComponent implements OnInit {
               forItem += '<br>联系人' +
               (i + 1) + '姓名：' + JSON.parse(res.payload)[i].CName +
               '<br>联系人' + (i + 1) + '证件号：' + JSON.parse(res.payload)[i].IDNumber +
-              '<br>联系人' + (i + 1) + '生日：' + JSON.parse(res.payload)[i].birthday +
+              '<br>联系人' + (i + 1) + '生日年月日：' + JSON.parse(res.payload)[i].birthday +
               '<br>联系人' + (i + 1) + '电话：' + JSON.parse(res.payload)[i].contactPhone +
-              '<br>联系人' + (i + 1) + '属性：' + JSON.parse(res.payload)[i].ageType +
+              '<br>联系人' + (i + 1) + '年龄段：' + this.getAgeType(JSON.parse(res.payload)[i].ageType) +
               '<br>联系人' + (i + 1) + '性别：' + this.getSex(JSON.parse(res.payload)[i].sex) + '<br>';
             }
             this.modalService.info({
@@ -176,8 +173,12 @@ export class UserComponent implements OnInit {
     });
   }
 
+  getAgeType(ageType): string {
+    return ageType === 0 ? '成人' : ageType === 1 ? '儿童' : ageType === 2 ? '婴儿' : '其他';
+  }
+
   getSex(sex): string {
-    return sex = 0 ? '男' : '女' ;
+    return sex === 0 ? '男' : '女' ;
   }
 
   doSearch() {

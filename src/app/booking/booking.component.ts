@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { registerLocaleData, DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CommonService } from '../public/service/common.service';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { LocalizationService } from '../public/service/localization.service';
-import { UserService } from '../public/service/user.service';
-import { BookingService } from '../public/service/booking.service';
 import { ModifyBookingInput, SearchBookingInput } from '../public/model/booking.model';
+import { BookingService } from '../public/service/booking.service';
+import { CommonService } from '../public/service/common.service';
 registerLocaleData(zh);
 
 @Component({
@@ -41,13 +39,12 @@ export class BookingComponent implements OnInit {
   changePage = 1;
   doLast = false;
   doFirst = false;
+  pageSize = 10;
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
     private datePipe: DatePipe,
     private modalService: NzModalService,
-    private localizationService: LocalizationService,
-    private userService: UserService,
     private bookingService: BookingService,
     private notification: NzNotificationService,
   ) {
@@ -74,7 +71,7 @@ export class BookingComponent implements OnInit {
       id = this.firstId;
       flag = 'first';
     }
-    this.bookingService.getBookingList(flag, id).subscribe(res => {
+    this.bookingService.getBookingList(this.pageSize, flag, id).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = JSON.parse(res.payload);
@@ -106,10 +103,14 @@ export class BookingComponent implements OnInit {
       id = this.firstId;
       flag = 'first';
     }
-    this.bookingService.getBookingList(flag, id, sortType, sortKey).subscribe(res => {
+    this.bookingService.getBookingList(this.pageSize, flag, id, sortType, sortKey).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = JSON.parse(res.payload);
+          this.total = JSON.parse(res.payload).total;
+          this.allSize = JSON.parse(res.payload).allSize;
+          this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+          this.lastId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
         }
       } else {
         this.modalService.confirm({

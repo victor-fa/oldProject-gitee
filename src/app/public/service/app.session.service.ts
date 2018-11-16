@@ -3,7 +3,6 @@ import { CookiesService } from './cookies.service';
 declare const $: any;
 @Injectable()
 export class AppSessionService {
-    // public static userInfo: User = new User();
     constructor(
         private _cookiesService: CookiesService,
     ) {

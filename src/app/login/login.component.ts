@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { LoginItemInput } from '../public/model/user.model';
-import { LocalizationService } from '../public/service/localization.service';
-import { UserService } from '../public/service/user.service';
-import { CommonService } from '../public/service/common.service';
 import { NzModalService } from 'ng-zorro-antd';
+import { LoginItemInput } from '../public/model/user.model';
+import { CommonService } from '../public/service/common.service';
+import { UserService } from '../public/service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    public localizationService: LocalizationService,
     private commonService: CommonService,
     private modalService: NzModalService,
   ) {

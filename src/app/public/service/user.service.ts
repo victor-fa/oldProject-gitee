@@ -29,14 +29,14 @@ export class UserService extends AppServiceBase {
    * @param flag
    * @param id
    */
-  getUserInfoList(flag, id): Observable<IResponse<any>> {
+  getUserInfoList(pageSize, flag, id): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2';
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize;
     } else if (flag === 'last') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2' + '&lastId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2' + '&firstId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&firstId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -49,14 +49,14 @@ export class UserService extends AppServiceBase {
    * @param type
    * @param infoId
    */
-  getUserInfoListByType(flag, id, type, infoId): Observable<IResponse<any>> {
+  getUserInfoListByType(pageSize, flag, id, type, infoId): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2type=' + type + '&infoId=' + infoId;
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId;
     } else if (flag === 'last') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2type=' + type + '&infoId=' + infoId + '&lastId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=2type=' + type + '&infoId=' + infoId + '&firstId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId + '&firstId=' + id;
     }
     // const url = this.fullUrl(userApiUrls.users) + '?type=' + type + '&infoId=' + infoId;
     return this.httpClient
@@ -79,6 +79,12 @@ export class UserService extends AppServiceBase {
   updateUserInfo(infoId): Observable<IResponse<any>> {
     const url = this.fullUrl(userApiUrls.users);
     const body = `infoId=${infoId}`;
+    this.setOption = {
+      headers: new HttpHeaders({
+        // 'Content-Type': 'multipart/form-data; charset=UTF-8',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      })
+    };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }

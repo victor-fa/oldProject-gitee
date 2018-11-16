@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { LocalizationService } from './localization.service';
+import { AppSessionService } from './app.session.service';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
-    public localizationService: LocalizationService,
+    private _sessionService: AppSessionService,
   ) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let canLogin: boolean;
-    // 判断用户是否登入
-    const isLogin = this.localizationService.getLocalization;
-    if (isLogin === 'isLogin') {
+    if (this._sessionService.isLogin) {
       canLogin = true;
     } else {
       canLogin = false;
