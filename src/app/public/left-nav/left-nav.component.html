@@ -24,8 +24,8 @@
 
 <!-- 左侧 -->
 <div class="left_nav">
-  <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="isCollapsed">
-    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''"
+  <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="commonService.isCollapsed">
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
       [ngClass]="{'active_panel': commonService.nav[0].active}">
       <a class="common-button" routerLink="/booking" routerLinkActive="active">
         <span title>
@@ -44,7 +44,7 @@
     </li>
     <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
       <span title>
-        <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="isCollapsed" [class.anticon-menu-fold]="!isCollapsed"></i>
+        <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="commonService.isCollapsed" [class.anticon-menu-fold]="!commonService.isCollapsed"></i>
       </span>
     </li>
   </ul>

@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class CommonService {
   list: string[] = [];
   isLeftNavClose = false;
+  isCollapsed = false;
   nav = [
     { active: false },
     { active: false },

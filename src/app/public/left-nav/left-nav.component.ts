@@ -9,7 +9,6 @@ import { CookiesService } from '../service/cookies.service';
 })
 export class LeftNavComponent implements OnInit {
 
-  isCollapsed = false;
   constructor(
     private commonService: CommonService,
     private _cookiesService: CookiesService,
@@ -19,7 +18,7 @@ export class LeftNavComponent implements OnInit {
   }
 
   toggleCollapsed(): void {
-    this.isCollapsed = !this.isCollapsed;
+    this.commonService.isCollapsed = !this.commonService.isCollapsed;
     this.commonService.isLeftNavClose = !this.commonService.isLeftNavClose;
   }
 
