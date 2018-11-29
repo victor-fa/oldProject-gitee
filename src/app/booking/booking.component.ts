@@ -17,12 +17,14 @@ export class BookingComponent implements OnInit {
 
   data = [];
   dataDetail = [];
+  dataOrder = {};
   displayData = [];
   allChecked = false;
   indeterminate = false;
   isBookingDetailVisible = false;
   isExternalDetailVisible = false;
   isModifyVisible = false;
+  isInvoiceVisible = false;
   orderId = '';
   orderStatus = '';
   searchForm: FormGroup;  // 查询表单
@@ -42,7 +44,7 @@ export class BookingComponent implements OnInit {
   pageSize = 10;
   constructor(
     private fb: FormBuilder,
-    private commonService: CommonService,
+    public commonService: CommonService,
     private datePipe: DatePipe,
     private modalService: NzModalService,
     private bookingService: BookingService,
@@ -75,6 +77,7 @@ export class BookingComponent implements OnInit {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = JSON.parse(res.payload);
+          this.dataOrder = JSON.parse(res.payload).orders;
           this.total = JSON.parse(res.payload).total;
           this.allSize = JSON.parse(res.payload).allSize;
           this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
@@ -107,6 +110,7 @@ export class BookingComponent implements OnInit {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = JSON.parse(res.payload);
+          this.dataOrder = JSON.parse(res.payload).orders;
           this.total = JSON.parse(res.payload).total;
           this.allSize = JSON.parse(res.payload).allSize;
           this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
@@ -212,6 +216,14 @@ export class BookingComponent implements OnInit {
       }
     });
     this.isBookingDetailVisible = true;
+  }
+
+  showInvoiceDetail(data): void {
+    this.isInvoiceVisible = true;
+  }
+
+  hideInvoiceDetail(): void {
+    this.isInvoiceVisible = false;
   }
 
   /* 展示供应商订单详情 */
@@ -354,58 +366,6 @@ export class BookingComponent implements OnInit {
   getSex(sex): string {
     return sex = 1 ? '男' : '女' ;
   }
-
-/*
-  getStatusName(name): string {
-    console.log(name);
-    let status = '';
-    switch (name) {
-      case 0:
-        status = '待支付';
-        break;
-      case 1:
-        status = '出票中';
-        break;
-      case 2:
-        status = '待出行';
-        break;
-      case 3:
-        status = '已出行';
-        break;
-      case 4:
-        status = '出票失败';
-        break;
-      case 5:
-        status = '退款中';
-        break;
-      case 6:
-        status = '已退款';
-        break;
-      case 7:
-        status = '已取消';
-        break;
-      case 8:
-        status = '交易关闭';
-        break;
-      case 9:
-        status = '改签中';
-        break;
-      case 10:
-        status = '占座中';
-        break;
-      case 11:
-        status = '取消中';
-        break;
-      case 12:
-        status = '退票中';
-        break;
-      default:
-        break;
-    }
-    console.log(status);
-    return status;
-  }
- */
 
   hideBookingDetail(): void {
     this.isBookingDetailVisible = false;

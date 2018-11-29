@@ -10,7 +10,7 @@ import { CookiesService } from '../service/cookies.service';
 export class LeftNavComponent implements OnInit {
 
   constructor(
-    private commonService: CommonService,
+    public commonService: CommonService,
     private _cookiesService: CookiesService,
   ) { }
 

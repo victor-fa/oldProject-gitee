@@ -12,7 +12,7 @@ export abstract class AppServiceBase {
   ) {
   }
 
-  protected baseUrl = environment.appconfig.remoteBaseUrl;
+  protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',

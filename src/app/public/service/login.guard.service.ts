@@ -16,6 +16,7 @@ export class LoginGuard implements CanActivate {
       canLogin = true;
     } else {
       canLogin = false;
+      alert('您还未登录，请先登录！');
       // 未登入跳转到登入界面
       this.router.navigateByUrl('/login');
     }

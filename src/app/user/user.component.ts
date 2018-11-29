@@ -35,7 +35,7 @@ export class UserComponent implements OnInit {
   pageSize = 10;
   constructor(
     private fb: FormBuilder,
-    private commonService: CommonService,
+    public commonService: CommonService,
     private modalService: NzModalService,
     private userService: UserService,
   ) {

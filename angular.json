@@ -24,12 +24,16 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets/images/404.png",
+              "src/assets/images/person_logo.png",
+              "src/assets/images/qiwu_logo.png"
             ],
             "styles": [
               "src/scss/index.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/scripts/flexible.js"
+            ]
           },
           "configurations": {
             "production": {

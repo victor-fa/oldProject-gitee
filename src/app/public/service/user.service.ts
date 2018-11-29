@@ -5,7 +5,7 @@ import { AppServiceBase } from '../base/app-service.base';
 import { userApiUrls } from '../enum/api.enum';
 import { LoginItemInput } from '../model/user.model';
 import { IResponse } from '../model/response.model';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CookiesService } from './cookies.service';
 import { Router } from '@angular/router';
 
@@ -20,6 +20,7 @@ export class UserService extends AppServiceBase {
     private modalService: NzModalService,
     private _cookiesService: CookiesService,
     private router: Router,
+    private notification: NzNotificationService,
   ) {
     super(injector);
   }
@@ -133,10 +134,15 @@ export class UserService extends AppServiceBase {
         this._cookiesService.setToken(tempString.payload);
         this.router.navigateByUrl('booking');
         // 登录成功
-        this.modalService.success({
-          nzTitle: '提示',
-          nzContent: '登录成功！'
-        });
+        this.notification.blank(
+          '提示',
+          '登录成功！',
+          {
+            nzStyle: {
+              color : 'green'
+            }
+          }
+        );
       } else {
         // 登录不成功，处理错误信息
         this.modalService.error({
