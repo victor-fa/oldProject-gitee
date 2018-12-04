@@ -9,6 +9,7 @@ import { LoginGuard } from './public/service/login.guard.service';
 import { AppComponent } from './app.component';
 import { AppSessionService } from './public/service/app.session.service';
 import { CookiesService } from './public/service/cookies.service';
+import { LocalizationService } from './public/service/localization.service';
 
 @NgModule({
    declarations: [
@@ -20,12 +21,13 @@ import { CookiesService } from './public/service/cookies.service';
       BrowserModule,
       CoreModule,
       RouterModule,
-      CommonModule
+      CommonModule,
    ],
    providers: [
       LoginGuard,
       AppSessionService,
       CookiesService,
+      LocalizationService,
    ],
    bootstrap: [
     AppComponent,

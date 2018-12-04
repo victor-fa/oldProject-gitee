@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ServicesModule } from './service/service.module';
 import { DirectiveModule } from './directive/directive.module';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { DirectiveModule } from './directive/directive.module';
     NgZorroAntdModule.forRoot(),
     ServicesModule.forRoot(),
     DirectiveModule,
+    QuillModule,
   ],
   declarations: [
     LeftNavComponent,
@@ -29,6 +31,7 @@ import { DirectiveModule } from './directive/directive.module';
     LeftNavComponent,
     ServicesModule,
     DirectiveModule,
+    QuillModule,
   ]
 })
 export class PublicModule { }

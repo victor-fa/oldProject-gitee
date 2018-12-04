@@ -42,6 +42,14 @@
         </span>
       </a>
     </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[2].active}">
+      <a class="common-button" routerLink="/content" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-file"></i>
+          <span>内容管理</span>
+        </span>
+      </a>
+    </li>
     <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
       <span title>
         <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="commonService.isCollapsed" [class.anticon-menu-fold]="!commonService.isCollapsed"></i>

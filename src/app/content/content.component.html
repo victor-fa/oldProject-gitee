@@ -1,0 +1,230 @@
+<app-left-nav></app-left-nav>
+<div class="content" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab nzTitle="内容发布">
+          <!-- <form [formGroup]="searchForm"> -->
+          <div nz-row class="search_panel">
+            <!-- <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单状态：
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                订票类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="type">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
+                </nz-select>
+              </div> -->
+
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showAddModal()"><i class="anticon anticon-edit"></i>新增内容</button>
+            </div>
+          </div>
+          <!-- </form> -->
+          <nz-table #basicTable [nzData]="dataSet">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>缩略图</th>
+                <th>标题</th>
+                <th>阅读量</th>
+                <th>发布人</th>
+                <th>状态</th>
+                <th>发布时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td><img src="{{data.image}}" class="thumbnail" alt=""></td>
+                <td>{{data.title}}</td>
+                <td>{{data.readTime}}</td>
+                <td>{{data.author}}</td>
+                <td>{{data.state}}</td>
+                <td>{{data.time | date:'yyyyMM-dd HH:mm:ss' }}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <!-- <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="16"></div>
+            <div nz-col nzSpan="2">
+              <nz-select [(ngModel)]="pageSize">
+                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
+                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
+                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
+                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div> -->
+        </nz-tab>
+
+        <!-- 弹框 —— 新增 —— 新增内容 -->
+        <nz-modal [(nzVisible)]="isAddVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addModalFooter" nzClosable="false">
+          <form [formGroup]="addForm">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入标题" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">*类型：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="12" formControlName="type" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入标题" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">URL：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入url" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">摘要：</div>
+              <div nz-col nzSpan="22">
+                <textarea rows="4" nz-input formControlName="abstract" maxlength="64" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入摘要" nzSize="default"></textarea>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+              <div nz-col nzSpan="22">
+                <quill-editor formControlName="content" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
+              <div nz-col nzSpan="22">
+                <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar"
+                  nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+                  <ng-container *ngIf="!avatarUrl">
+                    <i nz-icon type="plus"></i>
+                    <div class="ant-upload-text">+</div>
+                  </ng-container>
+                  <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <!-- publishTime -->
+              <div nz-col nzSpan="2" class="span_down right_alignment">发布时间：</div>
+              <div nz-col nzSpan="22">
+                <nz-date-picker nzShowTime required [nzFormat]="'yyyy-MM-dd HH:mm'" nzPlaceHolder="请输入发布时间"></nz-date-picker>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">发布人：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="publisher" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入发布人" nzSize="default">
+              </div>
+            </div>
+          </form>
+          <!-- 弹框和底部定制 -->
+          <ng-template #addModalFooter>
+            <button nz-button nzType="primary" (click)="doSave()">保存</button>
+            <button nz-button nzType="primary" (click)="doPreviewAdd()">预览</button>
+            <button nz-button nzType="default" (click)="hideAddModal()">取消</button>
+          </ng-template>
+        </nz-modal>
+
+        <!-- 弹框 —— 修改 —— 修改内容 -->
+        <nz-modal [(nzVisible)]="isModifyVisible" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyModalFooter"
+          nzClosable="false">
+          <form [formGroup]="modifyForm">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入标题" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">*类型：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="12" formControlName="type" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入标题" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">URL：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入url" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">摘要：</div>
+              <div nz-col nzSpan="22">
+                <textarea rows="4" nz-input formControlName="abstract" maxlength="64" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入摘要" nzSize="default"></textarea>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+              <div nz-col nzSpan="22">
+                <quill-editor formControlName="content" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
+              <div nz-col nzSpan="22">
+                <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar"
+                  nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+                  <ng-container *ngIf="!avatarUrl">
+                    <i nz-icon type="plus"></i>
+                    <div class="ant-upload-text">+</div>
+                  </ng-container>
+                  <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar">
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <!-- publishTime -->
+              <div nz-col nzSpan="2" class="span_down right_alignment">发布时间：</div>
+              <div nz-col nzSpan="22">
+                <nz-date-picker nzShowTime required [nzFormat]="'yyyy-MM-dd HH:mm'" nzPlaceHolder="请输入发布时间"></nz-date-picker>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">发布人：</div>
+              <div nz-col nzSpan="22">
+                <input nz-input maxlength="64" formControlName="publisher" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  placeholder="请输入发布人" nzSize="default">
+              </div>
+            </div>
+          </form>
+          <!-- 弹框和底部定制 -->
+          <ng-template #modifyModalFooter>
+            <button nz-button nzType="primary" (click)="doModify()">保存</button>
+            <button nz-button nzType="primary" (click)="doPreviewModify()">预览</button>
+            <button nz-button nzType="default" (click)="hideModifyModal()">取消</button>
+          </ng-template>
+        </nz-modal>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>
