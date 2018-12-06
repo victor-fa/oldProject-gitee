@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 })
 
 export class UserService extends AppServiceBase {
+  token = this._cookiesService.getToken();
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -32,6 +33,9 @@ export class UserService extends AppServiceBase {
    */
   getUserInfoList(pageSize, flag, id): Observable<IResponse<any>> {
     let url;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
+    };
     if (flag === '') {
       url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize;
     } else if (flag === 'last') {
@@ -52,6 +56,9 @@ export class UserService extends AppServiceBase {
    */
   getUserInfoListByType(pageSize, flag, id, type, infoId): Observable<IResponse<any>> {
     let url;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
+    };
     if (flag === '') {
       url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId;
     } else if (flag === 'last') {
@@ -69,6 +76,9 @@ export class UserService extends AppServiceBase {
    */
   getUserInfo(id): Observable<IResponse<any>> {
     const url = this.fullUrl(userApiUrls.userContact) + '?infoId=' + id;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -82,8 +92,8 @@ export class UserService extends AppServiceBase {
     const body = `infoId=${infoId}`;
     this.setOption = {
       headers: new HttpHeaders({
-        // 'Content-Type': 'multipart/form-data; charset=UTF-8',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Authorization': 'Bearer ' + this.token
       })
     };
     return this.httpClient
@@ -92,6 +102,7 @@ export class UserService extends AppServiceBase {
 
   /** 发送伪验证码 */
   sendMsg(phone): Observable<IResponse<any>> {
+    // const url = 'http://lxwork.vipgz1.idcfengye.com/api/admin' + userApiUrls.sms;
     const url = 'http://account-center-test.chewrobot.com/api/admin' + userApiUrls.sms;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': phone })
@@ -115,6 +126,7 @@ export class UserService extends AppServiceBase {
       'status': 0
     };
 
+    // result.open('POST', 'http://lxwork.vipgz1.idcfengye.com/api/admin/token', true);
     result.open('POST', 'http://account-center-test.chewrobot.com/api/admin/token', true);
     result.setRequestHeader('Authorization', auth);
     result.setRequestHeader('Content-Type', 'application/json');

@@ -6,6 +6,7 @@ import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { ModifyBookingInput, SearchBookingInput } from '../public/model/booking.model';
 import { BookingService } from '../public/service/booking.service';
 import { CommonService } from '../public/service/common.service';
+import { Router } from '@angular/router';
 registerLocaleData(zh);
 
 @Component({
@@ -49,6 +50,7 @@ export class BookingComponent implements OnInit {
     private modalService: NzModalService,
     private bookingService: BookingService,
     private notification: NzNotificationService,
+    private _router: Router,
   ) {
     this.commonService.nav[0].active = true;
     this._initSearchForm();
@@ -83,6 +85,17 @@ export class BookingComponent implements OnInit {
           this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
           this.lastId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
         }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -116,6 +129,17 @@ export class BookingComponent implements OnInit {
           this.firstId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
           this.lastId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
         }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -188,7 +212,6 @@ export class BookingComponent implements OnInit {
     this.orderStatus = data.state;
     this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
       if (res.retcode === 0) {
-        console.log(JSON.parse(res.payload));
         if (JSON.parse(res.payload).flightOrderReturn) {
           this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
           this.isFlightOrder = true;
@@ -207,7 +230,17 @@ export class BookingComponent implements OnInit {
           this.isHotelOrder = false;
           this.isTrainOrder = true;
         }
-        console.log(this.dataDetail);
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -230,7 +263,6 @@ export class BookingComponent implements OnInit {
   showExternal(flag, data): void {
     this.bookingService.getBookingDetail(flag, data).subscribe(res => {
       if (res.retcode === 0) {
-        console.log(JSON.parse(res.payload));
         let externalDetail = [];
         if (JSON.parse(res.payload).flightOrderReturn) {
           externalDetail = JSON.parse(res.payload).flightOrderReturn;
@@ -344,7 +376,17 @@ export class BookingComponent implements OnInit {
             '<br>订单情况：' + JSON.parse(res.payload).trainOrderReturn.state_name,
             { nzDuration: 0 });
         }
-        console.log(externalDetail);
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -379,6 +421,17 @@ export class BookingComponent implements OnInit {
           nzTitle: '修改成功',
           nzContent: res.message
         });
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',

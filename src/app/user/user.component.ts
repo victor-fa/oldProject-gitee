@@ -2,10 +2,11 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { IUserInfoItemOutput, SendMsgInput, UserSearchInput } from '../public/model/user.model';
 import { CommonService } from '../public/service/common.service';
 import { UserService } from '../public/service/user.service';
+import { Router } from '@angular/router';
 registerLocaleData(zh);
 
 @Component({
@@ -38,6 +39,8 @@ export class UserComponent implements OnInit {
     public commonService: CommonService,
     private modalService: NzModalService,
     private userService: UserService,
+    private notification: NzNotificationService,
+    private _router: Router,
   ) {
     this.commonService.nav[1].active = true;
     this._initSearchForm();
@@ -75,6 +78,17 @@ export class UserComponent implements OnInit {
             item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
           });
         }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -109,6 +123,17 @@ export class UserComponent implements OnInit {
           this.data[0] = JSON.parse(res.payload);
           this.data[0].locked === false ? this.data[0].locked = '正常' : this.data[0].locked = '已拉黑';
         }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -164,6 +189,17 @@ export class UserComponent implements OnInit {
             });
           }
         }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.info({
           nzTitle: '提示',
@@ -223,6 +259,17 @@ export class UserComponent implements OnInit {
         setTimeout(() => {
           this.loadData();
         }, 1000);
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       }
     });
   }
@@ -256,6 +303,17 @@ export class UserComponent implements OnInit {
           nzContent: '验证码为： ' + res.message,
           nzOkText: '知道了',
         });
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        this._router.navigate(['/login']);
       } else {
         this.modalService.error({
           nzTitle: '提示',

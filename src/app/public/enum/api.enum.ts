@@ -24,3 +24,9 @@ export enum bookingApiUrls {
   orderDetail = '/order/detail',
 }
 
+/** 内容模块 */
+export enum contentApiUrls {
+  /** 获取全部内容 */
+  contentList = '/notices',
+}
+

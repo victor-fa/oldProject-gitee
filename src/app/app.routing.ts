@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginGuard } from './public/service/login.guard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'content', pathMatch: 'full' },
+  { path: '', redirectTo: 'booking', pathMatch: 'full' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'booking', loadChildren: './booking/booking.module#BookingModule'}, // , canActivate: [LoginGuard]
   { path: 'user', loadChildren: './user/user.module#UserModule'}, // , canActivate: [LoginGuard]

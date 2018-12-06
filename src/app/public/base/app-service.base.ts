@@ -12,6 +12,7 @@ export abstract class AppServiceBase {
   ) {
   }
 
+  // protected baseUrl = 'http://lxwork.vipgz1.idcfengye.com/api/admin';
   protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';
   protected options = {
     headers: new HttpHeaders({

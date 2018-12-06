@@ -37,6 +37,7 @@
                   <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
                   <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
                   <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
+                  <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
                 </nz-select>
               </div>
 
@@ -98,8 +99,9 @@
                 <td *ngIf="data.orderType === 0 || data.orderType === 1">机票</td>
                 <td *ngIf="data.orderType === 2">火车</td>
                 <td *ngIf="data.orderType === 3">酒店</td>
+                <td *ngIf="data.orderType === 4">打车</td>
 
-                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{data.createTime }}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
                 <td>{{data.orderId}}</td>
                 <td>{{data.actualId}}</td>
                 <td nzTitle="婴儿:{{data.type.baby}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小孩:{{data.type.child}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成人:{{data.type.major}}" nzPlacement="bottom" nz-tooltip><a>查看信息</a></td>

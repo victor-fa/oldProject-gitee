@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../public/service/common.service';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { NzMessageService, UploadFile, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService, UploadFile, NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalizationService } from '../public/service/localization.service';
+import { ContentService } from '../public/service/content.service';
+import { HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 
 registerLocaleData(zh);
 
@@ -22,6 +25,14 @@ export class ContentComponent implements OnInit {
   avatarUrl: string;
   addForm: FormGroup;  // 新增表单
   modifyForm: FormGroup;  // 修改表单
+  now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+  contentId = '';
+  contentDate = {};
+  emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
+  fileList: UploadFile[] = [];
+  isTypeNoPNG = false;
+  imageUrl = '';
+  showImageUrl = '';
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -31,7 +42,7 @@ export class ContentComponent implements OnInit {
       [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
       [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
       [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], // custom dropdown
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
@@ -40,40 +51,18 @@ export class ContentComponent implements OnInit {
       ['link', 'image', 'video']                         // link and image, video
     ]
   };
-  dataSet = [
-    {
-      image: 'http://stormfa.cn:3000/media/201812/5c04e3da1eba1a1e28046745/github-rain.jpg',
-      title: '让 Chrome 崩溃的一行 CSS 代码',
-      readTime: 6,
-      author: 'stormfa',
-      state: 1,
-      time: '2018-12-03'
-    },
-    {
-      image: 'http://stormfa.cn:3000/media/201811/5bed41821eba1a1e28046710/timg.jpg',
-      title: '介绍一款好用 mongodb 可视化工具',
-      readTime: 1,
-      author: 'stormfa',
-      state: 1,
-      time: '2018-11-15'
-    },
-    {
-      image: 'http://stormfa.cn:3000/media/201811/5bed40bf1eba1a1e2804670e/chrome.jpg',
-      title: 'chrome提示 “正在等待可用的套接字”',
-      readTime: 0,
-      author: 'stormfa',
-      state: 0,
-      time: '2018-11-15'
-    }
-  ];
+  dataSet = [];
 
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private msg: NzMessageService,
     private modalService: NzModalService,
-    private router: Router,
     public localizationService: LocalizationService,
+    private contentService: ContentService,
+    private notification: NzNotificationService,
+    private datePipe: DatePipe,
+    private http: HttpClient,
   ) {
     this.commonService.nav[2].active = true;
     this._initAddForm();
@@ -85,7 +74,24 @@ export class ContentComponent implements OnInit {
   }
 
   loadData() {
+    this.contentService.getContentList().subscribe(res => {
+      this.dataSet = JSON.parse(res.payload);
+      console.log(this.dataSet);
+    });
+  }
 
+  // 预览文章
+  doPreview(data) {
+    if (data.url) {
+      window.open(data.url);
+    } else {
+      const title = '<h1><strong>' + data.title + '</strong></h1>';
+      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + data.pseudonym + '</span>'
+          + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data.publishTime + '</p><p><br></p>';
+      this.localizationService.setPreview = title + publisher + data.content;
+      window.open('preview');
+    }
   }
 
   private _initAddForm(): void {
@@ -93,81 +99,274 @@ export class ContentComponent implements OnInit {
       title: [''],
       type: [''],
       url: [''],
-      abstract: [''],
+      abstractContent: [''],
       content: [''],
+      publishTime: [''],
       publisher: [''],
     });
-  }
-
-  /* 展示新增弹框 */
-
-  /**
-   *
-   * @param data
-   */
-  doSave(data): void {
-    // console.log(this.addForm.controls['title'].value);
-    // console.log(this.addForm.controls['type'].value);
-    // console.log(this.addForm.controls['url'].value);
-    // console.log(this.addForm.controls['abstract'].value);
-    // console.log(this.addForm.controls['content'].value);
-    // console.log(this.addForm.controls['publisher'].value);
-
-    // this.bookingService.updateBookingInfo(this.modifyForm.controls['updateType'].value, this.orderId).subscribe(res => {
-    //   if (res.retcode === 0) {
-    //     this.modalService.success({
-    //       nzTitle: '修改成功',
-    //       nzContent: res.message
-    //     });
-    //   } else {
-    //     this.modalService.confirm({
-    //       nzTitle: '提示',
-    //       nzContent: res.message
-    //     });
-    //   }
-    // });
-  }
-
-  // 预览新增
-  doPreviewAdd() {
-    this.localizationService.setPreview =  this.addForm.controls['content'].value;
-    window.open('preview');
   }
 
   // 新增 - 弹框
   showAddModal() {
     this.isAddVisible = true;
+    this.fileList.splice(0, this.fileList.length);
+    this.imageUrl = '';
+    this.showImageUrl = '';
+    this.emptyAdd = ['', '', '', '', '', '', ''];
   }
 
   hideAddModal() {
     this.isAddVisible = false;
+    this.fileList.splice(0, this.fileList.length);
+    this.imageUrl = '';
+    this.showImageUrl = '';
   }
 
+  // 封装验证新增
+  verificationAdd(): boolean {
+    let result = true;
+    if (this.addForm.controls['title'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
+      result = false;
+    } else if (this.addForm.controls['type'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
+      result = false;
+    } else if (this.addForm.controls['publisher'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
+      result = false;
+    } else if (this.addForm.controls['abstractContent'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
+      result = false;
+    } else if (this.addForm.controls['publishTime'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
+      result = false;
+    }
+    return result;
+  }
+
+  // 新增操作
+  doSave(): void {
+    if (!this.verificationAdd()) {
+      return;
+    }
+    const contentInput = {
+      'title': this.addForm.controls['title'].value,
+      'url': this.addForm.controls['url'].value,
+      'content': this.addForm.controls['content'].value,
+      'abstractContent': this.addForm.controls['abstractContent'].value,
+      'pseudonym': this.addForm.controls['publisher'].value,
+      'publishTime': this.datePipe.transform(this.addForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
+      'type': this.addForm.controls['type'].value,
+      'thumbnail': this.imageUrl
+    };
+    this.contentService.addContent(contentInput).subscribe(res => {
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '提示',
+          nzContent: '新增成功'
+        });
+        this.hideAddModal();
+        this.loadData();
+      } else {
+        this.modalService.error({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+  }
+
+  // 预览新增
+  doPreviewAdd() {
+    if (!this.verificationAdd()) {
+      return;
+    }
+    const url = this.addForm.controls['url'].value;
+    if (url) {
+      window.open(url);
+    } else {
+      const title = '<h1><strong>' + this.addForm.controls['title'].value + '</strong></h1>';
+      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + this.addForm.controls['publisher'].value + '</span>'
+          + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+          + this.datePipe.transform(this.addForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
+          + '</p><p><br></p>';
+      this.localizationService.setPreview = title + publisher + this.addForm.controls['content'].value;
+      window.open('preview');
+    }
+  }
+
+  // 上传image
+  beforeUpload = (file: UploadFile): boolean => {
+    const isExcel = file.name.substring(file.name.lastIndexOf('.'), file.name.length) === '.png' ? true : false;
+    const isMoreThanTen = file.size < 10485760 ? true : false;
+    if (!isExcel) {
+      this.msg.error('您只能上传.png文件');
+    } else if (!isMoreThanTen) {
+      this.msg.error('您只能上传不超过10M文件');
+    } else {
+      this.fileList.push(file);
+      this.handleUpload();
+    }
+    return false;
+  }
+
+  // 点击上传
+  handleUpload(): void {
+    // 文件数量不可超过1个，超过一个则提示
+    if (this.fileList.length > 1) {
+      this.notification.error(
+        '提示', '您上传的文件超过一个！'
+      );
+      return;
+    }
+    const formData = new FormData();
+    this.fileList.forEach((file: any) => {
+      // 文件不是png
+      file.name.substr(file.name.length - 3) !== 'png' ? this.isTypeNoPNG = true : this.isTypeNoPNG = false;
+      formData.append('thumbnail', file);
+    });
+    // 文件不是png，显示异常信息
+    if (this.isTypeNoPNG) {
+      setTimeout(() => {
+        this.isTypeNoPNG = false;
+      }, 3000);
+      return;
+    }
+    const req = new HttpRequest('POST', `http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails`, formData, {
+      reportProgress: true
+    });
+    this.http
+      .request(req)
+      .pipe(filter(e => e instanceof HttpResponse))
+      .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+        if (event.body.retcode === 0) {
+          this.imageUrl = event.body.payload;
+          this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + this.imageUrl;
+          this.notification.success(
+            '提示', '上传成功'
+          );
+        } else {
+          this.modalService.error({
+            nzTitle: '提示',
+            nzContent: event.body.message,
+          });
+        }
+        formData.delete('thumbnail');
+      },
+      err => {
+        formData.delete('thumbnail');
+      }
+    );
+  }
+
+  // 修改
   _initModifyForm() {
     this.modifyForm = this.fb.group({
       title: [''],
       type: [''],
       url: [''],
-      abstract: [''],
+      abstractContent: [''],
       content: [''],
+      publishTime: [''],
       publisher: [''],
     });
   }
 
+  // 封装验证修改表单
+  verificationModify(): boolean {
+    let result = true;
+    if (this.modifyForm.controls['title'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
+      result = false;
+    } else if (this.modifyForm.controls['type'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
+      result = false;
+    } else if (this.modifyForm.controls['publisher'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
+      result = false;
+    } else if (this.modifyForm.controls['abstractContent'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
+      result = false;
+    } else if (this.modifyForm.controls['publishTime'].value === '') {
+      this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
+      result = false;
+    }
+    return result;
+  }
+
   // 预览修改
   doPreviewModify() {
-    console.log(this.modifyForm.controls['content'].value);
-    this.localizationService.setPreview = this.modifyForm.controls['content'].value;
-    window.open('preview');
+    if (!this.verificationModify()) {
+      return;
+    }
+    const url = this.modifyForm.controls['url'].value;
+    if (url) {
+      window.open(url);
+    } else {
+      const title = '<h1><strong>' + this.modifyForm.controls['title'].value + '</strong></h1>';
+      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + this.modifyForm.controls['publisher'].value + '</span>'
+          + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+          + this.datePipe.transform(this.modifyForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
+          + '</p><p><br></p>';
+      this.localizationService.setPreview = title + publisher + this.modifyForm.controls['content'].value;
+      window.open('preview');
+    }
   }
 
   // 修改 - 弹框
-  showModifyModal() {
+  showModifyModal(data) {
+    const id = data.id;
     this.isModifyVisible = true;
+    this.contentId = id;  // 用于修改
+    this.contentService.getContent(id).subscribe(res => {
+      // 处理异常处理
+      this.contentDate = JSON.parse(res.payload);
+      this.imageUrl = JSON.parse(res.payload).thumbnail;
+      this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
+      const file: any = {
+        name: JSON.parse(res.payload).thumbnail
+      };
+      this.fileList.push(file);
+    });
   }
 
   hideModifyModal() {
     this.isModifyVisible = false;
+  }
+
+  // 修改操作
+  doModify(): void {
+    if (!this.verificationModify()) {
+      return;
+    }
+    const contentInput = {
+      'id': this.contentId,
+      'title': this.modifyForm.controls['title'].value,
+      'url': this.modifyForm.controls['url'].value,
+      'content': this.modifyForm.controls['content'].value,
+      'abstractContent': this.modifyForm.controls['abstractContent'].value,
+      'pseudonym': this.modifyForm.controls['publisher'].value,
+      'publishTime': this.datePipe.transform(this.modifyForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
+      'type': this.modifyForm.controls['type'].value,
+      'thumbnail': this.imageUrl
+    };
+    this.contentService.updateContent(contentInput).subscribe(res => {
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '提示',
+          nzContent: '修改成功'
+        });
+        this.hideModifyModal();
+        this.loadData();
+      } else {
+        this.modalService.error({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
   }
 
   // 删除 - 弹框
@@ -176,43 +375,25 @@ export class ContentComponent implements OnInit {
       nzTitle: '提示',
       nzContent: '您确定要删除该内容？',
       nzOkText: '确定',
-      nzOnOk: () => this.doDelete()
+      nzOnOk: () => this.doDelete(data.id)
     });
   }
 
-  doDelete() {
-    console.log('删除');
+  doDelete(id) {
+    this.contentService.deleteContent(id).subscribe(res => {
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '提示',
+          nzContent: '删除成功'
+        });
+        this.loadData();
+      } else {
+        this.modalService.error({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
   }
 
-  beforeUpload = (file: File) => {
-    const isJPG = file.type === 'image/jpeg';
-    if (!isJPG) {
-      this.msg.error('You can only upload JPG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      this.msg.error('Image must smaller than 2MB!');
-    }
-    return isJPG && isLt2M;
-  }
-
-  private getBase64(img: File, callback: (img: string) => void): void {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result.toString()));
-    reader.readAsDataURL(img);
-  }
-
-  handleChange(info: { file: UploadFile }): void {
-    if (info.file.status === 'uploading') {
-      this.loading = true;
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, (img: string) => {
-        this.loading = false;
-        this.avatarUrl = img;
-      });
-    }
-  }
 }
