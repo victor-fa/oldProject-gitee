@@ -13,16 +13,16 @@
           <nz-table #basicTable [nzData]="dataSet">
             <thead>
               <tr>
-                <th>序号</th>
-                <th>缩略图</th>
-                <th>标题</th>
-                <th>类型</th>
-                <th>阅读量</th>
-                <th>链接</th>
-                <th>发布人</th>
-                <th>状态</th>
-                <th>发布时间</th>
-                <th>操作</th>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">缩略图</th>
+                <th nzWidth="20px">标题</th>
+                <th nzWidth="20px">类型</th>
+                <th nzWidth="20px">阅读量</th>
+                <th nzWidth="20px">链接</th>
+                <th nzWidth="20px">发布人</th>
+                <th nzWidth="20px">状态</th>
+                <th nzWidth="20px">发布时间</th>
+                <th nzWidth="20px">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -32,7 +32,7 @@
                 <td>{{data.title}}</td>
                 <td>{{data.type == 'SYSTEM_MESSAGE' ? '系统信息' : '其他'}}</td>
                 <td>{{data.readingAmount}}</td>
-                <td>{{data.url === 'null' ? '' : data.url }}</td>
+                <td style="max-width: 110px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{data.url === 'null' ? '' : data.url }}</td>
                 <td>{{data.pseudonym}}</td>
                 <td>{{now >= data.publishTime ? '已发布' : '未发布'}}</td>
                 <td>{{data.publishTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
@@ -86,12 +86,6 @@
               </div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
-              <div nz-col nzSpan="22">
-                <quill-editor formControlName="content" [(ngModel)]="emptyAdd[4]" [modules]="config" [style]="{height: '350px'}"></quill-editor>
-              </div>
-            </div>
-            <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
               <div nz-col nzSpan="22">
                 <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -104,7 +98,7 @@
             <div nz-row class="search_panel" *ngIf="fileList.length == 1">
               <div nz-col nzSpan="2" class="span_down right_alignment"></div>
               <div nz-col nzSpan="22">
-                <img *ngIf="imageUrl" [src]="showImageUrl" class="avatar">
+                <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -116,8 +110,14 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
               <div nz-col nzSpan="22">
-                <input nz-input maxlength="6" formControlName="publisher" [(ngModel)]="emptyAdd[6]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                <input nz-input maxlength="20" formControlName="publisher" [(ngModel)]="emptyAdd[6]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                   placeholder="请输入发布人" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+              <div nz-col nzSpan="22">
+                <quill-editor formControlName="content" [(ngModel)]="emptyAdd[4]" [modules]="config" [style]="{height: '350px'}"></quill-editor>
               </div>
             </div>
           </form>
@@ -167,12 +167,6 @@
               </div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
-              <div nz-col nzSpan="22">
-                <quill-editor formControlName="content" [(ngModel)]="contentDate.content" [modules]="config" [style]="{height: '350px'}"></quill-editor>
-              </div>
-            </div>
-            <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
               <div nz-col nzSpan="22">
                 <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -185,7 +179,7 @@
             <div nz-row class="search_panel" *ngIf="fileList.length === 1">
               <div nz-col nzSpan="2" class="span_down right_alignment"></div>
               <div nz-col nzSpan="22">
-                <img [src]="showImageUrl" class="avatar">
+                <img [src]="showImageUrl" class="image-panel">
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -197,8 +191,14 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
               <div nz-col nzSpan="22">
-                <input nz-input maxlength="6" formControlName="publisher" [(ngModel)]="contentDate.pseudonym" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                <input nz-input maxlength="20" formControlName="publisher" [(ngModel)]="contentDate.pseudonym" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                   placeholder="请输入发布人" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+              <div nz-col nzSpan="22">
+                <quill-editor formControlName="content" [(ngModel)]="contentDate.content" [modules]="config" [style]="{height: '350px'}"></quill-editor>
               </div>
             </div>
           </form>

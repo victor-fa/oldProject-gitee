@@ -27,10 +27,9 @@ export class ContentComponent implements OnInit {
   modifyForm: FormGroup;  // 修改表单
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   contentId = '';
-  contentDate = {};
+  contentDate = { 'url': '' };
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   fileList: UploadFile[] = [];
-  isTypeNoPNG = false;
   imageUrl = '';
   showImageUrl = '';
   config = {
@@ -48,7 +47,7 @@ export class ContentComponent implements OnInit {
       [{ 'font': [] }],
       [{ 'align': [] }],
       ['clean'],                                         // remove formatting button
-      ['link', 'image', 'video']                         // link and image, video
+      ['link', 'video']                         // link and image, video
     ]
   };
   dataSet = [];
@@ -83,7 +82,7 @@ export class ContentComponent implements OnInit {
   // 预览文章
   doPreview(data) {
     if (data.url) {
-      window.open(data.url);
+      data.url.indexOf('`') !== -1 ? window.open(this.dotranUrl(data.url)) : window.open(data.url) ;
     } else {
       const title = '<h1><strong>' + data.title + '</strong></h1>';
       const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
@@ -151,7 +150,7 @@ export class ContentComponent implements OnInit {
     }
     const contentInput = {
       'title': this.addForm.controls['title'].value,
-      'url': this.addForm.controls['url'].value,
+      'url': this.dotranUrl(this.addForm.controls['url'].value),
       'content': this.addForm.controls['content'].value,
       'abstractContent': this.addForm.controls['abstractContent'].value,
       'pseudonym': this.addForm.controls['publisher'].value,
@@ -183,7 +182,7 @@ export class ContentComponent implements OnInit {
     }
     const url = this.addForm.controls['url'].value;
     if (url) {
-      window.open(url);
+      url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
     } else {
       const title = '<h1><strong>' + this.addForm.controls['title'].value + '</strong></h1>';
       const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
@@ -198,10 +197,11 @@ export class ContentComponent implements OnInit {
 
   // 上传image
   beforeUpload = (file: UploadFile): boolean => {
-    const isExcel = file.name.substring(file.name.lastIndexOf('.'), file.name.length) === '.png' ? true : false;
+    const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+    const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
     const isMoreThanTen = file.size < 10485760 ? true : false;
-    if (!isExcel) {
-      this.msg.error('您只能上传.png文件');
+    if (!isPng) {
+      this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
     } else if (!isMoreThanTen) {
       this.msg.error('您只能上传不超过10M文件');
     } else {
@@ -222,17 +222,8 @@ export class ContentComponent implements OnInit {
     }
     const formData = new FormData();
     this.fileList.forEach((file: any) => {
-      // 文件不是png
-      file.name.substr(file.name.length - 3) !== 'png' ? this.isTypeNoPNG = true : this.isTypeNoPNG = false;
       formData.append('thumbnail', file);
     });
-    // 文件不是png，显示异常信息
-    if (this.isTypeNoPNG) {
-      setTimeout(() => {
-        this.isTypeNoPNG = false;
-      }, 3000);
-      return;
-    }
     const req = new HttpRequest('POST', `http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails`, formData, {
       reportProgress: true
     });
@@ -302,7 +293,7 @@ export class ContentComponent implements OnInit {
     }
     const url = this.modifyForm.controls['url'].value;
     if (url) {
-      window.open(url);
+      url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
     } else {
       const title = '<h1><strong>' + this.modifyForm.controls['title'].value + '</strong></h1>';
       const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
@@ -317,23 +308,28 @@ export class ContentComponent implements OnInit {
 
   // 修改 - 弹框
   showModifyModal(data) {
+    console.log(data.content);
     const id = data.id;
     this.isModifyVisible = true;
     this.contentId = id;  // 用于修改
     this.contentService.getContent(id).subscribe(res => {
       // 处理异常处理
       this.contentDate = JSON.parse(res.payload);
+      this.contentDate.url = this.dotranUrl(JSON.parse(res.payload).url);
       this.imageUrl = JSON.parse(res.payload).thumbnail;
-      this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
       const file: any = {
         name: JSON.parse(res.payload).thumbnail
       };
       this.fileList.push(file);
+      this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
     });
   }
 
   hideModifyModal() {
     this.isModifyVisible = false;
+    this.fileList.splice(0, this.fileList.length);
+    this.imageUrl = '';
+    this.showImageUrl = '';
   }
 
   // 修改操作
@@ -344,8 +340,8 @@ export class ContentComponent implements OnInit {
     const contentInput = {
       'id': this.contentId,
       'title': this.modifyForm.controls['title'].value,
-      'url': this.modifyForm.controls['url'].value,
-      'content': this.modifyForm.controls['content'].value,
+      'url': this.dotranUrl(this.modifyForm.controls['url'].value),
+      'content': this.dotran(this.modifyForm.controls['content'].value),
       'abstractContent': this.modifyForm.controls['abstractContent'].value,
       'pseudonym': this.modifyForm.controls['publisher'].value,
       'publishTime': this.datePipe.transform(this.modifyForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
@@ -367,6 +363,35 @@ export class ContentComponent implements OnInit {
         });
       }
     });
+  }
+
+  // 转换 url 的 & 字符
+  dotranUrl(url) {
+    if (url.indexOf('`') !== -1) {
+      url = url.replace(/`/g, '&');
+    } else {
+      url = url.replace(/&/g, '`');
+    }
+    return url;
+  }
+
+  // 转换 html 为 json
+  dotran(str) {
+    // str = str.replace(/"/g, '//"', str);
+    // str = str.replace(/\/r\/n/g, '//r//n', str);
+    // str = str.replace(/\/t/g, '//t', str);
+    // str = str.replace(/\/\//g, '//', str);
+    // str = str.replace(/\/b/g, '//b', str);
+    return str;
+  }
+
+  // 转换 json 为 html
+  dotranJson(str) {
+    str = str.replace(/\/\/"/g, '"', str);
+    str = str.replace(/\/\/r\/\/n/g, '/r/n', str);
+    str = str.replace(/\/\/t/g, '/t', str);
+    str = str.replace(/\/\/b/g, '/b', str);
+    return str;
   }
 
   // 删除 - 弹框
