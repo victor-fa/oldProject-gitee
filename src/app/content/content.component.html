@@ -30,7 +30,7 @@
                 <td>{{i+1}}</td>
                 <td><img [src]="'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
                 <td>{{data.title}}</td>
-                <td>{{data.type == 'SYSTEM_MESSAGE' ? '系统信息' : '其他'}}</td>
+                <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '运营活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>
                 <td style="max-width: 110px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{data.url === 'null' ? '' : data.url }}</td>
                 <td>{{data.pseudonym}}</td>
@@ -110,7 +110,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
               <div nz-col nzSpan="22">
-                <input nz-input maxlength="20" formControlName="publisher" [(ngModel)]="emptyAdd[6]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="emptyAdd[6]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                   placeholder="请输入发布人" nzSize="default">
               </div>
             </div>
@@ -191,7 +191,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
               <div nz-col nzSpan="22">
-                <input nz-input maxlength="20" formControlName="publisher" [(ngModel)]="contentDate.pseudonym" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="contentDate.pseudonym" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                   placeholder="请输入发布人" nzSize="default">
               </div>
             </div>

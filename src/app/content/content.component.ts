@@ -27,11 +27,19 @@ export class ContentComponent implements OnInit {
   modifyForm: FormGroup;  // 修改表单
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   contentId = '';
-  contentDate = { 'url': '' };
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   fileList: UploadFile[] = [];
   imageUrl = '';
   showImageUrl = '';
+  contentDate = {
+    'title': '',
+    'type': '',
+    'url': '',
+    'abstractContent': '',
+    'content': '',
+    'publishTime': '',
+    'pseudonym': ''
+  };
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -85,10 +93,10 @@ export class ContentComponent implements OnInit {
       data.url.indexOf('`') !== -1 ? window.open(this.dotranUrl(data.url)) : window.open(data.url) ;
     } else {
       const title = '<h1><strong>' + data.title + '</strong></h1>';
-      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+      const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
           + data.pseudonym + '</span>'
           + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data.publishTime + '</p><p><br></p>';
-      this.localizationService.setPreview = title + publisher + data.content;
+      this.localizationService.setPreview = title + pseudonym + data.content;
       window.open('preview');
     }
   }
@@ -101,7 +109,7 @@ export class ContentComponent implements OnInit {
       abstractContent: [''],
       content: [''],
       publishTime: [''],
-      publisher: [''],
+      pseudonym: [''],
     });
   }
 
@@ -112,6 +120,15 @@ export class ContentComponent implements OnInit {
     this.imageUrl = '';
     this.showImageUrl = '';
     this.emptyAdd = ['', '', '', '', '', '', ''];
+    this.contentDate = {  // 清空
+      'title': '',
+      'type': '',
+      'url': '',
+      'abstractContent': '',
+      'content': '',
+      'publishTime': '',
+      'pseudonym': ''
+    };
   }
 
   hideAddModal() {
@@ -130,7 +147,7 @@ export class ContentComponent implements OnInit {
     } else if (this.addForm.controls['type'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
       result = false;
-    } else if (this.addForm.controls['publisher'].value === '') {
+    } else if (this.addForm.controls['pseudonym'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
       result = false;
     } else if (this.addForm.controls['abstractContent'].value === '') {
@@ -153,7 +170,7 @@ export class ContentComponent implements OnInit {
       'url': this.dotranUrl(this.addForm.controls['url'].value),
       'content': this.addForm.controls['content'].value,
       'abstractContent': this.addForm.controls['abstractContent'].value,
-      'pseudonym': this.addForm.controls['publisher'].value,
+      'pseudonym': this.addForm.controls['pseudonym'].value,
       'publishTime': this.datePipe.transform(this.addForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
       'type': this.addForm.controls['type'].value,
       'thumbnail': this.imageUrl
@@ -185,12 +202,12 @@ export class ContentComponent implements OnInit {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
     } else {
       const title = '<h1><strong>' + this.addForm.controls['title'].value + '</strong></h1>';
-      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
-          + this.addForm.controls['publisher'].value + '</span>'
+      const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + this.addForm.controls['pseudonym'].value + '</span>'
           + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
           + this.datePipe.transform(this.addForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
           + '</p><p><br></p>';
-      this.localizationService.setPreview = title + publisher + this.addForm.controls['content'].value;
+      this.localizationService.setPreview = title + pseudonym + this.addForm.controls['content'].value;
       window.open('preview');
     }
   }
@@ -260,7 +277,7 @@ export class ContentComponent implements OnInit {
       abstractContent: [''],
       content: [''],
       publishTime: [''],
-      publisher: [''],
+      pseudonym: [''],
     });
   }
 
@@ -273,7 +290,7 @@ export class ContentComponent implements OnInit {
     } else if (this.modifyForm.controls['type'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
       result = false;
-    } else if (this.modifyForm.controls['publisher'].value === '') {
+    } else if (this.modifyForm.controls['pseudonym'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
       result = false;
     } else if (this.modifyForm.controls['abstractContent'].value === '') {
@@ -296,12 +313,12 @@ export class ContentComponent implements OnInit {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
     } else {
       const title = '<h1><strong>' + this.modifyForm.controls['title'].value + '</strong></h1>';
-      const publisher = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
-          + this.modifyForm.controls['publisher'].value + '</span>'
+      const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + this.modifyForm.controls['pseudonym'].value + '</span>'
           + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
           + this.datePipe.transform(this.modifyForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
           + '</p><p><br></p>';
-      this.localizationService.setPreview = title + publisher + this.modifyForm.controls['content'].value;
+      this.localizationService.setPreview = title + pseudonym + this.modifyForm.controls['content'].value;
       window.open('preview');
     }
   }
@@ -343,7 +360,7 @@ export class ContentComponent implements OnInit {
       'url': this.dotranUrl(this.modifyForm.controls['url'].value),
       'content': this.dotran(this.modifyForm.controls['content'].value),
       'abstractContent': this.modifyForm.controls['abstractContent'].value,
-      'pseudonym': this.modifyForm.controls['publisher'].value,
+      'pseudonym': this.modifyForm.controls['pseudonym'].value,
       'publishTime': this.datePipe.transform(this.modifyForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
       'type': this.modifyForm.controls['type'].value,
       'thumbnail': this.imageUrl
