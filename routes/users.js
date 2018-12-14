@@ -96,7 +96,7 @@ router.post('/register', function(req,res,next){
 	UserService.checkVcode(req,res,params,next);
 },function (req, res, next) {
 	var user_info = {};
-	var phoneNumberReg=/(^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$)|(^((13[0-2])|(15[256])|(18[56]))\d{8}$)|(^1((33|53|8[09])\d|349)\d{7})/;
+	var phoneNumberReg=/(^1(34[0-8]|(3[5-9]|5[017-9]|8[278])\d)\d{7}$)|(^((13[0-2])|(15[256])|(18[56])|(18[1]))\d{8}$)|(^1((33|53|8[09])\d|349)\d{7})/;
 	user_info.name = req.body.name;
 	user_info.email = req.body.email;
 	user_info.username = req.body.username;
@@ -341,7 +341,7 @@ passport.use(new LocalStrategy(
 				if (err) {
 					return done(null, false, { message: '登陆错误：' + err })
 				}
-				if (isMatch) {
+                if (isMatch) {
 					if(!UserService.isUserCheckByEmail(user.group)){
 						return done(null, false, { message: '请进入您输入的邮箱进行帐号激活' })
 					} else{
@@ -352,8 +352,8 @@ passport.use(new LocalStrategy(
 						}
 					}
 				} else {
-					return done(null, false, { message: '密码错误' });
-				}
+                    return done(null, false, { message: '密码错误' });
+                }
 			});
 		});
 	}
