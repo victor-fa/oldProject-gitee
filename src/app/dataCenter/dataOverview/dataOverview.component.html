@@ -1,0 +1,89 @@
+<nz-card style="width: 100%;">
+  <nz-card-tab>
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="BOT总览">
+        <form [formGroup]="searchForm">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3" class="span_down right_alignment">
+              查询日期范围：
+            </div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+            </div>
+
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              来源：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [ngModel]="''" formControlName="status">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
+                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
+                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
+                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
+                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+        </form>
+
+        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>APP唤醒人次</th>
+              <th>小爱人次</th>
+              <th>AppStore人次</th>
+              <th>总人次</th>
+              <th>火车人次</th>
+              <th>机票人次</th>
+              <th>天气人次</th>
+              <th>导航人次</th>
+              <th>酒店人次</th>
+              <th>打车人次</th>
+              <th>总行为数</th>
+              <th>火车行为数</th>
+              <th>机票行为数</th>
+              <th>天气行为数</th>
+              <th>导航行为数</th>
+              <th>酒店行为数</th>
+              <th>打车行为数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.appAwakenBotUsers }}</td>
+              <td>{{data.xiaoaiAwakenBotUsers}}</td>
+              <td>{{data.appStoreAwakenUsers}}</td>
+              <td>{{data.awakTrainUsers + data.awakFlightUsers + data.awakWeatherUsers + data.awakNavigationUsers + data.awakHotelUsers + data.awakTaxisUsers}}</td>
+              <td>{{data.awakTrainUsers}}</td>
+              <td>{{data.awakFlightUsers}}</td>
+              <td>{{data.awakWeatherUsers}}</td>
+              <td>{{data.awakNavigationUsers}}</td>
+              <td>{{data.awakHotelUsers}}</td>
+              <td>{{data.awakTaxisUsers}}</td>
+              <td>{{data.awakTrainCount + data.awakFlightCount + data.awakWeatherCount + data.awakNavigationCount + data.awakHotelCount + data.awakTaxisCount}}</td>
+              <td>{{data.awakTrainCount}}</td>
+              <td>{{data.awakFlightCount}}</td>
+              <td>{{data.awakWeatherCount}}</td>
+              <td>{{data.awakNavigationCount}}</td>
+              <td>{{data.awakHotelCount}}</td>
+              <td>{{data.awakTaxisCount}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

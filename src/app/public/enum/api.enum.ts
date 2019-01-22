@@ -30,3 +30,8 @@ export enum contentApiUrls {
   contentList = '/notices',
 }
 
+/** 数据中心模块 */
+export enum dataCenterApiUrls {
+  /** 获取全部内容 */
+  dataCenterList = '/dataCenter',
+}

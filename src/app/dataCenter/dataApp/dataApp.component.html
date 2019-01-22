@@ -1,0 +1,89 @@
+<nz-card style="width: 100%;">
+  <nz-card-tab>
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="APP">
+        <form [formGroup]="searchForm">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3" class="span_down right_alignment">
+              查询日期范围：
+            </div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+            </div>
+
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              来源：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [ngModel]="''" formControlName="status">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
+                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
+                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
+                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
+                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+        </form>
+
+        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>新增安装数</th>
+              <th>新增启动数</th>
+              <th>新增注册数</th>
+              <th>新增启动率</th>
+              <th>新增注册率</th>
+              <th>日启动总数</th>
+              <th>平均启动次数</th>
+              <th>APP日活跃</th>
+              <th>老用户活跃</th>
+              <th>订单成交总数</th>
+              <th>订单成交总金额</th>
+              <th>机票订单成交数</th>
+              <th>火车订单成交数</th>
+              <th>酒店订单成交数</th>
+              <th>机票订单成交金额</th>
+              <th>火车订单成交金额</th>
+              <th>酒店订单成交金额</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.dailyInstallation }}</td>
+              <td>{{data.dailyNewLaunch}}</td>  <!-- 新增启动数 -->
+              <td>{{data.dailyRegister}}</td>  <!-- 新增注册数 -->
+              <td>{{(data.dailyRegister === 0 ? 0 : (data.dailyNewLaunch / data.dailyRegister)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : (data.dailyRegister / dailyInstallation)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{data.dailyLaunch}}</td>  <!-- 日启动总数 -->
+              <td>{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
+              <td>{{data.dailyActiveUsers}}</td>
+              <td>{{(data.dailyRegister === 0 ? 0 : (data.dailyActiveUsers / data.dailyRegister)) * 100 | number:"0.1-2"}}%</td>  <!-- 老用户活跃 -->
+              <td>{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout}}</td>
+              <td>{{data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice }}</td>
+              <td>{{data.flightOrderCheckout}}</td>
+              <td>{{data.trainOrderCheckout}}</td>
+              <td>{{data.hotelOrderCheckout}}</td>
+              <td>{{data.flightChangePrice}}</td>
+              <td>{{data.trainChangePrice}}</td>
+              <td>{{data.hotelChangePrice}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

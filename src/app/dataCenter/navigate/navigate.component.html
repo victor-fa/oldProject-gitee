@@ -1,0 +1,83 @@
+<nz-card style="width: 100%;">
+  <nz-card-tab>
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="留存">
+        <form [formGroup]="searchForm">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3" class="span_down right_alignment">
+              查询日期范围：
+            </div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+            </div>
+
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              来源：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [ngModel]="''" formControlName="status">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
+                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
+                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
+                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
+                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+        </form>
+
+        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>唤醒导航人次</th>
+              <th>导航唤醒行为数</th>
+              <th>导航对话轮数（总）</th>
+              <th>导航日最高对话轮数</th>
+              <th>查询周边的次数</th>
+              <th>查询地点的次数</th>
+              <th>开始导航的次数</th>
+              <th>结束导航的次数</th>
+              <th>切换使用行为数</th>
+              <th>到达目的地次数</th>
+              <th>导航骑行行为数</th>
+              <th>导航驾驶行为数</th>
+              <th>导航步行行为数</th>
+              <th>导航公交/地铁</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.awakNavigationUsers }}</td>
+              <td>{{data.awakNavigationCount}}</td>
+              <td>{{data.navigationSessionCount}}</td>
+              <td>{{data.navigationSessionMax}}</td>
+              <td>{{data.navigationQueryRound}}</td>
+              <td>{{data.navigationQuerySite}}</td>
+              <td>{{data.navigationStart}}</td>
+              <td>{{data.navigationEnd}}</td>
+              <td>{{data.navigationSwitch}}</td>
+              <td>{{data.navigationArrived}}</td>
+              <td>{{data.navigationForBiking}}</td>
+              <td>{{data.navigationForDriving}}</td>
+              <td>{{data.navigationForWalk}}</td>
+              <td>{{data.navigationForPubTransport}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

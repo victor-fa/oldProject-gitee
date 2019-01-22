@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'  // 必须添加，放在根部分
@@ -19,6 +20,16 @@ export class CommonService {
     { active: false },
     { active: false },
     { active: false },
+    { active: false }
+  ];
+  dataCenter = [
+    { active: false },
+    { active: false },
+    { active: false },
+    { active: false },
+    { active: false },
+    { active: false },
+    { active: false },
     { active: false },
     { active: false },
     { active: false }
@@ -26,6 +37,7 @@ export class CommonService {
 
   constructor(
     private _httpClient: HttpClient,
+    private _router: Router,
   ) { }
 
   append(str: any) {
@@ -36,6 +48,16 @@ export class CommonService {
     this.nav.forEach(item => {
       item.active = false;
     });
+  }
+
+  changeDataCenter(flag, route): void {
+    this.dataCenter.forEach(item => {
+      item.active = false;
+    });
+    this.dataCenter[flag].active = true;
+    setTimeout(() => {
+      this._router.navigate([route]);
+    }, 400);
   }
 
   // 验证有效的手机号

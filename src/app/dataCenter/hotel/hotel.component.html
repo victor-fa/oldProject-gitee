@@ -1,0 +1,93 @@
+<nz-card style="width: 100%;">
+  <nz-card-tab>
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="酒店BOT">
+        <form [formGroup]="searchForm">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3" class="span_down right_alignment">
+              查询日期范围：
+            </div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+            </div>
+
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              来源：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [ngModel]="''" formControlName="status">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
+                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
+                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
+                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
+                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+        </form>
+
+        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>唤醒酒店人次</th>
+              <th>唤醒酒店行为数</th>
+              <th>酒店订单推荐总数</th>
+              <th>首次酒店订单推荐数</th>
+              <th>酒店对话轮数（总）</th>
+              <th>日最高酒店对话轮数</th>
+              <th>酒店订单请求数</th>
+              <th>酒店订单提交数</th>
+              <th>酒店订单成交数</th>
+              <th>酒店订单出票数</th>
+              <th>酒店退款数</th>
+              <th>酒店订单请求率</th>
+              <th>酒店订单提交率</th>
+              <th>酒店成交率</th>
+              <th>酒店退款率</th>
+              <th>酒店换舱位</th>
+              <th>酒店换时间</th>
+              <th>酒店换价格</th>
+              <th>酒店换航空公司</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.awakHotelUsers}}</td>
+              <td>{{data.awakHotelCount}}</td>
+              <td>{{data.hotelOrderRecommend}}</td>
+              <td>{{data.hotelOrderRecommendFirst}}</td>
+              <td>{{data.hotelSessionCount}}</td>
+              <td>{{data.hotelSessionMax}}</td>
+              <td>{{data.hotelOrderQuery}}</td>
+              <td>{{data.hotelOrderCommit}}</td>
+              <td>{{data.hotelOrderCheckout}}</td>
+              <td>{{data.hotelOrderTicket}}</td>
+              <td>{{data.hotelOrderRefund}}</td>
+              <td>{{(data.awakHotelCount === 0 ? 0 : (data.hotelOrderQuery / data.awakHotelCount)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.awakHotelCount === 0 ? 0 : (data.hotelOrderCommit / data.awakHotelCount)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.awakHotelCount === 0 ? 0 : (data.hotelOrderCheckout / data.awakHotelCount)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.hotelOrderTicket === 0 ? 0 : (data.hotelOrderRefund / data.hotelOrderTicket)) * 100 | number:"0.1-2"}}%</td>
+              <td>{{data.hotelChangeSpace}}</td>
+              <td>{{data.hotelChangeTime}}</td>
+              <td>{{data.hotelChangePrice}}</td>
+              <td>{{data.hotelChangeAirline}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

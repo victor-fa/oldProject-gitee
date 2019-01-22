@@ -782,13 +782,14 @@
               <div nz-col nzSpan="3"></div>
             </div>
           </form>
-          <!-- 弹框和底部定制 -->
+          <!-- 弹框和底部定制 待出行且为酒店时 才可取消订单 -->
           <ng-template #bookingDetailModalFooter>
+            <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()">取消订单</button>
             <button nz-button nzType="default" (click)="hideBookingDetail()">取消</button>
           </ng-template>
         </nz-modal>
 
       </nz-tabset>
-    </nz-card-tab>
+    </nz-card-tab>1
   </nz-card>
 </div>

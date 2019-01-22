@@ -251,6 +251,11 @@ export class BookingComponent implements OnInit {
     this.isBookingDetailVisible = true;
   }
 
+  /*  取消酒店订单 */
+  cancleHotelOrder(): void {
+    
+  }
+
   showInvoiceDetail(data): void {
     this.isInvoiceVisible = true;
   }

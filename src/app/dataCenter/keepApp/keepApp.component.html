@@ -1,0 +1,93 @@
+<nz-card style="width: 100%;">
+  <nz-card-tab>
+    <nz-tabset nzSize="large">
+      <nz-tab nzTitle="留存">
+        <form [formGroup]="searchForm">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3" class="span_down right_alignment">
+              查询日期范围：
+            </div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
+            </div>
+
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              来源：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [ngModel]="''" formControlName="status">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
+                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
+                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
+                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
+                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+              </nz-select>
+            </div>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+        </form>
+
+        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>时间</th>
+              <th>新增安装数</th>
+              <th>2日留存数</th>
+              <th>3日留存数</th>
+              <th>4日留存数</th>
+              <th>5日留存数</th>
+              <th>6日留存数</th>
+              <th>7日留存数</th>
+              <th>14日留存数</th>
+              <th>21日留存数</th>
+              <th>30日留存数</th>
+              <th>2日留存率</th>
+              <th>3日留存率</th>
+              <th>4日留存率</th>
+              <th>5日留存率</th>
+              <th>6日留存率</th>
+              <th>7日留存率</th>
+              <th>14日留存率</th>
+              <th>21日留存率</th>
+              <th>30日留存率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <td>{{i+1}}</td>
+              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.dailyInstallation }}</td>
+              <td>{{data.day2RetentionUsers}}</td><!-- 2日留存数 -->
+              <td>{{data.day3RetentionUsers}}</td>
+              <td>{{data.day4RetentionUsers}}</td>
+              <td>{{data.day5RetentionUsers}}</td>
+              <td>{{data.day6RetentionUsers}}</td>
+              <td>{{data.day7RetentionUsers}}</td>
+              <td>{{data.day14RetentionUsers}}</td><!-- 14日留存数 -->
+              <td>null</td>
+              <td>null</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day2RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td><!-- 2日留存率 -->
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day3RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day4RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day5RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day6RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day7RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>{{(data.dailyInstallation === 0 ? 0 : data.day14RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+              <td>null</td>
+              <td>null</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+</nz-card>

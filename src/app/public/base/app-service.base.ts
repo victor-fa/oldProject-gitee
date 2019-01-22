@@ -14,6 +14,7 @@ export abstract class AppServiceBase {
 
   // protected baseUrl = 'http://lxwork.vipgz1.idcfengye.com/api/admin';
   protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';
+  protected dataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',
@@ -23,6 +24,10 @@ export abstract class AppServiceBase {
 
   protected fullUrl(url: string): string {
     return this.baseUrl + url;
+  }
+
+  protected fullDataCenterUrl(url: string): string {
+    return this.dataCenterUrl + url;
   }
 
   protected json2stringfy(obj: {}): string {

@@ -1,0 +1,13 @@
+<app-left-nav></app-left-nav>
+<div class="dataCenter" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <app-dataApp *ngIf="commonService.dataCenter[0].active === true"></app-dataApp>
+  <app-keepApp *ngIf="commonService.dataCenter[1].active === true"></app-keepApp>
+  <app-dataOverview *ngIf="commonService.dataCenter[2].active === true"></app-dataOverview>
+  <app-product *ngIf="commonService.dataCenter[3].active === true"></app-product>
+  <app-error *ngIf="commonService.dataCenter[4].active === true"></app-error>
+  <app-ticket *ngIf="commonService.dataCenter[5].active === true"></app-ticket>
+  <app-train *ngIf="commonService.dataCenter[6].active === true"></app-train>
+  <app-hotel *ngIf="commonService.dataCenter[7].active === true"></app-hotel>
+  <app-weather *ngIf="commonService.dataCenter[8].active === true"></app-weather>
+  <app-navigate *ngIf="commonService.dataCenter[9].active === true"></app-navigate>
+</div>
