@@ -88,7 +88,7 @@ export class UserComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -133,7 +133,7 @@ export class UserComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -199,7 +199,7 @@ export class UserComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.info({
           nzTitle: '提示',
@@ -269,7 +269,7 @@ export class UserComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       }
     });
   }
@@ -313,7 +313,7 @@ export class UserComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.error({
           nzTitle: '提示',

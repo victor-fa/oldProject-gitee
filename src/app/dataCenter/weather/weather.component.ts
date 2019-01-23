@@ -1,9 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { DataCenterService } from 'src/app/public/service/dataCenter.service';
 
 @Component({
   selector: 'app-weather',
@@ -16,31 +11,13 @@ export class WeatherComponent implements OnInit {
   displayData = [];
   allChecked = false;
   indeterminate = false;
-  searchForm: FormGroup;  // 查询表单
   pageSize = 100;
   constructor(
-    private fb: FormBuilder,
-    private datePipe: DatePipe,
-    private modalService: NzModalService,
-    private dataCenterService: DataCenterService,
-    private notification: NzNotificationService,
-    private _router: Router,
   ) {
-    this._initSearchForm();
   }
 
   ngOnInit() {
-    this.dataResult = JSON.parse(localStorage.getItem('dataCenter'));
-  }
-
-  doSearch() {
-  }
-
-  private _initSearchForm(): void {
-    this.searchForm = this.fb.group({
-      date: [''],
-      status: [''],
-    });
+    this.dataResult = JSON.parse(localStorage.getItem('dataCenter')).reverse();
   }
 
   // 主面板分页表单

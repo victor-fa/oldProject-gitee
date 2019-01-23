@@ -55,6 +55,9 @@ export class CommonService {
       item.active = false;
     });
     this.dataCenter[flag].active = true;
+    if (location.href.indexOf('dataCenter') > -1) {
+      return;
+    }
     setTimeout(() => {
       this._router.navigate([route]);
     }, 400);

@@ -1,93 +1,53 @@
-<nz-card style="width: 100%;">
-  <nz-card-tab>
-    <nz-tabset nzSize="large">
-      <nz-tab nzTitle="火车BOT">
-        <form [formGroup]="searchForm">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3" class="span_down right_alignment">
-              查询日期范围：
-            </div>
-            <div nz-col nzSpan="9" class="span_down">
-              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
-            </div>
-
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-              来源：
-            </div>
-            <div nz-col nzSpan="4">
-              <nz-select [ngModel]="''" formControlName="status">
-                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
-                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
-                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
-                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
-                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
-              </nz-select>
-            </div>
-
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-          </div>
-        </form>
-
-        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
-          <thead>
-            <tr>
-              <th>序号</th>
-              <th>时间</th>
-              <th>唤醒火车人次</th>
-              <th>唤醒火车行为数</th>
-              <th>火车订单推荐总数</th>
-              <th>首次火车订单推荐数</th>
-              <th>火车对话轮数（总）</th>
-              <th>日最高火车对话轮数</th>
-              <th>火车订单请求数</th>
-              <th>火车订单提交数</th>
-              <th>火车订单成交数</th>
-              <th>火车订单出票数</th>
-              <th>火车退款数</th>
-              <th>火车订单请求率</th>
-              <th>火车订单提交率</th>
-              <th>火车成交率</th>
-              <th>火车退款率</th>
-              <th>火车换舱位</th>
-              <th>火车换时间</th>
-              <th>火车换价格</th>
-              <th>火车换车类型</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-              <td>{{i+1}}</td>
-              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
-              <td>{{data.awakTrainUsers}}</td>
-              <td>{{data.awakTrainCount}}</td>
-              <td>{{data.trainOrderRecommend}}</td>
-              <td>{{data.trainOrderRecommendFirst}}</td>
-              <td>{{data.trainSessionCount}}</td>
-              <td>{{data.trainSessionMax}}</td>
-              <td>{{data.trainOrderQuery}}</td>
-              <td>{{data.trainOrderCommit}}</td>
-              <td>{{data.trainOrderCheckout}}</td>
-              <td>{{data.trainOrderTicket}}</td>
-              <td>{{data.trainOrderRefund}}</td>
-              <td>{{(data.awakTrainCount === 0 ? 0 : data.trainOrderQuery / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCommit / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCheckout / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.trainOrderTicket === 0 ? 0 : data.trainOrderRefund / data.trainOrderTicket) * 100 | number:"0.1-2"}}%</td>
-              <td>{{data.trainChangeSpace}}</td>
-              <td>{{data.trainChangeTime}}</td>
-              <td>{{data.trainChangePrice}}</td>
-              <td>{{data.trainChangeAirline}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </nz-tab>
-    </nz-tabset>
-  </nz-card-tab>
-</nz-card>
+<nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3200px', y: '520px'}">
+  <thead>
+    <tr>
+      <th nzWidth="50px">序号</th>
+      <!-- <th nzWidth="100px">时间</th> -->
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">唤醒火车人次</th>
+      <th nzWidth="100px">唤醒火车行为数</th>
+      <th nzWidth="100px">火车订单推荐总数</th>
+      <th nzWidth="100px">首次火车订单推荐数</th>
+      <th nzWidth="100px">火车对话轮数（总）</th>
+      <th nzWidth="100px">日最高火车对话轮数</th>
+      <th nzWidth="100px">火车订单请求数</th>
+      <th nzWidth="100px">火车订单提交数</th>
+      <th nzWidth="100px">火车订单成交数</th>
+      <th nzWidth="100px">火车订单出票数</th>
+      <th nzWidth="100px">火车退款数</th>
+      <th nzWidth="100px">火车订单请求率</th>
+      <th nzWidth="100px">火车订单提交率</th>
+      <th nzWidth="100px">火车成交率</th>
+      <th nzWidth="100px">火车退款率</th>
+      <th nzWidth="100px">火车换舱位</th>
+      <th nzWidth="100px">火车换时间</th>
+      <th nzWidth="100px">火车换价格</th>
+      <th nzWidth="100px">火车换车类型</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.awakTrainUsers}}</td>
+      <td nzWidth="100px">{{data.awakTrainCount}}</td>
+      <td nzWidth="100px">{{data.trainOrderRecommend}}</td>
+      <td nzWidth="100px">{{data.trainOrderRecommendFirst}}</td>
+      <td nzWidth="100px">{{data.trainSessionCount}}</td>
+      <td nzWidth="100px">{{data.trainSessionMax}}</td>
+      <td nzWidth="100px">{{data.trainOrderQuery}}</td>
+      <td nzWidth="100px">{{data.trainOrderCommit}}</td>
+      <td nzWidth="100px">{{data.trainOrderCheckout}}</td>
+      <td nzWidth="100px">{{data.trainOrderTicket}}</td>
+      <td nzWidth="100px">{{data.trainOrderRefund}}</td>
+      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderQuery / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCommit / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCheckout / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.trainOrderTicket === 0 ? 0 : data.trainOrderRefund / data.trainOrderTicket) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{data.trainChangeSpace}}</td>
+      <td nzWidth="100px">{{data.trainChangeTime}}</td>
+      <td nzWidth="100px">{{data.trainChangePrice}}</td>
+      <td nzWidth="100px">{{data.trainChangeAirline}}</td>
+    </tr>
+  </tbody>
+</nz-table>

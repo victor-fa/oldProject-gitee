@@ -1,73 +1,32 @@
-<nz-card style="width: 100%;">
-  <nz-card-tab>
-    <nz-tabset nzSize="large">
-      <nz-tab nzTitle="产品">
-        <form [formGroup]="searchForm">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3" class="span_down right_alignment">
-              查询日期范围：
-            </div>
-            <div nz-col nzSpan="9" class="span_down">
-              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
-            </div>
-
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-              来源：
-            </div>
-            <div nz-col nzSpan="4">
-              <nz-select [ngModel]="''" formControlName="status">
-                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
-                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
-                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
-                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
-                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
-              </nz-select>
-            </div>
-
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-          </div>
-        </form>
-
-        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
-          <thead>
-            <tr>
-              <th>序号</th>
-              <th>时间</th>
-              <th>位置权限</th>
-              <th>麦克风权限</th>
-              <th>通讯录权限</th>
-              <th>通话权限</th>
-              <th>相机权限</th>
-              <th>相册权限</th>
-              <th>点赞人次</th>
-              <th>点赞数量</th>
-              <th>点踩人次</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-              <td>{{i+1}}</td>
-              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
-              <td>{{data.locationPermission}}</td>
-              <td>{{data.microphonePermission}}</td>
-              <td>{{data.contactsPermission}}</td>
-              <td>{{data.phonePermission}}</td>
-              <td>{{data.cameraPermission}}</td>
-              <td>{{data.galleryPermission}}</td>
-              <td>{{data.upvoteUsers}}</td>
-              <td>{{data.upvoteCount}}</td>
-              <td>{{data.downvoteUsers}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </nz-tab>
-    </nz-tabset>
-  </nz-card-tab>
-</nz-card>
+<nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}">
+  <thead>
+    <tr>
+        <th nzWidth="50px">序号</th>
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">位置权限</th>
+      <th nzWidth="100px">麦克风权限</th>
+      <th nzWidth="100px">通讯录权限</th>
+      <th nzWidth="100px">通话权限</th>
+      <th nzWidth="100px">相机权限</th>
+      <th nzWidth="100px">相册权限</th>
+      <th nzWidth="100px">点赞人次</th>
+      <th nzWidth="100px">点赞数量</th>
+      <th nzWidth="100px">点踩人次</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.locationPermission}}</td>
+      <td nzWidth="100px">{{data.microphonePermission}}</td>
+      <td nzWidth="100px">{{data.contactsPermission}}</td>
+      <td nzWidth="100px">{{data.phonePermission}}</td>
+      <td nzWidth="100px">{{data.cameraPermission}}</td>
+      <td nzWidth="100px">{{data.galleryPermission}}</td>
+      <td nzWidth="100px">{{data.upvoteUsers}}</td>
+      <td nzWidth="100px">{{data.upvoteCount}}</td>
+      <td nzWidth="100px">{{data.downvoteUsers}}</td>
+    </tr>
+  </tbody>
+</nz-table>

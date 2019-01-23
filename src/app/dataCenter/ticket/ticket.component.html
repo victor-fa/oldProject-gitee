@@ -1,93 +1,52 @@
-<nz-card style="width: 100%;">
-  <nz-card-tab>
-    <nz-tabset nzSize="large">
-      <nz-tab nzTitle="机票BOT">
-        <form [formGroup]="searchForm">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3" class="span_down right_alignment">
-              查询日期范围：
-            </div>
-            <div nz-col nzSpan="9" class="span_down">
-              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
-            </div>
-
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-              来源：
-            </div>
-            <div nz-col nzSpan="4">
-              <nz-select [ngModel]="''" formControlName="status">
-                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
-                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
-                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
-                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
-                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
-              </nz-select>
-            </div>
-
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-          </div>
-        </form>
-
-        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
-          <thead>
-            <tr>
-              <th>序号</th>
-              <th>时间</th>
-              <th>唤醒机票人次</th>
-              <th>唤醒机票行为数</th>
-              <th>机票订单推荐总数</th>
-              <th>首次机票订单推荐数</th>
-              <th>机票对话轮数（总）</th>
-              <th>日最高机票对话轮数</th>
-              <th>机票订单请求数</th>
-              <th>机票订单提交数</th>
-              <th>机票订单成交数</th>
-              <th>机票订单出票数</th>
-              <th>机票退款数</th>
-              <th>机票订单请求率</th>
-              <th>机票订单提交率</th>
-              <th>机票成交率</th>
-              <th>机票退款率</th>
-              <th>机票换舱位</th>
-              <th>机票换时间</th>
-              <th>机票换价格</th>
-              <th>机票换航空公司</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-              <td>{{i+1}}</td>
-              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
-              <td>{{data.awakFlightUsers}}</td>
-              <td>{{data.awakFlightCount}}</td>
-              <td>{{data.flightOrderRecommend}}</td>
-              <td>{{data.flightOrderRecommendFirst}}</td>
-              <td>{{data.flightSessionCount}}</td>
-              <td>{{data.flightSessionMax}}</td>
-              <td>{{data.flightOrderQuery}}</td>
-              <td>{{data.flightOrderCommit}}</td>
-              <td>{{data.flightOrderCheckout}}</td>
-              <td>{{data.flightOrderTicket}}</td>
-              <td>{{data.flightOrderRefund}}</td>
-              <td>{{(data.awakFlightCount === 0 ? 0 : data.flightOrderQuery / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.awakFlightCount === 0 ? 0 : data.flightOrderCommit / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.awakFlightCount === 0 ? 0 : data.flightOrderCheckout / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
-              <td>{{(data.flightOrderTicket === 0 ? 0 : data.flightOrderRefund / data.flightOrderTicket) * 100 | number:"0.1-2"}}%</td>
-              <td>{{data.flightChangeSpace}}</td>
-              <td>{{data.flightChangeTime}}</td>
-              <td>{{data.flightChangePrice}}</td>
-              <td>{{data.flightChangeAirline}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </nz-tab>
-    </nz-tabset>
-  </nz-card-tab>
-</nz-card>
+<nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3200px', y: '520px'}">
+  <thead>
+    <tr>
+      <th nzWidth="50px">序号</th>
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">唤醒机票人次</th>
+      <th nzWidth="100px">唤醒机票行为数</th>
+      <th nzWidth="100px">机票订单推荐总数</th>
+      <th nzWidth="100px">首次机票订单推荐数</th>
+      <th nzWidth="100px">机票对话轮数（总）</th>
+      <th nzWidth="100px">日最高机票对话轮数</th>
+      <th nzWidth="100px">机票订单请求数</th>
+      <th nzWidth="100px">机票订单提交数</th>
+      <th nzWidth="100px">机票订单成交数</th>
+      <th nzWidth="100px">机票订单出票数</th>
+      <th nzWidth="100px">机票退款数</th>
+      <th nzWidth="100px">机票订单请求率</th>
+      <th nzWidth="100px">机票订单提交率</th>
+      <th nzWidth="100px">机票成交率</th>
+      <th nzWidth="100px">机票退款率</th>
+      <th nzWidth="100px">机票换舱位</th>
+      <th nzWidth="100px">机票换时间</th>
+      <th nzWidth="100px">机票换价格</th>
+      <th nzWidth="100px">机票换航空公司</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.awakFlightUsers}}</td>
+      <td nzWidth="100px">{{data.awakFlightCount}}</td>
+      <td nzWidth="100px">{{data.flightOrderRecommend}}</td>
+      <td nzWidth="100px">{{data.flightOrderRecommendFirst}}</td>
+      <td nzWidth="100px">{{data.flightSessionCount}}</td>
+      <td nzWidth="100px">{{data.flightSessionMax}}</td>
+      <td nzWidth="100px">{{data.flightOrderQuery}}</td>
+      <td nzWidth="100px">{{data.flightOrderCommit}}</td>
+      <td nzWidth="100px">{{data.flightOrderCheckout}}</td>
+      <td nzWidth="100px">{{data.flightOrderTicket}}</td>
+      <td nzWidth="100px">{{data.flightOrderRefund}}</td>
+      <td nzWidth="100px">{{(data.awakFlightCount === 0 ? 0 : data.flightOrderQuery / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakFlightCount === 0 ? 0 : data.flightOrderCommit / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakFlightCount === 0 ? 0 : data.flightOrderCheckout / data.awakFlightCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.flightOrderTicket === 0 ? 0 : data.flightOrderRefund / data.flightOrderTicket) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{data.flightChangeSpace}}</td>
+      <td nzWidth="100px">{{data.flightChangeTime}}</td>
+      <td nzWidth="100px">{{data.flightChangePrice}}</td>
+      <td nzWidth="100px">{{data.flightChangeAirline}}</td>
+    </tr>
+  </tbody>
+</nz-table>

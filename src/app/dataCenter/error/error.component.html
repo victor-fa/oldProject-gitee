@@ -1,99 +1,58 @@
-<nz-card style="width: 100%;">
-  <nz-card-tab>
-    <nz-tabset nzSize="large">
-      <nz-tab nzTitle="异常表述">
-        <form [formGroup]="searchForm">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3" class="span_down right_alignment">
-              查询日期范围：
-            </div>
-            <div nz-col nzSpan="9" class="span_down">
-              <nz-range-picker formControlName="date" required [nzFormat]="'yyyy-MM-dd'"></nz-range-picker>
-            </div>
-
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-              来源：
-            </div>
-            <div nz-col nzSpan="4">
-              <nz-select [ngModel]="''" formControlName="status">
-                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
-                <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
-                <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
-                <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
-                <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
-              </nz-select>
-            </div>
-
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-          </div>
-        </form>
-
-        <nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px'}">
-          <thead>
-            <tr>
-              <th>序号</th>
-              <th>时间</th>
-              <th>表述1人数</th>
-              <th>表述2人数</th>
-              <th>表述3人数</th>
-              <th>表述4人数</th>
-              <th>表述5人数</th>
-              <th>表述6人数</th>
-              <th>表述7人数</th>
-              <th>表述8人数</th>
-              <th>表述9人数</th>
-              <th>表述10人数</th>
-              <th>表述11人数</th>
-              <th>表述1行为数</th>
-              <th>表述2行为数</th>
-              <th>表述3行为数</th>
-              <th>表述4行为数</th>
-              <th>表述5行为数</th>
-              <th>表述6行为数</th>
-              <th>表述7行为数</th>
-              <th>表述8行为数</th>
-              <th>表述9行为数</th>
-              <th>表述10行为数</th>
-              <th>表述11行为数</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-              <td>{{i+1}}</td>
-              <td>{{data.updateDateTime | date:'yy-MM-dd HH:mm:ss'}}</td>
-              <td>{{data.botException1Users}}</td>
-              <td>{{data.botException2Users}}</td>
-              <td>{{data.botException3Users}}</td>
-              <td>{{data.botException4Users}}</td>
-              <td>{{data.botException5Users}}</td>
-              <td>{{data.botException6Users}}</td>
-              <td>{{data.botException7Users}}</td>
-              <td>{{data.botException8Users}}</td>
-              <td>{{data.botException9Users}}</td>
-              <td>{{data.botException10Users}}</td>
-              <td>{{data.botException11Users}}</td>
-              <td>{{data.botException1Count}}</td>
-              <td>{{data.botException2Count}}</td>
-              <td>{{data.botException3Count}}</td>
-              <td>{{data.botException4Count}}</td>
-              <td>{{data.botException5Count}}</td>
-              <td>{{data.botException6Count}}</td>
-              <td>{{data.botException7Count}}</td>
-              <td>{{data.botException8Count}}</td>
-              <td>{{data.botException9Count}}</td>
-              <td>{{data.botException10Count}}</td>
-              <td>{{data.botException11Count}}</td>
-            </tr>
-          </tbody>
-        </nz-table>
-      </nz-tab>
-    </nz-tabset>
-  </nz-card-tab>
-</nz-card>
+<nz-table #rowSelectionTable [nzData]="dataResult" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y:'520px'}">
+  <thead>
+    <tr>
+      <th nzWidth="50px">序号</th>
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">表述1人数</th>
+      <th nzWidth="100px">表述2人数</th>
+      <th nzWidth="100px">表述3人数</th>
+      <th nzWidth="100px">表述4人数</th>
+      <th nzWidth="100px">表述5人数</th>
+      <th nzWidth="100px">表述6人数</th>
+      <th nzWidth="100px">表述7人数</th>
+      <th nzWidth="100px">表述8人数</th>
+      <th nzWidth="100px">表述9人数</th>
+      <th nzWidth="100px">表述10人数</th>
+      <th nzWidth="100px">表述11人数</th>
+      <th nzWidth="100px">表述1行为数</th>
+      <th nzWidth="100px">表述2行为数</th>
+      <th nzWidth="100px">表述3行为数</th>
+      <th nzWidth="100px">表述4行为数</th>
+      <th nzWidth="100px">表述5行为数</th>
+      <th nzWidth="100px">表述6行为数</th>
+      <th nzWidth="100px">表述7行为数</th>
+      <th nzWidth="100px">表述8行为数</th>
+      <th nzWidth="100px">表述9行为数</th>
+      <th nzWidth="100px">表述10行为数</th>
+      <th nzWidth="100px">表述11行为数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.botException1Users}}</td>
+      <td nzWidth="100px">{{data.botException2Users}}</td>
+      <td nzWidth="100px">{{data.botException3Users}}</td>
+      <td nzWidth="100px">{{data.botException4Users}}</td>
+      <td nzWidth="100px">{{data.botException5Users}}</td>
+      <td nzWidth="100px">{{data.botException6Users}}</td>
+      <td nzWidth="100px">{{data.botException7Users}}</td>
+      <td nzWidth="100px">{{data.botException8Users}}</td>
+      <td nzWidth="100px">{{data.botException9Users}}</td>
+      <td nzWidth="100px">{{data.botException10Users}}</td>
+      <td nzWidth="100px">{{data.botException11Users}}</td>
+      <td nzWidth="100px">{{data.botException1Count}}</td>
+      <td nzWidth="100px">{{data.botException2Count}}</td>
+      <td nzWidth="100px">{{data.botException3Count}}</td>
+      <td nzWidth="100px">{{data.botException4Count}}</td>
+      <td nzWidth="100px">{{data.botException5Count}}</td>
+      <td nzWidth="100px">{{data.botException6Count}}</td>
+      <td nzWidth="100px">{{data.botException7Count}}</td>
+      <td nzWidth="100px">{{data.botException8Count}}</td>
+      <td nzWidth="100px">{{data.botException9Count}}</td>
+      <td nzWidth="100px">{{data.botException10Count}}</td>
+      <td nzWidth="100px">{{data.botException11Count}}</td>
+    </tr>
+  </tbody>
+</nz-table>

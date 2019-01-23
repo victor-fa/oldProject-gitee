@@ -7,4 +7,15 @@
   height: calc(100% - 70px);
   overflow-x: hidden;
   overflow-y: scroll;
+  .search_panel {
+    margin-bottom: 10px;
+    .span_down {
+      line-height: 30px;
+    }
+  }
+
+  .ant-table-tbody>tr>td,
+  .ant-table-thead>tr>th {
+    padding: 10px !important;
+  }
 }

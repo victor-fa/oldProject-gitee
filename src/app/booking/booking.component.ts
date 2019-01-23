@@ -95,7 +95,7 @@ export class BookingComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -139,7 +139,7 @@ export class BookingComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -240,7 +240,7 @@ export class BookingComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -253,7 +253,7 @@ export class BookingComponent implements OnInit {
 
   /*  取消酒店订单 */
   cancleHotelOrder(): void {
-    
+
   }
 
   showInvoiceDetail(data): void {
@@ -309,6 +309,9 @@ export class BookingComponent implements OnInit {
           this.notification.blank('供应商订单详情',
             '到达时间：' + JSON.parse(res.payload).hotelOrder.arrival_date +
             '<br>是否可取消：' + this.getAllowed(JSON.parse(res.payload).hotelOrder.allowed) +
+            '<br>取消说明：' + JSON.parse(res.payload).hotelOrder.cancel_policy.penalty_type_name +
+            '<br>取消时限：' + JSON.parse(res.payload).hotelOrder.cancel_policy.time_limit +
+            '<br>手续费：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.detail.penalty +
             '<br>最晚到达时间：' + JSON.parse(res.payload).hotelOrder.cancel_policy.time_limit +
             '<br>联系人电话：' + JSON.parse(res.payload).hotelOrder.contact_mobile +
             '<br>联系人姓名：' + JSON.parse(res.payload).hotelOrder.contact_name +
@@ -391,7 +394,7 @@ export class BookingComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
@@ -436,7 +439,7 @@ export class BookingComponent implements OnInit {
             }
           }
         );
-        this._router.navigate(['/login']);
+        // this._router.navigate(['/login']);
       } else {
         this.modalService.confirm({
           nzTitle: '提示',
