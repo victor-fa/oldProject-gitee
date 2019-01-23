@@ -24,7 +24,6 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
-    "centaurs-test-plugin": "git+https://github.com/yiwangcentaurs/centaurs-test-plugin.git",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",

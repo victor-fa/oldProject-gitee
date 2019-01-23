@@ -8,15 +8,10 @@ var express = require('express'),
 	session = require('express-session'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,    
-	plugin = require("centaurs-test-plugin"),
 	port = process.env.PORT || 10010;	
 
-var mongo = require('mongodb'),
-	mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/chewtool', {
-	useMongoClient: true,
-});
-var db = mongoose.connection;
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/chewtool', { useNewUrlParser: true });
 
 var UserService = require('./services/user'),
 	UserGroupPolicy = require('./services/group_policy')
@@ -129,10 +124,6 @@ app.use(function (req, res, next) {
 	next();
 });
 
-
-// Plugin: start API request timer
-app.use(plugin.timer.start);
-
 // Routes
 app.use('/', routes);
 app.use('/users', users);
@@ -142,21 +133,11 @@ app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManager
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
 app.use('/image', UserService.ensureAuthenticated, image);
 app.use('/download', getCount);
-
-// Plugin: stop API request timer
-app.use(plugin.timer.stop);
+app.use('/favicon.ico', express.static('/public/img/favicon.ico'));
 
 // Set Port
 app.set('port', port);
 
-// Plugin: catch exceptions
-plugin.catchErr();
-
 app.listen(app.get('port'), function () {
 	console.log('Server started on port ' + port);
-	plugin.set('app_name', 'chewrobot-tool');
-	// Plugin: show configurations
-	plugin.showConfig();
-	// Plugin: send system usage to monitor once per minute 
-    plugin.sysCheck(60);
 });
