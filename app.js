@@ -7,7 +7,8 @@ var express = require('express'),
 	flash = require('connect-flash'),
 	session = require('express-session'),
 	passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy,    
+	LocalStrategy = require('passport-local').Strategy,
+	favicon = require('serve-favicon'),
 	port = process.env.PORT || 10010;	
 
 var mongoose = require('mongoose');
@@ -75,6 +76,9 @@ app.use(fileUpload({
 	safeFileNames: /.+(\.(jpg|jpeg)(\?tn=(1|0))?)$/i
 }));
 
+// Fav icon
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
+
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -133,7 +137,6 @@ app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManager
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
 app.use('/image', UserService.ensureAuthenticated, image);
 app.use('/download', getCount);
-app.use('/favicon.ico', express.static('/public/img/favicon.ico'));
 
 // Set Port
 app.set('port', port);
