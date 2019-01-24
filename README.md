@@ -8,3 +8,15 @@ npm install
 
 ## 启动项目
 npm start
+
+## 编译项目
+npm run build
+
+## 摇树编译
+ng build --prod --aot
+
+## 测试服务器
+sz2
+
+## 服务器路径
+/usr/share/nginx/html/acmt-front
