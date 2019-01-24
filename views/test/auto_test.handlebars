@@ -49,7 +49,7 @@
         var appsecret = '{{user.appsecret}}'
 
         var nickname = '{{user.name}}'
-        var uid = Math.random() + ''
+        var uid = 'Console.AutoTest.' + Math.random()
         var tempArr = [];
     </script>
 
@@ -60,7 +60,7 @@
     <script>
         function on_send_question(ask) {
             if (ask === '&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;') {
-                setCookie('uid', uid, 100)  // Reset Dialogue
+                setCookie('uid', 'Console.AutoTest.' + Math.random(), 100)  // Reset Dialogue
                 $('<li class="me-message" style="display:none;">\
                 <span class="me-message-content"></span>\
             </li>').appendTo(".chat-list"); // hide ask when '======'
