@@ -1,9 +1,11 @@
+
+
 <app-left-nav></app-left-nav>
 <div class="dataCenter" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="{{currentTitle}}">
+        <nz-tab nzTitle="{{commonService.currentTitle}}">
           <form [formGroup]="searchForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="1"></div>
@@ -12,20 +14,20 @@
                 查询日期范围：
               </div>
               <div nz-col nzSpan="9" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="yyyy-MM-dd" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="yyyyMMdd" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 来源：
               </div>
               <div nz-col nzSpan="4">
-                <nz-select [ngModel]="''" formControlName="status">
-                  <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'ios官方'" [nzValue]="'0'"></nz-option>
-                  <nz-option required [nzLabel]="'ios越狱'" [nzValue]="'1'"></nz-option>
-                  <nz-option required [nzLabel]="'And官方'" [nzValue]="'2'"></nz-option>
-                  <nz-option required [nzLabel]="'And-小米'" [nzValue]="'3'"></nz-option>
-                  <nz-option required [nzLabel]="'And-vivo'" [nzValue]="'4'"></nz-option>
+                <nz-select [ngModel]="commonService.dataCenterStatus" formControlName="status">
+                  <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
+                  <nz-option required [nzLabel]="'LENZE-ANDROID-LENZE'" [nzValue]="'LENZE-ANDROID-LENZE'"></nz-option>
+                  <nz-option required [nzLabel]="'LENZE-IOS-APPSTORE'" [nzValue]="'LENZE-IOS-APPSTORE'"></nz-option>
+                  <nz-option required [nzLabel]="'XIAOWU-IOS-TESTFLIGHT'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
+                  <nz-option required [nzLabel]="'LENZE-ANDROID-APK'" [nzValue]="'LENZE-ANDROID-APK'"></nz-option>
+                  <nz-option required [nzLabel]="'XIAOWU-ANDROID-FIRIM'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
                 </nz-select>
               </div>
 
@@ -37,19 +39,25 @@
             </div>
           </form>
 
-          <app-dataApp *ngIf="commonService.dataCenter[0].active === true"></app-dataApp>
-          <app-keepApp *ngIf="commonService.dataCenter[1].active === true"></app-keepApp>
-          <app-dataOverview *ngIf="commonService.dataCenter[2].active === true"></app-dataOverview>
-          <app-product *ngIf="commonService.dataCenter[3].active === true"></app-product>
-          <app-error *ngIf="commonService.dataCenter[4].active === true"></app-error>
-          <app-ticket *ngIf="commonService.dataCenter[5].active === true"></app-ticket>
-          <app-train *ngIf="commonService.dataCenter[6].active === true"></app-train>
-          <app-hotel *ngIf="commonService.dataCenter[7].active === true"></app-hotel>
-          <app-weather *ngIf="commonService.dataCenter[8].active === true"></app-weather>
-          <app-navigate *ngIf="commonService.dataCenter[9].active === true"></app-navigate>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+          <div *ngIf="!isSpinning">
+            <app-dataApp *ngIf="commonService.dataCenter[0].active === true"></app-dataApp>
+            <app-keepApp *ngIf="commonService.dataCenter[1].active === true"></app-keepApp>
+            <app-dataOverview *ngIf="commonService.dataCenter[2].active === true"></app-dataOverview>
+            <app-product *ngIf="commonService.dataCenter[3].active === true"></app-product>
+            <app-error *ngIf="commonService.dataCenter[4].active === true"></app-error>
+            <app-ticket *ngIf="commonService.dataCenter[5].active === true"></app-ticket>
+            <app-train *ngIf="commonService.dataCenter[6].active === true"></app-train>
+            <app-hotel *ngIf="commonService.dataCenter[7].active === true"></app-hotel>
+            <app-weather *ngIf="commonService.dataCenter[8].active === true"></app-weather>
+            <app-navigate *ngIf="commonService.dataCenter[9].active === true"></app-navigate>
+          </div>
 
         </nz-tab>
       </nz-tabset>
     </nz-card-tab>
   </nz-card>
 </div>
+

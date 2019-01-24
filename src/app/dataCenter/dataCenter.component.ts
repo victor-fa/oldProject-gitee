@@ -6,8 +6,6 @@ import { DataCenterService } from '../public/service/dataCenter.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
-import { iterateListLike } from '@angular/core/src/change_detection/change_detection_util';
-import { initDomAdapter } from '@angular/platform-browser/src/browser';
 
 registerLocaleData(zh);
 
@@ -19,19 +17,17 @@ registerLocaleData(zh);
 })
 export class DataCenterComponent implements OnInit {
 
-  dataResult: any = [];
   displayData = [];
   allChecked = false;
   indeterminate = false;
   searchForm: FormGroup;  // 查询表单
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  beginDate = '20190101';
-  endDate = '20190115';
+  beginDate = '';
+  endDate = '';
   myDate = new Date();
   localStorageTime = localStorage.getItem('dataCenterTime');
-  currentTitle = '数据中心';
-  titleName = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT'];
+  isSpinning = false;
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
@@ -43,66 +39,140 @@ export class DataCenterComponent implements OnInit {
   ) {
     this.commonService.nav[3].active = true;
     this._initSearchForm();
+    this.beginDate = this.getDay(-7);
+    this.endDate = this.getDay(0);
   }
 
   ngOnInit() {
     this.initData();
-    this.getTitle();
   }
 
   initData(): void {
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
     if (localStorage.getItem('dataCenter') == null || currentTime !== this.localStorageTime) {
       this.loadData();
+    } else {
+      this.loadData();
     }
     localStorage.setItem('beginDate', this.beginDate);
     localStorage.setItem('endDate', this.endDate);
   }
 
+  // 获取大数据
   loadData(): void {
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
+    this.isSpinning = true; // loading
     this.dataCenterService.getDataCenterList(this.beginDate, this.endDate).subscribe(res => {
       if (res.retcode === 0) {
         localStorage.setItem('dataCenter', res.payload);
+        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
         localStorage.setItem('dataCenterTime', currentTime);
+        this.isSpinning = false;  // loading
       } else {
-        this.modalService.error({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      }
+    });
+  }
+
+  // 获取单元数据
+  loadUnitData(platform, origin): void {
+    const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
+    let flag = '';
+    switch (this.commonService.currentTitle) {
+      case 'APP':
+        flag = 'user-behavior';
+        break;
+      case '留存':
+        flag = 'retentions';
+        break;
+      case 'BOT总览':
+        flag = 'bot-awaken';
+        break;
+      case '产品':
+        flag = 'user-behavior';
+        break;
+      case '异常表述':
+        flag = 'bot-exception';
+        break;
+      case '机票BOT':
+        flag = 'flight-bot';
+        break;
+      case '火车BOT':
+        flag = 'train-bot';
+        break;
+      case '酒店BOT':
+        flag = 'hotel-bot';
+        break;
+      case '天气BOT':
+        flag = 'weather-bot';
+        break;
+      case '导航BOT':
+        flag = 'navigation-bot';
+        break;
+      default:
+        break;
+    }
+    this.isSpinning = true; // loading
+    this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
+      if (res.retcode === 0) {
+        localStorage.setItem('dataCenter', res.payload);
+        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
+        localStorage.setItem('dataCenterTime', currentTime);
+        this.isSpinning = false;  // loading
+      } else {
+        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
     });
   }
 
   doSearch(): void {
-    if (this.beginDate === localStorage.getItem('beginDate') || this.endDate === localStorage.getItem('endDate')) {
-      // this.loadData();
+    const params = this.searchForm.controls['status'].value;
+    this.commonService.dataCenterStatus = params;
+    this.commonService.needDataCenter = false;
+    if (params === 'all') {
+      this.loadData();
       localStorage.setItem('beginDate', this.beginDate);
       localStorage.setItem('endDate', this.endDate);
+    } else {
+      const platform = params.substring(0, params.indexOf('-'));
+      const origin = params.substring(params.indexOf('-') + 1, params.length);
+      // 处理成请求单独接口的……
+      this.loadUnitData(platform, origin);
     }
   }
 
-  getTitle(): void {
-    let count = 0;
-    this.commonService.dataCenter.forEach(item => {
-      if (item.active === true) {
-        this.currentTitle = this.titleName[count];
-      }
-      count++;
-    });
+  // 获取指定时间的日期 格式：yyyyMMdd
+  getDay(day): string {
+    const today = new Date();
+    const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+    today.setTime(targetday_milliseconds); // 注意，这行是关键代码
+    const tYear = today.getFullYear();
+    let tMonth = today.getMonth().toString();
+    let tDate = today.getDate().toString();
+    tMonth = this.doHandleMonth(tMonth + 1);
+    tDate = this.doHandleMonth(tDate);
+    return tYear + '' + tMonth + '' + tDate;
+  }
+
+  doHandleMonth(month): string {
+    let m = month;
+    if (month.toString().length === 1) {
+      m = '0' + month;
+    }
+    return m;
   }
 
   // 日期插件
   onChange(result: Date): void {
-    if (result[0] !== '') {
-      let beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
-      let endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
-      if (beginDate === endDate) {
-        beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
-      }
-      this.beginDate = beginDate;
-      this.endDate = endDate;
+    // 正确选择数据
+    if (result[0] !== '' || result[1] !== '') {
+      this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+      this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+    }
+    // 手动点击清空
+    if (this.beginDate === null || this.endDate === null) {
+      this.beginDate = this.getDay(-7);
+      this.endDate = this.getDay(0);
     }
   }
 

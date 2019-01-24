@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from 'src/app/public/service/common.service';
+import { NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-navigate',
@@ -7,17 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigateComponent implements OnInit {
 
-  dataResult: any = [];
   displayData = [];
   allChecked = false;
   indeterminate = false;
   pageSize = 100;
   constructor(
+    public commonService: CommonService,
+    private notification: NzNotificationService,
   ) {
   }
 
   ngOnInit() {
-    this.dataResult = JSON.parse(localStorage.getItem('dataCenter')).reverse();
+    if (this.commonService.dataCenterStatus !== 'all' && this.commonService.needDataCenter) {  // 单独接口需要重新请求
+      this.notification.create('info', '提示', '您切换了查询面板，请重新查询数据');
+    }
   }
 
   // 主面板分页表单
