@@ -12,52 +12,12 @@ import { TrainComponent } from './train/train.component';
 import { HotelComponent } from './hotel/hotel.component';
 import { WeatherComponent } from './weather/weather.component';
 import { NavigateComponent } from './navigate/navigate.component';
+import { DataCenterRoutingModule } from './daraCenter.routing';
 
 @NgModule({
   imports: [
     PublicModule,
-    RouterModule.forChild([
-      {
-        path: 'app',
-        component: DataCenterComponent
-      },
-      {
-        path: 'keepApp',
-        component: DataCenterComponent
-      },
-      {
-        path: 'overview',
-        component: DataCenterComponent
-      },
-      {
-        path: 'product',
-        component: DataCenterComponent
-      },
-      {
-        path: 'error',
-        component: DataCenterComponent
-      },
-      {
-        path: 'ticket',
-        component: DataCenterComponent
-      },
-      {
-        path: 'train',
-        component: DataCenterComponent
-      },
-      {
-        path: 'hotel',
-        component: DataCenterComponent
-      },
-      {
-        path: 'weather',
-        component: DataCenterComponent
-      },
-      {
-        path: 'navigate',
-        component: DataCenterComponent
-      }
-    ]),
+    DataCenterRoutingModule,
   ],
   declarations: [
     DataCenterComponent,
