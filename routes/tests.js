@@ -9,17 +9,11 @@ router.get('/manual', function (req, res, next) {
 			'/css/qw/demo_style.css'
 		]
 	})
-	if (next) {
-        next();
-    }
 })
 
 // Auto Test Configuration
 router.get('/config', function (req, res, next) {
 	res.render('test/auto_test_config')
-	if (next) {
-        next();
-    }
 });
 
 // Auto Test
@@ -36,9 +30,6 @@ router.post('/auto', function (req, res, next) {
 			testcases: testcases
 		})
 	})
-	if (next) {
-        next();
-    }
 })
 
 module.exports = router

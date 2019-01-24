@@ -12,17 +12,11 @@ router.get('/', UserService.ensureAuthenticated, function (req, res, next) {
 			'/js/qw/dashboard.js'
 		]
 	});
-	if (next) {
-        next();
-    }
 });
 
 // Get Chart
 router.get('/chart', UserService.ensureAuthenticated, function (req, res, next) {
 	res.render('dashboard/chart');
-	if (next) {
-        next();
-    }
 });
 
 // Get Table
