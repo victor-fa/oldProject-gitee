@@ -134,9 +134,12 @@ export class DataCenterComponent implements OnInit {
       localStorage.setItem('beginDate', this.beginDate);
       localStorage.setItem('endDate', this.endDate);
     } else {
+      if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
+        this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });
+        return;
+      }
       const platform = params.substring(0, params.indexOf('-'));
       const origin = params.substring(params.indexOf('-') + 1, params.length);
-      // 处理成请求单独接口的……
       this.loadUnitData(platform, origin);
     }
   }

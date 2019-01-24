@@ -14,7 +14,7 @@
                 查询日期范围：
               </div>
               <div nz-col nzSpan="9" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="yyyyMMdd" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
