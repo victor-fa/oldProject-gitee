@@ -1,6 +1,8 @@
 <div id="qw_dialog_box">
-    <button type="button" class="btn btn-success" style="position: absolute;left: 307px;top: 63px;" onclick="randomUid()">
-        Reset Dialogue </button>
+    <button type="button" class="btn btn-success" style="position: absolute;left: 307px;top: 63px;" onclick="randomUidAndRefresh()">
+        重置对话 </button>
+    <button type="button" id="memoryBtn" class="btn btn-info" style="position: absolute;left: 507px;top: 63px;" onclick="checkMemory()">
+        查看记忆 </button>
     <div class="dialog_window">
         <div class="row">
             <div class="col-md-7">
@@ -44,14 +46,38 @@
 
     var nickname = '{{user.name}}'
 
+    var memory_url = '';
+    if (appkey == 'cenri-ios-test') {
+        memory_url = 'http://aliyun-sz2.chewrobot.com:8080';
+    }
+    if (appkey == 'zhihuishenghuo-pre') {
+        memory_url = 'http://aliyun-sh11.chewrobot.com:6006';
+    }
+    if (appkey == 'zhihuishenghuo-pro') {
+        memory_url = 'http://aliyun-sh1.chewrobot.com:6006';
+    }
+    if (memory_url == '') {
+        $('#memoryBtn')[0].style.visibility='hidden';
+    }
+
     function randomUid() {
         uid = 'Console.Test.' + Math.random()
         setCookie('uid', uid, 100)
     }
 
+    function randomUidAndRefresh() {
+        randomUid();
+        location.reload();
+    }
+
     var uid = getCookie('uid')
     if (uid == '') {
-        randomUid()
+        randomUid();
+    }
+
+    function checkMemory() {
+        var win = window.open(memory_url + '/api/central/memory?uid=' + uid, '_blank');
+        win.focus();
     }
 </script>
 
