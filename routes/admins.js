@@ -17,7 +17,7 @@ const fs = require('fs');
 
 var rp = require('request-promise');
 // Manage
-router.get('/manage', function (req, res, next) {
+router.get('/manage', function (req, res) {
 	var id = req.query.id; // $_GET["id"]
 	if (id) {
 		UserService.getUserById(id, function (err, aUser) {
@@ -61,13 +61,10 @@ router.get('/manage', function (req, res, next) {
 
 		});
 	}
-	if (next) {
-        next();
-    }
 });
 
 // API: list all users
-router.get('/manage/api/load', function (req, res, next) {
+router.get('/manage/api/load', function (req, res) {
 	UserService.listAllUsers(function (err, users) {
 		if (err) {
 			// throw err;
@@ -75,44 +72,32 @@ router.get('/manage/api/load', function (req, res, next) {
 		}
 		res.json(users);
 	});
-	if (next) {
-        next();
-    }
 });
 
 //API: 重置用户密码
-router.get('/manage/api/reset', function (req, res, next) {
+router.get('/manage/api/reset', function (req, res) {
 	var username = req.param("username");
 	var newPwd = UserService.resertPwd(username);
 	res.json({"pwd":newPwd});
-	if (next) {
-        next();
-    }
 });
 
 // API:转发到上传配置页面
-router.get('/manage/api/upload',function(req, res, next){
+router.get('/manage/api/upload',function(req, res){
 	res.render('admin/cases-upload', {
 		css: ['/css/qw/app.css']
 	});
-	if (next) {
-        next();
-    }
 });
 
 
 // API:转发到新建配置页面
-router.get('/manage/api/new',function(req, res, next){
+router.get('/manage/api/new',function(req, res){
 	res.render('admin/cases-new', {
 		css: ['/css/qw/app.css']
 	});
-	if (next) {
-        next();
-    }
 });
 
 // API:调用第三方接口获取验证码
-router.get('/manage/api/getfakecode',function(req, res, next){
+router.get('/manage/api/getfakecode',function(req, res){
 	var phone = req.param("phone");
 	var b = new Buffer(phone);
 	var s = b.toString('base64');
@@ -135,7 +120,7 @@ router.get('/manage/api/getfakecode',function(req, res, next){
 });
 
 // API:转发到获取验证码页面
-router.get('/manage/api/codemanage',function(req, res, next){
+router.get('/manage/api/codemanage',function(req, res){
 	res.render('admin/manage-fakecode', {
 		
 		css: ['/css/qw/app.css'],
@@ -143,13 +128,10 @@ router.get('/manage/api/codemanage',function(req, res, next){
 		js: ['/js/qw/applist.js'],
 		js: ['/js/qw/get_fakecode.js']
 	});
-	if (next) {
-        next();
-    }
 });
 
 // API: active or inactive user
-router.post('/manage/api/activate', function (req, res, next) {
+router.post('/manage/api/activate', function (req, res) {
 	var id = req.body.id;
 	var activate = req.body.activate;
 	// console.log(`server: id = ${id} \tactivate = ${activate}`);
@@ -180,16 +162,10 @@ router.post('/manage/api/activate', function (req, res, next) {
 			})
 		});
 	}
-	if (next) {
-        next();
-    }
 });
 
-
-
-
 // API: add new APP
-router.post('/manage/api/addapp', function (req, res, next) {
+router.post('/manage/api/addapp', function (req, res) {
 	var ids = req.body.checkItem;
 	var id = req.body.id;
 	if (!id) {
@@ -210,13 +186,10 @@ router.post('/manage/api/addapp', function (req, res, next) {
                 res.redirect('/admin/manage?id=' + id);
 		});
 	}
-	if (next) {
-        next();
-    }
 });
 
 // API: updateApp byApp
-router.get('/manage/api/updateAppByApp', function (req, res, next) {
+router.get('/manage/api/updateAppByApp', function (req, res) {
 	var appkey = 'zhihuishenghuo-chat-test';	// 旧的
 	var newappkey = 'zhihuishenghuo-chat-test1';	// 新的
 	UserService.updateAppByApp(appkey, newappkey, function (err, users) {
@@ -228,13 +201,10 @@ router.get('/manage/api/updateAppByApp', function (req, res, next) {
 			res.json({"msg": 'OK'});
 		}
 	});
-	if (next) {
-        next();
-    }
 });
 
 // API: remove APP
-router.get('/manage/api/removeapp', function (req, res, next) {
+router.get('/manage/api/removeapp', function (req, res) {
 	var id = req.query.id;
 	var appkey = req.query.appkey;
 	if (!id) {
@@ -253,9 +223,6 @@ router.get('/manage/api/removeapp', function (req, res, next) {
 			res.redirect('/admin/manage?id=' + id);
 		});
 	}
-	if (next) {
-        next();
-    }
 });
 
 
@@ -275,19 +242,17 @@ router.get('/manage/api/listappinfors',function (req,res) {
 	});
 });
 // app manage  page
-router.get('/manage/api/appmanage', function (req, res, next) {
+router.get('/manage/api/appmanage', function (req, res) {
 	res.render('admin/app-manage', {
 		
 		css: ['/css/qw/app.css'],
 		js: ['/js/qw/app.js'],
 		js: ['/js/qw/applist.js']
 	});
-	if(next){
-		next();
-	}
 });
+
 //delete app
-router.get('/manage/api/deleteapp', function (req, res, next) {
+router.get('/manage/api/deleteapp', function (req, res) {
 	var secret = req.query.appsecret;
 	var attr = 'secret='+ secret;
 	delAppBySrt(attr);
@@ -296,9 +261,6 @@ router.get('/manage/api/deleteapp', function (req, res, next) {
 		js: ['/js/qw/app.js'],
 		js: ['/js/qw/applist.js']
 	});
-	if(next){
-		next();
-	}
 });
 //update app
 router.get('/manage/api/alterapp', function (req, res) {
@@ -317,8 +279,9 @@ router.get('/manage/api/alterapp', function (req, res) {
 		
 	});
 });
+
 //update app
-router.post('/manage/api/alterapp', function (req, res, next) {
+router.post('/manage/api/alterapp', function (req, res) {
 	var app_info = {};
 	app_info.appname = req.body.appname;
 	app_info.appkey = req.body.appkey;
@@ -354,9 +317,6 @@ router.post('/manage/api/alterapp', function (req, res, next) {
 			res.redirect('/admin/manage/api/appmanage');
 		}
 	});
-	if(next){
-		next();
-	}
 });
 // add Appication to DB page
 router.get('/manage/api/app-add', function (req, res) {
@@ -371,7 +331,7 @@ router.get('/manage/api/app-add', function (req, res) {
 });
 
 // add Appication to DB
-router.post('/manage/api/app-add', function (req, res, next) {
+router.post('/manage/api/app-add', function (req, res) {
 	var app_info = {};
 	app_info.appname = req.body.appname;
 	app_info.appkey = req.body.appkey;
@@ -419,9 +379,6 @@ router.post('/manage/api/app-add', function (req, res, next) {
 			 
 		}
 	});
-	if(next){
-		next();
-	}
 });
 
 function addAppToDB(attr,callbackfunciton){
@@ -531,9 +488,8 @@ function deleteYMLFile(ymlName, flag) {
  * @param {*} flag 
  * @param {*} req 
  * @param {*} res 
- * @param {*} next 
  */
-function execYMLFile(ymlName, flag, req, res, next) {
+function execYMLFile(ymlName, flag, req, res) {
 	var exec = require('child_process').exec;
 	const yml_dir = flag === 'upload' ? yml_upload_dir : yml_new_dir;
 	const redirectURL = flag === 'upload' ? '/admin/manage/api/upload' : '/admin/manage/api/new';
@@ -570,7 +526,7 @@ function execYMLFile(ymlName, flag, req, res, next) {
 /**
  * upload file
  */
-router.post('/cases/uploadyml', function (req, res, next) {
+router.post('/cases/uploadyml', function (req, res) {
 	// JSON.stringify()
 	let ymlFileName = '';
 	let casesFile = req.files.ymlFile;
@@ -592,12 +548,9 @@ router.post('/cases/uploadyml', function (req, res, next) {
             return res.redirect('/admin/manage/api/upload');
 		} 
 		else {
-			execYMLFile(ymlFileName, 'upload', req, res, next);
+			execYMLFile(ymlFileName, 'upload', req, res);
         }
     })
-    if (next) {
-        next();
-    }
 })
 /* 配置文件上传结束 */
 
@@ -605,7 +558,7 @@ router.post('/cases/uploadyml', function (req, res, next) {
 /**
  * 提交表单
  */
-router.post('/cases/newcases', function (req, res, next) {
+router.post('/cases/newcases', function (req, res) {
 	console.log('=========' + JSON.stringify(req.body));
 	reqString = JSON.stringify(req.body);
 	var YAML = require('json2yaml');
@@ -822,10 +775,6 @@ router.post('/cases/newcases', function (req, res, next) {
 			}
 		}
 	}
-	
-    if (next) {
-        next();
-    }
 })
 
 /**
