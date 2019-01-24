@@ -34,6 +34,10 @@ export class UserComponent implements OnInit {
   doLast = false;
   doFirst = false;
   pageSize = 10;
+  feedBackPageSize = 1000;
+  feedbackInfo = [];
+  isFeedBackVisible = false;
+  tempFeedBack = {};
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -48,7 +52,8 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData();
+    this.loadData();  // 默认信息
+    this.loadFeedbackInfo();  // 反馈信息
     this.sendScreenHeight = (window.screen.height - 524) + 'px';
   }
 
@@ -207,6 +212,35 @@ export class UserComponent implements OnInit {
         });
       }
     });
+  }
+
+  /**
+   * 查询反馈信息
+   */
+  private loadFeedbackInfo(): void {
+    this.userService.getFeedBackInfo().subscribe(res => {
+      if (res.payload !== '') {
+        if (res.status === 200) {
+          this.feedbackInfo = JSON.parse(res.payload);
+        }
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+  }
+
+  // 反馈详情
+  showFeedbackInfo(data): void {
+    this.isFeedBackVisible = true;
+    this.tempFeedBack = data;
+    console.log(this.tempFeedBack);
+  }
+
+  hideFeedBack(): void {
+    this.isFeedBackVisible = false;
   }
 
   getAgeType(ageType): string {

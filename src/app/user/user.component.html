@@ -66,6 +66,7 @@
               </tr>
             </tbody>
           </nz-table>
+          <!-- 分页模块 -->
           <div nz-row style="margin: 10px 0;line-height: 30px;">
             <div nz-col nzSpan="16"></div>
             <div nz-col nzSpan="2">
@@ -83,6 +84,60 @@
             <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
         </nz-tab>
+
+        <nz-tab nzTitle="用户反馈">
+          <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" [(nzPageSize)]="feedBackPageSize" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th nzWidth="100px">序号</th>
+                <th nzWidth="100px">问题描述</th>
+                <th nzWidth="100px">图片</th>
+                <th nzWidth="100px">手机号或邮箱</th>
+                <th nzWidth="100px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowFeedBackTable.data; let i=index;">
+                <td nzWidth="100px">{{i + 1}}</td>
+                <!-- http://account-center-test.chewrobot.com/upload/d7b3074188454ac4aabda98e24ea69fd.jpg -->
+                <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
+                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? 'null' : data.photo.length) : 'null'}}</td>
+                <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
+                <td nzWidth="100px">
+                  <button nz-button nzType="primary" (click)="showFeedbackInfo(data)" style="margin-right: 10px;">查看详情</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
+        <!-- 弹框 —— 信息 —— 反馈详情 -->
+        <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideFeedBack()">
+          <form style="font-size: 0.4rem;line-height: 1rem;">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="7" class="right_alignment">问题描述：</div>
+              <div nz-col nzSpan="9">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
+              <div nz-col nzSpan="4"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="7" class="right_alignment">图片：</div>
+              <div nz-col nzSpan="9">{{tempFeedBack.photo ? (tempFeedBack.photo.length === 0 ? 'null' : tempFeedBack.photo.length) : 'null'}}</div>
+              <div nz-col nzSpan="4"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="7" class="right_alignment">手机号或邮箱：</div>
+              <div nz-col nzSpan="9">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
+              <div nz-col nzSpan="4"></div>
+            </div>
+          </form>
+          <!-- 弹框和底部定制 -->
+          <ng-template #feedBackModalFooter>
+            <button nz-button nzType="default" (click)="hideFeedBack()">取消</button>
+          </ng-template>
+        </nz-modal>
 
 
         <nz-tab nzTitle="发送短信">

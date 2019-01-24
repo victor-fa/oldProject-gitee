@@ -84,6 +84,15 @@ export class UserService extends AppServiceBase {
   }
 
   /**
+   * 查看用户反馈
+   */
+  getFeedBackInfo(): Observable<IResponse<any>> {
+    const url = 'http://account-center-test.chewrobot.com/api/feedback/';
+    return this.httpClient
+      .get<IResponse<any>>(url);
+  }
+
+  /**
    * 更新用户状态
    * @param infoId
    */

@@ -34,7 +34,7 @@
       <td nzWidth="100px">{{data.dailyLaunch}}</td>  <!-- 日启动总数 -->
       <td nzWidth="100px">{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
       <td nzWidth="100px">{{data.dailyActiveUsers}}</td>
-      <td nzWidth="100px">{{(data.dailyRegister === 0 ? 0 : (data.dailyActiveUsers / data.dailyRegister)) * 100 | number:"0.1-2"}}%</td>  <!-- 老用户活跃 -->
+      <td nzWidth="100px">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
       <td nzWidth="100px">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout}}</td>
       <td nzWidth="100px">{{data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice }}</td>
       <td nzWidth="100px">{{data.flightOrderCheckout}}</td>
