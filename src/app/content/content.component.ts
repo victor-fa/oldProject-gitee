@@ -241,7 +241,7 @@ export class ContentComponent implements OnInit {
     this.fileList.forEach((file: any) => {
       formData.append('thumbnail', file);
     });
-    const req = new HttpRequest('POST', `http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails`, formData, {
+    const req = new HttpRequest('POST', `http://account-center-test.chewrobot.com/api/notices/thumbnails`, formData, {
       reportProgress: true
     });
     this.http
@@ -250,7 +250,7 @@ export class ContentComponent implements OnInit {
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           this.imageUrl = event.body.payload;
-          this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + this.imageUrl;
+          this.showImageUrl = 'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + this.imageUrl;
           this.notification.success(
             '提示', '上传成功'
           );
@@ -338,7 +338,7 @@ export class ContentComponent implements OnInit {
         name: JSON.parse(res.payload).thumbnail
       };
       this.fileList.push(file);
-      this.showImageUrl = 'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
+      this.showImageUrl = 'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
     });
   }
 

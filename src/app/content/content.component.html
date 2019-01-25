@@ -28,7 +28,7 @@
             <tbody>
               <tr *ngFor="let data of basicTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td><img [src]="'http://aliyun-sz2.chewrobot.com:46006/api/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
+                <td><img [src]="'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
                 <td>{{data.title}}</td>
                 <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '运营活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>

@@ -91,7 +91,7 @@
               <tr>
                 <th nzWidth="100px">序号</th>
                 <th nzWidth="100px">问题描述</th>
-                <th nzWidth="100px">图片</th>
+                <th nzWidth="100px">图片（张）</th>
                 <th nzWidth="100px">手机号或邮箱</th>
                 <th nzWidth="100px">操作</th>
               </tr>
@@ -99,7 +99,6 @@
             <tbody>
               <tr *ngFor="let data of rowFeedBackTable.data; let i=index;">
                 <td nzWidth="100px">{{i + 1}}</td>
-                <!-- http://account-center-test.chewrobot.com/upload/d7b3074188454ac4aabda98e24ea69fd.jpg -->
                 <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
                 <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? 'null' : data.photo.length) : 'null'}}</td>
                 <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
@@ -122,10 +121,18 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="7" class="right_alignment">图片：</div>
-              <div nz-col nzSpan="9">{{tempFeedBack.photo ? (tempFeedBack.photo.length === 0 ? 'null' : tempFeedBack.photo.length) : 'null'}}</div>
+              <div nz-col nzSpan="7" class="right_alignment">图片（张）：</div>
+              <div nz-col nzSpan="9"></div>
               <div nz-col nzSpan="4"></div>
             </div>
+            <ng-container *ngIf="tempFeedBack.photo.length > 0">
+              <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
+                 <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="7"></div>
+                <div nz-col nzSpan="9"><img [src]="'http://account-center-test.chewrobot.com/api/feedback/img/' + item" style="width: 8rem;height: 3rem;"></div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+            </ng-container>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4"></div>
               <div nz-col nzSpan="7" class="right_alignment">手机号或邮箱：</div>
@@ -138,7 +145,6 @@
             <button nz-button nzType="default" (click)="hideFeedBack()">取消</button>
           </ng-template>
         </nz-modal>
-
 
         <nz-tab nzTitle="发送短信">
           <form [formGroup]="sendMsgForm">

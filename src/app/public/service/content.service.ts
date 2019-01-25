@@ -12,6 +12,7 @@ import { CookiesService } from './cookies.service';
 
 export class ContentService extends AppServiceBase {
   token = this._cookiesService.getToken();
+  contentUrl = 'http://account-center-test.chewrobot.com/api';
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -22,12 +23,7 @@ export class ContentService extends AppServiceBase {
 
   /** 获取所有内容列表 */
   getContentList(): Observable<IResponse<any>> {
-    let url;
-    // this.setOption = {
-    //   headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
-    // };
-    // url = this.fullUrl(contentApiUrls.orderList) + ;
-    url = 'http://aliyun-sz2.chewrobot.com:46006/api' + contentApiUrls.contentList;
+    const url = this.fullContentUrl(contentApiUrls.contentList);
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -39,7 +35,7 @@ export class ContentService extends AppServiceBase {
     //   headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     // };
     // url = this.fullUrl(contentApiUrls.orderList) + ;
-    url = 'http://aliyun-sz2.chewrobot.com:46006/api' + contentApiUrls.contentList + '/' + id;
+    url = this.contentUrl + contentApiUrls.contentList + '/' + id;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -48,7 +44,7 @@ export class ContentService extends AppServiceBase {
   deleteContent(id): Observable<IResponse<any>> {
     let url;
     // url = this.fullUrl(contentApiUrls.orderList) + ;
-    url = 'http://aliyun-sz2.chewrobot.com:46006/api' + contentApiUrls.contentList + '/' + id;
+    url = this.contentUrl + contentApiUrls.contentList + '/' + id;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -63,7 +59,7 @@ export class ContentService extends AppServiceBase {
     // url = this.fullUrl(contentApiUrls.orderList) + ;
     // tslint:disable-next-line:max-line-length
     body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
-    url = 'http://aliyun-sz2.chewrobot.com:46006/api' + contentApiUrls.contentList;
+    url = this.contentUrl + contentApiUrls.contentList;
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -79,7 +75,7 @@ export class ContentService extends AppServiceBase {
     // tslint:disable-next-line:max-line-length
     body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
     // url = this.fullUrl(contentApiUrls.orderList) + data.id;
-    url = 'http://aliyun-sz2.chewrobot.com:46006/api' + contentApiUrls.contentList + '/' + data.id;
+    url = this.contentUrl + contentApiUrls.contentList + '/' + data.id;
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

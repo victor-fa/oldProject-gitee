@@ -114,7 +114,7 @@ export class DataCenterComponent implements OnInit {
     }
     this.isSpinning = true; // loading
     this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
-      if (res.retcode === 0) {
+      if (res.retcode === 0 && res.status !== 500) {
         localStorage.setItem('dataCenter', res.payload);
         this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
         localStorage.setItem('dataCenterTime', currentTime);

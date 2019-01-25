@@ -148,22 +148,23 @@ export class UserService extends AppServiceBase {
 
     setTimeout(() => {
       tempString = JSON.parse(document.getElementById('resultInfo').innerHTML);
-      console.log(document.getElementById('resultInfo').innerHTML);
 
       if (tempString.retcode === 0) {
         // 登录成功，直接跳转
         this._cookiesService.setToken(tempString.payload);
-        this.router.navigateByUrl('booking');
-        // 登录成功
-        this.notification.blank(
-          '提示',
-          '登录成功！',
-          {
-            nzStyle: {
-              color : 'green'
+        setTimeout(() => {
+          this.router.navigateByUrl('booking');
+          // 登录成功
+          this.notification.blank(
+            '提示',
+            '登录成功！',
+            {
+              nzStyle: {
+                color : 'green'
+              }
             }
-          }
-        );
+          );
+        }, 1000);
       } else {
         // 登录不成功，处理错误信息
         this.modalService.error({

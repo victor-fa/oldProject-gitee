@@ -24,17 +24,20 @@ export class CookiesService {
   setCookieValue(key: string, value: string, expireDate?: Date, path?: string): void {
     let cookieValue = encodeURIComponent(key) + '=';
     if (value) {
+      console.log('4:' + value);
       cookieValue = cookieValue + encodeURIComponent(value);
     }
     if (expireDate) {
+      console.log('5:' + cookieValue);
       cookieValue = cookieValue + '; expires=' + expireDate.toUTCString();
     }
     if (path) {
+      console.log('6:' + cookieValue);
       cookieValue = cookieValue + '; path=' + path;
     }
     cookieValue = cookieValue + '; domain=' + this.domain;
-    console.log(cookieValue);
     document.cookie = cookieValue;
+    console.log('7:' + cookieValue);
   }
 
   /**
@@ -45,6 +48,7 @@ export class CookiesService {
    * @returns {string} Cookie value or null
    */
   getCookieValue(key: string): string {
+    console.log('2:' + key);
     const equalities = document.cookie.split('; ');
     for (let i = 0; i < equalities.length; i++) {
       if (!equalities[i]) {
@@ -57,6 +61,7 @@ export class CookiesService {
       }
 
       if (decodeURIComponent(splitted[0]) === key) {
+        console.log('3:' + decodeURIComponent(splitted[1] || ''));
         return decodeURIComponent(splitted[1] || '');
       }
     }
@@ -93,6 +98,7 @@ export class CookiesService {
   }
 
   getToken(): string {
+    console.log('1:' + this.getCookieValue(this.tokenCookieName));
     return this.getCookieValue(this.tokenCookieName);
   }
 

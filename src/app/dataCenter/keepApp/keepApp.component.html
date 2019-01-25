@@ -28,7 +28,7 @@
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px">{{i+1}}</td>
       <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.dailyInstallation }}</td>
+      <td nzWidth="100px">{{data.day1RetentionUsers >= 0 ? data.day1RetentionUsers : 'null' }}</td>
       <td nzWidth="100px">{{data.day2RetentionUsers >= 0 ? data.day2RetentionUsers : 'null' }}</td>
       <td nzWidth="100px">{{data.day3RetentionUsers >= 0 ? data.day3RetentionUsers : 'null' }}</td>
       <td nzWidth="100px">{{data.day4RetentionUsers >= 0 ? data.day4RetentionUsers : 'null' }}</td>
@@ -39,19 +39,19 @@
       <td nzWidth="100px">null</td>
       <td nzWidth="100px">null</td>
       <td nzWidth="100px" *ngIf="!(data.day2RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day2RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day2RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day2RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day2RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day3RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day3RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day3RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day3RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day3RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day4RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day4RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day4RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day4RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day4RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day5RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day5RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day5RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day5RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day5RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day6RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day6RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day6RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day6RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day6RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day7RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day7RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day7RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day7RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day7RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px" *ngIf="!(data.day14RetentionUsers >= 0)">null</td>
-      <td nzWidth="100px" *ngIf="data.day14RetentionUsers >= 0">{{(data.dailyInstallation === 0 ? 0 : data.day14RetentionUsers / data.dailyInstallation) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="data.day14RetentionUsers >= 0">{{(data.day1RetentionUsers === 0 ? 0 : data.day14RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px">null</td>
       <td nzWidth="100px">null</td>
     </tr>

@@ -37,7 +37,11 @@ export class UserComponent implements OnInit {
   feedBackPageSize = 1000;
   feedbackInfo = [];
   isFeedBackVisible = false;
-  tempFeedBack = {};
+  tempFeedBack = {
+    'words': '',
+    'photo': '',
+    'number': ''
+  };
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -236,7 +240,6 @@ export class UserComponent implements OnInit {
   showFeedbackInfo(data): void {
     this.isFeedBackVisible = true;
     this.tempFeedBack = data;
-    console.log(this.tempFeedBack);
   }
 
   hideFeedBack(): void {

@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       return; }
     this.login.userName = this.loginForm.controls['userName'].value;
     this.login.password = this.loginForm.controls['password'].value;
-    console.log(this.login);
     this.userService.login(this.login);
   }
 
