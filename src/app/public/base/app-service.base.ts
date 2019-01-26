@@ -12,10 +12,9 @@ export abstract class AppServiceBase {
   ) {
   }
 
-  // protected baseUrl = 'http://lxwork.vipgz1.idcfengye.com/api/admin';
   protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';
   protected contentUrl = 'http://account-center-test.chewrobot.com/api';
-  protected dataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';
+  protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api/v2/counts';
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',

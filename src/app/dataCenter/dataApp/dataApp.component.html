@@ -26,11 +26,11 @@
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px">{{i+1}}</td>
       <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.day1RetentionUsers }}</td>
+      <td nzWidth="100px">{{data.dailyInstallation }}</td>
       <td nzWidth="100px">{{data.dailyNewLaunch}}</td>  <!-- 新增启动数 -->
       <td nzWidth="100px">{{data.dailyRegister}}</td>  <!-- 新增注册数 -->
-      <td nzWidth="100px">{{(data.day1RetentionUsers === 0 ? 0 : (data.dailyNewLaunch / data.day1RetentionUsers)) * 100 | number:"0.1-2"}}%</td>  <!-- 新增启动率 -->
-      <td nzWidth="100px">{{(data.day1RetentionUsers === 0 ? 0 : (data.dailyRegister / data.day1RetentionUsers)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.dailyInstallation === 0 ? 0 : (data.dailyNewLaunch / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>  <!-- 新增启动率 -->
+      <td nzWidth="100px">{{(data.dailyInstallation === 0 ? 0 : (data.dailyRegister / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>
       <td nzWidth="100px">{{data.dailyLaunch}}</td>  <!-- 日启动总数 -->
       <td nzWidth="100px">{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
       <td nzWidth="100px">{{data.dailyActiveUsers}}</td>

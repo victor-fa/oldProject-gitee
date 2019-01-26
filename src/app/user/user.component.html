@@ -100,7 +100,7 @@
               <tr *ngFor="let data of rowFeedBackTable.data; let i=index;">
                 <td nzWidth="100px">{{i + 1}}</td>
                 <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
-                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? 'null' : data.photo.length) : 'null'}}</td>
+                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? '0' : data.photo.length) : '0'}}</td>
                 <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
                 <td nzWidth="100px">
                   <button nz-button nzType="primary" (click)="showFeedbackInfo(data)" style="margin-right: 10px;">查看详情</button>
@@ -115,30 +115,30 @@
           <form style="font-size: 0.4rem;line-height: 1rem;">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="7" class="right_alignment">问题描述：</div>
-              <div nz-col nzSpan="9">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
+              <div nz-col nzSpan="12">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
               <div nz-col nzSpan="4"></div>
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="7" class="right_alignment">图片（张）：</div>
-              <div nz-col nzSpan="9"></div>
+              <div nz-col nzSpan="4" class="right_alignment">手机号或邮箱：</div>
+              <div nz-col nzSpan="12">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
+              <div nz-col nzSpan="4"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="4" class="right_alignment">图片（张）：</div>
+              <div nz-col nzSpan="12"></div>
               <div nz-col nzSpan="4"></div>
             </div>
             <ng-container *ngIf="tempFeedBack.photo.length > 0">
               <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
                  <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7"></div>
-                <div nz-col nzSpan="9"><img [src]="'http://account-center-test.chewrobot.com/api/feedback/img/' + item" style="width: 8rem;height: 3rem;"></div>
+                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="12"><img [src]="'http://account-center-test.chewrobot.com/api/feedback/img/' + item" style="width: 8rem;"></div>
                 <div nz-col nzSpan="4"></div>
               </div>
             </ng-container>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="7" class="right_alignment">手机号或邮箱：</div>
-              <div nz-col nzSpan="9">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
-              <div nz-col nzSpan="4"></div>
-            </div>
           </form>
           <!-- 弹框和底部定制 -->
           <ng-template #feedBackModalFooter>
