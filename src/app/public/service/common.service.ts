@@ -75,6 +75,27 @@ export class CommonService {
     }, 400);
   }
 
+  // 获取指定时间的日期 格式：yyyyMMdd
+  getDay(day): string {
+    const today = new Date();
+    const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+    today.setTime(targetday_milliseconds); // 注意，这行是关键代码
+    const tYear = today.getFullYear();
+    let tMonth = today.getMonth().toString();
+    let tDate = today.getDate().toString();
+    tMonth = this.doHandleMonth(tMonth + 1);
+    tDate = this.doHandleMonth(tDate);
+    return tYear + '' + tMonth + '' + tDate;
+  }
+
+  doHandleMonth(month): string {
+    let m = month;
+    if (month.toString().length === 1) {
+      m = '0' + month;
+    }
+    return m;
+  }
+
   // 验证有效的手机号
   phoneNumValidator = (control: FormControl): { [s: string]: boolean } => {
     const MOBILE_REGEXP = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;

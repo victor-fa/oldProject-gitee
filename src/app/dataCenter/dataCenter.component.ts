@@ -39,8 +39,8 @@ export class DataCenterComponent implements OnInit {
   ) {
     this.commonService.nav[3].active = true;
     this._initSearchForm();
-    this.beginDate = this.getDay(-7);
-    this.endDate = this.getDay(-1);
+    this.beginDate = this.commonService.getDay(-7);
+    this.endDate = this.commonService.getDay(-1);
   }
 
   ngOnInit() {
@@ -128,27 +128,6 @@ export class DataCenterComponent implements OnInit {
     }
   }
 
-  // 获取指定时间的日期 格式：yyyyMMdd
-  getDay(day): string {
-    const today = new Date();
-    const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
-    today.setTime(targetday_milliseconds); // 注意，这行是关键代码
-    const tYear = today.getFullYear();
-    let tMonth = today.getMonth().toString();
-    let tDate = today.getDate().toString();
-    tMonth = this.doHandleMonth(tMonth + 1);
-    tDate = this.doHandleMonth(tDate);
-    return tYear + '' + tMonth + '' + tDate;
-  }
-
-  doHandleMonth(month): string {
-    let m = month;
-    if (month.toString().length === 1) {
-      m = '0' + month;
-    }
-    return m;
-  }
-
   // 日期插件
   onChange(result: Date): void {
     // 正确选择数据
@@ -158,8 +137,8 @@ export class DataCenterComponent implements OnInit {
     }
     // 手动点击清空
     if (this.beginDate === null || this.endDate === null) {
-      this.beginDate = this.getDay(-7);
-      this.endDate = this.getDay(0);
+      this.beginDate = this.commonService.getDay(-7);
+      this.endDate = this.commonService.getDay(-1);
     }
   }
 

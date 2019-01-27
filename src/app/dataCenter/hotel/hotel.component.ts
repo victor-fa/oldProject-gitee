@@ -24,11 +24,13 @@ export class HotelComponent implements OnInit {
   }
 
   ngOnInit() {
-    const beginDate = localStorage.getItem('beginDate');
-    const endDate = localStorage.getItem('endDate');
+    let beginDate = localStorage.getItem('beginDate');
+    let endDate = localStorage.getItem('endDate');
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
     const isDataCenterSearch = localStorage.getItem('isDataCenterSearch');
     if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
+      beginDate = this.commonService.getDay(-7);
+      endDate = this.commonService.getDay(-1);
       this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'hotel-bot').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);

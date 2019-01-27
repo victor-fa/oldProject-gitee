@@ -14,7 +14,7 @@
                 查询日期范围：
               </div>
               <div nz-col nzSpan="9" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -23,9 +23,9 @@
               <div nz-col nzSpan="4">
                 <nz-select [(ngModel)]="commonService.dataCenterStatus" formControlName="status">
                   <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
-                  <nz-option required [nzLabel]="'LENZE-IOS-APPSTORE'" [nzValue]="'LENZE-IOS-APPSTORE'"></nz-option>
+                  <!-- <nz-option required [nzLabel]="'LENZE-IOS-APPSTORE'" [nzValue]="'LENZE-IOS-APPSTORE'"></nz-option> -->
                   <nz-option required [nzLabel]="'XIAOWU-IOS-TESTFLIGHT'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
-                  <nz-option required [nzLabel]="'LENZE-ANDROID-APK'" [nzValue]="'LENZE-ANDROID-APK'"></nz-option>
+                  <!-- <nz-option required [nzLabel]="'LENZE-ANDROID-APK'" [nzValue]="'LENZE-ANDROID-APK'"></nz-option> -->
                   <nz-option required [nzLabel]="'XIAOWU-ANDROID-FIRIM'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
                 </nz-select>
               </div>
