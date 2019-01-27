@@ -56,6 +56,7 @@ export class CommonService {
   changeDataCenter(flag, route): void {
     const dataCenterTitle = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT'];
     this.needDataCenter = flag === this.currentDataCenter ? false : true;
+    localStorage.setItem('isDataCenterSearch', 'false');
 
     this.dataCenter.forEach(item => {
       item.active = false;

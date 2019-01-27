@@ -240,7 +240,6 @@ export class UserComponent implements OnInit {
   showFeedbackInfo(data): void {
     this.isFeedBackVisible = true;
     this.tempFeedBack = data;
-    console.log(this.tempFeedBack);
   }
 
   hideFeedBack(): void {

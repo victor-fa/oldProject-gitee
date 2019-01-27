@@ -105,6 +105,7 @@ export class DataCenterComponent implements OnInit {
     });
   }
 
+  // 查询
   doSearch(): void {
     const params = this.searchForm.controls['status'].value;
     this.commonService.dataCenterStatus = params;
@@ -115,6 +116,7 @@ export class DataCenterComponent implements OnInit {
       this.loadUnitData(platform, origin);
       localStorage.setItem('beginDate', this.beginDate);
       localStorage.setItem('endDate', this.endDate);
+      localStorage.setItem('isDataCenterSearch', 'true');
     } else {
       if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
         this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });

@@ -27,15 +27,18 @@ export class TrainComponent implements OnInit {
     const beginDate = localStorage.getItem('beginDate');
     const endDate = localStorage.getItem('endDate');
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
-    this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'train-bot').subscribe(res => {
-      if (res.retcode === 0 && res.status !== 500) {
-        localStorage.setItem('dataCenter', res.payload);
-        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
-        localStorage.setItem('dataCenterTime', currentTime);
-      } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
+    const isDataCenterSearch = localStorage.getItem('isDataCenterSearch');
+    if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
+      this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'train-bot').subscribe(res => {
+        if (res.retcode === 0 && res.status !== 500) {
+          localStorage.setItem('dataCenter', res.payload);
+          this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
+          localStorage.setItem('dataCenterTime', currentTime);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    }
   }
 
   // 主面板分页表单
