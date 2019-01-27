@@ -36,13 +36,13 @@
       <td nzWidth="100px">{{data.dailyActiveUsers}}</td>
       <td nzWidth="100px">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
       <td nzWidth="100px">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice }}</td>
+      <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice : 'null'}}</td>
       <td nzWidth="100px">{{data.flightOrderCheckout}}</td>
       <td nzWidth="100px">{{data.trainOrderCheckout}}</td>
       <td nzWidth="100px">{{data.hotelOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.flightChangePrice}}</td>
-      <td nzWidth="100px">{{data.trainChangePrice}}</td>
-      <td nzWidth="100px">{{data.hotelChangePrice}}</td>
+      <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice : 'null'}}</td>
+      <td nzWidth="100px">{{data.trainChangePrice ? data.trainChangePrice : 'null'}}</td>
+      <td nzWidth="100px">{{data.hotelChangePrice ? data.hotelChangePrice : 'null'}}</td>
     </tr>
   </tbody>
 </nz-table>

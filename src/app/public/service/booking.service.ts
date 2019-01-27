@@ -11,7 +11,8 @@ import { CookiesService } from './cookies.service';
 })
 
 export class BookingService extends AppServiceBase {
-  token = this._cookiesService.getToken();
+  // token = this._cookiesService.getToken();
+  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -21,32 +22,34 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有订单列表 */
-  getBookingList(pageSize, flag, id, sortType?, sortKey?): Observable<IResponse<any>> {
+  getBookingList(pageSize, flag, id, state?, orderType?, createTime?, orderId?): Observable<IResponse<any>> { // sortType?, sortKey?
     let url;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey);
+      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId);
     } else if (flag === 'last') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey) + '&lastId=' + id;
+      url = this.fullUrl(bookingApiUrls.orderList)
+          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(bookingApiUrls.orderList) + this.getBookingListUrl(pageSize, sortType, sortKey) + '&firstId=' + id;
+      url = this.fullUrl(bookingApiUrls.orderList)
+          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&firstId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
-  getBookingListUrl(pageSize, sortType, sortKey): string {
+  getBookingListUrl(pageSize, state, orderType, createTime, orderId): string {
     let url = '';
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
-    if (!sortType) {
-      url = '?pageSize=' + pageSize;
-    } else {
-      url = '?pageSize=' + pageSize + '&sortType=' + sortType + '&sortKey=' + sortKey;
-    }
+    url = '?pageSize=' + pageSize + (state ? '&state=' + state : '')
+    + (orderType ? '&orderType=' + orderType : '')
+    + (createTime ? '&createTime=' + createTime : '')
+    + (orderId ? '&orderId=' + orderId : '');
+
     return url;
   }
 

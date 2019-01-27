@@ -108,7 +108,7 @@ export class BookingComponent implements OnInit {
   }
 
   /* 加载信息 */
-  private loadDataByKey(sortType, sortKey): void {
+  private loadDataByKey(state, type, createTime, orderId): void {
     let id = 0;
     let flag = '';
     if (this.doLast) {
@@ -119,7 +119,7 @@ export class BookingComponent implements OnInit {
       id = this.firstId;
       flag = 'first';
     }
-    this.bookingService.getBookingList(this.pageSize, flag, id, sortType, sortKey).subscribe(res => {
+    this.bookingService.getBookingList(this.pageSize, flag, id, state, type, createTime, orderId).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = JSON.parse(res.payload);
@@ -131,13 +131,7 @@ export class BookingComponent implements OnInit {
         }
       } else if (res.retcode === 10000) {
         this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
+          '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } }
         );
         // this._router.navigate(['/login']);
       } else {
@@ -177,23 +171,8 @@ export class BookingComponent implements OnInit {
     if ((this.searchItem.date === '' || this.searchItem.date === null) && this.searchItem.type === ''
         && this.searchItem.status === '' && this.searchItem.orderId === '') {
       this.loadData();
-    } else if ((this.searchItem.date !== '' || this.searchItem.date !== null) && this.searchItem.type === ''
-        && this.searchItem.status === '' && this.searchItem.orderId === '') {
-      this.loadDataByKey('createTime', this.searchItem.date);
-    } else if ((this.searchItem.date === '' || this.searchItem.date === null) && this.searchItem.type !== ''
-        && this.searchItem.status === '' && this.searchItem.orderId === '') {
-      this.loadDataByKey('orderType', this.searchItem.type);
-    } else if ((this.searchItem.date === '' || this.searchItem.date === null) && this.searchItem.type === ''
-        && this.searchItem.status !== '' && this.searchItem.orderId === '') {
-      this.loadDataByKey('state', this.searchItem.status);
-    } else if ((this.searchItem.date === '' || this.searchItem.date === null) && this.searchItem.type === ''
-        && this.searchItem.status === '' && this.searchItem.orderId !== '') {
-      this.loadDataByKey('id', this.searchItem.orderId);
     } else {
-      this.modalService.confirm({
-        nzTitle: '提示',
-        nzContent: '查询条件只能选一个查询'
-      });
+      this.loadDataByKey(this.searchItem.status, this.searchItem.type, this.searchItem.date, this.searchItem.orderId);
     }
   }
 

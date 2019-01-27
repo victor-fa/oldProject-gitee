@@ -12,9 +12,12 @@ export abstract class AppServiceBase {
   ) {
   }
 
-  protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';
-  protected contentUrl = 'http://account-center-test.chewrobot.com/api';
-  protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api/v2/counts';
+  // protected baseUrl = 'http://lxwork.vipgz1.idcfengye.com/api/admin'; // 刘兴
+  protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // 订票 用户正式
+  protected contentUrl = 'http://account-center-test.chewrobot.com/api';  // 内容正式
+  protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api/v2/counts';  // 数据中心正式
+  // protected dataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';  // 数据中心测试1
+  // protected dataCenterUrl = 'http://hrygddv2.vipgz1.idcfengye.com/api/v2/counts';  // 衡锐自己的服务器2
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',

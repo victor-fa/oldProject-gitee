@@ -40,44 +40,24 @@ export class DataCenterComponent implements OnInit {
     this.commonService.nav[3].active = true;
     this._initSearchForm();
     this.beginDate = this.getDay(-7);
-    this.endDate = this.getDay(0);
+    this.endDate = this.getDay(-1);
   }
 
   ngOnInit() {
     this.initData();
+    // this.doSearch();
   }
 
   initData(): void {
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
-    if (localStorage.getItem('dataCenter') == null || currentTime !== this.localStorageTime) {
-      this.loadData();
-    } else {
-      this.loadData();
-    }
     localStorage.setItem('beginDate', this.beginDate);
     localStorage.setItem('endDate', this.endDate);
-  }
-
-  // 获取大数据
-  loadData(): void {
-    const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
-    this.isSpinning = true; // loading
-    this.dataCenterService.getDataCenterList(this.beginDate, this.endDate).subscribe(res => {
-      if (res.retcode === 0) {
-        localStorage.setItem('dataCenter', res.payload);
-        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
-        localStorage.setItem('dataCenterTime', currentTime);
-        this.isSpinning = false;  // loading
-      } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
   }
 
   // 获取单元数据
   loadUnitData(platform, origin): void {
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
-    let flag = '';
+    let flag = 'user-behavior';
     switch (this.commonService.currentTitle) {
       case 'APP':
         flag = 'user-behavior';
@@ -130,7 +110,9 @@ export class DataCenterComponent implements OnInit {
     this.commonService.dataCenterStatus = params;
     this.commonService.needDataCenter = false;
     if (params === 'all') {
-      this.loadData();
+      const platform = '';
+      const origin = '';
+      this.loadUnitData(platform, origin);
       localStorage.setItem('beginDate', this.beginDate);
       localStorage.setItem('endDate', this.endDate);
     } else {
@@ -138,8 +120,8 @@ export class DataCenterComponent implements OnInit {
         this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });
         return;
       }
-      const platform = params.substring(0, params.indexOf('-'));
-      const origin = params.substring(params.indexOf('-') + 1, params.length);
+      const origin = params.substring(0, params.indexOf('-'));
+      const platform = params.substring(params.indexOf('-') + 1, params.length);
       this.loadUnitData(platform, origin);
     }
   }

@@ -114,24 +114,21 @@
         <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideFeedBack()">
           <form style="font-size: 0.4rem;line-height: 1rem;">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
+              <div nz-col nzSpan="8" class="right_alignment">问题描述：</div>
               <div nz-col nzSpan="12">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
               <div nz-col nzSpan="4"></div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="4" class="right_alignment">手机号或邮箱：</div>
+              <div nz-col nzSpan="8" class="right_alignment">手机号或邮箱：</div>
               <div nz-col nzSpan="12">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
               <div nz-col nzSpan="4"></div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="4"></div>
-              <div nz-col nzSpan="4" class="right_alignment">图片（张）：</div>
-              <div nz-col nzSpan="12"></div>
+              <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
+              <div nz-col nzSpan="12">{{!tempFeedBack.photo ? 'null' : ''}}</div>
               <div nz-col nzSpan="4"></div>
             </div>
-            <ng-container *ngIf="tempFeedBack.photo.length > 0">
+            <ng-container *ngIf="tempFeedBack.photo">
               <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
                  <div nz-col nzSpan="4"></div>
                 <div nz-col nzSpan="4"></div>

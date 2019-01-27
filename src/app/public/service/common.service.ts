@@ -64,7 +64,7 @@ export class CommonService {
     this.dataCenter[flag].active = true;
     this.currentTitle = dataCenterTitle[flag];
     this.currentDataCenter = flag;
-    // this.dataCenterStatus = 'all'; // 重置为全部
+    this.dataCenterStatus = 'all';
 
     if (location.href.indexOf('dataCenter') > -1) {
       return;

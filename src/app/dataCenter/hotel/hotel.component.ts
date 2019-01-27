@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/public/service/common.service';
-import { NzNotificationService } from 'ng-zorro-antd';
+import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
+import { DataCenterService } from 'src/app/public/service/dataCenter.service';
 
 @Component({
   selector: 'app-hotel',
@@ -13,16 +14,28 @@ export class HotelComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   pageSize = 100;
+  myDate = new Date();
   constructor(
     public commonService: CommonService,
     private notification: NzNotificationService,
+    private dataCenterService: DataCenterService,
+    private modalService: NzModalService,
   ) {
   }
 
   ngOnInit() {
-    if (this.commonService.dataCenterStatus !== 'all' && this.commonService.needDataCenter) {  // 单独接口需要重新请求
-      this.notification.create('info', '提示', '您切换了查询面板，请重新查询数据');
-    }
+    const beginDate = localStorage.getItem('beginDate');
+    const endDate = localStorage.getItem('endDate');
+    const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
+    this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'hotel-bot').subscribe(res => {
+      if (res.retcode === 0 && res.status !== 500) {
+        localStorage.setItem('dataCenter', res.payload);
+        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
+        localStorage.setItem('dataCenterTime', currentTime);
+      } else {
+        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      }
+    });
   }
 
   // 主面板分页表单

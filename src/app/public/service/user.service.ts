@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 })
 
 export class UserService extends AppServiceBase {
-  token = this._cookiesService.getToken();
+  // const token = this._cookiesService.getToken();
+  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,

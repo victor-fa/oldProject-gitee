@@ -25,6 +25,7 @@ export class CookiesService {
     let cookieValue = encodeURIComponent(key) + '=';
     if (value) {
       console.log('4:' + value);
+      localStorage.setItem('token', value);
       cookieValue = cookieValue + encodeURIComponent(value);
     }
     if (expireDate) {

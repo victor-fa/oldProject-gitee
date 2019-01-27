@@ -11,7 +11,8 @@ import { CookiesService } from './cookies.service';
 })
 
 export class ContentService extends AppServiceBase {
-  token = this._cookiesService.getToken();
+  // const token = this._cookiesService.getToken();
+  token = localStorage.getItem('token');
   contentUrl = 'http://account-center-test.chewrobot.com/api';
   constructor(
     private httpClient: HttpClient,

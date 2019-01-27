@@ -83,7 +83,6 @@ export class ContentComponent implements OnInit {
   loadData() {
     this.contentService.getContentList().subscribe(res => {
       this.dataSet = JSON.parse(res.payload);
-      console.log(this.dataSet);
     });
   }
 
@@ -325,7 +324,6 @@ export class ContentComponent implements OnInit {
 
   // 修改 - 弹框
   showModifyModal(data) {
-    console.log(data.content);
     const id = data.id;
     this.isModifyVisible = true;
     this.contentId = id;  // 用于修改

@@ -15,7 +15,7 @@ import { NavigateComponent } from './navigate/navigate.component';
 
 const routes: Routes = [
     {
-        path: '',
+        path: 'app',
         component: DataCenterComponent,
         children: [
             {

@@ -19,18 +19,12 @@ export class DataCenterService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有订单列表 */
-  getDataCenterList(begin, end): Observable<IResponse<any>> {
-    const url = this.fullDataCenterUrl('')
-        + '?begin=' + begin + '&end=' + end;
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
   /** 获取单元 */
   getUnitList(begin, end, platform, origin, flag): Observable<IResponse<any>> {
     const url = this.fullDataCenterUrl('') + '/' + flag
-        + '?begin=' + begin + '&end=' + end + '&platform=' + origin + '&origin=' + platform;  // 临时直接修改成platform和origin的位置
+        + '?begin=' + begin + '&end=' + end
+        + (platform !== '' ? '&platform=' + platform : '')
+        + (origin !== '' ? '&origin=' + origin : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
