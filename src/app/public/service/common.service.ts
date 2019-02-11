@@ -83,7 +83,8 @@ export class CommonService {
     const tYear = today.getFullYear();
     let tMonth = today.getMonth().toString();
     let tDate = today.getDate().toString();
-    tMonth = this.doHandleMonth(tMonth + 1);
+    // tslint:disable-next-line:radix
+    tMonth = this.doHandleMonth(parseInt(tMonth) + 1);
     tDate = this.doHandleMonth(tDate);
     return tYear + '' + tMonth + '' + tDate;
   }
