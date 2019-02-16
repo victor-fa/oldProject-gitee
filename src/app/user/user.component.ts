@@ -50,7 +50,7 @@ export class UserComponent implements OnInit {
     private notification: NzNotificationService,
     private _router: Router,
   ) {
-    this.commonService.nav[1].active = true;
+    this.commonService.nav[2].active = true;
     this._initSearchForm();
     this._initSendMsgForm();
   }

@@ -37,6 +37,21 @@ export class CommonService {
     { active: false },
     { active: false }
   ];
+  permission = {
+    personal: false,
+    reset: false,
+    monitor: false,
+    number: false,
+    template: false,
+    outbound: false,
+    examine: false,
+    material: false,
+    datareport: false,
+    account: false,
+    role: false,
+    conversation: false,
+  };
+
   currentTitle = '数据中心';  // 数据中心标题
 
   constructor(
@@ -95,6 +110,48 @@ export class CommonService {
       m = '0' + month;
     }
     return m;
+  }
+
+  havePermission(): void {
+    const flag = localStorage.getItem('permission').split(',');
+    flag.forEach(item => {
+      if (item === '个人资料') {
+        this.permission.personal = true;
+      } else if (item === '重置密码') {
+        this.permission.reset = true;
+      } else if (item === '首页监控') {
+        this.permission.monitor = true;
+      } else if (item === '号码管理') {
+        this.permission.number = true;
+      } else if (item === '模板管理') {
+        this.permission.template = true;
+      } else if (item === '外呼任务') {
+        this.permission.outbound = true;
+      } else if (item === '任务审核') {
+        this.permission.examine = true;
+      } else if (item === '员工列表') {
+        this.permission.account = true;
+      } else if (item === '角色列表') {
+        this.permission.role = true;
+      } else if (item === '会话记录') {
+        this.permission.conversation = true;
+      }
+    });
+  }
+
+  closePermission(): void {
+    this.permission.personal = false;
+    this.permission.reset = false;
+    this.permission.monitor = false;
+    this.permission.number = false;
+    this.permission.template = false;
+    this.permission.outbound = false;
+    this.permission.examine = false;
+    this.permission.material = false;
+    this.permission.datareport = false;
+    this.permission.account = false;
+    this.permission.role = false;
+    this.permission.conversation = false;
   }
 
   // 验证有效的手机号

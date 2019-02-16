@@ -25,8 +25,17 @@
 <!-- 左侧 -->
 <div class="left_nav">
   <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="commonService.isCollapsed">
-    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+    <!-- <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
       [ngClass]="{'active_panel': commonService.nav[0].active}">
+      <a class="common-button" routerLink="/account" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>权限管理</span>
+        </span>
+      </a>
+    </li> -->
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+      [ngClass]="{'active_panel': commonService.nav[1].active}">
       <a class="common-button" routerLink="/booking" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-book"></i>
@@ -34,7 +43,7 @@
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[1].active}">
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[2].active}">
       <a class="common-button" routerLink="/user" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-user"></i>
@@ -42,14 +51,14 @@
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[2].active}">
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
       <a class="common-button" routerLink="/content" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-file"></i><span>内容管理</span>
         </span>
       </a>
     </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}" routerLinkActive="active">
+    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}" routerLinkActive="active">
       <span title>
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>

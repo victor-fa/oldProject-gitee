@@ -10,10 +10,11 @@ import { AppComponent } from './app.component';
 import { AppSessionService } from './public/service/app.session.service';
 import { CookiesService } from './public/service/cookies.service';
 import { LocalizationService } from './public/service/localization.service';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
    declarations: [
-    AppComponent,
+      AppComponent,
    ],
    imports: [
       BrowserModule,
@@ -21,16 +22,16 @@ import { LocalizationService } from './public/service/localization.service';
       BrowserModule,
       CoreModule,
       RouterModule,
-      CommonModule,
+      CommonModule
    ],
    providers: [
       LoginGuard,
       AppSessionService,
       CookiesService,
-      LocalizationService,
+      LocalizationService
    ],
    bootstrap: [
-    AppComponent,
+      AppComponent
    ]
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { userApiUrls, contentApiUrls } from '../enum/api.enum';
+import { userApiUrls, cmsApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { CookiesService } from './cookies.service';
 
@@ -24,7 +24,7 @@ export class ContentService extends AppServiceBase {
 
   /** 获取所有内容列表 */
   getContentList(): Observable<IResponse<any>> {
-    const url = this.fullContentUrl(contentApiUrls.contentList);
+    const url = this.fullContentUrl(cmsApiUrls.contentList);
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -35,8 +35,8 @@ export class ContentService extends AppServiceBase {
     // this.setOption = {
     //   headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     // };
-    // url = this.fullUrl(contentApiUrls.orderList) + ;
-    url = this.contentUrl + contentApiUrls.contentList + '/' + id;
+    // url = this.fullUrl(cmsApiUrls.orderList) + ;
+    url = this.contentUrl + cmsApiUrls.contentList + '/' + id;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -44,8 +44,8 @@ export class ContentService extends AppServiceBase {
   /** 删除单个内容 */
   deleteContent(id): Observable<IResponse<any>> {
     let url;
-    // url = this.fullUrl(contentApiUrls.orderList) + ;
-    url = this.contentUrl + contentApiUrls.contentList + '/' + id;
+    // url = this.fullUrl(cmsApiUrls.orderList) + ;
+    url = this.contentUrl + cmsApiUrls.contentList + '/' + id;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -57,10 +57,10 @@ export class ContentService extends AppServiceBase {
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
-    // url = this.fullUrl(contentApiUrls.orderList) + ;
+    // url = this.fullUrl(cmsApiUrls.orderList) + ;
     // tslint:disable-next-line:max-line-length
     body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
-    url = this.contentUrl + contentApiUrls.contentList;
+    url = this.contentUrl + cmsApiUrls.contentList;
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -72,11 +72,11 @@ export class ContentService extends AppServiceBase {
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
-    // url = this.fullUrl(contentApiUrls.orderList) + ;
+    // url = this.fullUrl(cmsApiUrls.orderList) + ;
     // tslint:disable-next-line:max-line-length
     body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
-    // url = this.fullUrl(contentApiUrls.orderList) + data.id;
-    url = this.contentUrl + contentApiUrls.contentList + '/' + data.id;
+    // url = this.fullUrl(cmsApiUrls.orderList) + data.id;
+    url = this.contentUrl + cmsApiUrls.contentList + '/' + data.id;
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

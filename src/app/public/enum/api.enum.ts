@@ -14,6 +14,14 @@ export enum userApiUrls {
   publicSalt = '/users/publicSalt',
   /** 发送伪验证码 */
   sms = '/sms/fake',
+  /** 登录账号 */
+  register = '/users/register',
+  /** 登出当前账号 */
+  logout = '/users/logout',
+  /** 角色 */
+  roles = '/roles',
+  /** 获取部门下拉 */
+  departments = '/users/departments',
 }
 
 /** 订单模块 */
@@ -25,9 +33,15 @@ export enum bookingApiUrls {
 }
 
 /** 内容模块 */
-export enum contentApiUrls {
+export enum cmsApiUrls {
   /** 获取全部内容 */
   contentList = '/notices',
+  /** 获取首屏 */
+  screenList = '/cms/start-page-ads',
+  /** 获取弹框 */
+  openList = '/cms/main-page-ads',
+  /** 获取cms */
+  bannerList = '/cms/start-page-ads',
 }
 
 /** 数据中心模块 */
