@@ -47,7 +47,7 @@ export class BannerService extends AppServiceBase {
   addBanner(data): Observable<IResponse<any>> {
     const url = this.bannerUrl + cmsApiUrls.bannerList;
     // tslint:disable-next-line:max-line-length
-    const body = `enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
@@ -59,7 +59,7 @@ export class BannerService extends AppServiceBase {
   updateBanner(data): Observable<IResponse<any>> {
     const url = this.bannerUrl + cmsApiUrls.bannerList + '/' + data.id;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&url=${data.url}&banner=${data.banner}&abstractBanner=${data.abstractBanner}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
+    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

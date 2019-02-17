@@ -61,6 +61,7 @@ export class ContentComponent implements OnInit {
     'pseudonym': ''
   };
   screenDate = {
+    'site': '',
     'enabled': '',
     'jump': '',
     'image': '',
@@ -72,11 +73,19 @@ export class ContentComponent implements OnInit {
     'enabled': '',
     'jump': '',
     'site': '',
-    'sort': '',
+    'order': '',
     'image': '',
     'url': ''
   };
-  bannerDate = {};
+  bannerDate = {
+    'title': '',
+    'jump': '',
+    'enabled': '',
+    'site': '',
+    'order': '',
+    'image': '',
+    'url': ''
+  };
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -97,8 +106,8 @@ export class ContentComponent implements OnInit {
   };
   dataContent = []; // 内容
   dataScreen = [];  // 首屏
-  dataOpen = [{}, {}];  // 弹框
-  dataBanner = [{}, {}];  // 轮播
+  dataOpen = [];  // 弹框
+  dataBanner = [];  // 轮播
 
   constructor(
     private fb: FormBuilder,
@@ -146,9 +155,9 @@ export class ContentComponent implements OnInit {
         this.dataOpen = JSON.parse(res.payload);
       });
     } else if (flag === 'banner') {
-      // this.bannerService.getBannerList().subscribe(res => {
-      //   this.dataBanner = JSON.parse(res.payload);
-      // });
+      this.bannerService.getBannerList().subscribe(res => {
+        this.dataBanner = JSON.parse(res.payload);
+      });
     }
   }
 
@@ -178,18 +187,18 @@ export class ContentComponent implements OnInit {
     this.addOpenForm = this.fb.group({
       jump: [''],
       site: [''],
-      sort: [''],
+      order: [''],
       url: [''],
     });
   }
 
   private _initAddBannerForm(): void {
     this.addBannerForm = this.fb.group({
-      aaa: [''],
-      bbb: [''],
-      ccc: [''],
-      ddd: [''],
-      eee: [''],
+      jump: [''],
+      title: [''],
+      site: [''],
+      order: [''],
+      url: [''],
     });
   }
 
@@ -203,17 +212,17 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'screen') {
       this.isAddScreenVisible = true;
       this.screenDate = {  // 清空
-        'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
+        'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
       };
     } else if (flag === 'open') {
       this.isAddOpenVisible = true;
       this.openDate = {  // 清空
-        'enabled': '', 'jump': '', 'site': '', 'sort': '', 'image': '', 'url': ''
+        'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
       };
     } else if (flag === 'banner') {
       this.isAddBannerVisible = true;
       this.bannerDate = { // 清空
-
+        'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
       };
     }
     this.fileList.splice(0, this.fileList.length);
@@ -323,8 +332,7 @@ export class ContentComponent implements OnInit {
         'site': this.addOpenForm.controls['site'].value,
         'jump': this.addOpenForm.controls['jump'].value,
         'image': this.imageUrl,
-        // 'sort': this.addOpenForm.controls['sort'].value,
-        'sort': 1,
+        'order': this.addOpenForm.controls['order'].value,
         'url': this.addOpenForm.controls['url'].value
       };
       this.openService.addOpen(openInput).subscribe(res => {
@@ -340,6 +348,24 @@ export class ContentComponent implements OnInit {
       // if (!this.verificationAddContent('banner')) {
       //   return;
       // }
+      const bannerInput = {
+        'enabled': false, // 默认不可启用
+        'title': this.addBannerForm.controls['title'].value,
+        'site': this.addBannerForm.controls['site'].value,
+        'jump': this.addBannerForm.controls['jump'].value,
+        'image': this.imageUrl,
+        'order': this.addBannerForm.controls['order'].value,
+        'url': this.addBannerForm.controls['url'].value
+      };
+      this.bannerService.addBanner(bannerInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.hideAddModal('banner');
+          this.loadData('banner');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -372,7 +398,7 @@ export class ContentComponent implements OnInit {
     this.modifyOpenForm = this.fb.group({
       jump: [''],
       site: [''],
-      sort: [''],
+      order: [''],
       url: [''],
     });
   }
@@ -380,11 +406,11 @@ export class ContentComponent implements OnInit {
   // 修改
   _initModifyBannerForm() {
     this.modifyBannerForm = this.fb.group({
-      aaa: [''],
-      bbb: [''],
-      ccc: [''],
-      ddd: [''],
-      eee: [''],
+      jump: [''],
+      title: [''],
+      site: [''],
+      order: [''],
+      url: [''],
     });
   }
 
@@ -453,7 +479,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).thumbnail
         };
         this.fileList.push(file);
-        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
+        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
       });
     } else if (flag === 'screen') {
       const id = data.id;
@@ -486,7 +512,20 @@ export class ContentComponent implements OnInit {
         this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/' + JSON.parse(res.payload).image;
       });
     } else if (flag === 'banner') {
+      const id = data.id;
       this.isModifyBannerVisible = true;
+      this.cmsId = id;  // 用于修改
+      this.bannerService.getBanner(id).subscribe(res => {
+        // 处理异常处理
+        this.bannerDate = JSON.parse(res.payload);
+        this.bannerDate.url = JSON.parse(res.payload).url;
+        this.imageUrl = JSON.parse(res.payload).image;
+        const file: any = {
+          name: JSON.parse(res.payload).image
+        };
+        this.fileList.push(file);
+        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/' + JSON.parse(res.payload).image;
+      });
     }
   }
 
@@ -562,7 +601,7 @@ export class ContentComponent implements OnInit {
         'jump': this.modifyOpenForm.controls['jump'].value,
         'site': this.modifyOpenForm.controls['site'].value,  // 安卓 IOS 标识
         'url': this.modifyOpenForm.controls['url'].value,
-        'sort': this.modifyOpenForm.controls['sort'].value,
+        'order': this.modifyOpenForm.controls['order'].value,
         'image': this.imageUrl
       };
       this.openService.updateOpen(openInput).subscribe(res => {
@@ -575,7 +614,27 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'banner') {
-
+      // if (!this.verificationModify('open')) {
+      //   return;
+      // }
+      const bannerInput = {
+        'id': this.cmsId,
+        'title': this.modifyBannerForm.controls['title'].value,
+        'jump': this.modifyBannerForm.controls['jump'].value,
+        'site': this.modifyBannerForm.controls['site'].value,  // 安卓 IOS 标识
+        'url': this.modifyBannerForm.controls['url'].value,
+        'order': this.modifyBannerForm.controls['order'].value,
+        'image': this.imageUrl
+      };
+      this.bannerService.updateBanner(bannerInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.hideModifyModal('banner');
+          this.loadData('banner');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -730,7 +789,7 @@ export class ContentComponent implements OnInit {
     let flag = '';
     switch (this.currentPanel) {
       case 'content':
-        url = 'http://account-center-test.chewrobot.com/api/notices/thumbnails';
+        url = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails';
         flag = 'thumbnail';
         break;
       case 'screen':
@@ -742,7 +801,7 @@ export class ContentComponent implements OnInit {
         flag = 'image';
         break;
       case 'banner':
-        url = 'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/';
+        url = 'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/';
         flag = 'image';
         break;
       default:

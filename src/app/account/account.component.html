@@ -44,7 +44,8 @@
             <div nz-col nzSpan="1"></div>
 
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="doSearchCustomer()"><i class="anticon anticon-search" style="margin-right: 10px;"></i>查询</button>
+              <button nz-button nzType="primary"><i class="anticon anticon-search" style="margin-right: 10px;"></i>查询</button>
+              <!-- (click)="doSearchCustomer()" -->
             </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddCustomerModal()"><i class="anticon anticon-file-add"></i>新增</button>
@@ -236,17 +237,18 @@
           <nz-table #rowSelectionTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
             <thead>
               <tr>
-                <th nzWidth="80px">角色</th>
-                <th nzWidth="350px">描述</th>
+                <!-- <th nzWidth="80px">角色</th>
+                <th nzWidth="350px">描述</th> -->
                 <th nzWidth="30px">操作</th>
               </tr>
             </thead>
             <tbody>
-              <td>{{data.name}}</td>
-              <td>{{data.description}}</td>
+              <!-- <td>{{data.name}}</td>
+              <td>{{data.description}}</td> -->
               <td>
                 <button nz-button nzType="primary" (click)="showModifyRoleModal(data)" style="margin-right: 10px;">编辑</button>
-                <button nz-button nzType="danger" (click)="doDeleteRole(data.id)">删除</button>
+                <button nz-button nzType="danger">删除</button>
+                <!-- (click)="doDeleteRole(data.id)" -->
               </td>
             </tbody>
           </nz-table>

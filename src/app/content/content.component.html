@@ -28,7 +28,7 @@
             <tbody>
               <tr *ngFor="let data of contentTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
+                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
                 <td>{{data.title}}</td>
                 <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '运营活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>
@@ -215,7 +215,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddModal('screen')"><i class="anticon anticon-file-add"></i>新增</button>
+              <button nz-button nzType="primary" (click)="showAddModal('screen')"><i class="anticon anticon-file-add"></i>新增开屏</button>
             </div>
           </div>
           <nz-table #screenTable [nzData]="dataScreen">
@@ -303,7 +303,6 @@
                   </nz-select>
                 </div>
               </div>
-              <!-- 上面的链接跳转状态为“可跳转”，则展示下面的输入框 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
@@ -380,7 +379,6 @@
                   </nz-select>
                 </div>
               </div>
-              <!-- 上面的链接跳转状态为“可跳转”，则展示下面的输入框 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
@@ -418,7 +416,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增</button>
+              <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增弹框</button>
             </div>
           </div>
           <nz-table #openTable [nzData]="dataOpen">
@@ -439,7 +437,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.jump === 'DISABLED'? '不可跳转' : data.jump === 'html' ? '端内跳端外' : '端外跳端内'}}</td>
                 <td>{{data.url ? '可跳转' : '不可跳转'}}</td>
-                <td>{{i+1}}</td>
+                <td>{{data.order}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户 > 设置小额免密' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : '对话流 > 帮助'}}</td>
                 <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
@@ -483,14 +481,12 @@
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="jump" [(ngModel)]="emptyAdd[2]">
                     <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
-                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
                 </div>
               </div>
-              <!-- 上面的链接跳转状态为“可跳转”，则展示下面的输入框 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
@@ -501,7 +497,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="sort" [(ngModel)]="openDate.sort" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="order" [(ngModel)]="openDate.order" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
@@ -513,6 +509,12 @@
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
                   </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
             </form>
@@ -563,7 +565,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="sort" [ngModel]="openDate.sort" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="order" [ngModel]="openDate.order" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
@@ -575,6 +577,12 @@
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
                   </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
             </form>
@@ -591,7 +599,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddModal('banner')"><i class="anticon anticon-file-add"></i>新增</button>
+              <button nz-button nzType="primary" (click)="showAddModal('banner')"><i class="anticon anticon-file-add"></i>新增轮播图</button>
             </div>
           </div>
           <nz-table #bannerTable [nzData]="dataBanner">
@@ -599,10 +607,11 @@
               <tr>
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">轮播图标题</th>
-                <th nzWidth="20px">轮播图片</th>
                 <th nzWidth="20px">跳转位置</th>
                 <th nzWidth="20px">链接跳转状态</th>
                 <th nzWidth="20px">排序状态</th>
+                <th nzWidth="20px">APP标识</th>
+                <th nzWidth="20px">轮播图片</th>
                 <th nzWidth="20px">启用状态</th>
                 <th nzWidth="20px">操作</th>
               </tr>
@@ -610,12 +619,12 @@
             <tbody>
               <tr *ngFor="let data of bannerTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.title}}test</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
-                <!-- <td>{{data.readingAmount}}</td> -->
-                <td>端外跳端外 / 端外跳端内</td>
-                <td>可跳转</td>
-                <td>{{i+1}}</td>
+                <td>{{data.title}}</td>
+                <td>{{data.jump === 'DISABLED'? '不可跳转' : data.jump === 'html' ? '端内跳端外' : '端外跳端内'}}</td>
+                <td>{{data.url ? '可跳转' : '不可跳转'}}</td>
+                <td>{{data.order}}</td>
+                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户 > 设置小额免密' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : '对话流 > 帮助'}}</td>
+                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -639,40 +648,48 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">轮播图标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="aaa" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="title" [(ngModel)]="bannerDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入轮播图标题" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select formControlName="site" [(ngModel)]="emptyAdd[1]">
+                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心'" [nzValue]="1"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="2"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
+                  </nz-select>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">跳转位置：</div>
                 <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="''" formControlName="bbb" [(ngModel)]="emptyAdd[1]">
-                    <nz-option required [nzLabel]="'端内跳端外'" [nzValue]="'SKILL'"></nz-option>
-                    <nz-option required [nzLabel]="'端内跳端内'" [nzValue]="'OPERATION'"></nz-option>
+                  <nz-select [ngModel]="''" formControlName="jump" [(ngModel)]="emptyAdd[2]">
+                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="span_down right_alignment">链接跳转状态：</div>
-                <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="''" formControlName="ccc" [(ngModel)]="emptyAdd[1]">
-                    <nz-option required [nzLabel]="'可跳转'" [nzValue]="'SKILL'"></nz-option>
-                    <nz-option required [nzLabel]="'不可跳转'" [nzValue]="'OPERATION'"></nz-option>
-                  </nz-select>
-                </div>
-              </div>
-              <!-- 上面的链接跳转状态为“可跳转”，则展示下面的输入框 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="ddd" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="url" [(ngModel)]="bannerDate.url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="eee" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
@@ -684,6 +701,12 @@
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
                   </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
             </form>
@@ -700,40 +723,48 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">轮播图标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="aaa" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="title" [(ngModel)]="bannerDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入轮播图标题" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select [ngModel]="bannerDate.site" formControlName="site">
+                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心'" [nzValue]="1"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="2"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
+                  </nz-select>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">跳转位置：</div>
                 <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="''" formControlName="bbb" [(ngModel)]="emptyAdd[1]">
-                    <nz-option required [nzLabel]="'端内跳端外'" [nzValue]="'SKILL'"></nz-option>
-                    <nz-option required [nzLabel]="'端内跳端内'" [nzValue]="'OPERATION'"></nz-option>
+                  <nz-select [ngModel]="bannerDate.jump" formControlName="jump">
+                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="span_down right_alignment">链接跳转状态：</div>
-                <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="''" formControlName="ccc" [(ngModel)]="emptyAdd[1]">
-                    <nz-option required [nzLabel]="'可跳转'" [nzValue]="'SKILL'"></nz-option>
-                    <nz-option required [nzLabel]="'不可跳转'" [nzValue]="'OPERATION'"></nz-option>
-                  </nz-select>
-                </div>
-              </div>
-              <!-- 上面的链接跳转状态为“可跳转”，则展示下面的输入框 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="ddd" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="url" [(ngModel)]="bannerDate.url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="eee" [(ngModel)]="contentDate.aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
@@ -745,6 +776,12 @@
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
                   </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
             </form>

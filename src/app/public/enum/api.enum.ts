@@ -35,13 +35,13 @@ export enum bookingApiUrls {
 /** 内容模块 */
 export enum cmsApiUrls {
   /** 获取全部内容 */
-  contentList = '/notices',
+  contentList = '/cms/notices',
   /** 获取首屏 */
   screenList = '/cms/start-page-ads',
   /** 获取弹框 */
   openList = '/cms/main-page-ads',
   /** 获取cms */
-  bannerList = '/cms/start-page-ads',
+  bannerList = '/cms/banner-ads',
 }
 
 /** 数据中心模块 */
