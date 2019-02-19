@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'content', loadChildren: './content/content.module#ContentModule'}, // , canActivate: [LoginGuard]
   { path: 'preview', loadChildren: './preview/preview.module#PreviewModule'}, // , canActivate: [LoginGuard]
   { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'}, // , canActivate: [LoginGuard]
+  { path: 'coupon', loadChildren: './coupon/coupon.module#CouponModule'}, // , canActivate: [LoginGuard]
   { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 

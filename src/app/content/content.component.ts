@@ -34,7 +34,6 @@ export class ContentComponent implements OnInit {
   isModifyOpenVisible = false;
   isAddBannerVisible = false;
   isModifyBannerVisible = false;
-  loading = false;
   avatarUrl: string;
   addContentForm: FormGroup;
   addScreenForm: FormGroup;
@@ -44,6 +43,9 @@ export class ContentComponent implements OnInit {
   modifyScreenForm: FormGroup;
   modifyOpenForm: FormGroup;
   modifyBannerForm: FormGroup;
+  jumpForScreen = 'DISABLED';
+  jumpForOpen = 'DISABLED';
+  jumpForBanner = 'DISABLED';
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
@@ -52,39 +54,16 @@ export class ContentComponent implements OnInit {
   showImageUrl = '';
   currentPanel = '';  // 当前面板
   contentDate = {
-    'title': '',
-    'type': '',
-    'url': '',
-    'abstractContent': '',
-    'content': '',
-    'publishTime': '',
-    'pseudonym': ''
+    'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': ''
   };
   screenDate = {
-    'site': '',
-    'enabled': '',
-    'jump': '',
-    'image': '',
-    'skip': '',
-    'duration': '',
-    'url': ''
+    'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
   };
   openDate = {
-    'enabled': '',
-    'jump': '',
-    'site': '',
-    'order': '',
-    'image': '',
-    'url': ''
+    'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
   };
   bannerDate = {
-    'title': '',
-    'jump': '',
-    'enabled': '',
-    'site': '',
-    'order': '',
-    'image': '',
-    'url': ''
+    'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
   };
   config = {
     toolbar: [
@@ -144,19 +123,19 @@ export class ContentComponent implements OnInit {
   loadData(flag) {
     if (flag === 'content') {
       this.contentService.getContentList().subscribe(res => {
-        this.dataContent = JSON.parse(res.payload);
+        this.dataContent = JSON.parse(res.payload).reverse();
       });
     } else if (flag === 'screen') {
       this.screenService.getScreenList().subscribe(res => {
-        this.dataScreen = JSON.parse(res.payload);
+        this.dataScreen = JSON.parse(res.payload).reverse();
       });
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
-        this.dataOpen = JSON.parse(res.payload);
+        this.dataOpen = JSON.parse(res.payload).reverse();
       });
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
-        this.dataBanner = JSON.parse(res.payload);
+        this.dataBanner = JSON.parse(res.payload).reverse();
       });
     }
   }
@@ -175,6 +154,7 @@ export class ContentComponent implements OnInit {
 
   private _initAddScreenForm(): void {
     this.addScreenForm = this.fb.group({
+      title: [''],
       jump: [''],
       skip: [''],
       site: [''],
@@ -185,6 +165,7 @@ export class ContentComponent implements OnInit {
 
   private _initAddOpenForm(): void {
     this.addOpenForm = this.fb.group({
+      title: [''],
       jump: [''],
       site: [''],
       order: [''],
@@ -212,12 +193,12 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'screen') {
       this.isAddScreenVisible = true;
       this.screenDate = {  // 清空
-        'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
+        'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
       };
     } else if (flag === 'open') {
       this.isAddOpenVisible = true;
       this.openDate = {  // 清空
-        'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
+        'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
       };
     } else if (flag === 'banner') {
       this.isAddBannerVisible = true;
@@ -247,7 +228,7 @@ export class ContentComponent implements OnInit {
   }
 
   // 封装验证新增
-  verificationAddContent(flag): boolean {
+  verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'content') {
       if (this.addContentForm.controls['title'].value === '') {
@@ -267,11 +248,43 @@ export class ContentComponent implements OnInit {
         result = false;
       }
     } else if (flag === 'screen') {
-
+      if (this.addScreenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '开屏标题未填写' });
+        result = false;
+      } else if (this.addScreenForm.controls['duration'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '持续时间未填写' });
+        result = false;
+      } else if (this.addScreenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '链接跳转状态未选择' });
+        result = false;
+      }
     } else if (flag === 'open') {
-
+      if (this.addOpenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '弹框标题未填写' });
+        result = false;
+      } else if (this.addOpenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      }
+      // } else if (this.addOpenForm.controls['order'].value === '') {
+      //   this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+      //   result = false;
+      // }
     } else if (flag === 'banner') {
-
+      if (this.addBannerForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
+        result = false;
+      } else if (this.addBannerForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      } else if (this.addBannerForm.controls['order'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        result = false;
+      }
+    }
+    if (this.fileList.length !== 1) {
+      this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
+      result = false;
     }
     return result;
   }
@@ -279,7 +292,7 @@ export class ContentComponent implements OnInit {
   // 新增操作
   doSave(flag): void {
     if (flag === 'content') {
-      if (!this.verificationAddContent('content')) {
+      if (!this.verificationAdd('content')) {
         return;
       }
       const contentInput = {
@@ -294,7 +307,7 @@ export class ContentComponent implements OnInit {
       };
       this.contentService.addContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('content');
           this.loadData('content');
         } else {
@@ -302,11 +315,12 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'screen') {
-      // if (!this.verificationAddContent('screen')) {
-      //   return;
-      // }
+      if (!this.verificationAdd('screen')) {
+        return;
+      }
       const screenInput = {
         'enabled': false, // 默认不可启用
+        'title': this.addScreenForm.controls['title'].value,
         'site': this.addScreenForm.controls['site'].value,
         'jump': this.addScreenForm.controls['jump'].value,
         'image': this.imageUrl,
@@ -316,7 +330,7 @@ export class ContentComponent implements OnInit {
       };
       this.screenService.addScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('screen');
           this.loadData('screen');
         } else {
@@ -324,11 +338,12 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'open') {
-      // if (!this.verificationAddContent('open')) {
-      //   return;
-      // }
+      if (!this.verificationAdd('open')) {
+        return;
+      }
       const openInput = {
         'enabled': false, // 默认不可启用
+        'title': this.addOpenForm.controls['title'].value,
         'site': this.addOpenForm.controls['site'].value,
         'jump': this.addOpenForm.controls['jump'].value,
         'image': this.imageUrl,
@@ -337,7 +352,7 @@ export class ContentComponent implements OnInit {
       };
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('open');
           this.loadData('open');
         } else {
@@ -345,9 +360,9 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'banner') {
-      // if (!this.verificationAddContent('banner')) {
-      //   return;
-      // }
+      if (!this.verificationAdd('banner')) {
+        return;
+      }
       const bannerInput = {
         'enabled': false, // 默认不可启用
         'title': this.addBannerForm.controls['title'].value,
@@ -359,7 +374,7 @@ export class ContentComponent implements OnInit {
       };
       this.bannerService.addBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('banner');
           this.loadData('banner');
         } else {
@@ -385,6 +400,7 @@ export class ContentComponent implements OnInit {
   // 修改
   _initModifyScreenForm() {
     this.modifyScreenForm = this.fb.group({
+      title: [''],
       jump: [''],
       site: [''],
       skip: [''],
@@ -396,6 +412,7 @@ export class ContentComponent implements OnInit {
   // 修改
   _initModifyOpenForm() {
     this.modifyOpenForm = this.fb.group({
+      title: [''],
       jump: [''],
       site: [''],
       order: [''],
@@ -435,11 +452,45 @@ export class ContentComponent implements OnInit {
         result = false;
       }
     } else if (flag === 'screen') {
-
+      if (this.modifyScreenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '开屏标题未填写' });
+        result = false;
+      } else if (this.modifyScreenForm.controls['duration'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '持续时间未填写' });
+        result = false;
+      } else if (this.modifyScreenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '链接跳转状态未选择' });
+        result = false;
+      }
     } else if (flag === 'open') {
-
+      if (this.modifyOpenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '弹框标题未填写' });
+        result = false;
+      } else if (this.modifyOpenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      }
+      // } else if (this.modifyOpenForm.controls['order'].value === '') {
+      //   this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+      //   result = false;
+      // }
     } else if (flag === 'banner') {
+      console.log(this.modifyBannerForm.controls['jump']);
 
+      if (this.modifyBannerForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
+        result = false;
+      } else if (this.modifyBannerForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      } else if (this.modifyBannerForm.controls['order'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        result = false;
+      }
+    }
+    if (this.fileList.length !== 1) {
+      this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
+      result = false;
     }
     return result;
   }
@@ -563,7 +614,7 @@ export class ContentComponent implements OnInit {
       };
       this.contentService.updateContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideModifyModal('content');
           this.loadData('content');
         } else {
@@ -571,21 +622,23 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'screen') {
-      // if (!this.verificationModify('screen')) {
-      //   return;
-      // }
+      if (!this.verificationModify('screen')) {
+        return;
+      }
+      const jump = this.modifyScreenForm.controls['jump'].value;
       const screenInput = {
         'id': this.cmsId,
+        'title': this.modifyScreenForm.controls['title'].value,
         'jump': this.modifyScreenForm.controls['jump'].value,
-        'site': this.modifyScreenForm.controls['site'].value,  // 安卓 IOS 标识
+        'site': jump === 'APP' ? this.modifyScreenForm.controls['site'].value : '',  // 安卓 IOS 标识
         'duration': this.modifyScreenForm.controls['duration'].value,
-        'url': this.modifyScreenForm.controls['url'].value,
+        'url': jump === 'HTML' ? this.modifyScreenForm.controls['url'].value : '',
         'skip': this.modifyScreenForm.controls['skip'].value,
         'image': this.imageUrl
       };
       this.screenService.updateScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideModifyModal('screen');
           this.loadData('screen');
         } else {
@@ -593,20 +646,22 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'open') {
-      // if (!this.verificationModify('open')) {
-      //   return;
-      // }
+      if (!this.verificationModify('open')) {
+        return;
+      }
+      const jump = this.modifyOpenForm.controls['jump'].value;
       const openInput = {
         'id': this.cmsId,
+        'title': this.modifyOpenForm.controls['title'].value,
         'jump': this.modifyOpenForm.controls['jump'].value,
-        'site': this.modifyOpenForm.controls['site'].value,  // 安卓 IOS 标识
-        'url': this.modifyOpenForm.controls['url'].value,
+        'site': jump === 'APP' ? this.modifyOpenForm.controls['site'].value : '',  // 安卓 IOS 标识
+        'url': jump === 'HTML' ? this.modifyOpenForm.controls['url'].value : '',
         'order': this.modifyOpenForm.controls['order'].value,
         'image': this.imageUrl
       };
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideModifyModal('open');
           this.loadData('open');
         } else {
@@ -614,21 +669,22 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'banner') {
-      // if (!this.verificationModify('open')) {
-      //   return;
-      // }
+      if (!this.verificationModify('banner')) {
+        return;
+      }
+      const jump = this.modifyBannerForm.controls['jump'].value;
       const bannerInput = {
         'id': this.cmsId,
         'title': this.modifyBannerForm.controls['title'].value,
         'jump': this.modifyBannerForm.controls['jump'].value,
-        'site': this.modifyBannerForm.controls['site'].value,  // 安卓 IOS 标识
-        'url': this.modifyBannerForm.controls['url'].value,
+        'site': jump === 'APP' ? this.modifyBannerForm.controls['site'].value : '',  // 安卓 IOS 标识
+        'url': jump === 'HTML' ? this.modifyBannerForm.controls['url'].value : '',
         'order': this.modifyBannerForm.controls['order'].value,
         'image': this.imageUrl
       };
       this.bannerService.updateBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.hideModifyModal('banner');
           this.loadData('banner');
         } else {
@@ -652,7 +708,7 @@ export class ContentComponent implements OnInit {
     if (flag === 'content') {
       this.contentService.deleteContent(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '删除成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('content');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -661,7 +717,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'screen') {
       this.screenService.deleteScreen(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '删除成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -670,7 +726,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'open') {
       this.openService.deleteOpen(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '删除成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('open');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -679,7 +735,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'banner') {
       this.bannerService.deleteBanner(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '删除成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('banner');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -702,11 +758,10 @@ export class ContentComponent implements OnInit {
 
   // 点击switch
   clickSwitch(id, switchValue, flag) {
-    if (flag === 'content') {
-    } else if (flag === 'screen') {
+    if (flag === 'screen') {
       this.screenService.updateSwitch(id, switchValue).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -715,7 +770,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'open') {
       this.openService.updateSwitch(id, switchValue).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -724,7 +779,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'banner') {
       this.bannerService.updateSwitch(id, switchValue).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -735,7 +790,7 @@ export class ContentComponent implements OnInit {
 
   // 预览新增
   doPreviewContentAdd() {
-    if (!this.verificationAddContent('content')) {
+    if (!this.verificationAdd('content')) {
       return;
     }
     const url = this.addContentForm.controls['url'].value;

@@ -108,40 +108,40 @@
               </tr>
             </tbody>
           </nz-table>
-        </nz-tab>
 
-        <!-- 弹框 —— 信息 —— 反馈详情 -->
-        <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideFeedBack()">
-          <form style="font-size: 0.4rem;line-height: 1rem;">
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="8" class="right_alignment">问题描述：</div>
-              <div nz-col nzSpan="12">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
-              <div nz-col nzSpan="4"></div>
-            </div>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="8" class="right_alignment">手机号或邮箱：</div>
-              <div nz-col nzSpan="12">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
-              <div nz-col nzSpan="4"></div>
-            </div>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
-              <div nz-col nzSpan="12">{{!tempFeedBack.photo ? 'null' : ''}}</div>
-              <div nz-col nzSpan="4"></div>
-            </div>
-            <ng-container *ngIf="tempFeedBack.photo">
-              <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
-                 <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="12"><img [src]="'http://account-center-test.chewrobot.com/api/feedback/img/' + item" style="width: 350px;"></div>
+          <!-- 弹框 —— 信息 —— 反馈详情 -->
+          <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideFeedBack()">
+            <form style="font-size: 0.4rem;line-height: 1rem;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">问题描述：</div>
+                <div nz-col nzSpan="12">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
                 <div nz-col nzSpan="4"></div>
               </div>
-            </ng-container>
-          </form>
-          <!-- 弹框和底部定制 -->
-          <ng-template #feedBackModalFooter>
-            <button nz-button nzType="default" (click)="hideFeedBack()">取消</button>
-          </ng-template>
-        </nz-modal>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">手机号或邮箱：</div>
+                <div nz-col nzSpan="12">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
+                <div nz-col nzSpan="12">{{!tempFeedBack.photo ? 'null' : ''}}</div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+              <ng-container *ngIf="tempFeedBack.photo">
+                <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
+                   <div nz-col nzSpan="4"></div>
+                  <div nz-col nzSpan="4"></div>
+                  <div nz-col nzSpan="12"><img [src]="'http://account-center-test.chewrobot.com/api/feedback/img/' + item" style="width: 350px;"></div>
+                  <div nz-col nzSpan="4"></div>
+                </div>
+              </ng-container>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #feedBackModalFooter>
+              <button nz-button nzType="default" (click)="hideFeedBack()">取消</button>
+            </ng-template>
+          </nz-modal>
+        </nz-tab>
 
         <nz-tab nzTitle="发送短信">
           <form [formGroup]="sendMsgForm">
@@ -165,6 +165,58 @@
             <div nz-row [ngStyle]="{'height': sendScreenHeight}"></div>
           </form>
         </nz-tab>
+
+        <nz-tab nzTitle="点踩对话日志">
+          <nz-table #rowOppositionTable [nzData]="oppositionInfo" [nzSimple]="true" [(nzPageSize)]="oppositionPageSize" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th nzWidth="100px">序号</th>
+                <th nzWidth="100px">用户昵称</th>
+                <th nzWidth="100px">用户账号</th>
+                <th nzWidth="100px">上传时间</th>
+                <th nzWidth="100px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowOppositionTable.data; let i=index;">
+                <td nzWidth="100px">{{i + 1}}</td>
+                <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
+                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? '0' : data.photo.length) : '0'}}</td>
+                <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
+                <td nzWidth="100px">
+                  <button nz-button nzType="primary" (click)="showOppositionInfo(data)" style="margin-right: 10px;">查看详情</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <!-- 弹框 —— 信息 —— 点踩对话日志详情 -->
+          <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="750" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideOpposition()">
+            <form style="font-size: 0.4rem;line-height: 1rem;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">用户昵称：</div>
+                <div nz-col nzSpan="12">{{tempOpposition.words ? tempOpposition.words : 'null'}}</div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">用户账号：</div>
+                <div nz-col nzSpan="12">{{tempOpposition.number ? tempOpposition.number : 'null'}}</div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
+                <div nz-col nzSpan="12">{{!tempOpposition.photo ? 'null' : ''}}</div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #oppositionModalFooter>
+              <button nz-button nzType="default" (click)="hideOpposition()">取消</button>
+            </ng-template>
+          </nz-modal>
+        </nz-tab>
+
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>

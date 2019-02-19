@@ -47,7 +47,7 @@ export class ScreenService extends AppServiceBase {
   addScreen(data): Observable<IResponse<any>> {
     const url = this.screenUrl + cmsApiUrls.screenList;
     // tslint:disable-next-line:max-line-length
-    const body = `site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
@@ -58,7 +58,8 @@ export class ScreenService extends AppServiceBase {
   /** 修改单个 */
   updateScreen(data): Observable<IResponse<any>> {
     const url = this.screenUrl + cmsApiUrls.screenList + '/' + data.id;
-    const body = `jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}`;
+    // tslint:disable-next-line:max-line-length
+    const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

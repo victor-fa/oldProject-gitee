@@ -58,7 +58,14 @@
         </span>
       </a>
     </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}" routerLinkActive="active">
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
+      <a class="common-button" routerLink="/coupon" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-file"></i><span>优惠券</span>
+        </span>
+      </a>
+    </li>
+    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[5].active}" routerLinkActive="active">
       <span title>
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>

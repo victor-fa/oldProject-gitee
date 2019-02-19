@@ -47,8 +47,7 @@ export class OpenService extends AppServiceBase {
   addOpen(data): Observable<IResponse<any>> {
     const url = this.openUrl + cmsApiUrls.openList;
     // tslint:disable-next-line:max-line-length
-    // const body = `site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
-    const body = `site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
@@ -60,8 +59,7 @@ export class OpenService extends AppServiceBase {
   updateOpen(data): Observable<IResponse<any>> {
     const url = this.openUrl + cmsApiUrls.openList + '/' + data.id;
     // tslint:disable-next-line:max-line-length
-    // const body = `site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
-    const body = `site=${data.site}&jump=${data.jump}&image=${data.image}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

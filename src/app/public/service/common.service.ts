@@ -23,6 +23,7 @@ export class CommonService {
     { active: false },
     { active: false },
     { active: false },
+    { active: false },
     { active: false }
   ];
   dataCenter = [    // 数据中心下标状态

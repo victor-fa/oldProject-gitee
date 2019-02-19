@@ -36,8 +36,16 @@ export class UserComponent implements OnInit {
   pageSize = 10;
   feedBackPageSize = 1000;
   feedbackInfo = [];
+  oppositionInfo = [{}, {}];
+  oppositionPageSize = 1000;
   isFeedBackVisible = false;
+  isOppositionVisible = false;
   tempFeedBack = {
+    'words': '',
+    'photo': '',
+    'number': ''
+  };
+  tempOpposition = {
     'words': '',
     'photo': '',
     'number': ''
@@ -244,6 +252,15 @@ export class UserComponent implements OnInit {
 
   hideFeedBack(): void {
     this.isFeedBackVisible = false;
+  }
+
+  showOppositionInfo(data): void {
+    this.isOppositionVisible = true;
+    this.tempOpposition = data;
+  }
+
+  hideOpposition(): void {
+    this.isOppositionVisible = false;
   }
 
   getAgeType(ageType): string {
