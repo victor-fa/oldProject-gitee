@@ -36,6 +36,8 @@ export class CommonService {
     { active: false },
     { active: false },
     { active: false },
+    { active: false },
+    { active: false },
     { active: false }
   ];
   permission = {
@@ -70,7 +72,7 @@ export class CommonService {
   }
 
   changeDataCenter(flag, route): void {
-    const dataCenterTitle = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT'];
+    const dataCenterTitle = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT', '打车BOT', '音乐BOT'];
     this.needDataCenter = flag === this.currentDataCenter ? false : true;
     localStorage.setItem('isDataCenterSearch', 'false');
 

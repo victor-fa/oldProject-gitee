@@ -89,6 +89,12 @@ export class DataCenterComponent implements OnInit {
       case '导航BOT':
         flag = 'navigation-bot';
         break;
+      case '打车BOT':
+        flag = 'taxi-bot';
+        break;
+      case '音乐BOT':
+        flag = 'music-bot';
+        break;
       default:
         break;
     }

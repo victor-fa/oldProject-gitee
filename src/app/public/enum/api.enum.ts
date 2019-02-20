@@ -42,6 +42,8 @@ export enum cmsApiUrls {
   openList = '/cms/main-page-ads',
   /** 获取cms */
   bannerList = '/cms/banner-ads',
+  /** 获取优惠券 */
+  couponList = '/couponrule',
 }
 
 /** 数据中心模块 */

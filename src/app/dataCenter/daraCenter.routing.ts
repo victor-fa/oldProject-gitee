@@ -11,6 +11,8 @@ import { TrainComponent } from './train/train.component';
 import { HotelComponent } from './hotel/hotel.component';
 import { WeatherComponent } from './weather/weather.component';
 import { NavigateComponent } from './navigate/navigate.component';
+import { TaxiComponent } from './taxi/taxi.component';
+import { MusicComponent } from './music/music.component';
 
 
 const routes: Routes = [
@@ -57,6 +59,14 @@ const routes: Routes = [
             {
                 path: 'navigate',
                 component: NavigateComponent,
+            },
+            {
+                path: 'taxi',
+                component: TaxiComponent,
+            },
+            {
+                path: 'music',
+                component: MusicComponent,
             }
         ]
     },

@@ -1,0 +1,27 @@
+<div class="spin" *ngIf="isSpinning">
+  <nz-spin [nzSize]="'large'"></nz-spin>
+</div>
+<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+  <thead>
+    <tr>
+      <th nzWidth="50px">序号</th>
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">唤醒音乐人次</th>
+      <th nzWidth="100px">唤醒音乐行为数</th>
+      <th nzWidth="100px">音乐对话轮数（总）</th>
+      <th nzWidth="100px">日最高音乐对话轮数</th>
+      <th nzWidth="100px">平均音乐对话轮数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
+      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
+      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
+    </tr>
+  </tbody>
+</nz-table>

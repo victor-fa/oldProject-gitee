@@ -15,6 +15,7 @@ export class WeatherComponent implements OnInit {
   indeterminate = false;
   pageSize = 100;
   myDate = new Date();
+  isSpinning = false;
   constructor(
     public commonService: CommonService,
     private notification: NzNotificationService,
@@ -28,12 +29,14 @@ export class WeatherComponent implements OnInit {
     const endDate = localStorage.getItem('endDate');
     const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
     const isDataCenterSearch = localStorage.getItem('isDataCenterSearch');
+    this.isSpinning = true; // loading
     if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
       this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'weather-bot').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
           localStorage.setItem('dataCenterTime', currentTime);
+          this.isSpinning = false;  // loading
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }

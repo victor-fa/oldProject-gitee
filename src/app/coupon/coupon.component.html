@@ -1,14 +1,14 @@
 <app-left-nav></app-left-nav>
-<div class="content" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+<div class="coupon" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <div nz-row class="search_panel">
-        <form [formGroup]="searchContentForm">
-          <!-- <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+        <!-- <form [formGroup]="searchCouponForm"> -->
+          <div nz-col nzSpan="2" class="span_down spacing right_alignment">
             优惠券名称：
           </div>
           <div nz-col nzSpan="3">
-            <input nz-input maxlength="32" formControlName="aaa" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
+            <input nz-input maxlength="32" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
               nzSize="default">
           </div>
 
@@ -16,7 +16,7 @@
             优惠券类型：
           </div>
           <div nz-col nzSpan="3">
-            <nz-select [ngModel]="''" formControlName="bbb">
+            <nz-select [ngModel]="''" formControlName="discountType">
               <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
               <nz-option required [nzLabel]="'全部'" [nzValue]="'1'"></nz-option>
               <nz-option required [nzLabel]="'满减固定额'" [nzValue]="'2'"></nz-option>
@@ -30,7 +30,7 @@
             优惠券品类：
           </div>
           <div nz-col nzSpan="3">
-            <nz-select [ngModel]="''" formControlName="ccc">
+            <nz-select [ngModel]="''" formControlName="couponCategory">
               <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
               <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
               <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
@@ -43,9 +43,9 @@
             创建日期范围：
           </div>
           <div nz-col nzSpan="7" class="span_down">
-            <nz-range-picker formControlName="ddd" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
-          </div> -->
-        </form>
+            <nz-range-picker formControlName="data" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+          </div>
+        <!-- </form> -->
 
       </div>
       <div nz-row class="search_panel">
@@ -54,14 +54,14 @@
         </div>
         <div nz-col nzSpan="1"></div>
         <div nz-col nzSpan="2">
-          <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增优惠券</button>
+          <button nz-button nzType="primary" (click)="showAddModal('coupon')"><i class="anticon anticon-file-add"></i>新增优惠券</button>
         </div>
         <div nz-col nzSpan="2">
-          <button nz-button nzType="primary" (click)="doSearch('content')"><i class="anticon anticon-file-add"></i>查询</button>
+          <button nz-button nzType="primary" (click)="doSearch('coupon')"><i class="anticon anticon-file-add"></i>查询</button>
         </div>
         <div nz-col nzSpan="1"></div>
       </div>
-      <nz-table #contentTable [nzData]="dataContent">
+      <nz-table #couponTable [nzData]="dataCoupon">
         <thead>
           <tr>
             <th nzWidth="20px">序号</th>
@@ -74,17 +74,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of contentTable.data; let i=index;">
+          <tr *ngFor="let data of couponTable.data; let i=index;">
             <td>{{i+1}}</td>
             <td>{{data.readingAmount}}</td>
-            <td>{{data.readingAmount}}</td>
-            <td>{{data.readingAmount}}</td>
-            <td>{{data.readingAmount}}</td>
-            <td>{{data.readingAmount}}</td>
+            <td>{{data.couponId}}</td>
+            <td>{{data.couponName}}</td>
+            <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
+            <td>{{data.timeLimitValidDay}}</td>
             <td>
-              <button nz-button nzType="primary" (click)="showModifyModal(data, 'content')" style="margin-right: 10px;"><i
+              <button nz-button nzType="primary" (click)="showModifyModal(data, 'coupon')" style="margin-right: 10px;"><i
                   class="anticon anticon-form"></i>编辑</button>
-              <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i
+              <button nz-button nzType="primary" (click)="doPreviewCoupon(data)" style="margin-right: 10px;"><i
                   class="anticon anticon-play-circle"></i>查看</button>
             </td>
           </tr>
@@ -92,9 +92,9 @@
       </nz-table>
 
       <!-- 弹框 —— 新增 —— 新增优惠券 -->
-      <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addContentModalFooter" nzClosable="false" (nzOnCancel)="hideAddModal('content')">
-        <form [formGroup]="addContentForm">
-          <!-- <div nz-row class="search_panel">
+      <nz-modal [(nzVisible)]="isAddCouponVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" nzClosable="false" (nzOnCancel)="hideAddModal('coupon')">
+        <!-- <form [formGroup]="addCouponForm"> -->
+          <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
           </div>
           <div nz-row class="search_panel">
@@ -172,7 +172,7 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="17" class="span_down" style="font-size: 20px;font-weight: bold;">
-              <nz-table #rowCategoryTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+              <nz-table #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
                 <thead>
                   <tr>
                     <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
@@ -180,7 +180,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of rowCategoryTable.data">
+                  <tr *ngFor="let data of rowCategoryAddTable.data">
                     <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus()"></td>
                     <td>{{data.name}}</td>
                   </tr>
@@ -220,20 +220,20 @@
               </div>
               <div>10元</div>
             </div>
-          </div> -->
+          </div>
 
-        </form>
+        <!-- </form> -->
         <!-- 弹框和底部定制 -->
-        <ng-template #addContentModalFooter>
-          <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
-          <button nz-button nzType="default" (click)="hideAddModal('content')">取消</button>
+        <ng-template #addCouponModalFooter>
+          <button nz-button nzType="primary" (click)="doSave('coupon')">保存</button>
+          <button nz-button nzType="default" (click)="hideAddModal('coupon')">取消</button>
         </ng-template>
       </nz-modal>
 
       <!-- 弹框 —— 修改 —— 编辑优惠券 -->
-      <nz-modal [(nzVisible)]="isModifyContentVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyContentModalFooter" nzClosable="false" (nzOnCancel)="hideModifyModal('content')">
-        <form [formGroup]="modifyContentForm">
-          <!-- <div nz-row class="search_panel">
+      <nz-modal [(nzVisible)]="isModifyCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" nzClosable="false" (nzOnCancel)="hideModifyModal('coupon')">
+        <!-- <form [formGroup]="modifyCouponForm"> -->
+          <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
           </div>
           <div nz-row class="search_panel">
@@ -311,7 +311,7 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="17" class="span_down" style="font-size: 20px;font-weight: bold;">
-              <nz-table #rowCategoryTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+              <nz-table #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
                 <thead>
                   <tr>
                     <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
@@ -319,7 +319,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of rowCategoryTable.data">
+                  <tr *ngFor="let data of rowCategoryModifyTable.data">
                     <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus()"></td>
                     <td>{{data.name}}</td>
                   </tr>
@@ -359,13 +359,13 @@
               </div>
               <div>10元</div>
             </div>
-          </div> -->
+          </div>
 
-        </form>
+        <!-- </form> -->
         <!-- 弹框和底部定制 -->
-        <ng-template #modifyContentModalFooter>
-          <button nz-button nzType="primary" (click)="doModify('content')">保存</button>
-          <button nz-button nzType="default" (click)="hideModifyModal('content')">取消</button>
+        <ng-template #modifyCouponModalFooter>
+          <button nz-button nzType="primary" (click)="doModify('coupon')">保存</button>
+          <button nz-button nzType="default" (click)="hideModifyModal('coupon')">取消</button>
         </ng-template>
       </nz-modal>
 

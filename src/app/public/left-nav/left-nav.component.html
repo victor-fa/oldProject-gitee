@@ -54,14 +54,14 @@
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
       <a class="common-button" routerLink="/content" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-file"></i><span>内容管理</span>
+          <i class="anticon anticon-file-text"></i><span>内容管理</span>
         </span>
       </a>
     </li>
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
       <a class="common-button" routerLink="/coupon" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-file"></i><span>优惠券</span>
+          <i class="anticon anticon-red-envelope"></i><span>优惠券</span>
         </span>
       </a>
     </li>
@@ -80,6 +80,8 @@
         <li nz-menu-item (click)="commonService.changeDataCenter(7, '/dataCenter/hotel')">酒店BOT</li>
         <li nz-menu-item (click)="commonService.changeDataCenter(8, '/dataCenter/weather')">天气BOT</li>
         <li nz-menu-item (click)="commonService.changeDataCenter(9, '/dataCenter/navigate')">导航BOT</li>
+        <li nz-menu-item (click)="commonService.changeDataCenter(10, '/dataCenter/taxi')">打车BOT</li>
+        <li nz-menu-item (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
       </ul>
     </li>
     <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">

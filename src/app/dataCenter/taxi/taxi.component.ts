@@ -4,11 +4,11 @@ import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { DataCenterService } from 'src/app/public/service/dataCenter.service';
 
 @Component({
-  selector: 'app-hotel',
-  templateUrl: './hotel.component.html',
-  styleUrls: ['./hotel.component.scss']
+  selector: 'app-taxi',
+  templateUrl: './taxi.component.html',
+  styleUrls: ['./taxi.component.scss']
 })
-export class HotelComponent implements OnInit {
+export class TaxiComponent implements OnInit {
 
   displayData = [];
   allChecked = false;
@@ -33,7 +33,7 @@ export class HotelComponent implements OnInit {
     if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
       beginDate = this.commonService.getDay(-7);
       endDate = this.commonService.getDay(-1);
-      this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'hotel-bot').subscribe(res => {
+      this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'navigation-bot').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();

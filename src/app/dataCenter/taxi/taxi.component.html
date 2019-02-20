@@ -1,0 +1,67 @@
+<div class="spin" *ngIf="isSpinning">
+  <nz-spin [nzSize]="'large'"></nz-spin>
+</div>
+<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+  <thead>
+    <tr>
+      <th nzWidth="50px">序号</th>
+      <th nzWidth="100px">时间</th>
+      <th nzWidth="100px">唤醒打车人次</th>
+      <th nzWidth="100px">唤醒打车行为数</th>
+      <th nzWidth="100px">打车订单推荐总数</th>
+      <th nzWidth="100px">首次打车订单推荐数</th>
+      <th nzWidth="100px">打车对话轮数（总）</th>
+      <th nzWidth="100px">日最高打车对话轮数</th>
+      <th nzWidth="100px">平均打车对话轮数</th>
+      <th nzWidth="100px">打车订单请求数</th>
+      <th nzWidth="100px">打车订单提交数</th>
+      <th nzWidth="100px">打车服务完成数</th>
+      <th nzWidth="100px">打车未遂取消行为数</th>
+      <th nzWidth="100px">打车超时取消行为数</th>
+      <th nzWidth="100px">打车服务中主动取消行为数</th>
+      <th nzWidth="100px">打车服务中被动取消行为数</th>
+      <th nzWidth="100px">打车订单请求率</th>
+      <th nzWidth="100px">打车订单提交率</th>
+      <th nzWidth="100px">打车订单服务完成率</th>
+      <th nzWidth="100px">打车未遂取消率</th>
+      <th nzWidth="100px">打车超时取消率</th>
+      <th nzWidth="100px">打车服务中主动取消率</th>
+      <th nzWidth="100px">打车服务中被动取消率</th>
+      <th nzWidth="100px">打车换平台</th>
+      <th nzWidth="100px">打车换车型</th>
+      <th nzWidth="100px">打车换价格</th>
+      <th nzWidth="100px">打车换接车速度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+      <td nzWidth="50px">{{i+1}}</td>
+      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
+      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
+      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
+      <td nzWidth="100px">{{data.navigationQuerySite}}</td>
+      <td nzWidth="100px">{{data.navigationStart}}</td>
+      <td nzWidth="100px">{{data.navigationEnd}}</td>
+      <td nzWidth="100px">{{data.navigationSwitch}}</td>
+      <td nzWidth="100px">{{data.navigationArrived}}</td>
+      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
+      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
+      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
+      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
+      <td nzWidth="100px">{{data.navigationQuerySite}}</td>
+      <td nzWidth="100px">{{data.navigationStart}}</td>
+      <td nzWidth="100px">{{data.navigationEnd}}</td>
+      <td nzWidth="100px">{{data.navigationSwitch}}</td>
+      <td nzWidth="100px">{{data.navigationArrived}}</td>
+      <td nzWidth="100px">{{data.navigationForBiking}}</td>
+      <td nzWidth="100px">{{data.navigationForDriving}}</td>
+      <td nzWidth="100px">{{data.navigationForWalk}}</td>
+      <td nzWidth="100px">{{data.navigationForPubTransport}}</td>
+      <td nzWidth="100px">{{data.navigationForPubTransport}}</td>
+    </tr>
+  </tbody>
+</nz-table>

@@ -382,7 +382,7 @@
                   <font color="red">*</font>开屏标题：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input maxlength="18" formControlName="title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input maxlength="18" formControlName="title" [ngModel]="screenDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
@@ -517,7 +517,9 @@
           <nz-modal [(nzVisible)]="isAddOpenVisible" nzWidth="750" nzTitle="新增弹框" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')">
             <form [formGroup]="addOpenForm">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="span_down right_alignment">弹框标题：</div>
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  <font color="red">*</font>弹框标题：
+                </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [(ngModel)]="openDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入弹框标题" nzSize="default">
@@ -596,7 +598,9 @@
           <nz-modal [(nzVisible)]="isModifyOpenVisible" nzWidth="750" nzTitle="修改弹框" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')">
             <form [formGroup]="modifyOpenForm">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="span_down right_alignment">弹框标题：</div>
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  <font color="red">*</font>弹框标题：
+                </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [ngModel]="openDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入弹框标题" nzSize="default">

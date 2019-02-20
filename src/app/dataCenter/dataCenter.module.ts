@@ -13,6 +13,8 @@ import { HotelComponent } from './hotel/hotel.component';
 import { WeatherComponent } from './weather/weather.component';
 import { NavigateComponent } from './navigate/navigate.component';
 import { DataCenterRoutingModule } from './daraCenter.routing';
+import { TaxiComponent } from './taxi/taxi.component';
+import { MusicComponent } from './music/music.component';
 
 @NgModule({
   imports: [
@@ -31,6 +33,8 @@ import { DataCenterRoutingModule } from './daraCenter.routing';
     HotelComponent,
     WeatherComponent,
     NavigateComponent,
+    TaxiComponent,
+    MusicComponent,
   ]
 })
 export class DataCenterModule {}

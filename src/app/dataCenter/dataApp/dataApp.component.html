@@ -1,4 +1,7 @@
-<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}">
+<div class="spin" *ngIf="isSpinning">
+  <nz-spin [nzSize]="'large'"></nz-spin>
+</div>
+<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
       <th nzWidth="50px">序号</th>
@@ -17,9 +20,11 @@
       <th nzWidth="100px">机票订单成交数</th>
       <th nzWidth="100px">火车订单成交数</th>
       <th nzWidth="100px">酒店订单成交数</th>
+      <th nzWidth="100px">打车订单成交数</th>
       <th nzWidth="100px">机票订单成交金额</th>
       <th nzWidth="100px">火车订单成交金额</th>
       <th nzWidth="100px">酒店订单成交金额</th>
+      <th nzWidth="100px">打车订单成交金额</th>
     </tr>
   </thead>
   <tbody>
@@ -40,9 +45,11 @@
       <td nzWidth="100px">{{data.flightOrderCheckout}}</td>
       <td nzWidth="100px">{{data.trainOrderCheckout}}</td>
       <td nzWidth="100px">{{data.hotelOrderCheckout}}</td>
+      <td nzWidth="100px">{{data.aaaaa}}</td>
       <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice : 'null'}}</td>
       <td nzWidth="100px">{{data.trainChangePrice ? data.trainChangePrice : 'null'}}</td>
       <td nzWidth="100px">{{data.hotelChangePrice ? data.hotelChangePrice : 'null'}}</td>
+      <td nzWidth="100px">{{data.aaaaa}}</td>
     </tr>
   </tbody>
 </nz-table>

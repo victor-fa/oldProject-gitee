@@ -8,6 +8,7 @@ import { LocalizationService } from '../public/service/localization.service';
 import { ContentService } from '../public/service/content.service';
 import { HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
+import { CouponService } from '../public/service/coupon.service';
 
 registerLocaleData(zh);
 
@@ -18,13 +19,13 @@ registerLocaleData(zh);
 })
 export class CouponComponent implements OnInit {
 
-  isAddContentVisible = false;
-  isModifyContentVisible = false;
+  isAddCouponVisible = false;
+  isModifyCouponVisible = false;
   loading = false;
   avatarUrl: string;
-  searchContentForm: FormGroup;
-  addContentForm: FormGroup;
-  modifyContentForm: FormGroup;
+  searchCouponForm: FormGroup;
+  addCouponForm: FormGroup;
+  modifyCouponForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
@@ -35,12 +36,12 @@ export class CouponComponent implements OnInit {
   beginDate = '';
   endDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  contentDate = {
+  couponDate = {
     'title': '',
     'type': '',
     'url': '',
-    'abstractContent': '',
-    'content': '',
+    'abstractCoupon': '',
+    'coupon': '',
     'publishTime': '',
     'pseudonym': ''
   };
@@ -62,7 +63,7 @@ export class CouponComponent implements OnInit {
       ['link', 'video']                         // link and image, video
     ]
   };
-  dataContent = []; // 内容
+  dataCoupon = []; // 内容
   allChecked = false;
   indeterminate = false;
   displayData = [];
@@ -99,33 +100,33 @@ export class CouponComponent implements OnInit {
     private msg: NzMessageService,
     private modalService: NzModalService,
     public localizationService: LocalizationService,
-    private contentService: ContentService,
+    private couponService: CouponService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private http: HttpClient,
   ) {
     this.commonService.nav[4].active = true;
     this._initSearchForm();
-    this._initAddContentForm();
-    this._initModifyContentForm();
+    this._initAddCouponForm();
+    this._initModifyCouponForm();
   }
 
   ngOnInit() {
-    this.loadData('content');
+    this.loadData('coupon');
   }
 
   loadData(flag) {
-    this.contentService.getContentList().subscribe(res => {
-      this.dataContent = JSON.parse(res.payload);
+    this.couponService.getCouponList().subscribe(res => {
+      this.dataCoupon = JSON.parse(res.payload);
     });
   }
 
   private _initSearchForm(): void {
-    this.searchContentForm = this.fb.group({
-      aaa: [''],
-      bbb: [''],
-      ccc: [''],
-      ddd: [''],
+    this.searchCouponForm = this.fb.group({
+      couponName: [''],
+      discountType: [''],
+      couponCategory: [''],
+      data: [''],
     });
   }
 
@@ -133,13 +134,13 @@ export class CouponComponent implements OnInit {
 
   }
 
-  private _initAddContentForm(): void {
-    this.addContentForm = this.fb.group({
+  private _initAddCouponForm(): void {
+    this.addCouponForm = this.fb.group({
       title: [''],
       type: [''],
       url: [''],
-      abstractContent: [''],
-      content: [''],
+      abstractCoupon: [''],
+      coupon: [''],
       publishTime: [''],
       pseudonym: [''],
     });
@@ -147,9 +148,9 @@ export class CouponComponent implements OnInit {
 
   // 新增内容 - 弹框
   showAddModal(flag) {
-    this.isAddContentVisible = true;
-    this.contentDate = {  // 清空
-      'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': ''
+    this.isAddCouponVisible = true;
+    this.couponDate = {  // 清空
+      'title': '', 'type': '', 'url': '', 'abstractCoupon': '', 'coupon': '', 'publishTime': '', 'pseudonym': ''
     };
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -158,28 +159,28 @@ export class CouponComponent implements OnInit {
   }
 
   hideAddModal(flag) {
-    this.isAddContentVisible = false;
+    this.isAddCouponVisible = false;
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
     this.showImageUrl = '';
   }
 
   // 封装验证新增
-  verificationAddContent(flag): boolean {
+  verificationAddCoupon(flag): boolean {
     let result = true;
-    if (this.addContentForm.controls['title'].value === '') {
+    if (this.addCouponForm.controls['title'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
       result = false;
-    } else if (this.addContentForm.controls['type'].value === '') {
+    } else if (this.addCouponForm.controls['type'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
       result = false;
-    } else if (this.addContentForm.controls['pseudonym'].value === '') {
+    } else if (this.addCouponForm.controls['pseudonym'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
       result = false;
-    } else if (this.addContentForm.controls['abstractContent'].value === '') {
+    } else if (this.addCouponForm.controls['abstractCoupon'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
       result = false;
-    } else if (this.addContentForm.controls['publishTime'].value === '') {
+    } else if (this.addCouponForm.controls['publishTime'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
       result = false;
     }
@@ -188,24 +189,24 @@ export class CouponComponent implements OnInit {
 
   // 新增操作
   doSave(flag): void {
-    if (!this.verificationAddContent('content')) {
+    if (!this.verificationAddCoupon('coupon')) {
       return;
     }
-    const contentInput = {
-      'title': this.addContentForm.controls['title'].value,
-      'url': this.dotranUrl(this.addContentForm.controls['url'].value),
-      'content': this.addContentForm.controls['content'].value,
-      'abstractContent': this.addContentForm.controls['abstractContent'].value,
-      'pseudonym': this.addContentForm.controls['pseudonym'].value,
-      'publishTime': this.datePipe.transform(this.addContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
-      'type': this.addContentForm.controls['type'].value,
+    const couponInput = {
+      'title': this.addCouponForm.controls['title'].value,
+      'url': this.dotranUrl(this.addCouponForm.controls['url'].value),
+      'coupon': this.addCouponForm.controls['coupon'].value,
+      'abstractCoupon': this.addCouponForm.controls['abstractCoupon'].value,
+      'pseudonym': this.addCouponForm.controls['pseudonym'].value,
+      'publishTime': this.datePipe.transform(this.addCouponForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
+      'type': this.addCouponForm.controls['type'].value,
       'thumbnail': this.imageUrl
     };
-    this.contentService.addContent(contentInput).subscribe(res => {
+    this.couponService.addCoupon(couponInput).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
-        this.hideAddModal('content');
-        this.loadData('content');
+        this.hideAddModal('coupon');
+        this.loadData('coupon');
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
@@ -213,13 +214,13 @@ export class CouponComponent implements OnInit {
   }
 
   // 修改
-  _initModifyContentForm() {
-    this.modifyContentForm = this.fb.group({
+  _initModifyCouponForm() {
+    this.modifyCouponForm = this.fb.group({
       title: [''],
       type: [''],
       url: [''],
-      abstractContent: [''],
-      content: [''],
+      abstractCoupon: [''],
+      coupon: [''],
       publishTime: [''],
       pseudonym: [''],
     });
@@ -228,19 +229,19 @@ export class CouponComponent implements OnInit {
   // 封装验证修改表单
   verificationModify(flag): boolean {
     let result = true;
-    if (this.modifyContentForm.controls['title'].value === '') {
+    if (this.modifyCouponForm.controls['title'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
       result = false;
-    } else if (this.modifyContentForm.controls['type'].value === '') {
+    } else if (this.modifyCouponForm.controls['type'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
       result = false;
-    } else if (this.modifyContentForm.controls['pseudonym'].value === '') {
+    } else if (this.modifyCouponForm.controls['pseudonym'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
       result = false;
-    } else if (this.modifyContentForm.controls['abstractContent'].value === '') {
+    } else if (this.modifyCouponForm.controls['abstractCoupon'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
       result = false;
-    } else if (this.modifyContentForm.controls['publishTime'].value === '') {
+    } else if (this.modifyCouponForm.controls['publishTime'].value === '') {
       this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
       result = false;
     }
@@ -248,21 +249,21 @@ export class CouponComponent implements OnInit {
   }
 
   // 预览修改
-  doPreviewContentModify() {
-    if (!this.verificationModify('content')) {
+  doPreviewCouponModify() {
+    if (!this.verificationModify('coupon')) {
       return;
     }
-    const url = this.modifyContentForm.controls['url'].value;
+    const url = this.modifyCouponForm.controls['url'].value;
     if (url) {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
     } else {
-      const title = '<h1><strong>' + this.modifyContentForm.controls['title'].value + '</strong></h1>';
+      const title = '<h1><strong>' + this.modifyCouponForm.controls['title'].value + '</strong></h1>';
       const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
-          + this.modifyContentForm.controls['pseudonym'].value + '</span>'
+          + this.modifyCouponForm.controls['pseudonym'].value + '</span>'
           + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-          + this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
+          + this.datePipe.transform(this.modifyCouponForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
           + '</p><p><br></p>';
-      this.localizationService.setPreview = title + pseudonym + this.modifyContentForm.controls['content'].value;
+      this.localizationService.setPreview = title + pseudonym + this.modifyCouponForm.controls['coupon'].value;
       window.open('preview');
     }
   }
@@ -270,12 +271,12 @@ export class CouponComponent implements OnInit {
   // 修改 - 弹框
   showModifyModal(data, flag) {
     const id = data.id;
-    this.isModifyContentVisible = true;
+    this.isModifyCouponVisible = true;
     this.cmsId = id;  // 用于修改
-    this.contentService.getContent(id).subscribe(res => {
+    this.couponService.getCoupon(id).subscribe(res => {
       // 处理异常处理
-      this.contentDate = JSON.parse(res.payload);
-      this.contentDate.url = this.dotranUrl(JSON.parse(res.payload).url);
+      this.couponDate = JSON.parse(res.payload);
+      this.couponDate.url = this.dotranUrl(JSON.parse(res.payload).url);
       this.imageUrl = JSON.parse(res.payload).thumbnail;
       const file: any = {
         name: JSON.parse(res.payload).thumbnail
@@ -286,7 +287,7 @@ export class CouponComponent implements OnInit {
   }
 
   hideModifyModal(flag) {
-    this.isModifyContentVisible = false;
+    this.isModifyCouponVisible = false;
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
     this.showImageUrl = '';
@@ -294,25 +295,25 @@ export class CouponComponent implements OnInit {
 
   // 修改操作
   doModify(flag) {
-    if (!this.verificationModify('content')) {
+    if (!this.verificationModify('coupon')) {
       return;
     }
-    const contentInput = {
+    const couponInput = {
       'id': this.cmsId,
-      'title': this.modifyContentForm.controls['title'].value,
-      'url': this.dotranUrl(this.modifyContentForm.controls['url'].value),
-      'content': this.dotran(this.modifyContentForm.controls['content'].value),
-      'abstractContent': this.modifyContentForm.controls['abstractContent'].value,
-      'pseudonym': this.modifyContentForm.controls['pseudonym'].value,
-      'publishTime': this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
-      'type': this.modifyContentForm.controls['type'].value,
+      'title': this.modifyCouponForm.controls['title'].value,
+      'url': this.dotranUrl(this.modifyCouponForm.controls['url'].value),
+      'coupon': this.dotran(this.modifyCouponForm.controls['coupon'].value),
+      'abstractCoupon': this.modifyCouponForm.controls['abstractCoupon'].value,
+      'pseudonym': this.modifyCouponForm.controls['pseudonym'].value,
+      'publishTime': this.datePipe.transform(this.modifyCouponForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
+      'type': this.modifyCouponForm.controls['type'].value,
       'thumbnail': this.imageUrl
     };
-    this.contentService.updateContent(contentInput).subscribe(res => {
+    this.couponService.updateCoupon(couponInput).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
-        this.hideModifyModal('content');
-        this.loadData('content');
+        this.hideModifyModal('coupon');
+        this.loadData('coupon');
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
@@ -330,10 +331,10 @@ export class CouponComponent implements OnInit {
   }
 
   doDelete(id, flag) {
-    this.contentService.deleteContent(id).subscribe(res => {
+    this.couponService.deleteCoupon(id).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '提示', nzContent: '删除成功' });
-        this.loadData('content');
+        this.loadData('coupon');
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
