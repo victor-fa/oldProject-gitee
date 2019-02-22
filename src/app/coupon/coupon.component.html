@@ -3,7 +3,28 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <div nz-row class="search_panel">
-        <!-- <form [formGroup]="searchCouponForm"> -->
+        <form [formGroup]="searchCouponForm">
+          <div nz-col nzSpan="2" class="span_down right_alignment">
+            创建日期范围：
+          </div>
+          <div nz-col nzSpan="7" class="span_down">
+            <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+          </div>
+
+          <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+            优惠券品类：
+          </div>
+          <div nz-col nzSpan="3">
+            <nz-select [ngModel]="''" formControlName="couponCategory">
+              <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+              <nz-option required [nzLabel]="'全品类'" [nzValue]="'all'"></nz-option>
+              <nz-option required [nzLabel]="'机票'" [nzValue]="'flight'"></nz-option>
+              <nz-option required [nzLabel]="'火车'" [nzValue]="'hotel'"></nz-option>
+              <nz-option required [nzLabel]="'酒店'" [nzValue]="'train'"></nz-option>
+              <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
+            </nz-select>
+          </div>
+
           <div nz-col nzSpan="2" class="span_down spacing right_alignment">
             优惠券名称：
           </div>
@@ -18,46 +39,25 @@
           <div nz-col nzSpan="3">
             <nz-select [ngModel]="''" formControlName="discountType">
               <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-              <nz-option required [nzLabel]="'全部'" [nzValue]="'1'"></nz-option>
-              <nz-option required [nzLabel]="'满减固定额'" [nzValue]="'2'"></nz-option>
-              <nz-option required [nzLabel]="'满减百分比'" [nzValue]="'3'"></nz-option>
-              <nz-option required [nzLabel]="'满减随机额'" [nzValue]="'4'"></nz-option>
-              <nz-option required [nzLabel]="'满减随机百分比'" [nzValue]="'5'"></nz-option>
+              <nz-option required [nzLabel]="'满减固定额'" [nzValue]="'fix_discount'"></nz-option>
+              <nz-option required [nzLabel]="'满减百分比'" [nzValue]="'percentage_discount'"></nz-option>
             </nz-select>
           </div>
 
-          <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-            优惠券品类：
-          </div>
-          <div nz-col nzSpan="3">
-            <nz-select [ngModel]="''" formControlName="couponCategory">
-              <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-              <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
-              <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
-              <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
-              <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
-            </nz-select>
-          </div>
-
-          <div nz-col nzSpan="2" class="span_down right_alignment">
-            创建日期范围：
-          </div>
-          <div nz-col nzSpan="7" class="span_down">
-            <nz-range-picker formControlName="data" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
-          </div>
-        <!-- </form> -->
+        </form>
 
       </div>
       <div nz-row class="search_panel">
-        <div nz-col nzSpan="18" class="span_down right_alignment">
+        <div nz-col nzSpan="16" class="span_down right_alignment">
             如果想要废除某个优惠券，请联系产品人员
         </div>
         <div nz-col nzSpan="1"></div>
-        <div nz-col nzSpan="2">
+        <div nz-col nzSpan="3">
           <button nz-button nzType="primary" (click)="showAddModal('coupon')"><i class="anticon anticon-file-add"></i>新增优惠券</button>
         </div>
+        <div nz-col nzSpan="1"></div>
         <div nz-col nzSpan="2">
-          <button nz-button nzType="primary" (click)="doSearch('coupon')"><i class="anticon anticon-file-add"></i>查询</button>
+          <button nz-button nzType="primary" (click)="doSearchCoupon('coupon')"><i class="anticon anticon-file-add"></i>查询</button>
         </div>
         <div nz-col nzSpan="1"></div>
       </div>
@@ -76,16 +76,17 @@
         <tbody>
           <tr *ngFor="let data of couponTable.data; let i=index;">
             <td>{{i+1}}</td>
-            <td>{{data.readingAmount}}</td>
-            <td>{{data.couponId}}</td>
+            <td>{{data.ctime | date:'yyyy-MM-dd HH:mm'}}</td>
+            <td>{{data.couponNo}}</td>
             <td>{{data.couponName}}</td>
             <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
-            <td>{{data.timeLimitValidDay}}</td>
+            <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
+            <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
             <td>
               <button nz-button nzType="primary" (click)="showModifyModal(data, 'coupon')" style="margin-right: 10px;"><i
                   class="anticon anticon-form"></i>编辑</button>
-              <button nz-button nzType="primary" (click)="doPreviewCoupon(data)" style="margin-right: 10px;"><i
-                  class="anticon anticon-play-circle"></i>查看</button>
+              <button nz-button nzType="primary" (click)="showPreviewModal(data, 'coupon')" style="margin-right: 10px;"><i
+                  class="anticon anticon-eye"></i>查看</button>
             </td>
           </tr>
         </tbody>
@@ -93,14 +94,14 @@
 
       <!-- 弹框 —— 新增 —— 新增优惠券 -->
       <nz-modal [(nzVisible)]="isAddCouponVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" nzClosable="false" (nzOnCancel)="hideAddModal('coupon')">
-        <!-- <form [formGroup]="addCouponForm"> -->
+        <form [formGroup]="addCouponForm">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
             <div nz-col nzSpan="4">
-              <input nz-input maxlength="12" [(ngModel)]="emptyAdd[0]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                 placeholder="请输入红包名称" nzSize="default">
             </div>
           </div>
@@ -110,29 +111,25 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down">
-              <nz-radio-group [(ngModel)]="radioValue">
-                <label nz-radio nzValue="满减固定额">满减固定额</label>
-                <label nz-radio nzValue="满减百分比" [nzDisabled]="true">满减百分比</label>
-                <label nz-radio nzValue="满减随机额" [nzDisabled]="true">满减随机额</label>
+              <nz-radio-group [ngModel]="'fix_discount'" formControlName="discountType">
+                <label nz-radio nzValue="fix_discount">满减固定额</label>
+                <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减百分比</label>
+                <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减随机额</label>
               </nz-radio-group>
             </div>
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
             <div nz-col nzSpan="4" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input formControlName="thresholdPrice" [(ngModel)]="couponDate.thresholdPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
             </div>
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
             <div nz-col nzSpan="2" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
-            </div>
-            <div nz-col nzSpan="1" class="span_down" style="text-align: center;">至</div>
-            <div nz-col nzSpan="2" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input formControlName="discountPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
             </div>
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
             <div nz-col nzSpan="1" class="span_down"></div>
-            <div nz-col nzSpan="10" class="span_down" style="text-align: center;font-size: 12px;color: #A9A9A9">
+            <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">
               说明：例如，订单满100减20<br>
               可以定义阶梯满减规则，例如：订单满100减20；满300减50
             </div>
@@ -144,9 +141,9 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
             <div nz-col nzSpan="5" class="span_down">
-              <nz-radio-group [(ngModel)]="radioValue">
-                <label nz-radio nzValue="固定时间">固定时间</label>
-                <label nz-radio nzValue="相对时间">相对时间</label>
+              <nz-radio-group formControlName="timeLimitType">
+                <label nz-radio nzValue="fix_start_end">固定时间</label>
+                <label nz-radio nzValue="fix_duration">相对时间</label>
               </nz-radio-group>
             </div>
             <div nz-col nzSpan="1"></div>
@@ -163,7 +160,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="9">
-              <nz-range-picker [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
             </div>
           </div>
 
@@ -171,7 +168,7 @@
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div>
           </div>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="17" class="span_down" style="font-size: 20px;font-weight: bold;">
+            <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
               <nz-table #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
                 <thead>
                   <tr>
@@ -187,6 +184,8 @@
                 </tbody>
               </nz-table>
             </div>
+            <div nz-col nzSpan="1">
+            </div>
             <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">
                 1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>
                 2. 也可单独勾选【具体品类】
@@ -198,8 +197,8 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="5" class="span_down">
-              <label nz-checkbox [(ngModel)]="checkOptions[0].checked">{{checkOptions[0].label}}</label><br>
-              <label nz-checkbox [(ngModel)]="checkOptions[1].checked">{{checkOptions[1].label}}</label>
+              <label nz-checkbox [(nzChecked)]="checkOptions[0].checked">{{checkOptions[0].label}}</label><br>
+              <label nz-checkbox [(nzChecked)]="checkOptions[1].checked">{{checkOptions[1].label}}</label>
             </div>
             <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
               默认不勾选，则无任何使用约束<br>
@@ -210,19 +209,18 @@
 
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
-            <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png')">
+            <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); width: 469px; height: 209px; padding: 18px;">
               <div>
-                <div>【充值赠送】打车红包</div>
-                <div>限打车使用</div>
-                <div>满100元可用</div>
-                <div>不可与优惠活动叠加使用</div>
-                <div>有效期至：2019-02-28</div>
+                <div style="color: #01C44E;">{{couponDate.couponName}}</div>
+                <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
+                <div>满{{couponDate.thresholdPrice}}元可用</div>
+                <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
+                <div>有效期至：{{endDate}}</div>
               </div>
-              <div>10元</div>
             </div>
           </div>
 
-        <!-- </form> -->
+        </form>
         <!-- 弹框和底部定制 -->
         <ng-template #addCouponModalFooter>
           <button nz-button nzType="primary" (click)="doSave('coupon')">保存</button>
@@ -232,14 +230,14 @@
 
       <!-- 弹框 —— 修改 —— 编辑优惠券 -->
       <nz-modal [(nzVisible)]="isModifyCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" nzClosable="false" (nzOnCancel)="hideModifyModal('coupon')">
-        <!-- <form [formGroup]="modifyCouponForm"> -->
+        <form [formGroup]="modifyCouponForm">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
             <div nz-col nzSpan="4">
-              <input nz-input maxlength="12" [(ngModel)]="emptyAdd[0]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                 placeholder="请输入红包名称" nzSize="default">
             </div>
           </div>
@@ -249,29 +247,25 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down">
-              <nz-radio-group [(ngModel)]="radioValue">
-                <label nz-radio nzValue="满减固定额">满减固定额</label>
-                <label nz-radio nzValue="满减百分比" [nzDisabled]="true">满减百分比</label>
-                <label nz-radio nzValue="满减随机额" [nzDisabled]="true">满减随机额</label>
+              <nz-radio-group [ngModel]="'fix_discount'" formControlName="discountType">
+                <label nz-radio nzValue="fix_discount">满减固定额</label>
+                <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减百分比</label>
+                <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减随机额</label>
               </nz-radio-group>
             </div>
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
             <div nz-col nzSpan="4" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input [(ngModel)]="couponDate.thresholdPrice" formControlName="thresholdPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
             </div>
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
             <div nz-col nzSpan="2" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
-            </div>
-            <div nz-col nzSpan="1" class="span_down" style="text-align: center;">至</div>
-            <div nz-col nzSpan="2" class="span_down">
-              <input nz-input onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input [(ngModel)]="couponDate.discountPrice" formControlName="discountPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
             </div>
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
             <div nz-col nzSpan="1" class="span_down"></div>
-            <div nz-col nzSpan="10" class="span_down" style="text-align: center;font-size: 12px;color: #A9A9A9">
+            <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">
               说明：例如，订单满100减20<br>
               可以定义阶梯满减规则，例如：订单满100减20；满300减50
             </div>
@@ -283,10 +277,12 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
             <div nz-col nzSpan="5" class="span_down">
-              <nz-radio-group [(ngModel)]="radioValue">
-                <label nz-radio nzValue="固定时间">固定时间</label>
-                <label nz-radio nzValue="相对时间">相对时间</label>
+              <nz-radio-group [(ngModel)]="couponDate.timeLimitType" formControlName="timeLimitType">
+                <label nz-radio nzValue="fix_start_end">固定时间</label>
+                <label nz-radio nzValue="fix_duration">相对时间</label>
               </nz-radio-group>
+              <br>
+              {{couponDate.timeLimitStart}}&nbsp;至&nbsp;{{couponDate.timeLimitEnd}}
             </div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;color: #A9A9A9">
@@ -302,7 +298,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="9">
-              <nz-range-picker [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
             </div>
           </div>
 
@@ -310,7 +306,7 @@
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div>
           </div>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="17" class="span_down" style="font-size: 20px;font-weight: bold;">
+            <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
               <nz-table #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
                 <thead>
                   <tr>
@@ -326,6 +322,8 @@
                 </tbody>
               </nz-table>
             </div>
+            <div nz-col nzSpan="1">
+            </div>
             <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">
                 1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>
                 2. 也可单独勾选【具体品类】
@@ -337,8 +335,8 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="5" class="span_down">
-              <label nz-checkbox [(ngModel)]="checkOptions[0].checked">{{checkOptions[0].label}}</label><br>
-              <label nz-checkbox [(ngModel)]="checkOptions[1].checked">{{checkOptions[1].label}}</label>
+              <label nz-checkbox [(nzChecked)]="checkOptions[0].checked">{{checkOptions[0].label}}</label><br>
+              <label nz-checkbox [(nzChecked)]="checkOptions[1].checked">{{checkOptions[1].label}}</label>
             </div>
             <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
               默认不勾选，则无任何使用约束<br>
@@ -349,23 +347,153 @@
 
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
-            <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png')">
+            <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); width: 469px; height: 209px; padding: 18px;">
               <div>
-                <div>【充值赠送】打车红包</div>
-                <div>限打车使用</div>
-                <div>满100元可用</div>
-                <div>不可与优惠活动叠加使用</div>
-                <div>有效期至：2019-02-28</div>
+                <div style="color: #01C44E;">{{couponDate.couponName}}</div>
+                <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
+                <div>满{{couponDate.thresholdPrice}}元可用</div>
+                <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
+                <div>有效期至：{{endDate}}</div>
               </div>
-              <div>10元</div>
             </div>
           </div>
 
-        <!-- </form> -->
+        </form>
         <!-- 弹框和底部定制 -->
         <ng-template #modifyCouponModalFooter>
           <button nz-button nzType="primary" (click)="doModify('coupon')">保存</button>
           <button nz-button nzType="default" (click)="hideModifyModal('coupon')">取消</button>
+        </ng-template>
+      </nz-modal>
+
+      <!-- 弹框 —— 查看 —— 查看优惠券 -->
+      <nz-modal [(nzVisible)]="isPreviewCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="previewCouponModalFooter" nzClosable="false" (nzOnCancel)="hidePreviewModal('coupon')">
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down">红包名称：{{couponDate.couponName}}</div>
+        </div>
+
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">优惠规则</div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down">
+            <nz-radio-group [ngModel]="'fix_discount'">
+              <label nz-radio nzValue="fix_discount" [nzDisabled]="true">满减固定额</label>
+              <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减百分比</label>
+              <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">满减随机额</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
+          <div nz-col nzSpan="4" class="span_down" style="text-align: center">
+            {{couponDate.thresholdPrice}}
+          </div>
+          <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
+          <div nz-col nzSpan="2" class="span_down" style="text-align: center">
+            {{couponDate.discountPrice}}
+          </div>
+          <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
+          <div nz-col nzSpan="1" class="span_down"></div>
+          <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">
+            说明：例如，订单满100减20<br>
+            可以定义阶梯满减规则，例如：订单满100减20；满300减50
+          </div>
+        </div>
+
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">时间限制</div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
+          <div nz-col nzSpan="5" class="span_down">
+            <nz-radio-group [(ngModel)]="couponDate.timeLimitType">
+              <label nz-radio nzValue="fix_start_end" [nzDisabled]="true">固定时间</label>
+              <label nz-radio nzValue="fix_duration" [nzDisabled]="true">相对时间</label>
+            </nz-radio-group>
+            <br>
+            <div *ngIf="couponDate.timeLimitType === 'fix_start_end'">
+              {{couponDate.timeLimitStart}} &nbsp; 至 &nbsp; {{couponDate.timeLimitEnd}}
+            </div>
+            <div *ngIf="couponDate.timeLimitType === 'fix_duration'">
+              自领取之日起&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{couponDate.timeLimitValidDay}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;天
+            </div>
+          </div>
+          <div nz-col nzSpan="1"></div>
+          <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;color: #A9A9A9">
+            固定时间，指的是固定开始和结束日期<br>
+            相对时间，指的是从用户领取之日，开始计算
+          </div>
+          <div nz-col nzSpan="1"></div>
+          <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">
+            相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>
+            相对时间-领取后1天，失效日期是用户领取次日的最后1秒
+          </div>
+        </div>
+
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
+            <nz-table #rowCategoryPreviewTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+              <thead>
+                <tr>
+                  <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="true" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+                  <th>全品类</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of rowCategoryPreviewTable.data">
+                  <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="true" (nzCheckedChange)="refreshStatus()"></td>
+                  <td>{{data.name}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+          <div nz-col nzSpan="1">
+          </div>
+          <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">
+              1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>
+              2. 也可单独勾选【具体品类】
+          </div>
+        </div>
+
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">互斥限制</div>
+        </div>
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="5" class="span_down">
+            <label nz-checkbox [(nzChecked)]="checkOptions[0].checked" [nzDisabled]="true">{{checkOptions[0].label}}</label><br>
+            <label nz-checkbox [(nzChecked)]="checkOptions[1].checked" [nzDisabled]="true">{{checkOptions[1].label}}</label>
+          </div>
+          <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
+            默认不勾选，则无任何使用约束<br>
+            勾选-活动不可用，则在全平台（满x减y）活动的情况下，不允许使用<br>
+            勾选-会员可用，则是会员身份方可使用，非会员不可用
+          </div>
+        </div>
+
+        <div nz-row class="search_panel">
+          <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
+          <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); width: 469px; height: 209px; padding: 18px;">
+            <div>
+              <div style="color: #01C44E;">{{couponDate.couponName}}</div>
+              <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
+              <div>满{{couponDate.thresholdPrice}}元可用</div>
+              <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
+              <div>有效期至：{{endDate}}</div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- 弹框和底部定制 -->
+        <ng-template #previewCouponModalFooter>
+          <button nz-button nzType="default" (click)="hidePreviewModal('coupon')">取消</button>
         </ng-template>
       </nz-modal>
 

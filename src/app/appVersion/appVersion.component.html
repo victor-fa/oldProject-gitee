@@ -1,0 +1,158 @@
+<app-left-nav></app-left-nav>
+<div class="content" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab nzTitle="APP版本">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
+            </div>
+          </div>
+          <nz-table #contentTable [nzData]="dataContent">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">标题</th>
+                <th nzWidth="20px">副标题</th>
+                <th nzWidth="20px">更新时间</th>
+                <th nzWidth="20px">渠道</th>
+                <th nzWidth="20px">文件地址</th>
+                <th nzWidth="20px">大小</th>
+                <th nzWidth="20px">操作系统</th>
+                <th nzWidth="20px">版本</th>
+                <th nzWidth="20px">允许的最低版本</th>
+                <th nzWidth="20px">描述</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of contentTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.title}}</td>
+                <td>{{data.sub_title}}</td>
+                <td>{{data.update}}</td>
+                <td>{{data.channel}}</td>
+                <td>{{data.file}}</td>
+                <td>{{data.size}}</td>
+                <td>{{data.system_symbol}}</td>
+                <td>{{data.version}}</td>
+                <td>{{data.version_allowed}}</td>
+                <td>{{data.description}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <!-- 弹框 —— 新增 —— 新增内容 -->
+          <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="750" nzTitle="新增内容" [nzFooter]="addContentModalFooter" nzClosable="false">
+            <form [formGroup]="addContentForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select [ngModel]="contentDate.channel" formControlName="channel">
+                    <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'小悟'" [nzValue]="'XIAOWU'"></nz-option>
+                    <nz-option required [nzLabel]="'伦茨'" [nzValue]="'LENZE'"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*描述：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="description" [(ngModel)]="contentDate.description" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*大小：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="size" [(ngModel)]="contentDate.size" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*文件：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="file" [(ngModel)]="contentDate.file" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*副标题：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="sub_title" [(ngModel)]="contentDate.sub_title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*允许的最低版本：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="version_allowed" [(ngModel)]="contentDate.version_allowed" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*系统版本：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select [ngModel]="contentDate.system_symbol" formControlName="system_symbol">
+                    <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'安卓'" [nzValue]="'ANDROID'"></nz-option>
+                    <nz-option required [nzLabel]="'IOS'" [nzValue]="'IOS'"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*标题：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="title" [(ngModel)]="contentDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">*版本：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="version" [(ngModel)]="contentDate.version" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入渠道" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #addContentModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
+              <button nz-button nzType="default" (click)="hideAddModal('content')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+
+        </nz-tab>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>

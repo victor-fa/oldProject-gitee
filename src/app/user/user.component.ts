@@ -37,26 +37,26 @@ export class UserComponent implements OnInit {
   feedBackPageSize = 1000;
   feedbackInfo = [];
   oppositionInfo = [{}, {}];
+  agreeInfo = [{}, {}];
   oppositionPageSize = 1000;
+  agreePageSize = 1000;
   isFeedBackVisible = false;
   isOppositionVisible = false;
+  isAgreeVisible = false;
+  currentOppositionAgreeId = '';  // 弹框后的id
   tempFeedBack = {
     'words': '',
     'photo': '',
     'number': ''
   };
-  tempOpposition = {
-    'words': '',
-    'photo': '',
-    'number': ''
-  };
+  tempOpposition = { session: '' };
+  tempAgree = { session: '' };
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private modalService: NzModalService,
     private userService: UserService,
     private notification: NzNotificationService,
-    private _router: Router,
   ) {
     this.commonService.nav[2].active = true;
     this._initSearchForm();
@@ -64,57 +64,81 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData();  // 默认信息
-    this.loadFeedbackInfo();  // 反馈信息
+    this.loadData('user');  // 默认信息
+    this.loadData('feedback');  // 反馈信息
+    this.loadData('agree');  // 点赞信息
+    this.loadData('opposition');  // 点踩信息
     this.sendScreenHeight = (window.screen.height - 524) + 'px';
   }
 
   /**
    * 查询全部
    */
-  private loadData(): void {
-    let id = 0;
-    let flag = '';
-    if (this.doLast) {
-      id = this.lastId;
-      flag = 'last';
-    }
-    if (this.doFirst) {
-      id = this.firstId;
-      flag = 'first';
-    }
-    this.userService.getUserInfoList(this.pageSize, flag, id).subscribe(res => {
-      if (res.payload !== '') {
-        if (res.status === 200) {
-          this.data = JSON.parse(res.payload).users;
-          this.total = JSON.parse(res.payload).total;
-          this.allSize = JSON.parse(res.payload).allSize;
-          this.firstId = JSON.parse(res.payload).users[0].userId;  // 最前面的userId
-          this.lastId = JSON.parse(res.payload).users[JSON.parse(res.payload).users.length - 1].userId;  // 最后面的userId
-          this.data.forEach(item => {
-            item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
-          });
-        }
-      } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
-        // this._router.navigate(['/login']);
-      } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+  private loadData(flag): void {
+    if (flag === 'user') {
+      let id = 0;
+      let flagPage = '';
+      if (this.doLast) {
+        id = this.lastId;
+        flagPage = 'last';
       }
-    });
-    this.doLast = false;
-    this.doFirst = false;
+      if (this.doFirst) {
+        id = this.firstId;
+        flagPage = 'first';
+      }
+      this.userService.getUserInfoList(this.pageSize, flagPage, id).subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.data = JSON.parse(res.payload).users;
+            this.total = JSON.parse(res.payload).total;
+            this.allSize = JSON.parse(res.payload).allSize;
+            this.firstId = JSON.parse(res.payload).users[0].userId;  // 最前面的userId
+            this.lastId = JSON.parse(res.payload).users[JSON.parse(res.payload).users.length - 1].userId;  // 最后面的userId
+            this.data.forEach(item => {
+              item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
+            });
+          }
+        } else if (res.retcode === 10000) {
+          this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
+          // this._router.navigate(['/login']);
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+      this.doLast = false;
+      this.doFirst = false;
+    } else if (flag === 'feedback') {
+      this.userService.getFeedBackInfo().subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.feedbackInfo = JSON.parse(res.payload);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'opposition') {
+      this.userService.getOppositionInfo().subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.oppositionInfo = JSON.parse(res.payload);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'agree') {
+      this.userService.getAgreeInfo().subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.agreeInfo = JSON.parse(res.payload);
+            console.log(this.agreeInfo);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    }
   }
 
   /**
@@ -124,16 +148,16 @@ export class UserComponent implements OnInit {
    */
   private loadDataByUserName(type, userName): void {
     let id = 0;
-    let flag = '';
+    let flagPage = '';
     if (this.doLast) {
       id = this.lastId;
-      flag = 'last';
+      flagPage = 'last';
     }
     if (this.doFirst) {
       id = this.firstId;
-      flag = 'first';
+      flagPage = 'first';
     }
-    this.userService.getUserInfoListByType(this.pageSize, flag, id, type, userName).subscribe(res => {
+    this.userService.getUserInfoListByType(this.pageSize, flagPage, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
           this.data = [];
@@ -141,21 +165,10 @@ export class UserComponent implements OnInit {
           this.data[0].locked === false ? this.data[0].locked = '正常' : this.data[0].locked = '已拉黑';
         }
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank('提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
     this.doLast = false;
@@ -195,51 +208,16 @@ export class UserComponent implements OnInit {
               '<br>联系人' + (i + 1) + '年龄段：' + this.getAgeType(JSON.parse(res.payload)[i].ageType) +
               '<br>联系人' + (i + 1) + '性别：' + this.getSex(JSON.parse(res.payload)[i].sex) + '<br>';
             }
-            this.modalService.info({
-              nzTitle: '常用联系人',
-              nzContent: forItem
-            });
+            this.modalService.info({  nzTitle: '常用联系人', nzContent: forItem });
           } else {
-            this.modalService.info({
-              nzTitle: '提示',
-              nzContent: '当前用户无常用联系人'
-            });
+            this.modalService.info({ nzTitle: '提示', nzContent: '当前用户无常用联系人' });
           }
         }
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.info({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
-      }
-    });
-  }
-
-  /**
-   * 查询反馈信息
-   */
-  private loadFeedbackInfo(): void {
-    this.userService.getFeedBackInfo().subscribe(res => {
-      if (res.payload !== '') {
-        if (res.status === 200) {
-          this.feedbackInfo = JSON.parse(res.payload);
-        }
-      } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.info({ nzTitle: '提示', nzContent: res.message });
       }
     });
   }
@@ -254,13 +232,26 @@ export class UserComponent implements OnInit {
     this.isFeedBackVisible = false;
   }
 
+  // 点踩详情
   showOppositionInfo(data): void {
     this.isOppositionVisible = true;
     this.tempOpposition = data;
+    this.currentOppositionAgreeId = data.id;
   }
 
   hideOpposition(): void {
     this.isOppositionVisible = false;
+  }
+
+  // 点赞详情
+  showAgreeInfo(data): void {
+    this.isAgreeVisible = true;
+    this.tempAgree = data;
+    this.currentOppositionAgreeId = data.id;
+  }
+
+  hideAgree(): void {
+    this.isAgreeVisible = false;
   }
 
   getAgeType(ageType): string {
@@ -275,16 +266,13 @@ export class UserComponent implements OnInit {
     this.searchItem.userName = this.searchForm.controls['userName'].value;
     this.searchItem.phoneNum = this.searchForm.controls['phoneNum'].value;
     if (this.searchItem.userName === '' && this.searchItem.phoneNum === '') {
-      this.loadData();
+      this.loadData('user');
     } else if (this.searchItem.userName !== '' && this.searchItem.phoneNum === '') {
       this.loadDataByUserName('infoId', this.searchItem.userName);
     } else if (this.searchItem.userName === '' && this.searchItem.phoneNum !== '') {
       this.loadDataByUserName('phone', this.searchItem.phoneNum);
     } else {
-      this.modalService.confirm({
-        nzTitle: '提示',
-        nzContent: '查询条件只能选一个查询'
-      });
+      this.modalService.confirm({ nzTitle: '提示', nzContent: '查询条件只能选一个查询' });
     }
   }
 
@@ -311,18 +299,10 @@ export class UserComponent implements OnInit {
     this.userService.updateUserInfo(this.infoId).subscribe(res => {
       if (res.status === 200) {
         setTimeout(() => {
-          this.loadData();
+          this.loadData('user');
         }, 1000);
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } } );
         // this._router.navigate(['/login']);
       }
     });
@@ -332,10 +312,7 @@ export class UserComponent implements OnInit {
   showSendMsgModal(): void {
     const phoneNum = this.sendMsgForm.controls['phoneNum'].value;
     if (phoneNum === '') {
-      this.modalService.error({
-        nzTitle: '提示',
-        nzContent: '请填写手机号'
-      });
+      this.modalService.error({ nzTitle: '提示', nzContent: '请填写手机号' });
       return;
     }
     this.modalService.confirm({
@@ -352,27 +329,12 @@ export class UserComponent implements OnInit {
     const phoneNum = 'Basic ' + Base64.encode(this.sendMsgForm.controls['phoneNum'].value);
     this.userService.sendMsg(phoneNum).subscribe(res => {
       if (res.retcode === 0) {
-        this.modalService.success({
-          nzTitle: '获取成功',
-          nzContent: '验证码为： ' + res.message,
-          nzOkText: '知道了',
-        });
+        this.modalService.success({ nzTitle: '获取成功', nzContent: '验证码为： ' + res.message, nzOkText: '知道了', });
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.error({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
     });
   }
@@ -382,4 +344,25 @@ export class UserComponent implements OnInit {
       phoneNum: [''],
     });
   }
+
+
+  // 下载Excel模板
+  getExcel(flag): void {
+    const estimate = flag === 'opposition' ? false : true;
+    const fileName = flag === 'opposition' ? '点踩对话日志' : '点赞对话日志';
+    this.userService.getExcel(this.currentOppositionAgreeId, estimate).subscribe(res => {
+      const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+      const a = document.createElement('a');
+      a.id = 'tempId';
+      document.body.appendChild(a);
+      a.download = fileName + '.xls';
+      a.href = URL.createObjectURL(blob);
+      a.click();
+      const tempA = document.getElementById('tempId');
+      if (tempA) {
+        tempA.parentNode.removeChild(tempA);
+      }
+    });
+  }
+
 }

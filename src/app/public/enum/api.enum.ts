@@ -46,6 +46,12 @@ export enum cmsApiUrls {
   couponList = '/couponrule',
 }
 
+/** APP版本 */
+export enum appVersionApiUrls {
+  /** 获取最新 */
+  appVersionList = '/app/version',
+}
+
 /** 数据中心模块 */
 export enum dataCenterApiUrls {
   /** 获取全部内容 */

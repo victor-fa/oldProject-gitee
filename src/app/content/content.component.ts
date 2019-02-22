@@ -539,6 +539,7 @@ export class ContentComponent implements OnInit {
       this.screenService.getScreen(id).subscribe(res => {
         // 处理异常处理
         this.screenDate = JSON.parse(res.payload);
+        console.log(this.screenDate)
         this.screenDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
         const file: any = {

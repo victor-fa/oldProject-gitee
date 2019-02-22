@@ -44,7 +44,7 @@
                   <button nz-button nzType="primary" (click)="showDeleteModal(data, 'content')" style="margin-right: 10px;"><i
                       class="anticon anticon-delete"></i>删除</button>
                   <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-play-circle"></i>预览</button>
+                      class="anticon anticon-eye"></i>预览</button>
                 </td>
               </tr>
             </tbody>
@@ -292,7 +292,7 @@
                   <font color="red">*</font>开屏标题：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input maxlength="18" formControlName="title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input maxlength="18" formControlName="title" [(ngModel)]="screenDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
@@ -301,7 +301,7 @@
                   <font color="red">*</font>持续时间：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input maxlength="2" formControlName="duration" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input maxlength="2" formControlName="duration" [(ngModel)]="screenDate.duration" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入持续时间（单位：s）" nzSize="default">
                 </div>
               </div>
@@ -344,7 +344,7 @@
               <div nz-row class="search_panel" *ngIf="jumpForScreen === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                  <input nz-input formControlName="url" [(ngModel)]="screenDate.url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>

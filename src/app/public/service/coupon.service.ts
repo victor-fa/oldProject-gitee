@@ -23,15 +23,21 @@ export class CouponService extends AppServiceBase {
   }
 
   /** 获取所有优惠券列表 */
-  getCouponList(): Observable<IResponse<any>> {
-    const url = this.fullContentUrl(cmsApiUrls.couponList) + '/list';
+  getCouponList(searchItem): Observable<IResponse<any>> {
+    const url = this.fullContentUrl(cmsApiUrls.couponList) + '/list'
+    + '?page=0&pageSize=10'
+    + (searchItem.couponName ? '&couponName=' + searchItem.couponName : '')
+    + (searchItem.discountType ? '&discountType=' + searchItem.discountType : '')
+    + (searchItem.couponCategory ? '&couponCategory=' + searchItem.couponCategory : '')
+    + (searchItem.ctimeStart ? '&ctimeStart=' + searchItem.ctimeStart : '')
+    + (searchItem.ctimeEnd ? '&ctimeEnd=' + searchItem.ctimeEnd : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取单个 */
   getCoupon(id): Observable<IResponse<any>> {
-    const url = this.couponUrl + cmsApiUrls.couponList + '/info/' + id;
+    const url = this.couponUrl + cmsApiUrls.couponList + '/info?couponId=' + id;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -46,25 +52,21 @@ export class CouponService extends AppServiceBase {
   /** 添加单个 */
   addCoupon(data): Observable<IResponse<any>> {
     const url = this.couponUrl + cmsApiUrls.couponList;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改单个 */
   updateCoupon(data): Observable<IResponse<any>> {
-    const url = this.couponUrl + cmsApiUrls.couponList + '/' + data.id;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}`;
+    const url = this.couponUrl + cmsApiUrls.couponList;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改启用状态 */

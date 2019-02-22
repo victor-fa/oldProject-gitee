@@ -18,6 +18,7 @@ export abstract class AppServiceBase {
   protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api/v2/counts';  // 数据中心正式
   // protected dataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';  // 数据中心测试1
   // protected dataCenterUrl = 'http://hrygddv2.vipgz1.idcfengye.com/api/v2/counts';  // 衡锐自己的服务器2
+  protected tempDataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';  // 临时的数据中心测试，测试完了就删除
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',
@@ -35,6 +36,10 @@ export abstract class AppServiceBase {
 
   protected fullDataCenterUrl(url: string): string {
     return this.dataCenterUrl + url;
+  }
+
+  protected tempFullDataCenterUrl(url: string): string {
+    return this.tempDataCenterUrl + url;
   }
 
   protected json2stringfy(obj: {}): string {

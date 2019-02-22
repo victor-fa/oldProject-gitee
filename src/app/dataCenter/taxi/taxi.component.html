@@ -37,31 +37,31 @@
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px">{{i+1}}</td>
       <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
-      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
-      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
-      <td nzWidth="100px">{{data.navigationQuerySite}}</td>
-      <td nzWidth="100px">{{data.navigationStart}}</td>
-      <td nzWidth="100px">{{data.navigationEnd}}</td>
-      <td nzWidth="100px">{{data.navigationSwitch}}</td>
-      <td nzWidth="100px">{{data.navigationArrived}}</td>
-      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
-      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
-      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
-      <td nzWidth="100px">{{data.navigationQuerySite}}</td>
-      <td nzWidth="100px">{{data.navigationStart}}</td>
-      <td nzWidth="100px">{{data.navigationEnd}}</td>
-      <td nzWidth="100px">{{data.navigationSwitch}}</td>
-      <td nzWidth="100px">{{data.navigationArrived}}</td>
-      <td nzWidth="100px">{{data.navigationForBiking}}</td>
-      <td nzWidth="100px">{{data.navigationForDriving}}</td>
-      <td nzWidth="100px">{{data.navigationForWalk}}</td>
-      <td nzWidth="100px">{{data.navigationForPubTransport}}</td>
-      <td nzWidth="100px">{{data.navigationForPubTransport}}</td>
+      <td nzWidth="100px">{{data.awakTaxisUsers}}</td>
+      <td nzWidth="100px">{{data.awakTaxisCount}}</td>
+      <td nzWidth="100px">{{data.taxiOrderRecommend}}</td>
+      <td nzWidth="100px">{{data.taxiOrderRecommendFirst}}</td>
+      <td nzWidth="100px">{{data.taxiSessionCount}}</td>
+      <td nzWidth="100px">{{data.taxiSessionMax}}</td>
+      <td nzWidth="100px">{{data.awakTaxisCount === 0 ? 0 : data.taxiSessionCount / data.awakTaxisCount}}</td>
+      <td nzWidth="100px">{{data.taxiOrderQuery}}</td>
+      <td nzWidth="100px">{{data.taxiOrderCommit}}</td>
+      <td nzWidth="100px">{{data.taxiOrderCheckout}}</td>
+      <td nzWidth="100px">{{data.taxiCancelCar}}</td>
+      <td nzWidth="100px">{{data.taxiTimeoutCar}}</td>
+      <td nzWidth="100px">{{data.taxiCancelCarUser}}</td>
+      <td nzWidth="100px">{{data.taxiCancelCarDriver}}</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderQuery / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCommit / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCheckout / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiTimeoutCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarUser / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarDriver / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px">{{data.taxiChangeCarPlatform}}</td>
+      <td nzWidth="100px">{{data.taxiChangeCarType}}</td>
+      <td nzWidth="100px">{{data.taxiChangeCarPrice}}</td>
+      <td nzWidth="100px">{{data.taxiFastCar}}</td>
     </tr>
   </tbody>
 </nz-table>

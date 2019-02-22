@@ -19,9 +19,19 @@ export class DataCenterService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取单元 */
+  /** 获取单元 正式 */
   getUnitList(begin, end, platform, origin, flag): Observable<IResponse<any>> {
     const url = this.fullDataCenterUrl('') + '/' + flag
+        + '?begin=' + begin + '&end=' + end
+        + (platform !== '' ? '&platform=' + platform : '')
+        + (origin !== '' ? '&origin=' + origin : '');
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取单元 测试 */
+  getUnitTestList(begin, end, platform, origin, flag): Observable<IResponse<any>> {
+    const url = this.tempFullDataCenterUrl('') + '/' + flag
         + '?begin=' + begin + '&end=' + end
         + (platform !== '' ? '&platform=' + platform : '')
         + (origin !== '' ? '&origin=' + origin : '');

@@ -1,7 +1,7 @@
 <div class="spin" *ngIf="isSpinning">
   <nz-spin [nzSize]="'large'"></nz-spin>
 </div>
-<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+<nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
   <thead>
     <tr>
       <th nzWidth="50px">序号</th>
@@ -17,11 +17,11 @@
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px">{{i+1}}</td>
       <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
-      <td nzWidth="100px">{{data.awakNavigationCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionCount}}</td>
-      <td nzWidth="100px">{{data.navigationSessionMax}}</td>
-      <td nzWidth="100px">{{data.navigationQueryRound}}</td>
+      <td nzWidth="100px">{{data.awakMusicUsers}}</td>
+      <td nzWidth="100px">{{data.awakMusicCount}}</td>
+      <td nzWidth="100px">{{data.musicSessionCount}}</td>
+      <td nzWidth="100px">{{data.musicSessionMax}}</td>
+      <td nzWidth="100px">{{data.awakMusicCount === 0 ? 0 : data.musicSessionCount / data.awakMusicCount}}</td>
     </tr>
   </tbody>
 </nz-table>

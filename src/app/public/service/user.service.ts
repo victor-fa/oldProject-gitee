@@ -94,6 +94,24 @@ export class UserService extends AppServiceBase {
   }
 
   /**
+   * 查看点踩
+   */
+  getOppositionInfo(): Observable<IResponse<any>> {
+    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate?estimate=false&page=0&pageSize=20';
+    return this.httpClient
+      .get<IResponse<any>>(url);
+  }
+
+  /**
+   * 查看点赞
+   */
+  getAgreeInfo(): Observable<IResponse<any>> {
+    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate?estimate=true&page=0&pageSize=20';
+    return this.httpClient
+      .get<IResponse<any>>(url);
+  }
+
+  /**
    * 更新用户状态
    * @param infoId
    */
@@ -175,4 +193,17 @@ export class UserService extends AppServiceBase {
       }
     }, 200);
   }
+
+  /** 获取点赞点踩Excel模板接口 */
+  getExcel(id, estimate) {
+    const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8' });
+    this.setOption = {
+      headers: head,
+      responseType: 'blob'
+    };
+    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate/session?id=' + id + '&estimate=' + true;
+    return this.httpClient
+      .get<Blob>(url, this.options);
+  }
+
 }

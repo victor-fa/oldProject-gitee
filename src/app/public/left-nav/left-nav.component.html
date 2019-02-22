@@ -35,6 +35,15 @@
       </a>
     </li> -->
     <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+    [ngClass]="{'active_panel': commonService.nav[0].active}">
+    <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
+      <span title>
+        <i class="anticon anticon-book"></i>
+        <span>APP版本管理</span>
+      </span>
+    </a>
+  </li>
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
       [ngClass]="{'active_panel': commonService.nav[1].active}">
       <a class="common-button" routerLink="/booking" routerLinkActive="active">
         <span title>
@@ -84,11 +93,11 @@
         <li nz-menu-item (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
       </ul>
     </li>
-    <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
+    <!-- <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
       <span title>
         <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="commonService.isCollapsed"
           [class.anticon-menu-fold]="!commonService.isCollapsed"></i>
       </span>
-    </li>
+    </li> -->
   </ul>
 </div>

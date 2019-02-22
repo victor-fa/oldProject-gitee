@@ -167,23 +167,29 @@
         </nz-tab>
 
         <nz-tab nzTitle="点踩对话日志">
+          <!-- <div nz-row class="search_panel">
+            <div nz-col nzSpan="24">
+              <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-search"></i>点踩对话日志</button>
+            </div>
+          </div> -->
+
           <nz-table #rowOppositionTable [nzData]="oppositionInfo" [nzSimple]="true" [(nzPageSize)]="oppositionPageSize" [nzShowPagination]="false">
             <thead>
               <tr>
-                <th nzWidth="100px">序号</th>
-                <th nzWidth="100px">用户昵称</th>
-                <th nzWidth="100px">用户账号</th>
-                <th nzWidth="100px">上传时间</th>
-                <th nzWidth="100px">操作</th>
+                <th>序号</th>
+                <th>用户昵称</th>
+                <th>用户账号</th>
+                <th>上传时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowOppositionTable.data; let i=index;">
-                <td nzWidth="100px">{{i + 1}}</td>
-                <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
-                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? '0' : data.photo.length) : '0'}}</td>
-                <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
-                <td nzWidth="100px">
+                <td>{{i + 1}}</td>
+                <td>{{data.nickName}}</td>
+                <td>{{data.userId}}</td>
+                <td>{{data.date}}</td>
+                <td>
                   <button nz-button nzType="primary" (click)="showOppositionInfo(data)" style="margin-right: 10px;">查看详情</button>
                 </td>
               </tr>
@@ -192,26 +198,117 @@
 
           <!-- 弹框 —— 信息 —— 点踩对话日志详情 -->
           <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="750" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideOpposition()">
-            <form style="font-size: 0.4rem;line-height: 1rem;">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">用户昵称：</div>
-                <div nz-col nzSpan="12">{{tempOpposition.words ? tempOpposition.words : 'null'}}</div>
-                <div nz-col nzSpan="4"></div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-search"></i>点踩对话日志</button>
               </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">用户账号：</div>
-                <div nz-col nzSpan="12">{{tempOpposition.number ? tempOpposition.number : 'null'}}</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
-                <div nz-col nzSpan="12">{{!tempOpposition.photo ? 'null' : ''}}</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-            </form>
+            </div>
+
+            <ng-container *ngIf="tempOpposition.session">
+              <ng-container *ngFor="let item of tempOpposition.session">
+                <div nz-row class="search_panel" style="background-color: #DFF0D8;">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-question"></i>
+                    用户提问&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.ask}}
+                  </div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-exclamation"></i>
+                    齐悟回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.cpsAnswer}}
+                  </div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-exclamation"></i>
+                    子bot回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.businessAnswer}}
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
             <!-- 弹框和底部定制 -->
             <ng-template #oppositionModalFooter>
               <button nz-button nzType="default" (click)="hideOpposition()">取消</button>
+            </ng-template>
+          </nz-modal>
+        </nz-tab>
+
+
+        <nz-tab nzTitle="点赞对话日志">
+          <!-- <div nz-row class="search_panel">
+            <div nz-col nzSpan="24">
+              <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-search"></i>点赞对话日志</button>
+            </div>
+          </div> -->
+
+          <nz-table #rowAgreeTable [nzData]="agreeInfo" [nzSimple]="true" [(nzPageSize)]="agreePageSize" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>用户昵称</th>
+                <th>用户账号</th>
+                <th>上传时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowAgreeTable.data; let i=index;">
+                <td>{{i + 1}}</td>
+                <td>{{data.nickName}}</td>
+                <td>{{data.userId}}</td>
+                <td>{{data.date}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showAgreeInfo(data)" style="margin-right: 10px;">查看详情</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <!-- 弹框 —— 信息 —— 点赞对话日志详情 -->
+          <nz-modal [(nzVisible)]="isAgreeVisible" nzWidth="750" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideAgree()">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-search"></i>点赞对话日志</button>
+              </div>
+            </div>
+
+            <ng-container *ngIf="tempAgree.session">
+              <ng-container *ngFor="let item of tempAgree.session">
+                <div nz-row class="search_panel" style="background-color: #DFF0D8;">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-question"></i>
+                    用户提问&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.ask}}
+                  </div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-exclamation"></i>
+                    齐悟回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.cpsAnswer}}
+                  </div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24">
+                    <i class="anticon anticon-exclamation"></i>
+                    子bot回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
+                    <br>
+                    {{item.businessAnswer}}
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+            <!-- 弹框和底部定制 -->
+            <ng-template #agreeModalFooter>
+              <button nz-button nzType="default" (click)="hideAgree()">取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>
