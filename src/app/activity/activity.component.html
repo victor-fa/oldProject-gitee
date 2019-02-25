@@ -23,7 +23,7 @@
               <button nz-button nzType="primary" (click)="loadData('content')"><i class="anticon anticon-search"></i>查询</button>
             </div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showModal('content', '')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
+              <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
             </div>
           </div>
           <nz-table #contentTable [nzData]="dataContent">
@@ -161,71 +161,7 @@
             <!-- 弹框和底部定制 -->
             <ng-template #addContentModalFooter>
               <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('content')">取消</button>
-            </ng-template>
-          </nz-modal>
-
-        </nz-tab>
-
-
-        <nz-tab nzTitle="打车路径">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="loadData('taxi')"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-          </div>
-          <nz-table #taxiTable [nzData]="dataTaxi">
-            <thead>
-              <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">订单id</th>
-                <th nzWidth="20px">用户手机号</th>
-                <th nzWidth="20px">司机手机号</th>
-                <th nzWidth="20px">用户昵称</th>
-                <th nzWidth="20px">起点名称</th>
-                <th nzWidth="20px">终点名称</th>
-                <th nzWidth="20px">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of taxiTable.data; let i=index;">
-                <td>{{i+1}}</td>
-                <td>{{data.orderId}}</td>
-                <td>{{data.userPhone}}</td>
-                <td>{{data.driverPhone}}</td>
-                <td>{{data.userNickName}}</td>
-                <td>{{data.originName}}</td>
-                <td>{{data.destinationName}}</td>
-                <td>
-                  <button nz-button nzType="primary" (click)="showModal('taxi', data)"><i
-                      class="anticon anticon-form"></i>详情</button>
-                </td>
-              </tr>
-            </tbody>
-          </nz-table>
-
-          <!-- 弹框 —— 详情 —— 打车路径 -->
-          <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" nzClosable="false">
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="4">
-                订单Id：{{currentTaxi.orderId}}<br>
-                起始地点：{{currentTaxi.originName}}<br>
-                目标地点：{{currentTaxi.destinationName}}<br>
-                当前价格：{{currentTaxi.nowPrice}}<br>
-                用户名称：{{currentTaxi.userNickName}}<br>
-                用户机号：{{currentTaxi.userPhone}}<br>
-                司机机号：{{currentTaxi.driverPhone}}<br>
-                用户余额：{{currentTaxi.aggregateAmount}}
-              </div>
-              <div nz-col nzSpan="16">
-                <div id='container' style='width: 100%; height: 400px;'></div>
-              </div>
-              <div nz-col nzSpan="4"></div>
-            </div>
-
-            <!-- 弹框和底部定制 -->
-            <ng-template #taxiDetailModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('taxi')">取消</button>
+              <button nz-button nzType="default" (click)="hideAddModal('content')">取消</button>
             </ng-template>
           </nz-modal>
 

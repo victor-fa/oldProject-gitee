@@ -25,7 +25,7 @@ export class AppversionService extends AppServiceBase {
   /** 获取APP版本 */
   getAppversionList(searchItem): Observable<IResponse<any>> {
     const url = this.fullContentUrl(appVersionApiUrls.appVersionList)
-    + '?app-channel-id=XIAOWU';
+    + '?app-channel-id=' + searchItem;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -39,7 +39,7 @@ export class AppversionService extends AppServiceBase {
 
   /** 添加单个 */
   addAppversion(data): Observable<IResponse<any>> {
-    const url = this.appversionUrl + appVersionApiUrls.appVersionList;
+    const url = 'http://account-center-test.chewrobot.com/api/admin' + appVersionApiUrls.appVersionList;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -57,6 +57,14 @@ export class AppversionService extends AppServiceBase {
   /** 获取渠道 */
   getChannelList(): Observable<IResponse<any>> {
     const url = this.fullContentUrl(appVersionApiUrls.appVersionList) + '/channel';
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取打车路径列表 */
+  getTaxiList(): Observable<IResponse<any>> {
+    const url = this.fullTaxiRouteUrl(appVersionApiUrls.taxiList);
+    // const url = 'http://192.168.1.48:41005/api' + appVersionApiUrls.taxiList;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

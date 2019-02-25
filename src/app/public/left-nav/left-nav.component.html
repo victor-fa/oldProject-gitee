@@ -39,7 +39,7 @@
     <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
       <span title>
         <i class="anticon anticon-book"></i>
-        <span>APP版本管理</span>
+        <span>APP版本 & 打车路径管理</span>
       </span>
     </a>
   </li>
@@ -74,7 +74,14 @@
         </span>
       </a>
     </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[5].active}" routerLinkActive="active">
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[5].active}">
+      <a class="common-button" routerLink="/activity" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-red-envelope"></i><span>活动管理</span>
+        </span>
+      </a>
+    </li>
+    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[6].active}" routerLinkActive="active">
       <span title>
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>

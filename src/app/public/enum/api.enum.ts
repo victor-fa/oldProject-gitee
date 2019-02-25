@@ -50,6 +50,14 @@ export enum cmsApiUrls {
 export enum appVersionApiUrls {
   /** 获取最新 */
   appVersionList = '/app/version',
+  /** 获取打车路径 */
+  taxiList = '/monitor/taxi/list',
+}
+
+/** 活动管理 */
+export enum activityApiUrls {
+  /** 活动管理 */
+  activityList = '/app/activity',
 }
 
 /** 数据中心模块 */

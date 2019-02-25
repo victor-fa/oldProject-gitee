@@ -197,7 +197,7 @@
           </nz-table>
 
           <!-- 弹框 —— 信息 —— 点踩对话日志详情 -->
-          <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="750" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideOpposition()">
+          <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="1400" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideOpposition()">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-search"></i>点踩对话日志</button>
@@ -271,7 +271,7 @@
           </nz-table>
 
           <!-- 弹框 —— 信息 —— 点赞对话日志详情 -->
-          <nz-modal [(nzVisible)]="isAgreeVisible" nzWidth="750" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideAgree()">
+          <nz-modal [(nzVisible)]="isAgreeVisible" nzWidth="1400" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideAgree()">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-search"></i>点赞对话日志</button>

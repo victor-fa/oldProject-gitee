@@ -52,7 +52,7 @@ export class ContentComponent implements OnInit {
   fileList: UploadFile[] = [];
   imageUrl = '';
   showImageUrl = '';
-  currentPanel = '';  // 当前面板
+  currentPanel = 'content';  // 当前面板 默认内容管理
   contentDate = {
     'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': ''
   };
@@ -307,7 +307,7 @@ export class ContentComponent implements OnInit {
       };
       this.contentService.addContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('content');
           this.loadData('content');
         } else {
@@ -330,7 +330,7 @@ export class ContentComponent implements OnInit {
       };
       this.screenService.addScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('screen');
           this.loadData('screen');
         } else {
@@ -352,7 +352,7 @@ export class ContentComponent implements OnInit {
       };
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('open');
           this.loadData('open');
         } else {
@@ -374,7 +374,7 @@ export class ContentComponent implements OnInit {
       };
       this.bannerService.addBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideAddModal('banner');
           this.loadData('banner');
         } else {
@@ -539,7 +539,6 @@ export class ContentComponent implements OnInit {
       this.screenService.getScreen(id).subscribe(res => {
         // 处理异常处理
         this.screenDate = JSON.parse(res.payload);
-        console.log(this.screenDate)
         this.screenDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
         const file: any = {
@@ -709,7 +708,7 @@ export class ContentComponent implements OnInit {
     if (flag === 'content') {
       this.contentService.deleteContent(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           this.loadData('content');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -718,7 +717,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'screen') {
       this.screenService.deleteScreen(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -727,7 +726,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'open') {
       this.openService.deleteOpen(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           this.loadData('open');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -736,7 +735,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'banner') {
       this.bannerService.deleteBanner(id).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           this.loadData('banner');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -766,24 +765,27 @@ export class ContentComponent implements OnInit {
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+          this.loadData('screen');
         }
       });
     } else if (flag === 'open') {
       this.openService.updateSwitch(id, switchValue).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          this.loadData('screen');
+          this.loadData('open');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+          this.loadData('open');
         }
       });
     } else if (flag === 'banner') {
       this.bannerService.updateSwitch(id, switchValue).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          this.loadData('screen');
+          this.loadData('banner');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+          this.loadData('banner');
         }
       });
     }
@@ -845,7 +847,7 @@ export class ContentComponent implements OnInit {
     let flag = '';
     switch (this.currentPanel) {
       case 'content':
-        url = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails';
+        url = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/';
         flag = 'thumbnail';
         break;
       case 'screen':
