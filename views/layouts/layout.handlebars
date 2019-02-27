@@ -34,11 +34,14 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111125762-1"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'UA-111125762-1');
+        gtag('config', 'UA-111125762-1');
+        {{#if user}}
+        gtag('set', {'user_id': '{{user.username}}'});
+        {{/if}}
     </script>
 
 
@@ -193,16 +196,6 @@
     {{#each js}}
     <script src="{{this}}"></script>
     {{/each}}
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111125762-1"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-111125762-1');
-    </script>
 </body>
 
 </html>
