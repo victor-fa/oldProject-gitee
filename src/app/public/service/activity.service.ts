@@ -20,9 +20,10 @@ export class ActivityService extends AppServiceBase {
   }
 
   /** 获取APP版本 */
-  getActivityList(searchItem): Observable<IResponse<any>> {
+  getActivityList(actName): Observable<IResponse<any>> {
     const url = this.fullContentUrl(activityApiUrls.activityList)
-    + '?app-channel-id=' + searchItem;
+    + '?page=0&pageSize=10'
+    + (actName ? '&actName=' + actName : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

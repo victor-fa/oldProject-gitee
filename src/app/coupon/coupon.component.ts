@@ -33,6 +33,7 @@ export class CouponComponent implements OnInit {
   endDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   couponDate = {
+    // tslint:disable-next-line:max-line-length
     'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
   };
   dataCoupon = []; // 内容

@@ -68,9 +68,9 @@ export class OpenService extends AppServiceBase {
   }
 
   /** 修改启用状态 */
-  updateSwitch(id, enabled): Observable<IResponse<any>> {
-    const url = this.openUrl + cmsApiUrls.openList + '/' + id;
-    const body = `enabled=${enabled}`;
+  updateSwitch(data): Observable<IResponse<any>> {
+    const url = this.openUrl + cmsApiUrls.openList + '/' + data.id;
+    const body = `enabled=${data.enabled}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

@@ -72,6 +72,7 @@
                 <th>订单状态</th>
                 <th>订票类型</th>
                 <th>订单生成日期</th>
+                <th>订单价格</th>
                 <th>内部订单号</th>
                 <th>企业管家订单号</th>
                 <th>订票人信息</th>
@@ -101,7 +102,8 @@
                 <td *ngIf="data.orderType === 3">酒店</td>
                 <td *ngIf="data.orderType === 4">打车</td>
 
-                <td>{{data.createTime }}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
+                <td>{{data.createTime}}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
+                <td>{{data.total}}</td>
                 <td>{{data.orderId}}</td>
                 <td>{{data.actualId}}</td>
                 <td nzTitle="婴儿:{{data.type.baby}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小孩:{{data.type.child}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成人:{{data.type.major}}" nzPlacement="bottom" nz-tooltip><a>查看信息</a></td>

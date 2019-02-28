@@ -62,9 +62,15 @@ export class AppversionService extends AppServiceBase {
   }
 
   /** 获取打车路径列表 */
-  getTaxiList(): Observable<IResponse<any>> {
-    const url = this.fullTaxiRouteUrl(appVersionApiUrls.taxiList);
-    // const url = 'http://192.168.1.48:41005/api' + appVersionApiUrls.taxiList;
+  getTaxiList(data): Observable<IResponse<any>> {
+    const url = this.fullTaxiRouteUrl(appVersionApiUrls.taxiList)
+    + (data.orderId ? '?orderId=' + data.orderId : '')
+    + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
+    + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
+    // const url = 'http://192.168.1.48:41005/api' + appVersionApiUrls.taxiList
+    // + (data.orderId ? '?orderId=' + data.orderId : '')
+    // + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
+    // + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

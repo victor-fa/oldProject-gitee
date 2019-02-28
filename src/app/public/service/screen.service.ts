@@ -68,9 +68,9 @@ export class ScreenService extends AppServiceBase {
   }
 
   /** 修改启用状态 */
-  updateSwitch(id, enabled): Observable<IResponse<any>> {
-    const url = this.screenUrl + cmsApiUrls.screenList + '/' + id;
-    const body = `enabled=${enabled}`;
+  updateSwitch(data): Observable<IResponse<any>> {
+    const url = this.screenUrl + cmsApiUrls.screenList + '/' + data.id;
+    const body = `enabled=${data.enabled}&duration=${data.duration}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

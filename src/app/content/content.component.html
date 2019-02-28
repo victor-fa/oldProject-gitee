@@ -33,7 +33,7 @@
                 <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '福利活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>
                 <td style="max-width: 110px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-                  <div title="{{data.url}}">{{data.url === '' ? '自定义页面' : data.url === '1' ? '个人中心' : data.url === '2' ? '个人中心 > 设置' : data.url === '3' ? '个人中心 > 我的订单' : data.url === '4' ? '个人中心 > 常用信息' : data.url === '5' ? '个人中心 > 我的账户 > 充值' : data.url === '6' ? '个人中心 > 我的账户 > 设置小额免密' : data.url === '7' ? '个人中心 > 联系我们 > 我的建议' : data.url === '8' ? '对话流 > 帮助' : data.url }}</div>
+                  <div title="{{data.url}}">{{data.url === '' ? '自定义页面' : data.url === '1' ? '个人中心' : data.url === '2' ? '个人中心 > 设置' : data.url === '3' ? '个人中心 > 我的订单' : data.url === '4' ? '个人中心 > 常用信息' : data.url === '5' ? '个人中心 > 我的账户 > 充值' : data.url === '6' ? '个人中心 > 我的账户' : data.url === '7' ? '个人中心 > 联系我们 > 我的建议' : data.url === '8' ? '对话流 > 帮助' : data.url }}</div>
                 </td>
                 <td>{{data.pseudonym}}</td>
                 <td>{{now >= data.publishTime ? '已发布' : '未发布'}}</td>
@@ -45,6 +45,7 @@
                       class="anticon anticon-delete"></i>删除</button>
                   <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i
                       class="anticon anticon-eye"></i>预览</button>
+                  <button nz-button nzType="primary" *ngIf="data.url === ''" (click)="doGetContentUrl(data)" style="margin-right: 10px;">获取地址</button>
                 </td>
               </tr>
             </tbody>
@@ -56,8 +57,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input maxlength="25" formControlName="title" [(ngModel)]="emptyAdd[0]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入标题" nzSize="default">
+                  <input nz-input maxlength="25" formControlName="title" [(ngModel)]="emptyAdd[0]" placeholder="请输入标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -75,8 +75,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">url：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input formControlName="url" [(ngModel)]="emptyAdd[2]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
+                  <input nz-input formControlName="url" [(ngModel)]="emptyAdd[2]" placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -86,15 +85,14 @@
                     <br>
                     1：个人中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：个人中心 > 设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     3：个人中心 > 我的订单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4：个人中心 > 常用信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    5：个人中心 > 我的账户 > 充值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6：个人中心 > 我的账户 > 设置小额免密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    5：个人中心 > 我的账户 > 充值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6：个人中心 > 我的账户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     7：个人中心 > 联系我们 > 我的建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8：对话流 > 帮助</font>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*摘要：</div>
                 <div nz-col nzSpan="22">
-                  <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="emptyAdd[3]" maxlength="50" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入摘要" nzSize="default"></textarea>
+                  <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="emptyAdd[3]" maxlength="50" placeholder="请输入摘要" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -104,6 +102,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -122,8 +121,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="emptyAdd[6]" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入发布人" nzSize="default">
+                  <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="emptyAdd[6]" placeholder="请输入发布人" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -148,8 +146,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input maxlength="25" formControlName="title" [(ngModel)]="contentDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入标题" nzSize="default">
+                  <input nz-input maxlength="25" formControlName="title" [(ngModel)]="contentDate.title" placeholder="请输入标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -167,8 +164,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">url：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input formControlName="url" [(ngModel)]="contentDate.url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
+                  <input nz-input formControlName="url" [(ngModel)]="contentDate.url" placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -178,15 +174,14 @@
                     <br>
                     1：个人中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2：个人中心 > 设置&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     3：个人中心 > 我的订单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4：个人中心 > 常用信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    5：个人中心 > 我的账户 > 充值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6：个人中心 > 我的账户 > 设置小额免密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    5：个人中心 > 我的账户 > 充值&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6：个人中心 > 我的账户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     7：个人中心 > 联系我们 > 我的建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8：对话流 > 帮助</font>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="spthumbnailan_down right_alignment">*摘要：</div>
                 <div nz-col nzSpan="22">
-                  <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="contentDate.abstractContent" maxlength="64" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入摘要" nzSize="default"></textarea>
+                  <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="contentDate.abstractContent" maxlength="64" placeholder="请输入摘要" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -196,6 +191,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -214,8 +210,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
                 <div nz-col nzSpan="22">
-                  <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="contentDate.pseudonym" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                    placeholder="请输入发布人" nzSize="default">
+                  <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="contentDate.pseudonym" placeholder="请输入发布人" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -265,12 +260,12 @@
                 <td>{{data.skip === true ? '可跳过' : '不可跳过' }}</td>
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
-                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户 > 设置小额免密' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
+                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/start-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data.id, data.enabled, 'screen')"></nz-switch>
+                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'screen')"></nz-switch>
                     </nz-form-control>
                   </nz-form-item>
                 </td>
@@ -326,7 +321,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -357,6 +352,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：750*1154&nbsp;&nbsp;限制大小：500K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -416,7 +412,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -447,6 +443,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：750*1154&nbsp;&nbsp;限制大小：500K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -494,12 +491,12 @@
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <!-- <td>{{data.order}}</td> -->
-                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户 > 设置小额免密' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
+                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data.id, data.enabled, 'open')"></nz-switch>
+                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'open')"></nz-switch>
                     </nz-form-control>
                   </nz-form-item>
                 </td>
@@ -546,7 +543,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -577,6 +574,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：540*600&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -627,7 +625,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -658,6 +656,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：540*600&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -691,7 +690,7 @@
                 <th nzWidth="20px">轮播图标题</th>
                 <th nzWidth="20px">跳转位置</th>
                 <th nzWidth="20px">链接地址</th>
-                  <th nzWidth="20px">APP标识</th>
+                <th nzWidth="20px">APP标识</th>
                 <th nzWidth="20px">排序状态</th>
                 <th nzWidth="20px">轮播图片</th>
                 <th nzWidth="20px">启用状态</th>
@@ -704,13 +703,13 @@
                 <td>{{data.title}}</td>
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
-                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户 > 设置小额免密' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
+                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td>{{data.order}}</td>
                 <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data.id, data.enabled, 'banner')"></nz-switch>
+                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'banner')"></nz-switch>
                     </nz-form-control>
                   </nz-form-item>
                 </td>
@@ -757,7 +756,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -788,6 +787,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -838,7 +838,7 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 设置小额免密'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
                   </nz-select>
@@ -869,6 +869,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
+                    <font color="#cccccc">建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>

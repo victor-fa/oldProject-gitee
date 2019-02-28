@@ -230,6 +230,7 @@ export class ContentComponent implements OnInit {
   // 封装验证新增
   verificationAdd(flag): boolean {
     let result = true;
+    console.log(this.addContentForm);
     if (flag === 'content') {
       if (this.addContentForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
@@ -757,9 +758,9 @@ export class ContentComponent implements OnInit {
 
 
   // 点击switch
-  clickSwitch(id, switchValue, flag) {
+  clickSwitch(data, flag) {
     if (flag === 'screen') {
-      this.screenService.updateSwitch(id, switchValue).subscribe(res => {
+      this.screenService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('screen');
@@ -769,7 +770,7 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'open') {
-      this.openService.updateSwitch(id, switchValue).subscribe(res => {
+      this.openService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('open');
@@ -779,7 +780,7 @@ export class ContentComponent implements OnInit {
         }
       });
     } else if (flag === 'banner') {
-      this.bannerService.updateSwitch(id, switchValue).subscribe(res => {
+      this.bannerService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           this.loadData('banner');
@@ -813,6 +814,7 @@ export class ContentComponent implements OnInit {
 
   // 预览文章
   doPreviewContent(data) {
+    console.log(data);
     if (data.url) {
       data.url.indexOf('`') !== -1 ? window.open(this.dotranUrl(data.url)) : window.open(data.url) ;
     } else {
@@ -825,15 +827,20 @@ export class ContentComponent implements OnInit {
     }
   }
 
+  // 获取地址
+  doGetContentUrl(data) {
+    window.open('http://account-center-test.chewrobot.com/static/content-detail.html?id=' + data.id);
+  }
+
   // 上传image
   beforeUpload = (file: UploadFile): boolean => {
     const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
     const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
-    const isMoreThanTen = file.size < 10485760 ? true : false;
+    const isMoreThanTen = file.size < 512000 ? true : false;
     if (!isPng) {
       this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
     } else if (!isMoreThanTen) {
-      this.msg.error('您只能上传不超过10M文件');
+      this.msg.error('您只能上传不超过500K文件');
     } else {
       this.fileList.push(file);
       this.handleUpload();

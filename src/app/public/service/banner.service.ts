@@ -68,9 +68,9 @@ export class BannerService extends AppServiceBase {
   }
 
   /** 修改启用状态 */
-  updateSwitch(id, enabled): Observable<IResponse<any>> {
-    const url = this.bannerUrl + cmsApiUrls.bannerList + '/' + id;
-    const body = `enabled=${enabled}`;
+  updateSwitch(data): Observable<IResponse<any>> {
+    const url = this.bannerUrl + cmsApiUrls.bannerList + '/' + data.id;
+    const body = `enabled=${data.enabled}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

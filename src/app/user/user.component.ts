@@ -36,8 +36,8 @@ export class UserComponent implements OnInit {
   pageSize = 10;
   feedBackPageSize = 1000;
   feedbackInfo = [];
-  oppositionInfo = [{}, {}];
-  agreeInfo = [{}, {}];
+  oppositionInfo = [];
+  agreeInfo = [];
   oppositionPageSize = 1000;
   agreePageSize = 1000;
   isFeedBackVisible = false;
@@ -111,7 +111,7 @@ export class UserComponent implements OnInit {
       this.userService.getFeedBackInfo().subscribe(res => {
         if (res.payload !== '') {
           if (res.status === 200) {
-            this.feedbackInfo = JSON.parse(res.payload);
+            this.feedbackInfo = JSON.parse(res.payload).reverse();
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -132,7 +132,6 @@ export class UserComponent implements OnInit {
         if (res.payload !== '') {
           if (res.status === 200) {
             this.agreeInfo = JSON.parse(res.payload);
-            console.log(this.agreeInfo);
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });

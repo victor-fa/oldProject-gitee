@@ -201,7 +201,7 @@ export class UserService extends AppServiceBase {
       headers: head,
       responseType: 'blob'
     };
-    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate/session?id=' + id + '&estimate=' + true;
+    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate/session?id=' + id + '&estimate=' + estimate;
     return this.httpClient
       .get<Blob>(url, this.options);
   }

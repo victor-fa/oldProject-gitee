@@ -9,7 +9,6 @@ import { ContentService } from '../public/service/content.service';
 import { AppversionService } from '../public/service/appVersion.service';
 
 registerLocaleData(zh);
-declare var  AMap: any;
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -21,13 +20,11 @@ export class AppVersionComponent implements OnInit {
 
   isAddContentVisible = false;
   isTaxiDetailVisible = false;
-  avatarUrl: string;
-  searchForm: FormGroup;
+  searchContentForm: FormGroup;
+  searchTaxiForm: FormGroup;
   addContentForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
-  cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
-  currentPanel = '';  // 当前面板
   contentDate = {
     // tslint:disable-next-line:max-line-length
     'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'channel': '', 'dataContent': ''
@@ -38,8 +35,14 @@ export class AppVersionComponent implements OnInit {
   dataTaxi = [];  // 打车路径
   currentTaxi = {  // 当前打车路径
     // tslint:disable-next-line:max-line-length
-    'orderId': '', 'originName': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'aggregateAmount': ''
+    'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'aggregateAmount': ''
   };
+  taxiItem = {
+    'orderId': '', 'startTime': '', 'endTime': ''
+  };
+  beginDate = '';
+  endDate = '';
+  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   private timerList;
   private timerDetail;
 
@@ -53,7 +56,8 @@ export class AppVersionComponent implements OnInit {
     private datePipe: DatePipe,
   ) {
     this.commonService.nav[0].active = true;
-    this._initSearchForm();
+    this._initSearchContentForm();
+    this._initSearchTaxiForm();
     this._initAddContentForm();
     this.timerList = setInterval(() => {
       this.loadData('taxi');
@@ -80,7 +84,7 @@ export class AppVersionComponent implements OnInit {
   loadData(flag) {
     if (flag === 'content') {
       const arr = [];
-      const channel = this.searchForm.controls['channel'].value;
+      const channel = this.searchContentForm.controls['channel'].value;
       this.appversionService.getAppversionList(channel).subscribe(res => {
         if (JSON.parse(res.payload).android !== 'null') {
           arr.push(JSON.parse(JSON.parse(res.payload).android));
@@ -105,16 +109,26 @@ export class AppVersionComponent implements OnInit {
         this.dataChannel = arrChannel;
       });
     } else if (flag === 'taxi') {
-      const arr = [];
-      this.appversionService.getTaxiList().subscribe(res => {
+      this.taxiItem.orderId = this.searchTaxiForm.controls['orderId'].value;
+      this.taxiItem.startTime = this.beginDate;
+      this.taxiItem.endTime = this.endDate;
+      this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
         this.dataTaxi = JSON.parse(res.payload);
+        // this.dataTaxi = [{}];
       });
     }
   }
 
-  private _initSearchForm(): void {
-    this.searchForm = this.fb.group({
+  private _initSearchContentForm(): void {
+    this.searchContentForm = this.fb.group({
       channel: [''],
+    });
+  }
+
+  private _initSearchTaxiForm(): void {
+    this.searchTaxiForm = this.fb.group({
+      orderId: [''],
+      date: ['']
     });
   }
 
@@ -148,6 +162,36 @@ export class AppVersionComponent implements OnInit {
         clearInterval(this.timerList);
       }
       this.loadData('taxi');
+      let mainMap, mainRoute;
+      let mainPoints = [];
+      for (let i = 0; i < this.dataTaxi.length; i++) {
+        if (this.dataTaxi[i].orderId === data.orderId) {
+          mainPoints = this.dataTaxi[i].path.points;
+        }
+      }
+      // mainPoints = [
+      //   '22.529970703125,113.95009521484',
+      //   '22.529969346788,113.95010199653',
+      //   '22.529686414931,113.94993489583',
+      //   '22.529541286892,113.94940104167',
+      //   '22.529588216146,113.94827582465',
+      //   '22.529588216146,113.9482679579',
+      //   '22.528731282552,113.94793646918',
+      //   '22.528059353299,113.94797851562',
+      //   '22.527355957031,113.94803466797',
+      //   '22.527105577257,113.94755533854',
+      //   '22.527065,113.947008'
+      // ];
+      // 基本地图加载
+      mainMap = new AMap.Map('container', {
+        resizeEnable: true
+      });
+      // 绘制初始路径
+      const mainPath = this.getPointRoute(mainPoints);
+      mainMap.plugin('AMap.DragRoute', function() {
+        mainRoute = new AMap.DragRoute(mainMap, mainPath, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
+        mainRoute.search(); // 查询导航路径并开启拖拽导航
+      });
       this.timerDetail = setInterval(() => {
         let map, route;
         let points = [];
@@ -156,6 +200,19 @@ export class AppVersionComponent implements OnInit {
             points = this.dataTaxi[i].path.points;
           }
         }
+        // points = [
+        //   '22.529970703125,113.95009521484',
+        //   '22.529969346788,113.95010199653',
+        //   '22.529686414931,113.94993489583',
+        //   '22.529541286892,113.94940104167',
+        //   '22.529588216146,113.94827582465',
+        //   '22.529588216146,113.9482679579',
+        //   '22.528731282552,113.94793646918',
+        //   '22.528059353299,113.94797851562',
+        //   '22.527355957031,113.94803466797',
+        //   '22.527105577257,113.94755533854',
+        //   '22.527065,113.947008'
+        // ];
         // 基本地图加载
         map = new AMap.Map('container', {
           resizeEnable: true
@@ -258,4 +315,19 @@ export class AppVersionComponent implements OnInit {
       });
     }
   }
+
+  // 日期插件
+  onChange(result): void {
+    if (result === []) {
+      this.beginDate = '';
+      this.endDate = '';
+      return;
+    }
+    // 正确选择数据
+    if (result[0] !== '' || result[1] !== '') {
+      this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+      this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+    }
+  }
+
 }
