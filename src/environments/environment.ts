@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   appconfig: {
-    // remoteBaseUrl: 'http://lxwork.vipgz1.idcfengye.com/api/admin' // remoteUrl：请求大兴服务器API
     remoteBaseUrl: 'http://account-center-test.chewrobot.com/api/admin' // remoteU、rl：请求远程服务器API
   }
 };

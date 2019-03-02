@@ -42,14 +42,14 @@
       <td nzWidth="100px">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
       <td nzWidth="100px">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout}}</td>
       <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice : 'null'}}</td>
-      <td nzWidth="100px">{{data.flightOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.trainOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.hotelOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.aaaaa}}</td>
-      <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice : 'null'}}</td>
-      <td nzWidth="100px">{{data.trainChangePrice ? data.trainChangePrice : 'null'}}</td>
-      <td nzWidth="100px">{{data.hotelChangePrice ? data.hotelChangePrice : 'null'}}</td>
-      <td nzWidth="100px">{{data.aaaaa}}</td>
+      <td nzWidth="100px">{{data.flightOrderCheckout ? data.flightOrderCheckout : 'null'}}</td>
+      <td nzWidth="100px">{{data.trainOrderCheckout ? data.trainOrderCheckout : 'null'}}</td>
+      <td nzWidth="100px">{{data.hotelOrderCheckout ? data.hotelOrderCheckout : 'null'}}</td>
+      <td nzWidth="100px">{{data.taxiOrderCheckout ? data.taxiOrderCheckout : 'null'}}</td>
+      <td nzWidth="100px">{{data.flightTurnover ? data.flightTurnover : 'null'}}</td>
+      <td nzWidth="100px">{{data.trainTurnover ? data.trainTurnover : 'null'}}</td>
+      <td nzWidth="100px">{{data.hotelTurnover ? data.hotelTurnover : 'null'}}</td>
+      <td nzWidth="100px">{{data.taxiTurnover ? data.taxiTurnover : 'null'}}</td>
     </tr>
   </tbody>
 </nz-table>

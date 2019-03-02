@@ -186,8 +186,8 @@
             <tbody>
               <tr *ngFor="let data of rowOppositionTable.data; let i=index;">
                 <td>{{i + 1}}</td>
-                <td>{{data.nickName}}</td>
-                <td>{{data.userId}}</td>
+                <td>{{data.nickName ? data.nickName : data.userId}}</td>
+                <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showOppositionInfo(data)" style="margin-right: 10px;">查看详情</button>
@@ -260,8 +260,8 @@
             <tbody>
               <tr *ngFor="let data of rowAgreeTable.data; let i=index;">
                 <td>{{i + 1}}</td>
-                <td>{{data.nickName}}</td>
-                <td>{{data.userId}}</td>
+                <td>{{data.nickName ? data.nickName : data.userId}}</td>
+                <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showAgreeInfo(data)" style="margin-right: 10px;">查看详情</button>

@@ -230,7 +230,6 @@ export class ContentComponent implements OnInit {
   // 封装验证新增
   verificationAdd(flag): boolean {
     let result = true;
-    console.log(this.addContentForm);
     if (flag === 'content') {
       if (this.addContentForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
@@ -290,6 +289,16 @@ export class ContentComponent implements OnInit {
     return result;
   }
 
+  // 替换所有奇怪字符
+  replaceHtmlStr(str) {
+    return str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
+          .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
+          .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
+          // .replace(/&copy;/g, '©')
+          // .replace(/&reg;/g, '®').replace(/™/g, '™').replace(/&times;/g, '×')
+          // .replace(/&divide;/g, '÷')
+  }
+
   // 新增操作
   doSave(flag): void {
     if (flag === 'content') {
@@ -299,7 +308,7 @@ export class ContentComponent implements OnInit {
       const contentInput = {
         'title': this.addContentForm.controls['title'].value,
         'url': this.dotranUrl(this.addContentForm.controls['url'].value),
-        'content': this.addContentForm.controls['content'].value,
+        'content': encodeURI(this.replaceHtmlStr(this.addContentForm.controls['content'].value)).replace(/&/g, '%26'),
         'abstractContent': this.addContentForm.controls['abstractContent'].value,
         'pseudonym': this.addContentForm.controls['pseudonym'].value,
         'publishTime': this.datePipe.transform(this.addContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
@@ -476,8 +485,6 @@ export class ContentComponent implements OnInit {
       //   result = false;
       // }
     } else if (flag === 'banner') {
-      console.log(this.modifyBannerForm.controls['jump']);
-
       if (this.modifyBannerForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
         result = false;
@@ -606,7 +613,7 @@ export class ContentComponent implements OnInit {
         'id': this.cmsId,
         'title': this.modifyContentForm.controls['title'].value,
         'url': this.dotranUrl(this.modifyContentForm.controls['url'].value),
-        'content': this.dotran(this.modifyContentForm.controls['content'].value),
+        'content': encodeURI(this.replaceHtmlStr(this.modifyContentForm.controls['content'].value)).replace(/&/g, '%26'),
         'abstractContent': this.modifyContentForm.controls['abstractContent'].value,
         'pseudonym': this.modifyContentForm.controls['pseudonym'].value,
         'publishTime': this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
@@ -814,7 +821,6 @@ export class ContentComponent implements OnInit {
 
   // 预览文章
   doPreviewContent(data) {
-    console.log(data);
     if (data.url) {
       data.url.indexOf('`') !== -1 ? window.open(this.dotranUrl(data.url)) : window.open(data.url) ;
     } else {

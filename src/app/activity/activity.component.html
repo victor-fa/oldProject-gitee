@@ -16,12 +16,11 @@
                 活动状态：
               </div>
               <div nz-col nzSpan="5">
-                <nz-select [ngModel]="''" formControlName="bbb">
+                <nz-select [ngModel]="''" formControlName="status">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'全部'" [nzValue]="'XIAOWU'"></nz-option>
-                  <nz-option required [nzLabel]="'未开始'" [nzValue]="'LENZE'"></nz-option>
-                  <nz-option required [nzLabel]="'进行中'" [nzValue]="'XIAOWU'"></nz-option>
-                  <nz-option required [nzLabel]="'已结束'" [nzValue]="'LENZE'"></nz-option>
+                  <nz-option required [nzLabel]="'未完成'" [nzValue]="'unfinished'"></nz-option>
+                  <nz-option required [nzLabel]="'已激活'" [nzValue]="'activated'"></nz-option>
+                  <nz-option required [nzLabel]="'非激活'" [nzValue]="'unactivated'"></nz-option>
                 </nz-select>
               </div>
             </form>
@@ -31,7 +30,7 @@
               <button nz-button nzType="primary" (click)="loadData('content')"><i class="anticon anticon-search"></i>查询</button>
             </div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showModal('content')"><i class="anticon anticon-file-add"></i>新增活动</button>
+              <button nz-button nzType="primary" (click)="showModal('content', '')"><i class="anticon anticon-file-add"></i>新增活动</button>
             </div>
           </div>
           <nz-table #contentTable [nzData]="dataContent">
@@ -43,6 +42,7 @@
                 <th nzWidth="20px">活动时间</th>
                 <th nzWidth="20px">关联红包数</th>
                 <th nzWidth="20px">已领取/剩余</th>
+                <th nzWidth="20px">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -53,6 +53,10 @@
                 <td>{{data.actStartDate | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>{{data.totalQuantity}}</td>
                 <td>{{data.consumedQuantity}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="doDelete(data, 'content')" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>删除</button>
+                </td>
               </tr>
             </tbody>
           </nz-table>
@@ -80,7 +84,7 @@
                     <font color="red">*</font>活动时间：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
                 </div>
               </div>
 
@@ -95,7 +99,7 @@
               </div>
 
               <div nz-row class="search_panel">
-              ` <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="span_down right_alignment">
                   <font color="red">*</font>活动图片：
                 </div>
                 <div nz-col nzSpan="12">
@@ -131,7 +135,7 @@
                     登录时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -139,7 +143,7 @@
                     奖励发放上限：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" formControlName="date" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -147,7 +151,7 @@
                     每个用户可领：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" formControlName="date" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">
                   </div>
@@ -167,7 +171,7 @@
                     登录时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -175,7 +179,7 @@
                     奖励发放上限：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" formControlName="date" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -183,7 +187,7 @@
                     每个用户可领：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" formControlName="date" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">
                   </div>
@@ -204,7 +208,7 @@
                     充值时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -233,7 +237,7 @@
                     奖励发放上限：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" formControlName="date" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">
                     &nbsp;&nbsp;&nbsp;组
@@ -244,7 +248,7 @@
                     每个用户可领：
                   </div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" formControlName="date" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">
                     &nbsp;&nbsp;&nbsp;组
@@ -265,7 +269,7 @@
                     充值时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row class="search_panel">
@@ -299,7 +303,7 @@
                           奖励发放上限：
                         </div>
                         <div nz-col nzSpan="7">
-                          <input nz-input maxlength="2" formControlName="date" placeholder="请输入奖励发放上限" nzSize="default">
+                          <input nz-input maxlength="2" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                         </div>
                       </div>
                       <div nz-row class="search_panel">
@@ -309,7 +313,7 @@
                           每个用户可领：
                         </div>
                         <div nz-col nzSpan="7">
-                          <input nz-input maxlength="2" formControlName="date" placeholder="请输入每个用户可领数额" nzSize="default">
+                          <input nz-input maxlength="2" formControlName="perUserQuantity" placeholder="请输入每个用户可领数额" nzSize="default">
                         </div>
                         <div nz-col nzSpan="1">
                         </div>
@@ -346,7 +350,7 @@
                 <div nz-col nzSpan="17">
                 </div>
                 <div nz-col nzSpan="3">
-                  <button nz-button nzType="primary" (click)="showModal('coupon')"><i class="anticon anticon-file-add"></i>新增红包组</button>
+                  <button nz-button nzType="primary" (click)="showModal('coupon', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
                 </div>
               </div>
 
@@ -376,7 +380,7 @@
                           <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
                           <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
                           <td>{{data.consumedQuantity}}</td>
-                          <td *ngIf="i === 0"><button nz-button nzType="primary" (click)="showModal('content')"><i class="anticon anticon-form"></i>配置红包</button></td>
+                          <td *ngIf="i === 0"><button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)"><i class="anticon anticon-form"></i>配置红包</button></td>
                           <td *ngIf="i > 0"></td>
                         </tr>
                       </tbody>
@@ -401,7 +405,7 @@
                   创建日期范围：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
                 </div>
 
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -446,9 +450,6 @@
               </div>
             </div>
             <nz-table #couponSelectTable [nzData]="dataSearchCoupon">
-              <!-- (nzCurrentPageDataChange)="currentPageDataChange($event)"
-              (nzPageIndexChange)="refreshSearchCouponStatus()"
-              (nzPageSizeChange)="refreshSearchCouponStatus()" -->
               <thead>
                 <tr>
                   <th nzShowCheckbox [(nzChecked)]="allSearchCouponChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAllSearchCoupon($event)"></th>

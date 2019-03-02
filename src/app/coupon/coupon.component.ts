@@ -78,7 +78,6 @@ export class CouponComponent implements OnInit {
   loadData(flag) {
     this.couponService.getCouponList(this.searchItem).subscribe(res => {
       this.dataCoupon = JSON.parse(res.payload);
-      console.log(this.dataCoupon);
     });
   }
 
@@ -242,7 +241,6 @@ export class CouponComponent implements OnInit {
     this.couponService.getCoupon(id).subscribe(res => {
       // 处理异常处理
       this.couponDate = JSON.parse(res.payload);
-      console.log(this.couponDate);
       this.changeMutualExcludeRules(JSON.parse(res.payload).mutualExcludeRules);
       this.changeCouponCategory(JSON.parse(res.payload).couponCategory);
       this.beginDate = JSON.parse(res.payload).timeLimitStart;
@@ -289,7 +287,6 @@ export class CouponComponent implements OnInit {
     this.couponService.getCoupon(id).subscribe(res => {
       // 处理异常处理
       this.couponDate = JSON.parse(res.payload);
-      console.log(this.couponDate);
       this.changeMutualExcludeRules(JSON.parse(res.payload).mutualExcludeRules);
       this.changeCouponCategory(JSON.parse(res.payload).couponCategory);
       this.beginDate = JSON.parse(res.payload).timeLimitStart;

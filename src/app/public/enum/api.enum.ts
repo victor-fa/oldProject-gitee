@@ -57,7 +57,7 @@ export enum appVersionApiUrls {
 /** 活动管理 */
 export enum activityApiUrls {
   /** 活动管理 */
-  activityList = '/actrule/list',
+  activityList = '/actrule',
 }
 
 /** 数据中心模块 */

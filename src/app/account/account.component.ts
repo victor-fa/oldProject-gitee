@@ -193,8 +193,6 @@ export class AccountComponent implements OnInit {
     this.customerModifyItem.password = data.password;
     this.customerModifyItem.nick = data.nick;
     this.tempRoleName = data.roles[0];
-    console.log(this.roleData);
-    console.log(this.tempRoleName);
   }
 
   hideModifyCustomerModal(): void {
@@ -366,16 +364,16 @@ export class AccountComponent implements OnInit {
 
   // 获取所有的多选
   private getPermission(): any {
-    this.checkOptionsOne[0].checked ? this.addPermission.push('个人资料') : console.log('无 个人资料');
-    this.checkOptionsOne[1].checked ? this.addPermission.push('重置密码') : console.log('无 重置密码');
-    this.checkOptionsTwo ? this.addPermission.push('首页监控') : console.log('无 首页监控');
-    this.checkOptionsThree ? this.addPermission.push('号码管理') : console.log('无 号码管理');
-    this.checkOptionsFour ? this.addPermission.push('模板管理') : console.log('无 模板管理');
-    this.checkOptionsFive[0].checked ? this.addPermission.push('外呼任务') : console.log('无 外呼任务');
-    this.checkOptionsFive[1].checked ? this.addPermission.push('任务审核') : console.log('无 任务审核');
-    this.checkOptionsSix[0].checked ? this.addPermission.push('员工列表') : console.log('无 员工列表');
-    this.checkOptionsSix[1].checked ? this.addPermission.push('角色列表') : console.log('无 角色列表');
-    this.checkOptionsFour ? this.addPermission.push('会话记录') : console.log('无 会话记录');
+    this.checkOptionsOne[0].checked ? this.addPermission.push('个人资料') : 1;
+    this.checkOptionsOne[1].checked ? this.addPermission.push('重置密码') : 1;
+    this.checkOptionsTwo ? this.addPermission.push('首页监控') : 1 ;
+    this.checkOptionsThree ? this.addPermission.push('号码管理') : 1;
+    this.checkOptionsFour ? this.addPermission.push('模板管理') : 1;
+    this.checkOptionsFive[0].checked ? this.addPermission.push('外呼任务') : 1;
+    this.checkOptionsFive[1].checked ? this.addPermission.push('任务审核') : 1;
+    this.checkOptionsSix[0].checked ? this.addPermission.push('员工列表') : 1;
+    this.checkOptionsSix[1].checked ? this.addPermission.push('角色列表') : 1;
+    this.checkOptionsFour ? this.addPermission.push('会话记录') : 1;
     return this.addPermission;
   }
 
@@ -541,7 +539,7 @@ export class AccountComponent implements OnInit {
       nzTitle: '用户删除',
       nzContent: '确认要删除该用户吗？',
       nzCancelText: '取消',
-      nzOnCancel: () => console.log('Cancel'),
+      nzOnCancel: () => 1,
       nzOkText: '确定',
       nzOnOk: () => {
         this.accountService.deleteCustomer(id).subscribe(res => {
@@ -560,7 +558,7 @@ export class AccountComponent implements OnInit {
       nzTitle: '角色删除',
       nzContent: '确认要删除该角色吗？',
       nzCancelText: '取消',
-      nzOnCancel: () => console.log('Cancel'),
+      nzOnCancel: () => 1,
       nzOkText: '确定',
       nzOnOk: () => {
         this.accountService.deleteRole(id).subscribe(res => {

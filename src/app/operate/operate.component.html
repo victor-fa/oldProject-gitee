@@ -1,0 +1,22 @@
+
+
+<app-left-nav></app-left-nav>
+<div class="operate" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab nzTitle="{{commonService.currentOperateTitle}}">
+
+          <!-- <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+          <div *ngIf="!isSpinning"> -->
+            <app-xiaowubean *ngIf="commonService.operate[0].active === true"></app-xiaowubean>
+          <!-- </div> -->
+
+        </nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>
+
