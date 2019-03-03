@@ -60,7 +60,8 @@
     <script>
         function on_send_question(ask) {
             if (ask === '&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;') {
-                setCookie('uid', 'Console.AutoTest.' + Math.random(), 100)  // Reset Dialogue
+                uid = 'Console.AutoTest.' + Math.random();
+                setCookie('uid', uid, 100)  // Reset Dialogue
                 $('<li class="me-message" style="display:none;">\
                 <span class="me-message-content"></span>\
             </li>').appendTo(".chat-list"); // hide ask when '======'
