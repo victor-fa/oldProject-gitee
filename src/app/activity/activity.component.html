@@ -51,9 +51,16 @@
                 <td>{{data.ctime | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>{{data.actName}}</td>
                 <td>{{data.actStartDate | date:'yyyy-MM-dd HH:mm'}}</td>
-                <td>{{data.totalQuantity}}</td>
-                <td>{{data.consumedQuantity}}</td>
+                <td>{{data.allQuantity}}</td>
+                <td>{{data.actTypeBo !== undefined && data.actTypeBo.consumedQuantity !== undefined ? data.actTypeBo.consumedQuantity + '/' : 'null'}}{{data.actTypeBo !== undefined && data.actTypeBo.perUserQuantity !== undefined ? data.actTypeBo.perUserQuantity : ''}}</td>
+                <!-- <td>{{data.actTypeBo !== undefined && data.actTypeBo.consumedQuantity !== undefined ? data.actTypeBo.consumedQuantity : ''}}</td> -->
                 <td>
+                  <button nz-button nzType="primary" (click)="showModal('modify', data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="changeState('start', data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>开始</button>
+                  <button nz-button nzType="primary" (click)="changeState('end', data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>结束</button>
                   <button nz-button nzType="primary" (click)="doDelete(data, 'content')" style="margin-right: 10px;"><i
                       class="anticon anticon-delete"></i>删除</button>
                 </td>
@@ -111,6 +118,14 @@
                 </div>
               </div>
 
+              <!-- <font color="#cccccc">建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font> -->
+              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+                <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="22">
+                  <img [src]="showImageUrl" class="image-panel">
+                </div>
+              </div>
+
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">活动规则配置</div>
               </div>
@@ -126,6 +141,7 @@
                 </div>
               </div>
 
+              <!-- 规则1 -->
               <div *ngIf="radioValue === 'LoginOneOff'">
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24">模板A&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单日登录，领取红包（组）</div>
@@ -154,6 +170,12 @@
                     <input nz-input maxlength="2" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">
+                    <!-- <nz-select [(ngModel)]="actGifType" formControlName="status">
+                      <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                      <nz-option required [nzLabel]="'未完成'" [nzValue]="'unfinished'"></nz-option>
+                      <nz-option required [nzLabel]="'已激活'" [nzValue]="'activated'"></nz-option>
+                      <nz-option required [nzLabel]="'非激活'" [nzValue]="'unactivated'"></nz-option>
+                    </nz-select> -->
                   </div>
                   <div nz-col nzSpan="7" style="color: #A2A2A2;">
                     活动只能选1天<br>
@@ -162,6 +184,7 @@
                 </div>
               </div>
 
+              <!-- 规则2 -->
               <div *ngIf="radioValue === 'LoginDaily'">
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24">模板B&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单周期登录，领取红包（组）</div>
@@ -199,6 +222,7 @@
                 </div>
               </div>
 
+              <!-- 规则3 -->
               <div *ngIf="radioValue === 'ChargeOneOff'">
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24">模板C&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单笔充值X元，获赠红包（组）</div>
@@ -260,6 +284,7 @@
                 </div>
               </div>
 
+              <!-- 规则4 -->
               <div *ngIf="radioValue === 'ChargeMargin'">
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24">模板D&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;区间充值，获赠红包（组）</div>
@@ -354,10 +379,10 @@
                 </div>
               </div>
 
-              <!-- <ng-container *ngFor="let item of addMarginArr"> -->
+              <ng-container *ngFor="let item of couponListArr">
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24">
-                    <nz-table #couponTable [nzData]="dataCoupon">
+                    <nz-table #couponTable [nzData]="item.actCouponRulePoL">
                       <thead>
                         <tr>
                           <th [attr.rowspan]="2">红包组编号</th>
@@ -372,22 +397,26 @@
                       </thead>
                       <tbody>
                         <tr *ngFor="let data of couponTable.data; let i=index;">
-                          <td>{{i === 0 ? '20190222-1' : ''}}</td>
+                          <td>{{i === 0 ? item.actGiftNo : ''}}</td>
                           <td>{{i+1}}</td>
-                          <td>{{data.couponNo}}</td>
-                          <td>{{data.couponName}}</td>
-                          <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
-                          <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
-                          <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
-                          <td>{{data.consumedQuantity}}</td>
-                          <td *ngIf="i === 0"><button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)"><i class="anticon anticon-form"></i>配置红包</button></td>
+                          <td>{{data.couponRulePo.couponNo}}</td>
+                          <td>{{data.couponRulePo.couponName}}</td>
+                          <td>{{data.couponRulePo.couponCategory === 'all' ? '全品类' : data.couponRulePo.couponCategory === 'flight' ? '订机票' : data.couponRulePo.couponCategory === 'hotel' ? '订酒店' : data.couponRulePo.couponCategory === 'train' ? '订火车' : data.couponRulePo.couponCategory === 'taxi' ? '打车' : ''}}</td>
+                          <td *ngIf="data.couponRulePo.timeLimitType === 'fix_start_end'">{{data.couponRulePo.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.couponRulePo.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
+                          <td *ngIf="data.couponRulePo.timeLimitType === 'fix_duration'">{{data.couponRulePo.timeLimitValidDay}}</td>
+                          <td *ngIf="!(data.couponRulePo.timeLimitType === 'fix_start_end' || data.couponRulePo.timeLimitType === 'fix_duration')"></td>
+                          <td>{{data.quantity}}</td>
+                          <td *ngIf="i === 0">
+                            <button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)"><i class="anticon anticon-form"></i>配置红包</button>
+                            <button nz-button nzType="primary" (click)="doDelete(item.actGiftNo, 'couponList')"><i class="anticon anticon-delete"></i>删除</button>
+                          </td>
                           <td *ngIf="i > 0"></td>
                         </tr>
                       </tbody>
                     </nz-table>
                   </div>
                 </div>
-              <!-- </ng-container> -->
+              </ng-container>
 
             </form>
             <!-- 弹框和底部定制 -->
@@ -458,6 +487,7 @@
                   <th nzWidth="20px">优惠券编号</th>
                   <th nzWidth="20px">优惠券名称</th>
                   <th nzWidth="20px">优惠券类型</th>
+                  <th nzWidth="20px">数量限制</th>
                   <th nzWidth="20px">时间限制</th>
                 </tr>
               </thead>
@@ -469,6 +499,7 @@
                   <td>{{data.couponNo}}</td>
                   <td>{{data.couponName}}</td>
                   <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
+                  <td><input nz-input maxlength="3" nzSize="default" [ngModel]="data.number" (ngModelChange)="getCouponNumber($event, data)"></td>
                   <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
                   <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
                 </tr>

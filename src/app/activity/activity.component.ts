@@ -28,7 +28,6 @@ export class ActivityComponent implements OnInit {
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   currentPanel = '';  // 当前面板
   dataContent = []; // 内容
-  dataCoupon = [{}, {}];
   dataSearchCoupon = [];
   dataSystemSymbo = []; // 操作系统
   dataChannel = []; // 渠道
@@ -58,6 +57,9 @@ export class ActivityComponent implements OnInit {
   indeterminate = false; // 用于table多选
   baseInfoId = ''; // 上传图片前的Id
   modelId = ''; // 弹框获取当前Id
+  couponListArr = []; // 最底部的活动奖励配置数组
+  actGiftNo = ''; // 非区间重置的活动编码
+  // actGifType = [];  // 用于下拉当前有的红包组
 
   constructor(
     private fb: FormBuilder,
@@ -87,12 +89,38 @@ export class ActivityComponent implements OnInit {
       this.searchActivityItem.status = this.searchContentForm.controls['status'].value;
       this.activityService.getActivityList(this.searchActivityItem).subscribe(res => {
         this.dataContent = JSON.parse(res.payload);
+        this.dataContent.forEach(data => {
+          let actGiftNo = '';
+          let count = 0;
+          if (data.actTypeBo && data.actTypeBo !== undefined) {
+            actGiftNo = data.actTypeBo.actGiftNo;
+          }
+          if (data.actGiftRuleConfigL) {
+            data.actGiftRuleConfigL.forEach(item => {
+              if (item.actCouponRulePoL && item.actGiftNo === actGiftNo) {
+                item.actCouponRulePoL.forEach(cell => {
+                  count += cell.quantity;
+                });
+              }
+            });
+          }
+          data.allQuantity = count;
+        });
         console.log(this.dataContent);
       });
     } else if (flag === 'coupon') {
       this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
         this.dataSearchCoupon = JSON.parse(res.payload);
         console.log(this.dataSearchCoupon);
+      });
+    } else if (flag === 'newCoupon') {
+      this.activityService.getNewCouponList(this.baseInfoId).subscribe(res => {
+        this.couponListArr = JSON.parse(res.payload);
+        if (this.radioValue !== 'ChargeMargin') {
+          this.actGiftNo = JSON.parse(res.payload)[0].actGiftNo;
+        }
+        console.log(this.couponListArr);
+        console.log(this.actGiftNo);
       });
     }
   }
@@ -137,19 +165,18 @@ export class ActivityComponent implements OnInit {
       this.searchCouponItem.couponName = encodeURI(this.searchCouponForm.controls['couponName'].value);
       this.searchCouponItem.discountType = this.searchCouponForm.controls['discountType'].value;
       this.searchCouponItem.couponCategory = this.searchCouponForm.controls['couponCategory'].value;
-      this.searchCouponItem.ctimeStart = this.beginBaseInfoDate;
-      this.searchCouponItem.ctimeEnd = this.endBaseInfoDate;
+      this.searchCouponItem.ctimeStart = this.beginCouponDate + 'T00:00:00.000Z';
+      this.searchCouponItem.ctimeEnd = this.endCouponDate + 'T23:59:59.999Z';
       this.loadData('coupon');
     }
   }
-
 
   // 新增内容 - 弹框
   showModal(flag, data) {
     if (flag === 'content') { // 新增活动
       this.isAddContentVisible = true;
-      this.beginBaseInfoDate = ''; // 基本信息日期选择
-      this.endBaseInfoDate = '';
+      // this.beginBaseInfoDate = ''; // 基本信息日期选择
+      // this.endBaseInfoDate = '';
       this.beginRuleDate = ''; // 模板1日期选择
       this.endRuleDate = '';
       this.beginCouponDate = ''; // 红包日期选择
@@ -159,6 +186,10 @@ export class ActivityComponent implements OnInit {
         'actName': '', 'date': '', 'actRuleDesc': ''
       };
     } else if (flag === 'coupon') { // 新增红包 | 活动奖励
+      if (this.baseInfoId === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '基本信息未填写' });
+        return;
+      }
       this.isCouponVisible = true;
       this.doSearchCoupon('coupon');
     } else if (flag === 'modifyCoupon') { // 修改红包 | 活动奖励
@@ -236,7 +267,7 @@ export class ActivityComponent implements OnInit {
           'actTypeEndTime': this.endRuleDate.substring(this.endRuleDate.indexOf('@') + 1),
           'totalQuantity': this.addContentForm.controls['totalQuantity'].value,
           'perUserQuantity': this.addContentForm.controls['perUserQuantity'].value,
-          'actGiftNo': this.addContentForm.controls['actGiftNo'].value, // 活动奖励包编码
+          'actGiftNo': this.actGiftNo, // 活动奖励包编码
         };
       } else if (this.radioValue === 'ChargeOneOff') {
         actTypeBo = {
@@ -248,7 +279,7 @@ export class ActivityComponent implements OnInit {
           'totalQuantity': this.addContentForm.controls['totalQuantity'].value,
           // 'consumedQuantity': this.addContentForm.controls['consumedQuantity'].value,  // 该字段是后台自己使用
           'perUserQuantity': this.addContentForm.controls['perUserQuantity'].value,
-          'actGiftNo': this.addContentForm.controls['actGiftNo'].value, // 活动奖励包编码
+          'actGiftNo': this.actGiftNo, // 活动奖励包编码
         };
       } else if (this.radioValue === 'ChargeMargin') {
         actTypeBo = {
@@ -259,8 +290,8 @@ export class ActivityComponent implements OnInit {
       const contentInput = {
         'id': this.baseInfoId,
         'actName': this.addContentForm.controls['actName'].value,
-        'actStartDate': this.beginBaseInfoDate,
-        'actEndDate': this.endBaseInfoDate,
+        'actStartDate': this.beginRuleDate.substring(0, this.beginRuleDate.indexOf('@')),
+        'actEndDate': this.endRuleDate.substring(0, this.endRuleDate.indexOf('@')),
         'actRuleDesc': this.addContentForm.controls['actRuleDesc'].value,
         'actType': this.radioValue,
         'actTypeBo': actTypeBo
@@ -275,20 +306,31 @@ export class ActivityComponent implements OnInit {
       });
     } else if (flag === 'coupon') {
       const couponArr = [];
+      let checkedCount = 0;
+      let quantityCount = 0;
       this.dataSearchCoupon.forEach(data => {
         if (data.checked === true) {
           couponArr.push(data);
+          checkedCount++;
+          data.quantity ? quantityCount++ : 1 ;
         }
       });
+      if (checkedCount === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '请勾选优惠券' });
+        return;
+      }
+      if (quantityCount === 0 || checkedCount !== quantityCount) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '勾选的优惠券的数量限制不能为空' });
+        return;
+      }
       const couponInput = {
         'actRuleId': this.baseInfoId,
-        'actCouponRulePoL': couponArr,
-        'couponId': this.beginBaseInfoDate,
-        'quantity': this.endBaseInfoDate
+        'actCouponRulePoL': couponArr
       };
       this.activityService.addCoupon(couponInput).subscribe(res => {
         if (res.retcode === 0) {
-          // this.loadData('coupon');
+          this.isCouponVisible = false;
+          this.loadData('newCoupon');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -308,6 +350,15 @@ export class ActivityComponent implements OnInit {
               this.modalService.error({ nzTitle: '提示', nzContent: res.message });
             }
           });
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
+        }
+      });
+    } else if (flag === 'couponList') {
+      this.activityService.deleteCouponArr(this.baseInfoId, data).subscribe(resItem => { // 删除图片
+        if (resItem.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('newCoupon');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
         }
@@ -351,6 +402,7 @@ export class ActivityComponent implements OnInit {
   // 点击上传
   handleUpload(baseInfoId): void {
     const url = 'http://account-center-test.chewrobot.com/api/actrule/img';
+    const imageUrl = 'http://account-center-test.chewrobot.com';
     const flag = 'imageFile';
     // 文件数量不可超过1个，超过一个则提示
     if (this.fileList.length > 1) {
@@ -372,8 +424,8 @@ export class ActivityComponent implements OnInit {
       .pipe(filter(e => e instanceof HttpResponse))
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
-          this.imageUrl = event.body.payload;
-          this.showImageUrl = url + this.imageUrl;
+          this.imageUrl = JSON.parse(event.body.payload).relativeUri;
+          this.showImageUrl = imageUrl + this.imageUrl;
           this.notification.success( '提示', '上传成功' );
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
@@ -450,5 +502,13 @@ export class ActivityComponent implements OnInit {
       }
     });
     this.refreshSearchCouponStatus();
+  }
+
+  getCouponNumber(event, data) {
+    this.dataSearchCoupon.forEach(item => {
+      if (item.couponId === data.couponId) {
+        item.quantity = parseInt(event);
+      }
+    });
   }
 }

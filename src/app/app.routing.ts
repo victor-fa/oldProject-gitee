@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'}, // , canActivate: [LoginGuard]
   { path: 'coupon', loadChildren: './coupon/coupon.module#CouponModule'}, // , canActivate: [LoginGuard]
   { path: 'activity', loadChildren: './activity/activity.module#ActivityModule'}, // , canActivate: [LoginGuard]
-  { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
+  // { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 
 @NgModule({

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/public/service/common.service';
 import { CookiesService } from '../service/cookies.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-left-nav',
@@ -12,6 +13,7 @@ export class LeftNavComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     private _cookiesService: CookiesService,
+    private _router: Router,
   ) { }
 
   ngOnInit() {
@@ -24,5 +26,9 @@ export class LeftNavComponent implements OnInit {
 
   cancellation(): void {
     this._cookiesService.clearToken();
+  }
+
+  goDataCenter() {
+    this._router.navigate(['/dataCenter/app']);
   }
 }

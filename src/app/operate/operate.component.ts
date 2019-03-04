@@ -26,13 +26,9 @@ export class OperateComponent implements OnInit {
     private _router: Router,
   ) {
     this.commonService.nav[6].active = true;
-    // this._initSearchForm();
-    // this.beginDate = this.commonService.getDay(-7);
-    // this.endDate = this.commonService.getDay(-1);
   }
 
   ngOnInit() {
-    console.log(123);
 
   }
 

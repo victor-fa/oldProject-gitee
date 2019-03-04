@@ -7,12 +7,13 @@
       <nz-tabset nzSize="large">
         <nz-tab nzTitle="{{commonService.currentOperateTitle}}">
 
-          <!-- <div class="spin" *ngIf="isSpinning">
+          <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
-          <div *ngIf="!isSpinning"> -->
-            <app-xiaowubean *ngIf="commonService.operate[0].active === true"></app-xiaowubean>
-          <!-- </div> -->
+          <div *ngIf="!isSpinning">
+            <!-- <app-xiaowubean *ngIf="commonService.operate[0].active === true"></app-xiaowubean> -->
+            <app-xiaowubean></app-xiaowubean>
+          </div>
 
         </nz-tab>
       </nz-tabset>

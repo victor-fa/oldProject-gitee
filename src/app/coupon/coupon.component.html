@@ -29,7 +29,7 @@
             优惠券名称：
           </div>
           <div nz-col nzSpan="3">
-            <input nz-input maxlength="32" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
+            <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号"
               nzSize="default">
           </div>
 
@@ -38,7 +38,6 @@
           </div>
           <div nz-col nzSpan="3">
             <nz-select [ngModel]="''" formControlName="discountType">
-              <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
               <nz-option required [nzLabel]="'满减固定额'" [nzValue]="'fix_discount'"></nz-option>
               <nz-option required [nzLabel]="'满减百分比'" [nzValue]="'percentage_discount'"></nz-option>
             </nz-select>
@@ -101,8 +100,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
             <div nz-col nzSpan="4">
-              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                placeholder="请输入红包名称" nzSize="default">
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" placeholder="请输入红包名称" nzSize="default">
             </div>
           </div>
 
@@ -121,11 +119,11 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
             <div nz-col nzSpan="4" class="span_down">
-              <input nz-input formControlName="thresholdPrice" [(ngModel)]="couponDate.thresholdPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input formControlName="thresholdPrice" [(ngModel)]="couponDate.thresholdPrice" nzSize="default">
             </div>
-            <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
+            <div nz-col nzSpan="2" class="span_down" style="text-align: center;">减</div>
             <div nz-col nzSpan="2" class="span_down">
-              <input nz-input formControlName="discountPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input formControlName="discountPrice" nzSize="default">
             </div>
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
             <div nz-col nzSpan="1" class="span_down"></div>
@@ -141,7 +139,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
             <div nz-col nzSpan="5" class="span_down">
-              <nz-radio-group formControlName="timeLimitType">
+              <nz-radio-group [(ngModel)]="radioValue" formControlName="timeLimitType">
                 <label nz-radio nzValue="fix_start_end">固定时间</label>
                 <label nz-radio nzValue="fix_duration">相对时间</label>
               </nz-radio-group>
@@ -157,11 +155,21 @@
               相对时间-领取后1天，失效日期是用户领取次日的最后1秒
             </div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row class="search_panel" *ngIf="radioValue === 'fix_start_end'">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="9">
               <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
             </div>
+          </div>
+          <div nz-row class="search_panel" *ngIf="radioValue === 'fix_duration'">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">自领取之日起</div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="2">
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" nzSize="default">
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="2">天</div>
           </div>
 
           <div nz-row class="search_panel">
@@ -237,8 +245,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
             <div nz-col nzSpan="4">
-              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
-                placeholder="请输入红包名称" nzSize="default">
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" placeholder="请输入红包名称" nzSize="default">
             </div>
           </div>
 
@@ -257,11 +264,11 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
             <div nz-col nzSpan="4" class="span_down">
-              <input nz-input [(ngModel)]="couponDate.thresholdPrice" formControlName="thresholdPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input [(ngModel)]="couponDate.thresholdPrice" formControlName="thresholdPrice" nzSize="default">
             </div>
-            <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
+            <div nz-col nzSpan="2" class="span_down" style="text-align: center;">减</div>
             <div nz-col nzSpan="2" class="span_down">
-              <input nz-input [(ngModel)]="couponDate.discountPrice" formControlName="discountPrice" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" nzSize="default">
+              <input nz-input [(ngModel)]="couponDate.discountPrice" formControlName="discountPrice" nzSize="default">
             </div>
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
             <div nz-col nzSpan="1" class="span_down"></div>
@@ -392,7 +399,7 @@
           <div nz-col nzSpan="4" class="span_down" style="text-align: center">
             {{couponDate.thresholdPrice}}
           </div>
-          <div nz-col nzSpan="2" class="span_down" style="text-align: center;">固定减</div>
+          <div nz-col nzSpan="2" class="span_down" style="text-align: center;">减</div>
           <div nz-col nzSpan="2" class="span_down" style="text-align: center">
             {{couponDate.discountPrice}}
           </div>

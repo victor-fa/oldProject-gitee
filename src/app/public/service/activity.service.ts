@@ -36,9 +36,24 @@ export class ActivityService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取新增后的红包信息 */
+  getNewCouponList(actRuleId): Observable<IResponse<any>> {
+    const url = this.activityUrl + activityApiUrls.activityList + '/gift'
+    + '?actRuleId=' + actRuleId;
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
   /** 删除单个活动 */
   deleteActivity(id): Observable<IResponse<any>> {
     const url = this.activityUrl + activityApiUrls.activityList + '?id=' + id;
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
+  /** 删除单个活动奖励 */
+  deleteCouponArr(actRuleId, actGiftNo): Observable<IResponse<any>> {
+    const url = this.activityUrl + activityApiUrls.activityList + '/gift?actRuleId=' + actRuleId + '&actGiftNo=' + actGiftNo;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

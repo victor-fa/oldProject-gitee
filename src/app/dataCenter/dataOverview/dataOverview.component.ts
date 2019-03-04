@@ -47,17 +47,4 @@ export class DataOverviewComponent implements OnInit {
     }
   }
 
-  // 主面板分页表单
-  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
-    this.displayData = $event;
-    this.refreshStatus();
-  }
-
-  refreshStatus(): void {
-    const allChecked = this.displayData.filter(value => !value.disabled).every(value => value.checked === true);
-    const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-  }
-
 }

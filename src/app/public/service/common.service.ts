@@ -97,16 +97,16 @@ export class CommonService {
     this.currentDataCenter = flag;
     this.dataCenterStatus = 'all';
 
-    if (location.href.indexOf('dataCenter') > -1) {
-      return;
-    }
+    // if (location.href.indexOf('dataCenter') > -1) {
+    //   return;
+    // }
     setTimeout(() => {
       this._router.navigate([route]);
     }, 400);
   }
 
   changeOperate(flag, route) {
-    const operateTitle = ['小悟豆'];
+    const operateTitle = ['充值送豆'];
     this.needOperate = flag === this.currentOperate ? false : true;
     localStorage.setItem('isOperateSearch', 'false');
 

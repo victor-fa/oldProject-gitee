@@ -5,20 +5,20 @@ import { OperateComponent } from './operate.component';
 
 
 const routes: Routes = [
-    {
+  {
+    path: 'app',
+    component: OperateComponent,
+    children: [
+      {
         path: 'app',
-        component: OperateComponent,
-        children: [
-            {
-                path: 'bean',
-                component: XiaowubeanComponent,
-            }
-        ]
-    },
+        component: XiaowubeanComponent,
+      }
+    ]
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class OperateRoutingModule { }

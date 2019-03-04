@@ -86,11 +86,11 @@
         <i class="anticon anticon-bar-chart"></i><span>运营中心</span>
       </span>
       <ul>
-        <li nz-menu-item (click)="commonService.changeOperate(0, '/operate/bean')">小悟豆</li>
+        <li nz-menu-item (click)="commonService.changeOperate(0, '/operate/app')">充值送豆</li>
       </ul>
     </li>
     <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[7].active}" routerLinkActive="active">
-      <span title>
+      <span title (click)="goDataCenter()">
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>
       <ul>

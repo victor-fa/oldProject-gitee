@@ -40,6 +40,7 @@ export class CouponComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   displayData = [];
+  radioValue = 'fix_start_end';  // 有效时间
   searchItem = {
     couponName: '', discountType: '', couponCategory: '', ctimeStart: '', ctimeEnd: ''
   };
@@ -114,6 +115,7 @@ export class CouponComponent implements OnInit {
   showAddModal(flag) {
     this.isAddCouponVisible = true;
     this.couponDate = {  // 清空
+      // tslint:disable-next-line:max-line-length
       'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
     };
   }
@@ -154,7 +156,7 @@ export class CouponComponent implements OnInit {
       'discountType': this.dotranUrl(this.addCouponForm.controls['discountType'].value),
       'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
       'discountPrice': this.addCouponForm.controls['discountPrice'].value,
-      'timeLimitType': this.addCouponForm.controls['timeLimitType'].value,
+      'timeLimitType': this.radioValue,
       'timeLimitStart': this.beginDate.substring(0, 10),
       'timeLimitEnd': this.endDate.substring(0, 10),
       'couponCategory': this.getCheckedCategory(),
