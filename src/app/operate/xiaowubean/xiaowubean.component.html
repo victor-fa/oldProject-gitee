@@ -1,5 +1,5 @@
 <div nz-row class="search_panel">
-  <form [formGroup]="searchBeanForm">
+  <!-- <form [formGroup]="searchBeanForm">
     <div nz-col nzSpan="2" class="span_down spacing right_alignment">
       活动名称：
     </div>
@@ -33,7 +33,7 @@
     <div nz-col nzSpan="2">
       <button nz-button nzType="primary" (click)="showModal('', 'addBean')"><i class="anticon anticon-search"></i>查询</button>
     </div>
-  </form>
+  </form> -->
 </div>
 <div nz-row class="search_panel">
   <div nz-col nzSpan="21"></div>
@@ -76,7 +76,7 @@
 
 <!-- 弹框 —— 新增 —— 新增活动 -->
 <nz-modal [(nzVisible)]="isAddBeanVisible" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" nzClosable="false" (nzOnCancel)="hideModal('addBean')">
-  <form [formGroup]="addBeanForm">
+  <!-- <form [formGroup]="addBeanForm">
     <div nz-row class="search_panel">
       <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
     </div>
@@ -147,7 +147,7 @@
       </div>
     </div>
 
-  </form>
+  </form> -->
   <!-- 弹框和底部定制 -->
   <ng-template #addBeanModalFooter>
     <button nz-button nzType="primary" (click)="doSave('bean')">保存</button>
@@ -157,7 +157,7 @@
 
 <!-- 弹框 —— 修改 —— 修改活动 -->
 <nz-modal [(nzVisible)]="isModifyBeanVisible" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" nzClosable="false" (nzOnCancel)="hideModal('modifyBean')">
-  <form [formGroup]="modifyBeanForm">
+  <!-- <form [formGroup]="modifyBeanForm">
     <div nz-row class="search_panel">
       <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
     </div>
@@ -227,7 +227,7 @@
       </div>
     </div>
 
-  </form>
+  </form> -->
   <!-- 弹框和底部定制 -->
   <ng-template #modifyBeanModalFooter>
     <button nz-button nzType="default" (click)="hideModal('modifyBean')">关闭</button>

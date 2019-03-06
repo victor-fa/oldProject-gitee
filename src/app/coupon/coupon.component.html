@@ -123,7 +123,7 @@
             </div>
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">减</div>
             <div nz-col nzSpan="2" class="span_down">
-              <input nz-input formControlName="discountPrice" nzSize="default">
+              <input nz-input formControlName="discountPrice" [(ngModel)]="couponDate.discountPrice" nzSize="default">
             </div>
             <div nz-col nzSpan="1" class="span_down" style="text-align: center;">元</div>
             <div nz-col nzSpan="1" class="span_down"></div>
@@ -166,7 +166,7 @@
             <div nz-col nzSpan="2">自领取之日起</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="2">
-              <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" formControlName="couponName" nzSize="default">
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.timeLimitValidDay" formControlName="timeLimitValidDay" nzSize="default">
             </div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="2">天</div>
@@ -284,7 +284,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
             <div nz-col nzSpan="5" class="span_down">
-              <nz-radio-group [(ngModel)]="couponDate.timeLimitType" formControlName="timeLimitType">
+              <nz-radio-group [(ngModel)]="radioValue" formControlName="timeLimitType">
                 <label nz-radio nzValue="fix_start_end">固定时间</label>
                 <label nz-radio nzValue="fix_duration">相对时间</label>
               </nz-radio-group>
@@ -302,12 +302,23 @@
               相对时间-领取后1天，失效日期是用户领取次日的最后1秒
             </div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row class="search_panel" *ngIf="radioValue === 'fix_start_end'">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="9">
               <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
             </div>
           </div>
+          <div nz-row class="search_panel" *ngIf="radioValue === 'fix_duration'">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">自领取之日起</div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="2">
+              <input nz-input maxlength="12" [(ngModel)]="couponDate.timeLimitValidDay" formControlName="timeLimitValidDay" nzSize="default">
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="2">天</div>
+          </div>
+
 
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div>

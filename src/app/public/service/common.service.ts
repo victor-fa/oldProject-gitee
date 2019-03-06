@@ -141,6 +141,20 @@ export class CommonService {
     return tYear + '' + tMonth + '' + tDate;
   }
 
+  // 获取指定时间的日期 格式：yyyyMMdd
+  getDayWithAcross(day): string {
+    const today = new Date();
+    const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+    today.setTime(targetday_milliseconds); // 注意，这行是关键代码
+    const tYear = today.getFullYear();
+    let tMonth = today.getMonth().toString();
+    let tDate = today.getDate().toString();
+    // tslint:disable-next-line:radix
+    tMonth = this.doHandleMonth(parseInt(tMonth) + 1);
+    tDate = this.doHandleMonth(tDate);
+    return tYear + '-' + tMonth + '-' + tDate;
+  }
+
   doHandleMonth(month): string {
     let m = month;
     if (month.toString().length === 1) {

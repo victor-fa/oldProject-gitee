@@ -21,7 +21,7 @@ export class XiaowubeanComponent implements OnInit {
   isSearchBeanVisible = false;
   beanItem = {
     // tslint:disable-next-line:max-line-length
-    'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+    'beanName': '', 'discountPrice': '', 'thresholdPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
   };
   addBeanForm: FormGroup;
   searchBeanForm: FormGroup;
@@ -89,19 +89,19 @@ export class XiaowubeanComponent implements OnInit {
       this.isAddBeanVisible = true;
       this.beanItem = {  // 清空
         // tslint:disable-next-line:max-line-length
-        'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+    'beanName': '', 'discountPrice': '', 'thresholdPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
       };
     } else if (flag === 'modifyBean') {
       this.isModifyBeanVisible = true;
       this.beanItem = {  // 清空
         // tslint:disable-next-line:max-line-length
-        'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+    'beanName': '', 'discountPrice': '', 'thresholdPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
       };
     } else if (flag === 'searchBean') {
       this.isSearchBeanVisible = true;
       this.beanItem = {  // 清空
         // tslint:disable-next-line:max-line-length
-        'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+    'beanName': '', 'discountPrice': '', 'thresholdPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
       };
     }
   }

@@ -46,12 +46,9 @@ export class ActivityComponent implements OnInit {
     'actName': '', 'date': '', 'actRuleDesc': ''
   };
   radioValue = 'LoginOneOff';
-  addMarginArr = [{}];  // 模板D下的对区间数量的操作
+  addMarginArr = [{ chargeThreshold: '', totalQuantity: '', perUserQuantity: '', actGiftNo: '' }];  // 模板D下的对区间数量的操作
   searchActivityItem = {
     actName: '', status: ''
-  };
-  searchCouponItem = {
-    couponName: '', discountType: '', couponCategory: '', ctimeStart: '', ctimeEnd: ''
   };
   allSearchCouponChecked = false; // 用于table多选
   indeterminate = false; // 用于table多选
@@ -59,7 +56,7 @@ export class ActivityComponent implements OnInit {
   modelId = ''; // 弹框获取当前Id
   couponListArr = []; // 最底部的活动奖励配置数组
   actGiftNo = ''; // 非区间重置的活动编码
-  // actGifType = [];  // 用于下拉当前有的红包组
+  actGiftNoArr = [{ value: '', label: '---选择红包组---' }];  // 用于下拉当前有的红包组
 
   constructor(
     private fb: FormBuilder,
@@ -109,18 +106,29 @@ export class ActivityComponent implements OnInit {
         console.log(this.dataContent);
       });
     } else if (flag === 'coupon') {
-      this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
+      if (this.beginCouponDate === null) {
+        this.beginCouponDate = this.commonService.getDayWithAcross(-7);
+        this.endCouponDate = this.commonService.getDayWithAcross(-1);
+      }
+      const searchCouponItem = {
+        couponName: encodeURI(this.searchCouponForm.controls['couponName'].value),
+        discountType: this.searchCouponForm.controls['discountType'].value,
+        couponCategory: this.searchCouponForm.controls['couponCategory'].value,
+        ctimeStart: this.beginCouponDate + 'T00:00:00.000Z',
+        ctimeEnd: this.endCouponDate + 'T23:59:59.999Z',
+      };
+      this.couponService.getCouponList(searchCouponItem).subscribe(res => {
         this.dataSearchCoupon = JSON.parse(res.payload);
-        console.log(this.dataSearchCoupon);
       });
     } else if (flag === 'newCoupon') {
       this.activityService.getNewCouponList(this.baseInfoId).subscribe(res => {
+        this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
         this.couponListArr = JSON.parse(res.payload);
-        if (this.radioValue !== 'ChargeMargin') {
-          this.actGiftNo = JSON.parse(res.payload)[0].actGiftNo;
-        }
+        this.couponListArr.forEach(item => {
+          const tempObject = { value: item.actGiftNo, label: item.actGiftNo };
+          this.actGiftNoArr.push(tempObject);
+        });
         console.log(this.couponListArr);
-        console.log(this.actGiftNo);
       });
     }
   }
@@ -152,21 +160,12 @@ export class ActivityComponent implements OnInit {
       // consumedQuantity: [''], 该字段是后台自己使用
       perUserQuantity: [''],
       actGiftNo: [''],
-      // chargeThreshold: [''],
-      // totalQuantity: [''],
-      // consumedQuantity: [''], 该字段是后台自己使用
-      // perUserQuantity: [''],
-      // actGiftNo: [''],
+      temp: [''], // 临时用于不需要的字段，比如模板4上的子区间相关字段
     });
   }
 
   doSearchCoupon(flag) {
     if (flag === 'coupon') {
-      this.searchCouponItem.couponName = encodeURI(this.searchCouponForm.controls['couponName'].value);
-      this.searchCouponItem.discountType = this.searchCouponForm.controls['discountType'].value;
-      this.searchCouponItem.couponCategory = this.searchCouponForm.controls['couponCategory'].value;
-      this.searchCouponItem.ctimeStart = this.beginCouponDate + 'T00:00:00.000Z';
-      this.searchCouponItem.ctimeEnd = this.endCouponDate + 'T23:59:59.999Z';
       this.loadData('coupon');
     }
   }
@@ -179,8 +178,6 @@ export class ActivityComponent implements OnInit {
       // this.endBaseInfoDate = '';
       this.beginRuleDate = ''; // 模板1日期选择
       this.endRuleDate = '';
-      this.beginCouponDate = ''; // 红包日期选择
-      this.endCouponDate = '';
       this.contentDate = {  // 清空
         // tslint:disable-next-line:max-line-length
         'actName': '', 'date': '', 'actRuleDesc': ''
@@ -203,9 +200,15 @@ export class ActivityComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = false;
-      this.baseInfoId = '';
+      this.fileList.length = 0;
+      this.imageUrl = '';
+      this.showImageUrl = '';
+      this.radioValue = 'LoginOneOff';  // 
+      this.baseInfoId = ''; // 清空Id
     } else if (flag === 'coupon') {
       this.isCouponVisible = false;
+      this.beginCouponDate = null;
+      this.endCouponDate = null;
     }
   }
 
@@ -213,34 +216,49 @@ export class ActivityComponent implements OnInit {
   verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'content') {
-      // if (this.addContentForm.controls['version'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '版本未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['title'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '标题未选择' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['description'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '描述未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['size'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '大小未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['file'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '文件地址未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['system_symbol'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '操作系统未选择' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['version_allowed'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '允许的最低版本未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['sub_title'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '副标题未填写' });
-      //   result = false;
-      // } else if (this.addContentForm.controls['channel'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '渠道未选择' });
-      //   result = false;
-      // }
+      if (this.radioValue === 'LoginOneOff' || this.radioValue === 'LoginDaily') {
+        if (this.addContentForm.controls['totalQuantity'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '奖励发放上限未填写' });
+          result = false;
+        } else if (this.addContentForm.controls['perUserQuantity'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '每个用户可领未填写' });
+          result = false;
+        } else if (this.addMarginArr[0].actGiftNo === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '下拉的活动奖励配置未选择' });
+          result = false;
+        }
+      } else if (this.radioValue === 'ChargeOneOff') {
+        if (this.addContentForm.controls['chargeThreshold'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '充值额度约束未填写' });
+          result = false;
+        } else if (this.addContentForm.controls['totalQuantity'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '奖励发放上限未填写' });
+          result = false;
+        } else if (this.addContentForm.controls['perUserQuantity'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '每个用户可领未填写' });
+          result = false;
+        } else if (this.addMarginArr[0].actGiftNo === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '下拉的活动奖励配置未选择' });
+          result = false;
+        }
+      } else if (this.radioValue === 'ChargeMargin') {
+        addMarginArr = [{ chargeThreshold: '', totalQuantity: '', perUserQuantity: '', actGiftNo: '' }];
+        this.addMarginArr.forEach(item => {
+          if (item.chargeThreshold === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '有充值额度约束未填写' });
+            result = false;
+          } else if (item.totalQuantity === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '有奖励发放上限未填写' });
+            result = false;
+          } else if (item.perUserQuantity === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '有每个用户可领未填写' });
+            result = false;
+          } else if (item.actGiftNo === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '有下拉的活动奖励配置未选择' });
+            result = false;
+          }
+        });
+      }
     } else if (flag === 'baseInfo') {
       if (this.addContentForm.controls['actName'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '活动名称未填写' });
@@ -258,7 +276,6 @@ export class ActivityComponent implements OnInit {
     if (flag === 'content') {
       if (!this.verificationAdd('content')) { return; }
       let actTypeBo = {};
-      let actSubTypeL = [];
       if (this.radioValue === 'LoginOneOff' || this.radioValue === 'LoginDaily') {
         actTypeBo = {
           'actTypeStartDate': this.beginRuleDate.substring(0, this.beginRuleDate.indexOf('@')),
@@ -267,7 +284,7 @@ export class ActivityComponent implements OnInit {
           'actTypeEndTime': this.endRuleDate.substring(this.endRuleDate.indexOf('@') + 1),
           'totalQuantity': this.addContentForm.controls['totalQuantity'].value,
           'perUserQuantity': this.addContentForm.controls['perUserQuantity'].value,
-          'actGiftNo': this.actGiftNo, // 活动奖励包编码
+          'actGiftNo': this.addMarginArr[0].actGiftNo, // 活动奖励包编码
         };
       } else if (this.radioValue === 'ChargeOneOff') {
         actTypeBo = {
@@ -279,12 +296,11 @@ export class ActivityComponent implements OnInit {
           'totalQuantity': this.addContentForm.controls['totalQuantity'].value,
           // 'consumedQuantity': this.addContentForm.controls['consumedQuantity'].value,  // 该字段是后台自己使用
           'perUserQuantity': this.addContentForm.controls['perUserQuantity'].value,
-          'actGiftNo': this.actGiftNo, // 活动奖励包编码
+          'actGiftNo': this.addMarginArr[0].actGiftNo, // 活动奖励包编码
         };
       } else if (this.radioValue === 'ChargeMargin') {
         actTypeBo = {
-          'chargeThreshold': this.addContentForm.controls['chargeThreshold'].value,
-          'actSubTypeL': actSubTypeL, // this.addMarginArr
+          'actSubTypeL': this.addMarginArr,
         };
       }
       const contentInput = {
@@ -323,10 +339,7 @@ export class ActivityComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '勾选的优惠券的数量限制不能为空' });
         return;
       }
-      const couponInput = {
-        'actRuleId': this.baseInfoId,
-        'actCouponRulePoL': couponArr
-      };
+      const couponInput = { 'actRuleId': this.baseInfoId, 'actCouponRulePoL': couponArr };
       this.activityService.addCoupon(couponInput).subscribe(res => {
         if (res.retcode === 0) {
           this.isCouponVisible = false;
@@ -340,18 +353,12 @@ export class ActivityComponent implements OnInit {
 
   doDelete(data, flag) {
     if (flag === 'content') {
-      this.activityService.deleteImage(data).subscribe(resItem => { // 删除图片
-        if (resItem.retcode === 0) {
-          this.activityService.deleteActivity(data.id).subscribe(res => {  // 删除活动
-            if (res.retcode === 0) {
-              this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-              this.loadData('content');
-            } else {
-              this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-            }
-          });
+      this.activityService.deleteActivity(data.id).subscribe(res => {  // 删除活动
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('content');
         } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'couponList') {
@@ -436,13 +443,43 @@ export class ActivityComponent implements OnInit {
     );
   }
 
-  clickChangeMargin(flag, target) {
+  // 对临时数组的操作
+  clickChangeMargin(flag, target, item) {
     if (flag === 'content') {
       if (target === 'add') {
-        this.addMarginArr.push({});
+        this.addMarginArr.push({ chargeThreshold: '', totalQuantity: '', perUserQuantity: '', actGiftNo: '' });
       } else if (target === 'delete') {
-        this.addMarginArr.pop();
+        this.addMarginArr.splice(item, 1);
       }
+    }
+  }
+
+  // 针对区域重置处理的数组情况
+  onMarginChange(value, site, item) {
+    if (site === 'chargeThreshold') { // 充值额度门槛
+      this.addMarginArr.forEach(( cell, i ) => {
+        if (i === item) {
+          cell.chargeThreshold = value ;
+        }
+      });
+    } else if (site === 'totalQuantity') {  // 可发放总数
+      this.addMarginArr.forEach(( cell, i ) => {
+        if (i === item) {
+          cell.totalQuantity = value ;
+        }
+      });
+    } else if (site === 'perUserQuantity') {  // 每个用户可领取数量
+      this.addMarginArr.forEach(( cell, i ) => {
+        if (i === item) {
+          cell.perUserQuantity = value ;
+        }
+      });
+    } else if (site === 'actGiftNo') {  // 最终选择的红包组
+      this.addMarginArr.forEach(( cell, i ) => {
+        if (i === item) {
+          cell.actGiftNo = value;
+        }
+      });
     }
   }
 

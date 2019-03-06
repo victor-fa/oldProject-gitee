@@ -34,7 +34,7 @@ export class CouponComponent implements OnInit {
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   couponDate = {
     // tslint:disable-next-line:max-line-length
-    'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+    'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
   };
   dataCoupon = []; // 内容
   allChecked = false;
@@ -107,6 +107,7 @@ export class CouponComponent implements OnInit {
       discountType: [''],
       thresholdPrice: [''],
       discountPrice: [''],
+      timeLimitValidDay: [''],
       timeLimitType: [''],
     });
   }
@@ -114,9 +115,10 @@ export class CouponComponent implements OnInit {
   // 新增内容 - 弹框
   showAddModal(flag) {
     this.isAddCouponVisible = true;
+    this.radioValue = 'fix_start_end';  // 重置时间限制（单选）
     this.couponDate = {  // 清空
       // tslint:disable-next-line:max-line-length
-      'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
+      'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': ''
     };
   }
 
@@ -151,17 +153,32 @@ export class CouponComponent implements OnInit {
     if (!this.verificationAddCoupon('coupon')) {
       return;
     }
-    const couponInput = {
-      'couponName': this.addCouponForm.controls['couponName'].value,
-      'discountType': this.dotranUrl(this.addCouponForm.controls['discountType'].value),
-      'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
-      'discountPrice': this.addCouponForm.controls['discountPrice'].value,
-      'timeLimitType': this.radioValue,
-      'timeLimitStart': this.beginDate.substring(0, 10),
-      'timeLimitEnd': this.endDate.substring(0, 10),
-      'couponCategory': this.getCheckedCategory(),
-      'mutualExcludeRules': this.getMutualExcludeRules(),
-    };
+    let couponInput = {};
+    console.log(this.radioValue);
+    if (this.radioValue === 'fix_start_end') {
+      couponInput = {
+        'couponName': this.addCouponForm.controls['couponName'].value,
+        'discountType': this.addCouponForm.controls['discountType'].value,
+        'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
+        'discountPrice': this.addCouponForm.controls['discountPrice'].value,
+        'timeLimitType': this.radioValue,
+        'timeLimitStart': this.beginDate.substring(0, 10),
+        'timeLimitEnd': this.endDate.substring(0, 10),
+        'couponCategory': this.getCheckedCategory(),
+        'mutualExcludeRules': this.getMutualExcludeRules(),
+      };
+    } else if (this.radioValue === 'fix_duration') {
+      couponInput = {
+        'couponName': this.addCouponForm.controls['couponName'].value,
+        'discountType': this.addCouponForm.controls['discountType'].value,
+        'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
+        'discountPrice': this.addCouponForm.controls['discountPrice'].value,
+        'timeLimitValidDay': this.addCouponForm.controls['timeLimitValidDay'].value,
+        'timeLimitType': this.radioValue,
+        'couponCategory': this.getCheckedCategory(),
+        'mutualExcludeRules': this.getMutualExcludeRules(),
+      };
+    }
     this.couponService.addCoupon(couponInput).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
@@ -207,6 +224,7 @@ export class CouponComponent implements OnInit {
       couponName: [''],
       date: [''],
       discountType: [''],
+      timeLimitValidDay: [''],
       thresholdPrice: [''],
       discountPrice: [''],
       timeLimitType: [''],
@@ -243,6 +261,7 @@ export class CouponComponent implements OnInit {
     this.couponService.getCoupon(id).subscribe(res => {
       // 处理异常处理
       this.couponDate = JSON.parse(res.payload);
+      this.radioValue = JSON.parse(res.payload).timeLimitType;
       this.changeMutualExcludeRules(JSON.parse(res.payload).mutualExcludeRules);
       this.changeCouponCategory(JSON.parse(res.payload).couponCategory);
       this.beginDate = JSON.parse(res.payload).timeLimitStart;
@@ -259,18 +278,45 @@ export class CouponComponent implements OnInit {
     if (!this.verificationModify('coupon')) {
       return;
     }
-    const couponInput = {
-      'couponId': this.cmsId,
-      'couponName': this.modifyCouponForm.controls['couponName'].value,
-      'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
-      'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
-      'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
-      'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
-      'timeLimitStart': this.beginDate.substring(0, 10),
-      'timeLimitEnd': this.endDate.substring(0, 10),
-      'couponCategory': this.getCheckedCategory(),
-      'mutualExcludeRules': this.getMutualExcludeRules(),
-    };
+    // const couponInput = {
+    //   'couponId': this.cmsId,
+    //   'couponName': this.modifyCouponForm.controls['couponName'].value,
+    //   'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
+    //   'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
+    //   'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
+    //   'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
+    //   'timeLimitStart': this.beginDate.substring(0, 10),
+    //   'timeLimitEnd': this.endDate.substring(0, 10),
+    //   'couponCategory': this.getCheckedCategory(),
+    //   'mutualExcludeRules': this.getMutualExcludeRules(),
+    // };
+    let couponInput = {};
+    if (this.radioValue === 'fix_start_end') {
+      couponInput = {
+        'couponId': this.cmsId,
+        'couponName': this.modifyCouponForm.controls['couponName'].value,
+        'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
+        'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
+        'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
+        'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
+        'timeLimitStart': this.beginDate.substring(0, 10),
+        'timeLimitEnd': this.endDate.substring(0, 10),
+        'couponCategory': this.getCheckedCategory(),
+        'mutualExcludeRules': this.getMutualExcludeRules(),
+      };
+    } else if (this.radioValue === 'fix_duration') {
+      couponInput = {
+        'couponId': this.cmsId,
+        'couponName': this.modifyCouponForm.controls['couponName'].value,
+        'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
+        'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
+        'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
+        'timeLimitValidDay': this.addCouponForm.controls['timeLimitValidDay'].value,
+        'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
+        'couponCategory': this.getCheckedCategory(),
+        'mutualExcludeRules': this.getMutualExcludeRules(),
+      };
+    }
     this.couponService.updateCoupon(couponInput).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
