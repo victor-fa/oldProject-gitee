@@ -30,4 +30,4 @@
 > 正式环境下，除了数据中心访问的是http，其他都是https
 
 ## 正式环境地址与测试环境地址区分方式
-> ![blockchain](https://www.baidu.com/img/bd_logo1.png?qua=high "区块链")
+> ![区别](https://gitlab.com/yiwangcentaurs/account-center-manager/raw/stormfa/src/assets/images/%E5%8C%BA%E5%88%AB%E6%AD%A3%E5%BC%8F%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83.png "")
