@@ -12,14 +12,14 @@ export abstract class AppServiceBase {
   ) {
   }
 
-  // protected baseUrl = 'http://lxwork.vipgz1.idcfengye.com/api/admin'; // 刘兴
-  protected baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // 订票 用户正式
-  protected contentUrl = 'http://account-center-test.chewrobot.com/api';  // 内容正式
-  protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api/v2/counts';  // 数据中心正式
-  // protected dataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';  // 数据中心测试1
-  // protected dataCenterUrl = 'http://hrygddv2.vipgz1.idcfengye.com/api/v2/counts';  // 衡锐自己的服务器2
-  protected tempDataCenterUrl = 'http://aliyun-sz2.chewrobot.com:46004/api/v2/counts';  // 临时的数据中心测试，测试完了就删除
-  protected taxiRouteUrl = 'http://aliyun-sz2.chewrobot.com:41005/api';  // 打车路径正式
+  protected baseUrl = 'http://account-center-test.chewrobot.com/api';  // 订票 用户测试 内容测试
+  // protected baseUrl = 'https://xiaowu.centaurstech.com/api';  // 订票 用户测试 内容测试
+  protected dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
+  // protected dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api';  // 数据中心正式【衡锐】
+  // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
+  protected taxiRouteUrl = 'http://account-center-test.chewrobot.com:41005/api';  // 打车路径测试【宇辉】
+  // protected taxiRouteUrl = 'https://xiaowu.centaurstech.com:41005/api';  // 打车路径正式【宇辉】
+
   protected options = {
     headers: new HttpHeaders({
       'Accept': '*/*',
@@ -30,24 +30,12 @@ export abstract class AppServiceBase {
   protected fullUrl(url: string): string {
     return this.baseUrl + url;
   }
-  // 内容管理
-  protected fullContentUrl(url: string): string {
-    return this.contentUrl + url;
-  }
   // 正式的数据中心
   protected fullDataCenterUrl(url: string): string {
     return this.dataCenterUrl + url;
   }
-  // 临时的数据中心，目前用于打车和音乐，因为正式环境没数据
-  protected tempFullDataCenterUrl(url: string): string {
-    return this.tempDataCenterUrl + url;
-  }
   protected fullTaxiRouteUrl(url: string): string {
     return this.taxiRouteUrl + url;
-  }
-
-  protected json2stringfy(obj: {}): string {
-    return JSON.stringify(obj);
   }
 
   protected set setOption(option: {}) {

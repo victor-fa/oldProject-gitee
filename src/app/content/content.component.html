@@ -28,7 +28,7 @@
             <tbody>
               <tr *ngFor="let data of contentTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl + '/cms/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
                 <td>{{data.title}}</td>
                 <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '福利活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>
@@ -263,7 +263,7 @@
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/start-page-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl + '/cms/start-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -496,7 +496,7 @@
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <!-- <td>{{data.order}}</td> -->
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl + '/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -711,7 +711,7 @@
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td>{{data.order}}</td>
-                <td><img [src]="'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl + '/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>

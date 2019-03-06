@@ -33,7 +33,7 @@ export class TaxiComponent implements OnInit {
     if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
       beginDate = this.commonService.getDay(-7);
       endDate = this.commonService.getDay(-1);
-      this.dataCenterService.getUnitTestList(beginDate, endDate, '', '', 'taxi-bot').subscribe(res => {
+      this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'taxi-bot').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();

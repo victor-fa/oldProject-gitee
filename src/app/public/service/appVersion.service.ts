@@ -3,8 +3,8 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
 import { IResponse } from '../model/response.model';
-import { CookiesService } from './cookies.service';
 import { appVersionApiUrls } from '../enum/api.enum';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,33 +13,31 @@ import { appVersionApiUrls } from '../enum/api.enum';
 export class AppversionService extends AppServiceBase {
   // const token = this._cookiesService.getToken();
   token = localStorage.getItem('token');
-  appversionUrl = 'http://account-center-test.chewrobot.com/api';
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
-    private _cookiesService: CookiesService,
+    private commonService: CommonService,
   ) {
     super(injector);
   }
 
   /** 获取APP版本 */
   getAppversionList(searchItem): Observable<IResponse<any>> {
-    const url = this.fullContentUrl(appVersionApiUrls.appVersionList)
-    + '?app-channel-id=' + searchItem;
+    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}?app-channel-id=${searchItem}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取单个 */
   getAppversion(id): Observable<IResponse<any>> {
-    const url = this.appversionUrl + appVersionApiUrls.appVersionList + '/info?appversionId=' + id;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/info?appversionId=${id}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 添加单个 */
   addAppversion(data): Observable<IResponse<any>> {
-    const url = 'http://account-center-test.chewrobot.com/api/admin' + appVersionApiUrls.appVersionList;
+    const url = `${this.commonService.baseUrl}/admin${appVersionApiUrls.appVersionList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -49,14 +47,14 @@ export class AppversionService extends AppServiceBase {
 
   /** 获取操作系统 */
   getSystemSymbolList(): Observable<IResponse<any>> {
-    const url = this.fullContentUrl(appVersionApiUrls.appVersionList) + '/system_symbol';
+    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}/system_symbol`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取渠道 */
   getChannelList(): Observable<IResponse<any>> {
-    const url = this.fullContentUrl(appVersionApiUrls.appVersionList) + '/channel';
+    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}/channel`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -67,10 +65,6 @@ export class AppversionService extends AppServiceBase {
     + (data.orderId ? '?orderId=' + data.orderId : '')
     + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
     + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
-    // const url = 'http://192.168.1.48:41005/api' + appVersionApiUrls.taxiList
-    // + (data.orderId ? '?orderId=' + data.orderId : '')
-    // + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
-    // + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

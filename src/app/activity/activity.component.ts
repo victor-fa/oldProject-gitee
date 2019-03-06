@@ -203,7 +203,7 @@ export class ActivityComponent implements OnInit {
       this.fileList.length = 0;
       this.imageUrl = '';
       this.showImageUrl = '';
-      this.radioValue = 'LoginOneOff';  // 
+      this.radioValue = 'LoginOneOff';  //
       this.baseInfoId = ''; // 清空Id
     } else if (flag === 'coupon') {
       this.isCouponVisible = false;
@@ -242,7 +242,6 @@ export class ActivityComponent implements OnInit {
           result = false;
         }
       } else if (this.radioValue === 'ChargeMargin') {
-        addMarginArr = [{ chargeThreshold: '', totalQuantity: '', perUserQuantity: '', actGiftNo: '' }];
         this.addMarginArr.forEach(item => {
           if (item.chargeThreshold === '') {
             this.modalService.error({ nzTitle: '提示', nzContent: '有充值额度约束未填写' });
@@ -408,8 +407,8 @@ export class ActivityComponent implements OnInit {
 
   // 点击上传
   handleUpload(baseInfoId): void {
-    const url = 'http://account-center-test.chewrobot.com/api/actrule/img';
-    const imageUrl = 'http://account-center-test.chewrobot.com';
+    const url = `${this.commonService.baseUrl}/actrule/img`;
+    const imageUrl = `${this.commonService.baseUrl}`;
     const flag = 'imageFile';
     // 文件数量不可超过1个，超过一个则提示
     if (this.fileList.length > 1) {
@@ -432,7 +431,7 @@ export class ActivityComponent implements OnInit {
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           this.imageUrl = JSON.parse(event.body.payload).relativeUri;
-          this.showImageUrl = imageUrl + this.imageUrl;
+          this.showImageUrl = imageUrl.substring(0, imageUrl.indexOf('/api')) + this.imageUrl;
           this.notification.success( '提示', '上传成功' );
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });

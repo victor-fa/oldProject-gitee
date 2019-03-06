@@ -8,6 +8,7 @@ import { IResponse } from '../model/response.model';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CookiesService } from './cookies.service';
 import { Router } from '@angular/router';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class UserService extends AppServiceBase {
     private _cookiesService: CookiesService,
     private router: Router,
     private notification: NzNotificationService,
+    public commonService: CommonService,
   ) {
     super(injector);
   }
@@ -38,11 +40,11 @@ export class UserService extends AppServiceBase {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize;
+      url = this.fullUrl(userApiUrls.users) + '/admin/list?pageSize=' + pageSize;
     } else if (flag === 'last') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&lastId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/admin/list?pageSize=' + pageSize + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&firstId=' + id;
+      url = this.fullUrl(userApiUrls.users) + '/admin/list?pageSize=' + pageSize + '&firstId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -61,13 +63,12 @@ export class UserService extends AppServiceBase {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId;
-    } else if (flag === 'last') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId + '&lastId=' + id;
+      url = `${this.fullUrl(userApiUrls.users)}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
     } else if (flag === 'first') {
-      url = this.fullUrl(userApiUrls.users) + '/list?pageSize=' + pageSize + '&type=' + type + '&infoId=' + infoId + '&firstId=' + id;
+      url = `${this.fullUrl(userApiUrls.users)}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
+    } else if (flag === 'last') {
+      url = `${this.fullUrl(userApiUrls.users)}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
     }
-    // const url = this.fullUrl(userApiUrls.users) + '?type=' + type + '&infoId=' + infoId;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -76,7 +77,7 @@ export class UserService extends AppServiceBase {
    * 查看用户详情
    */
   getUserInfo(id): Observable<IResponse<any>> {
-    const url = this.fullUrl(userApiUrls.userContact) + '?infoId=' + id;
+    const url = `${this.fullUrl(userApiUrls.userContact)}/admin?infoId=${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
@@ -88,7 +89,7 @@ export class UserService extends AppServiceBase {
    * 查看用户反馈
    */
   getFeedBackInfo(): Observable<IResponse<any>> {
-    const url = 'http://account-center-test.chewrobot.com/api/feedback/';
+    const url = `${this.commonService.baseUrl}/feedback/`;
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -97,7 +98,7 @@ export class UserService extends AppServiceBase {
    * 查看点踩
    */
   getOppositionInfo(): Observable<IResponse<any>> {
-    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate?estimate=false&page=0&pageSize=2000';
+    const url = `${this.commonService.baseUrl}/v2/estimate?estimate=false&page=0&pageSize=2000`;
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -106,7 +107,7 @@ export class UserService extends AppServiceBase {
    * 查看点赞
    */
   getAgreeInfo(): Observable<IResponse<any>> {
-    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate?estimate=true&page=0&pageSize=2000';
+    const url = `${this.commonService.baseUrl}/v2/estimate?estimate=true&page=0&pageSize=2000`;
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -116,7 +117,7 @@ export class UserService extends AppServiceBase {
    * @param infoId
    */
   updateUserInfo(infoId): Observable<IResponse<any>> {
-    const url = this.fullUrl(userApiUrls.users);
+    const url = this.fullUrl(userApiUrls.users) + '/admin';
     const body = `infoId=${infoId}`;
     this.setOption = {
       headers: new HttpHeaders({
@@ -130,8 +131,7 @@ export class UserService extends AppServiceBase {
 
   /** 发送伪验证码 */
   sendMsg(phone): Observable<IResponse<any>> {
-    // const url = 'http://lxwork.vipgz1.idcfengye.com/api/admin' + userApiUrls.sms;
-    const url = 'http://account-center-test.chewrobot.com/api/admin' + userApiUrls.sms;
+    const url = `${this.commonService.baseUrl}/admin${userApiUrls.sms}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': phone })
     };
@@ -154,8 +154,7 @@ export class UserService extends AppServiceBase {
       'status': 0
     };
 
-    // result.open('POST', 'http://lxwork.vipgz1.idcfengye.com/api/admin/token', true);
-    result.open('POST', 'http://account-center-test.chewrobot.com/api/admin/token', true);
+    result.open('POST', `${this.commonService.baseUrl}/admin/token`, true);
     result.setRequestHeader('Authorization', auth);
     result.setRequestHeader('Content-Type', 'application/json');
     result.send('');
@@ -201,7 +200,7 @@ export class UserService extends AppServiceBase {
       headers: head,
       responseType: 'blob'
     };
-    const url = 'http://account-center-test.chewrobot.com/api/v2/estimate/session?id=' + id + '&estimate=' + estimate;
+    const url = `${this.commonService.baseUrl}/v2/estimate/session?id=${id}&estimate=${estimate}`;
     return this.httpClient
       .get<Blob>(url, this.options);
   }

@@ -11,6 +11,13 @@ import { NzModalService } from 'ng-zorro-antd';
  * 公用的
  */
 export class CommonService {
+  baseUrl = 'http://account-center-test.chewrobot.com/api';  // 订票 用户测试 内容测试
+  // baseUrl = 'https://xiaowu.centaurstech.com/api';  // 订票 用户测试 内容测试
+  dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
+  // dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api';  // 数据中心正式【衡锐】
+  // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
+  taxiRouteUrl = 'http://account-center-test.chewrobot.com:41005/api';  // 打车路径测试【宇辉】
+  // taxiRouteUrl = 'https://xiaowu.centaurstech.com:41005/api';  // 打车路径正式【宇辉】
   list: string[] = [];
   isLeftNavClose = false;
   isCollapsed = false;

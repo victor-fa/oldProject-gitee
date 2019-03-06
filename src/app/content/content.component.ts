@@ -538,7 +538,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).thumbnail
         };
         this.fileList.push(file);
-        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/' + JSON.parse(res.payload).thumbnail;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/notices/thumbnails/${JSON.parse(res.payload).thumbnail}`;
       });
     } else if (flag === 'screen') {
       const id = data.id;
@@ -553,7 +553,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/start-page-ads/images/' + JSON.parse(res.payload).image;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/start-page-ads/images/${JSON.parse(res.payload).image}`;
       });
     } else if (flag === 'open') {
       const id = data.id;
@@ -568,7 +568,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/' + JSON.parse(res.payload).image;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/main-page-ads/images/JSON.parse(res.payload).image`;
       });
     } else if (flag === 'banner') {
       const id = data.id;
@@ -583,7 +583,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = 'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/' + JSON.parse(res.payload).image;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/JSON.parse(res.payload).image`;
       });
     }
   }
@@ -835,7 +835,7 @@ export class ContentComponent implements OnInit {
 
   // 获取地址
   doGetContentUrl(data) {
-    window.open('http://account-center-test.chewrobot.com/static/content-detail.html?id=' + data.id);
+    window.open(`${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/api'))}/static/content-detail.html?id=${data.id}`);
   }
 
   // 上传image
@@ -860,19 +860,19 @@ export class ContentComponent implements OnInit {
     let flag = '';
     switch (this.currentPanel) {
       case 'content':
-        url = 'http://account-center-test.chewrobot.com/api/cms/notices/thumbnails/';
+        url = `${this.commonService.baseUrl}/cms/notices/thumbnails/`;
         flag = 'thumbnail';
         break;
       case 'screen':
-        url = 'http://account-center-test.chewrobot.com/api/cms/start-page-ads/images/';
+        url = `${this.commonService.baseUrl}/cms/start-page-ads/images/`;
         flag = 'image';
         break;
       case 'open':
-        url = 'http://account-center-test.chewrobot.com/api/cms/main-page-ads/images/';
+        url = `${this.commonService.baseUrl}/cms/main-page-ads/images/`;
         flag = 'image';
         break;
       case 'banner':
-        url = 'http://account-center-test.chewrobot.com/api/cms/banner-ads/images/';
+        url = `${this.commonService.baseUrl}/cms/banner-ads/images/`;
         flag = 'image';
         break;
       default:
