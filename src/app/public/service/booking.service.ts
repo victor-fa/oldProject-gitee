@@ -5,6 +5,7 @@ import { AppServiceBase } from '../base/app-service.base';
 import { userApiUrls, bookingApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { CookiesService } from './cookies.service';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class BookingService extends AppServiceBase {
     private httpClient: HttpClient,
     private injector: Injector,
     private _cookiesService: CookiesService,
+    private commonService: CommonService,
   ) {
     super(injector);
   }
@@ -28,12 +30,13 @@ export class BookingService extends AppServiceBase {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = this.fullUrl(bookingApiUrls.orderList) + '/admin' + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId);
+      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}/admin`
+          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId);
     } else if (flag === 'last') {
-      url = this.fullUrl(bookingApiUrls.orderList) + '/admin'
+      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}/admin`
           + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = this.fullUrl(bookingApiUrls.orderList) + '/admin'
+      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}/admin`
           + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&firstId=' + id;
     }
     return this.httpClient
@@ -54,7 +57,7 @@ export class BookingService extends AppServiceBase {
 
   /** 获取订单详情 */
   getBookingDetail(orderType, orderId): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(bookingApiUrls.orderDetail)}/admin?orderType=${orderType}&orderId=${orderId}`;
+    const url = `${this.commonService.baseUrl}${bookingApiUrls.orderDetail}/admin?orderType=${orderType}&orderId=${orderId}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
@@ -64,7 +67,7 @@ export class BookingService extends AppServiceBase {
 
   /** 更新订单状态 */
   updateBookingInfo(updateType, orderId): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(bookingApiUrls.orderDetail)}/admin`;
+    const url = `${this.commonService.baseUrl}${bookingApiUrls.orderDetail}/admin`;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };

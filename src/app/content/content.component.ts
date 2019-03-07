@@ -835,6 +835,7 @@ export class ContentComponent implements OnInit {
 
   // 获取地址
   doGetContentUrl(data) {
+    // tslint:disable-next-line:max-line-length
     window.open(`${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/api'))}/static/content-detail.html?id=${data.id}`);
   }
 

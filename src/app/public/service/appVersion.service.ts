@@ -23,7 +23,7 @@ export class AppversionService extends AppServiceBase {
 
   /** 获取APP版本 */
   getAppversionList(searchItem): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}?app-channel-id=${searchItem}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}?app-channel-id=${searchItem}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -47,21 +47,21 @@ export class AppversionService extends AppServiceBase {
 
   /** 获取操作系统 */
   getSystemSymbolList(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}/system_symbol`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/system_symbol`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取渠道 */
   getChannelList(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(appVersionApiUrls.appVersionList)}/channel`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/channel`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取打车路径列表 */
   getTaxiList(data): Observable<IResponse<any>> {
-    const url = this.fullTaxiRouteUrl(appVersionApiUrls.taxiList)
+    const url = `${this.commonService.taxiRouteUrl}${appVersionApiUrls.taxiList}`
     + (data.orderId ? '?orderId=' + data.orderId : '')
     + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
     + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');

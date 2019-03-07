@@ -23,7 +23,7 @@ export class ScreenService extends AppServiceBase {
 
   /** 获取所有内容列表 */
   getScreenList(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(cmsApiUrls.screenList)}`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

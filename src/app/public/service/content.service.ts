@@ -23,7 +23,7 @@ export class ContentService extends AppServiceBase {
 
   /** 获取所有内容列表 */
   getContentList(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(cmsApiUrls.contentList)}`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

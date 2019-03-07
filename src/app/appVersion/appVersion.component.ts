@@ -169,19 +169,6 @@ export class AppVersionComponent implements OnInit {
           mainPoints = this.dataTaxi[i].path.points;
         }
       }
-      // mainPoints = [
-      //   '22.529970703125,113.95009521484',
-      //   '22.529969346788,113.95010199653',
-      //   '22.529686414931,113.94993489583',
-      //   '22.529541286892,113.94940104167',
-      //   '22.529588216146,113.94827582465',
-      //   '22.529588216146,113.9482679579',
-      //   '22.528731282552,113.94793646918',
-      //   '22.528059353299,113.94797851562',
-      //   '22.527355957031,113.94803466797',
-      //   '22.527105577257,113.94755533854',
-      //   '22.527065,113.947008'
-      // ];
       // 基本地图加载
       mainMap = new AMap.Map('container', {
         resizeEnable: true
@@ -200,19 +187,6 @@ export class AppVersionComponent implements OnInit {
             points = this.dataTaxi[i].path.points;
           }
         }
-        // points = [
-        //   '22.529970703125,113.95009521484',
-        //   '22.529969346788,113.95010199653',
-        //   '22.529686414931,113.94993489583',
-        //   '22.529541286892,113.94940104167',
-        //   '22.529588216146,113.94827582465',
-        //   '22.529588216146,113.9482679579',
-        //   '22.528731282552,113.94793646918',
-        //   '22.528059353299,113.94797851562',
-        //   '22.527355957031,113.94803466797',
-        //   '22.527105577257,113.94755533854',
-        //   '22.527065,113.947008'
-        // ];
         // 基本地图加载
         map = new AMap.Map('container', {
           resizeEnable: true
@@ -255,32 +229,32 @@ export class AppVersionComponent implements OnInit {
   verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'content') {
-      if (this.addContentForm.controls['version'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '版本未填写' });
+      if (this.addContentForm.controls['channel'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '渠道未选择' });
+        result = false;
+      } else if (this.addContentForm.controls['system_symbol'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '系统类型未选择' });
         result = false;
       } else if (this.addContentForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '标题未选择' });
         result = false;
-      } else if (this.addContentForm.controls['description'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '描述未填写' });
+      } else if (this.addContentForm.controls['sub_title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '副标题未填写' });
         result = false;
-      } else if (this.addContentForm.controls['size'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '大小未填写' });
-        result = false;
-      } else if (this.addContentForm.controls['file'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '文件地址未填写' });
-        result = false;
-      } else if (this.addContentForm.controls['system_symbol'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '操作系统未选择' });
+      } else if (this.addContentForm.controls['version'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '版本未填写' });
         result = false;
       } else if (this.addContentForm.controls['version_allowed'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '允许的最低版本未填写' });
         result = false;
-      } else if (this.addContentForm.controls['sub_title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '副标题未填写' });
+      } else if (this.addContentForm.controls['file'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '下载链接未填写' });
         result = false;
-      } else if (this.addContentForm.controls['channel'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '渠道未选择' });
+      } else if (this.addContentForm.controls['size'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '文件大小未填写' });
+        result = false;
+      } else if (this.addContentForm.controls['description'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '更新详情未填写' });
         result = false;
       }
     }

@@ -23,7 +23,7 @@ export class OpenService extends AppServiceBase {
 
   /** 获取所有内容列表 */
   getOpenList(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(cmsApiUrls.openList)}`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.openList}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

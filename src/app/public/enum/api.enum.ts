@@ -65,3 +65,9 @@ export enum dataCenterApiUrls {
   /** 获取全部内容 */
   dataCenterList = '/dataCenter',
 }
+
+/** 运营模块 */
+export enum operateApiUrls {
+  /** 重置送豆 */
+  xiaowubeanList = '/v1/wallet/promotions',
+}

@@ -7,6 +7,7 @@ import { userApiUrls } from '../enum/api.enum';
 import { IAccountListItemOutput, LoginItemInput, IRolesItemInput,
   IRolesItemOutput, AddRolesItem, AddCustomerItem, CustomerItem, LoginItemOutput } from '../model/account.model';
 import { environment } from 'src/environments/environment';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AccountService extends AppServiceBase {
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
+    private commonService: CommonService,
   ) {
     super(injector);
   }
@@ -32,7 +34,7 @@ export class AccountService extends AppServiceBase {
       department = customerItem.department ? customerItem.department : '';
       role = customerItem.role ? customerItem.role : '';
     }
-    const url = this.fullUrl(userApiUrls.users) + '/admin' + (userName ? '?userName=' + userName : '')
+    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin` + (userName ? '?userName=' + userName : '')
         + (nick ? (userName ? '&nick=' : '?nick=') + nick : '')
         + (department ? (userName || nick ? '&department=' : '?department=') + department : '')
         + (role ? (userName || nick || department ? '&roleId=' : '?roleId=') + role : '');
@@ -42,7 +44,7 @@ export class AccountService extends AppServiceBase {
 
   /** 登录账号 */
   login(login: LoginItemInput): Observable<IResponse<LoginItemOutput>> {
-    const url = `${this.fullUrl(userApiUrls.login)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.login}/admin`;
     const body = `userName=${login.userName}&password=${login.password}`;
     return this.httpClient
       .post<IResponse<LoginItemOutput>>(url, body, this.options);
@@ -50,14 +52,14 @@ export class AccountService extends AppServiceBase {
 
   /** 获取加密用的盐 */
   getPublicSalt(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(userApiUrls.publicSalt)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.publicSalt}/admin`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 新增员工 */
   addCustomer(customer: AddCustomerItem): Observable<IResponse<IAccountListItemOutput[]>> {
-    const url = `${this.fullUrl(userApiUrls.register)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.register}/admin`;
     // tslint:disable-next-line:max-line-length
     const body = `userName=${customer.userName}&password=${customer.password}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
     return this.httpClient
@@ -67,7 +69,7 @@ export class AccountService extends AppServiceBase {
   /** 修改员工 */
   modifyCustomer(id: string, customer: AddCustomerItem): Observable<IResponse<IAccountListItemOutput[]>> {
     let body = '';
-    const url = `${this.fullUrl(userApiUrls.users)}/admin${id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${id}`;
     if (customer.password === undefined) {
       // tslint:disable-next-line:max-line-length
       body = `userName=${customer.userName}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
@@ -81,14 +83,14 @@ export class AccountService extends AppServiceBase {
 
   /** 删除员工 */
   deleteCustomer(id: string): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(userApiUrls.users)}/admin${id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${id}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
   /** 登出当前账号 */
   logout() {
-    const url = `${this.fullUrl(userApiUrls.logout)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.logout}/admin`;
     return this.httpClient
       .post<IResponse<IAccountListItemOutput[]>>(url, this.options);
   }
@@ -99,7 +101,7 @@ export class AccountService extends AppServiceBase {
     if (role) {
       name = role.name ? role.name : '';
     }
-    const url = this.fullUrl(userApiUrls.roles) + '/admin' + (name ? '?name=' + name : '');
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin` + (name ? '?name=' + name : '');
     return this.httpClient
       .get<IResponse<IRolesItemOutput[]>>(url, this.options);
   }
@@ -107,7 +109,7 @@ export class AccountService extends AppServiceBase {
   /** 新增角色 */
   addRoles(role: AddRolesItem): Observable<IResponse<IRolesItemOutput[]>> {
     // tslint:disable-next-line:max-line-length
-    const url = `${this.fullUrl(userApiUrls.roles)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin`;
     const body = `name=${role.name}&description=${role.description}&permissions=${role.permissions}`;
     return this.httpClient
       .post<IResponse<IRolesItemOutput[]>>(url, body, this.options);
@@ -115,7 +117,7 @@ export class AccountService extends AppServiceBase {
 
   /** 修改角色 */
   modifyRole(id: string, customer: AddRolesItem): Observable<IResponse<IRolesItemOutput[]>> {
-    const url = `${this.fullUrl(userApiUrls.roles)}/admin${id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${id}`;
     const body = `name=${customer.name}&description=${customer.description}&permissions=${customer.permissions}`;
     return this.httpClient
       .post<IResponse<IRolesItemOutput[]>>(url, body, this.options);
@@ -123,14 +125,14 @@ export class AccountService extends AppServiceBase {
 
   /** 删除角色 */
   deleteRole(id: string): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(userApiUrls.roles)}/admin${id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${id}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
   /* 获取部门下拉 */
   getdepartments(): Observable<IResponse<any>> {
-    const url = `${this.fullUrl(userApiUrls.departments)}/admin`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.departments}/admin`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

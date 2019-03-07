@@ -22,10 +22,9 @@ export class ActivityService extends AppServiceBase {
 
   /** 获取APP版本 */
   getActivityList(data): Observable<IResponse<any>> {
-    const url = this.fullUrl(activityApiUrls.activityList)
-    + '/list?page=0&pageSize=10'
+    const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/list?page=0&pageSize=10`
     + (data.actName ? '&actName=' + data.actName : '')
-    + (data.status ? '&status=' + data.status : '');
+    + (data.actStatus ? '&actStatus=' + data.actStatus : '');
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -65,7 +64,7 @@ export class ActivityService extends AppServiceBase {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .put<IResponse<any>>(url, data, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 保存单个活动 */
@@ -75,11 +74,21 @@ export class ActivityService extends AppServiceBase {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .post<IResponse<any>>(url, data, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 添加单个红包到活动 */
   addCoupon(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 修改单个红包到活动 */
+  updateCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

@@ -23,7 +23,7 @@ export class CouponService extends AppServiceBase {
 
   /** 获取所有优惠券列表 */
   getCouponList(searchItem): Observable<IResponse<any>> {
-    const url = this.fullUrl(cmsApiUrls.couponList) + '/list'
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/list`
     + '?page=0&pageSize=10'
     + (searchItem.couponName ? '&couponName=' + searchItem.couponName : '')
     + (searchItem.discountType ? '&discountType=' + searchItem.discountType : '')
@@ -55,7 +55,7 @@ export class CouponService extends AppServiceBase {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .put<IResponse<any>>(url, data, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改单个 */
@@ -65,7 +65,7 @@ export class CouponService extends AppServiceBase {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .post<IResponse<any>>(url, data, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改启用状态 */

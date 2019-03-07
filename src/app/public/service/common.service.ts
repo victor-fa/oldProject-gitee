@@ -18,6 +18,8 @@ export class CommonService {
   // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
   taxiRouteUrl = 'http://account-center-test.chewrobot.com:41005/api';  // 打车路径测试【宇辉】
   // taxiRouteUrl = 'https://xiaowu.centaurstech.com:41005/api';  // 打车路径正式【宇辉】
+  tempHengRuiUrl = 'http://hrygddv2.vipgz1.idcfengye.com/api';  // 调试充值送豆的url
+
   list: string[] = [];
   isLeftNavClose = false;
   isCollapsed = false;

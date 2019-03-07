@@ -21,7 +21,7 @@
 ## 正式服务器
 >https://xiaowu.centaurstech.com
 
-## 服务器路径
+## sz2上具体的服务器路径
 >/usr/share/nginx/html/acmt-front
 
 ## 备注
@@ -30,4 +30,8 @@
 > 正式环境下，除了数据中心访问的是http，其他都是https
 
 ## 正式环境地址与测试环境地址区分方式
+> 红色区域中，未被注释的是测试环境，已被注释的是正式环境
+
+> 目前测试环境以及正式环境的后台都放置在sz2服务器上，具体看'sz2上具体的服务器路径'
+
 > ![区别](https://gitlab.com/yiwangcentaurs/account-center-manager/raw/stormfa/src/assets/images/%E5%8C%BA%E5%88%AB%E6%AD%A3%E5%BC%8F%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83.png "")
