@@ -58,6 +58,8 @@ export enum appVersionApiUrls {
 export enum activityApiUrls {
   /** 活动管理 */
   activityList = '/actrule',
+  /** 发放管理 */
+  batchsendList = '/pushrule',
 }
 
 /** 数据中心模块 */

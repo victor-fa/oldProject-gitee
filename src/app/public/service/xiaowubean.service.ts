@@ -22,7 +22,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 获取所有列表 */
   getXiaowubeanList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.tempHengRuiUrl}${operateApiUrls.xiaowubeanList}`
+    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}`
       + '?a=1' + (data.title ? '&title=' + data.title : '')
       + (data.beginTime ? '&beginTime=' + data.beginTime : '')
       + (data.endTime ? '&endTime=' + data.endTime : '');
@@ -32,14 +32,14 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 获取单个 */
   getXiaowubean(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.tempHengRuiUrl}${operateApiUrls.xiaowubeanList}/${id}`;
+    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}/${id}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 添加单个 */
   addXiaowubean(data, flag): Observable<IResponse<any>> {
-    const url = `${this.commonService.tempHengRuiUrl}${operateApiUrls.xiaowubeanList}`;
+    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
       // tslint:disable-next-line:max-line-length
@@ -57,7 +57,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 修改单个 */
   updateXiaowubean(data, flag): Observable<IResponse<any>> {
-    const url = `${this.commonService.tempHengRuiUrl}${operateApiUrls.xiaowubeanList}/${data.id}`;
+    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}/${data.id}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
       // tslint:disable-next-line:max-line-length

@@ -19,9 +19,7 @@ registerLocaleData(zh);
 export class AppVersionComponent implements OnInit {
 
   isAddContentVisible = false;
-  isTaxiDetailVisible = false;
   searchContentForm: FormGroup;
-  searchTaxiForm: FormGroup;
   addContentForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
@@ -32,14 +30,6 @@ export class AppVersionComponent implements OnInit {
   dataContent = []; // 内容
   dataSystemSymbo = []; // 操作系统
   dataChannel = []; // 渠道
-  dataTaxi = [];  // 打车路径
-  currentTaxi = {  // 当前打车路径
-    // tslint:disable-next-line:max-line-length
-    'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'aggregateAmount': ''
-  };
-  taxiItem = {
-    'orderId': '', 'startTime': '', 'endTime': ''
-  };
   beginDate = '';
   endDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
@@ -57,18 +47,13 @@ export class AppVersionComponent implements OnInit {
   ) {
     this.commonService.nav[0].active = true;
     this._initSearchContentForm();
-    this._initSearchTaxiForm();
     this._initAddContentForm();
-    this.timerList = setInterval(() => {
-      this.loadData('taxi');
-    }, 15000);
   }
 
   ngOnInit() {
     this.loadData('content');
     this.loadData('system');
     this.loadData('channel');
-    this.loadData('taxi');
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
@@ -108,27 +93,12 @@ export class AppVersionComponent implements OnInit {
         arrChannel.push(JSON.parse(res.payload).LENZE);
         this.dataChannel = arrChannel;
       });
-    } else if (flag === 'taxi') {
-      this.taxiItem.orderId = this.searchTaxiForm.controls['orderId'].value;
-      this.taxiItem.startTime = this.beginDate;
-      this.taxiItem.endTime = this.endDate;
-      this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
-        this.dataTaxi = JSON.parse(res.payload);
-        // this.dataTaxi = [{}];
-      });
     }
   }
 
   private _initSearchContentForm(): void {
     this.searchContentForm = this.fb.group({
       channel: [''],
-    });
-  }
-
-  private _initSearchTaxiForm(): void {
-    this.searchTaxiForm = this.fb.group({
-      orderId: [''],
-      date: ['']
     });
   }
 
@@ -155,49 +125,6 @@ export class AppVersionComponent implements OnInit {
           // tslint:disable-next-line:max-line-length
           'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'channel': '', 'dataContent': ''
         };
-    } else if (flag === 'taxi') {
-      this.isTaxiDetailVisible = true;
-      this.currentTaxi = data;
-      if (this.timerList) {
-        clearInterval(this.timerList);
-      }
-      this.loadData('taxi');
-      let mainMap, mainRoute;
-      let mainPoints = [];
-      for (let i = 0; i < this.dataTaxi.length; i++) {
-        if (this.dataTaxi[i].orderId === data.orderId) {
-          mainPoints = this.dataTaxi[i].path.points;
-        }
-      }
-      // 基本地图加载
-      mainMap = new AMap.Map('container', {
-        resizeEnable: true
-      });
-      // 绘制初始路径
-      const mainPath = this.getPointRoute(mainPoints);
-      mainMap.plugin('AMap.DragRoute', function() {
-        mainRoute = new AMap.DragRoute(mainMap, mainPath, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
-        mainRoute.search(); // 查询导航路径并开启拖拽导航
-      });
-      this.timerDetail = setInterval(() => {
-        let map, route;
-        let points = [];
-        for (let i = 0; i < this.dataTaxi.length; i++) {
-          if (this.dataTaxi[i].orderId === data.orderId) {
-            points = this.dataTaxi[i].path.points;
-          }
-        }
-        // 基本地图加载
-        map = new AMap.Map('container', {
-          resizeEnable: true
-        });
-        // 绘制初始路径
-        const path = this.getPointRoute(points);
-        map.plugin('AMap.DragRoute', function() {
-          route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
-          route.search(); // 查询导航路径并开启拖拽导航
-        });
-      }, 15000);
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
   }
@@ -214,14 +141,6 @@ export class AppVersionComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = false;
-    } else if (flag === 'taxi') {
-      this.isTaxiDetailVisible = false;
-      if (this.timerDetail) {
-        clearInterval(this.timerDetail);
-      }
-      this.timerList = setInterval(() => {
-        this.loadData('taxi');
-      }, 15000);
     }
   }
 

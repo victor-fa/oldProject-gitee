@@ -58,7 +58,7 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private notification: NzNotificationService,
   ) {
-    this.commonService.nav[2].active = true;
+    this.commonService.nav[3].active = true;
     this._initSearchForm();
     this._initSendMsgForm();
   }

@@ -7,10 +7,12 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   // { path: 'account', loadChildren: './account/account.module#AccountModule'}, // , canActivate: [LoginGuard]
   { path: 'appVersion', loadChildren: './appVersion/appVersion.module#AppVersionModule'}, // , canActivate: [LoginGuard]
+  { path: 'taximonitor', loadChildren: './taximonitor/taximonitor.module#TaximonitorModule'}, // , canActivate: [LoginGuard]
   { path: 'booking', loadChildren: './booking/booking.module#BookingModule'}, // , canActivate: [LoginGuard]
   { path: 'user', loadChildren: './user/user.module#UserModule'}, // , canActivate: [LoginGuard]
   { path: 'content', loadChildren: './content/content.module#ContentModule'}, // , canActivate: [LoginGuard]
   { path: 'preview', loadChildren: './preview/preview.module#PreviewModule'}, // , canActivate: [LoginGuard]
+  { path: 'batchsend', loadChildren: './batchsend/batchsend.module#BatchsendModule'}, // , canActivate: [LoginGuard]
   { path: 'operate', loadChildren: './operate/operate.module#OperateModule'}, // , canActivate: [LoginGuard]
   { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'}, // , canActivate: [LoginGuard]
   { path: 'coupon', loadChildren: './coupon/coupon.module#CouponModule'}, // , canActivate: [LoginGuard]

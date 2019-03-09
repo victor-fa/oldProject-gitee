@@ -66,7 +66,7 @@ export class CouponComponent implements OnInit {
     private datePipe: DatePipe,
     private http: HttpClient,
   ) {
-    this.commonService.nav[4].active = true;
+    this.commonService.nav[5].active = true;
     this._initSearchCouponForm();
     this._initAddCouponForm();
     this._initModifyCouponForm();

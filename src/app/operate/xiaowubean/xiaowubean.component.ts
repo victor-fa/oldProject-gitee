@@ -27,8 +27,8 @@ export class XiaowubeanComponent implements OnInit {
   addBeanForm: FormGroup;
   searchBeanForm: FormGroup;
   modifyBeanForm: FormGroup;
-  beginDate = '';
-  endDate = '';
+  beginDate = null;
+  endDate = null;
   radioValue = 'PERCENT_GIFT';  // 单选
 
   constructor(
@@ -120,8 +120,8 @@ export class XiaowubeanComponent implements OnInit {
         'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '',
          'giftPercent': 0, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: ''
       };
-      this.beginDate = '';  // 重置日期
-      this.endDate = '';
+      this.beginDate = null;  // 重置日期
+      this.endDate = null;
       this.radioValue = 'PERCENT_GIFT'; // 重置单选
       this.isAddBeanVisible = true;
     } else if (flag === 'modifyBean') {
@@ -140,8 +140,12 @@ export class XiaowubeanComponent implements OnInit {
 
   hideModal(flag) {
     if (flag === 'addBean') {
+      this.beginDate = null;  // 重置日期
+      this.endDate = null;
       this.isAddBeanVisible = false;
     } else if (flag === 'modifyBean') {
+      this.beginDate = null;  // 重置日期
+      this.endDate = null;
       this.isModifyBeanVisible = false;
     } else if (flag === 'searchBean') {
       this.isSearchBeanVisible = false;
@@ -150,7 +154,7 @@ export class XiaowubeanComponent implements OnInit {
 
   // 封装验证新增
   verification(flag): boolean {
-    let result = true;
+    const result = true;
     // if (flag === 'activity') {
     //   if (this.radioValue === 'LoginOneOff' || this.radioValue === 'LoginDaily') {
     //     if (this.addBeanForm.controls['totalQuantity'].value === '') {

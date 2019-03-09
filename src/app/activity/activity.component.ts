@@ -64,7 +64,7 @@ export class ActivityComponent implements OnInit {
     private datePipe: DatePipe,
     private http: HttpClient,
   ) {
-    this.commonService.nav[5].active = true;
+    this.commonService.nav[6].active = true;
     this._initSearchActivityForm();
     this._initSearchCouponForm();
     this._initAddActivityForm();

@@ -20,7 +20,7 @@ export class ActivityService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取APP版本 */
+  /** 获取活动列表 */
   getActivityList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/list?page=0&pageSize=10`
     + (data.actName ? '&actName=' + data.actName : '')

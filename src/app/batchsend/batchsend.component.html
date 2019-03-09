@@ -1,0 +1,183 @@
+<app-left-nav></app-left-nav>
+<div class="batchsend" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab nzTitle="批量发放">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="7" class="span_down">
+              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
+            </div>
+            <div nz-col nzSpan="11"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('batchsend')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('batchsend', '')"><i class="anticon anticon-file-add"></i>新增发放</button>
+            </div>
+          </div>
+          <nz-table #batchsendTable [nzData]="dataBatchsend">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">发放日期</th>
+                <th nzWidth="20px">发放时间</th>
+                <th nzWidth="20px">发放人数</th>
+                <th nzWidth="20px">失败人数</th>
+                <th nzWidth="20px">优惠券数量</th>
+                <th nzWidth="20px">附带消息</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of batchsendTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.sendTime | date:'yyyy-MM-dd' }}</td>
+                <td>{{data.sendTime | date:'HH:mm:ss' }}</td>
+                <td>{{data.invalidRevL ? data.invalidRevL.length : 0}}</td>
+                <td>{{data.errorRevL ? data.errorRevL.length : 0}}</td>
+                <td>{{data.totalRevNum}}</td>
+                <td>{{data.displayMessage}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('detail', data)" style="margin-right: 10px;"><i
+                      class="anticon anticon-eye"></i>查看</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <!-- 弹框 —— 新增 —— 新增内容 -->
+          <nz-modal [(nzVisible)]="isAddBatchsendVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" nzClosable="false" (nzOnCancel)="hideModal('addBatchsend')">
+            <form [formGroup]="addBatchsendForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="20" style="color: #a9a9a9">
+                  请填写发送的用户id（手机号码），如果需要发送多个，请换行输入<br>单次发送人数上限：10000（如果需要调整，请通知产品）
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="24">
+                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">附带消息</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="20" style="color: #a9a9a9">
+                  一般适用于奖励/补偿用户，附带的信息<br>限制字数500
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="24">
+                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="这里是要写给用户的话，字数限制xxx个" nzSize="default"></textarea>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down" style="font-size: 20px;font-weight: bold;">发送奖励配置</div>
+                <div nz-col nzSpan="17">
+                </div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('addCoupon', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
+                </div>
+              </div>
+  
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="24">
+                  <nz-table #couponTable [nzData]="dataSearchCoupon">
+                    <thead>
+                      <tr>
+                        <th [attr.rowspan]="2">红包组编号</th>
+                        <th>序号</th>
+                        <th>优惠券编号</th>
+                        <th>优惠券名称</th>
+                        <th>优惠券类型</th>
+                        <th>时间限制</th>
+                        <th>数量限制</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of couponTable.data; let i=index;">
+                        <td>{{i === 0 ? item.actGiftNo : ''}}</td>
+                        <td>{{i+1}}</td>
+                        <td>{{data.couponRulePo.couponNo}}</td>
+                        <td>{{data.couponRulePo.couponName}}</td>
+                        <td>{{data.couponRulePo.couponCategory === 'all' ? '全品类' : data.couponRulePo.couponCategory === 'flight' ? '订机票' : data.couponRulePo.couponCategory === 'hotel' ? '订酒店' : data.couponRulePo.couponCategory === 'train' ? '订火车' : data.couponRulePo.couponCategory === 'taxi' ? '打车' : ''}}</td>
+                        <td *ngIf="data.couponRulePo.timeLimitType === 'fix_start_end'">{{data.couponRulePo.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.couponRulePo.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
+                        <td *ngIf="data.couponRulePo.timeLimitType === 'fix_duration'">{{data.couponRulePo.timeLimitValidDay}}</td>
+                        <td *ngIf="!(data.couponRulePo.timeLimitType === 'fix_start_end' || data.couponRulePo.timeLimitType === 'fix_duration')"></td>
+                        <td>{{data.quantity}}</td>
+                        <td *ngIf="i === 0">
+                          <button nz-button nzType="primary" (click)="showModal('modifyCoupon', item)"><i class="anticon anticon-form"></i>配置红包</button>
+                          <button nz-button nzType="primary" (click)="doDelete(item.actGiftNo, 'couponList')"><i class="anticon anticon-delete"></i>删除</button>
+                        </td>
+                        <td *ngIf="i > 0"></td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                </div>
+              </div>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #addBatchsendModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('batchsend')">保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addBatchsend')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 查看 —— 查看发放情况 -->
+          <nz-modal [(nzVisible)]="isDetailBatchsendVisible" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" nzClosable="false" (nzOnCancel)="hideModal('detailBatchsend')">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="5" class="span_down">发放日期：<br>{{batchsendDate.sendTime | date:'yyyy-MM-dd'}}</div>
+              <div nz-col nzSpan="5" class="span_down">发放时间：<br>{{batchsendDate.sendTime | date:'HH:mm:ss'}}</div>
+              <div nz-col nzSpan="5" class="span_down">发放人数：<br>{{batchsendDate.totalRevNum}}</div>
+              <div nz-col nzSpan="5" class="span_down">失败人数：<br>{{batchsendDate.errorRevL.length}}</div>
+              <div nz-col nzSpan="2"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="11" class="spthumbnailan_down">发送成功（总计x个）</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="11" class="spthumbnailan_down">奖励配置</div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="11">
+                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.successRevL" [disabled]="true" placeholder="请输入发送成功" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="11">
+                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="请输入奖励配置" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="11" class="spthumbnailan_down">失败对象(总计y个)</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="11" class="spthumbnailan_down">附带消息</div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="11">
+                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.errorRevL" [disabled]="true" placeholder="请输入失败对象" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="11">
+                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.displayMessage" [disabled]="true" placeholder="请输入附带消息" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <!-- 弹框和底部定制 -->
+            <ng-template #modifyBatchsendModalFooter>
+              <button nz-button nzType="default" (click)="hideModal('detailBatchsend')">关闭</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>
