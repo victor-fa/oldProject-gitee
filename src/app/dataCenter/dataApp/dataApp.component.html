@@ -40,16 +40,16 @@
       <td nzWidth="100px">{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
       <td nzWidth="100px">{{data.dailyActiveUsers}}</td>
       <td nzWidth="100px">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
-      <td nzWidth="100px">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.flightChangePrice ? data.flightChangePrice + data.trainChangePrice + data.hotelChangePrice : 'null'}}</td>
-      <td nzWidth="100px">{{data.flightOrderCheckout ? data.flightOrderCheckout : 'null'}}</td>
-      <td nzWidth="100px">{{data.trainOrderCheckout ? data.trainOrderCheckout : 'null'}}</td>
-      <td nzWidth="100px">{{data.hotelOrderCheckout ? data.hotelOrderCheckout : 'null'}}</td>
-      <td nzWidth="100px">{{data.taxiOrderCheckout ? data.taxiOrderCheckout : 'null'}}</td>
-      <td nzWidth="100px">{{data.flightTurnover ? data.flightTurnover : 'null'}}</td>
-      <td nzWidth="100px">{{data.trainTurnover ? data.trainTurnover : 'null'}}</td>
-      <td nzWidth="100px">{{data.hotelTurnover ? data.hotelTurnover : 'null'}}</td>
-      <td nzWidth="100px">{{data.taxiTurnover ? data.taxiTurnover : 'null'}}</td>
+      <td nzWidth="100px">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout + data.taxiOrderCheckout}}</td>
+      <td nzWidth="100px">{{data.flightTurnover + data.trainTurnover + data.hotelTurnover + data.taxiTurnover}}</td>
+      <td nzWidth="100px">{{data.flightOrderCheckout ? data.flightOrderCheckout : data.flightOrderCheckout === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.trainOrderCheckout ? data.trainOrderCheckout : data.trainOrderCheckout === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.hotelOrderCheckout ? data.hotelOrderCheckout : data.hotelOrderCheckout === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.taxiOrderCheckout ? data.taxiOrderCheckout : data.taxiOrderCheckout === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.flightTurnover ? data.flightTurnover : data.flightTurnover === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.trainTurnover ? data.trainTurnover : data.trainTurnover === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.hotelTurnover ? data.hotelTurnover : data.hotelTurnover === 0 ? 0 : 'null'}}</td>
+      <td nzWidth="100px">{{data.taxiTurnover ? data.taxiTurnover : data.taxiTurnover === 0 ? 0 : 'null'}}</td>
     </tr>
   </tbody>
 </nz-table>

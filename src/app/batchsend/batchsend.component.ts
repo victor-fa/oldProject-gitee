@@ -6,6 +6,8 @@ import { NzMessageService, NzModalService, NzNotificationService } from 'ng-zorr
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { LocalizationService } from '../public/service/localization.service';
 import { BatchsendService } from '../public/service/batchsend.service';
+import { CouponService } from '../public/service/coupon.service';
+import { ActivityService } from '../public/service/activity.service';
 
 registerLocaleData(zh);
 
@@ -20,19 +22,23 @@ export class BatchsendComponent implements OnInit {
   isDetailBatchsendVisible = false;
   isCouponVisible = false;
   addBatchsendForm: FormGroup;
+  searchCouponForm: FormGroup;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = '';
   endDate = '';
-  beginCouponDate = ''; // 红包日期选择
-  endCouponDate = '';
+  beginCouponDate = null; // 红包日期选择
+  endCouponDate = null;
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
+  allSearchCouponChecked = false; // 用于table多选
+  indeterminate = false; // 用于table多选
   batchsendDate = {
     // tslint:disable-next-line:max-line-length
-    'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': ''
+    'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
   };
   dataSearchCoupon = [];
   dataBatchsend = []; // 内容
+  couponListArr = []; // 最底部的活动奖励配置数组
 
   constructor(
     private fb: FormBuilder,
@@ -41,11 +47,14 @@ export class BatchsendComponent implements OnInit {
     private modalService: NzModalService,
     public localizationService: LocalizationService,
     private batchsendService: BatchsendService,
+    private couponService: CouponService,
+    private activityService: ActivityService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
   ) {
     this.commonService.nav[7].active = true;
     this._initAddBatchsendForm();
+    this._initSearchCouponForm();
   }
 
   ngOnInit() {
@@ -63,42 +72,45 @@ export class BatchsendComponent implements OnInit {
         if (this.dataBatchsend.length > 0) {
           this.dataBatchsend.forEach(item => {
             // tslint:disable-next-line:max-line-length
-            item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0)
+            item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
           });
         }
-        console.log(this.dataBatchsend);
       });
     } else if (flag === 'coupon') {
-      // if (this.beginCouponDate === null) {
-      //   this.beginCouponDate = this.commonService.getDayWithAcross(-7);
-      //   this.endCouponDate = this.commonService.getDayWithAcross(-1);
-      // }
-      // const searchCouponItem = {
-      //   couponName: encodeURI(this.searchCouponForm.controls['couponName'].value),
-      //   discountType: this.searchCouponForm.controls['discountType'].value,
-      //   couponCategory: this.searchCouponForm.controls['couponCategory'].value,
-      //   ctimeStart: this.beginCouponDate + 'T00:00:00.000Z',
-      //   ctimeEnd: this.endCouponDate + 'T23:59:59.999Z',
-      // };
-      // this.couponService.getCouponList(searchCouponItem).subscribe(res => {
-      //   if (res.payload === '') {
-      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      //     return;
-      //   }
-      //   this.dataSearchCoupon = JSON.parse(res.payload);
-      // });
+      if (this.beginCouponDate === null) {
+        this.beginCouponDate = this.commonService.getDayWithAcross(-7);
+        this.endCouponDate = this.commonService.getDayWithAcross(-1);
+      }
+      const searchCouponItem = {
+        couponName: encodeURI(this.searchCouponForm.controls['couponName'].value),
+        discountType: this.searchCouponForm.controls['discountType'].value,
+        couponCategory: this.searchCouponForm.controls['couponCategory'].value,
+        ctimeStart: this.beginCouponDate + 'T00:00:00.000Z',
+        ctimeEnd: this.endCouponDate + 'T23:59:59.999Z',
+      };
+      this.couponService.getCouponList(searchCouponItem).subscribe(res => {
+        if (res.payload === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+          return;
+        }
+        this.dataSearchCoupon = JSON.parse(res.payload);
+      });
     }
   }
 
   private _initAddBatchsendForm(): void {
     this.addBatchsendForm = this.fb.group({
-      title: [''],
-      type: [''],
-      url: [''],
-      abstractContent: [''],
-      content: [''],
-      publishTime: [''],
-      pseudonym: [''],
+      pendingRevL: [''],
+      displayMessage: [''],
+    });
+  }
+
+  private _initSearchCouponForm(): void {
+    this.searchCouponForm = this.fb.group({
+      couponName: [''],
+      discountType: [''],
+      couponCategory: [''],
+      date: [''],
     });
   }
 
@@ -107,29 +119,39 @@ export class BatchsendComponent implements OnInit {
     if (flag === 'batchsend') {
       this.batchsendDate = {  // 清空
         // tslint:disable-next-line:max-line-length
-        'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': ''
+        'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
       };
       this.loadData('coupon');
       this.isAddBatchsendVisible = true;
     } else if (flag === 'detail') {
       this.batchsendDate = data;
+      if (this.batchsendDate.actCouponRulePoL) {
+        const tempArr = [];
+        this.batchsendDate.actCouponRulePoL.forEach((item, i) => {
+          tempArr.push(item.couponRulePo.couponName);
+        });
+        this.batchsendDate.tempCouponName = tempArr;
+      }
       this.isDetailBatchsendVisible = true;
-      console.log(this.batchsendDate);
     } else if (flag === 'addCoupon') { // 新增红包 | 活动奖励
       this.isCouponVisible = true;
-      // this.couponGiftNo = '';
-      // this.loadData('coupon');
+      this.couponListArr = [];
+      this.loadData('coupon');
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
   }
 
   hideModal(flag) {
-    if (flag === 'addBatchsend') {
+    if (flag === 'batchsend') {
       this.isAddBatchsendVisible = false;
       this.beginCouponDate = null;
       this.endCouponDate = null;
-    } else if (flag === 'detailBatchsend') {
+    } else if (flag === 'detailBatchsend') {  // 查看
       this.isDetailBatchsendVisible = false;
+    } else if (flag === 'coupon') { // 新增红包
+      this.isCouponVisible = false;
+      this.beginCouponDate = null;
+      this.endCouponDate = null;
     }
   }
 
@@ -137,38 +159,48 @@ export class BatchsendComponent implements OnInit {
   verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'batchsend') {
-      if (this.addBatchsendForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
+      if (this.addBatchsendForm.controls['pendingRevL'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '发送对象未填写' });
         result = false;
-      } else if (this.addBatchsendForm.controls['type'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
+      } else if (this.addBatchsendForm.controls['displayMessage'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '附带信息未选择' });
         result = false;
-      } else if (this.addBatchsendForm.controls['pseudonym'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
-        result = false;
-      } else if (this.addBatchsendForm.controls['abstractContent'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
-        result = false;
-      } else if (this.addBatchsendForm.controls['publishTime'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
+      } else if (this.couponListArr === []) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '发送奖励配置未选择' });
         result = false;
       }
     }
     return result;
   }
 
+  isPoneAvailable($poneInput) {
+    const myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    if (!myreg.test($poneInput)) {
+        return false;
+    } else {
+        return true;
+    }
+  }
+
   // 新增操作
   doSave(flag): void {
     if (flag === 'batchsend') {
+      let count = 0;
       if (!this.verificationAdd('batchsend')) {
         return;
       }
+      this.addBatchsendForm.controls['pendingRevL'].value.split('\n').forEach(item => {
+        // tslint:disable-next-line:no-unused-expression
+        !this.isPoneAvailable(item) ? count++ : 1 ;
+      });
+      if (count > 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '输入的手机号码中有不符合要求的！' });
+        return;
+      }
       const batchsendInput = {
-        'title': this.addBatchsendForm.controls['title'].value,
-        'abstractContent': this.addBatchsendForm.controls['abstractContent'].value,
-        'pseudonym': this.addBatchsendForm.controls['pseudonym'].value,
-        'publishTime': this.datePipe.transform(this.addBatchsendForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
-        'type': this.addBatchsendForm.controls['type'].value,
+        'pendingRevL': this.addBatchsendForm.controls['pendingRevL'].value.split('\n'),
+        'displayMessage': this.addBatchsendForm.controls['displayMessage'].value,
+        'actCouponRulePoL': this.couponListArr,
       };
       this.batchsendService.addBatchsend(batchsendInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -179,6 +211,29 @@ export class BatchsendComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'coupon') { // 保存红包组选择区
+      const couponArr = [];
+      let checkedCount = 0;
+      let quantityCount = 0;
+      this.dataSearchCoupon.forEach(data => {
+        if (data.checked === true) {
+          couponArr.push(data);
+          checkedCount++;
+          // tslint:disable-next-line:no-unused-expression
+          data.quantity ? quantityCount++ : 1 ;
+        }
+      });
+      if (checkedCount === 0) { // 优惠券未勾选
+        this.modalService.error({ nzTitle: '提示', nzContent: '请勾选优惠券' });
+        return;
+      }
+      if (quantityCount === 0 || checkedCount !== quantityCount) {  // 勾选的优惠券中有数量未填写
+        this.modalService.error({ nzTitle: '提示', nzContent: '勾选的优惠券的数量限制不能为空' });
+        return;
+      }
+      this.couponListArr = couponArr;
+      this.isCouponVisible = false;
+      this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
     }
   }
 
@@ -195,7 +250,7 @@ export class BatchsendComponent implements OnInit {
         this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z';
         this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z';
       }
-     } else if (flag === 'coupon') { // 红包 活动奖励查询 时间
+    } else if (flag === 'coupon') { // 红包 活动奖励查询 时间
       if (result === []) {
         this.beginCouponDate = '';
         this.endCouponDate = '';
@@ -209,4 +264,33 @@ export class BatchsendComponent implements OnInit {
     }
   }
 
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
+    this.dataSearchCoupon = $event;
+    this.refreshSearchCouponStatus();
+  }
+
+  refreshSearchCouponStatus(): void {
+    const allSearchCouponChecked = this.dataSearchCoupon.filter(value => !value.disabled).every(value => value.checked === true);
+    const allUnChecked = this.dataSearchCoupon.filter(value => !value.disabled).every(value => !value.checked);
+    this.allSearchCouponChecked = allSearchCouponChecked;
+    this.indeterminate = (!allSearchCouponChecked) && (!allUnChecked);
+  }
+
+  checkAllSearchCoupon(value: boolean): void {
+    this.dataSearchCoupon.forEach(data => {
+      if (!data.disabled) {
+        data.checked = value;
+      }
+    });
+    this.refreshSearchCouponStatus();
+  }
+
+  getCouponNumber(event, data) {
+    this.dataSearchCoupon.forEach(item => {
+      if (item.couponId === data.couponId) {
+        // tslint:disable-next-line:radix
+        item.quantity = parseInt(event);
+      }
+    });
+  }
 }

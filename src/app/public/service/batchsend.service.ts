@@ -40,13 +40,11 @@ export class BatchsendService extends AppServiceBase {
   /** 添加单个 */
   addBatchsend(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}`;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
 }

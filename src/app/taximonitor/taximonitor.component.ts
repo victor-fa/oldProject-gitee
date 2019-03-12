@@ -24,7 +24,7 @@ export class TaximonitorComponent implements OnInit {
   dataTaxi = [];  // 打车路径
   currentTaxi = {  // 当前打车路径
     // tslint:disable-next-line:max-line-length
-    'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'aggregateAmount': ''
+    'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'availableAmount': '', 'availableBeans': '', 'estimate_price': '', 'source': '', 'monitorType': 0
   };
   taxiItem = {
     'orderId': '', 'startTime': '', 'endTime': ''

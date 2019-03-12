@@ -38,6 +38,8 @@ export class DataAppComponent implements OnInit {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
+          console.log(JSON.parse(res.payload).reverse());
+
           localStorage.setItem('dataCenterTime', currentTime);
           this.isSpinning = false;  // loading
         } else {
