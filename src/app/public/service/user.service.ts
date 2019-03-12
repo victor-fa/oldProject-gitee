@@ -40,11 +40,11 @@ export class UserService extends AppServiceBase {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}`;
     } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}&lastId=${id}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}&lastId=${id}`;
     } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}&firstId=${id}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}&firstId=${id}`;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -63,11 +63,11 @@ export class UserService extends AppServiceBase {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
     if (flag === '') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
     } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
     } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/admin/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
+      url = `${this.commonService.baseUrl}/admin${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -77,7 +77,7 @@ export class UserService extends AppServiceBase {
    * 查看用户详情
    */
   getUserInfo(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.userContact}/admin?infoId=${id}`;
+    const url = `${this.commonService.baseUrl}/admin${userApiUrls.userContact}?infoId=${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Authorization': 'Bearer ' + this.token })
     };
@@ -117,7 +117,7 @@ export class UserService extends AppServiceBase {
    * @param infoId
    */
   updateUserInfo(infoId): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin`;
+    const url = `${this.commonService.baseUrl}/admin${userApiUrls.users}`;
     const body = `infoId=${infoId}`;
     this.setOption = {
       headers: new HttpHeaders({

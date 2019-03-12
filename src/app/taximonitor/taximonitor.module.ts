@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PublicModule } from '../public/public.module';
-import { TaximonitorComponent } from './Taximonitor.component';
+import { TaximonitorComponent } from './taximonitor.component';
 
 @NgModule({
   imports: [

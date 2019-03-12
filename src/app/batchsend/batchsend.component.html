@@ -59,7 +59,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.displayMessage" [disabled]="true" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -71,7 +71,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="这里是要写给用户的话，字数限制xxx个" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input formControlName="publishTime" [(ngModel)]="batchsendDate.displayMessage" [disabled]="true" placeholder="这里是要写给用户的话，字数限制xxx个" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -82,7 +82,7 @@
                   <button nz-button nzType="primary" (click)="showModal('addCoupon', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
                 </div>
               </div>
-  
+
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <nz-table #couponTable [nzData]="dataSearchCoupon">
@@ -149,7 +149,7 @@
               </div>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="11">
-                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.abstractContent" [disabled]="true" placeholder="请输入奖励配置" nzSize="default"></textarea>
+                <textarea rows="5" nz-input [(ngModel)]="batchsendDate.displayMessage" [disabled]="true" placeholder="请输入奖励配置" nzSize="default"></textarea>
               </div>
               <div nz-col nzSpan="1"></div>
             </div>
