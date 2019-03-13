@@ -32,7 +32,7 @@ export class BatchsendService extends AppServiceBase {
 
   /** 获取单个 */
   getBatchsend(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/${id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/info?pushRuleId=${id}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -45,6 +45,16 @@ export class BatchsendService extends AppServiceBase {
     };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 添加单个 */
+  batchsend(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+    return this.httpClient
+      .patch<IResponse<any>>(url, data, this.options);
   }
 
 }

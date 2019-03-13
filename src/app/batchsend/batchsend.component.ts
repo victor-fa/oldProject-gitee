@@ -21,6 +21,7 @@ export class BatchsendComponent implements OnInit {
   isAddBatchsendVisible = false;
   isDetailBatchsendVisible = false;
   isCouponVisible = false;
+  isBatchsendVisible = false;
   addBatchsendForm: FormGroup;
   searchCouponForm: FormGroup;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
@@ -39,6 +40,10 @@ export class BatchsendComponent implements OnInit {
   dataSearchCoupon = [];
   dataBatchsend = []; // 内容
   couponListArr = []; // 最底部的活动奖励配置数组
+  finalBatchsendDate = {  // 发送界面
+    // tslint:disable-next-line:max-line-length
+    'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -58,11 +63,11 @@ export class BatchsendComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('batchsend');
+    this.loadData('batchsendList');
   }
 
   loadData(flag) {
-    if (flag === 'batchsend') {
+    if (flag === 'batchsendList') {
       const batchsend = {
         sendStartTime: this.beginDate,
         sendEndTime: this.endDate
@@ -75,6 +80,7 @@ export class BatchsendComponent implements OnInit {
             item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
           });
         }
+        console.log(this.dataBatchsend);
       });
     } else if (flag === 'coupon') {
       if (this.beginCouponDate === null) {
@@ -116,7 +122,7 @@ export class BatchsendComponent implements OnInit {
 
   // 新增内容 - 弹框
   showModal(flag, data) {
-    if (flag === 'batchsend') {
+    if (flag === 'addBatchsend') {
       this.batchsendDate = {  // 清空
         // tslint:disable-next-line:max-line-length
         'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
@@ -137,12 +143,28 @@ export class BatchsendComponent implements OnInit {
       this.isCouponVisible = true;
       this.couponListArr = [];
       this.loadData('coupon');
+    } else if (flag === 'batchsend') { // 批量发送
+      this.batchsendService.getBatchsend(data.pushRuleId).subscribe(res => {
+        if (res.payload === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+          return;
+        }
+        this.finalBatchsendDate = JSON.parse(res.payload);
+        if (this.finalBatchsendDate.actCouponRulePoL) {
+          const tempArr = [];
+          this.finalBatchsendDate.actCouponRulePoL.forEach((item, i) => {
+            tempArr.push(item.couponRulePo.couponName);
+          });
+          this.finalBatchsendDate.tempCouponName = tempArr;
+        }
+      });
+      this.isBatchsendVisible = true;
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
   }
 
   hideModal(flag) {
-    if (flag === 'batchsend') {
+    if (flag === 'batchsendList') {
       this.isAddBatchsendVisible = false;
       this.beginCouponDate = null;
       this.endCouponDate = null;
@@ -152,6 +174,8 @@ export class BatchsendComponent implements OnInit {
       this.isCouponVisible = false;
       this.beginCouponDate = null;
       this.endCouponDate = null;
+    } else if (flag === 'batchsend') {
+      this.isBatchsendVisible = false;
     }
   }
 
@@ -184,7 +208,7 @@ export class BatchsendComponent implements OnInit {
 
   // 新增操作
   doSave(flag): void {
-    if (flag === 'batchsend') {
+    if (flag === 'batchsendList') {
       let count = 0;
       if (!this.verificationAdd('batchsend')) {
         return;
@@ -205,8 +229,9 @@ export class BatchsendComponent implements OnInit {
       this.batchsendService.addBatchsend(batchsendInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          this.hideModal('batchsend');
-          this.loadData('batchsend');
+          this.hideModal('batchsendList');
+          this.loadData('batchsendList');
+          this.showModal('batchsend', JSON.parse(res.payload));  // 打开发送弹窗
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -234,6 +259,19 @@ export class BatchsendComponent implements OnInit {
       this.couponListArr = couponArr;
       this.isCouponVisible = false;
       this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
+    } else if (flag === 'batchsend') { // 批量发送
+      const batchsendInput = {
+        'pushRuleId': this.finalBatchsendDate.pushRuleId
+      };
+      this.batchsendService.batchsend(batchsendInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '批量发送成功', { nzStyle: { color : 'green' } });
+          this.hideModal('batchsend');
+          this.loadData('batchsendList');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
