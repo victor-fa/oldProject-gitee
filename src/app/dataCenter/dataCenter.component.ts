@@ -20,6 +20,7 @@ export class DataCenterComponent implements OnInit {
   displayData = [];
   allChecked = false;
   indeterminate = false;
+  isExplainVisiable = false;
   searchForm: FormGroup;  // 查询表单
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
@@ -153,6 +154,14 @@ export class DataCenterComponent implements OnInit {
       date: [''],
       status: [''],
     });
+  }
+
+  shouExplain() {
+    this.isExplainVisiable = true;
+  }
+
+  hideExplain() {
+    this.isExplainVisiable = false;
   }
 
 }

@@ -44,6 +44,7 @@ export class BatchsendComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
   };
+  modelId = ''; // 新增后拿到的id，用来批量发放
 
   constructor(
     private fb: FormBuilder,
@@ -80,7 +81,6 @@ export class BatchsendComponent implements OnInit {
             item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
           });
         }
-        console.log(this.dataBatchsend);
       });
     } else if (flag === 'coupon') {
       if (this.beginCouponDate === null) {
@@ -144,20 +144,16 @@ export class BatchsendComponent implements OnInit {
       this.couponListArr = [];
       this.loadData('coupon');
     } else if (flag === 'batchsend') { // 批量发送
-      this.batchsendService.getBatchsend(data.pushRuleId).subscribe(res => {
-        if (res.payload === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          return;
-        }
-        this.finalBatchsendDate = JSON.parse(res.payload);
-        if (this.finalBatchsendDate.actCouponRulePoL) {
-          const tempArr = [];
-          this.finalBatchsendDate.actCouponRulePoL.forEach((item, i) => {
-            tempArr.push(item.couponRulePo.couponName);
-          });
-          this.finalBatchsendDate.tempCouponName = tempArr;
-        }
-      });
+      this.finalBatchsendDate.pendingRevL = this.addBatchsendForm.controls['pendingRevL'].value.split('\n');
+      this.finalBatchsendDate.actCouponRulePoL = this.couponListArr;
+      this.finalBatchsendDate.displayMessage = this.addBatchsendForm.controls['displayMessage'].value;
+      if (this.finalBatchsendDate.actCouponRulePoL) {
+        const tempArr = [];
+        this.finalBatchsendDate.actCouponRulePoL.forEach((item, i) => {
+          tempArr.push(item.couponName);
+        });
+        this.finalBatchsendDate.tempCouponName = tempArr;
+      }
       this.isBatchsendVisible = true;
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -221,21 +217,7 @@ export class BatchsendComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '输入的手机号码中有不符合要求的！' });
         return;
       }
-      const batchsendInput = {
-        'pendingRevL': this.addBatchsendForm.controls['pendingRevL'].value.split('\n'),
-        'displayMessage': this.addBatchsendForm.controls['displayMessage'].value,
-        'actCouponRulePoL': this.couponListArr,
-      };
-      this.batchsendService.addBatchsend(batchsendInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          this.hideModal('batchsendList');
-          this.loadData('batchsendList');
-          this.showModal('batchsend', JSON.parse(res.payload));  // 打开发送弹窗
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
+      this.showModal('batchsend', '');  // 打开发送弹窗
     } else if (flag === 'coupon') { // 保存红包组选择区
       const couponArr = [];
       let checkedCount = 0;
@@ -260,18 +242,35 @@ export class BatchsendComponent implements OnInit {
       this.isCouponVisible = false;
       this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
     } else if (flag === 'batchsend') { // 批量发送
-      const batchsendInput = {
-        'pushRuleId': this.finalBatchsendDate.pushRuleId
+      // 调用新增接口
+      const batchsendListInput = {
+        'pendingRevL': this.addBatchsendForm.controls['pendingRevL'].value.split('\n'),
+        'displayMessage': this.addBatchsendForm.controls['displayMessage'].value,
+        'actCouponRulePoL': this.couponListArr,
       };
-      this.batchsendService.batchsend(batchsendInput).subscribe(res => {
+      this.batchsendService.addBatchsend(batchsendListInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '批量发送成功', { nzStyle: { color : 'green' } });
-          this.hideModal('batchsend');
-          this.loadData('batchsendList');
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          // 调用发送接口
+          const batchsendInput = {
+            'pushRuleId': JSON.parse(res.payload).pushRuleId
+          };
+          this.batchsendService.batchsend(batchsendInput).subscribe(finalres => {
+            if (finalres.retcode === 0) {
+              this.notification.blank( '提示', '批量发送成功', { nzStyle: { color : 'green' } });
+              this.hideModal('batchsendList');
+              this.hideModal('batchsend');
+              this.loadData('batchsendList');
+            } else {
+              this.modalService.error({ nzTitle: '提示', nzContent: finalres.message });
+            }
+          });
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+
+
     }
   }
 

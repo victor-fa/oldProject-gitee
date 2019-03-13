@@ -22,6 +22,7 @@ export class ActivityComponent implements OnInit {
 
   isAddActivityVisible = false;
   isCouponVisible = false;
+  isPreviewVisible = false;
   searchActivityForm: FormGroup;
   searchCouponForm: FormGroup;
   addActivityForm: FormGroup;
@@ -226,6 +227,8 @@ export class ActivityComponent implements OnInit {
       this.couponGiftNo = data.actGiftNo;
       this.isCouponVisible = true;
       this.loadData('coupon');
+    } else if (flag === 'preview') { // 活动页预览
+      this.isPreviewVisible = true;
     }
   }
 
@@ -245,6 +248,8 @@ export class ActivityComponent implements OnInit {
       this.isCouponVisible = false;
       this.beginCouponDate = null;
       this.endCouponDate = null;
+    } else if (flag === 'preview') { // 活动页预览
+      this.isPreviewVisible = false;
     }
   }
 

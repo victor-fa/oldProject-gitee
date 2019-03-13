@@ -68,7 +68,7 @@
           </nz-table>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="isAddActivityVisible" nzWidth="1550" nzTitle="新增内容" [nzFooter]="addContentModalFooter" nzClosable="false" (nzOnCancel)="hideModal('activity')">
+          <nz-modal [(nzVisible)]="isAddActivityVisible" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改内容' : '新增内容'}}" [nzFooter]="addContentModalFooter" nzClosable="false" (nzOnCancel)="hideModal('activity')">
             <form [formGroup]="addActivityForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -79,7 +79,7 @@
                   <div nz-col nzSpan="2" class="span_down right_alignment">
                     <font color="red">*</font>活动名称：
                   </div>
-                  <div nz-col nzSpan="4">
+                  <div nz-col nzSpan="7">
                     <input nz-input maxlength="12" [(ngModel)]="modifyctivityItem.actName" formControlName="actName" placeholder="请输入活动名称" nzSize="default">
                   </div>
                 </div>
@@ -100,7 +100,7 @@
                     <font color="red">*</font>活动规则：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                    <textarea rows="3" formControlName="actRuleDesc" [(ngModel)]="modifyctivityItem.actRuleDesc" maxlength="200" nz-input
+                    <textarea rows="5" formControlName="actRuleDesc" [(ngModel)]="modifyctivityItem.actRuleDesc" maxlength="200" nz-input
                       placeholder="输入活动规则，不超过200个字符"></textarea>
                 </div>
               </div>
@@ -115,6 +115,11 @@
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
                   </nz-upload>
+                </div>
+                <div nz-col nzSpan="7"></div>
+                <div nz-col nzSpan="3">
+                  <button *ngIf="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')" disabled><i class="anticon anticon-eye"></i>活动页预览</button>
+                  <button *ngIf="baseInfoId !== ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye"></i>活动页预览</button>
                 </div>
               </div>
 
@@ -542,6 +547,32 @@
             </ng-template>
           </nz-modal>
 
+          <!-- 弹框 —— 查看 —— 活动页预览 -->
+          <nz-modal [(nzVisible)]="isPreviewVisible" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" nzClosable="false" (nzOnCancel)="hideModal('preview')">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
+                {{modifyctivityItem.actName}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down">
+                <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
+              </div>
+              <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
+                {{modifyctivityItem.actStartDate}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actEndDate}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
+                功能区
+              </div>
+              <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
+                {{modifyctivityItem.actRuleDesc}}
+              </div>
+            </div>
+
+            <!-- 弹框和底部定制 -->
+            <ng-template #previewFooter>
+              <button nz-button nzType="default" (click)="hideModal('preview')">关闭</button>
+            </ng-template>
+          </nz-modal>
+  
         </nz-tab>
 
       </nz-tabset>

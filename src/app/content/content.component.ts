@@ -43,6 +43,7 @@ export class ContentComponent implements OnInit {
   modifyScreenForm: FormGroup;
   modifyOpenForm: FormGroup;
   modifyBannerForm: FormGroup;
+  shareForm: FormGroup;
   jumpForScreen = 'DISABLED';
   jumpForOpen = 'DISABLED';
   jumpForBanner = 'DISABLED';
@@ -111,13 +112,11 @@ export class ContentComponent implements OnInit {
     this._initModifyScreenForm();
     this._initModifyOpenForm();
     this._initModifyBannerForm();
+    this._initShareForm();
   }
 
   ngOnInit() {
     this.loadData('content');
-    this.loadData('screen');
-    this.loadData('open');
-    this.loadData('banner');
   }
 
   loadData(flag) {
@@ -391,6 +390,28 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'preview') {
+      // if (!this.verificationAdd('banner')) {
+      //   return;
+      // }
+      // const bannerInput = {
+      //   'enabled': false, // 默认不可启用
+      //   'title': this.addBannerForm.controls['title'].value,
+      //   'site': this.addBannerForm.controls['site'].value,
+      //   'jump': this.addBannerForm.controls['jump'].value,
+      //   'image': this.imageUrl,
+      //   'order': this.addBannerForm.controls['order'].value,
+      //   'url': this.addBannerForm.controls['url'].value
+      // };
+      // this.bannerService.addBanner(bannerInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+      //     this.hideAddModal('banner');
+      //     this.loadData('banner');
+      //   } else {
+      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      //   }
+      // });
     }
   }
 
@@ -438,6 +459,13 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
+    });
+  }
+
+  // 分享
+  _initShareForm() {
+    this.shareForm = this.fb.group({
+      title: [''],
     });
   }
 
@@ -936,6 +964,15 @@ export class ContentComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
+    if (flag === 'content' && flag !== this.currentPanel) {
+      this.loadData('content');
+    } else if (flag === 'screen' && flag !== this.currentPanel) {
+      this.loadData('screen');
+    } else if (flag === 'open' && flag !== this.currentPanel) {
+      this.loadData('open');
+    } else if (flag === 'banner' && flag !== this.currentPanel) {
+      this.loadData('banner');
+    }
     this.currentPanel = flag;
   }
 }

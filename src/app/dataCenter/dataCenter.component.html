@@ -8,12 +8,14 @@
         <nz-tab nzTitle="{{commonService.currentTitle}}">
           <form [formGroup]="searchForm">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="shouExplain()"><i class="anticon anticon-info-circle"></i>数据说明？</button>
+              </div>
 
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 查询日期范围：
               </div>
-              <div nz-col nzSpan="9" class="span_down">
+              <div nz-col nzSpan="7" class="span_down">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
 
@@ -30,7 +32,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2"></div>
 
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="doSearch()"><i class="anticon anticon-search"></i>查询</button>
@@ -57,6 +59,29 @@
           </div>
 
         </nz-tab>
+
+        <!-- 弹框 —— 信息 —— 数据说明 -->
+        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="950" nzTitle="{{commonService.currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideExplain()">
+          <div nz-row class="search_panel" style="text-align: center;">
+            <img *ngIf="commonService.dataCenter[0].active === true" [src]="'assets/images/dataCenter_dataApp.png'">
+            <img *ngIf="commonService.dataCenter[1].active === true" [src]="'assets/images/dataCenter_keepapp.png'">
+            <img *ngIf="commonService.dataCenter[2].active === true" [src]="'assets/images/dataCenter_overview.png'">
+            <img *ngIf="commonService.dataCenter[3].active === true" [src]="'assets/images/dataCenter_product.png'">
+            <img *ngIf="commonService.dataCenter[4].active === true" [src]="'assets/images/dataCenter_error.png'">
+            <img *ngIf="commonService.dataCenter[5].active === true" [src]="'assets/images/dataCenter_ticket.png'">
+            <img *ngIf="commonService.dataCenter[6].active === true" [src]="'assets/images/dataCenter_train.png'">
+            <img *ngIf="commonService.dataCenter[7].active === true" [src]="'assets/images/dataCenter_hotel.png'">
+            <img *ngIf="commonService.dataCenter[8].active === true" [src]="'assets/images/dataCenter_weather.png'">
+            <img *ngIf="commonService.dataCenter[9].active === true" [src]="'assets/images/dataCenter_navigate.png'">
+            <img *ngIf="commonService.dataCenter[10].active === true" [src]="'assets/images/dataCenter_taxi.png'">
+            <img *ngIf="commonService.dataCenter[11].active === true" [src]="'assets/images/dataCenter_music.png'">
+          </div>
+          <!-- 弹框和底部定制 -->
+          <ng-template #ecplainModalFooter>
+            <button nz-button nzType="default" (click)="hideExplain()">关闭</button>
+          </ng-template>
+        </nz-modal>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>

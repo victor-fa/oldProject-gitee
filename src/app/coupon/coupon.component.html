@@ -47,18 +47,17 @@
 
       </div>
       <div nz-row class="search_panel">
-        <div nz-col nzSpan="16" class="span_down right_alignment">
+        <div nz-col nzSpan="18" class="span_down right_alignment">
             如果想要废除某个优惠券，请联系产品人员
         </div>
         <div nz-col nzSpan="1"></div>
-        <div nz-col nzSpan="3">
+        <div nz-col nzSpan="2">
           <button nz-button nzType="primary" (click)="showAddModal('coupon')"><i class="anticon anticon-file-add"></i>新增优惠券</button>
         </div>
         <div nz-col nzSpan="1"></div>
         <div nz-col nzSpan="2">
           <button nz-button nzType="primary" (click)="doSearchCoupon('coupon')"><i class="anticon anticon-file-add"></i>查询</button>
         </div>
-        <div nz-col nzSpan="1"></div>
       </div>
       <nz-table #couponTable [nzData]="dataCoupon">
         <thead>
