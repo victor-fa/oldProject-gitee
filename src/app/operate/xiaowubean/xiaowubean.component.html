@@ -13,7 +13,7 @@
       有效时间：
     </div>
     <div nz-col nzSpan="7" class="span_down">
-      <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd hh:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')"></nz-range-picker>
+      <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
     </div>
 
     <div nz-col nzSpan="3"></div>
@@ -46,7 +46,7 @@
       <td nzWidth="50px">{{i+1}}</td>
       <td>{{data.title}}</td>
       <td>{{data.describe}}</td>
-      <td>{{data.beginTime | date:'yyyy-MM-dd hh:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd hh:mm:ss'}}</td>
+      <td>{{data.beginTime | date:'yyyy-MM-dd hh:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>{{data.activeStatus}}</td>
       <td>{{data.createTime}}</td>
       <td>
@@ -97,7 +97,7 @@
     <div nz-row class="search_panel">
       <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
       <div nz-col nzSpan="9">
-        <nz-range-picker [nzFormat]="'yyyy-MM-dd hh:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')"></nz-range-picker>
+        <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
       </div>
       <div nz-col nzSpan="1"></div>
       <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">
@@ -180,7 +180,7 @@
     <div nz-row class="search_panel">
       <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
       <div nz-col nzSpan="9">
-        <nz-range-picker [nzFormat]="'yyyy-MM-dd hh:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')"></nz-range-picker>
+        <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
       </div>
       <div nz-col nzSpan="1"></div>
       <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">
@@ -266,7 +266,7 @@
   <div nz-row class="search_panel">
     <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
     <div nz-col nzSpan="9" class="span_down">
-      {{beanItem.beginTime | date:'yyyy-MM-dd hh:mm:ss'}}——{{beanItem.endTime | date:'yyyy-MM-dd hh:mm:ss'}}
+      {{beanItem.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{beanItem.endTime | date:'yyyy-MM-dd HH:mm:ss'}}
     </div>
     <div nz-col nzSpan="1"></div>
     <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">

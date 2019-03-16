@@ -908,14 +908,14 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9">
-                  <input nz-input maxlength="32" formControlName="title" placeholder="输入标题" nzSize="default">
+                  <input nz-input maxlength="32" formControlName="wechatTitle" [(ngModel)]="dataShare.wechatTitle" placeholder="输入标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9">
-                  <textarea rows="5" nz-input formControlName="title" [disabled]="true" placeholder="请输入内容" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input formControlName="wechatContent" [(ngModel)]="dataShare.wechatContent" [disabled]="true" placeholder="请输入内容" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -923,21 +923,35 @@
                   分享图片
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
+                <div nz-col nzSpan="21">
+                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button (click)="choosePng('0')" nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传图片</span>
                     </button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：32K</font>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row class="search_panel" *ngIf="shareImageUrl01 !== ''">
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
+                <div nz-col nzSpan="21">
+                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel1">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：32K</font>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="9">
+                  <input nz-input maxlength="32" formControlName="wechatHost" [(ngModel)]="dataShare.wechatHost" placeholder="请输入域名路径" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="9">
+                  <input nz-input maxlength="32" formControlName="wechatUrl" [(ngModel)]="dataShare.wechatUrl" placeholder="请输入跳转链接" nzSize="default">
                 </div>
               </div>
 
@@ -948,7 +962,21 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9">
-                  <input nz-input maxlength="32" formControlName="title" placeholder="输入标题" nzSize="default">
+                  <input nz-input maxlength="32" formControlName="linkTitle" [(ngModel)]="dataShare.linkTitle" placeholder="输入标题" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="9">
+                  <input nz-input maxlength="32" formControlName="linkHost" [(ngModel)]="dataShare.linkHost" placeholder="输入域名路径" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接</div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="9">
+                  <input nz-input maxlength="32" formControlName="linkUrl" [(ngModel)]="dataShare.linkUrl" placeholder="输入跳转链接" nzSize="default">
                 </div>
               </div>
 
@@ -959,14 +987,14 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9">
-                  <input nz-input maxlength="32" formControlName="title" placeholder="输入标题" nzSize="default">
+                  <input nz-input maxlength="32" formControlName="H5Title" [(ngModel)]="dataShare.h5Title" placeholder="输入标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9">
-                  <textarea rows="5" nz-input formControlName="title" [disabled]="true" placeholder="请输入内容" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input formControlName="H5Content" [(ngModel)]="dataShare.h5Content" [disabled]="true" placeholder="请输入内容" nzSize="default"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -974,21 +1002,21 @@
                   导航栏图片
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
+                <div nz-col nzSpan="21">
+                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button (click)="choosePng('1')" nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传图片</span>
                     </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：20K</font>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：150*40&nbsp;&nbsp;限制大小：20K</font>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row class="search_panel" *ngIf="shareImageUrl02 !== ''">
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
-                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：468*128&nbsp;&nbsp;限制大小：20K</font>
+                <div nz-col nzSpan="21">
+                  <img *ngIf="shareImageUrl02" [src]="shareImageUrl02" class="image-panel2">
+                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：150*40&nbsp;&nbsp;限制大小：20K</font>
                 </div>
               </div>
 
@@ -997,20 +1025,20 @@
                   文案图片
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
+                <div nz-col nzSpan="21">
+                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button (click)="choosePng('2')" nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传图片</span>
                     </button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：50K</font>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row class="search_panel" *ngIf="shareImageUrl03 !== ''">
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
+                <div nz-col nzSpan="21">
+                  <img *ngIf="shareImageUrl03" [src]="shareImageUrl03" class="image-panel3">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：50K</font>
                 </div>
               </div>
@@ -1018,11 +1046,309 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="22"></div>
                 <div nz-col nzSpan="2">
-                  <button nz-button nzType="primary" (click)="doSave('preview')">保存</button>
+                  <button nz-button nzType="primary" (click)="doSave('share')">保存</button>
                 </div>
-            </div>
+              </div>
             </form>
           </div>
+        </nz-tab>
+
+        <nz-tab nzTitle="引导语模板" (nzClick)="changePanel('guide')">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showAddModal('guide')"><i class="anticon anticon-file-add"></i>新增模板</button>
+            </div>
+          </div>
+          <nz-table #guideTable [nzData]="dataGuide">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>模板类型</th>
+                <th>模板名称</th>
+                <th>启用状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of guideTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.type === 'BEGINNNER_GUIDE' ? '新手引导' : '活动推荐'}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.enabled ? '已激活' : '未激活'}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'guide')" style="margin-right: 10px;"><i
+                      class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'guide')" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <!-- 弹框 —— 新增 —— 新增模板 -->
+          <nz-modal [(nzVisible)]="isAddGuideVisible" nzWidth="950" nzTitle="新增模板" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideAddModal('guide')">
+            <form [formGroup]="addGuideForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  模板名称：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="title" [(ngModel)]="guideDate.title" placeholder="请输入模板名称" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  模板类型：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  <nz-radio-group [ngModel]="'BEGINNNER_GUIDE'" formControlName="type">
+                    <label nz-radio nzValue="BEGINNNER_GUIDE">新手引导</label>
+                    <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">活动推荐</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+            </form>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">
+                对话配置：
+              </div>
+              <div nz-col nzSpan="12" class="span_down">
+                APP对用户说的话
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4" class="span_down">
+                排序
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                <button nz-button nzType="primary" (click)="doSave('guide_message')">添加</button>
+              </div>
+            </div>
+            <ng-container *ngFor="let item of guideItem.messageArr; let i=index;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="12" class="span_down">
+                  <textarea rows="3" nz-input [ngModel]="guideItem.messageArr[i].text" (ngModelChange)="onGuideChange($event, 'messageText', i)" maxlength="50" nzSize="default"></textarea>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <input nz-input [ngModel]="guideItem.messageArr[i].sort" (ngModelChange)="onGuideChange($event, 'messageSort', i)" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_message')">删除</button>
+                </div>
+              </div>
+            </ng-container>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">
+                表单配置：
+              </div>
+              <div nz-col nzSpan="12" class="span_down">
+                点击后，替用户，在对话框输入对应内容
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4" class="span_down">
+                排序
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                <button nz-button nzType="primary" (click)="doSave('guide_button')">添加</button>
+              </div>
+            </div>
+            <ng-container *ngFor="let item of guideItem.buttonArr; let i=index;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="12" class="span_down">
+                  <textarea rows="3" nz-input [ngModel]="guideItem.buttonArr[i].text" (ngModelChange)="onGuideChange($event, 'buttonText', i)" maxlength="50" nzSize="default"></textarea>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <input nz-input [ngModel]="guideItem.buttonArr[i].sort" (ngModelChange)="onGuideChange($event, 'buttonSort', i)" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_button')">删除</button>
+                </div>
+              </div>
+            </ng-container>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">
+                图片配置：
+              </div>
+              <div nz-col nzSpan="12" class="span_down">
+                点击后，可自动配置跳转方式
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4" class="span_down">
+                排序
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                <button nz-button nzType="primary" (click)="doSave('guide_image')">添加</button>
+              </div>
+            </div>
+            <ng-container *ngFor="let item of guideItem.imageArr; let i=index;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="12">
+                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button nzType="primary">
+                      <i class="anticon anticon-upload"></i><span>选择文件</span>
+                    </button>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*420&nbsp;&nbsp;限制大小：150K</font>
+                  </nz-upload>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <input nz-input [ngModel]="guideItem.imageArr[i].sort" (ngModelChange)="onGuideChange($event, 'imageSort', i)" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')">删除</button>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+                <div nz-col nzSpan="4" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
+                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
+                </div>
+                <div nz-col nzSpan="5"></div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')">删除</button>
+                </div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  跳转位置：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-select [(ngModel)]="guideDate.jumpType" (ngModelChange)="onGuideChange($event, 'imageJumpType', i)">
+                    <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLE'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'WEB'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="guideDate.jumpType === 'APP'">
+                <div nz-col nzSpan="4" class="span_down right_alignment">APP标识：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select [(ngModel)]="guideDate.appDestinationType" (ngModelChange)="onGuideChange($event, 'imageAppDestinationType', i)">
+                    <nz-option required [nzLabel]="'个人中心'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="'SETTINGS'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="'ORDER_LIST'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="'GENERAL_INFO'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="'CHARGE'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="'ACCOUNT'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="'ADVICE'"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="'HELP'"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="guideDate.jumpType === 'WEB'">
+                <div nz-col nzSpan="4" class="span_down right_alignment">链接地址：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input [(ngModel)]="guideDate.webUrl" (ngModelChange)="onGuideChange($event, 'imageWebUrl', i)" placeholder="请输入链接地址" nzSize="default">
+                </div>
+              </div>
+            </ng-container>
+            <!-- 弹框和底部定制 -->
+            <ng-template #addGuideModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('guide')">确定</button>
+              <button nz-button nzType="default" (click)="hideAddModal('guide')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 修改 —— 修改模板 -->
+          <nz-modal [(nzVisible)]="isModifyGuideVisible" nzWidth="950" nzTitle="修改模板" [nzFooter]="modifyGuideModalFooter" (nzOnCancel)="hideModifyModal('guide')">
+            <!-- <form [formGroup]="modifyGuideForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  标题：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="title" [(ngModel)]="guideDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入标题" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  跳转位置：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-select [(ngModel)]="guideDate.title" formControlName="title">
+                    <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
+                    <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="guideDate.jump === 'APP'">
+                <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
+                <div nz-col nzSpan="12">
+                  <nz-select [ngModel]="guideDate.title" formControlName="title">
+                    <nz-option required [nzLabel]="'个人中心'" [nzValue]="1"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="2"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="3"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="4"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="5"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="6"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="7"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="8"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="guideDate.jump === 'HTML'">
+                <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="title" [(ngModel)]="guideDate.url" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入链接地址" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  排序状态：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="title" [(ngModel)]="guideDate.title" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')"
+                    placeholder="请输入排序状态" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
+                  弹框图片：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button>
+                      <i class="anticon anticon-upload"></i><span>选择文件</span>
+                    </button>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*420&nbsp;&nbsp;限制大小：150K</font>
+                  </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="12">
+                  <img [src]="showImageUrl" class="image-panel">
+                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
+                </div>
+              </div>
+            </form> -->
+            <!-- 弹框和底部定制 -->
+            <ng-template #modifyGuideModalFooter>
+              <button nz-button nzType="primary" (click)="doModify('guide')">保存</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('guide')">取消</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
       </nz-tabset>

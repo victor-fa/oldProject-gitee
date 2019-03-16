@@ -44,6 +44,10 @@ export enum cmsApiUrls {
   bannerList = '/cms/banner-ads',
   /** 获取优惠券 */
   couponList = '/couponrule',
+  /** 分享 */
+  shareList = '/copywriter',
+  /** 引导语 */
+  guideList = '/guide/management',
 }
 
 /** APP版本 */

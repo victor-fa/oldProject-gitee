@@ -61,19 +61,18 @@ export class XiaowubeanComponent implements OnInit {
           this.beanData = JSON.parse(res.payload);
           const nowTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm');
           this.beanData.forEach((item, i) => {
-            const beginTime = this.compareDate(item.beginTime, 'yyyy-MM-dd HH:mm');
-            const endTime = this.compareDate(item.endTime, 'yyyy-MM-dd HH:mm');
+            const beginTime = this.datePipe.transform(item.beginTime, 'yyyy-MM-dd HH:mm');
+            const endTime = this.datePipe.transform(item.endTime, 'yyyy-MM-dd HH:mm');
             let result = '';
             if (this.compareDate(nowTime, beginTime)) {
               result = '未开始';
             } else if (this.compareDate(endTime, nowTime)) {
               result = '已结束';
-            } else {
+            } else if (this.compareDate(beginTime, nowTime) && this.compareDate(nowTime, endTime)) {
               result = '进行中';
             }
             item.activeStatus = result;
           });
-          console.log(this.beanData);
           this.isSpinning = false;  // loading
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -126,6 +125,7 @@ export class XiaowubeanComponent implements OnInit {
       this.isAddBeanVisible = true;
     } else if (flag === 'modifyBean') {
       this.beanItem = data;
+      this.beanItem.giftPercent = data.giftPercent ? (data.giftPercent * 100) : 0;
       this.beginDate = data.beginTime;  // 重置日期
       this.endDate = data.endTime;
       this.radioValue = data.type; // 重置单选
@@ -134,6 +134,7 @@ export class XiaowubeanComponent implements OnInit {
     } else if (flag === 'searchBean') {
       this.isSearchBeanVisible = true;
       this.beanItem = data;
+      this.beanItem.giftPercent = data.giftPercent ? data.giftPercent : 0;
       this.radioValue = data.type;
     }
   }
@@ -142,12 +143,15 @@ export class XiaowubeanComponent implements OnInit {
     if (flag === 'addBean') {
       this.beginDate = null;  // 重置日期
       this.endDate = null;
+      this.loadData('bean');
       this.isAddBeanVisible = false;
     } else if (flag === 'modifyBean') {
       this.beginDate = null;  // 重置日期
       this.endDate = null;
+      this.loadData('bean');
       this.isModifyBeanVisible = false;
     } else if (flag === 'searchBean') {
+      this.loadData('bean');
       this.isSearchBeanVisible = false;
     }
   }
@@ -202,7 +206,9 @@ export class XiaowubeanComponent implements OnInit {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
           this.isAddBeanVisible = false;
-          this.loadData('activity');
+          this.beginDate = null;
+          this.endDate = null;
+          this.loadData('bean');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -236,8 +242,10 @@ export class XiaowubeanComponent implements OnInit {
       this.xiaowubeanService.updateXiaowubean(beanInput, this.radioValue).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-          this.isAddBeanVisible = false;
-          this.loadData('activity');
+          this.isModifyBeanVisible = false;
+          this.beginDate = null;
+          this.endDate = null;
+          this.loadData('bean');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -253,10 +261,11 @@ export class XiaowubeanComponent implements OnInit {
         this.endDate = '';
         return;
       }
+      console.log(result);
       // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
-        this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd hh:mm:ss');
-        this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd hh:mm:ss');
+        this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
+        this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
       }
     }
   }
