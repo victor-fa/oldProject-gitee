@@ -10,8 +10,7 @@
                 账号：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="orderId" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
-                  nzSize="default">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="1"></div>
@@ -20,8 +19,7 @@
                 名称：
               </div>
               <div nz-col nzSpan="3" class="span_down">
-                <input nz-input maxlength="32" formControlName="orderId" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
-                  nzSize="default">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="1"></div>
@@ -103,8 +101,7 @@
                   <font color="red">*</font>账号：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="12" [(ngModel)]="customerAddItem.userName" placeholder="输入账号"
-                    nzSize="default">
+                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerAddItem.userName" placeholder="输入账号" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('userName').dirty&&getAddFormControl('userName').hasError('rightNum')">由数字或英文组成，8到12个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('userName').dirty&&getAddFormControl('userName').value === ''">请输入账号</div>
                 </div>
@@ -114,8 +111,7 @@
                     <font color="red">*</font>密码：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="12" [(ngModel)]="customerAddItem.password" placeholder="输入密码"
-                    nzSize="default">
+                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerAddItem.password" placeholder="输入密码" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('password').dirty&&getAddFormControl('password').hasError('rightNum')">由数字或英文组成，6到12个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('password').dirty&&getAddFormControl('password').value === ''">请输入密码</div>
                 </div>
@@ -125,7 +121,7 @@
                     <font color="red">*</font>员工名称：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="10" [(ngModel)]="customerAddItem.nick" placeholder="输入名称" nzSize="default">
+                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerAddItem.nick" placeholder="输入名称" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('nick').dirty&&getAddFormControl('nick').hasError('userName')">由中文或英文组成，不超过10个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getAddFormControl('nick').dirty&&getAddFormControl('nick').value === ''">请输入名称</div>
                 </div>
@@ -159,8 +155,7 @@
                   <font color="red">*</font>账号：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="12" [(ngModel)]="customerModifyItem.userName" placeholder="输入账号"
-                    nzSize="default">
+                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerModifyItem.userName" placeholder="输入账号" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('userName').dirty&&getModifyFormControl('userName').hasError('rightNum')">由数字或英文组成，8到12个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('userName').dirty&&getModifyFormControl('userName').value === ''">请输入账号</div>
                 </div>
@@ -170,8 +165,7 @@
                   <font color="red">*</font>密码：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="12" [(ngModel)]="customerModifyItem.password"
-                    placeholder="输入密码" nzSize="default">
+                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerModifyItem.password" placeholder="输入密码" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('password').dirty&&getModifyFormControl('password').hasError('rightNum')">由数字或英文组成，6到12个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('password').dirty&&getModifyFormControl('password').value === ''">请输入密码</div>
                 </div>
@@ -181,8 +175,7 @@
                   <font color="red">*</font>员工名称：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="10" [(ngModel)]="customerModifyItem.nick" placeholder="输入员工名称"
-                    nzSize="default">
+                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerModifyItem.nick" placeholder="输入员工名称" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('nick').dirty&&getModifyFormControl('nick').hasError('userName')">由中文或英文组成，不超过10个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('nick').dirty&&getModifyFormControl('nick').value === ''">请输入名称</div>
                 </div>
@@ -216,7 +209,7 @@
                 角色名称：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesItem.name" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入角色名" nzSize="default">
+                <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesItem.name" placeholder="输入角色名" nzSize="default">
               </div>
               <div nz-col nzSpan="1">
               </div>
@@ -278,7 +271,7 @@
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
-                  <input nz-input formControlName="name" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" maxlength="10" [(ngModel)]="rolesAddItem.name" placeholder="输入角色名称" nzSize="default">
+                  <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesAddItem.name" placeholder="输入角色名称" nzSize="default">
                   <div nz-form-explain style="color: red" *ngIf="getAddControl('name').dirty&&getAddControl('name').hasError('userName')">由中文或英文组成，不超过10个字符</div>
                   <div nz-form-explain style="color: red" *ngIf="getAddControl('name').dirty&&getAddControl('name').value === ''">请输入角色名称</div>
                 </div>
@@ -292,8 +285,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <textarea rows="2" formControlName="description" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input
-                    placeholder="输入角色描述，不超过100个字符"></textarea>
+                  <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色描述，不超过100个字符"></textarea>
                   <div nz-form-explain style="color: red" *ngIf="getAddControl('description').dirty&&getAddControl('description').value === ''">请输入角色描述</div>
                 </div>
               </div>
@@ -368,7 +360,7 @@
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
-                  <input nz-input formControlName="name" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" [(ngModel)]="rolesAddItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
+                  <input nz-input formControlName="name" [(ngModel)]="rolesAddItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
                 </div>
                 <div nz-col nzSpan="9">
                 </div>
@@ -380,8 +372,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <textarea rows="2" formControlName="description" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input
-                    placeholder="输入角色说明，不超过100个字符"></textarea>
+                  <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色说明，不超过100个字符"></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">

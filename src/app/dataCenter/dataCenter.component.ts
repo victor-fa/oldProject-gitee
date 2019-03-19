@@ -38,7 +38,7 @@ export class DataCenterComponent implements OnInit {
     private notification: NzNotificationService,
     private _router: Router,
   ) {
-    this.commonService.nav[9].active = true;
+    this.commonService.nav[0].active = true;
     this._initSearchForm();
     this.beginDate = this.commonService.getDay(-7);
     this.endDate = this.commonService.getDay(-1);

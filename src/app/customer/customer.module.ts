@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { BookingComponent } from './booking.component';
 import { PublicModule } from '../public/public.module';
+import { CustomerComponent } from './customer.component';
 
 @NgModule({
   imports: [
@@ -9,12 +9,12 @@ import { PublicModule } from '../public/public.module';
     RouterModule.forChild([
       {
         path: '',
-        component: BookingComponent
+        component: CustomerComponent
       }
     ]),
   ],
   declarations: [
-    BookingComponent,
+    CustomerComponent,
   ]
 })
-export class BookingModule {}
+export class CustomerModule {}

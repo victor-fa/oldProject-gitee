@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -7,6 +7,7 @@ import { IUserInfoItemOutput, SendMsgInput, UserSearchInput } from '../public/mo
 import { CommonService } from '../public/service/common.service';
 import { UserService } from '../public/service/user.service';
 import { Router } from '@angular/router';
+import { BookingService } from '../public/service/booking.service';
 registerLocaleData(zh);
 
 @Component({
@@ -16,59 +17,59 @@ registerLocaleData(zh);
 })
 export class UserComponent implements OnInit {
 
-  data: IUserInfoItemOutput[];
+  userData: IUserInfoItemOutput[];
+  searchUserForm: FormGroup;  // 查询表单
+  searchUserItem = new UserSearchInput();
+  userInfoId = '';
+  lastUserId = 0;
+  firstUserId = 0;
+  totalUser = 0;
+  allUserSize = 0;
+  changeUserPage = 1;
+  doLastUser = false;
+  doFirstUser = false;
+  userPageSize = 10;
+  dataDetail = [];
+  dataOrder = {};
   displayData = [];
+  allChecked = false;
   indeterminate = false;
-  phoneNum = '';
-  searchForm: FormGroup;  // 查询表单
-  searchItem = new UserSearchInput();
-  sendMsgForm: FormGroup;  // 发送短信表单
-  sendMsgItem = new SendMsgInput();
-  infoId = '';
-  sendScreenHeight = '';
-  lastId = 0;
-  firstId = 0;
-  total = 0;
-  allSize = 0;
-  changePage = 1;
-  doLast = false;
-  doFirst = false;
-  pageSize = 10;
-  feedBackPageSize = 1000;
-  feedbackInfo = [];
-  oppositionInfo = [];
-  agreeInfo = [];
-  oppositionPageSize = 1000;
-  agreePageSize = 1000;
-  isFeedBackVisible = false;
-  isOppositionVisible = false;
-  isAgreeVisible = false;
-  currentOppositionAgreeId = '';  // 弹框后的id
-  tempFeedBack = {
-    'words': '',
-    'photo': '',
-    'number': ''
-  };
-  tempOpposition = { session: '' };
-  tempAgree = { session: '' };
+  isBookingDetailVisible = false;
+  isExternalDetailVisible = false;
+  isInvoiceVisible = false;
+  orderId = '';
+  orderStatus = '';
+  searchBookingForm: FormGroup;  // 查询表单
+  modifyBookingForm: FormGroup;  // 修改表单
+  isFlightOrder = false;
+  isHotelOrder = false;
+  isTrainOrder = false;
+  lastBookingId = 0;
+  firstBookingId = 0;
+  totalBooking = 0;
+  allBookingSize = 0;
+  changeBookingPage = 1;
+  doLastBooking = false;
+  doFirstBooking = false;
+  bookingPageSize = 10;
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private modalService: NzModalService,
     private userService: UserService,
     private notification: NzNotificationService,
+    private datePipe: DatePipe,
+    private bookingService: BookingService,
   ) {
     this.commonService.nav[3].active = true;
-    this._initSearchForm();
-    this._initSendMsgForm();
+    this._initSearchUserForm();
+    this._initSearchBookingForm();
+    this._initModifyBookingForm();
   }
 
   ngOnInit() {
-    this.loadData('user');  // 默认信息
-    this.loadData('feedback');  // 反馈信息
-    this.loadData('agree');  // 点赞信息
-    this.loadData('opposition');  // 点踩信息
-    this.sendScreenHeight = (window.screen.height - 524) + 'px';
+    this.loadData('user');
+    this.loadData('booking');
   }
 
   /**
@@ -78,23 +79,23 @@ export class UserComponent implements OnInit {
     if (flag === 'user') {
       let id = 0;
       let flagPage = '';
-      if (this.doLast) {
-        id = this.lastId;
+      if (this.doLastUser) {
+        id = this.lastUserId;
         flagPage = 'last';
       }
-      if (this.doFirst) {
-        id = this.firstId;
+      if (this.doFirstUser) {
+        id = this.firstUserId;
         flagPage = 'first';
       }
-      this.userService.getUserInfoList(this.pageSize, flagPage, id).subscribe(res => {
+      this.userService.getUserInfoList(this.userPageSize, flagPage, id).subscribe(res => {
         if (res.payload !== '') {
           if (res.status === 200) {
-            this.data = JSON.parse(res.payload).users;
-            this.total = JSON.parse(res.payload).total;
-            this.allSize = JSON.parse(res.payload).allSize;
-            this.firstId = JSON.parse(res.payload).users[0].userId;  // 最前面的userId
-            this.lastId = JSON.parse(res.payload).users[JSON.parse(res.payload).users.length - 1].userId;  // 最后面的userId
-            this.data.forEach(item => {
+            this.userData = JSON.parse(res.payload).users;
+            this.totalUser = JSON.parse(res.payload).total;
+            this.allUserSize = JSON.parse(res.payload).allSize;
+            this.firstUserId = JSON.parse(res.payload).users[0].userId;  // 最前面的userId
+            this.lastUserId = JSON.parse(res.payload).users[JSON.parse(res.payload).users.length - 1].userId;  // 最后面的userId
+            this.userData.forEach(item => {
               item.locked === false ? item.locked = '正常' : item.locked = '已拉黑';
             });
           }
@@ -105,39 +106,86 @@ export class UserComponent implements OnInit {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      this.doLast = false;
-      this.doFirst = false;
-    } else if (flag === 'feedback') {
-      this.userService.getFeedBackInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.feedbackInfo = JSON.parse(res.payload).reverse();
+      this.doLastUser = false;
+      this.doFirstUser = false;
+    } else if (flag === 'booking') {
+      let id = 0;
+      let pageFlag = '';
+      if (this.doLastBooking) {
+        id = this.lastBookingId;
+        pageFlag = 'last';
+      }
+      if (this.doFirstBooking) {
+        id = this.firstBookingId;
+        pageFlag = 'first';
+      }
+      this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id).subscribe(res => {
+        if (res.retcode === 0) {
+          if (res.payload !== '') {
+            this.dataOrder = JSON.parse(res.payload).orders;
+            this.totalBooking = JSON.parse(res.payload).total;
+            this.allBookingSize = JSON.parse(res.payload).allSize;
+            this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+            this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
           }
+        } else if (res.retcode === 10000) {
+          this.notification.blank(
+            '提示',
+            '您还没有登录哦！',
+            {
+              nzStyle: {
+                color : 'red'
+              }
+            }
+          );
+          // this._router.navigate(['/login']);
         } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+          this.modalService.confirm({
+            nzTitle: '提示',
+            nzContent: res.message
+          });
         }
       });
-    } else if (flag === 'opposition') {
-      this.userService.getOppositionInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.oppositionInfo = JSON.parse(res.payload);
-          }
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
-    } else if (flag === 'agree') {
-      this.userService.getAgreeInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.agreeInfo = JSON.parse(res.payload);
-          }
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
+      this.doLastBooking = false;
+      this.doFirstBooking = false;
     }
+  }
+
+  /* 加载信息 */
+  private loadDataByKey(state, type, createTime, orderId): void {
+    let id = 0;
+    let pageFlag = '';
+    if (this.doLastBooking) {
+      id = this.lastBookingId;
+      pageFlag = 'last';
+    }
+    if (this.doFirstBooking) {
+      id = this.firstBookingId;
+      pageFlag = 'first';
+    }
+    this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, state, type, createTime, orderId).subscribe(res => {
+      if (res.retcode === 0) {
+        if (res.payload !== '') {
+          this.dataOrder = JSON.parse(res.payload).orders;
+          this.totalBooking = JSON.parse(res.payload).total;
+          this.allBookingSize = JSON.parse(res.payload).allSize;
+          this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+          this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+        }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } }
+        );
+        // this._router.navigate(['/login']);
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+    this.doLastBooking = false;
+    this.doFirstBooking = false;
   }
 
   /**
@@ -148,20 +196,20 @@ export class UserComponent implements OnInit {
   private loadDataByUserName(type, userName): void {
     let id = 0;
     let flagPage = '';
-    if (this.doLast) {
-      id = this.lastId;
+    if (this.doLastUser) {
+      id = this.lastUserId;
       flagPage = 'last';
     }
-    if (this.doFirst) {
-      id = this.firstId;
+    if (this.doFirstUser) {
+      id = this.firstUserId;
       flagPage = 'first';
     }
-    this.userService.getUserInfoListByType(this.pageSize, flagPage, id, type, userName).subscribe(res => {
+    this.userService.getUserInfoListByType(this.userPageSize, flagPage, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
-          this.data = [];
-          this.data[0] = JSON.parse(res.payload);
-          this.data[0].locked === false ? this.data[0].locked = '正常' : this.data[0].locked = '已拉黑';
+          this.userData = [];
+          this.userData[0] = JSON.parse(res.payload);
+          this.userData[0].locked === false ? this.userData[0].locked = '正常' : this.userData[0].locked = '已拉黑';
         }
       } else if (res.retcode === 10000) {
         this.notification.blank('提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
@@ -170,26 +218,26 @@ export class UserComponent implements OnInit {
         this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
-    this.doLast = false;
-    this.doFirst = false;
+    this.doLastUser = false;
+    this.doFirstUser = false;
   }
 
   /**
    * 上一页
    */
-  lastPage(): void {
-    this.changePage -= 1;
-    this.doFirst = true;
-    this.doSearch();
+  lastPage(flag): void {
+    this.changeUserPage -= 1;
+    this.doFirstUser = true;
+    this.doSearch(flag);
   }
 
   /**
    * 下一页
    */
-  nextPage(): void {
-    this.changePage += 1;
-    this.doLast = true;
-    this.doSearch();
+  nextPage(flag): void {
+    this.changeUserPage += 1;
+    this.doLastUser = true;
+    this.doSearch(flag);
   }
 
   showUserInfo(data): void {
@@ -221,38 +269,6 @@ export class UserComponent implements OnInit {
     });
   }
 
-  // 反馈详情
-  showFeedbackInfo(data): void {
-    this.isFeedBackVisible = true;
-    this.tempFeedBack = data;
-  }
-
-  hideFeedBack(): void {
-    this.isFeedBackVisible = false;
-  }
-
-  // 点踩详情
-  showOppositionInfo(data): void {
-    this.isOppositionVisible = true;
-    this.tempOpposition = data;
-    this.currentOppositionAgreeId = data.id;
-  }
-
-  hideOpposition(): void {
-    this.isOppositionVisible = false;
-  }
-
-  // 点赞详情
-  showAgreeInfo(data): void {
-    this.isAgreeVisible = true;
-    this.tempAgree = data;
-    this.currentOppositionAgreeId = data.id;
-  }
-
-  hideAgree(): void {
-    this.isAgreeVisible = false;
-  }
-
   getAgeType(ageType): string {
     return ageType === 0 ? '成人' : ageType === 1 ? '儿童' : ageType === 2 ? '婴儿' : '其他';
   }
@@ -261,30 +277,60 @@ export class UserComponent implements OnInit {
     return sex === 0 ? '男' : '女' ;
   }
 
-  doSearch() {
-    this.searchItem.userName = this.searchForm.controls['userName'].value;
-    this.searchItem.phoneNum = this.searchForm.controls['phoneNum'].value;
-    if (this.searchItem.userName === '' && this.searchItem.phoneNum === '') {
-      this.loadData('user');
-    } else if (this.searchItem.userName !== '' && this.searchItem.phoneNum === '') {
-      this.loadDataByUserName('infoId', this.searchItem.userName);
-    } else if (this.searchItem.userName === '' && this.searchItem.phoneNum !== '') {
-      this.loadDataByUserName('phone', this.searchItem.phoneNum);
-    } else {
-      this.modalService.confirm({ nzTitle: '提示', nzContent: '查询条件只能选一个查询' });
+  doSearch(flag) {
+    if (flag === 'user') {
+      this.searchUserItem.userName = this.searchUserForm.controls['userName'].value;
+      this.searchUserItem.phoneNum = this.searchUserForm.controls['phoneNum'].value;
+      if (this.searchUserItem.userName === '' && this.searchUserItem.phoneNum === '') {
+        this.loadData('user');
+      } else if (this.searchUserItem.userName !== '' && this.searchUserItem.phoneNum === '') {
+        this.loadDataByUserName('infoId', this.searchUserItem.userName);
+      } else if (this.searchUserItem.userName === '' && this.searchUserItem.phoneNum !== '') {
+        this.loadDataByUserName('phone', this.searchUserItem.phoneNum);
+      } else {
+        this.modalService.confirm({ nzTitle: '提示', nzContent: '查询条件只能选一个查询' });
+      }
+    } else if ('booking') {
+      const searchBookingItem = {
+        'date': this.datePipe.transform(this.searchBookingForm.controls['date'].value, 'yyyy-MM-dd'),
+        'type': this.searchBookingForm.controls['type'].value,
+        'status': this.searchBookingForm.controls['status'].value,
+        'orderId': this.searchBookingForm.controls['orderId'].value
+      };
+      if ((searchBookingItem.date === '' || searchBookingItem.date === null) && searchBookingItem.type === ''
+          && searchBookingItem.status === '' && searchBookingItem.orderId === '') {
+        this.loadData('booking');
+      } else {
+        this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.date, searchBookingItem.orderId);
+      }
     }
   }
 
-  private _initSearchForm(): void {
-    this.searchForm = this.fb.group({
+  private _initSearchUserForm(): void {
+    this.searchUserForm = this.fb.group({
       userName: [''],
       phoneNum: [''],
     });
   }
 
+  private _initSearchBookingForm(): void {
+    this.searchBookingForm = this.fb.group({
+      date: [''],
+      type: [''],
+      status: [''],
+      orderId: [''],
+    });
+  }
+
+  private _initModifyBookingForm(): void {
+    this.modifyBookingForm = this.fb.group({
+      updateType: [''],
+    });
+  }
+
   /* 展示拉入黑名单 */
   showBlacklistModal(data): void {
-    this.infoId = data.userId;
+    this.userInfoId = data.userId;
     this.modalService.confirm({
       nzTitle: '提示',
       nzContent: '确定将该用户拉入黑名单吗？',
@@ -295,7 +341,7 @@ export class UserComponent implements OnInit {
 
   /* 设为拉黑状态 */
   doBlacklist(): void {
-    this.userService.updateUserInfo(this.infoId).subscribe(res => {
+    this.userService.updateUserInfo(this.userInfoId).subscribe(res => {
       if (res.status === 200) {
         setTimeout(() => {
           this.loadData('user');
@@ -307,61 +353,256 @@ export class UserComponent implements OnInit {
     });
   }
 
-  /* 显示发送提示 */
-  showSendMsgModal(): void {
-    const phoneNum = this.sendMsgForm.controls['phoneNum'].value;
-    if (phoneNum === '') {
-      this.modalService.error({ nzTitle: '提示', nzContent: '请填写手机号' });
-      return;
-    }
-    this.modalService.confirm({
-      nzTitle: '提示',
-      nzContent: '确定发送验证码给该手机号：' + phoneNum + '的用户吗？',
-      nzOkText: '确定',
-      nzOnOk: () => this.doSendMsg()
-    });
+  /*  取消酒店订单 */
+  cancleHotelOrder(): void {
+
   }
 
-  /* 发送短息 */
-  doSendMsg(): void {
-    const Base64 = require('js-base64').Base64;
-    const phoneNum = 'Basic ' + Base64.encode(this.sendMsgForm.controls['phoneNum'].value);
-    this.userService.sendMsg(phoneNum).subscribe(res => {
+  showInvoiceDetail(data): void {
+    this.isInvoiceVisible = true;
+  }
+
+  hideInvoiceDetail(): void {
+    this.isInvoiceVisible = false;
+  }
+
+  /* 展示订单详情 */
+  showBookingDetail(data): void {
+    this.orderId = data.orderId;
+    this.orderStatus = data.state;
+    this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
       if (res.retcode === 0) {
-        this.modalService.success({ nzTitle: '获取成功', nzContent: '验证码为： ' + res.message, nzOkText: '知道了', });
+        if (JSON.parse(res.payload).flightOrderReturn) {
+          this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
+          this.isFlightOrder = true;
+          this.isHotelOrder = false;
+          this.isTrainOrder = false;
+        }
+        if (JSON.parse(res.payload).hotelOrder) {
+          this.dataDetail = JSON.parse(res.payload).hotelOrder;
+          this.isFlightOrder = false;
+          this.isHotelOrder = true;
+          this.isTrainOrder = false;
+        }
+        if (JSON.parse(res.payload).trainOrderReturn) {
+          this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
+          this.isFlightOrder = false;
+          this.isHotelOrder = false;
+          this.isTrainOrder = true;
+        }
       } else if (res.retcode === 10000) {
-        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+    this.isBookingDetailVisible = true;
+  }
+
+  /* 展示供应商订单详情 */
+  showExternal(flag, data): void {
+    this.bookingService.getBookingDetail(flag, data).subscribe(res => {
+      if (res.retcode === 0) {
+        let externalDetail = [];
+        if (JSON.parse(res.payload).flightOrderReturn) {
+          externalDetail = JSON.parse(res.payload).flightOrderReturn;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).flightOrderReturn.flight_order_passengers.length; i++) {
+            forItem = '\'<br>乘客\'' + (i + 1) + '\'姓名：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].name +
+            '\'<br>乘客\'' + (i + 1) + '\'属性：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].age_type +
+            '\'<br>乘客\'' + (i + 1) + '\'生日：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].birthday +
+            '\'<br>乘客\'' + (i + 1) + '\'证件号：\'' + JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].card_no +
+            '\'<br>乘客\'' + (i + 1) + '\'性别：\'' + this.getSex(JSON.parse(res.payload).flightOrderReturn.flight_order_passengers[i].sex);
+          }
+          this.notification.blank('供应商订单详情',
+            '订单数量：' + JSON.parse(res.payload).flightOrderReturn.amount +
+            '<br>目的机场位置：' + JSON.parse(res.payload).flightOrderReturn.arr_airport +
+            '<br>目的城市：' + JSON.parse(res.payload).flightOrderReturn.arr_city +
+            '<br>到达时间：' + JSON.parse(res.payload).flightOrderReturn.arr_time +
+            '<br>机票类型：' + JSON.parse(res.payload).flightOrderReturn.cabin_type +
+            '<br>联系人：' + JSON.parse(res.payload).flightOrderReturn.contact +
+            '<br>联系人电话：' + JSON.parse(res.payload).flightOrderReturn.contact_mobile +
+            '<br>始发机场：' + JSON.parse(res.payload).flightOrderReturn.dept_airport +
+            '<br>始发城市：' + JSON.parse(res.payload).flightOrderReturn.dept_city +
+            '<br>始发时间：' + JSON.parse(res.payload).flightOrderReturn.dept_time +
+            '<br>所在航班：' + JSON.parse(res.payload).flightOrderReturn.flight_com +
+            forItem +
+            '<br>旅程时间：' + JSON.parse(res.payload).flightOrderReturn.flight_times +
+            '<br>航班类型：' + JSON.parse(res.payload).flightOrderReturn.flight_type +
+            '<br>企业管家编号：' + JSON.parse(res.payload).flightOrderReturn.no +
+            '<br>订单价格：' + JSON.parse(res.payload).flightOrderReturn.order_amount +
+            '<br>订单类型：' + JSON.parse(res.payload).flightOrderReturn.order_type +
+            '<br>备注：' + JSON.parse(res.payload).flightOrderReturn.order_type,
+            { nzDuration: 0 });
+        }
+        if (JSON.parse(res.payload).hotelOrder) {
+          externalDetail = JSON.parse(res.payload).hotelOrder;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).hotelOrder.customers.length; i++) {
+            forItem = '\'<br>入住成员\'' + (i + 1) + '\'：\'' + JSON.parse(res.payload).hotelOrder.customers[i].name;
+          }
+          this.notification.blank('供应商订单详情',
+            '到达时间：' + JSON.parse(res.payload).hotelOrder.arrival_date +
+            '<br>是否可取消：' + this.getAllowed(JSON.parse(res.payload).hotelOrder.allowed) +
+            '<br>取消说明：' + JSON.parse(res.payload).hotelOrder.cancel_policy.penalty_type_name +
+            '<br>取消时限：' + JSON.parse(res.payload).hotelOrder.cancel_policy.time_limit +
+            '<br>手续费：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.detail.penalty +
+            '<br>最晚到达时间：' + JSON.parse(res.payload).hotelOrder.cancel_policy.time_limit +
+            '<br>联系人电话：' + JSON.parse(res.payload).hotelOrder.contact_mobile +
+            '<br>联系人姓名：' + JSON.parse(res.payload).hotelOrder.contact_name +
+            '<br>订单创建时间：' + JSON.parse(res.payload).hotelOrder.createAt +
+            forItem +
+            '<br>离开时间：' + JSON.parse(res.payload).hotelOrder.departure_date +
+            '<br>订单价格：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.order_amount +
+            '<br>酒店订单编号：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.no +
+            '<br>酒店订单状态：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.state_name +
+            '<br>酒店订单创建时间：' + JSON.parse(res.payload).hotelOrder.hotelOrderReturn.created_at +
+            '<br>酒店所在城市：' + JSON.parse(res.payload).hotelOrder.hotel_city +
+            '<br>酒店编号：' + JSON.parse(res.payload).hotelOrder.hotel_id +
+            '<br>酒店名称：' + JSON.parse(res.payload).hotelOrder.hotel_name +
+            '<br>酒店评价：' + JSON.parse(res.payload).hotelOrder.hotel_score + '分' +
+            '<br>最晚到达时间：' + JSON.parse(res.payload).hotelOrder.latest_arrival_time +
+            '<br>房间类型：' + JSON.parse(res.payload).hotelOrder.order_room.bed_type +
+            '<br>房间容纳人数：' + JSON.parse(res.payload).hotelOrder.order_room.capacity + '人' +
+            '<br>房间小孩人数：' + JSON.parse(res.payload).hotelOrder.order_room.children + '人' +
+            '<br>房间是否有早餐：' + JSON.parse(res.payload).hotelOrder.order_room.meal +
+            '<br>房间规格：' + JSON.parse(res.payload).hotelOrder.order_room.rate_type_name +
+            '<br>房间占地面积：' + JSON.parse(res.payload).hotelOrder.order_room.roomArea +
+            '<br>房间特色：' + JSON.parse(res.payload).hotelOrder.order_room.room_type_name +
+            '<br>酒店所在区：' + JSON.parse(res.payload).hotelOrder.peripheral_information +
+            '<br>预订房间数量：' + JSON.parse(res.payload).hotelOrder.room_nums +
+            '<br>信息来源：' + JSON.parse(res.payload).hotelOrder.stars_level + '星级' +
+            '<br>酒店星级：' + JSON.parse(res.payload).hotelOrder.source +
+            '<br>用户边海鸥：' + JSON.parse(res.payload).hotelOrder.userId,
+            { nzDuration: 0 });
+        }
+        if (JSON.parse(res.payload).trainOrderReturn) {
+          externalDetail = JSON.parse(res.payload).trainOrderReturn;
+          let forItem = '';
+          for (let i = 0; i < JSON.parse(res.payload).trainOrderReturn.service_order.tickets.length; i++) {
+            forItem = '\'<br>车票\'' + (i + 1) + '\'退款价：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].estimate_refund_price +
+            '\'<br>车票\'' + (i + 1) + '\'变更价格：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].estimate_refund_service_charge +
+            '\'<br>车票\'' + (i + 1) + '\'编号：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].id +
+            '\'<br>车票\'' + (i + 1) + '\'价格：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].price +
+            '\'<br>车票\'' + (i + 1) + '\'退款费用：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].refund_price +
+            '\'<br>车票\'' + (i + 1) + '\'退款服务费：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].refund_service_charge +
+            '\'<br>车票\'' + (i + 1) + '\'状态：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].state_name +
+            '\'<br>乘客\'' + (i + 1) + '\'生日：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.birthday +
+            '\'<br>乘客\'' + (i + 1) + '\'编号：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.id_no +
+            '\'<br>乘客\'' + (i + 1) + '\'身份证：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.id_type_name +
+            '\'<br>乘客\'' + (i + 1) + '\'姓名：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.name +
+            '\'<br>乘客\'' + (i + 1) + '\'类型：\'' +
+             JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.passenger_type_name +
+            '\'<br>乘客\'' + (i + 1) + '\'是否退款：\'' +
+             this.getRefund(JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.refund) +
+            '\'<br>乘客\'' + (i + 1) + '\'性别：\'' + JSON.parse(res.payload).trainOrderReturn.service_order.tickets[i].passenger.sex_name;
+          }
+          this.notification.blank('供应商订单详情',
+            '订单创建时间：' + JSON.parse(res.payload).trainOrderReturn.created_at +
+            '<br>订单编号：' + this.getAllowed(JSON.parse(res.payload).trainOrderReturn.no) +
+            '<br>到达时间：' + JSON.parse(res.payload).trainOrderReturn.service_order.arrival_at +
+            '<br>到达城市：' + JSON.parse(res.payload).trainOrderReturn.service_order.arrival_city_name +
+            '<br>变更差价：' + JSON.parse(res.payload).trainOrderReturn.service_order.change_price_diff +
+            '<br>变更服务价格：' + JSON.parse(res.payload).trainOrderReturn.service_order.change_service_charge +
+            '<br>联系人电话：' + JSON.parse(res.payload).trainOrderReturn.service_order.contact_mobile +
+            '<br>联系人姓名：' + JSON.parse(res.payload).trainOrderReturn.service_order.contacts +
+            '<br>出发时间：' + JSON.parse(res.payload).trainOrderReturn.service_order.departure_at +
+            '<br>出发城市：' + JSON.parse(res.payload).trainOrderReturn.service_order.departure_city_name +
+            '<br>出发站台：' + JSON.parse(res.payload).trainOrderReturn.service_order.from_station +
+            '<br>到达站台：' + JSON.parse(res.payload).trainOrderReturn.service_order.to_station +
+            '<br>火车编号：' + JSON.parse(res.payload).trainOrderReturn.service_order.train_no +
+            forItem +
+            '<br>订单情况：' + JSON.parse(res.payload).trainOrderReturn.state_name,
+            { nzDuration: 0 });
+        }
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        // this._router.navigate(['/login']);
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
+      }
+    });
+    this.isExternalDetailVisible = true;
+  }
+
+  getAllowed(allowed): string {
+    return allowed = true ? '可以取消' : '不可取消' ;
+  }
+
+  getRefund(refund): string {
+    return refund = true ? '是' : '否' ;
+  }
+
+  hideBookingDetail(): void {
+    this.isBookingDetailVisible = false;
+  }
+
+  /* 展示修改弹框 */
+  doBookingModify(): void {
+    this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
+      if (res.retcode === 0) {
+        this.modalService.success({
+          nzTitle: '修改成功',
+          nzContent: res.message
+        });
+      } else if (res.retcode === 10000) {
+        this.notification.blank(
+          '提示',
+          '您还没有登录哦！',
+          {
+            nzStyle: {
+              color : 'red'
+            }
+          }
+        );
+        // this._router.navigate(['/login']);
+      } else {
+        this.modalService.confirm({
+          nzTitle: '提示',
+          nzContent: res.message
+        });
       }
     });
   }
 
-  private _initSendMsgForm(): void {
-    this.sendMsgForm = this.fb.group({
-      phoneNum: [''],
-    });
+  // 主面板分页表单
+  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean; disabled: boolean; }>): void {
+    this.displayData = $event;
+    this.refreshStatus();
   }
 
-
-  // 下载Excel模板
-  getExcel(flag): void {
-    const estimate = flag === 'opposition' ? false : true;
-    const fileName = flag === 'opposition' ? '点踩对话日志' : '点赞对话日志';
-    this.userService.getExcel(this.currentOppositionAgreeId, estimate).subscribe(res => {
-      const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
-      const a = document.createElement('a');
-      a.id = 'tempId';
-      document.body.appendChild(a);
-      a.download = fileName + '.xls';
-      a.href = URL.createObjectURL(blob);
-      a.click();
-      const tempA = document.getElementById('tempId');
-      if (tempA) {
-        tempA.parentNode.removeChild(tempA);
-      }
-    });
+  refreshStatus(): void {
+    const allChecked = this.displayData.filter(value => !value.disabled).every(value => value.checked === true);
+    const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
   }
 
 }

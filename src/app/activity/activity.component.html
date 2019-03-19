@@ -100,8 +100,7 @@
                     <font color="red">*</font>活动规则：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                    <textarea rows="5" formControlName="actRuleDesc" [(ngModel)]="modifyctivityItem.actRuleDesc" maxlength="200" nz-input
-                      placeholder="输入活动规则，不超过200个字符"></textarea>
+                    <textarea rows="5" formControlName="actRuleDesc" [(ngModel)]="modifyctivityItem.actRuleDesc" maxlength="200" nz-input placeholder="输入活动规则，不超过200个字符"></textarea>
                 </div>
               </div>
 
@@ -489,8 +488,7 @@
                   优惠券名称：
                 </div>
                 <div nz-col nzSpan="3">
-                  <input nz-input maxlength="32" formControlName="couponName" onkeyup="this.value=this.value.replace(/(^\s*)|(\s*$)/g,'')" placeholder="输入订单编号"
-                    nzSize="default">
+                  <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号" nzSize="default">
                 </div>
 
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -572,7 +570,7 @@
               <button nz-button nzType="default" (click)="hideModal('preview')">关闭</button>
             </ng-template>
           </nz-modal>
-  
+
         </nz-tab>
 
       </nz-tabset>

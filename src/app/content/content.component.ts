@@ -12,8 +12,6 @@ import { filter } from 'rxjs/operators';
 import { ScreenService } from '../public/service/screen.service';
 import { OpenService } from '../public/service/open.service';
 import { BannerService } from '../public/service/banner.service';
-import { ShareService } from '../public/service/share.service';
-import { GuideService } from '../public/service/guide.service';
 import { ReturnStatement } from '@angular/compiler';
 
 registerLocaleData(zh);
@@ -37,20 +35,15 @@ export class ContentComponent implements OnInit {
   isModifyOpenVisible = false;
   isAddBannerVisible = false;
   isModifyBannerVisible = false;
-  isAddGuideVisible = false;
-  isModifyGuideVisible = false;
   avatarUrl: string;
   addContentForm: FormGroup;
   addScreenForm: FormGroup;
   addOpenForm: FormGroup;
   addBannerForm: FormGroup;
-  addGuideForm: FormGroup;
   modifyContentForm: FormGroup;
   modifyScreenForm: FormGroup;
   modifyOpenForm: FormGroup;
   modifyBannerForm: FormGroup;
-  modifyGuideForm: FormGroup;
-  shareForm: FormGroup;
   jumpForScreen = 'DISABLED';
   jumpForOpen = 'DISABLED';
   jumpForBanner = 'DISABLED';
@@ -60,25 +53,11 @@ export class ContentComponent implements OnInit {
   fileList: UploadFile[] = [];
   imageUrl = '';
   showImageUrl = '';
-  shareImageUrl01 = '';
-  shareImageUrl02 = '';
-  shareImageUrl03 = '';
   currentPanel = 'content';  // 当前面板 默认内容管理
-  contentDate = {
-    'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': ''
-  };
-  screenDate = {
-    'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
-  };
-  openDate = {
-    'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
-  };
-  bannerDate = {
-    'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
-  };
-  guideDate = {
-    'title': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'imageSort': '', 'webUrl': ''
-  };
+  contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };
+  screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '' };
+  openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '' };
+  bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '' };
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -101,13 +80,8 @@ export class ContentComponent implements OnInit {
   dataScreen = [];  // 首屏
   dataOpen = [];  // 弹框
   dataBanner = [];  // 轮播
-  dataGuide = []; // 引导语
-  // tslint:disable-next-line:max-line-length
-  dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   currentCopywritingImage = '';
-  guideItem = { messageArr: [], buttonArr: [], imageArr: [], };
   currentAppId = '';  // 当前默认的APP信息
-  currentGuideId = '';  // 当前弹框出来的Id
 
   constructor(
     private fb: FormBuilder,
@@ -119,8 +93,6 @@ export class ContentComponent implements OnInit {
     private screenService: ScreenService,
     private openService: OpenService,
     private bannerService: BannerService,
-    private shareService: ShareService,
-    private guideService: GuideService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private http: HttpClient,
@@ -130,13 +102,10 @@ export class ContentComponent implements OnInit {
     this._initAddScreenForm();
     this._initAddOpenForm();
     this._initAddBannerForm();
-    this._initAddGuideForm();
     this._initModifyContentForm();
     this._initModifyScreenForm();
     this._initModifyOpenForm();
     this._initModifyBannerForm();
-    this._initModifyGuideForm();
-    this._initShareForm();
   }
 
   ngOnInit() {
@@ -159,41 +128,6 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
         this.dataBanner = JSON.parse(res.payload).reverse();
-      });
-    } else if (flag === 'share') {
-      this.shareImageUrl01 = '';
-      this.shareImageUrl02 = '';
-      this.shareImageUrl03 = '';
-      this.shareService.getShareList().subscribe(res => {
-        this.dataShare = JSON.parse(res.payload);
-        if (this.currentPanel === 'share') {
-          const url = `${this.commonService.baseUrl}/copywriter/upload/`;
-          this.shareImageUrl01 = `${url}?fileName=wechatPhoto`;
-          this.shareImageUrl02 = `${url}?fileName=H5NavigatePhoto`;
-          this.shareImageUrl03 = `${url}?fileName=H5Photo`;
-          this.fileList.splice(0, this.fileList.length);
-        }
-      });
-    } else if (flag === 'guide') {
-      this.guideService.getGuideAppList().subscribe(res => {
-        if (res.retcode === 0) {
-          const appList = JSON.parse(res.payload);
-          appList.forEach(item => {
-            console.log(item);
-            if (item.displayName === '小悟') {
-              this.currentAppId = item.id;
-            }
-          });
-          this.guideService.getGuideList(this.currentAppId).subscribe(result => {
-            if (result.retcode === 0) {
-              this.dataGuide = JSON.parse(result.payload);
-              this.dataGuide.forEach(cell => {
-                cell.enabled = cell.guideElements.length === 0 ? false : true;
-              });
-              console.log(this.dataGuide);
-            }
-          });
-        }
       });
     }
   }
@@ -228,6 +162,7 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
+      aaa: [''],
     });
   }
 
@@ -238,13 +173,6 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
-    });
-  }
-
-  private _initAddGuideForm(): void {
-    this.addGuideForm = this.fb.group({
-      title: [''],
-      type: [''],
     });
   }
 
@@ -270,15 +198,6 @@ export class ContentComponent implements OnInit {
       this.bannerDate = { // 清空
         'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
       };
-    } else if (flag === 'guide') {
-      this.isAddGuideVisible = true;
-      this.guideDate = { // 清空
-        'title': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'imageSort': '', 'webUrl': ''
-      };
-      this.guideItem.messageArr.splice(0, this.guideItem.messageArr.length);
-      this.guideItem.buttonArr.splice(0, this.guideItem.buttonArr.length);
-      this.guideItem.imageArr.splice(0, this.guideItem.imageArr.length);
-      this.showImageUrl = '';
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -295,8 +214,6 @@ export class ContentComponent implements OnInit {
       this.isAddOpenVisible = false;
     } else if (flag === 'banner') {
       this.isAddBannerVisible = false;
-    } else if (flag === 'guide') {
-      this.isAddGuideVisible = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -357,42 +274,8 @@ export class ContentComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
         result = false;
       }
-    } else if (flag === 'share') {
-      if (this.shareForm.controls['wechatTitle'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '微信分享的标题未填写' });
-        result = false;
-      } else if (this.shareForm.controls['wechatContent'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '微信分享的的内容未填写' });
-        result = false;
-      } else if (this.shareForm.controls['wechatHost'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '微信分享的的域名路径未填写' });
-        result = false;
-      } else if (this.shareForm.controls['wechatUrl'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '微信分享的跳转链接未填写' });
-        result = false;
-      } else if (this.shareForm.controls['linkTitle'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '复制路径的标题未填写' });
-        result = false;
-      } else if (this.shareForm.controls['linkUrl'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '复制路径对的跳转链接未填写' });
-        result = false;
-      } else if (this.shareForm.controls['linkHost'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '复制路径的域名路径未填写' });
-        result = false;
-      } else if (this.shareForm.controls['H5Title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'H5标题未填写' });
-        result = false;
-      } else if (this.shareForm.controls['H5Content'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'H5内容未填写' });
-        result = false;
-      }
-    } else if (flag === 'guide') {
-      if (this.addGuideForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '模板名称未填写' });
-        result = false;
-      }
     }
-    if (this.fileList.length !== 1 && flag !== 'share' && flag !== 'guide') {
+    if (this.fileList.length !== 1) {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
       result = false;
     }
@@ -501,151 +384,6 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'share') {
-      if (!this.verificationAdd('share')) {
-        return;
-      }
-      const shareInput = {
-        'wechatTitle': this.shareForm.controls['wechatTitle'].value,
-        'wechatContent': this.shareForm.controls['wechatContent'].value,
-        'wechatHost': this.shareForm.controls['wechatHost'].value,
-        'wechatUrl': this.shareForm.controls['wechatUrl'].value,
-        'linkTitle': this.shareForm.controls['linkTitle'].value,
-        'linkUrl': this.shareForm.controls['linkUrl'].value,
-        'linkHost': this.shareForm.controls['linkHost'].value,
-        'h5Title': this.shareForm.controls['H5Title'].value,
-        'h5Content': this.shareForm.controls['H5Content'].value,
-      };
-      this.shareService.addShare(shareInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-          this.loadData('share');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
-    } else if (flag === 'guide') {  // 引导语
-      if (!this.verificationAdd('guide')) {
-        return;
-      }
-      const guideInput = {
-        'name': this.addGuideForm.controls['title'].value,
-        'type': 'BEGINNNER_GUIDE',  // 目前暂时固定一种
-      };
-      let count = 0;
-      const allArr = [];
-      this.guideItem.messageArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? allArr.push(item) : 1;
-        count++;
-      });
-      this.guideItem.buttonArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? allArr.push(item) : 1;
-        count++;
-      });
-      this.guideItem.imageArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? allArr.push(item) : 1;
-        count++;
-      });
-      console.log(allArr);
-
-      // tslint:disable-next-line:no-unused-expression
-      allArr.forEach((item, i) => { (item.sort === i + 1) ? count++ : 1; });
-      if (count !== allArr.length) { // 解决不按序号排列的情况
-        this.modalService.error({ nzTitle: '提示', nzContent: '序号没有按顺序填写，或序号填写不完整' });
-        return;
-      }
-
-      // 拿到模板Id
-      this.guideService.addGuide(guideInput).subscribe(res => {
-        if (res.retcode === 0) {
-          const guideId = JSON.parse(res.payload).id;
-
-          // 元素添加到模板
-          // tslint:disable-next-line:no-shadowed-variable
-          let elementCount = 0;
-          allArr.forEach((item, i) => {
-            // tslint:disable-next-line:radix
-            if (parseInt(item.sort) === (i + 1)) {
-              if (item.type === 'MESSAGE') {
-                const finalInput = { 'templateId': guideId, 'text': item.text, 'index': item.sort };
-                this.guideService.addXxxForGuide(finalInput, 'message-element').subscribe(res1 => {
-                  if (res1.retcode === 0) {
-                    elementCount++;
-                    this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-                  } else {
-                    this.modalService.error({ nzTitle: '提示', nzContent: res1.message });
-                  }
-                });
-              } else if (item.type === 'BUTTON') {
-                const finalInput = { 'templateId': guideId, 'text': item.text, 'index': item.sort };
-                this.guideService.addXxxForGuide(finalInput, 'button-element').subscribe(res2 => {
-                  if (res2.retcode === 0) {
-                    elementCount++;
-                    this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-                  } else {
-                    this.modalService.error({ nzTitle: '提示', nzContent: res2.message });
-                  }
-                });
-              } else if (item.type === 'IMAGE') {
-                // tslint:disable-next-line:max-line-length
-                const finalInput = { 'templateId': guideId, 'imageKey': item.imageKey, 'index': item.sort, 'jumpType': item.jumpType, 'appDestinationType': item.appDestinationType, 'webUrl': item.webUrl };
-                this.guideService.addXxxForGuide(finalInput, 'image-element').subscribe(res3 => {
-                  if (res3.retcode === 0) {
-                    elementCount++;
-                    this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-                  } else {
-                    this.modalService.error({ nzTitle: '提示', nzContent: res3.message });
-                  }
-                });
-              }
-            }
-          });
-
-          // 给指定的APP绑定模板
-          const guideInfo = { 'id': this.currentAppId, 'templateId': guideId };
-          this.guideService.addGuideForApp(guideInfo).subscribe(result => {  // 新增一个模板给到默认的APP，不然看不到模板新增后的数据
-            if (result.retcode === 0) {
-              this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-              this.isAddGuideVisible = false;
-              this.loadData('guide');
-            }
-          });
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message })
-        }
-      });
-
-    } else if (flag === 'guide_message') {
-      const mesItem = {
-        'type': 'MESSAGE',
-        'text': '',
-        'sort': ''
-      };
-      this.guideItem.messageArr.push(mesItem);
-    } else if (flag === 'guide_button') {
-      const butItem = {
-        'type': 'BUTTON',
-        'text': '',
-        'sort': ''
-      };
-      this.guideItem.buttonArr.push(butItem);
-    } else if (flag === 'guide_image') {
-      if (this.guideItem.imageArr.length === 1) { // 最多添加一个上传图片
-        this.modalService.error({ nzTitle: '提示', nzContent: '暂时只支持上传一张' });
-        return;
-      }
-      const imgItem = {
-        'type': 'IMAGE',
-        'imageKey': '',
-        'jumpType': '',
-        'appDestinationType': '',
-        'webUrl': '',
-        'sort': ''
-      };
-      this.guideItem.imageArr.push(imgItem);
     }
   }
 
@@ -682,6 +420,7 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
+      aaa: [''],
     });
   }
 
@@ -693,28 +432,6 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
-    });
-  }
-
-  // 修改
-  _initModifyGuideForm() {
-    this.modifyGuideForm = this.fb.group({
-      title: [''],
-    });
-  }
-
-  // 分享
-  _initShareForm() {
-    this.shareForm = this.fb.group({
-      wechatTitle: [''],
-      wechatContent: [''],
-      wechatHost: [''],
-      wechatUrl: [''],
-      linkTitle: [''],
-      linkUrl: [''],
-      linkHost: [''],
-      H5Title: [''],
-      H5Content: [''],
     });
   }
 
@@ -782,9 +499,7 @@ export class ContentComponent implements OnInit {
 
   // 预览修改
   doPreviewContentModify() {
-    if (!this.verificationModify('content')) {
-      return;
-    }
+    if (!this.verificationModify('content')) { return; }
     const url = this.modifyContentForm.controls['url'].value;
     if (url) {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
@@ -862,23 +577,7 @@ export class ContentComponent implements OnInit {
         this.fileList.push(file);
         this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/JSON.parse(res.payload).image`;
       });
-    } else if (flag === 'guide') {
-      // const id = data.id;
-      // this.isModifyBannerVisible = true;
-      // this.cmsId = id;  // 用于修改
-      // this.bannerService.getBanner(id).subscribe(res => {
-      //   // 处理异常处理
-      //   this.bannerDate = JSON.parse(res.payload);
-      //   this.bannerDate.url = JSON.parse(res.payload).url;
-      //   this.imageUrl = JSON.parse(res.payload).image;
-      //   const file: any = {
-      //     name: JSON.parse(res.payload).image
-      //   };
-      //   this.fileList.push(file);
-      //   this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/JSON.parse(res.payload).image`;
-      // });
     }
-
   }
 
   hideModifyModal(flag) {
@@ -998,10 +697,8 @@ export class ContentComponent implements OnInit {
   // 删除 - 复用弹框
   showDeleteModal(data, flag) {
     this.modalService.confirm({
-      nzTitle: '提示',
-      nzContent: '您确定要删除该信息？',
-      nzOkText: '确定',
-      nzOnOk: () => this.doDelete(data.id, flag)
+      nzTitle: '提示', nzContent: '您确定要删除该信息？',
+      nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag)
     });
   }
 
@@ -1042,22 +739,6 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'guide') {
-      this.guideService.deleteGuideFromApp(this.currentAppId, id).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          this.loadData('guide');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
-    } else if (flag === 'guide_message') {
-      this.guideItem.messageArr.splice(id, 1);
-      console.log(id);
-    } else if (flag === 'guide_button') {
-      this.guideItem.buttonArr.splice(id, 1);
-    } else if (flag === 'guide_image') {
-      this.guideItem.imageArr.splice(id, 1);
     }
   }
 
@@ -1079,31 +760,28 @@ export class ContentComponent implements OnInit {
       this.screenService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          this.loadData('screen');
         }
+        this.loadData('screen');
       });
     } else if (flag === 'open') {
       this.openService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          this.loadData('open');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          this.loadData('open');
         }
+        this.loadData('open');
       });
     } else if (flag === 'banner') {
       this.bannerService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          this.loadData('banner');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          this.loadData('banner');
         }
+        this.loadData('banner');
       });
     }
   }
@@ -1158,9 +836,6 @@ export class ContentComponent implements OnInit {
     const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
     const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
     const isMoreThanTen = file.size < 512000 ? true : false;
-    if (this.currentPanel === 'share' || this.currentPanel === 'guide') {
-      this.fileList.splice(0, this.fileList.length);
-    }
     if (!isPng) {
       this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
     } else if (!isMoreThanTen) {
@@ -1193,168 +868,46 @@ export class ContentComponent implements OnInit {
         url = `${this.commonService.baseUrl}/cms/banner-ads/images/`;
         flag = 'image';
         break;
-      case 'share':
-        url = `${this.commonService.baseUrl}/copywriter/upload/`;
-        flag = 'file';
-        break;
-      case 'guide':
-        // url = `${this.commonService.baseUrl}/guide/resources/images/`;
-        url = `http://192.168.1.217:8086/api/guide/resources/images/`;
-        flag = 'file';
-        break;
       default:
         break;
-    }
-    // 文件数量不可超过1个，超过一个则提示
-    if (this.fileList.length > 1 && this.currentPanel !== 'share') {
-      this.notification.error(
-        '提示', '您上传的文件超过一个！'
-      );
-      return;
     }
     const formData = new FormData();
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
-      if (this.currentPanel === 'share') {
-        formData.append('fileType', this.currentCopywritingImage);
-      }
-      if (this.currentPanel === 'guide') {
-        formData.append('imageKey', file.name);
-      }
     });
-    const req = new HttpRequest('POST', url, formData, {
-      reportProgress: true
-    });
+    const req = new HttpRequest('POST', url, formData, { reportProgress: true });
     this.http
       .request(req)
       .pipe(filter(e => e instanceof HttpResponse))
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           this.imageUrl = event.body.payload; // 不仅用于下面的showImageUrl的拼接，还有其他接口会用到新增修改等操作
-          if (this.currentPanel === 'share') {  // 针对分享
-            if (this.currentCopywritingImage === '0') {
-              this.shareImageUrl01 = `${url}?fileName=${this.imageUrl}`;
-            } else if (this.currentCopywritingImage === '1') {
-              this.shareImageUrl02 = `${url}?fileName=${this.imageUrl}`;
-            } else if (this.currentCopywritingImage === '2') {
-              this.shareImageUrl03 = `${url}?fileName=${this.imageUrl}`;
-            }
-            if (event.body.message !== 'SUCCESS') {
-              if (this.currentCopywritingImage === '0') {
-                this.modalService.error({ nzTitle: '提示', nzContent: '上传超过32K' });
-              } else if (this.currentCopywritingImage === '1') {
-                this.modalService.error({ nzTitle: '提示', nzContent: '上传超过20K' });
-              } else if (this.currentCopywritingImage === '2') {
-                this.modalService.error({ nzTitle: '提示', nzContent: '上传超过50K' });
-              }
-              return;
-            }
-            this.loadData('share'); // 每次上传成功都重新加载数据
-          } else if (this.currentPanel === 'guide') {  // 引导语
-            this.onGuideChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
-            this.showImageUrl = url + this.imageUrl;
-          } else {  // 内容、开屏、首页弹框、轮播
-            this.showImageUrl = url + this.imageUrl;
-          }
+          this.showImageUrl = url + this.imageUrl;
           this.notification.success( '提示', '上传成功' );
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
         }
         formData.delete(flag);
-      },
-      err => { formData.delete(flag); }
+      }, err => { formData.delete(flag); }
     );
   }
 
   // 转换 url 的 & 字符
   dotranUrl(url) {
-    if (url.indexOf('`') !== -1) {
-      url = url.replace(/`/g, '&');
-    } else {
-      url = url.replace(/&/g, '`');
-    }
+    url = url.indexOf('`') !== -1 ? url.replace(/`/g, '&') : url.replace(/&/g, '`');
     return url;
-  }
-
-  // 转换 html 为 json
-  dotran(str) {
-    return str;
   }
 
   // 转换 json 为 html
   dotranJson(str) {
-    str = str.replace(/\/\/"/g, '"', str);
-    str = str.replace(/\/\/r\/\/n/g, '/r/n', str);
-    str = str.replace(/\/\/t/g, '/t', str);
-    str = str.replace(/\/\/b/g, '/b', str);
+    str = str.replace(/\/\/"/g, '"', str).replace(/\/\/r\/\/n/g, '/r/n', str).replace(/\/\/t/g, '/t', str).replace(/\/\/b/g, '/b', str);
     return str;
-  }
-
-  // 针对结构进行数据的累加
-  onGuideChange(value, site, item) {
-    if (site === 'messageSort') { // message 排序
-      this.guideItem.messageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
-      });
-    } else if (site === 'messageText') { // message
-      this.guideItem.messageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.text = value : 1;
-      });
-    } else if (site === 'buttonSort') {  // button 排序
-      this.guideItem.buttonArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
-      });
-    } else if (site === 'buttonText') {  // button
-      this.guideItem.buttonArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.text = value : 1;
-      });
-    } else if (site === 'imageSort') {  // image 排序
-      this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
-      });
-    } else if (site === 'imageJumpType') {  // image TYPE
-      this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.jumpType = value : 1;
-      });
-    } else if (site === 'imageAppDestinationType') {  // image APP
-      this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.appDestinationType = value : 1;
-      });
-    } else if (site === 'imageWebUrl') {  // image WEB
-      this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.webUrl = value : 1;
-      });
-    } else if (site === 'imageImageKey') {  // image WEB
-      this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.imageKey = value : 1;
-      });
-    }
-    console.log(this.guideItem);
   }
 
   // 切换面板
   changePanel(flag): void {
-    if (flag === 'content' && flag !== this.currentPanel) {
-      this.loadData('content');
-    } else if (flag === 'screen' && flag !== this.currentPanel) {
-      this.loadData('screen');
-    } else if (flag === 'open' && flag !== this.currentPanel) {
-      this.loadData('open');
-    } else if (flag === 'banner' && flag !== this.currentPanel) {
-      this.loadData('banner');
-    } else if (flag === 'share' && flag !== this.currentPanel) {
-      this.loadData('share');
-    } else if (flag === 'guide' && flag !== this.currentPanel) {
-      this.loadData('guide');
+    if (flag !== this.currentPanel) {
+      this.loadData(flag);
     }
     this.currentPanel = flag;
   }

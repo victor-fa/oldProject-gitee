@@ -25,87 +25,7 @@
 <!-- 左侧 -->
 <div class="left_nav">
   <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="commonService.isCollapsed">
-    <!-- <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
-      [ngClass]="{'active_panel': commonService.nav[0].active}">
-      <a class="common-button" routerLink="/account" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-book"></i>
-          <span>权限管理</span>
-        </span>
-      </a>
-    </li> -->
-    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
-    [ngClass]="{'active_panel': commonService.nav[0].active}">
-      <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-book"></i>
-          <span>APP版本</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
-    [ngClass]="{'active_panel': commonService.nav[1].active}">
-      <a class="common-button" routerLink="/taximonitor" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-book"></i>
-          <span>打车监控</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
-      [ngClass]="{'active_panel': commonService.nav[2].active}">
-      <a class="common-button" routerLink="/booking" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-book"></i>
-          <span>订票管理</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
-      <a class="common-button" routerLink="/user" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-user"></i>
-          <span>用户管理</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
-      <a class="common-button" routerLink="/content" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-file-text"></i><span>内容管理</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[5].active}">
-      <a class="common-button" routerLink="/coupon" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-red-envelope"></i><span>优惠券</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[6].active}">
-      <a class="common-button" routerLink="/activity" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-gift"></i><span>活动管理</span>
-        </span>
-      </a>
-    </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[7].active}">
-      <a class="common-button" routerLink="/batchsend" routerLinkActive="active">
-        <span title>
-          <i class="anticon anticon-notification"></i><span>批量发放</span>
-        </span>
-      </a>
-    </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[8].active}" routerLinkActive="active">
-      <span title>
-        <i class="anticon anticon-windows"></i><span>运营中心</span>
-      </span>
-      <ul>
-        <li nz-menu-item (click)="commonService.changeOperate(0, '/operate/app')">充值送豆</li>
-      </ul>
-    </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[9].active}" routerLinkActive="active">
+    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[0].active}" routerLinkActive="active">
       <span title (click)="goDataCenter()">
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>
@@ -124,6 +44,86 @@
         <li nz-menu-item (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
       </ul>
     </li>
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+    [ngClass]="{'active_panel': commonService.nav[1].active}">
+      <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>APP管理</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+    [ngClass]="{'active_panel': commonService.nav[2].active}">
+      <a class="common-button" routerLink="/customer" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>客服中心</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
+      <a class="common-button" routerLink="/user" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-user"></i>
+          <span>用户信息</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
+      <a class="common-button" routerLink="/content" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-file-text"></i><span>内容管理</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+    [ngClass]="{'active_panel': commonService.nav[5].active}">
+      <a class="common-button" routerLink="/taximonitor" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>打车监控</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[6].active}">
+      <a class="common-button" routerLink="/coupon" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-red-envelope"></i><span>优惠券</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[7].active}">
+      <a class="common-button" routerLink="/activity" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-gift"></i><span>活动相关</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[8].active}">
+      <a class="common-button" routerLink="/batchsend" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-notification"></i><span>批量发放</span>
+        </span>
+      </a>
+    </li>
+    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[9].active}" routerLinkActive="active">
+      <span title>
+        <i class="anticon anticon-windows"></i><span>运维后台</span>
+      </span>
+      <ul>
+        <li nz-menu-item (click)="commonService.changeOperate(0, '/operate/app')">充值送豆</li>
+      </ul>
+    </li>
+    <!-- <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
+      [ngClass]="{'active_panel': commonService.nav[0].active}">
+      <a class="common-button" routerLink="/account" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-book"></i>
+          <span>权限管理</span>
+        </span>
+      </a>
+    </li> -->
     <!-- <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
       <span title>
         <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="commonService.isCollapsed"

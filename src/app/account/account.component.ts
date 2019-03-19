@@ -114,7 +114,7 @@ export class AccountComponent implements OnInit {
     private _router: Router,
     private accountService: AccountService,
   ) {
-    this.commonService.nav[0].active = true;
+    this.commonService.nav[10].active = true;
     this._initRoleSearchForm();
     this._initAddRoleForm();
     this._initAddCustomerForm();

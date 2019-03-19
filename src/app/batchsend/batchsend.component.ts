@@ -58,7 +58,7 @@ export class BatchsendComponent implements OnInit {
     private notification: NzNotificationService,
     private datePipe: DatePipe,
   ) {
-    this.commonService.nav[7].active = true;
+    this.commonService.nav[8].active = true;
     this._initAddBatchsendForm();
     this._initSearchCouponForm();
   }

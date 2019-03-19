@@ -44,7 +44,7 @@ export class TaximonitorComponent implements OnInit {
     private notification: NzNotificationService,
     private datePipe: DatePipe,
   ) {
-    this.commonService.nav[1].active = true;
+    this.commonService.nav[5].active = true;
     this._initSearchTaxiForm();
     this.timerList = setInterval(() => {
       this.loadData('taxi');
