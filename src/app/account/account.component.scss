@@ -31,70 +31,10 @@
       }
     }
 
-
-  .framework_content {
-    padding: 10px;
-    height: 35%;
-    width: 98.5%;
-    border: 1px solid #E8E8E8;
-    border-radius: 4px;
-    box-shadow: 3px 3px 10px #7A7A7A;
-    margin: 10px;
-
-    .chart {
-      height: 250px;
-      width: 100%;
+    .ant-table-tbody>tr>td,
+    .ant-table-thead>tr>th {
+      padding: 10px !important;
     }
-  }
-
-  .shadow {
-    border: 1px solid #E8E8E8;
-    border-radius: 4px;
-    padding: 13px;
-    -moz-box-shadow: 3px 3px 10px #7A7A7A;
-    -webkit-box-shadow: 3px 3px 10px #7A7A7A;
-    box-shadow: 3px 3px 10px #7A7A7A;
-    margin: 10px;
-  }
-
-  .bottom {
-    display: flex;
-
-    .role {
-      height: 31.5%;
-      padding: 23px;
-      line-height: 25px;
-      width: 60%;
-
-      .content {
-        padding: 1em 0 0 0;
-      }
-    }
-
-    .user {
-      height: 31.5%;
-      padding: 23px;
-      line-height: 25px;
-      flex: 1;
-
-      .content {
-        padding: 1em 0 0 2em;
-
-        .search_panel {
-          margin-bottom: 1rem;
-        }
-      }
-
-      .button {
-        float: right;
-      }
-    }
-  }
-
-  .ant-table-tbody>tr>td,
-  .ant-table-thead>tr>th {
-    padding: 10px !important;
-  }
 
   }
 }

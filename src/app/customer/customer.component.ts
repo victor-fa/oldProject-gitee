@@ -37,6 +37,7 @@ export class CustomerComponent implements OnInit {
   };
   tempOpposition = { session: '' };
   tempAgree = { session: '' };
+  currentPanel = 'feedback';
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -50,8 +51,6 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('feedback');  // 反馈信息
-    this.loadData('agree');  // 点赞信息
-    this.loadData('opposition');  // 点踩信息
     this.sendScreenHeight = (window.screen.height - 524) + 'px';
   }
 
@@ -178,6 +177,13 @@ export class CustomerComponent implements OnInit {
         tempA.parentNode.removeChild(tempA);
       }
     });
+  }
+
+  // 切换面板
+  changePanel(flag): void {
+    // tslint:disable-next-line:no-unused-expression
+    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    this.currentPanel = flag;
   }
 
 }

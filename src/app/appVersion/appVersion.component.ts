@@ -81,6 +81,7 @@ export class AppVersionComponent implements OnInit {
       ['link', 'video']                         // link and image, video
     ]
   };
+  isSaveShareButton = false;
   private timerList;
   private timerDetail;
 
@@ -110,8 +111,6 @@ export class AppVersionComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('content');
-    this.loadData('system');
-    this.loadData('channel');
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
@@ -288,6 +287,8 @@ export class AppVersionComponent implements OnInit {
       this.isModifyGuideVisible = false;
     } else if (flag === 'help') {
       this.isAddHelpVisible = false;
+    } else if (flag === 'share') {  // 取消分享的保存功能
+      this.isSaveShareButton = false;
     }
   }
 
@@ -354,13 +355,14 @@ export class AppVersionComponent implements OnInit {
       } else if (this.shareForm.controls['linkHost'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '复制路径的域名路径未填写' });
         result = false;
-      } else if (this.shareForm.controls['H5Title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'H5标题未填写' });
-        result = false;
-      } else if (this.shareForm.controls['H5Content'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'H5内容未填写' });
-        result = false;
       }
+      //  else if (this.shareForm.controls['H5Title'].value === '') {
+      //   this.modalService.error({ nzTitle: '提示', nzContent: 'H5标题未填写' });
+      //   result = false;
+      // } else if (this.shareForm.controls['H5Content'].value === '') {
+      //   this.modalService.error({ nzTitle: '提示', nzContent: 'H5内容未填写' });
+      //   result = false;
+      // }
     } else if (flag === 'guide') {
       if (this.addGuideForm.controls['name'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '模板名称未填写' });
@@ -411,6 +413,8 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'editShare') {
+      this.isSaveShareButton = true;  // 点击编辑按钮，变成保存按钮
     } else if (flag === 'share') {
       if (!this.verificationAdd('share')) {
         return;
@@ -423,12 +427,13 @@ export class AppVersionComponent implements OnInit {
         'linkTitle': this.shareForm.controls['linkTitle'].value,
         'linkUrl': this.shareForm.controls['linkUrl'].value,
         'linkHost': this.shareForm.controls['linkHost'].value,
-        'h5Title': this.shareForm.controls['H5Title'].value,
-        'h5Content': this.shareForm.controls['H5Content'].value,
+        // 'h5Title': this.shareForm.controls['H5Title'].value,
+        // 'h5Content': this.shareForm.controls['H5Content'].value,
       };
       this.shareService.addShare(shareInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          this.isSaveShareButton = false; // 保存成功后，变为编辑按钮
           this.loadData('share');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -901,8 +906,10 @@ export class AppVersionComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) {
-      this.loadData(flag);
+    // tslint:disable-next-line:no-unused-expression
+    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== 'share') {
+      this.isSaveShareButton = false;
     }
     this.currentPanel = flag;
   }

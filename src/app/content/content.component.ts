@@ -906,9 +906,8 @@ export class ContentComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) {
-      this.loadData(flag);
-    }
+    // tslint:disable-next-line:no-unused-expression
+    flag !== this.currentPanel ? this.loadData(flag) : 1;
     this.currentPanel = flag;
   }
 

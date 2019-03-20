@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="用户管理">
+        <nz-tab nzTitle="用户管理" (nzClick)="changePanel('user')">
           <form [formGroup]="searchUserForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -85,12 +85,7 @@
           </div>
         </nz-tab>
 
-
-
-
-
-
-        <nz-tab nzTitle="订票业务">
+        <nz-tab nzTitle="订票业务" (nzClick)="changePanel('booking')">
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">

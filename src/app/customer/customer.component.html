@@ -4,7 +4,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large">
 
-        <nz-tab nzTitle="用户反馈">
+        <nz-tab nzTitle="用户反馈" (nzClick)="changePanel('feedback')">
           <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" [(nzPageSize)]="feedBackPageSize" [nzShowPagination]="false">
             <thead>
               <tr>
@@ -62,7 +62,7 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab nzTitle="发送短信">
+        <nz-tab nzTitle="发送短信" (nzClick)="changePanel('sendMsg')">
           <form [formGroup]="sendMsgForm">
             <div nz-row>
               <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br></div>
@@ -85,7 +85,7 @@
           </form>
         </nz-tab>
 
-        <nz-tab nzTitle="点踩对话日志">
+        <nz-tab nzTitle="点踩对话日志" (nzClick)="changePanel('opposition')">
           <!-- <div nz-row class="search_panel">
             <div nz-col nzSpan="24">
               <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-search"></i>点踩对话日志</button>
@@ -158,7 +158,7 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab nzTitle="点赞对话日志">
+        <nz-tab nzTitle="点赞对话日志" (nzClick)="changePanel('agree')">
           <!-- <div nz-row class="search_panel">
             <div nz-col nzSpan="24">
               <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-search"></i>点赞对话日志</button>

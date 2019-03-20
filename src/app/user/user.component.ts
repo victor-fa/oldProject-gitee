@@ -52,6 +52,7 @@ export class UserComponent implements OnInit {
   doLastBooking = false;
   doFirstBooking = false;
   bookingPageSize = 10;
+  currentPanel = 'user';
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -69,7 +70,6 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('user');
-    this.loadData('booking');
   }
 
   /**
@@ -603,6 +603,13 @@ export class UserComponent implements OnInit {
     const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
+  }
+
+  // 切换面板
+  changePanel(flag): void {
+    // tslint:disable-next-line:no-unused-expression
+    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    this.currentPanel = flag;
   }
 
 }
