@@ -111,7 +111,7 @@ export class ActivityComponent implements OnInit {
   isModifyBeanVisible = false;
   isSearchBeanVisible = false;
   // tslint:disable-next-line:max-line-length
-  beanItem = { 'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '', 'giftPercent': 0, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: '' };
+  beanItem = { 'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '', 'giftPercent': 1, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: '' };
   addBeanForm: FormGroup;
   searchBeanForm: FormGroup;
   modifyBeanForm: FormGroup;
@@ -133,7 +133,7 @@ export class ActivityComponent implements OnInit {
     private datePipe: DatePipe,
     private http: HttpClient,
   ) {
-    this.commonService.nav[7].active = true;
+    this.commonService.nav[6].active = true;
     this._initSearchActivityForm();
     this._initSearchCouponInActivityForm();
     this._initAddActivityForm();
@@ -528,7 +528,7 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'addBean') {
       this.beanItem = { // 重置数据
         'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '',
-         'giftPercent': 0, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: ''
+         'giftPercent': 1, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: ''
       };
       this.beginBeanDate = null;  // 重置日期
       this.endBeanDate = null;
@@ -801,7 +801,6 @@ export class ActivityComponent implements OnInit {
         return;
       }
       let couponInput = {};
-      console.log(this.couponRadioValue);
       if (this.couponRadioValue === 'fix_start_end') {
         couponInput = {
           'couponName': this.addCouponForm.controls['couponName'].value,
@@ -901,7 +900,7 @@ export class ActivityComponent implements OnInit {
         }
       });
     } else if (flag === 'addBean') { // 保存操作
-      if (!this.verificationAdd('activity')) { return; }
+      // if (!this.verificationAdd('addBean')) { return; }
       let beanInput = {};
       if (this.radioBeanValue === 'PERCENT_GIFT') {
         beanInput = {
@@ -936,7 +935,7 @@ export class ActivityComponent implements OnInit {
         }
       });
     } else if (flag === 'modifyBean') { // 保存操作
-      if (!this.verificationAdd('activity')) { return; }
+      // if (!this.verificationAdd('addBean')) { return; }
       let beanInput = {};
       if (this.radioBeanValue === 'PERCENT_GIFT') {
         beanInput = {
@@ -1302,7 +1301,6 @@ export class ActivityComponent implements OnInit {
         this.endBeanDate = '';
         return;
       }
-      console.log(result);
       // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
         this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
@@ -1418,4 +1416,5 @@ export class ActivityComponent implements OnInit {
     return ((new Date(s1.toString().replace(/-/g, '\/'))) < (new Date(s2.toString().replace(/-/g, '\/'))));
   }
 
+  parserPoint = (value: string) => value.replace('.', '');
 }

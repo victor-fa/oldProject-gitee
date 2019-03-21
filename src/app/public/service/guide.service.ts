@@ -22,7 +22,6 @@ export class GuideService extends AppServiceBase {
   /** 获取所有APP列表 */
   getGuideAppList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps`;
-    // const url = `http://192.168.1.217:8086/aapi${cmsApiUrls.guideList}/apps`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +29,6 @@ export class GuideService extends AppServiceBase {
   /** 获取指定APP的模板列表 */
   getGuideList(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates?appId=${id}`;
-    // const url = `http://192.168.1.217:8086/api${cmsApiUrls.guideList}/templates?appId=${id}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,7 +36,6 @@ export class GuideService extends AppServiceBase {
   /** 添加模板 */
   addGuide(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates`;
-    // const url = `http://192.168.1.217:8086/api${cmsApiUrls.guideList}/templates`;
     const body = `name=${data.name}&type=${data.type}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -50,7 +47,6 @@ export class GuideService extends AppServiceBase {
   /** 给APP添加模板  */
   addGuideForApp(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps/${data.id}/template`;
-    // const url = `http://192.168.1.217:8086/api${cmsApiUrls.guideList}/apps/${data.id}/template`;
     const body = `templateId=${data.templateId}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -62,7 +58,6 @@ export class GuideService extends AppServiceBase {
   /** 添加元三大元素给模板 */
   addXxxForGuide(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates/${data.templateId}`;
-    // const url = `http://192.168.1.217:8086/api${cmsApiUrls.guideList}/templates/${data.templateId}`;
     const body = `elements=${JSON.stringify(data.elements)}&name=${data.name}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -74,7 +69,6 @@ export class GuideService extends AppServiceBase {
   /** 从APP中删除模板 */
   deleteGuideFromApp(appId, templateId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps/${appId}/template/${templateId}`;
-    // const url = `http://192.168.1.217:8086/api${cmsApiUrls.guideList}/apps/${appId}/template/${templateId}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

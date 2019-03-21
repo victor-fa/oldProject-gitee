@@ -24,6 +24,9 @@ export class ContentService extends AppServiceBase {
   /** 获取所有内容列表 */
   getContentList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -31,6 +34,9 @@ export class ContentService extends AppServiceBase {
   /** 获取单个内容 */
   getContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,6 +44,9 @@ export class ContentService extends AppServiceBase {
   /** 删除单个内容 */
   deleteContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -45,7 +54,10 @@ export class ContentService extends AppServiceBase {
   /** 添加单个内容 */
   addContent(data): Observable<IResponse<any>> {
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'App-Channel-Id': localStorage.getItem('currentAppHeader')
+      })
     };
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
@@ -57,7 +69,10 @@ export class ContentService extends AppServiceBase {
   /** 修改单个内容 */
   updateContent(data): Observable<IResponse<any>> {
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'App-Channel-Id': localStorage.getItem('currentAppHeader')
+      })
     };
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;

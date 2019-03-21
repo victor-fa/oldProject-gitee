@@ -37,7 +37,7 @@ export class BookingService extends AppServiceBase {
           + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&lastId=' + id;
     } else if (flag === 'first') {
       url = `${this.commonService.baseUrl}/admin${bookingApiUrls.orderList}`
-          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&firstId=' + id;
+          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&preId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

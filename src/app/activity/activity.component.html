@@ -1441,7 +1441,7 @@
                 <td nzWidth="50px">{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.describe}}</td>
-                <td>{{data.beginTime | date:'yyyy-MM-dd hh:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>{{data.activeStatus}}</td>
                 <td>{{data.createTime}}</td>
                 <td>
@@ -1516,14 +1516,14 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
                 <div nz-col nzSpan="3" class="span_down">
-                  <input nz-input formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" nzSize="default">
+                  <nz-input-number formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">送</div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
-                  <input nz-input formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" nzSize="default">
+                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="1" [nzMax]="99" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
-                  <input nz-input formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" nzSize="default">
+                  <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="2" class="span_down" style="text-align: center;">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
                 <div nz-col nzSpan="2" class="span_down"></div>
@@ -1603,14 +1603,14 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">满</div>
                 <div nz-col nzSpan="3" class="span_down">
-                  <input nz-input formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" nzSize="default">
+                  <nz-input-number formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">送</div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
-                  <input nz-input formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" nzSize="default">
+                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="1" [nzMax]="99" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
-                  <input nz-input formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" nzSize="default">
+                  <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="2" class="span_down" style="text-align: center;">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
                 <div nz-col nzSpan="2" class="span_down"></div>

@@ -24,17 +24,10 @@ export class CommonService {
   isLeftNavClose = false;
   isCollapsed = false;
   commonDataCenter: any = [];
-  commonOperate: any = [];
   dataCenterStatus = 'all';
-  operateStatus = 'all';
   currentDataCenter = 0;   // 用于比对是否还是当前面板
-  currentOperate = 0;   // 用于比对是否还是当前面板
   needDataCenter = false;   // 用于判断是否需要提示
-  needOperate = false;   // 用于判断是否需要提示
   nav = [    // 大菜单的下标状态
-    { active: false },
-    { active: false },
-    { active: false },
     { active: false },
     { active: false },
     { active: false },
@@ -58,10 +51,6 @@ export class CommonService {
     { active: false },
     { active: false }
   ];
-  operate = [    // 运营中心下标状态
-    { active: false },
-    { active: false }
-  ];
   permission = {  // 权限管理
     personal: false,
     reset: false,
@@ -78,7 +67,6 @@ export class CommonService {
   };
 
   currentTitle = '数据中心';  // 数据中心标题
-  currentOperateTitle = '运营中心';  // 运营中心标题
 
   constructor(
     private _router: Router,
@@ -111,28 +99,6 @@ export class CommonService {
     // if (location.href.indexOf('dataCenter') > -1) {
     //   return;
     // }
-    setTimeout(() => {
-      this._router.navigate([route]);
-    }, 400);
-  }
-
-  changeOperate(flag, route) {
-    const operateTitle = ['充值送豆'];
-    this.needOperate = flag === this.currentOperate ? false : true;
-    localStorage.setItem('isOperateSearch', 'false');
-
-    this.operate.forEach(item => {
-      item.active = false;
-    });
-
-    this.operate[flag].active = true;
-    this.currentOperateTitle = operateTitle[flag];
-    this.currentOperate = flag;
-    this.operateStatus = 'all';
-
-    if (location.href.indexOf('operate') > -1) {
-      return;
-    }
     setTimeout(() => {
       this._router.navigate([route]);
     }, 400);

@@ -79,14 +79,8 @@ export class UserComponent implements OnInit {
     if (flag === 'user') {
       let id = 0;
       let flagPage = '';
-      if (this.doLastUser) {
-        id = this.lastUserId;
-        flagPage = 'last';
-      }
-      if (this.doFirstUser) {
-        id = this.firstUserId;
-        flagPage = 'first';
-      }
+      if (this.doLastUser) { id = this.lastUserId; flagPage = 'last'; }
+      if (this.doFirstUser) { id = this.firstUserId; flagPage = 'first'; }
       this.userService.getUserInfoList(this.userPageSize, flagPage, id).subscribe(res => {
         if (res.payload !== '') {
           if (res.status === 200) {
@@ -111,14 +105,8 @@ export class UserComponent implements OnInit {
     } else if (flag === 'booking') {
       let id = 0;
       let pageFlag = '';
-      if (this.doLastBooking) {
-        id = this.lastBookingId;
-        pageFlag = 'last';
-      }
-      if (this.doFirstBooking) {
-        id = this.firstBookingId;
-        pageFlag = 'first';
-      }
+      if (this.doLastBooking) { id = this.lastBookingId; pageFlag = 'last'; }
+      if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
       this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload !== '') {
@@ -127,23 +115,14 @@ export class UserComponent implements OnInit {
             this.allBookingSize = JSON.parse(res.payload).allSize;
             this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
             this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+            console.log(this.dataOrder);
+            console.log(this.firstBookingId + '===' + this.lastBookingId);
           }
         } else if (res.retcode === 10000) {
-          this.notification.blank(
-            '提示',
-            '您还没有登录哦！',
-            {
-              nzStyle: {
-                color : 'red'
-              }
-            }
-          );
+          this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' }});
           // this._router.navigate(['/login']);
         } else {
-          this.modalService.confirm({
-            nzTitle: '提示',
-            nzContent: res.message
-          });
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
       this.doLastBooking = false;
@@ -155,14 +134,8 @@ export class UserComponent implements OnInit {
   private loadDataByKey(state, type, createTime, orderId): void {
     let id = 0;
     let pageFlag = '';
-    if (this.doLastBooking) {
-      id = this.lastBookingId;
-      pageFlag = 'last';
-    }
-    if (this.doFirstBooking) {
-      id = this.firstBookingId;
-      pageFlag = 'first';
-    }
+    if (this.doLastBooking) { id = this.lastBookingId; pageFlag = 'last'; }
+    if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
     this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, state, type, createTime, orderId).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
@@ -171,17 +144,13 @@ export class UserComponent implements OnInit {
           this.allBookingSize = JSON.parse(res.payload).allSize;
           this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
           this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+          console.log(this.dataOrder);
         }
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
     this.doLastBooking = false;
@@ -196,14 +165,8 @@ export class UserComponent implements OnInit {
   private loadDataByUserName(type, userName): void {
     let id = 0;
     let flagPage = '';
-    if (this.doLastUser) {
-      id = this.lastUserId;
-      flagPage = 'last';
-    }
-    if (this.doFirstUser) {
-      id = this.firstUserId;
-      flagPage = 'first';
-    }
+    if (this.doLastUser) { id = this.lastUserId; flagPage = 'last'; }
+    if (this.doFirstUser) { id = this.firstUserId; flagPage = 'first'; }
     this.userService.getUserInfoListByType(this.userPageSize, flagPage, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
@@ -227,7 +190,9 @@ export class UserComponent implements OnInit {
    */
   lastPage(flag): void {
     this.changeUserPage -= 1;
+    this.changeBookingPage -= 1;
     this.doFirstUser = true;
+    this.doFirstBooking = true;
     this.doSearch(flag);
   }
 
@@ -236,7 +201,9 @@ export class UserComponent implements OnInit {
    */
   nextPage(flag): void {
     this.changeUserPage += 1;
+    this.changeBookingPage += 1;
     this.doLastUser = true;
+    this.doLastBooking = true;
     this.doSearch(flag);
   }
 
@@ -332,10 +299,7 @@ export class UserComponent implements OnInit {
   showBlacklistModal(data): void {
     this.userInfoId = data.userId;
     this.modalService.confirm({
-      nzTitle: '提示',
-      nzContent: '确定将该用户拉入黑名单吗？',
-      nzOkText: '确定',
-      nzOnOk: () => this.doBlacklist()
+      nzTitle: '提示', nzContent: '确定将该用户拉入黑名单吗？', nzOkText: '确定', nzOnOk: () => this.doBlacklist()
     });
   }
 
@@ -392,20 +356,11 @@ export class UserComponent implements OnInit {
         }
       } else if (res.retcode === 10000) {
         this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
+          '提示', '您还没有登录哦！', { nzStyle: { color : 'red' }}
         );
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
     this.isBookingDetailVisible = true;
@@ -481,7 +436,7 @@ export class UserComponent implements OnInit {
             '<br>房间规格：' + JSON.parse(res.payload).hotelOrder.order_room.rate_type_name +
             '<br>房间占地面积：' + JSON.parse(res.payload).hotelOrder.order_room.roomArea +
             '<br>房间特色：' + JSON.parse(res.payload).hotelOrder.order_room.room_type_name +
-            '<br>酒店所在区：' + JSON.parse(res.payload).hotelOrder.peripheral_information +
+            // '<br>酒店所在区：' + JSON.parse(res.payload).hotelOrder.peripheral_information +
             '<br>预订房间数量：' + JSON.parse(res.payload).hotelOrder.room_nums +
             '<br>信息来源：' + JSON.parse(res.payload).hotelOrder.stars_level + '星级' +
             '<br>酒店星级：' + JSON.parse(res.payload).hotelOrder.source +
@@ -532,21 +487,10 @@ export class UserComponent implements OnInit {
             { nzDuration: 0 });
         }
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
     this.isExternalDetailVisible = true;
@@ -568,26 +512,12 @@ export class UserComponent implements OnInit {
   doBookingModify(): void {
     this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
       if (res.retcode === 0) {
-        this.modalService.success({
-          nzTitle: '修改成功',
-          nzContent: res.message
-        });
+        this.modalService.success({ nzTitle: '修改成功', nzContent: res.message });
       } else if (res.retcode === 10000) {
-        this.notification.blank(
-          '提示',
-          '您还没有登录哦！',
-          {
-            nzStyle: {
-              color : 'red'
-            }
-          }
-        );
+        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
         // this._router.navigate(['/login']);
       } else {
-        this.modalService.confirm({
-          nzTitle: '提示',
-          nzContent: res.message
-        });
+        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
   }

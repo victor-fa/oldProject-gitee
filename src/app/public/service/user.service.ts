@@ -171,7 +171,7 @@ export class UserService extends AppServiceBase {
         // 登录成功，直接跳转
         this._cookiesService.setToken(tempString.payload);
         setTimeout(() => {
-          this.router.navigateByUrl('booking');
+          this.router.navigateByUrl('appVersion');
           // 登录成功
           this.notification.blank(
             '提示',

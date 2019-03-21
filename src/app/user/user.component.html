@@ -32,7 +32,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [(nzPageSize)]="userPageSize" [nzShowPagination]="false">
+          <nz-table #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [(nzPageSize)]="userPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -68,7 +68,7 @@
           </nz-table>
           <!-- 分页模块 -->
           <div nz-row style="margin: 10px 0;line-height: 30px;">
-            <div nz-col nzSpan="16"></div>
+            <div nz-col nzSpan="12"></div>
             <div nz-col nzSpan="2">
               <nz-select [(ngModel)]="userPageSize">
                 <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
@@ -79,13 +79,13 @@
             </div>
             <div nz-col nzSpan="1" *ngIf="changeUserPage !== 1 && totalUser !== 0"><button nz-button nzType="primary" (click)="lastPage('user')"><i class="anticon anticon-left"></i></button></div>
             <div nz-col nzSpan="1" *ngIf="changeUserPage === 1 || totalUser === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="4">当前为 {{changeUserPage}} / {{allUserSize}} 页 &nbsp;&nbsp; 共 {{totalUser}} 条</div>
+            <div nz-col nzSpan="6">当前为 {{changeUserPage}} / {{allUserSize}} 页 &nbsp;&nbsp; 共 {{totalUser}} 条</div>
             <div nz-col nzSpan="1" *ngIf="changeUserPage !== allUserSize && totalUser !== 0"><button nz-button nzType="primary" (click)="nextPage('user')"><i class="anticon anticon-right"></i></button></div>
             <div nz-col nzSpan="1" *ngIf="changeUserPage === allUserSize || totalUser === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="订票业务" (nzClick)="changePanel('booking')">
+        <nz-tab nzTitle="订单查询" (nzClick)="changePanel('booking')">
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -147,7 +147,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionBookingTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false">
+          <nz-table #rowSelectionBookingTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -198,7 +198,7 @@
             </tbody>
           </nz-table>
           <div nz-row style="margin: 10px 0;line-height: 30px;">
-            <div nz-col nzSpan="16"></div>
+            <div nz-col nzSpan="12"></div>
             <div nz-col nzSpan="2">
               <nz-select [(ngModel)]="bookingPageSize">
                 <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
@@ -209,7 +209,7 @@
             </div>
             <div nz-col nzSpan="1" *ngIf="changeBookingPage !== 1 && totalBooking !== 0"><button nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
             <div nz-col nzSpan="1" *ngIf="changeBookingPage === 1 || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="4">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
+            <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
             <div nz-col nzSpan="1" *ngIf="changeBookingPage !== allBookingSize && totalBooking !== 0"><button nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
             <div nz-col nzSpan="1" *ngIf="changeBookingPage === allBookingSize || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
@@ -618,12 +618,12 @@
                   <div nz-col nzSpan="9">{{dataDetail.order_room.room_type_name}}</div>
                   <div nz-col nzSpan="4"></div>
                 </div>
-                <div nz-row class="search_panel">
+                <!-- <div nz-row class="search_panel">
                   <div nz-col nzSpan="4"></div>
                   <div nz-col nzSpan="7" class="right_alignment">酒店所在区：</div>
                   <div nz-col nzSpan="9">{{dataDetail.peripheral_information}}</div>
                   <div nz-col nzSpan="4"></div>
-                </div>
+                </div> -->
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="4"></div>
                   <div nz-col nzSpan="7" class="right_alignment">预订房间数量：</div>

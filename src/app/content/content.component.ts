@@ -97,7 +97,7 @@ export class ContentComponent implements OnInit {
     private datePipe: DatePipe,
     private http: HttpClient,
   ) {
-    this.commonService.nav[4].active = true;
+    this.commonService.nav[5].active = true;
     this._initAddContentForm();
     this._initAddScreenForm();
     this._initAddOpenForm();

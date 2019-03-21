@@ -22,7 +22,6 @@ export class ShareService extends AppServiceBase {
   /** 获取所有内容列表 */
   getShareList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.shareList}`;
-    // const url = `http://192.168.1.48:8086/api${cmsApiUrls.shareList}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +29,6 @@ export class ShareService extends AppServiceBase {
   /** 添加单个 */
   addShare(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.shareList}`;
-    // const url = `http://192.168.1.48:8086/api${cmsApiUrls.shareList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
