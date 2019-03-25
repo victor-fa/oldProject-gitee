@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
@@ -8,6 +8,7 @@ import { IResponse } from '../model/response.model';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CookiesService } from './cookies.service';
 import { Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -25,6 +26,7 @@ export class UserService extends AppServiceBase {
     private router: Router,
     private notification: NzNotificationService,
     public commonService: CommonService,
+    private http: HttpClient,
   ) {
     super(injector);
   }
@@ -144,53 +146,42 @@ export class UserService extends AppServiceBase {
    * @param input
    */
   login(input: LoginItemInput) {
-    const Base64 = require('js-base64').Base64;
-    const auth = 'Basic ' + Base64.encode(input.userName + ':' + input.password);
     const result = new XMLHttpRequest();
-    let tempString = {
-      'message': '',
-      'payload': '',
-      'retcode': 0,
-      'status': 0
+    const formData = new FormData();
+    formData.set('username', input.userName);
+    formData.set('password', input.password);
+    result.onreadystatechange = function() {
+      console.log(result.getAllResponseHeaders());
+      console.log(result.getResponseHeader);
+      console.log(result.getResponseHeader('Authorization'));
+      console.log(result);
+        //   if (result.readyState !== 4 || result.status !== 200) { return; }
+      // if (this.readyState === this.HEADERS_RECEIVED) {
+        // const contentType = result.getAllResponseHeaders();
+        // console.log(this.readyState + '===' + this.HEADERS_RECEIVED);
+      // }
     };
+    result.open('POST', `http://192.168.1.39:8086/api/admin/process_login`);
+    result.send(formData);
 
-    result.open('POST', `${this.commonService.baseUrl}/admin/token`, true);
-    result.setRequestHeader('Authorization', auth);
-    result.setRequestHeader('Content-Type', 'application/json');
-    result.send('');
-    result.onreadystatechange = doResult;
-    function doResult() {
-      if (result.readyState !== 4 || result.status !== 200) { return; }
-      document.getElementById('resultInfo').innerHTML = result.responseText;
-    }
+    // const formData = new FormData();
+    // formData.set('username', input.userName);
+    // formData.set('password', input.password);
+    // const req = new HttpRequest('POST', `http://192.168.1.39:8086/api/admin/process_login`, formData, {
+    //   reportProgress: true
+    // });
+    // this.http
+    //   .request(req)
+    //   .pipe(filter(e => e instanceof HttpResponse))
+    //   .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+    //     console.log(event);
+    //     if (event.body.retcode === 0) {
+    //     } else {
+    //     }
+    //   },
+    //   err => {  }
+    // );
 
-    setTimeout(() => {
-      tempString = JSON.parse(document.getElementById('resultInfo').innerHTML);
-
-      if (tempString.retcode === 0) {
-        // 登录成功，直接跳转
-        this._cookiesService.setToken(tempString.payload);
-        setTimeout(() => {
-          this.router.navigateByUrl('appVersion');
-          // 登录成功
-          this.notification.blank(
-            '提示',
-            '登录成功！',
-            {
-              nzStyle: {
-                color : 'green'
-              }
-            }
-          );
-        }, 1000);
-      } else {
-        // 登录不成功，处理错误信息
-        this.modalService.error({
-          nzTitle: '提示',
-          nzContent: tempString.message
-        });
-      }
-    }, 200);
   }
 
   /** 获取点赞点踩Excel模板接口 */

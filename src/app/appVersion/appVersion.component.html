@@ -3,22 +3,9 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="APP版本" (nzClick)="changePanel('content')">
+        <nz-tab nzTitle="版本更新" (nzClick)="changePanel('content')">
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="19">
-              <form [formGroup]="searchContentForm">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                  渠道：
-                </div>
-                <div nz-col nzSpan="5">
-                  <nz-select [ngModel]="''" formControlName="channel">
-                    <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                    <nz-option required [nzLabel]="'小悟'" [nzValue]="'XIAOWU'"></nz-option>
-                    <nz-option required [nzLabel]="'伦茨'" [nzValue]="'LENZE'"></nz-option>
-                  </nz-select>
-                </div>
-              </form>
-            </div>
+            <div nz-col nzSpan="19"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('content')"><i class="anticon anticon-search"></i>查询</button>
             </div>
@@ -65,12 +52,8 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
-                <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="contentDate.channel" formControlName="channel">
-                    <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                    <nz-option required [nzLabel]="'小悟'" [nzValue]="'XIAOWU'"></nz-option>
-                    <nz-option required [nzLabel]="'伦茨'" [nzValue]="'LENZE'"></nz-option>
-                  </nz-select>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{currentChanelId === 'XIAOWU' ? '小悟' : (currentChanelId === 'LENZE' ? '伦茨' : 'null')}}
                 </div>
                 <div nz-col nzSpan="4"></div>
               </div>

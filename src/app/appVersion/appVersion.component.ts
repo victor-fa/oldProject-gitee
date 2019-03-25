@@ -28,7 +28,6 @@ export class AppVersionComponent implements OnInit {
   isAddHelpVisible = false;
   isModifyGuideVisible = false;
   isModifyHelpVisible = false;
-  searchContentForm: FormGroup;
   addContentForm: FormGroup;
   addGuideForm: FormGroup;
   addHelpForm: FormGroup;
@@ -38,7 +37,7 @@ export class AppVersionComponent implements OnInit {
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   // tslint:disable-next-line:max-line-length
-  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'channel': '', 'dataContent': '' };
+  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': '' };
   // tslint:disable-next-line:max-line-length
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   // tslint:disable-next-line:max-line-length
@@ -47,7 +46,6 @@ export class AppVersionComponent implements OnInit {
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   dataContent = []; // 内容
   dataSystemSymbo = []; // 操作系统
-  dataChannel = []; // 渠道
   dataGuide = []; // 引导语
   dataHelp = []; // 技能帮助
   beginDate = '';
@@ -84,6 +82,7 @@ export class AppVersionComponent implements OnInit {
   isSaveShareButton = false;
   private timerList;
   private timerDetail;
+  currentChanelId = '';
 
   constructor(
     private fb: FormBuilder,
@@ -100,13 +99,13 @@ export class AppVersionComponent implements OnInit {
     private http: HttpClient,
   ) {
     this.commonService.nav[1].active = true;
-    this._initSearchContentForm();
     this._initAddContentForm();
     this._initAddGuideForm();
     this._initAddHelpForm();
     this._initShareForm();
     this._initModifyGuideForm();
     this._initModifyHelpForm();
+    this.currentChanelId = localStorage.getItem('currentAppHeader');
   }
 
   ngOnInit() {
@@ -126,8 +125,7 @@ export class AppVersionComponent implements OnInit {
   loadData(flag) {
     if (flag === 'content') {
       const arr = [];
-      const channel = this.searchContentForm.controls['channel'].value;
-      this.appversionService.getAppversionList(channel).subscribe(res => {
+      this.appversionService.getAppversionList(this.currentChanelId).subscribe(res => {
         if (JSON.parse(res.payload).android !== 'null') {
           arr.push(JSON.parse(JSON.parse(res.payload).android));
         }
@@ -142,13 +140,6 @@ export class AppVersionComponent implements OnInit {
         arrSystem.push(JSON.parse(res.payload).ANDROID);
         arrSystem.push(JSON.parse(res.payload).IOS);
         this.dataSystemSymbo = arrSystem;
-      });
-    } else if (flag === 'channel') {
-      const arrChannel = [];
-      this.appversionService.getChannelList().subscribe(res => {
-        arrChannel.push(JSON.parse(res.payload).XIAOWU);
-        arrChannel.push(JSON.parse(res.payload).LENZE);
-        this.dataChannel = arrChannel;
       });
     } else if (flag === 'share') {
       this.shareImageUrl01 = '';
@@ -200,12 +191,6 @@ export class AppVersionComponent implements OnInit {
     }
   }
 
-  private _initSearchContentForm(): void {
-    this.searchContentForm = this.fb.group({
-      channel: [''],
-    });
-  }
-
   private _initAddContentForm(): void {
     this.addContentForm = this.fb.group({
       version: [''],
@@ -216,7 +201,6 @@ export class AppVersionComponent implements OnInit {
       system_symbol: [''],
       version_allowed: [''],
       sub_title: [''],
-      channel: [''],
     });
   }
 
@@ -256,9 +240,9 @@ export class AppVersionComponent implements OnInit {
     if (flag === 'content') {
       this.isAddContentVisible = true;
       this.contentDate = {  // 清空
-          // tslint:disable-next-line:max-line-length
-          'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'channel': '', 'dataContent': ''
-        };
+        // tslint:disable-next-line:max-line-length
+        'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': ''
+      };
     } else if (flag === 'guide') {
       this.isAddGuideVisible = true;
       this.guideDate = { // 清空
@@ -305,10 +289,7 @@ export class AppVersionComponent implements OnInit {
   verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'content') {
-      if (this.addContentForm.controls['channel'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '渠道未选择' });
-        result = false;
-      } else if (this.addContentForm.controls['system_symbol'].value === '') {
+      if (this.addContentForm.controls['system_symbol'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '系统类型未选择' });
         result = false;
       } else if (this.addContentForm.controls['title'].value === '') {
@@ -402,7 +383,7 @@ export class AppVersionComponent implements OnInit {
         'system_symbol': this.addContentForm.controls['system_symbol'].value,
         'version_allowed': this.addContentForm.controls['version_allowed'].value,
         'sub_title': this.addContentForm.controls['sub_title'].value,
-        'channel': this.addContentForm.controls['channel'].value
+        'channel': this.currentChanelId
       };
       this.appversionService.addAppversion(contentInput).subscribe(res => {
         if (res.retcode === 0) {

@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LocalizationService } from '../public/service/localization.service';
 import { ContentService } from '../public/service/content.service';
-import { HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
 import { ScreenService } from '../public/service/screen.service';
 import { OpenService } from '../public/service/open.service';
@@ -530,7 +530,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).thumbnail
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/notices/thumbnails/${JSON.parse(res.payload).thumbnail}`;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/notices/thumbnails/${this.imageUrl}`;
       });
     } else if (flag === 'screen') {
       const id = data.id;
@@ -545,7 +545,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/start-page-ads/images/${JSON.parse(res.payload).image}`;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/start-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'open') {
       const id = data.id;
@@ -560,7 +560,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/main-page-ads/images/JSON.parse(res.payload).image`;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/main-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'banner') {
       const id = data.id;
@@ -575,7 +575,7 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/JSON.parse(res.payload).image`;
+        this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/${this.imageUrl}`;
       });
     }
   }
@@ -823,7 +823,7 @@ export class ContentComponent implements OnInit {
   // 获取地址
   doGetContentUrl(data) {
     // tslint:disable-next-line:max-line-length
-    window.open(`${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/api'))}/static/content-detail.html?id=${data.id}`);
+    window.open(`${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/api'))}/static/content-detail.html?id=${data.id}&channelId=${localStorage.getItem('currentAppHeader')}`);
   }
 
   // 用于区分分享文案下的三个上传图片的方法
@@ -875,7 +875,10 @@ export class ContentComponent implements OnInit {
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
     });
-    const req = new HttpRequest('POST', url, formData, { reportProgress: true });
+    const req = new HttpRequest('POST', url, formData, {
+      reportProgress: true,
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    });
     this.http
       .request(req)
       .pipe(filter(e => e instanceof HttpResponse))

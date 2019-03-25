@@ -1090,10 +1090,13 @@
 
         <nz-tab nzTitle="批量发放" (nzClick)="changePanel('batchsendList')">
           <div nz-row class="search_panel">
+            <div nz-col nzSpan="2" class="span_down right_alignment">
+              查询范围：
+            </div>
             <div nz-col nzSpan="7" class="span_down">
               <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
             </div>
-            <div nz-col nzSpan="11"></div>
+            <div nz-col nzSpan="9"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('batchsendList')"><i class="anticon anticon-search"></i>查询</button>
             </div>
@@ -1431,7 +1434,7 @@
                 <th>活动名称</th>
                 <th>送豆规则</th>
                 <th>有效时间</th>
-                <th>活动状态</th>
+                <!-- <th>活动状态</th> -->
                 <th>创建时间</th>
                 <th>操作</th>
               </tr>
@@ -1442,7 +1445,7 @@
                 <td>{{data.title}}</td>
                 <td>{{data.describe}}</td>
                 <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td>{{data.activeStatus}}</td>
+                <!-- <td>{{data.activeStatus}}</td> -->
                 <td>{{data.createTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('searchBean', data)" style="margin-right: 10px;"><i
@@ -1508,7 +1511,7 @@
                 <div nz-col nzSpan="24" class="span_down">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
                     <label nz-radio nzValue="PERCENT_GIFT">充值送豆百分比</label>
-                    <label nz-radio nzValue="FIXED_QUOTA_GIFT">充值送豆固定额度</label>
+                    <label nz-radio nzValue="FIXED_QUOTA_GIFT" [nzDisabled]="true">充值送豆固定额度</label>
                   </nz-radio-group>
                 </div>
               </div>
@@ -1520,7 +1523,7 @@
                 </div>
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">送</div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
-                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="1" [nzMax]="99" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
+                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="0" [nzMax]="100" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
                   <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
@@ -1595,7 +1598,7 @@
                 <div nz-col nzSpan="24" class="span_down">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
                       <label nz-radio nzValue="PERCENT_GIFT">充值送豆百分比</label>
-                      <label nz-radio nzValue="FIXED_QUOTA_GIFT">充值送豆固定额度</label>
+                      <label nz-radio nzValue="FIXED_QUOTA_GIFT" [nzDisabled]="true">充值送豆固定额度</label>
                   </nz-radio-group>
                 </div>
               </div>
@@ -1607,7 +1610,7 @@
                 </div>
                 <div nz-col nzSpan="1" class="span_down" style="text-align: center;">送</div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
-                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="1" [nzMax]="99" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
+                  <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="0" [nzMax]="100" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
                 <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
                   <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>

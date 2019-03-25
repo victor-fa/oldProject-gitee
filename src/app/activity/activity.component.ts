@@ -257,10 +257,10 @@ export class ActivityComponent implements OnInit {
       this.xiaowubeanService.getXiaowubeanList(beanInput).subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           this.beanData = JSON.parse(res.payload);
-          const nowTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm');
+          const nowTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
           this.beanData.forEach((item, i) => {
-            const beginTime = this.datePipe.transform(item.beginTime, 'yyyy-MM-dd HH:mm');
-            const endTime = this.datePipe.transform(item.endTime, 'yyyy-MM-dd HH:mm');
+            const beginTime = this.datePipe.transform(item.beginTime, 'yyyy-MM-dd HH:mm:ss');
+            const endTime = this.datePipe.transform(item.endTime, 'yyyy-MM-dd HH:mm:ss');
             let result = '';
             if (this.compareDate(nowTime, beginTime)) {
               result = '未开始';
@@ -690,6 +690,31 @@ export class ActivityComponent implements OnInit {
       //     result = false;
       //   }
       // }
+    } else if (flag === 'addBean') {
+      let content = '';
+      this.beanData.forEach(item => {
+        if (this.compareDate(item.beginTime, this.beginBeanDate) && this.compareDate(this.beginBeanDate, item.endTime)
+          || this.compareDate(item.beginTime, this.endBeanDate) && this.compareDate(this.endBeanDate, item.endTime)) {
+          content += (item.title + '————' + item.beginTime + '~' + item.endTime + '<br>');
+        }
+      });
+      if (content !== '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '您输入的有效时间跟其他活动时间重叠，请重新选择时间<br>' + content });
+        result = false;
+      }
+    } else if (flag === 'modifyBean') {
+      let content = '';
+      this.beanData.forEach(item => {
+        if (this.beanItem.id === item.id) { return; } // 不跟自己比较
+        if (this.compareDate(item.beginTime, this.beginBeanDate) && this.compareDate(this.beginBeanDate, item.endTime)
+          || this.compareDate(item.beginTime, this.endBeanDate) && this.compareDate(this.endBeanDate, item.endTime)) {
+          content += (item.title + '————' + item.beginTime + '~' + item.endTime + '<br>');
+        }
+      });
+      if (content !== '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '您输入的有效时间跟其他活动时间重叠，请重新选择时间<br>' + content });
+        result = false;
+      }
     }
     return result;
   }
@@ -900,7 +925,7 @@ export class ActivityComponent implements OnInit {
         }
       });
     } else if (flag === 'addBean') { // 保存操作
-      // if (!this.verificationAdd('addBean')) { return; }
+      if (!this.verificationAdd('addBean')) { return; }
       let beanInput = {};
       if (this.radioBeanValue === 'PERCENT_GIFT') {
         beanInput = {
@@ -935,7 +960,7 @@ export class ActivityComponent implements OnInit {
         }
       });
     } else if (flag === 'modifyBean') { // 保存操作
-      // if (!this.verificationAdd('addBean')) { return; }
+      if (!this.verificationAdd('modifyBean')) { return; }
       let beanInput = {};
       if (this.radioBeanValue === 'PERCENT_GIFT') {
         beanInput = {

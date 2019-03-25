@@ -56,7 +56,7 @@
                 <td>{{data.availableAmount}}</td>
                 <td>{{data.availableBeans}}</td>
                 <td>{{data.estimate_price}}</td>
-                <td>{{data.monitorType ? (data.monitorType === 0 ? '余额不足' : data.monitorType === 1 ? '超出预估' : 'null') : 'null'}}</td>
+                <td>{{data.monitorType !== null ? (data.monitorType === 0 ? '余额不足' : (data.monitorType === 1 ? '超出预估' : 'null')) : 'null'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('taxi', data)"><i
                       class="anticon anticon-form"></i>详情</button>
@@ -69,19 +69,45 @@
           <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="8">
-                订单号&nbsp;&nbsp;：{{currentTaxi.orderId}}<br>
-                司机电话：{{currentTaxi.driverPhone}}<br>
-                用户账号：{{currentTaxi.userPhone}}<br>
-                用户昵称：{{currentTaxi.userNickName}}<br>
-                打车计价：{{currentTaxi.nowPrice}}<br>
-                可用小悟币：{{currentTaxi.availableAmount}}<br>
-                可用小悟豆：{{currentTaxi.availableBeans}}<br>
-                打车预估价：{{currentTaxi.estimate_price }}<br>
-                打车平台：{{currentTaxi.source ? currentTaxi.source === 'didi' ? '滴滴平台' : currentTaxi.source === 'shenzhou' ? '神州平台' : currentTaxi.source === 'yidao' ? '易到平台' : currentTaxi.source === 'shouqi' ? '首汽平台' : 'null' : 'null'}}<br>
-                报警原因：{{currentTaxi.monitorType ? (currentTaxi.monitorType === 0 ? '余额不足' : currentTaxi.monitorType === 1 ? '超出预估' : 'null') : 'null'}}<br>
-                报警时间：{{currentTaxi.createDate}}<br>
-                起始地点：{{currentTaxi.originName}}<br>
-                目标地点：{{currentTaxi.destinationName}}<br>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">订单号：</div><div nz-col nzSpan="16">{{currentTaxi.orderId}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">司机电话：</div><div nz-col nzSpan="16">{{currentTaxi.driverPhone}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">用户账号：</div><div nz-col nzSpan="16">{{currentTaxi.userPhone}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">用户昵称：</div><div nz-col nzSpan="16">{{currentTaxi.userNickName}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">打车计价：</div><div nz-col nzSpan="16">{{currentTaxi.nowPrice}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">可用小悟币：</div><div nz-col nzSpan="16">{{currentTaxi.availableAmount}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">可用小悟豆：</div><div nz-col nzSpan="16">{{currentTaxi.availableBeans}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">打车预估价：</div><div nz-col nzSpan="16">{{currentTaxi.estimate_price}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">打车平台：</div><div nz-col nzSpan="16">{{currentTaxi.source ? (currentTaxi.source === 'didi' ? '滴滴平台' : (currentTaxi.source === 'shenzhou' ? '神州平台' : (currentTaxi.source === 'yidao' ? '易到平台' : (currentTaxi.source === 'shouqi' ? '首汽平台' : (currentTaxi.source === 'caocao' ? '曹操' : 'null'))))) : 'null'}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">报警原因：</div><div nz-col nzSpan="16">{{currentTaxi.monitorType !== null ? (currentTaxi.monitorType === 0 ? '余额不足' : (currentTaxi.monitorType === 1 ? '超出预估' : 'null')) : 'null'}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">报警时间：</div><div nz-col nzSpan="16">{{currentTaxi.createDate}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">起始地点：</div><div nz-col nzSpan="16">{{currentTaxi.originName}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="8" class="right_alignment">目标地点：</div><div nz-col nzSpan="16">{{currentTaxi.destinationName}}</div>
+                </div>
               </div>
               <div nz-col nzSpan="16">
                 <div id='container' style='width: 100%; height: 400px;'></div>

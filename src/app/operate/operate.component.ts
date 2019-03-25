@@ -87,6 +87,7 @@ export class OperateComponent implements OnInit {
     if (flag === 'taxi') {
       this.isTaxiDetailVisible = true;
       this.currentTaxi = data;
+      console.log(this.currentTaxi);
       if (this.timerList) {
         clearInterval(this.timerList);
       }

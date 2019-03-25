@@ -33,8 +33,7 @@ export class LoginComponent implements OnInit {
       this.loginForm.controls[key].markAsDirty();
     }
     // 验证不通过，则不请求API
-    if (this.getFormControl('userName').hasError('mobile')
-    || this.getFormControl('userName').value === ''
+    if (this.getFormControl('userName').value === ''
     || this.getFormControl('password').value === '') {
       this.modalService.error({
         nzTitle: '提示',

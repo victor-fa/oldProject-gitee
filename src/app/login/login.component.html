@@ -28,9 +28,7 @@
           <div nz-col nzSpan="20">
             <label nz-form-item>
               <div nz-form-control nzHasFeedback>
-                <input nz-input formControlName="userName" placeholder="手机号" nzSize="default">
-                <div nz-form-explain maxlength="11" style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').hasError('mobile')"
-                  (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">不符合手机格式要求！</div>
+                <input nz-input formControlName="userName" placeholder="账号" nzSize="default">
                 <div nz-form-explain maxlength="16" style="color: red" *ngIf="getFormControl('userName').dirty&&getFormControl('userName').value === ''">请输入手机号！</div>
               </div>
             </label>
@@ -44,7 +42,7 @@
           <div nz-col nzSpan="20">
             <label nz-form-item>
               <div nz-form-control nzHasFeedback>
-                <input nz-input formControlName="password" placeholder="登录密码" type="password" nzSize="default" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">
+                <input nz-input formControlName="password" placeholder="密码" type="password" nzSize="default" (keyup)="($event.which === 13)?onSubmit($event, loginForm):0">
                 <div nz-form-explain maxlength="16" style="color: red" *ngIf="getFormControl('password').dirty&&getFormControl('password').value === ''">请输入密码！</div>
               </div>
             </label>
