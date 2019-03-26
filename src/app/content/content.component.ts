@@ -47,6 +47,7 @@ export class ContentComponent implements OnInit {
   jumpForScreen = 'DISABLED';
   jumpForOpen = 'DISABLED';
   jumpForBanner = 'DISABLED';
+  displayModeForOpen = 'ONCE';
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
@@ -91,8 +92,8 @@ export class ContentComponent implements OnInit {
     public localizationService: LocalizationService,
     private contentService: ContentService,
     private screenService: ScreenService,
-    private openService: OpenService,
     private bannerService: BannerService,
+    private openService: OpenService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private http: HttpClient,
@@ -124,6 +125,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
         this.dataOpen = JSON.parse(res.payload).reverse();
+        console.log(this.dataOpen);
       });
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
@@ -162,7 +164,8 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
-      aaa: [''],
+      displayModeForOpen: [''],
+      maxDisplay: ['']
     });
   }
 
@@ -351,7 +354,9 @@ export class ContentComponent implements OnInit {
         'jump': this.addOpenForm.controls['jump'].value,
         'image': this.imageUrl,
         'order': this.addOpenForm.controls['order'].value,
-        'url': this.addOpenForm.controls['url'].value
+        'url': this.addOpenForm.controls['url'].value,
+        'displayMode': this.displayModeForOpen,
+        'maxDisplay': this.addOpenForm.controls['maxDisplay'].value
       };
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -420,7 +425,8 @@ export class ContentComponent implements OnInit {
       site: [''],
       order: [''],
       url: [''],
-      aaa: [''],
+      displayModeForOpen: [''],
+      maxDisplay: ['']
     });
   }
 
@@ -530,7 +536,8 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).thumbnail
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/notices/thumbnails/${this.imageUrl}`;
+        // tslint:disable-next-line:max-line-length
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/notices/thumbnails/${this.imageUrl}`;
       });
     } else if (flag === 'screen') {
       const id = data.id;
@@ -545,7 +552,8 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/start-page-ads/images/${this.imageUrl}`;
+        // tslint:disable-next-line:max-line-length
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/start-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'open') {
       const id = data.id;
@@ -560,7 +568,8 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/main-page-ads/images/${this.imageUrl}`;
+        // tslint:disable-next-line:max-line-length
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/main-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'banner') {
       const id = data.id;
@@ -575,7 +584,8 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/banner-ads/images/${this.imageUrl}`;
+        // tslint:disable-next-line:max-line-length
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/banner-ads/images/${this.imageUrl}`;
       });
     }
   }
@@ -657,7 +667,9 @@ export class ContentComponent implements OnInit {
         'site': jump === 'APP' ? this.modifyOpenForm.controls['site'].value : '',  // 安卓 IOS 标识
         'url': jump === 'HTML' ? this.modifyOpenForm.controls['url'].value : '',
         'order': this.modifyOpenForm.controls['order'].value,
-        'image': this.imageUrl
+        'image': this.imageUrl,
+        'displayMode': this.displayModeForOpen,
+        'maxDisplay': this.modifyOpenForm.controls['maxDisplay'].value
       };
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -853,19 +865,19 @@ export class ContentComponent implements OnInit {
     let flag = '';
     switch (this.currentPanel) {
       case 'content':
-        url = `${this.commonService.baseUrl}/cms/notices/thumbnails/`;
+        url = `/v1/cms/notices/thumbnails/`;
         flag = 'thumbnail';
         break;
       case 'screen':
-        url = `${this.commonService.baseUrl}/cms/start-page-ads/images/`;
+        url = `/v1/cms/start-page-ads/images/`;
         flag = 'image';
         break;
       case 'open':
-        url = `${this.commonService.baseUrl}/cms/main-page-ads/images/`;
+        url = `/v1/cms/main-page-ads/images/`;
         flag = 'image';
         break;
       case 'banner':
-        url = `${this.commonService.baseUrl}/cms/banner-ads/images/`;
+        url = `/v1/cms/banner-ads/images/`;
         flag = 'image';
         break;
       default:
@@ -875,9 +887,13 @@ export class ContentComponent implements OnInit {
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
     });
-    const req = new HttpRequest('POST', url, formData, {
+    // tslint:disable-next-line:max-line-length
+    const req = new HttpRequest('POST', `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}`, formData, {
       reportProgress: true,
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+      headers: new HttpHeaders({
+        'App-Channel-Id': localStorage.getItem('currentAppHeader'),
+        'Authorization': localStorage.getItem('token')
+      })
     });
     this.http
       .request(req)
@@ -885,7 +901,8 @@ export class ContentComponent implements OnInit {
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           this.imageUrl = event.body.payload; // 不仅用于下面的showImageUrl的拼接，还有其他接口会用到新增修改等操作
-          this.showImageUrl = url + this.imageUrl;
+          // tslint:disable-next-line:max-line-length
+          this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           this.notification.success( '提示', '上传成功' );
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });

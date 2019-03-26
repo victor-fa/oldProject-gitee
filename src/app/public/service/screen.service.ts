@@ -11,8 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class ScreenService extends AppServiceBase {
-  // const token = this._cookiesService.getToken();
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -25,6 +23,7 @@ export class ScreenService extends AppServiceBase {
   getScreenList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -35,6 +34,7 @@ export class ScreenService extends AppServiceBase {
   getScreen(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}/${id}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -45,6 +45,7 @@ export class ScreenService extends AppServiceBase {
   deleteScreen(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}/${id}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -57,10 +58,8 @@ export class ScreenService extends AppServiceBase {
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
     this.setOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'App-Channel-Id': localStorage.getItem('currentAppHeader')
-      })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -72,10 +71,8 @@ export class ScreenService extends AppServiceBase {
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}`;
     this.setOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'App-Channel-Id': localStorage.getItem('currentAppHeader')
-      })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
@@ -86,10 +83,8 @@ export class ScreenService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}/${data.id}`;
     const body = `enabled=${data.enabled}&duration=${data.duration}`;
     this.setOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'App-Channel-Id': localStorage.getItem('currentAppHeader')
-      })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     // tslint:disable-next-line:max-line-length
     return this.httpClient

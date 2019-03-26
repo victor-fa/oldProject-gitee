@@ -11,8 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class HelpService extends AppServiceBase {
-  // const token = this._cookiesService.getToken();
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,

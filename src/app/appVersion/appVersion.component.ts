@@ -8,7 +8,7 @@ import { LocalizationService } from '../public/service/localization.service';
 import { ContentService } from '../public/service/content.service';
 import { AppversionService } from '../public/service/appVersion.service';
 import { ShareService } from '../public/service/share.service';
-import { HttpResponse, HttpRequest, HttpClient } from '@angular/common/http';
+import { HttpResponse, HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
 import { GuideService } from '../public/service/guide.service';
 import { HelpService } from '../public/service/help.service';
@@ -148,7 +148,7 @@ export class AppVersionComponent implements OnInit {
       this.shareService.getShareList().subscribe(res => {
         this.dataShare = JSON.parse(res.payload);
         if (this.currentPanel === 'share') {
-          const url = `${this.commonService.baseUrl}/copywriter/upload/`;
+          const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/copywriter/upload/`;
           this.shareImageUrl01 = `${url}?fileName=wechatPhoto`;
           this.shareImageUrl02 = `${url}?fileName=H5NavigatePhoto`;
           this.shareImageUrl03 = `${url}?fileName=H5Photo`;
@@ -159,9 +159,10 @@ export class AppVersionComponent implements OnInit {
       this.guideService.getGuideAppList().subscribe(res => {
         if (res.retcode === 0) {
           const appList = JSON.parse(res.payload);
+          console.log(appList);
           let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
           appList.forEach(item => {
-            if (item.displayName === '小悟') {
+            if (item.displayName === localStorage.getItem('currentAppHeader')) {
               this.currentAppId = item.id;
               // tslint:disable-next-line:no-unused-expression
               JSON.stringify(item.templates) !== '{}' ? templates = JSON.parse(item.templates) : 1;
@@ -602,8 +603,8 @@ export class AppVersionComponent implements OnInit {
           this.guideItem.imageArr.push(item);
         }
       });
-      this.showImageUrl = `${this.commonService.baseUrl}/guide/resources/images/${imageUrl}`;
-      // this.showImageUrl = `http://192.168.1.217:8086/api/guide/resources/images/${imageUrl}`;
+      // tslint:disable-next-line:max-line-length
+      this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/guide/resources/images/${imageUrl}`;
       this.guideDate.jumpType = jumpType;
       this.guideDate.appDestinationType = appDestinationType;
       this.guideDate.webUrl = webUrl;
@@ -750,19 +751,19 @@ export class AppVersionComponent implements OnInit {
 
   // 点击上传
   handleUpload(): void {
-    let url = '';
+    let url = ''; // 用于上传
     let flag = '';
     switch (this.currentPanel) {
       case 'share':
-        url = `${this.commonService.baseUrl}/copywriter/upload/`;
+        url = `/copywriter/upload/`;
         flag = 'file';
         break;
       case 'guide':
-        url = `${this.commonService.baseUrl}/guide/resources/images/`;
+        url = `/guide/resources/images/`;
         flag = 'file';
         break;
       case 'help':
-        url = `${this.commonService.baseUrl}/help/resources/images/`;
+        url = `/help/resources/images/`;
         flag = 'file';
         break;
       default:
@@ -781,7 +782,12 @@ export class AppVersionComponent implements OnInit {
       // tslint:disable-next-line:no-unused-expression
       this.currentPanel === 'guide' ? formData.append('imageKey', file.name) : 1;
     });
-    const req = new HttpRequest('POST', url, formData, { reportProgress: true });
+    // tslint:disable-next-line:max-line-length
+    const baseUrl = this.currentPanel === 'guide' ? this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) : this.commonService.baseUrl;
+    const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, { // 上传图需要区分，因为引导语不需要admin，而分享需要admin
+      reportProgress: true,
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
+    });
     this.http
       .request(req)
       .pipe(filter(e => e instanceof HttpResponse))
@@ -790,11 +796,14 @@ export class AppVersionComponent implements OnInit {
           this.imageUrl = event.body.payload; // 不仅用于下面的showImageUrl的拼接，还有其他接口会用到新增修改等操作
           if (this.currentPanel === 'share') {  // 针对分享
             if (this.currentCopywritingImage === '0') {
-              this.shareImageUrl01 = `${url}?fileName=${this.imageUrl}`;
+              // tslint:disable-next-line:max-line-length
+              this.shareImageUrl01 = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}?fileName=${this.imageUrl}`;
             } else if (this.currentCopywritingImage === '1') {
-              this.shareImageUrl02 = `${url}?fileName=${this.imageUrl}`;
+              // tslint:disable-next-line:max-line-length
+              this.shareImageUrl02 = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}?fileName=${this.imageUrl}`;
             } else if (this.currentCopywritingImage === '2') {
-              this.shareImageUrl03 = `${url}?fileName=${this.imageUrl}`;
+              // tslint:disable-next-line:max-line-length
+              this.shareImageUrl03 = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}?fileName=${this.imageUrl}`;
             }
             if (event.body.message !== 'SUCCESS') {
               if (this.currentCopywritingImage === '0') {
@@ -809,7 +818,7 @@ export class AppVersionComponent implements OnInit {
             this.loadData('share'); // 每次上传成功都重新加载数据
           } else if (this.currentPanel === 'guide') {  // 引导语
             this.onGuideChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
-            this.showImageUrl = url + this.imageUrl;
+            this.showImageUrl = url + '/api' + this.imageUrl;
           }
           this.notification.success( '提示', '上传成功' );
         } else {

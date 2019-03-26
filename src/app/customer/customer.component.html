@@ -50,7 +50,7 @@
                 <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
                    <div nz-col nzSpan="4"></div>
                   <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="12"><img [src]="commonService.baseUrl + '/feedback/img/' + item" style="width: 350px;"></div>
+                  <div nz-col nzSpan="12"><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/feedback/img/' + item" style="width: 350px;"></div>
                   <div nz-col nzSpan="4"></div>
                 </div>
               </ng-container>

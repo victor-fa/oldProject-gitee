@@ -28,7 +28,7 @@
             <tbody>
               <tr *ngFor="let data of contentTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td><img [src]="commonService.baseUrl + '/cms/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/notices/thumbnails/' + data.thumbnail" class="thumbnail"></td>
                 <td>{{data.title}}</td>
                 <td>{{data.type == 'SKILL' ? '使用技巧' : data.type == 'OPERATION' ? '福利活动' : data.type == 'OCCURRENCE' ? '小悟动态' : '系统消息'}}</td>
                 <td>{{data.readingAmount}}</td>
@@ -263,7 +263,7 @@
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
-                <td><img [src]="commonService.baseUrl + '/cms/start-page-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/start-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -496,7 +496,7 @@
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <!-- <td>{{data.order}}</td> -->
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
-                <td><img [src]="commonService.baseUrl + '/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -563,20 +563,20 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>展示规则：</div>
                 <div nz-col nzSpan="16" class="span_down">
-                  <nz-radio-group [ngModel]="'aaa'" formControlName="aaa">
-                    <label nz-radio nzValue="aaa">仅一次</label>
-                    <label nz-radio nzValue="bbb">每天展示N次</label>
-                    <label nz-radio nzValue="ccc">查看后不展示</label>
-                    <label nz-radio nzValue="ddd">每次启动出现</label>
+                  <nz-radio-group [(ngModel)]="displayModeForOpen" formControlName="displayModeForOpen">
+                    <label nz-radio nzValue="ONCE">仅一次</label>
+                    <label nz-radio nzValue="EVERY_DAY">每天展示N次</label>
+                    <label nz-radio nzValue="NO_MORE_AFTER_CHECK">查看后不展示</label>
+                    <label nz-radio nzValue="EACH_START_UP">每次启动出现</label>
                   </nz-radio-group>
                 </div>
               </div>
-              <div nz-row class="search_panel">
-                  <!-- *ngIf="" -->
+              <div nz-row class="search_panel" *ngIf="displayModeForOpen === 'EVERY_DAY'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>请输入展示次数：</div>
                 <div nz-col nzSpan="11">
                   <input nz-input placeholder="请输入展示次数" nzSize="default">
                 </div>
+                <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="1" class="span_down right">次</div>
               </div>
               <!-- <div nz-row class="search_panel">
@@ -665,20 +665,20 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>展示规则：</div>
                 <div nz-col nzSpan="16" class="span_down">
-                  <nz-radio-group [ngModel]="'aaa'" formControlName="aaa">
-                    <label nz-radio nzValue="aaa">仅一次</label>
-                    <label nz-radio nzValue="bbb">每天展示N次</label>
-                    <label nz-radio nzValue="ccc">查看后不展示</label>
-                    <label nz-radio nzValue="ddd">每次启动出现</label>
+                  <nz-radio-group [(ngModel)]="displayModeForOpen" formControlName="displayModeForOpen">
+                    <label nz-radio nzValue="ONCE">仅一次</label>
+                    <label nz-radio nzValue="EVERY_DAY">每天展示N次</label>
+                    <label nz-radio nzValue="NO_MORE_AFTER_CHECK">查看后不展示</label>
+                    <label nz-radio nzValue="EACH_START_UP">每次启动出现</label>
                   </nz-radio-group>
                 </div>
               </div>
-              <div nz-row class="search_panel">
-                  <!-- *ngIf="" -->
+              <div nz-row class="search_panel" *ngIf="displayModeForOpen === 'EVERY_DAY'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>请输入展示次数：</div>
                 <div nz-col nzSpan="11">
-                  <input nz-input placeholder="请输入展示次数" nzSize="default">
+                  <input nz-input formControlName="maxDisplay" [ngModel]="openDate.maxDisplay" placeholder="请输入展示次数" nzSize="default">
                 </div>
+                <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="1" class="span_down right">次</div>
               </div>
               <!-- <div nz-row class="search_panel">
@@ -749,7 +749,7 @@
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td>{{data.order}}</td>
-                <td><img [src]="commonService.baseUrl + '/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/banner-ads/images/' + data.image" class="thumbnail"></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>

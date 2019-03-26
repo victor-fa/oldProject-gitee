@@ -11,7 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class XiaowubeanService extends AppServiceBase {
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -49,7 +48,7 @@ export class XiaowubeanService extends AppServiceBase {
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + this.token })
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -67,7 +66,7 @@ export class XiaowubeanService extends AppServiceBase {
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + this.token })
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);

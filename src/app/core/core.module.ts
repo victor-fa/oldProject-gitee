@@ -50,11 +50,11 @@ import { AuthInterceptor } from '../public/service/auth-interceptor.service';
             provide: 'APP_CONFIG',
             useValue: 'APP_CONFIG', // 临时
         },
-        // {
-        //     provide: HTTP_INTERCEPTORS,
-        //     useClass: AuthInterceptor,
-        //     multi: true
-        // },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        },
     ]
 })
 

@@ -11,8 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class ContentService extends AppServiceBase {
-  // const token = this._cookiesService.getToken();
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -25,6 +23,7 @@ export class ContentService extends AppServiceBase {
   getContentList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -35,6 +34,7 @@ export class ContentService extends AppServiceBase {
   getContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -45,6 +45,7 @@ export class ContentService extends AppServiceBase {
   deleteContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
     this.setOption = {
+      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -54,10 +55,8 @@ export class ContentService extends AppServiceBase {
   /** 添加单个内容 */
   addContent(data): Observable<IResponse<any>> {
     this.setOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'App-Channel-Id': localStorage.getItem('currentAppHeader')
-      })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
@@ -68,15 +67,13 @@ export class ContentService extends AppServiceBase {
 
   /** 修改单个内容 */
   updateContent(data): Observable<IResponse<any>> {
-    this.setOption = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'App-Channel-Id': localStorage.getItem('currentAppHeader')
-      })
-    };
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${data.id}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

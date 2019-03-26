@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/public/service/common.service';
-import { CookiesService } from '../service/cookies.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,7 +12,6 @@ export class LeftNavComponent implements OnInit {
   currentAppHeader = '';
   constructor(
     public commonService: CommonService,
-    private _cookiesService: CookiesService,
     private _router: Router,
   ) {
     const tempKey = localStorage.getItem('currentAppHeader'); // 针对当前APP标识做的处理，因为每次切换都会加载组件，所以存放到localstorage（不能放ngInInit）
@@ -39,7 +37,8 @@ export class LeftNavComponent implements OnInit {
   }
 
   cancellation(): void {
-    this._cookiesService.clearToken();
+    localStorage.setItem('token', '');
+    this._router.navigate(['/login']);
   }
 
   goDataCenter() {

@@ -5,7 +5,7 @@ import zh from '@angular/common/locales/zh';
 import { NzModalService, NzNotificationService, UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { LocalizationService } from '../public/service/localization.service';
-import { HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
 import { ActivityService } from '../public/service/activity.service';
 import { CouponService } from '../public/service/coupon.service';
@@ -213,6 +213,7 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'coupon') {
       this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
         this.dataCoupon = JSON.parse(res.payload);
+        console.log(this.dataCoupon);
       });
     } else if (flag === 'batchsendList') {
       const batchsend = {
@@ -1189,7 +1190,8 @@ export class ActivityComponent implements OnInit {
       formData.append('actRuleId', baseInfoId);
     });
     const req = new HttpRequest('POST', url, formData, {
-      reportProgress: true
+      reportProgress: true,
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
     });
     this.http
       .request(req)

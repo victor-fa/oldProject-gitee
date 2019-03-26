@@ -62,7 +62,7 @@
               <button nz-button nzType="primary" (click)="doSearchCoupon('coupon')"><i class="anticon anticon-file-add"></i>查询</button>
             </div>
           </div>
-          <nz-table #couponTable [nzData]="dataCoupon">
+          <nz-table #couponManagerTable [nzData]="dataCoupon">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -75,7 +75,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of couponTable.data; let i=index;">
+              <tr *ngFor="let data of couponManagerTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.ctime | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>{{data.couponNo}}</td>
@@ -83,6 +83,7 @@
                 <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
                 <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
                 <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
+                <td *ngIf="!data.timeLimitType">null</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
@@ -931,7 +932,7 @@
             <ng-container *ngFor="let item of couponListArr">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <nz-table #couponTable [nzData]="item.actCouponRulePoL">
+                  <nz-table #couponNumberTable [nzData]="item.actCouponRulePoL">
                     <thead>
                       <tr>
                         <th [attr.rowspan]="2">红包组编号</th>
@@ -945,7 +946,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of couponTable.data; let i=index;">
+                      <tr *ngFor="let data of couponNumberTable.data; let i=index;">
                         <td>{{i === 0 ? item.actGiftNo : ''}}</td>
                         <td>{{i+1}}</td>
                         <td>{{data.couponRulePo.couponNo}}</td>
@@ -1173,7 +1174,7 @@
 
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <nz-table #couponTable [nzData]="couponListArrInBatchsend">
+                  <nz-table #couponChooseTable [nzData]="couponListArrInBatchsend">
                     <thead>
                       <tr>
                         <th>序号</th>
@@ -1186,7 +1187,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let data of couponTable.data; let i=index;">
+                      <tr *ngFor="let data of couponChooseTable.data; let i=index;">
                         <td>{{i+1}}</td>
                         <td>{{data.couponNo}}</td>
                         <td>{{data.couponName}}</td>

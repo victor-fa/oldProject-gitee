@@ -1,11 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
 import { AppServiceBase } from '../base/app-service.base';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IResponse } from '../model/response.model';
 import { userApiUrls } from '../enum/api.enum';
-import { IAccountListItemOutput, LoginItemInput, IRolesItemInput,
-  IRolesItemOutput, AddRolesItem, AddCustomerItem, CustomerItem, LoginItemOutput } from '../model/account.model';
+import { IAccountListItemOutput, LoginItemInput, LoginItemOutput } from '../model/account.model';
 import { environment } from 'src/environments/environment';
 import { CommonService } from './common.service';
 
@@ -23,7 +22,7 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 获取全部账号 */
-  getUserList(customerItem: CustomerItem): Observable<IResponse<IAccountListItemOutput[]>> {
+  getUserList(customerItem): Observable<IResponse<IAccountListItemOutput[]>> {
     let userName = '';
     let nick = '';
     let department = '';
@@ -43,12 +42,12 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 登录账号 */
-  login(login: LoginItemInput): Observable<IResponse<LoginItemOutput>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.login}/admin`;
-    const body = `userName=${login.userName}&password=${login.password}`;
-    return this.httpClient
-      .post<IResponse<LoginItemOutput>>(url, body, this.options);
-  }
+  // login(login: LoginItemInput): Observable<IResponse<LoginItemOutput>> {
+  //   const url = `${this.commonService.baseUrl}${userApiUrls.login}/admin`;
+  //   const body = `userName=${login.userName}&password=${login.password}`;
+  //   return this.httpClient
+  //     .post<IResponse<LoginItemOutput>>(url, body, this.options);
+  // }
 
   /** 获取加密用的盐 */
   getPublicSalt(): Observable<IResponse<any>> {
@@ -58,7 +57,7 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 新增员工 */
-  addCustomer(customer: AddCustomerItem): Observable<IResponse<IAccountListItemOutput[]>> {
+  addCustomer(customer): Observable<IResponse<IAccountListItemOutput[]>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.register}/admin`;
     // tslint:disable-next-line:max-line-length
     const body = `userName=${customer.userName}&password=${customer.password}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
@@ -67,7 +66,7 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 修改员工 */
-  modifyCustomer(id: string, customer: AddCustomerItem): Observable<IResponse<IAccountListItemOutput[]>> {
+  modifyCustomer(id, customer): Observable<IResponse<IAccountListItemOutput[]>> {
     let body = '';
     const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${id}`;
     if (customer.password === undefined) {
@@ -82,8 +81,8 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 删除员工 */
-  deleteCustomer(id: string): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${id}`;
+  deleteCustomer(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${data.id}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -96,36 +95,36 @@ export class AccountService extends AppServiceBase {
   }
 
   /** 获取全部角色 */
-  getRolesList(role?: IRolesItemInput): Observable<IResponse<IRolesItemOutput[]>> {
+  getRolesList(role): Observable<IResponse<any>> {
     let name = '';
     if (role) {
       name = role.name ? role.name : '';
     }
     const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin` + (name ? '?name=' + name : '');
     return this.httpClient
-      .get<IResponse<IRolesItemOutput[]>>(url, this.options);
+      .get<IResponse<any>>(url, this.options);
   }
 
   /** 新增角色 */
-  addRoles(role: AddRolesItem): Observable<IResponse<IRolesItemOutput[]>> {
+  addRoles(role): Observable<IResponse<any>> {
     // tslint:disable-next-line:max-line-length
     const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin`;
     const body = `name=${role.name}&description=${role.description}&permissions=${role.permissions}`;
     return this.httpClient
-      .post<IResponse<IRolesItemOutput[]>>(url, body, this.options);
+      .post<IResponse<any>>(url, body, this.options);
   }
 
   /** 修改角色 */
-  modifyRole(id: string, customer: AddRolesItem): Observable<IResponse<IRolesItemOutput[]>> {
+  modifyRole(id: string, customer): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${id}`;
     const body = `name=${customer.name}&description=${customer.description}&permissions=${customer.permissions}`;
     return this.httpClient
-      .post<IResponse<IRolesItemOutput[]>>(url, body, this.options);
+      .post<IResponse<any>>(url, body, this.options);
   }
 
   /** 删除角色 */
-  deleteRole(id: string): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${id}`;
+  deleteRole(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${data.id}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

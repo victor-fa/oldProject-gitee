@@ -3,74 +3,31 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="用户列表">
+        <nz-tab nzTitle="权限配置" (nzClick)="changePanel('role')">
           <div nz-row class="search_panel">
-          · <form [formGroup]="searchForm">
-              <div nz-col nzSpan="2" class="span_down right_alignment">
-                账号：
-              </div>
-              <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
-              </div>
-
-              <div nz-col nzSpan="1"></div>
-
-              <div nz-col nzSpan="2" class="span_down right_alignment">
-                名称：
-              </div>
-              <div nz-col nzSpan="3" class="span_down">
-                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
-              </div>
-
-              <div nz-col nzSpan="1"></div>
-
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                角色：
-              </div>
-              <div nz-col nzSpan="3">
-                <nz-select [ngModel]="''" formControlName="type">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
-                  <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
-                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
-                  <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
-                </nz-select>
-              </div>
-
-            </form>
-
-            <div nz-col nzSpan="1"></div>
-
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary"><i class="anticon anticon-search" style="margin-right: 10px;"></i>查询</button>
-              <!-- (click)="doSearchCustomer()" -->
+            <div nz-col nzSpan="21">
             </div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddCustomerModal()"><i class="anticon anticon-file-add"></i>新增</button>
+              <button nz-button nzType="primary" (click)="showModal('addRole', '')"><i class="anticon anticon-file-add"></i>新增角色</button>
             </div>
           </div>
-
-          <nz-table #rowSelectionTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
+          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
-                <th nzWidth="100px">账号</th>
-                <th nzWidth="100px">员工名称</th>
-                <th nzWidth="100px">角色</th>
-                <th nzWidth="100px">所属部门</th>
+                <th nzWidth="100px">角色名称</th>
+                <th nzWidth="100px">描述</th>
                 <th nzWidth="100px">操作</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowSelectionRoleTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.userName}}</td>
-                <td>{{data.nick}}</td>
-                <td>{{data.roleName}}</td>
-                <td>{{data.department}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.name}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyCustomerModal(data)" style="margin-right: 10px;">编辑</button>
-                  <button nz-button nzType="danger" (click)="showDeleteRoleModal(data.uid)">删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyRole', data)" style="margin-right: 10px;">编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteRole', data)">删除</button>
                 </td>
               </tr>
             </tbody>
@@ -92,206 +49,35 @@
             <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
 
-          <!-- 弹框 —— 新增 —— 新增员工 -->
-          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="450" nzTitle="新增员工" [nzFooter]="addRoleModalFooter"
-            (nzOnCancel)="hideAddCustomerModal()">
-            <form [formGroup]="customerAddForm">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>账号：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerAddItem.userName" placeholder="输入账号" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('userName').dirty&&getAddFormControl('userName').hasError('rightNum')">由数字或英文组成，8到12个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('userName').dirty&&getAddFormControl('userName').value === ''">请输入账号</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                    <font color="red">*</font>密码：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerAddItem.password" placeholder="输入密码" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('password').dirty&&getAddFormControl('password').hasError('rightNum')">由数字或英文组成，6到12个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('password').dirty&&getAddFormControl('password').value === ''">请输入密码</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                    <font color="red">*</font>员工名称：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerAddItem.nick" placeholder="输入名称" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('nick').dirty&&getAddFormControl('nick').hasError('userName')">由中文或英文组成，不超过10个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getAddFormControl('nick').dirty&&getAddFormControl('nick').value === ''">请输入名称</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  角色：
-                </div>
-                <div nz-col nzSpan="12">
-                  <nz-select formControlName="roles" [(ngModel)]="tempRoleName">
-                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
-                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" nzValue="item.id"></nz-option>
-                    <div nz-form-explain style="color: red" *ngIf="getAddFormControl('roles').dirty&&getAddFormControl('roles').value === ''">请输入角色，如果没有数据，请到角色列表获取角色数据</div>
-                  </nz-select>
-                </div>
-              </div>
-            </form>
-            <!-- 弹框和底部定制 -->
-            <ng-template #addRoleModalFooter>
-              <button nz-button nzType="primary" (click)="doAddCustomer($event, customerAddForm)">确认</button>
-              <button nz-button nzType="default" (click)="hideAddCustomerModal()">取消</button>
-            </ng-template>
-          </nz-modal>
-
-          <!-- 弹框 —— 修改 —— 修改用户信息 -->
-          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter"
-            (nzOnCancel)="hideModifyCustomerModal()">
-            <form [formGroup]="customerModifyForm">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>账号：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerModifyItem.userName" placeholder="输入账号" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('userName').dirty&&getModifyFormControl('userName').hasError('rightNum')">由数字或英文组成，8到12个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('userName').dirty&&getModifyFormControl('userName').value === ''">请输入账号</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>密码：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerModifyItem.password" placeholder="输入密码" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('password').dirty&&getModifyFormControl('password').hasError('rightNum')">由数字或英文组成，6到12个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('password').dirty&&getModifyFormControl('password').value === ''">请输入密码</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>员工名称：
-                </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerModifyItem.nick" placeholder="输入员工名称" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('nick').dirty&&getModifyFormControl('nick').hasError('userName')">由中文或英文组成，不超过10个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('nick').dirty&&getModifyFormControl('nick').value === ''">请输入名称</div>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  角色：
-                </div>
-                <div nz-col nzSpan="12">
-                  <nz-select formControlName="roles" [ngModel]="tempRoleName">
-                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
-                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
-                  </nz-select>
-                  <div nz-form-explain style="color: red" *ngIf="getModifyFormControl('roles').dirty&&getModifyFormControl('roles').value === ''">请输入角色，如果没有数据，请到角色列表获取角色数据</div>
-                </div>
-              </div>
-            </form>
-            <!-- 弹框和底部定制 -->
-            <ng-template #modifyCustomerModalFooter>
-              <button nz-button nzType="primary" (click)="doModifyCustomer($event, customerModifyForm)">确认修改</button>
-              <button nz-button nzType="default" (click)="hideModifyCustomerModal()">取消</button>
-            </ng-template>
-          </nz-modal>
-
-        </nz-tab>
-
-        <nz-tab nzTitle="角色列表">
-          <form [formGroup]="searchRoleForm">
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                角色名称：
-              </div>
-              <div nz-col nzSpan="3">
-                <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesItem.name" placeholder="输入角色名" nzSize="default">
-              </div>
-              <div nz-col nzSpan="1">
-              </div>
-              <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="doSearch($event, searchRoleForm)"><i class="anticon anticon-search"></i>查询</button>
-              </div>
-              <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="doReset()"><i class="anticon anticon-reload"></i>重置</button>
-              </div>
-              <div nz-col nzSpan="11">
-              </div>
-              <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="showAddRoleModal()"><i class="anticon anticon-file-add"></i>添加角色</button>
-              </div>
-            </div>
-          </form>
-
-          <nz-table #rowSelectionTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
-            <thead>
-              <tr>
-                <!-- <th nzWidth="80px">角色</th>
-                <th nzWidth="350px">描述</th> -->
-                <th nzWidth="30px">操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- <td>{{data.name}}</td>
-              <td>{{data.description}}</td> -->
-              <td>
-                <button nz-button nzType="primary" (click)="showModifyRoleModal(data)" style="margin-right: 10px;">编辑</button>
-                <button nz-button nzType="danger">删除</button>
-                <!-- (click)="doDeleteRole(data.id)" -->
-              </td>
-            </tbody>
-          </nz-table>
-          <div nz-row style="margin: 10px 0;line-height: 30px;">
-            <div nz-col nzSpan="16"></div>
-            <div nz-col nzSpan="2">
-              <nz-select [(ngModel)]="pageSize">
-                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
-                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
-                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
-                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
-              </nz-select>
-            </div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
-          </div>
-
-
           <!-- 弹框 —— 新增 —— 新增角色 -->
-          <nz-modal [(nzVisible)]="isAddVisible" nzWidth="650" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideAddRoleModal()">
+          <nz-modal [(nzVisible)]="isAddRoleVisible" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')">
             <form [formGroup]="roleAddForm">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="5" class="span_down spacing">
+                <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
                   <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesAddItem.name" placeholder="输入角色名称" nzSize="default">
-                  <div nz-form-explain style="color: red" *ngIf="getAddControl('name').dirty&&getAddControl('name').hasError('userName')">由中文或英文组成，不超过10个字符</div>
-                  <div nz-form-explain style="color: red" *ngIf="getAddControl('name').dirty&&getAddControl('name').value === ''">请输入角色名称</div>
-                </div>
-                <div nz-col nzSpan="9">
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col class="span_down spacing">
+                <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色描述：
                 </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="24">
+                <div nz-col nzSpan="20">
                   <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色描述，不超过100个字符"></textarea>
-                  <div nz-form-explain style="color: red" *ngIf="getAddControl('description').dirty&&getAddControl('description').value === ''">请输入角色描述</div>
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="24" class="span_down spacing">
-                  权限配置：
+                <div nz-col nzSpan="4" class="span_down spacing">
+                  权限设置：
+                </div>
+                <div nz-col nzSpan="10">
+                  <!-- <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked" [nzDisabled]="true">{{checkCouponOptions[0].label}}</label><br>
+                  <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked" [nzDisabled]="true">{{checkCouponOptions[1].label}}</label> -->
+                </div>
+                <div nz-col nzSpan="10" class="span_down spacing">
+                  一般情况仅勾选一个，如果勾选多个则可以切换平台
                 </div>
               </div>
             </form>
@@ -346,32 +132,27 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #addModalFooter>
-              <button nz-button nzType="primary" (click)="doAddRole($event, roleAddForm)">确定</button>
-              <button nz-button nzType="default" (click)="hideAddRoleModal()">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addRole')">确定</button>
+              <button nz-button nzType="default" (click)="hideModal('addRole')">取消</button>
             </ng-template>
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改角色 -->
-          <nz-modal [(nzVisible)]="isModifyRoleVisible" nzWidth="650" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter"
-            (nzOnCancel)="hideModifyRoleModal()">
+          <nz-modal [(nzVisible)]="isModifyRoleVisible" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')">
             <form [formGroup]="roleModifyForm">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="5" class="span_down spacing">
+                <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
                   <input nz-input formControlName="name" [(ngModel)]="rolesAddItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
                 </div>
-                <div nz-col nzSpan="9">
-                </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col class="span_down spacing">
+                <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色描述：
                 </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="24">
+                <div nz-col nzSpan="20">
                   <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色说明，不超过100个字符"></textarea>
                 </div>
               </div>
@@ -432,13 +213,197 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyRoleModalFooter>
-              <button nz-button nzType="primary" (click)="doModifyRole($event, roleModifyForm)">确定</button>
-              <button nz-button nzType="default" (click)="hideModifyRoleModal()">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('modifyRole')">确定</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyRole')">取消</button>
             </ng-template>
           </nz-modal>
 
+        </nz-tab>
+
+
+        <nz-tab nzTitle="员工配置" (nzClick)="changePanel('customer')">
+          <div nz-row class="search_panel">
+          · <form [formGroup]="searchCustomerForm">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                账号：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="1"></div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                名称：
+              </div>
+              <div nz-col nzSpan="3" class="span_down">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="1"></div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                角色：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="type">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
+                  <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
+                </nz-select>
+              </div>
+
+            </form>
+
+            <div nz-col nzSpan="1"></div>
+
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary"><i class="anticon anticon-search" (click)="loadData('customer')" style="margin-right: 10px;"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addCustomer', '')"><i class="anticon anticon-file-add"></i>新增员工</button>
+            </div>
+          </div>
+
+          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="100px">账号</th>
+                <th nzWidth="100px">员工名称</th>
+                <th nzWidth="100px">角色</th>
+                <th nzWidth="100px">所属部门</th>
+                <th nzWidth="100px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionCustomerTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.userName}}</td>
+                <td>{{data.nick}}</td>
+                <td>{{data.roleName}}</td>
+                <td>{{data.department}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" style="margin-right: 10px;">编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)">删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="16"></div>
+            <div nz-col nzSpan="2">
+              <nz-select [(ngModel)]="pageSize">
+                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
+                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
+                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
+                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div>
+
+          <!-- 弹框 —— 新增 —— 新增员工 -->
+          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="950" nzTitle="新增员工" [nzFooter]="addRoleModalFooter"
+            (nzOnCancel)="hideModal('addCustomer')">
+            <form [formGroup]="customerAddForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  <font color="red">*</font>账号：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerAddItem.userName" placeholder="输入账号" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                    <font color="red">*</font>密码：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerAddItem.password" placeholder="输入密码" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                    <font color="red">*</font>员工名称：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerAddItem.nick" placeholder="输入名称" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  角色：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-select formControlName="roles" [(ngModel)]="tempRoleName">
+                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
+                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" nzValue="item.id"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #addRoleModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addCustomer')">确认</button>
+              <button nz-button nzType="default" (click)="hideModal('addCustomer')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 修改 —— 修改用户信息 -->
+          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="950" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')">
+            <form [formGroup]="customerModifyForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  <font color="red">*</font>账号：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerModifyItem.userName" placeholder="输入账号" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  <font color="red">*</font>密码：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerModifyItem.password" placeholder="输入密码" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  <font color="red">*</font>员工名称：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerModifyItem.nick" placeholder="输入员工名称" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                  角色：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-select formControlName="roles" [ngModel]="tempRoleName">
+                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
+                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #modifyCustomerModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyCustomer')">确认修改</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyCustomer')">取消</button>
+            </ng-template>
+          </nz-modal>
 
         </nz-tab>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>

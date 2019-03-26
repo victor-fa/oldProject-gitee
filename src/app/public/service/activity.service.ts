@@ -11,7 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class ActivityService extends AppServiceBase {
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,

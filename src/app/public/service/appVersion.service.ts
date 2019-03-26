@@ -11,8 +11,6 @@ import { CommonService } from './common.service';
 })
 
 export class AppversionService extends AppServiceBase {
-  // const token = this._cookiesService.getToken();
-  token = localStorage.getItem('token');
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -37,7 +35,7 @@ export class AppversionService extends AppServiceBase {
 
   /** 添加单个 */
   addAppversion(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/admin${appVersionApiUrls.appVersionList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };

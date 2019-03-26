@@ -145,9 +145,6 @@ export class CustomerComponent implements OnInit {
     this.userService.sendMsg(phoneNum).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '获取成功', nzContent: '验证码为： ' + res.message, nzOkText: '知道了', });
-      } else if (res.retcode === 10000) {
-        this.notification.blank( '提示', '您还没有登录哦！', { nzStyle: { color : 'red' } });
-        // this._router.navigate(['/login']);
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }

@@ -34,28 +34,28 @@
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[1].active}">
       <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-book"></i><span>APP管理</span>
+          <i class="anticon anticon-appstore"></i><span>APP管理</span>
         </span>
       </a>
     </li>
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[2].active}">
       <a class="common-button" routerLink="/customer" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-book"></i><span>客服中心</span>
+          <i class="anticon anticon-customer-service"></i><span>客服中心</span>
         </span>
       </a>
     </li>
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
       <a class="common-button" routerLink="/user" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-user"></i><span>用户管理</span>
+          <i class="anticon anticon-solution"></i><span>用户管理</span>
         </span>
       </a>
     </li>
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
       <a class="common-button" routerLink="/operate" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-windows"></i><span>运维后台</span>
+          <i class="anticon anticon-tool"></i><span>运维后台</span>
         </span>
       </a>
     </li>
@@ -69,7 +69,7 @@
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[6].active}">
       <a class="common-button" routerLink="/activity" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-gift"></i><span>活动相关</span>
+          <i class="anticon anticon-shop"></i><span>活动相关</span>
         </span>
       </a>
     </li>
@@ -92,15 +92,13 @@
         <li nz-menu-item (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
       </ul>
     </li>
-    <!-- <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="commonService.isCollapsed ? 'Navigation One' : ''"
-      [ngClass]="{'active_panel': commonService.nav[7].active}">
+    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[7].active}">
       <a class="common-button" routerLink="/account" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-book"></i>
-          <span>权限管理</span>
+          <i class="anticon anticon-key"></i><span>权限管理</span>
         </span>
       </a>
-    </li> -->
+    </li>
     <!-- <li nz-menu-item nz-tooltip style="position: absolute;bottom: 0;" (click)="toggleCollapsed()">
       <span title>
         <i class="anticon anticon-menu-unfold" [class.anticon-menu-unfold]="commonService.isCollapsed"
