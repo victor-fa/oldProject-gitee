@@ -19,7 +19,7 @@ export class BatchsendService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有内容列表 */
+  /** 获取所有列表 */
   getBatchsendList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/list?page=0&pageSize=100`
       + (data.sendStartTime ? ('&sendStartTime=' + data.sendStartTime) : '')

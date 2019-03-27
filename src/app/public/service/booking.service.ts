@@ -19,7 +19,7 @@ export class BookingService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有订单列表 */
+  /** 获取所有列表 */
   getBookingList(pageSize, flag, id, state?, orderType?, createTime?, orderId?): Observable<IResponse<any>> { // sortType?, sortKey?
     let url;
     if (flag === '') {

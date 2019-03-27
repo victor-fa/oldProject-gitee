@@ -50,6 +50,8 @@ export enum cmsApiUrls {
   guideList = '/guide/management',
   /** 技能帮助 */
   helpList = '',
+  /** 语音配置 */
+  voiceList = '/cms/asr-configs',
 }
 
 /** APP版本 */

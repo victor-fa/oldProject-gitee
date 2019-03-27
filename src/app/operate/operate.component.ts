@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { LocalizationService } from '../public/service/localization.service';
 import { AppversionService } from '../public/service/appVersion.service';
+import { VoiceService } from '../public/service/voice.service';
 
 registerLocaleData(zh);
 
@@ -21,18 +22,28 @@ export class OperateComponent implements OnInit {
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   dataTaxi = [];  // 打车路径
+  dataVoice = [];  // 语音配置
   // tslint:disable-next-line:max-line-length
   currentTaxi = { 'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'availableAmount': '', 'availableBeans': '', 'estimate_price': '', 'source': '', 'monitorType': 0 };
   taxiItem = { 'orderId': '', 'startTime': '', 'endTime': '' };
   beginDate = '';
   endDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
+  currentPanel = 'content';  // 当前面板 默认
+  currentChannelName = '你好小悟';
+  currentIOSVoiceId = ''; // 拿到id
+  currentANDROIDVoiceId = ''; // 拿到id
+  isSaveIOSVoiceButton = false;
+  isSaveANDROIDVoiceButton = false;
+  voiceIOSRadioValue = 'baidu';
+  voiceANDROIDRadioValue = 'baidu';
   private timerList;
   private timerDetail;
 
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
+    public voiceService: VoiceService,
     private modalService: NzModalService,
     public localizationService: LocalizationService,
     private appversionService: AppversionService,
@@ -70,7 +81,19 @@ export class OperateComponent implements OnInit {
       this.taxiItem.endTime = this.endDate;
       this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
         this.dataTaxi = JSON.parse(res.payload);
-        // this.dataTaxi = [{}];
+      });
+    } else if (flag === 'voice') {
+      this.voiceService.getVoiceList().subscribe(res => {
+        this.dataVoice = JSON.parse(res.payload);
+        this.dataVoice.forEach(item => {
+          if (item.system === 'IOS') {
+            this.currentIOSVoiceId = item.id;
+            this.voiceIOSRadioValue = item.supplier;
+          } else if (item.system === 'ANDROID') {
+            this.currentANDROIDVoiceId = item.id;
+            this.voiceANDROIDRadioValue = item.supplier;
+          }
+        });
       });
     }
   }
@@ -150,6 +173,47 @@ export class OperateComponent implements OnInit {
       this.timerList = setInterval(() => {
         this.loadData('taxi');
       }, 15000);
+    } else if (flag === 'voicceIOS') {
+      this.isSaveIOSVoiceButton = false;
+    } else if (flag === 'voicceANDROID') {
+      this.isSaveANDROIDVoiceButton = false;
+    }
+  }
+
+  // 新增操作
+  doSave(flag, id): void {
+    if (flag === 'editVoiceIOS') {
+      this.isSaveIOSVoiceButton = true;  // 点击编辑按钮，变成保存按钮
+    } else if (flag === 'editVoiceANDROID') {
+      this.isSaveANDROIDVoiceButton = true;  // 点击编辑按钮，变成保存按钮
+    } else if (flag === 'saveVoicceIOS') {
+      const voiceInput = {
+        'id': this.currentIOSVoiceId,
+        'supplier': this.voiceIOSRadioValue
+      };
+      this.voiceService.updateVoice(voiceInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          this.isSaveIOSVoiceButton = false; // 保存成功后，变为编辑按钮
+          this.loadData('voice');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'saveVoicceANDROID') {
+      const voiceInput = {
+        'id': this.currentANDROIDVoiceId,
+        'supplier': this.voiceIOSRadioValue
+      };
+      this.voiceService.updateVoice(voiceInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          this.isSaveANDROIDVoiceButton = false; // 保存成功后，变为编辑按钮
+          this.loadData('voice');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -167,6 +231,18 @@ export class OperateComponent implements OnInit {
         this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
       }
     }
+  }
+
+  // 切换面板
+  changePanel(flag): void {
+    // tslint:disable-next-line:no-unused-expression
+    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== 'voice') {
+      this.isSaveIOSVoiceButton = false;
+      this.isSaveANDROIDVoiceButton = false;
+    }
+    this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : '听听同学';
+    this.currentPanel = flag;
   }
 
 }

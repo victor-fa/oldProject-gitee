@@ -19,7 +19,7 @@ export class GuideService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有APP列表 */
+  /** 获取所有列表 */
   getGuideAppList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps`;
     return this.httpClient

@@ -28,7 +28,7 @@ export class UserService extends AppServiceBase {
   }
 
   /**
-   * 获取所有用户列表
+   * 获取所有列表
    * @param flag
    * @param id
    */
@@ -46,7 +46,7 @@ export class UserService extends AppServiceBase {
   }
 
   /**
-   * 获取所有用户列表
+   * 获取所有列表
    * @param flag
    * @param id
    * @param type

@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="打车监控">
+        <nz-tab nzTitle="打车监控" (nzClick)="changePanel('taxi')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
@@ -121,6 +121,55 @@
           </nz-modal>
 
 
+        </nz-tab>
+
+
+        <nz-tab nzTitle="语音配置" (nzClick)="changePanel('voice')">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
+          </div>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{currentChannelName}}</div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-radio-group [(ngModel)]="voiceIOSRadioValue">
+                <label nz-radio nzValue="BAI_DU" [(nzDisabled)]="!isSaveIOSVoiceButton">百度ASR</label>
+                <label nz-radio nzValue="XUN_FEI" [(nzDisabled)]="!isSaveIOSVoiceButton">讯飞ASR</label>
+              </nz-radio-group>
+            </div>
+          </div>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2">
+              <button *ngIf="!isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceIOS', '')">编辑</button>
+              <button *ngIf="isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceIOS', '')">保存</button>
+            </div>
+            <div nz-col nzSpan="2" *ngIf="isSaveIOSVoiceButton">
+              <button nz-button nzType="primary" (click)="hideModal('voicceIOS')">取消</button>
+            </div>
+          </div>
+
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
+          </div>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{currentChannelName}}</div>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="9" class="span_down">
+              <nz-radio-group [(ngModel)]="voiceANDROIDRadioValue">
+                <label nz-radio nzValue="BAI_DU" [(nzDisabled)]="!isSaveANDROIDVoiceButton">百度ASR</label>
+                <label nz-radio nzValue="XUN_FEI" [(nzDisabled)]="!isSaveANDROIDVoiceButton">讯飞ASR</label>
+              </nz-radio-group>
+            </div>
+          </div>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2">
+              <button *ngIf="!isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceANDROID', '')">编辑</button>
+              <button *ngIf="isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceANDROID', '')">保存</button>
+            </div>
+            <div nz-col nzSpan="2" *ngIf="isSaveANDROIDVoiceButton">
+              <button nz-button nzType="primary" (click)="hideModal('voicceANDROID')">取消</button>
+            </div>
+          </div>
         </nz-tab>
 
       </nz-tabset>

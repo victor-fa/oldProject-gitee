@@ -19,7 +19,7 @@ export class CouponService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有优惠券列表 */
+  /** 获取所有列表 */
   getCouponList(searchItem): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/list`
     + '?page=0&pageSize=10'

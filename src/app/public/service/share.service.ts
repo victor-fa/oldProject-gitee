@@ -19,7 +19,7 @@ export class ShareService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取所有内容列表 */
+  /** 获取所有列表 */
   getShareList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.shareList}`;
     return this.httpClient
