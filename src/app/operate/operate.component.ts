@@ -203,7 +203,7 @@ export class OperateComponent implements OnInit {
     } else if (flag === 'saveVoicceANDROID') {
       const voiceInput = {
         'id': this.currentANDROIDVoiceId,
-        'supplier': this.voiceIOSRadioValue
+        'supplier': this.voiceANDROIDRadioValue
       };
       this.voiceService.updateVoice(voiceInput).subscribe(res => {
         if (res.retcode === 0) {

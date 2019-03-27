@@ -4,8 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IResponse } from '../model/response.model';
 import { userApiUrls } from '../enum/api.enum';
-import { IAccountListItemOutput, LoginItemInput, LoginItemOutput } from '../model/account.model';
-import { environment } from 'src/environments/environment';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,117 +19,105 @@ export class AccountService extends AppServiceBase {
     super(injector);
   }
 
-  /** 获取全部账号 */
-  getUserList(customerItem): Observable<IResponse<IAccountListItemOutput[]>> {
-    let userName = '';
-    let nick = '';
-    let department = '';
-    let role = '';
-    if (customerItem) {
-      userName = customerItem.userName ? customerItem.userName : '';
-      nick = customerItem.nick ? customerItem.nick : '';
-      department = customerItem.department ? customerItem.department : '';
-      role = customerItem.role ? customerItem.role : '';
-    }
-    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin` + (userName ? '?userName=' + userName : '')
-        + (nick ? (userName ? '&nick=' : '?nick=') + nick : '')
-        + (department ? (userName || nick ? '&department=' : '?department=') + department : '')
-        + (role ? (userName || nick || department ? '&roleId=' : '?roleId=') + role : '');
-    return this.httpClient
-      .get<IResponse<IAccountListItemOutput[]>>(url, this.options);
-  }
-
-  /** 登录账号 */
-  // login(login: LoginItemInput): Observable<IResponse<LoginItemOutput>> {
-  //   const url = `${this.commonService.baseUrl}${userApiUrls.login}/admin`;
-  //   const body = `userName=${login.userName}&password=${login.password}`;
-  //   return this.httpClient
-  //     .post<IResponse<LoginItemOutput>>(url, body, this.options);
-  // }
-
-  /** 获取加密用的盐 */
-  getPublicSalt(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.publicSalt}/admin`;
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
-  /** 新增员工 */
-  addCustomer(customer): Observable<IResponse<IAccountListItemOutput[]>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.register}/admin`;
-    // tslint:disable-next-line:max-line-length
-    const body = `userName=${customer.userName}&password=${customer.password}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
-    return this.httpClient
-      .post<IResponse<IAccountListItemOutput[]>>(url, body, this.options);
-  }
-
-  /** 修改员工 */
-  modifyCustomer(id, customer): Observable<IResponse<IAccountListItemOutput[]>> {
-    let body = '';
-    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${id}`;
-    if (customer.password === undefined) {
-      // tslint:disable-next-line:max-line-length
-      body = `userName=${customer.userName}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
-    } else {
-      // tslint:disable-next-line:max-line-length
-      body = `userName=${customer.userName}&password=${customer.password}&nick=${customer.nick}&department=${customer.department}&roleIds=${customer.roles}`;
-    }
-    return this.httpClient
-      .post<IResponse<IAccountListItemOutput[]>>(url, body, this.options);
-  }
-
-  /** 删除员工 */
-  deleteCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.users}/admin${data.id}`;
-    return this.httpClient
-      .delete<IResponse<any>>(url, this.options);
-  }
-
-  /** 登出当前账号 */
-  logout() {
-    const url = `${this.commonService.baseUrl}${userApiUrls.logout}/admin`;
-    return this.httpClient
-      .post<IResponse<IAccountListItemOutput[]>>(url, this.options);
-  }
-
   /** 获取全部角色 */
-  getRolesList(role): Observable<IResponse<any>> {
-    let name = '';
-    if (role) {
-      name = role.name ? role.name : '';
-    }
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin` + (name ? '?name=' + name : '');
+  getRolesList(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/list`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 新增角色 */
-  addRoles(role): Observable<IResponse<any>> {
-    // tslint:disable-next-line:max-line-length
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin`;
-    const body = `name=${role.name}&description=${role.description}&permissions=${role.permissions}`;
+  addRoles(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改角色 */
-  modifyRole(id: string, customer): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${id}`;
-    const body = `name=${customer.name}&description=${customer.description}&permissions=${customer.permissions}`;
+  modifyRole(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 删除角色 */
   deleteRole(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/admin${data.id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.roles}?id=${data.id}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
-  /* 获取部门下拉 */
-  getdepartments(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.departments}/admin`;
+  /** 获取全部用户 */
+  getCustomerList(data): Observable<IResponse<any>> {
+    let realname = '';
+    let roleIds = '';
+    let username = '';
+    if (data) {
+      realname = data.realname ? data.realname : '';
+      roleIds = data.roleIds ? data.roleIds : '';
+      username = data.username ? data.username : '';
+    }
+    const url = `${this.commonService.baseUrl}${userApiUrls.acc}/list` + (realname ? '?realname=' + realname : '')
+        + (roleIds ? (realname ? '&roleIds=' : '?roleIds=') + roleIds : '')
+        + (username ? (realname || roleIds ? '&username=' : '?username=') + username : '');
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 新增员工 */
+  addCustomer(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 修改员工 */
+  modifyCustomer(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .put<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 删除员工 */
+  deleteCustomer(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.acc}?id=${data.id}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取加密用的盐 */
+  getPublicSalt(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.publicSalt}/admin`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

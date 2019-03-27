@@ -19,9 +19,9 @@ export enum userApiUrls {
   /** 登出当前账号 */
   logout = '/users/logout',
   /** 角色 */
-  roles = '/roles',
-  /** 获取部门下拉 */
-  departments = '/users/departments',
+  roles = '/role',
+  /** 管理账号 */
+  acc = '/acc',
 }
 
 /** 订单模块 */

@@ -24,7 +24,7 @@
               <tr *ngFor="let data of rowSelectionRoleTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.name}}</td>
-                <td>{{data.name}}</td>
+                <td>{{data.desc}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyRole', data)" style="margin-right: 10px;">编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteRole', data)">删除</button>
@@ -57,7 +57,7 @@
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
-                  <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesAddItem.name" placeholder="输入角色名称" nzSize="default">
+                  <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesItem.name" placeholder="输入角色名称" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -65,22 +65,21 @@
                   <font color="red">*</font>角色描述：
                 </div>
                 <div nz-col nzSpan="20">
-                  <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色描述，不超过100个字符"></textarea>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="span_down spacing">
-                  权限设置：
-                </div>
-                <div nz-col nzSpan="10">
-                  <!-- <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked" [nzDisabled]="true">{{checkCouponOptions[0].label}}</label><br>
-                  <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked" [nzDisabled]="true">{{checkCouponOptions[1].label}}</label> -->
-                </div>
-                <div nz-col nzSpan="10" class="span_down spacing">
-                  一般情况仅勾选一个，如果勾选多个则可以切换平台
+                  <textarea rows="2" formControlName="desc" [(ngModel)]="rolesItem.desc" maxlength="50" nz-input placeholder="输入角色描述，不超过100个字符"></textarea>
                 </div>
               </div>
             </form>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down spacing">
+                权限设置：
+              </div>
+              <div nz-col nzSpan="10">
+                <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
+              </div>
+              <div nz-col nzSpan="10" class="span_down spacing">
+                一般情况仅勾选一个，如果勾选多个则可以切换平台
+              </div>
+            </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <table class="table">
@@ -91,41 +90,74 @@
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedOne" (ngModelChange)="updateAllChecked('one')"
-                        [nzIndeterminate]="indeterminateOne">个人中心</label>
+                        [nzIndeterminate]="indeterminateOne">APP管理</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked('one')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateAllChecked('one')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsThree">号码管理</label></td>
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsThree">号码库</label></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedTwo" (ngModelChange)="updateAllChecked('two')"
+                        [nzIndeterminate]="indeterminateTwo">客服中心</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsTwo" (ngModelChange)="updateAllChecked('two')"></nz-checkbox-group>
+                    </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsFour">模板管理</label></td>
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsFour">规则配置</label></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedThree" (ngModelChange)="updateAllChecked('three')"
+                        [nzIndeterminate]="indeterminateThree">用户信息</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="updateAllChecked('three')"></nz-checkbox-group>
+                    </td>
+                  </tr>
+                  <tr class="tr">
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedFour" (ngModelChange)="updateAllChecked('four')"
+                        [nzIndeterminate]="indeterminateFour">内容管理</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsFour" (ngModelChange)="updateAllChecked('four')"></nz-checkbox-group>
+                    </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedFive" (ngModelChange)="updateAllChecked('five')"
-                        [nzIndeterminate]="indeterminateFive">外呼任务管理</label>
+                        [nzIndeterminate]="indeterminateFive">活动相关</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateSingleChecked('five')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateAllChecked('five')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedSix" (ngModelChange)="updateAllChecked('six')"
-                        [nzIndeterminate]="indeterminateSix">账户管理</label>
+                        [nzIndeterminate]="indeterminateSix">运维后台</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateSingleChecked('six')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateAllChecked('six')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsSeven">会话记录</label></td>
-                    <td></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedSeven" (ngModelChange)="updateAllChecked('seven')"
+                        [nzIndeterminate]="indeterminateSeven">权限管理</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsSeven" (ngModelChange)="updateAllChecked('seven')"></nz-checkbox-group>
+                    </td>
+                  </tr>
+                  <tr class="tr">
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedEight" (ngModelChange)="updateAllChecked('eight')"
+                        [nzIndeterminate]="indeterminateEight">数据中心</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsEight" (ngModelChange)="updateAllChecked('eight')"></nz-checkbox-group>
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -145,7 +177,7 @@
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
-                  <input nz-input formControlName="name" [(ngModel)]="rolesAddItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
+                  <input nz-input formControlName="name" [(ngModel)]="rolesItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -153,15 +185,21 @@
                   <font color="red">*</font>角色描述：
                 </div>
                 <div nz-col nzSpan="20">
-                  <textarea rows="2" formControlName="description" [(ngModel)]="rolesAddItem.description" maxlength="50" nz-input placeholder="输入角色说明，不超过100个字符"></textarea>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="24" class="span_down spacing">
-                  权限配置：
+                  <textarea rows="2" formControlName="desc" [(ngModel)]="rolesItem.desc" maxlength="50" nz-input placeholder="输入角色说明，不超过100个字符"></textarea>
                 </div>
               </div>
             </form>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down spacing">
+                权限设置：
+              </div>
+              <div nz-col nzSpan="10">
+                <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
+              </div>
+              <div nz-col nzSpan="10" class="span_down spacing">
+                一般情况仅勾选一个，如果勾选多个则可以切换平台
+              </div>
+            </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <table class="table">
@@ -172,41 +210,74 @@
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedOne" (ngModelChange)="updateAllChecked('one')"
-                        [nzIndeterminate]="indeterminateOne">个人中心</label>
+                        [nzIndeterminate]="indeterminateOne">APP管理</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked('one')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateAllChecked('one')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsThree">号码管理</label></td>
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsThree">号码库</label></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedTwo" (ngModelChange)="updateAllChecked('two')"
+                        [nzIndeterminate]="indeterminateTwo">客服中心</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsTwo" (ngModelChange)="updateAllChecked('two')"></nz-checkbox-group>
+                    </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsFour">模板管理</label></td>
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsFour">规则配置</label></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedThree" (ngModelChange)="updateAllChecked('three')"
+                        [nzIndeterminate]="indeterminateThree">用户信息</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="updateAllChecked('three')"></nz-checkbox-group>
+                    </td>
+                  </tr>
+                  <tr class="tr">
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedFour" (ngModelChange)="updateAllChecked('four')"
+                        [nzIndeterminate]="indeterminateFour">内容管理</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsFour" (ngModelChange)="updateAllChecked('four')"></nz-checkbox-group>
+                    </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedFive" (ngModelChange)="updateAllChecked('five')"
-                        [nzIndeterminate]="indeterminateFive">外呼任务管理</label>
+                        [nzIndeterminate]="indeterminateFive">活动相关</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateSingleChecked('five')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateAllChecked('five')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
                       <label nz-checkbox [(ngModel)]="allCheckedSix" (ngModelChange)="updateAllChecked('six')"
-                        [nzIndeterminate]="indeterminateSix">账户管理</label>
+                        [nzIndeterminate]="indeterminateSix">运维后台</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateSingleChecked('six')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateAllChecked('six')"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
-                    <td class="td"><label nz-checkbox [(ngModel)]="checkOptionsSeven">会话记录</label></td>
-                    <td></td>
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedSeven" (ngModelChange)="updateAllChecked('seven')"
+                        [nzIndeterminate]="indeterminateSeven">权限管理</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsSeven" (ngModelChange)="updateAllChecked('seven')"></nz-checkbox-group>
+                    </td>
+                  </tr>
+                  <tr class="tr">
+                    <td class="td">
+                      <label nz-checkbox [(ngModel)]="allCheckedEight" (ngModelChange)="updateAllChecked('eight')"
+                        [nzIndeterminate]="indeterminateEight">数据中心</label>
+                    </td>
+                    <td>
+                      <nz-checkbox-group [(ngModel)]="checkOptionsEight" (ngModelChange)="updateAllChecked('eight')"></nz-checkbox-group>
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -225,33 +296,29 @@
           <div nz-row class="search_panel">
           · <form [formGroup]="searchCustomerForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
-                账号：
+                员工姓名：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+                <input nz-input maxlength="32" formControlName="realname" placeholder="输入员工姓名" nzSize="default">
               </div>
 
               <div nz-col nzSpan="1"></div>
 
               <div nz-col nzSpan="2" class="span_down right_alignment">
-                名称：
+                账号：
               </div>
               <div nz-col nzSpan="3" class="span_down">
-                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+                <input nz-input maxlength="32" formControlName="username" placeholder="输入账号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="1"></div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                角色：
+                角色名称：
               </div>
               <div nz-col nzSpan="3">
-                <nz-select [ngModel]="''" formControlName="type">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
-                  <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
-                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
-                  <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
+                <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                  <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                 </nz-select>
               </div>
 
@@ -271,20 +338,18 @@
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
+                <th nzWidth="100px">员工姓名</th>
                 <th nzWidth="100px">账号</th>
-                <th nzWidth="100px">员工名称</th>
-                <th nzWidth="100px">角色</th>
-                <th nzWidth="100px">所属部门</th>
+                <th nzWidth="100px">角色名称</th>
                 <th nzWidth="100px">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionCustomerTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.userName}}</td>
-                <td>{{data.nick}}</td>
+                <td>{{data.realname}}</td>
+                <td>{{data.username}}</td>
                 <td>{{data.roleName}}</td>
-                <td>{{data.department}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" style="margin-right: 10px;">编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)">删除</button>
@@ -310,41 +375,40 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增员工 -->
-          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="950" nzTitle="新增员工" [nzFooter]="addRoleModalFooter"
+          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter"
             (nzOnCancel)="hideModal('addCustomer')">
             <form [formGroup]="customerAddForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>账号：
+                  <font color="red">*</font>员工账号：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerAddItem.userName" placeholder="输入账号" nzSize="default">
+                  <input nz-input formControlName="username" maxlength="12" [(ngModel)]="customerItem.username" placeholder="输入员工账号" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                    <font color="red">*</font>密码：
+                    <font color="red">*</font>员工姓名：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerAddItem.password" placeholder="输入密码" nzSize="default">
+                  <input nz-input formControlName="realname" [(ngModel)]="customerItem.realname" placeholder="输入员工姓名" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                    <font color="red">*</font>员工名称：
+                    <font color="red">*</font>登录密码：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerAddItem.nick" placeholder="输入名称" nzSize="default">
+                  <input nz-input formControlName="password" [(ngModel)]="customerItem.password" type="password" placeholder="输入登录密码" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  角色：
+                    <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
-                  <nz-select formControlName="roles" [(ngModel)]="tempRoleName">
-                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
-                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" nzValue="item.id"></nz-option>
+                  <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                    <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                   </nz-select>
                 </div>
               </div>
@@ -357,40 +421,39 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改用户信息 -->
-          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="950" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')">
+          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')">
             <form [formGroup]="customerModifyForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>账号：
+                  <font color="red">*</font>员工账号：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="userName" maxlength="12" [(ngModel)]="customerModifyItem.userName" placeholder="输入账号" nzSize="default">
+                  <input nz-input formControlName="username" maxlength="12" [(ngModel)]="customerItem.username" placeholder="输入员工账号" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>密码：
+                    <font color="red">*</font>员工姓名：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="password" maxlength="12" [(ngModel)]="customerModifyItem.password" placeholder="输入密码" nzSize="default">
+                  <input nz-input formControlName="realname" [(ngModel)]="customerItem.realname" placeholder="输入员工姓名" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  <font color="red">*</font>员工名称：
+                    <font color="red">*</font>登录密码：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="nick" maxlength="10" [(ngModel)]="customerModifyItem.nick" placeholder="输入员工名称" nzSize="default">
+                  <input nz-input formControlName="password" [(ngModel)]="customerItem.password" type="password" placeholder="输入登录密码" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
-                  角色：
+                    <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
-                  <nz-select formControlName="roles" [ngModel]="tempRoleName">
-                    <nz-option [nzLabel]="'-----无-----'" nzValue=""></nz-option>
-                    <nz-option required *ngFor="let item of roleData" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                  <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                    <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                   </nz-select>
                 </div>
               </div>

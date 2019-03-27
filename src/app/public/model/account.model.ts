@@ -1,16 +1,16 @@
 /** 获取全部账号API输出接口 + 登录账号 */
-export interface IAccountListItemOutput {
-  uid: string;
-  userName: number;
-  nick: number;
-  pwd: number;
-  salt: number;
-  created: number;
-  updated: number;
-  roles: string[];
-  roleName: string;
-  perms: string[];
-}
+// export interface IAccountListItemOutput {
+//   uid: string;
+//   userName: number;
+//   nick: number;
+//   pwd: number;
+//   salt: number;
+//   created: number;
+//   updated: number;
+//   roles: string[];
+//   roleName: string;
+//   perms: string[];
+// }
 
 // /** 员工 */
 // export interface ICustomerItemInput {
@@ -28,15 +28,15 @@ export interface IAccountListItemOutput {
 // }
 
 /** 登录账号 */
-export interface ILoginItemInput {
-  userName: string;
-  password: string;
-}
+// export interface ILoginItemInput {
+//   userName: string;
+//   password: string;
+// }
 
-export class LoginItemInput implements ILoginItemInput {
-  userName: string;
-  password: string;
-}
+// export class LoginItemInput implements ILoginItemInput {
+//   userName: string;
+//   password: string;
+// }
 
 /** 登录账号输出 */
 export interface ILoginItemOutput {
