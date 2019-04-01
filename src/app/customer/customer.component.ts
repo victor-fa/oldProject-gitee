@@ -51,6 +51,7 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('feedback');  // 反馈信息
+    this.changePanel('feedback');
     this.sendScreenHeight = (window.screen.height - 524) + 'px';
   }
 
@@ -63,6 +64,8 @@ export class CustomerComponent implements OnInit {
         if (res.payload !== '') {
           if (res.status === 200) {
             this.feedbackInfo = JSON.parse(res.payload).reverse();
+            const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -73,6 +76,8 @@ export class CustomerComponent implements OnInit {
         if (res.payload !== '') {
           if (res.status === 200) {
             this.oppositionInfo = JSON.parse(res.payload);
+            const operationInput = { op_category: '客服中心', op_page: '点踩日志' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -83,6 +88,8 @@ export class CustomerComponent implements OnInit {
         if (res.payload !== '') {
           if (res.status === 200) {
             this.agreeInfo = JSON.parse(res.payload);
+            const operationInput = { op_category: '客服中心', op_page: '点赞日志' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -170,6 +177,8 @@ export class CustomerComponent implements OnInit {
       a.href = URL.createObjectURL(blob);
       a.click();
       const tempA = document.getElementById('tempId');
+      const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
       if (tempA) {
         tempA.parentNode.removeChild(tempA);
       }
@@ -181,6 +190,12 @@ export class CustomerComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     flag !== this.currentPanel ? this.loadData(flag) : 1;
     this.currentPanel = flag;
+    const operationInput = {
+      op_category: '客服中心',
+      op_page: flag === 'feedback' ? '用户反馈' : flag === 'opposition' ? '点踩日志' : flag === 'agree' ? '点赞日志' : '',
+      op_name: '访问'
+    };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

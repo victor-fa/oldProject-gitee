@@ -37,7 +37,7 @@ export class LeftNavComponent implements OnInit {
   }
 
   cancellation(): void {
-    localStorage.setItem('token', '');
+    localStorage.removeItem('token');
     this._router.navigate(['/login']);
   }
 

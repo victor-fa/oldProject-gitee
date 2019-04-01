@@ -79,5 +79,5 @@ export enum dataCenterApiUrls {
 /** 运营模块 */
 export enum operateApiUrls {
   /** 重置送豆 */
-  xiaowubeanList = '/v1/wallet/promotions',
+  xiaowubeanList = '/wallet/promotions',
 }

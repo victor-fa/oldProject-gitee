@@ -137,13 +137,23 @@ export class UserService extends AppServiceBase {
     formData.set('username', input.userName);
     formData.set('password', input.password);
     const that = this;
+    let count = 0;  // 因为该方法会被掉4次，所以出此下策只提示一次
     result.onreadystatechange = function() {
+      console.log(result.status);
       if (result.readyState !== 4 || result.status !== 200) {
+        count += 1;
+        count === 2 && result.status === 401 ? that.notification.blank('提示', '登录信息有误！', { nzStyle: { color : 'red' }}) : 1;
         return;
       }
       if (result.responseText !== '') {
         localStorage.setItem('token', JSON.parse(result.responseText).authorization);
         that.notification.blank('提示', '登录成功！', { nzStyle: { color : 'green' }});
+        // 获取树，添加到localstorage
+        that.getFullResource().subscribe(res => {
+          console.log(JSON.parse(res.payload).grantedRes);
+          localStorage.setItem('FullResource', JSON.stringify(JSON.parse(res.payload).grantedRes));
+          that.commonService.fullResource = JSON.parse(localStorage.getItem('FullResource'));
+        });
         that.router.navigateByUrl('appVersion');
       } else {
         that.modalService.error({ nzTitle: '提示', nzContent: '登录信息有误！' });
@@ -152,6 +162,17 @@ export class UserService extends AppServiceBase {
     result.open('POST', `${this.commonService.baseUrl}/process_login`, true);
     result.send(formData);
   }
+
+  /** 获取所有资源树 */
+  getFullResource(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/auth/info`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
 
   /** 获取点赞点踩Excel模板接口 */
   getExcel(id, estimate) {

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'appVersion', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
   { path: 'appVersion', loadChildren: './appVersion/appVersion.module#AppVersionModule'},
   { path: 'user', loadChildren: './user/user.module#UserModule'},

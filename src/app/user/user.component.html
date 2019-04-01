@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="用户管理" (nzClick)="changePanel('user')">
+        <nz-tab nzTitle="用户管理" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '用户管理')">
           <form [formGroup]="searchUserForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -85,7 +85,7 @@
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="订单查询" (nzClick)="changePanel('booking')">
+        <nz-tab nzTitle="订单查询" (nzClick)="changePanel('booking')" *ngIf="commonService.haveMenuPermission('children', '订单查询')">
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">

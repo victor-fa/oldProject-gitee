@@ -110,6 +110,7 @@ export class AppVersionComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('content');
+    this.changePanel('content');
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
@@ -133,6 +134,8 @@ export class AppVersionComponent implements OnInit {
           arr.push(JSON.parse(JSON.parse(res.payload).ios));
         }
         this.dataContent = arr;
+        const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'system') {
       const arrSystem = [];
@@ -140,6 +143,8 @@ export class AppVersionComponent implements OnInit {
         arrSystem.push(JSON.parse(res.payload).ANDROID);
         arrSystem.push(JSON.parse(res.payload).IOS);
         this.dataSystemSymbo = arrSystem;
+        const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'share') {
       this.shareImageUrl01 = '';
@@ -147,6 +152,8 @@ export class AppVersionComponent implements OnInit {
       this.shareImageUrl03 = '';
       this.shareService.getShareList().subscribe(res => {
         this.dataShare = JSON.parse(res.payload);
+        const operationInput = { op_category: 'APP管理', op_page: '分享文案', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         if (this.currentPanel === 'share') {
           const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/copywriter/upload/`;
           this.shareImageUrl01 = `${url}?fileName=wechatPhoto`;
@@ -162,7 +169,7 @@ export class AppVersionComponent implements OnInit {
           console.log(appList);
           let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
           appList.forEach(item => {
-            if (item.displayName === localStorage.getItem('currentAppHeader')) {
+            if (item.registryName === localStorage.getItem('currentAppHeader')) {
               this.currentAppId = item.id;
               // tslint:disable-next-line:no-unused-expression
               JSON.stringify(item.templates) !== '{}' ? templates = JSON.parse(item.templates) : 1;
@@ -171,6 +178,8 @@ export class AppVersionComponent implements OnInit {
           this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
             if (result.retcode === 0) {
               this.dataGuide = JSON.parse(result.payload);
+              const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '访问' };
+              this.commonService.updateOperationlog(operationInput).subscribe();
               this.dataGuide.forEach((cell, i) => {
                 let enabled = false;
                 // tslint:disable-next-line:forin
@@ -189,6 +198,8 @@ export class AppVersionComponent implements OnInit {
       // this.bannerService.getBannerList().subscribe(res => {
       //   this.dataBanner = JSON.parse(res.payload).reverse();
       // });
+      const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '访问' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
     }
   }
 
@@ -388,7 +399,9 @@ export class AppVersionComponent implements OnInit {
       };
       this.appversionService.addAppversion(contentInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('content');
           this.loadData('content');
         } else {
@@ -415,6 +428,8 @@ export class AppVersionComponent implements OnInit {
       this.shareService.addShare(shareInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '分享文案', op_name: '保存' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.isSaveShareButton = false; // 保存成功后，变为编辑按钮
           this.loadData('share');
         } else {
@@ -477,6 +492,8 @@ export class AppVersionComponent implements OnInit {
             this.guideService.addGuideForApp(guideInfo).subscribe(result => {  // 新增一个模板给到默认的APP，不然看不到模板新增后的数据
               if (result.retcode === 0) {
                 this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+                const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '新增' };
+                this.commonService.updateOperationlog(operationInput).subscribe();
                 this.isAddGuideVisible = false;
                 this.loadData('guide');
               }
@@ -491,6 +508,8 @@ export class AppVersionComponent implements OnInit {
         this.guideService.addXxxForGuide(finalInput).subscribe(res1 => {
           // tslint:disable-next-line:max-line-length
           res1.retcode === 0 ? this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } }) : this.modalService.error({ nzTitle: '提示', nzContent: res1.message });
+          const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '保存' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         });
       }
     } else if (flag === 'guide_message') {
@@ -537,6 +556,8 @@ export class AppVersionComponent implements OnInit {
       this.helpService.addHelp(helpInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('help');
           this.loadData('help');
         } else {
@@ -653,6 +674,8 @@ export class AppVersionComponent implements OnInit {
       this.helpService.updateHelp(helpInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('help');
           this.loadData('help');
         } else {
@@ -689,6 +712,8 @@ export class AppVersionComponent implements OnInit {
       this.guideService.deleteGuideFromApp(this.currentAppId, id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('guide');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -704,6 +729,8 @@ export class AppVersionComponent implements OnInit {
       this.helpService.deleteHelp(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('help');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -719,6 +746,8 @@ export class AppVersionComponent implements OnInit {
       this.guideService.updateSwitch(switchInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -778,12 +807,14 @@ export class AppVersionComponent implements OnInit {
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
       // tslint:disable-next-line:no-unused-expression
-      this.currentPanel === 'share' ? formData.append('fileType', this.currentCopywritingImage) : 1;
+      this.currentPanel === 'share' ? formData.append('fileType', '0') : '1';
+      // this.currentPanel === 'share' ? formData.append('fileType', this.currentCopywritingImage) : '1';
       // tslint:disable-next-line:no-unused-expression
       this.currentPanel === 'guide' ? formData.append('imageKey', file.name) : 1;
     });
     // tslint:disable-next-line:max-line-length
     const baseUrl = this.currentPanel === 'guide' ? this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) : this.commonService.baseUrl;
+    console.log(baseUrl);
     const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, { // 上传图需要区分，因为引导语不需要admin，而分享需要admin
       reportProgress: true,
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
@@ -821,6 +852,9 @@ export class AppVersionComponent implements OnInit {
             this.showImageUrl = url + '/api' + this.imageUrl;
           }
           this.notification.success( '提示', '上传成功' );
+          // tslint:disable-next-line:max-line-length
+          const operationInput = { op_category: 'APP管理', op_page: this.currentPanel === 'share' ? '分享文案' : this.currentPanel === 'guide' ? '引导语模板' : this.currentPanel === 'help' ? '技能帮助' : '' , op_name: '上传图片' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
         }
@@ -902,6 +936,9 @@ export class AppVersionComponent implements OnInit {
       this.isSaveShareButton = false;
     }
     this.currentPanel = flag;
+    // tslint:disable-next-line:max-line-length
+    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '技能帮助' : '', op_name: '访问' };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
   // 用于区分分享文案下的三个上传图片的方法

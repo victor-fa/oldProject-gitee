@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="版本更新" (nzClick)="changePanel('content')">
+        <nz-tab nzTitle="版本更新" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '版本更新')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19"></div>
             <div nz-col nzSpan="2">
@@ -146,7 +146,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="分享文案" (nzClick)="changePanel('share')">
+        <nz-tab nzTitle="分享文案" (nzClick)="changePanel('share')" *ngIf="commonService.haveMenuPermission('children', '分享文案')">
           <div nz-row class="search_panel">
             <form [formGroup]="shareForm">
 
@@ -236,69 +236,6 @@
                 </div>
               </div>
 
-              <!-- <div nz-row class="search_panel">
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">H5页面分享</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <input nz-input maxlength="32" formControlName="H5Title" [(ngModel)]="dataShare.h5Title" placeholder="输入标题" nzSize="default">
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9">
-                  <textarea rows="5" nz-input formControlName="H5Content" [(ngModel)]="dataShare.h5Content" [disabled]="true" placeholder="请输入内容" nzSize="default"></textarea>
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  导航栏图片
-                </div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="21">
-                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button (click)="choosePng('1')" nzType="primary">
-                      <i class="anticon anticon-upload"></i><span>上传图片</span>
-                    </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：150*40&nbsp;&nbsp;限制大小：20K</font>
-                  </nz-upload>
-                </div>
-              </div>
-              <div nz-row class="search_panel" *ngIf="shareImageUrl02 !== ''">
-                <div nz-col nzSpan="2" class="span_down right_alignment"></div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="21">
-                  <img *ngIf="shareImageUrl02" [src]="shareImageUrl02" class="image-panel2">
-                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：150*40&nbsp;&nbsp;限制大小：20K</font>
-                </div>
-              </div>
-
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  文案图片
-                </div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="21">
-                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button (click)="choosePng('2')" nzType="primary">
-                      <i class="anticon anticon-upload"></i><span>上传图片</span>
-                    </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：50K</font>
-                  </nz-upload>
-                </div>
-              </div>
-              <div nz-row class="search_panel" *ngIf="shareImageUrl03 !== ''">
-                <div nz-col nzSpan="2" class="span_down right_alignment"></div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="21">
-                  <img *ngIf="shareImageUrl03" [src]="shareImageUrl03" class="image-panel3">
-                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：50K</font>
-                </div>
-              </div> -->
-
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="20"></div>
                 <div nz-col nzSpan="2" *ngIf="!isSaveShareButton"></div>
@@ -314,7 +251,7 @@
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="引导语模板" (nzClick)="changePanel('guide')">
+        <nz-tab nzTitle="引导语模板" (nzClick)="changePanel('guide')" *ngIf="commonService.haveMenuPermission('children', '引导语模板')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -353,7 +290,6 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增/修改 —— 新增/修改模板 -->
           <nz-modal [(nzVisible)]="isAddGuideVisible || isModifyGuideVisible" nzWidth="950" nzTitle="{{isModifyGuideVisible ? '修改模板' : '新增模板'}}" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideAddModal('guide')">
             <form [formGroup]="addGuideForm">
               <div nz-row class="search_panel">
@@ -526,7 +462,6 @@
                 </div>
               </div>
             </ng-container>
-            <!-- 弹框和底部定制 -->
             <ng-template #addGuideModalFooter>
               <button nz-button nzType="primary" (click)="doSave('guide')">确定</button>
               <button nz-button nzType="default" (click)="hideAddModal('guide')">取消</button>
@@ -535,7 +470,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="技能帮助" (nzClick)="changePanel('help')">
+        <nz-tab nzTitle="帮助管理" (nzClick)="changePanel('help')" *ngIf="commonService.haveMenuPermission('children', '帮助管理')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -580,7 +515,6 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增技能 -->
           <nz-modal [(nzVisible)]="isAddHelpVisible" nzWidth="1150" nzTitle="新增技能" [nzFooter]="addHelpModalFooter" (nzOnCancel)="hideAddModal('help')">
             <form [formGroup]="addHelpForm">
               <div nz-row class="search_panel">
@@ -665,14 +599,12 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
             <ng-template #addHelpModalFooter>
               <button nz-button nzType="primary" (click)="doSave('help')">保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('help')">取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 修改 —— 修改技能 -->
           <nz-modal [(nzVisible)]="isModifyHelpVisible" nzWidth="1150" nzTitle="修改技能" [nzFooter]="modifyHelpModalFooter" (nzOnCancel)="hideModifyModal('help')">
             <form [formGroup]="modifyHelpForm">
               <div nz-row class="search_panel">
@@ -757,7 +689,6 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
             <ng-template #modifyHelpModalFooter>
               <button nz-button nzType="primary" (click)="doModify('help')">保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('help')">取消</button>

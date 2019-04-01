@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="权限配置" (nzClick)="changePanel('role')">
+        <nz-tab nzTitle="权限配置" (nzClick)="changePanel('role')" *ngIf="commonService.haveMenuPermission('children', '权限配置')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21">
             </div>
@@ -82,81 +82,73 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <table class="table">
+                <table class="table" *ngIf="allMenu.length > 0">
                   <tr class="tr">
                     <td class="td">一级菜单</td>
                     <td>二级菜单</td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedOne" (ngModelChange)="updateAllChecked('one')"
-                        [nzIndeterminate]="indeterminateOne">APP管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked1" (ngModelChange)="updateAllChecked('flag1')">{{allMenu[0].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateAllChecked('one')"></nz-checkbox-group>
+                      <nz-checkbox-group  [(ngModel)]="checkOptions1"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedTwo" (ngModelChange)="updateAllChecked('two')"
-                        [nzIndeterminate]="indeterminateTwo">客服中心</label>
+                      <label nz-checkbox [(ngModel)]="allChecked2" (ngModelChange)="updateAllChecked('flag2')">{{allMenu[1].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsTwo" (ngModelChange)="updateAllChecked('two')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions2"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedThree" (ngModelChange)="updateAllChecked('three')"
-                        [nzIndeterminate]="indeterminateThree">用户信息</label>
+                      <label nz-checkbox [(ngModel)]="allChecked3" (ngModelChange)="updateAllChecked('flag3')">{{allMenu[2].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="updateAllChecked('three')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions3"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedFour" (ngModelChange)="updateAllChecked('four')"
-                        [nzIndeterminate]="indeterminateFour">内容管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked4" (ngModelChange)="updateAllChecked('flag4')">{{allMenu[3].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFour" (ngModelChange)="updateAllChecked('four')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions4"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedFive" (ngModelChange)="updateAllChecked('five')"
-                        [nzIndeterminate]="indeterminateFive">活动相关</label>
+                      <label nz-checkbox [(ngModel)]="allChecked5" (ngModelChange)="updateAllChecked('flag5')">{{allMenu[4].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateAllChecked('five')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions5"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedSix" (ngModelChange)="updateAllChecked('six')"
-                        [nzIndeterminate]="indeterminateSix">运维后台</label>
+                      <label nz-checkbox [(ngModel)]="allChecked6" (ngModelChange)="updateAllChecked('flag6')">{{allMenu[5].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateAllChecked('six')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions6"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedSeven" (ngModelChange)="updateAllChecked('seven')"
-                        [nzIndeterminate]="indeterminateSeven">权限管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked7" (ngModelChange)="updateAllChecked('flag7')">{{allMenu[6].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSeven" (ngModelChange)="updateAllChecked('seven')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions7"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedEight" (ngModelChange)="updateAllChecked('eight')"
-                        [nzIndeterminate]="indeterminateEight">数据中心</label>
+                      <label nz-checkbox [(ngModel)]="allChecked8" (ngModelChange)="updateAllChecked('flag8')">{{allMenu[7].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsEight" (ngModelChange)="updateAllChecked('eight')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions8"></nz-checkbox-group>
                     </td>
                   </tr>
                 </table>
@@ -202,81 +194,73 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <table class="table">
+                <table class="table" *ngIf="allMenu.length > 0">
                   <tr class="tr">
                     <td class="td">一级菜单</td>
                     <td>二级菜单</td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedOne" (ngModelChange)="updateAllChecked('one')"
-                        [nzIndeterminate]="indeterminateOne">APP管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked1" (ngModelChange)="updateAllChecked('flag1')">{{allMenu[0].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateAllChecked('one')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions1"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedTwo" (ngModelChange)="updateAllChecked('two')"
-                        [nzIndeterminate]="indeterminateTwo">客服中心</label>
+                      <label nz-checkbox [(ngModel)]="allChecked2" (ngModelChange)="updateAllChecked('flag2')">{{allMenu[1].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsTwo" (ngModelChange)="updateAllChecked('two')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions2"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedThree" (ngModelChange)="updateAllChecked('three')"
-                        [nzIndeterminate]="indeterminateThree">用户信息</label>
+                      <label nz-checkbox [(ngModel)]="allChecked3" (ngModelChange)="updateAllChecked('flag3')">{{allMenu[2].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsThree" (ngModelChange)="updateAllChecked('three')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions3"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedFour" (ngModelChange)="updateAllChecked('four')"
-                        [nzIndeterminate]="indeterminateFour">内容管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked4" (ngModelChange)="updateAllChecked('flag4')">{{allMenu[3].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFour" (ngModelChange)="updateAllChecked('four')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions4"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedFive" (ngModelChange)="updateAllChecked('five')"
-                        [nzIndeterminate]="indeterminateFive">活动相关</label>
+                      <label nz-checkbox [(ngModel)]="allChecked5" (ngModelChange)="updateAllChecked('flag5')">{{allMenu[4].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsFive" (ngModelChange)="updateAllChecked('five')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions5"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedSix" (ngModelChange)="updateAllChecked('six')"
-                        [nzIndeterminate]="indeterminateSix">运维后台</label>
+                      <label nz-checkbox [(ngModel)]="allChecked6" (ngModelChange)="updateAllChecked('flag6')">{{allMenu[5].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSix" (ngModelChange)="updateAllChecked('six')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions6"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedSeven" (ngModelChange)="updateAllChecked('seven')"
-                        [nzIndeterminate]="indeterminateSeven">权限管理</label>
+                      <label nz-checkbox [(ngModel)]="allChecked7" (ngModelChange)="updateAllChecked('flag7')">{{allMenu[6].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsSeven" (ngModelChange)="updateAllChecked('seven')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions7"></nz-checkbox-group>
                     </td>
                   </tr>
                   <tr class="tr">
                     <td class="td">
-                      <label nz-checkbox [(ngModel)]="allCheckedEight" (ngModelChange)="updateAllChecked('eight')"
-                        [nzIndeterminate]="indeterminateEight">数据中心</label>
+                      <label nz-checkbox [(ngModel)]="allChecked8" (ngModelChange)="updateAllChecked('flag8')">{{allMenu[7].name}}</label>
                     </td>
                     <td>
-                      <nz-checkbox-group [(ngModel)]="checkOptionsEight" (ngModelChange)="updateAllChecked('eight')"></nz-checkbox-group>
+                      <nz-checkbox-group [(ngModel)]="checkOptions8"></nz-checkbox-group>
                     </td>
                   </tr>
                 </table>
@@ -292,9 +276,9 @@
         </nz-tab>
 
 
-        <nz-tab nzTitle="员工配置" (nzClick)="changePanel('customer')">
+        <nz-tab nzTitle="员工配置" (nzClick)="changePanel('customer')" *ngIf="commonService.haveMenuPermission('children', '员工配置')">
           <div nz-row class="search_panel">
-          · <form [formGroup]="searchCustomerForm">
+            <form [formGroup]="searchCustomerForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 员工姓名：
               </div>
@@ -317,7 +301,8 @@
                 角色名称：
               </div>
               <div nz-col nzSpan="3">
-                <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                <nz-select [ngModel]="''" formControlName="roleId">
+                  <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
                   <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                 </nz-select>
               </div>
@@ -327,7 +312,7 @@
             <div nz-col nzSpan="1"></div>
 
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary"><i class="anticon anticon-search" (click)="loadData('customer')" style="margin-right: 10px;"></i>查询</button>
+              <button nz-button nzType="primary" (click)="loadData('customer')" style="margin-right: 10px;"><i class="anticon anticon-search"></i>查询</button>
             </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('addCustomer', '')"><i class="anticon anticon-file-add"></i>新增员工</button>
@@ -346,11 +331,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionCustomerTable.data; let i=index;">
-                <td>{{i+1}}</td>
-                <td>{{data.realname}}</td>
-                <td>{{data.username}}</td>
-                <td>{{data.roleName}}</td>
-                <td>
+                <td *ngIf="data.baseAcc !== true">{{i+1}}</td>
+                <td *ngIf="data.baseAcc !== true">{{data.realname}}</td>
+                <td *ngIf="data.baseAcc !== true">{{data.username}}</td>
+                <td *ngIf="data.baseAcc !== true">{{data.roleName}}</td>
+                <td *ngIf="data.baseAcc !== true">
                   <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" style="margin-right: 10px;">编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)">删除</button>
                 </td>
@@ -407,7 +392,8 @@
                     <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                  <nz-select [ngModel]="''" formControlName="roleId">
+                    <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
                     <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                   </nz-select>
                 </div>
@@ -452,7 +438,7 @@
                     <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="dataRole[0].id" formControlName="roleIds">
+                  <nz-select [(ngModel)]="customerItem.roleId" formControlName="roleId">
                     <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
                   </nz-select>
                 </div>
@@ -464,6 +450,117 @@
               <button nz-button nzType="default" (click)="hideModal('modifyCustomer')">取消</button>
             </ng-template>
           </nz-modal>
+
+        </nz-tab>
+
+
+        <nz-tab nzTitle="操作日志" (nzClick)="changePanel('operationlog')" *ngIf="commonService.haveMenuPermission('children', '操作日志')">
+          <form [formGroup]="searchOperationlogForm">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                账号：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="username" placeholder="输入账号" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                姓名：
+              </div>
+              <div nz-col nzSpan="3" class="span_down">
+                <input nz-input maxlength="32" formControlName="realname" placeholder="输入姓名" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                查询日期范围：
+              </div>
+              <div nz-col nzSpan="7" class="span_down spacing right_alignment">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'operationlog')"></nz-range-picker>
+              </div>
+              <div nz-col nzSpan="1"></div>
+
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="role_id">
+                  <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                  <nz-option *ngFor="let item of dataRole; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                </nz-select>
+              </div>
+            </div>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4">
+                <nz-select [ngModel]="''" formControlName="op_category">
+                  <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                  <nz-option *ngFor="let item of dataResource; let i=index;" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+
+              <div nz-col nzSpan="6">
+                <nz-select [ngModel]="''" formControlName="op_page">
+                  <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
+                  <nz-option *ngFor="let item of dataResourceChildren; let i=index;" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                <label nz-checkbox [(nzChecked)]="unCheckVisit" formControlName="unCheckVisit">不看-访问</label><br>
+              </div>
+              <div nz-col nzSpan="6"></div>
+
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="loadData('operationlog')" style="margin-right: 10px;"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+            </div>
+          </form>
+
+          <nz-table #rowSelectionOperationlogTable [nzData]="dataOperationlog" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="100px">账号</th>
+                <th nzWidth="100px">员工姓名</th>
+                <th nzWidth="100px">IP</th>
+                <th nzWidth="100px">日期</th>
+                <th nzWidth="100px">时间</th>
+                <th nzWidth="100px">角色</th>
+                <th nzWidth="100px">一级菜单</th>
+                <th nzWidth="100px">二级菜单</th>
+                <th nzWidth="100px">行为</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionOperationlogTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.opUsername}}</td>
+                <td>{{data.opRealname}}</td>
+                <td>{{data.opIp}}</td>
+                <td>{{data.opTime | date:'yyyy-MM-dd'}}</td>
+                <td>{{data.opTime | date:'HH:mm:ss'}}</td>
+                <td>{{data.roleName}}</td>
+                <td>{{data.opCategoryName}}</td>
+                <td>{{data.opPageName}}</td>
+                <td>{{data.opName}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="16"></div>
+            <div nz-col nzSpan="2">
+              <nz-select [(ngModel)]="pageSize">
+                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
+                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
+                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
+                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div>
 
         </nz-tab>
 

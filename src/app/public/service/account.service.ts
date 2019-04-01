@@ -23,7 +23,6 @@ export class AccountService extends AppServiceBase {
   getRolesList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.roles}/list`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -54,7 +53,6 @@ export class AccountService extends AppServiceBase {
   deleteRole(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.roles}?id=${data.id}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -64,18 +62,17 @@ export class AccountService extends AppServiceBase {
   /** 获取全部用户 */
   getCustomerList(data): Observable<IResponse<any>> {
     let realname = '';
-    let roleIds = '';
+    let roleId = '';
     let username = '';
     if (data) {
       realname = data.realname ? data.realname : '';
-      roleIds = data.roleIds ? data.roleIds : '';
+      roleId = data.roleId ? data.roleId : '';
       username = data.username ? data.username : '';
     }
     const url = `${this.commonService.baseUrl}${userApiUrls.acc}/list` + (realname ? '?realname=' + realname : '')
-        + (roleIds ? (realname ? '&roleIds=' : '?roleIds=') + roleIds : '')
-        + (username ? (realname || roleIds ? '&username=' : '?username=') + username : '');
+        + (roleId ? (realname ? '&roleId=' : '?roleId=') + roleId : '')
+        + (username ? (realname || roleId ? '&username=' : '?username=') + username : '');
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -86,7 +83,6 @@ export class AccountService extends AppServiceBase {
   addCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -97,7 +93,6 @@ export class AccountService extends AppServiceBase {
   modifyCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -108,16 +103,35 @@ export class AccountService extends AppServiceBase {
   deleteCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.acc}?id=${data.id}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
-  /** 获取加密用的盐 */
-  getPublicSalt(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.publicSalt}/admin`;
+  /** 获取所有资源树 */
+  getFullResource(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/common/fullres`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 查询-管理员操作日志查询接口 */
+  getOperationlogList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/audit/list?size=1000`
+        + (data.op_category ? '&op_category=' + data.op_category : '')
+        + (data.op_page ? '&op_page=' + data.op_page : '')
+        + (data.op_time_end ? '&op_time_end=' + data.op_time_end : '')
+        + (data.op_time_start ? '&op_time_start=' + data.op_time_start : '')
+        + (data.realname ? '&realname=' + data.realname : '')
+        + (data.role_id ? '&role_id=' + data.role_id : '')
+        + (data.username ? '&username=' + data.username : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

@@ -149,6 +149,7 @@ export class ActivityComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('coupon');
+    this.changePanel('coupon');
   }
 
   loadData(flag) {
@@ -161,6 +162,8 @@ export class ActivityComponent implements OnInit {
           return;
         }
         this.dataActivity = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.dataActivity.forEach(data => {
           let actGiftNo = '';
           let count = 0;
@@ -197,6 +200,8 @@ export class ActivityComponent implements OnInit {
           return;
         }
         this.dataSearchCoupon = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'newCoupon') {
       this.activityService.getNewCouponList(this.baseInfoId).subscribe(res => {
@@ -205,6 +210,8 @@ export class ActivityComponent implements OnInit {
           return;
         }
         this.couponListArr = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.couponListArr.forEach(item => {
           const tempObject = { value: item.actGiftNo, label: item.actGiftNo };
           this.actGiftNoArr.push(tempObject);
@@ -213,6 +220,8 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'coupon') {
       this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
         this.dataCoupon = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         console.log(this.dataCoupon);
       });
     } else if (flag === 'batchsendList') {
@@ -222,6 +231,8 @@ export class ActivityComponent implements OnInit {
       };
       this.batchsendService.getBatchsendList(batchsend).subscribe(res => {
         this.dataBatchsend = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         if (this.dataBatchsend.length > 0) {
           this.dataBatchsend.forEach(item => {
             // tslint:disable-next-line:max-line-length
@@ -247,6 +258,8 @@ export class ActivityComponent implements OnInit {
           return;
         }
         this.dataSearchCouponInBatchsend = JSON.parse(res.payload);
+        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'bean') {
       this.isSpinning = true; // loading
@@ -258,6 +271,8 @@ export class ActivityComponent implements OnInit {
       this.xiaowubeanService.getXiaowubeanList(beanInput).subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           this.beanData = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '充值送豆', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           const nowTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
           this.beanData.forEach((item, i) => {
             const beginTime = this.datePipe.transform(item.beginTime, 'yyyy-MM-dd HH:mm:ss');
@@ -774,12 +789,14 @@ export class ActivityComponent implements OnInit {
           } else if (result === 'unfinished') {
             this.notification.blank( '提示', '保存成功，但有信息未填完整', { nzStyle: { color : 'green' } });
           }
+          const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '保存' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('activity');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'couponInActivity') { // 保存红包组选择去
+    } else if (flag === 'couponInActivity') { // 保存红包组选择区
       const couponArr = [];
       let checkedCount = 0;
       let quantityCount = 0;
@@ -806,6 +823,8 @@ export class ActivityComponent implements OnInit {
           if (res.retcode === 0) {
             this.isCouponVisible = false;
             this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '新增' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
             this.loadData('newCoupon');
           } else {
             this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -816,6 +835,8 @@ export class ActivityComponent implements OnInit {
           if (res.retcode === 0) {
             this.isCouponVisible = false;
             this.notification.blank( '提示', '配置红包组成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
             this.loadData('newCoupon');
           } else {
             this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -854,6 +875,8 @@ export class ActivityComponent implements OnInit {
       this.couponService.addCoupon(couponInput).subscribe(res => {
         if (res.retcode === 0) {
           this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('coupon');
           this.loadData('coupon');
         } else {
@@ -897,6 +920,8 @@ export class ActivityComponent implements OnInit {
       this.couponListArrInBatchsend = couponArr;
       this.isCouponInBatchsendVisible = false;
       this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
+      const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '新增红包组' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
     } else if (flag === 'batchsend') { // 批量发送
       // 调用新增接口
       const batchsendListInput = {
@@ -914,6 +939,8 @@ export class ActivityComponent implements OnInit {
           this.batchsendService.batchsend(batchsendInput).subscribe(finalres => {
             if (finalres.retcode === 0) {
               this.notification.blank( '提示', '批量发送成功', { nzStyle: { color : 'green' } });
+              const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '批量发送' };
+              this.commonService.updateOperationlog(operationInput).subscribe();
               this.hideModal('batchsendList');
               this.hideModal('batchsend');
               this.loadData('batchsendList');
@@ -952,6 +979,8 @@ export class ActivityComponent implements OnInit {
       this.xiaowubeanService.addXiaowubean(beanInput, this.radioBeanValue).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '充值送豆', op_name: '新增充值送豆' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.isAddBeanVisible = false;
           this.beginBeanDate = null;
           this.endBeanDate = null;
@@ -989,6 +1018,8 @@ export class ActivityComponent implements OnInit {
       this.xiaowubeanService.updateXiaowubean(beanInput, this.radioBeanValue).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '修改充值送豆' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.isModifyBeanVisible = false;
           this.beginBeanDate = null;
           this.endBeanDate = null;
@@ -1006,18 +1037,6 @@ export class ActivityComponent implements OnInit {
       if (!this.verificationAdd('modifyCoupon')) {
         return;
       }
-      // const couponInput = {
-      //   'couponId': this.cmsId,
-      //   'couponName': this.modifyCouponForm.controls['couponName'].value,
-      //   'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
-      //   'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
-      //   'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
-      //   'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
-      //   'timeLimitStart': this.couponBeginDate.substring(0, 10),
-      //   'timeLimitEnd': this.couponEndDate.substring(0, 10),
-      //   'couponCategory': this.getCheckedCategory(),
-      //   'mutualExcludeRules': this.getMutualExcludeRules(),
-      // };
       let couponInput = {};
       if (this.couponRadioValue === 'fix_start_end') {
         couponInput = {
@@ -1048,6 +1067,8 @@ export class ActivityComponent implements OnInit {
       this.couponService.updateCoupon(couponInput).subscribe(res => {
         if (res.retcode === 0) {
           this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改优惠券' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('modifyCoupon');
           this.loadData('coupon');
         } else {
@@ -1110,18 +1131,22 @@ export class ActivityComponent implements OnInit {
 
   doDelete(data, flag) {
     if (flag === 'activity') {
-      this.activityService.deleteActivity(data.id).subscribe(res => {  // 删除活动
+      this.activityService.deleteActivity(data.id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '删除活动' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('activity');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'couponList') {
-      this.activityService.deleteCouponArr(this.baseInfoId, data).subscribe(resItem => { // 删除图片
+      this.activityService.deleteCouponArr(this.baseInfoId, data).subscribe(resItem => {
         if (resItem.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '删除优惠券' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('newCoupon');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
@@ -1201,6 +1226,8 @@ export class ActivityComponent implements OnInit {
           this.imageUrl = JSON.parse(event.body.payload).relativeUri;
           this.showImageUrl = imageUrl.substring(0, imageUrl.indexOf('/api')) + this.imageUrl;
           this.notification.success( '提示', '上传成功' );
+          const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '上传活动图片' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
         }
@@ -1431,6 +1458,9 @@ export class ActivityComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     flag !== this.currentPanel ? this.loadData(flag) : 1;
     this.currentPanel = flag;
+    // tslint:disable-next-line:max-line-length
+    const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : '', op_name: '访问' };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
   isPoneAvailable($poneInput) {

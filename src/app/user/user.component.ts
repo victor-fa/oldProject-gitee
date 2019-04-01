@@ -84,6 +84,8 @@ export class UserComponent implements OnInit {
       this.userService.getUserInfoList(this.userPageSize, flagPage, id).subscribe(res => {
         if (res.payload !== '') {
           if (res.status === 200) {
+            const operationInput = { op_category: '用户管理', op_page: '用户管理' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
             this.userData = JSON.parse(res.payload).users;
             this.totalUser = JSON.parse(res.payload).total;
             this.allUserSize = JSON.parse(res.payload).allSize;
@@ -107,6 +109,8 @@ export class UserComponent implements OnInit {
       this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload !== '') {
+            const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
             this.dataOrder = JSON.parse(res.payload).orders;
             this.totalBooking = JSON.parse(res.payload).total;
             this.allBookingSize = JSON.parse(res.payload).allSize;
@@ -133,6 +137,8 @@ export class UserComponent implements OnInit {
     this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, state, type, createTime, orderId).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
+          const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.dataOrder = JSON.parse(res.payload).orders;
           this.totalBooking = JSON.parse(res.payload).total;
           this.allBookingSize = JSON.parse(res.payload).allSize;
@@ -161,6 +167,8 @@ export class UserComponent implements OnInit {
     this.userService.getUserInfoListByType(this.userPageSize, flagPage, id, type, userName).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
+          const operationInput = { op_category: '用户管理', op_page: '用户管理' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.userData = [];
           this.userData[0] = JSON.parse(res.payload);
           this.userData[0].locked === false ? this.userData[0].locked = '正常' : this.userData[0].locked = '已拉黑';
@@ -199,6 +207,8 @@ export class UserComponent implements OnInit {
     this.userService.getUserInfo(data.userId).subscribe(res => {
       if (res.retcode === 0) {
         if (res.payload !== '') {
+          const operationInput = { op_category: '用户管理', op_page: '用户管理' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           let forItem = '';
           if (JSON.parse(res.payload).length > 0) {
             for (let i = 0; i < JSON.parse(res.payload).length; i++) {
@@ -292,6 +302,8 @@ export class UserComponent implements OnInit {
   doBlacklist(): void {
     this.userService.updateUserInfo(this.userInfoId).subscribe(res => {
       if (res.status === 200) {
+        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         setTimeout(() => {
           this.loadData('user');
         }, 1000);
@@ -318,6 +330,8 @@ export class UserComponent implements OnInit {
     this.orderStatus = data.state;
     this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
       if (res.retcode === 0) {
+        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         if (JSON.parse(res.payload).flightOrderReturn) {
           this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
           this.isFlightOrder = true;
@@ -347,6 +361,8 @@ export class UserComponent implements OnInit {
   showExternal(flag, data): void {
     this.bookingService.getBookingDetail(flag, data).subscribe(res => {
       if (res.retcode === 0) {
+        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         let externalDetail = [];
         if (JSON.parse(res.payload).flightOrderReturn) {
           externalDetail = JSON.parse(res.payload).flightOrderReturn;
@@ -487,6 +503,8 @@ export class UserComponent implements OnInit {
     this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
       if (res.retcode === 0) {
         this.modalService.success({ nzTitle: '修改成功', nzContent: res.message });
+        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       } else {
         this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
@@ -511,6 +529,8 @@ export class UserComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     flag !== this.currentPanel ? this.loadData(flag) : 1;
     this.currentPanel = flag;
+    const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户管理' : flag === 'booking' ? '订单查询' : '', op_name: '访问' };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

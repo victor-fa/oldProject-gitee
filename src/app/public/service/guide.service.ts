@@ -21,14 +21,14 @@ export class GuideService extends AppServiceBase {
 
   /** 获取所有列表 */
   getGuideAppList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
   /** 获取指定APP的模板列表 */
   getGuideList(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates?appId=${id}`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates?channelId=${id}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -46,7 +46,7 @@ export class GuideService extends AppServiceBase {
 
   /** 给APP添加模板  */
   addGuideForApp(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps/${data.id}/template`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${data.id}/template`;
     const body = `templateId=${data.templateId}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -68,14 +68,14 @@ export class GuideService extends AppServiceBase {
 
   /** 从APP中删除模板 */
   deleteGuideFromApp(appId, templateId): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps/${appId}/template/${templateId}`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${appId}/template/${templateId}`;
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
   /** 修改启用状态 */
   updateSwitch(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/apps/${data.id}/template-enable`;
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${data.id}/template-enable`;
     const body = `templateId=${data.templateId}&enable=${data.enable}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })

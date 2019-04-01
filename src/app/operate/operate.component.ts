@@ -81,10 +81,14 @@ export class OperateComponent implements OnInit {
       this.taxiItem.endTime = this.endDate;
       this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
         this.dataTaxi = JSON.parse(res.payload);
+        const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'voice') {
       this.voiceService.getVoiceList().subscribe(res => {
         this.dataVoice = JSON.parse(res.payload);
+        const operationInput = { op_category: '运维后台', op_page: '语音配置' , op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.dataVoice.forEach(item => {
           if (item.system === 'IOS') {
             this.currentIOSVoiceId = item.id;
@@ -194,6 +198,8 @@ export class OperateComponent implements OnInit {
       this.voiceService.updateVoice(voiceInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '运维后台', op_page: '语音配置IOS' , op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.isSaveIOSVoiceButton = false; // 保存成功后，变为编辑按钮
           this.loadData('voice');
         } else {
@@ -208,6 +214,8 @@ export class OperateComponent implements OnInit {
       this.voiceService.updateVoice(voiceInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '运维后台', op_page: '语音配置ANDROID' , op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.isSaveANDROIDVoiceButton = false; // 保存成功后，变为编辑按钮
           this.loadData('voice');
         } else {
@@ -243,6 +251,8 @@ export class OperateComponent implements OnInit {
     }
     this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : '听听同学';
     this.currentPanel = flag;
+    const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : '', op_name: '访问' };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

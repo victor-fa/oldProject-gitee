@@ -37,6 +37,8 @@ export class DataAppComponent implements OnInit {
       this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'user-behavior').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
           localStorage.setItem('dataCenter', res.payload);
+          const operationInput = { op_category: '数据中心', op_page: 'APP总览' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
           console.log(JSON.parse(res.payload).reverse());
 

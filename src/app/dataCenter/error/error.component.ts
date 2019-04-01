@@ -35,6 +35,8 @@ export class ErrorComponent implements OnInit {
       endDate = this.commonService.getDay(-1);
       this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'bot-exception').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
+          const operationInput = { op_category: '数据中心', op_page: '异常表述' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
           localStorage.setItem('dataCenterTime', currentTime);

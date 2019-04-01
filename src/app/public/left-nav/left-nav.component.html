@@ -30,7 +30,7 @@
 
 <!-- 左侧 -->
 <div class="left_nav">
-  <ul nz-menu [nzMode]="'inline'" class="list" [nzInlineCollapsed]="commonService.isCollapsed">
+  <ul nz-menu [nzMode]="'inline'" class="list" *ngIf="commonService.haveMenuPermission('menu', 'APP管理')" [nzInlineCollapsed]="commonService.isCollapsed">
     <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[1].active}">
       <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
         <span title>
@@ -38,64 +38,64 @@
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[2].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '客服中心')" [ngClass]="{'active_panel': commonService.nav[2].active}">
       <a class="common-button" routerLink="/customer" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-customer-service"></i><span>客服中心</span>
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[3].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '用户管理')" [ngClass]="{'active_panel': commonService.nav[3].active}">
       <a class="common-button" routerLink="/user" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-solution"></i><span>用户管理</span>
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[4].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '运维后台')" [ngClass]="{'active_panel': commonService.nav[4].active}">
       <a class="common-button" routerLink="/operate" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-tool"></i><span>运维后台</span>
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[5].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '内容管理')" [ngClass]="{'active_panel': commonService.nav[5].active}">
       <a class="common-button" routerLink="/content" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-file-text"></i><span>内容管理</span>
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[6].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '活动管理')" [ngClass]="{'active_panel': commonService.nav[6].active}">
       <a class="common-button" routerLink="/activity" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-shop"></i><span>活动相关</span>
+          <i class="anticon anticon-shop"></i><span>活动管理</span>
         </span>
       </a>
     </li>
-    <li nz-submenu nz-tooltip [ngClass]="{'active_panel': commonService.nav[0].active}" routerLinkActive="active">
+    <li nz-submenu nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '数据中心')" [ngClass]="{'active_panel': commonService.nav[0].active}" routerLinkActive="active">
       <span title (click)="goDataCenter()">
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>
       <ul>
-        <li nz-menu-item (click)="commonService.changeDataCenter(0, '/dataCenter/app')">APP总览</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(1, '/dataCenter/keepApp')">APP留存</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(2, '/dataCenter/overview')">BOT总览</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(3, '/dataCenter/product')">产品权限</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(4, '/dataCenter/error')">异常表述</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(5, '/dataCenter/ticket')">机票BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(6, '/dataCenter/train')">火车BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(7, '/dataCenter/hotel')">酒店BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(8, '/dataCenter/weather')">天气BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(9, '/dataCenter/navigate')">导航BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(10, '/dataCenter/taxi')">打车BOT</li>
-        <li nz-menu-item (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', 'APP总览')" (click)="commonService.changeDataCenter(0, '/dataCenter/app')">APP总览</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', 'APP留存')" (click)="commonService.changeDataCenter(1, '/dataCenter/keepApp')">APP留存</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', 'BOT总览')" (click)="commonService.changeDataCenter(2, '/dataCenter/overview')">BOT总览</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '产品权限')" (click)="commonService.changeDataCenter(3, '/dataCenter/product')">产品权限</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '异常表述')" (click)="commonService.changeDataCenter(4, '/dataCenter/error')">异常表述</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '机票BOT')" (click)="commonService.changeDataCenter(5, '/dataCenter/ticket')">机票BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '火车BOT')" (click)="commonService.changeDataCenter(6, '/dataCenter/train')">火车BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '酒店BOT')" (click)="commonService.changeDataCenter(7, '/dataCenter/hotel')">酒店BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '天气BOT')" (click)="commonService.changeDataCenter(8, '/dataCenter/weather')">天气BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '导航BOT')" (click)="commonService.changeDataCenter(9, '/dataCenter/navigate')">导航BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '打车BOT')" (click)="commonService.changeDataCenter(10, '/dataCenter/taxi')">打车BOT</li>
+        <li nz-menu-item *ngIf="commonService.haveMenuPermission('children', '音乐BOT')" (click)="commonService.changeDataCenter(11, '/dataCenter/music')">音乐BOT</li>
       </ul>
     </li>
-    <li nz-menu-item nz-tooltip [ngClass]="{'active_panel': commonService.nav[7].active}">
+    <li nz-menu-item nz-tooltip *ngIf="commonService.haveMenuPermission('menu', '权限后台')" [ngClass]="{'active_panel': commonService.nav[7].active}">
       <a class="common-button" routerLink="/account" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-key"></i><span>权限管理</span>
+          <i class="anticon anticon-key"></i><span>权限后台</span>
         </span>
       </a>
     </li>

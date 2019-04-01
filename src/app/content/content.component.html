@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="内容发布" (nzClick)="changePanel('content')">
+        <nz-tab nzTitle="发文章" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '发文章')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -39,12 +39,9 @@
                 <td>{{now >= data.publishTime ? '已发布' : '未发布'}}</td>
                 <td>{{data.publishTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'content')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'content')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
-                  <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-eye"></i>预览</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'content')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'content')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i class="anticon anticon-eye"></i>预览</button>
                   <button nz-button nzType="primary" *ngIf="data.url === ''" (click)="doGetContentUrl(data)" style="margin-right: 10px;">获取地址</button>
                 </td>
               </tr>
@@ -232,7 +229,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="开屏启动" (nzClick)="changePanel('screen')">
+        <nz-tab nzTitle="开屏启动" (nzClick)="changePanel('screen')" *ngIf="commonService.haveMenuPermission('children', '开屏启动')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -467,7 +464,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="首页弹框" (nzClick)="changePanel('open')">
+        <nz-tab nzTitle="首页弹框" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹框')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -484,6 +481,7 @@
                 <!-- <th nzWidth="20px">排序状态</th> -->
                 <th nzWidth="20px">APP标识</th>
                 <th nzWidth="20px">弹框图片</th>
+                <th nzWidth="20px">弹框规则</th>
                 <th nzWidth="20px">启用状态</th>
                 <th nzWidth="20px">操作</th>
               </tr>
@@ -497,6 +495,7 @@
                 <!-- <td>{{data.order}}</td> -->
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
+                <td>{{data.displayMode === 'ONCE' ? '仅一次' : data.displayMode === 'EVERY_DAY' ? '每天展示N次' : data.displayMode === 'NO_MORE_AFTER_CHECK' ? '查看后不展示' : data.displayMode === 'EACH_START_UP' ? '每次启动出现' : 'null'}}</td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -720,7 +719,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="轮播图" (nzClick)="changePanel('banner')">
+        <nz-tab nzTitle="轮播图" (nzClick)="changePanel('banner')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">

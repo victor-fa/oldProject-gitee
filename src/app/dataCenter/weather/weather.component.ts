@@ -33,6 +33,8 @@ export class WeatherComponent implements OnInit {
     if (this.commonService.dataCenterStatus === 'all' && isDataCenterSearch === 'false') {
       this.dataCenterService.getUnitList(beginDate, endDate, '', '', 'weather-bot').subscribe(res => {
         if (res.retcode === 0 && res.status !== 500) {
+          const operationInput = { op_category: '数据中心', op_page: '天气BOT' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           localStorage.setItem('dataCenter', res.payload);
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
           localStorage.setItem('dataCenterTime', currentTime);

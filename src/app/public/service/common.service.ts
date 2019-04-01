@@ -1,8 +1,12 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
+import { Observable } from 'rxjs';
+import { IResponse } from '../model/response.model';
+import { userApiUrls } from '../enum/api.enum';
+import { AppServiceBase } from '../base/app-service.base';
 
 @Injectable({
   providedIn: 'root'  // 必须添加，放在根部分
@@ -10,16 +14,15 @@ import { NzModalService } from 'ng-zorro-antd';
 /**
  * 公用的
  */
-export class CommonService {
-  // baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // 订票 用户测试 内容测试
-  baseUrl = 'http://localhost:8086/api/admin';  // 订票 用户测试 内容测试
+export class CommonService extends AppServiceBase {
+  baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器翻墙用
+  // baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
+  // baseUrl = 'http://localhost:8088/api/admin';  // nginx正式前端地址
   // baseUrl = 'https://xiaowu.centaurstech.com/api';  // 订票 用户测试 内容测试
   dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
-  // dataCenterUrl = 'http://localhost:8086/api';  // 数据中心测试【衡锐】
   // dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api';  // 数据中心正式【衡锐】
   // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
   taxiRouteUrl = 'http://account-center-test.chewrobot.com:41005/api';  // 打车路径测试【宇辉】
-  // taxiRouteUrl = 'http://localhost:8086/api';  // 打车路径测试【宇辉】
   // taxiRouteUrl = 'https://xiaowu.centaurstech.com:41005/api';  // 打车路径正式【宇辉】
 
   list: string[] = [];
@@ -53,26 +56,16 @@ export class CommonService {
     { active: false },
     { active: false }
   ];
-  permission = {  // 权限管理
-    personal: false,
-    reset: false,
-    monitor: false,
-    number: false,
-    template: false,
-    outbound: false,
-    examine: false,
-    material: false,
-    datareport: false,
-    account: false,
-    role: false,
-    conversation: false,
-  };
-
+  fullResource = [];
   currentTitle = '数据中心';  // 数据中心标题
 
   constructor(
     private _router: Router,
-  ) { }
+    private httpClient: HttpClient,
+    private injector: Injector,
+  ) {
+    super(injector);
+  }
 
   append(str: any) {
     this.list.push(str);
@@ -142,48 +135,6 @@ export class CommonService {
     return m;
   }
 
-  havePermission(): void {
-    const flag = localStorage.getItem('permission').split(',');
-    flag.forEach(item => {
-      if (item === '个人资料') {
-        this.permission.personal = true;
-      } else if (item === '重置密码') {
-        this.permission.reset = true;
-      } else if (item === '首页监控') {
-        this.permission.monitor = true;
-      } else if (item === '号码管理') {
-        this.permission.number = true;
-      } else if (item === '模板管理') {
-        this.permission.template = true;
-      } else if (item === '外呼任务') {
-        this.permission.outbound = true;
-      } else if (item === '任务审核') {
-        this.permission.examine = true;
-      } else if (item === '员工列表') {
-        this.permission.account = true;
-      } else if (item === '角色列表') {
-        this.permission.role = true;
-      } else if (item === '会话记录') {
-        this.permission.conversation = true;
-      }
-    });
-  }
-
-  closePermission(): void {
-    this.permission.personal = false;
-    this.permission.reset = false;
-    this.permission.monitor = false;
-    this.permission.number = false;
-    this.permission.template = false;
-    this.permission.outbound = false;
-    this.permission.examine = false;
-    this.permission.material = false;
-    this.permission.datareport = false;
-    this.permission.account = false;
-    this.permission.role = false;
-    this.permission.conversation = false;
-  }
-
   // 验证有效的手机号
   phoneNumValidator = (control: FormControl): { [s: string]: boolean } => {
     const MOBILE_REGEXP = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
@@ -251,6 +202,33 @@ export class CommonService {
       return { required: true };
     } else if (!REGEXP.test(control.value)) {
       return { error: true, rightRule: true };
+    }
+  }
+
+  /** 记录-管理员操作日志记录接口 */
+  updateOperationlog(data): Observable<IResponse<any>> {
+    const url = `${this.baseUrl}/audit?op_category=${data.op_category}&op_page=${data.op_page}&op_name=${data.op_name}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, this.options);
+  }
+
+  // 判断一级是否有权限
+  haveMenuPermission(flag, data) {
+    let result = false;
+    const fullResource = JSON.parse(localStorage.getItem('FullResource'));
+    if (flag === 'menu') {
+      fullResource.forEach(item => { if (item.name === data && item.isVisible === true) { result = true; } });
+      return result;
+    } else if (flag === 'children') {
+      fullResource.forEach(item => {
+        item.children.forEach(cell => {
+          if (cell.name === data && cell.isVisible === true) { result = true; }
+        });
+      });
+      return result;
     }
   }
 

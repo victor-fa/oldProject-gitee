@@ -111,25 +111,34 @@ export class ContentComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('content');
+    this.changePanel('content');
   }
 
   loadData(flag) {
     if (flag === 'content') {
       this.contentService.getContentList().subscribe(res => {
         this.dataContent = JSON.parse(res.payload).reverse();
+        const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'screen') {
       this.screenService.getScreenList().subscribe(res => {
         this.dataScreen = JSON.parse(res.payload).reverse();
+        const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
         this.dataOpen = JSON.parse(res.payload).reverse();
+        const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         console.log(this.dataOpen);
       });
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
         this.dataBanner = JSON.parse(res.payload).reverse();
+        const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     }
   }
@@ -314,6 +323,8 @@ export class ContentComponent implements OnInit {
       this.contentService.addContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('content');
           this.loadData('content');
         } else {
@@ -337,6 +348,8 @@ export class ContentComponent implements OnInit {
       this.screenService.addScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('screen');
           this.loadData('screen');
         } else {
@@ -361,6 +374,8 @@ export class ContentComponent implements OnInit {
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('open');
           this.loadData('open');
         } else {
@@ -383,6 +398,8 @@ export class ContentComponent implements OnInit {
       this.bannerService.addBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('banner');
           this.loadData('banner');
         } else {
@@ -530,6 +547,8 @@ export class ContentComponent implements OnInit {
       this.contentService.getContent(id).subscribe(res => {
         // 处理异常处理
         this.contentDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.contentDate.url = this.dotranUrl(JSON.parse(res.payload).url);
         this.imageUrl = JSON.parse(res.payload).thumbnail;
         const file: any = {
@@ -546,6 +565,8 @@ export class ContentComponent implements OnInit {
       this.screenService.getScreen(id).subscribe(res => {
         // 处理异常处理
         this.screenDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '开屏弹框', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.screenDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
         const file: any = {
@@ -559,9 +580,12 @@ export class ContentComponent implements OnInit {
       const id = data.id;
       this.isModifyOpenVisible = true;
       this.cmsId = id;  // 用于修改
+      this.displayModeForOpen = data.displayMode;
       this.openService.getOpen(id).subscribe(res => {
         // 处理异常处理
         this.openDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.openDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
         const file: any = {
@@ -578,6 +602,8 @@ export class ContentComponent implements OnInit {
       this.bannerService.getBanner(id).subscribe(res => {
         // 处理异常处理
         this.bannerDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         this.bannerDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
         const file: any = {
@@ -625,6 +651,8 @@ export class ContentComponent implements OnInit {
       this.contentService.updateContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('content');
           this.loadData('content');
         } else {
@@ -649,6 +677,8 @@ export class ContentComponent implements OnInit {
       this.screenService.updateScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('screen');
           this.loadData('screen');
         } else {
@@ -669,11 +699,13 @@ export class ContentComponent implements OnInit {
         'order': this.modifyOpenForm.controls['order'].value,
         'image': this.imageUrl,
         'displayMode': this.displayModeForOpen,
-        'maxDisplay': this.modifyOpenForm.controls['maxDisplay'].value
+        'maxDisplay': this.modifyOpenForm.controls['maxDisplay'].value !== undefined ? this.modifyOpenForm.controls['maxDisplay'].value : ''
       };
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('open');
           this.loadData('open');
         } else {
@@ -697,6 +729,8 @@ export class ContentComponent implements OnInit {
       this.bannerService.updateBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('banner');
           this.loadData('banner');
         } else {
@@ -719,6 +753,8 @@ export class ContentComponent implements OnInit {
       this.contentService.deleteContent(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('content');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -728,6 +764,8 @@ export class ContentComponent implements OnInit {
       this.screenService.deleteScreen(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('screen');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -737,6 +775,8 @@ export class ContentComponent implements OnInit {
       this.openService.deleteOpen(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('open');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -746,6 +786,8 @@ export class ContentComponent implements OnInit {
       this.bannerService.deleteBanner(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('banner');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -772,6 +814,8 @@ export class ContentComponent implements OnInit {
       this.screenService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -781,6 +825,8 @@ export class ContentComponent implements OnInit {
       this.openService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -790,6 +836,8 @@ export class ContentComponent implements OnInit {
       this.bannerService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -835,7 +883,7 @@ export class ContentComponent implements OnInit {
   // 获取地址
   doGetContentUrl(data) {
     // tslint:disable-next-line:max-line-length
-    window.open(`${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/api'))}/static/content-detail.html?id=${data.id}&channelId=${localStorage.getItem('currentAppHeader')}`);
+    window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/content-detail.html?id=${data.id}&channelId=${localStorage.getItem('currentAppHeader')}`);
   }
 
   // 用于区分分享文案下的三个上传图片的方法
@@ -904,6 +952,9 @@ export class ContentComponent implements OnInit {
           // tslint:disable-next-line:max-line-length
           this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           this.notification.success( '提示', '上传成功' );
+          // tslint:disable-next-line:max-line-length
+          const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹框' : this.currentPanel === 'banner' ? '轮播图' : '' , op_name: '上传图片' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
         }
@@ -929,6 +980,13 @@ export class ContentComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     flag !== this.currentPanel ? this.loadData(flag) : 1;
     this.currentPanel = flag;
+    const operationInput = {
+      op_category: '内容管理',
+      // tslint:disable-next-line:max-line-length
+      op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹框' : flag === 'banner' ? '轮播图' : '',
+      op_name: '访问'
+    };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

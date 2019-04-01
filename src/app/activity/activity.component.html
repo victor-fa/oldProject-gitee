@@ -4,7 +4,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large">
 
-        <nz-tab nzTitle="优惠券" (nzClick)="changePanel('coupon')">
+        <nz-tab nzTitle="优惠券配置" (nzClick)="changePanel('coupon')" *ngIf="commonService.haveMenuPermission('children', '优惠券配置')">
           <div nz-row class="search_panel">
             <form [formGroup]="searchCouponForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -519,7 +519,7 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab nzTitle="活动管理" (nzClick)="changePanel('activity')">
+        <nz-tab nzTitle="优惠券活动" (nzClick)="changePanel('activity')" *ngIf="commonService.haveMenuPermission('children', '优惠券活动')">
           <div nz-row class="search_panel">
             <form [formGroup]="searchActivityForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -1089,7 +1089,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="批量发放" (nzClick)="changePanel('batchsendList')">
+        <nz-tab nzTitle="批量发放" (nzClick)="changePanel('batchsendList')" *ngIf="commonService.haveMenuPermission('children', '批量发放')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">
               查询范围：
@@ -1396,7 +1396,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="充值送豆" (nzClick)="changePanel('bean')">
+        <nz-tab nzTitle="充值送豆" (nzClick)="changePanel('bean')" *ngIf="commonService.haveMenuPermission('children', '充值送豆')">
           <div nz-row class="search_panel">
             <form [formGroup]="searchBeanForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">

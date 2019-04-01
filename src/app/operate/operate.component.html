@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="打车监控" (nzClick)="changePanel('taxi')">
+        <nz-tab nzTitle="打车监控" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
@@ -124,7 +124,7 @@
         </nz-tab>
 
 
-        <nz-tab nzTitle="语音配置" (nzClick)="changePanel('voice')">
+        <nz-tab nzTitle="ASR语音切换" (nzClick)="changePanel('voice')" *ngIf="commonService.haveMenuPermission('children', 'ASR语音切换')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
