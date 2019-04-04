@@ -134,17 +134,7 @@ export class ActivityComponent implements OnInit {
     private http: HttpClient,
   ) {
     this.commonService.nav[6].active = true;
-    this._initSearchActivityForm();
-    this._initSearchCouponInActivityForm();
-    this._initAddActivityForm();
-    this._initSearchCouponForm();
-    this._initAddCouponForm();
-    this._initModifyCouponForm();
-    this._initAddBatchsendForm();
-    this._initSearchCouponInBatchsendForm();
-    this._initSearchBeanForm();
-    this._initAddBeanForm();
-    this._initModifyBeanForm();
+    this._initForm();
   }
 
   ngOnInit() {
@@ -306,116 +296,23 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-  private _initSearchCouponForm(): void {
-    this.searchCouponForm = this.fb.group({
-      couponName: [''],
-      discountType: [''],
-      couponCategory: [''],
-      date: [''],
-    });
-  }
-
-  private _initSearchActivityForm(): void {
-    this.searchActivityForm = this.fb.group({
-      actName: [''],
-      actStatus: [''],
-    });
-  }
-
-  private _initSearchCouponInActivityForm(): void {
-    this.searchCouponInActivityForm = this.fb.group({
-      couponName: [''],
-      discountType: [''],
-      couponCategory: [''],
-      date: [''],
-    });
-  }
-
-  private _initAddActivityForm(): void {
-    this.addActivityForm = this.fb.group({
-      actName: [''],
-      date: [''],
-      actRuleDesc: [''],
-      actType: [''],
-      chargeThreshold: [''],
-      totalQuantity: [''],
-      // consumedQuantity: [''], 该字段是后台自己使用
-      perUserQuantity: [''],
-      actGiftNo: [''],
-      temp: [''], // 临时用于不需要的字段，比如模板4上的子区间相关字段
-    });
-  }
-
-  private _initAddCouponForm(): void {
-    this.addCouponForm = this.fb.group({
-      couponName: [''],
-      date: [''],
-      discountType: [''],
-      thresholdPrice: [''],
-      discountPrice: [''],
-      timeLimitValidDay: [''],
-      timeLimitType: [''],
-    });
-  }
-
-  private _initAddBatchsendForm(): void {
-    this.addBatchsendForm = this.fb.group({
-      pendingRevL: [''],
-      displayMessage: [''],
-    });
-  }
-
-  private _initSearchCouponInBatchsendForm(): void {
-    this.searchCouponInBatchsendForm = this.fb.group({
-      couponName: [''],
-      discountType: [''],
-      couponCategory: [''],
-      date: [''],
-    });
-  }
-
-  private _initSearchBeanForm(): void {
-    this.searchBeanForm = this.fb.group({
-      title: [''],
-      date: [''],
-    });
-  }
-
-  private _initAddBeanForm(): void {
-    this.addBeanForm = this.fb.group({
-      title: [''],
-      describe: [''],
-      date: [''],
-      type: [''],
-      depositAmount: [''],
-      giftPercent: [''],  // 百分比
-      giftAmount: [''], // 固定值
-    });
-  }
-
-  private _initModifyBeanForm(): void {
-    this.modifyBeanForm = this.fb.group({
-      title: [''],
-      describe: [''],
-      date: [''],
-      type: [''],
-      depositAmount: [''],
-      giftPercent: [''],  // 百分比
-      giftAmount: [''], // 固定值
-    });
-  }
-
-  // 修改
-  _initModifyCouponForm() {
-    this.modifyCouponForm = this.fb.group({
-      couponName: [''],
-      date: [''],
-      discountType: [''],
-      timeLimitValidDay: [''],
-      thresholdPrice: [''],
-      discountPrice: [''],
-      timeLimitType: [''],
-    });
+  private _initForm(): void {
+    this.searchCouponForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
+    this.searchActivityForm = this.fb.group({ actName: [''], actStatus: [''], });
+    this.searchCouponInActivityForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
+    this.addActivityForm = this.fb.group({ actName: [''], date: [''], actRuleDesc: [''], actType: [''], chargeThreshold: [''],
+      totalQuantity: [''], perUserQuantity: [''], actGiftNo: [''], temp: [''], });
+    this.addCouponForm = this.fb.group({ couponName: [''], date: [''], discountType: [''], thresholdPrice: [''], discountPrice: [''],
+      timeLimitValidDay: [''], timeLimitType: [''], });
+    this.addBatchsendForm = this.fb.group({ pendingRevL: [''], displayMessage: [''], });
+    this.searchCouponInBatchsendForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
+    this.searchBeanForm = this.fb.group({ title: [''], date: [''], });
+    this.addBeanForm = this.fb.group({ title: [''], describe: [''], date: [''], type: [''], depositAmount: [''], giftPercent: [''],
+      giftAmount: ['']});
+    this.modifyBeanForm = this.fb.group({ title: [''], describe: [''], date: [''], type: [''], depositAmount: [''], giftPercent: [''],
+      giftAmount: [''], });
+    this.modifyCouponForm = this.fb.group({ couponName: [''], date: [''], discountType: [''], timeLimitValidDay: [''], thresholdPrice: [''],
+      discountPrice: [''], timeLimitType: [''], });
   }
 
   // 新增内容 - 弹框

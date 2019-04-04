@@ -17,7 +17,7 @@ import { MusicComponent } from './music/music.component';
 
 const routes: Routes = [
     {
-        path: 'app',
+        path: 'overview',
         component: DataCenterComponent,
         children: [
             {

@@ -38,6 +38,7 @@ export class HotelComponent implements OnInit {
           const operationInput = { op_category: '数据中心', op_page: '酒店BOT' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           localStorage.setItem('dataCenter', res.payload);
+          console.log(JSON.parse(res.payload));
           this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
           localStorage.setItem('dataCenterTime', currentTime);
           this.isSpinning = false;  // loading

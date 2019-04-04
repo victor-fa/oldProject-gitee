@@ -132,14 +132,16 @@ export class UserService extends AppServiceBase {
    */
   login(input: LoginItemInput) {
     localStorage.setItem('token', '');
+    localStorage.setItem('FullMenuResource', '');
+    localStorage.setItem('FullChildrenResource', '');
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
     formData.set('password', input.password);
     const that = this;
     let count = 0;  // 因为该方法会被掉4次，所以出此下策只提示一次
+
     result.onreadystatechange = function() {
-      console.log(result.status);
       if (result.readyState !== 4 || result.status !== 200) {
         count += 1;
         count === 2 && result.status === 401 ? that.notification.blank('提示', '登录信息有误！', { nzStyle: { color : 'red' }}) : 1;
@@ -148,13 +150,59 @@ export class UserService extends AppServiceBase {
       if (result.responseText !== '') {
         localStorage.setItem('token', JSON.parse(result.responseText).authorization);
         that.notification.blank('提示', '登录成功！', { nzStyle: { color : 'green' }});
-        // 获取树，添加到localstorage
-        that.getFullResource().subscribe(res => {
-          console.log(JSON.parse(res.payload).grantedRes);
-          localStorage.setItem('FullResource', JSON.stringify(JSON.parse(res.payload).grantedRes));
-          that.commonService.fullResource = JSON.parse(localStorage.getItem('FullResource'));
-        });
-        that.router.navigateByUrl('appVersion');
+        // 获取当前登录用户的资源树
+        const resultFull = new XMLHttpRequest();
+        resultFull.onreadystatechange = function() {
+          const menuArr = [];
+          const childrenArr = [];
+          if (resultFull.responseText !== '') {
+            JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
+              if (item.isVisible === true) {
+                menuArr.push(item.name);
+              }
+              item.children.forEach(cell => {
+                console.log(cell.isVisible);
+                if (cell.isVisible === true) {
+                  childrenArr.push(cell.name);
+                }
+              });
+            });
+            localStorage.setItem('FullMenuResource', JSON.stringify(menuArr));
+            that.commonService.fullMenuResource = JSON.stringify(menuArr);
+            localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr));
+            that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
+            setTimeout(() => {
+              let target = 'appVersion';
+              if (menuArr.indexOf('APP管理') <= -1) { // 不存在
+                target = 'customer';
+                if (menuArr.indexOf('客服中心') <= -1) { // 不存在
+                  target = 'user';
+                  if (menuArr.indexOf('用户管理') <= -1) { // 不存在
+                    target = 'operate';
+                    if (menuArr.indexOf('运维后台') <= -1) { // 不存在
+                      target = 'content';
+                      if (menuArr.indexOf('内容管理') <= -1) { // 不存在
+                        target = 'activity';
+                        if (menuArr.indexOf('活动管理') <= -1) { // 不存在
+                          target = 'dataCenter';
+                          if (menuArr.indexOf('数据中心') <= -1) { // 不存在
+                            target = 'account';
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              that.router.navigateByUrl(target);
+            }, 2000);
+          }
+        };
+        resultFull.open('GET', `${that.commonService.baseUrl}/auth/info`, true);
+        resultFull.setRequestHeader('App-Channel-Id', localStorage.getItem('currentAppHeader'));
+        resultFull.setRequestHeader('Authorization', localStorage.getItem('token'));
+        resultFull.send();
+
       } else {
         that.modalService.error({ nzTitle: '提示', nzContent: '登录信息有误！' });
       }
@@ -162,17 +210,6 @@ export class UserService extends AppServiceBase {
     result.open('POST', `${this.commonService.baseUrl}/process_login`, true);
     result.send(formData);
   }
-
-  /** 获取所有资源树 */
-  getFullResource(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/auth/info`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
 
   /** 获取点赞点踩Excel模板接口 */
   getExcel(id, estimate) {

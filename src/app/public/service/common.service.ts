@@ -15,8 +15,8 @@ import { AppServiceBase } from '../base/app-service.base';
  * 公用的
  */
 export class CommonService extends AppServiceBase {
-  baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器翻墙用
-  // baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
+  // baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器不安全下使用
+  baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
   // baseUrl = 'http://localhost:8088/api/admin';  // nginx正式前端地址
   // baseUrl = 'https://xiaowu.centaurstech.com/api';  // 订票 用户测试 内容测试
   dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
@@ -56,8 +56,10 @@ export class CommonService extends AppServiceBase {
     { active: false },
     { active: false }
   ];
-  fullResource = [];
   currentTitle = '数据中心';  // 数据中心标题
+  fullMenuResource = localStorage.getItem('FullMenuResource') !== '' ? JSON.parse(localStorage.getItem('FullMenuResource')) : '';
+  // tslint:disable-next-line:max-line-length
+  fullChildrenResource = localStorage.getItem('FullChildrenResource') !== '' ? JSON.parse(localStorage.getItem('FullChildrenResource')) : '';
 
   constructor(
     private _router: Router,
@@ -215,21 +217,15 @@ export class CommonService extends AppServiceBase {
       .post<IResponse<any>>(url, this.options);
   }
 
-  // 判断一级是否有权限
+  // 判断二级是否有权限
   haveMenuPermission(flag, data) {
     let result = false;
-    const fullResource = JSON.parse(localStorage.getItem('FullResource'));
-    if (flag === 'menu') {
-      fullResource.forEach(item => { if (item.name === data && item.isVisible === true) { result = true; } });
-      return result;
-    } else if (flag === 'children') {
-      fullResource.forEach(item => {
-        item.children.forEach(cell => {
-          if (cell.name === data && cell.isVisible === true) { result = true; }
-        });
-      });
-      return result;
-    }
+    this.fullChildrenResource.forEach(item => {
+      if (item === data) {
+        result = true;
+      }
+    });
+    return result;
   }
 
 }

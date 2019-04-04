@@ -48,10 +48,12 @@ export enum cmsApiUrls {
   shareList = '/copywriter',
   /** 引导语 */
   guideList = '/guide/management',
-  /** 技能帮助 */
-  helpList = '',
+  /** 帮助管理 */
+  helpList = '/cms/skills',
   /** 语音配置 */
   voiceList = '/cms/asr-configs',
+  /** 语音配置 */
+  protocolList = '/agreement',
 }
 
 /** APP版本 */

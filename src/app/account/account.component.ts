@@ -89,12 +89,7 @@ export class AccountComponent implements OnInit {
     private accountService: AccountService,
   ) {
     this.commonService.nav[7].active = true;
-    this._initAddRoleForm();
-    this._initAddCustomerForm();
-    this._initCustomerSearchForm();
-    this._initCustomerModifyForm();
-    this._initRoleModifyForm();
-    this._initOperationlogrSearchForm();
+    this._initForm();
   }
 
   ngOnInit() {
@@ -201,38 +196,14 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  private _initCustomerSearchForm(): void {
-    this.searchCustomerForm = this.fb.group({
-      realname: [''],
-      username: [''],
-      roleId: [''],
-    });
-  }
-
-  private _initCustomerModifyForm(): void {
-    this.customerModifyForm = this.fb.group({
-      realname: [''],
-      password: [''],
-      roleId: [''],
-      username: [''],
-    });
-  }
-
-  private _initAddCustomerForm(): void {
-    this.customerAddForm = this.fb.group({
-      realname: [''],
-      password: [''],
-      roleId: [''],
-      username: [''],
-    });
-  }
-
-  private _initAddRoleForm(): void {
+  private _initForm(): void {
+    this.searchCustomerForm = this.fb.group({ realname: [''], username: [''], roleId: [''], });
+    this.customerModifyForm = this.fb.group({ realname: [''], password: [''], roleId: [''], username: [''], });
+    this.customerAddForm = this.fb.group({ realname: [''], password: [''], roleId: [''], username: [''], });
     this.roleAddForm = this.fb.group({ name: [''], desc: [''] });
-  }
-
-  private _initRoleModifyForm(): void {
     this.roleModifyForm = this.fb.group({ name: [''], desc: [''] });
+    this.searchOperationlogForm = this.fb.group({ realname: [''], username: [''], role_id: [''], op_category: [''],
+      op_page: [''], date: [''], unCheckVisit: [''], });
   }
 
   // 所有弹框
@@ -466,18 +437,6 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  private _initOperationlogrSearchForm(): void {
-    this.searchOperationlogForm = this.fb.group({
-      realname: [''],
-      username: [''],
-      role_id: [''],
-      op_category: [''],
-      op_page: [''],
-      date: [''],
-      unCheckVisit: [''],
-    });
-  }
-
   // 切换面板
   changePanel(flag): void {
     // tslint:disable-next-line:no-unused-expression
@@ -514,14 +473,14 @@ export class AccountComponent implements OnInit {
   getResArr() {
     const finalArr = [];
     const arr1 = [], arr2 = [], arr3 = [], arr4 = [], arr5 = [], arr6 = [], arr7 = [], arr8 = [];
-    this.checkOptions1.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions2.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions3.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions4.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions5.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions6.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions7.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
-    this.checkOptions8.forEach(item => { item.checked === true ? finalArr.push(item.value) : 1; });
+    this.checkOptions1.forEach(item => { if (item.checked) { finalArr.push(item.value); arr1.push(item.id); } });
+    this.checkOptions2.forEach(item => { if (item.checked) { finalArr.push(item.value); arr2.push(item.id); } });
+    this.checkOptions3.forEach(item => { if (item.checked) { finalArr.push(item.value); arr3.push(item.id); } });
+    this.checkOptions4.forEach(item => { if (item.checked) { finalArr.push(item.value); arr4.push(item.id); } });
+    this.checkOptions5.forEach(item => { if (item.checked) { finalArr.push(item.value); arr5.push(item.id); } });
+    this.checkOptions6.forEach(item => { if (item.checked) { finalArr.push(item.value); arr6.push(item.id); } });
+    this.checkOptions7.forEach(item => { if (item.checked) { finalArr.push(item.value); arr7.push(item.id); } });
+    this.checkOptions8.forEach(item => { if (item.checked) { finalArr.push(item.value); arr8.push(item.id); } });
     if (arr1.length > 0) { finalArr.push(this.allMenu[0].id); }
     if (arr2.length > 0) { finalArr.push(this.allMenu[1].id); }
     if (arr3.length > 0) { finalArr.push(this.allMenu[2].id); }

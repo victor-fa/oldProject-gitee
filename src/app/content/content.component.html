@@ -48,7 +48,7 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增内容 -->
+          <!-- 弹窗 —— 新增 —— 新增内容 -->
           <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addContentModalFooter" nzClosable="false">
             <form [formGroup]="addContentForm">
               <div nz-row class="search_panel">
@@ -129,7 +129,7 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #addContentModalFooter>
               <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
               <button nz-button nzType="primary" (click)="doPreviewContentAdd()">预览</button>
@@ -137,7 +137,7 @@
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 修改 —— 修改内容 -->
+          <!-- 弹窗 —— 修改 —— 修改内容 -->
           <nz-modal [(nzVisible)]="isModifyContentVisible" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyContentModalFooter"
             nzClosable="false">
             <form [formGroup]="modifyContentForm">
@@ -219,7 +219,7 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #modifyContentModalFooter>
               <button nz-button nzType="primary" (click)="doModify('content')">保存</button>
               <button nz-button nzType="primary" (click)="doPreviewContentModify()">预览</button>
@@ -278,7 +278,7 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增开屏 -->
+          <!-- 弹窗 —— 新增 —— 新增开屏 -->
           <nz-modal [(nzVisible)]="isAddScreenVisible" nzWidth="750" nzTitle="新增开屏" [nzFooter]="addScreenModalFooter" (nzOnCancel)="hideAddModal('screen')">
             <form [formGroup]="addScreenForm">
               <div nz-row class="search_panel">
@@ -363,14 +363,14 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #addScreenModalFooter>
               <button nz-button nzType="primary" (click)="doSave('screen')">保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('screen')">取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 修改 —— 修改开屏 -->
+          <!-- 弹窗 —— 修改 —— 修改开屏 -->
           <nz-modal [(nzVisible)]="isModifyScreenVisible" nzWidth="750" nzTitle="修改开屏" [nzFooter]="modifyScreenModalFooter" (nzOnCancel)="hideModifyModal('screen')">
             <form [formGroup]="modifyScreenForm">
               <div nz-row class="search_panel">
@@ -455,7 +455,7 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #modifyScreenModalFooter>
               <button nz-button nzType="primary" (click)="doModify('screen')">保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('screen')">取消</button>
@@ -464,24 +464,24 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="首页弹框" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹框')">
+        <nz-tab nzTitle="首页弹窗" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹窗')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增弹框</button>
+              <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增弹窗</button>
             </div>
           </div>
           <nz-table #openTable [nzData]="dataOpen">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">弹框标题</th>
+                <th nzWidth="20px">弹窗标题</th>
                 <th nzWidth="20px">跳转位置</th>
                 <th nzWidth="20px">链接地址</th>
                 <!-- <th nzWidth="20px">排序状态</th> -->
                 <th nzWidth="20px">APP标识</th>
-                <th nzWidth="20px">弹框图片</th>
-                <th nzWidth="20px">弹框规则</th>
+                <th nzWidth="20px">弹窗图片</th>
+                <th nzWidth="20px">弹窗规则</th>
                 <th nzWidth="20px">启用状态</th>
                 <th nzWidth="20px">操作</th>
               </tr>
@@ -513,16 +513,16 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增弹框 -->
-          <nz-modal [(nzVisible)]="isAddOpenVisible" nzWidth="750" nzTitle="新增弹框" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')">
+          <!-- 弹窗 —— 新增 —— 新增弹窗 -->
+          <nz-modal [(nzVisible)]="isAddOpenVisible" nzWidth="750" nzTitle="新增弹窗" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')">
             <form [formGroup]="addOpenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  <font color="red">*</font>弹框标题：
+                  <font color="red">*</font>弹窗标题：
                 </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [(ngModel)]="openDate.title"
-                    placeholder="请输入弹框标题" nzSize="default">
+                    placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -589,7 +589,7 @@
               </div> -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  <font color="red">*</font>弹框图片：
+                  <font color="red">*</font>弹窗图片：
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -608,23 +608,23 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #addOpenModalFooter>
               <button nz-button nzType="primary" (click)="doSave('open')">保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('open')">取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 修改 —— 修改弹框 -->
-          <nz-modal [(nzVisible)]="isModifyOpenVisible" nzWidth="750" nzTitle="修改弹框" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')">
+          <!-- 弹窗 —— 修改 —— 修改弹窗 -->
+          <nz-modal [(nzVisible)]="isModifyOpenVisible" nzWidth="750" nzTitle="修改弹窗" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')">
             <form [formGroup]="modifyOpenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  <font color="red">*</font>弹框标题：
+                  <font color="red">*</font>弹窗标题：
                 </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [ngModel]="openDate.title"
-                    placeholder="请输入弹框标题" nzSize="default">
+                    placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -691,7 +691,7 @@
               </div> -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  <font color="red">*</font>弹框图片：
+                  <font color="red">*</font>弹窗图片：
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -710,7 +710,7 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #modifyOpenModalFooter>
               <button nz-button nzType="primary" (click)="doModify('open')">保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('open')">取消</button>
@@ -766,7 +766,7 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增轮播图 -->
+          <!-- 弹窗 —— 新增 —— 新增轮播图 -->
           <nz-modal [(nzVisible)]="isAddBannerVisible" nzWidth="750" nzTitle="新增轮播图" [nzFooter]="addBannerModalFooter" (nzOnCancel)="hideAddModal('banner')">
             <form [formGroup]="addBannerForm">
               <div nz-row class="search_panel">
@@ -830,7 +830,7 @@
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*420&nbsp;&nbsp;限制大小：150K</font>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -842,14 +842,14 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #addBannerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('banner')">保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('banner')">取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 修改 —— 修改轮播图 -->
+          <!-- 弹窗 —— 修改 —— 修改轮播图 -->
           <nz-modal [(nzVisible)]="isModifyBannerVisible" nzWidth="750" nzTitle="修改轮播图" [nzFooter]="modifyBannerModalFooter" (nzOnCancel)="hideModifyModal('banner')">
             <form [formGroup]="modifyBannerForm">
               <div nz-row class="search_panel">
@@ -906,14 +906,14 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  <font color="red">*</font>弹框图片：
+                  <font color="red">*</font>弹窗图片：
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button>
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*420&nbsp;&nbsp;限制大小：150K</font>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
               </div>
@@ -925,7 +925,7 @@
                 </div>
               </div>
             </form>
-            <!-- 弹框和底部定制 -->
+            <!-- 弹窗和底部定制 -->
             <ng-template #modifyBannerModalFooter>
               <button nz-button nzType="primary" (click)="doModify('banner')">保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('banner')">取消</button>

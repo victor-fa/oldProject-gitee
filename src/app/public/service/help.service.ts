@@ -43,37 +43,21 @@ export class HelpService extends AppServiceBase {
   /** 添加单个 */
   addHelp(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}`;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改单个 */
   updateHelp(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${data.id}`;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
-  }
-
-  /** 修改启用状态 */
-  updateSwitch(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${data.id}`;
-    const body = `enabled=${data.enabled}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
-    };
-    // tslint:disable-next-line:max-line-length
-    return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .patch<IResponse<any>>(url, data, this.options);
   }
 
 }

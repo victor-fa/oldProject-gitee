@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LeftNavComponent implements OnInit {
 
   currentAppHeader = '';
+  fullMenuResource = JSON.parse(localStorage.getItem('FullMenuResource'));
   constructor(
     public commonService: CommonService,
     private _router: Router,
@@ -44,4 +45,16 @@ export class LeftNavComponent implements OnInit {
   goDataCenter() {
     this._router.navigate(['/dataCenter/app']);
   }
+
+  // 判断一级是否有权限
+  haveMenuPermission(flag, data) {
+    let result = false;
+    this.fullMenuResource.forEach(item => {
+      if (item === data) {
+        result = true;
+      }
+    });
+    return result;
+  }
+
 }

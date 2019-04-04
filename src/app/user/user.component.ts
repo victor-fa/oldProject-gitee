@@ -32,11 +32,13 @@ export class UserComponent implements OnInit {
   dataDetail = [];
   dataOrder = {};
   displayData = [];
+  dataRefund = [];
   allChecked = false;
   indeterminate = false;
   isBookingDetailVisible = false;
   isExternalDetailVisible = false;
   isInvoiceVisible = false;
+  isRefundVisible = false;
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
@@ -44,6 +46,7 @@ export class UserComponent implements OnInit {
   isFlightOrder = false;
   isHotelOrder = false;
   isTrainOrder = false;
+  isTaxiOrder = false;
   lastBookingId = 0;
   firstBookingId = 0;
   totalBooking = 0;
@@ -53,6 +56,10 @@ export class UserComponent implements OnInit {
   doFirstBooking = false;
   bookingPageSize = 10;
   currentPanel = 'user';
+  refundInfo = { userId: '', orderId: ''};
+  refundRadio = '';
+  refundSelectArr = [];
+  refundSelectName = [];
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -63,9 +70,7 @@ export class UserComponent implements OnInit {
     private bookingService: BookingService,
   ) {
     this.commonService.nav[3].active = true;
-    this._initSearchUserForm();
-    this._initSearchBookingForm();
-    this._initModifyBookingForm();
+    this._initForm();
   }
 
   ngOnInit() {
@@ -108,16 +113,18 @@ export class UserComponent implements OnInit {
       if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
       this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id).subscribe(res => {
         if (res.retcode === 0) {
-          if (res.payload !== '') {
-            const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-            this.dataOrder = JSON.parse(res.payload).orders;
-            this.totalBooking = JSON.parse(res.payload).total;
-            this.allBookingSize = JSON.parse(res.payload).allSize;
-            this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
-            this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
-            console.log(this.dataOrder);
-            console.log(this.firstBookingId + '===' + this.lastBookingId);
+          if (res.payload) {
+            if (res.payload !== '') {
+              const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+              this.commonService.updateOperationlog(operationInput).subscribe();
+              this.dataOrder = JSON.parse(res.payload).orders;
+              this.totalBooking = JSON.parse(res.payload).total;
+              this.allBookingSize = JSON.parse(res.payload).allSize;
+              if (JSON.parse(res.payload).orders.length > 0) {
+                this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+                this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+              }
+            }
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -142,9 +149,10 @@ export class UserComponent implements OnInit {
           this.dataOrder = JSON.parse(res.payload).orders;
           this.totalBooking = JSON.parse(res.payload).total;
           this.allBookingSize = JSON.parse(res.payload).allSize;
-          this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
-          this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
-          console.log(this.dataOrder);
+          if (JSON.parse(res.payload).orders.length > 0) {
+            this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
+            this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+          }
         }
       } else {
         this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -203,34 +211,6 @@ export class UserComponent implements OnInit {
     this.doSearch(flag);
   }
 
-  showUserInfo(data): void {
-    this.userService.getUserInfo(data.userId).subscribe(res => {
-      if (res.retcode === 0) {
-        if (res.payload !== '') {
-          const operationInput = { op_category: '用户管理', op_page: '用户管理' , op_name: '访问' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          let forItem = '';
-          if (JSON.parse(res.payload).length > 0) {
-            for (let i = 0; i < JSON.parse(res.payload).length; i++) {
-              forItem += '<br>联系人' +
-              (i + 1) + '姓名：' + JSON.parse(res.payload)[i].CName +
-              '<br>联系人' + (i + 1) + '证件号：' + JSON.parse(res.payload)[i].IDNumber +
-              '<br>联系人' + (i + 1) + '生日年月日：' + JSON.parse(res.payload)[i].birthday +
-              '<br>联系人' + (i + 1) + '电话：' + JSON.parse(res.payload)[i].contactPhone +
-              '<br>联系人' + (i + 1) + '年龄段：' + this.getAgeType(JSON.parse(res.payload)[i].ageType) +
-              '<br>联系人' + (i + 1) + '性别：' + this.getSex(JSON.parse(res.payload)[i].sex) + '<br>';
-            }
-            this.modalService.info({  nzTitle: '常用联系人', nzContent: forItem });
-          } else {
-            this.modalService.info({ nzTitle: '提示', nzContent: '当前用户无常用联系人' });
-          }
-        }
-      } else {
-        this.modalService.info({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
-  }
-
   getAgeType(ageType): string {
     return ageType === 0 ? '成人' : ageType === 1 ? '儿童' : ageType === 2 ? '婴儿' : '其他';
   }
@@ -268,33 +248,19 @@ export class UserComponent implements OnInit {
     }
   }
 
-  private _initSearchUserForm(): void {
+  private _initForm(): void {
     this.searchUserForm = this.fb.group({
       userName: [''],
       phoneNum: [''],
     });
-  }
-
-  private _initSearchBookingForm(): void {
     this.searchBookingForm = this.fb.group({
       date: [''],
       type: [''],
       status: [''],
       orderId: [''],
     });
-  }
-
-  private _initModifyBookingForm(): void {
     this.modifyBookingForm = this.fb.group({
       updateType: [''],
-    });
-  }
-
-  /* 展示拉入黑名单 */
-  showBlacklistModal(data): void {
-    this.userInfoId = data.userId;
-    this.modalService.confirm({
-      nzTitle: '提示', nzContent: '确定将该用户拉入黑名单吗？', nzOkText: '确定', nzOnOk: () => this.doBlacklist()
     });
   }
 
@@ -316,45 +282,121 @@ export class UserComponent implements OnInit {
 
   }
 
-  showInvoiceDetail(data): void {
-    this.isInvoiceVisible = true;
-  }
-
-  hideInvoiceDetail(): void {
-    this.isInvoiceVisible = false;
-  }
-
-  /* 展示订单详情 */
-  showBookingDetail(data): void {
-    this.orderId = data.orderId;
-    this.orderStatus = data.state;
-    this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
-      if (res.retcode === 0) {
-        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        if (JSON.parse(res.payload).flightOrderReturn) {
-          this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
-          this.isFlightOrder = true;
-          this.isHotelOrder = false;
-          this.isTrainOrder = false;
+  showModel(flag, data) {
+    if (flag === 'InvoiceDetail') {
+      this.isInvoiceVisible = true;
+    } if (flag === 'Refund') {
+      this.isRefundVisible = true;
+      this.refundInfo.userId = data.userId;
+      this.refundInfo.orderId = data.orderId;
+      const refundInput = { orderId: data.orderId, ticketNo: data.actualId };
+      this.bookingService.getRefundDetail(refundInput).subscribe(res => {
+        if (res.retcode === 0) {
+          const personArr = [];
+          const msgArr = [];
+          console.log(JSON.parse(res.payload));
+          JSON.parse(res.payload).forEach(item => {
+            this.refundSelectArr.push({id: item.code, msg: item.msg});
+          });
+          JSON.parse(res.payload)[0].refundPassengerPriceInfoList.forEach(item => {
+            personArr.push({
+              passengerName: item.basePassengerPriceInfo.passengerName,
+              cardNum: item.basePassengerPriceInfo.cardNum,
+              passengerId: item.basePassengerPriceInfo.passengerId,
+              ticketPrice: item.basePassengerPriceInfo.ticketPrice,
+              preRefundFee: item.refundFeeInfo.refundFee,
+              preRefundPrice: item.refundFeeInfo.returnRefundFee,
+              refundCauseId: JSON.parse(res.payload)[0].code,
+              refundCause: JSON.parse(res.payload)[0].msg
+            });
+          });
+          JSON.parse(res.payload).forEach(item => {
+            msgArr.push(item.msg);
+          });
+          personArr.forEach(item => {
+            item.msg = msgArr;
+          });
+          this.dataRefund = personArr;
+          
+          console.log(this.dataRefund);
+          console.log(this.refundSelectArr);
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
-        if (JSON.parse(res.payload).hotelOrder) {
-          this.dataDetail = JSON.parse(res.payload).hotelOrder;
-          this.isFlightOrder = false;
-          this.isHotelOrder = true;
-          this.isTrainOrder = false;
+      });
+    } if (flag === 'Blacklist') {
+      this.userInfoId = data.userId;
+      this.modalService.confirm({
+        nzTitle: '提示', nzContent: '确定将该用户拉入黑名单吗？', nzOkText: '确定', nzOnOk: () => this.doBlacklist()
+      });
+    } if (flag === 'BookingDetail') {
+      this.orderId = data.orderId;
+      this.orderStatus = data.state;
+      this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
+        if (res.retcode === 0) {
+          console.log(JSON.parse(res.payload));
+          const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          if (JSON.parse(res.payload).flightOrderReturn) {
+            this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
+            this.isFlightOrder = true;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+          }
+          if (JSON.parse(res.payload).hotelOrder) {
+            this.dataDetail = JSON.parse(res.payload).hotelOrder;
+            this.isFlightOrder = false;
+            this.isHotelOrder = true;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+          }
+          if (JSON.parse(res.payload).trainOrderReturn) {
+            this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = true;
+            this.isTaxiOrder = false;
+          }
+          if (JSON.parse(res.payload).taxiOrderDetailResponse) {
+            this.dataDetail = JSON.parse(res.payload).taxiOrderDetailResponse;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = true;
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
-        if (JSON.parse(res.payload).trainOrderReturn) {
-          this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
-          this.isFlightOrder = false;
-          this.isHotelOrder = false;
-          this.isTrainOrder = true;
+      });
+      this.isBookingDetailVisible = true;
+    } if (flag === 'UserInfo') {
+      this.userService.getUserInfo(data.userId).subscribe(res => {
+        if (res.retcode === 0) {
+          if (res.payload !== '') {
+            const operationInput = { op_category: '用户管理', op_page: '用户管理' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            let forItem = '';
+            if (JSON.parse(res.payload).length > 0) {
+              for (let i = 0; i < JSON.parse(res.payload).length; i++) {
+                forItem += '<br>联系人' +
+                (i + 1) + '姓名：' + JSON.parse(res.payload)[i].CName +
+                '<br>联系人' + (i + 1) + '证件号：' + JSON.parse(res.payload)[i].IDNumber +
+                '<br>联系人' + (i + 1) + '生日年月日：' + JSON.parse(res.payload)[i].birthday +
+                '<br>联系人' + (i + 1) + '电话：' + JSON.parse(res.payload)[i].contactPhone +
+                '<br>联系人' + (i + 1) + '年龄段：' + this.getAgeType(JSON.parse(res.payload)[i].ageType) +
+                '<br>联系人' + (i + 1) + '性别：' + this.getSex(JSON.parse(res.payload)[i].sex) + '<br>';
+              }
+              this.modalService.info({  nzTitle: '常用联系人', nzContent: forItem });
+            } else {
+              this.modalService.info({ nzTitle: '提示', nzContent: '当前用户无常用联系人' });
+            }
+          }
+        } else {
+          this.modalService.info({ nzTitle: '提示', nzContent: res.message });
         }
-      } else {
-        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
-    this.isBookingDetailVisible = true;
+      });
+    }
   }
 
   /* 展示供应商订单详情 */
@@ -486,6 +528,16 @@ export class UserComponent implements OnInit {
     this.isExternalDetailVisible = true;
   }
 
+  hideModel(flag) {
+    if (flag === 'InvoiceDetail') {
+      this.isInvoiceVisible = false;
+    } else if (flag === 'BookingDetail') {
+      this.isBookingDetailVisible = false;
+    } else if (flag === 'Refund') {
+      this.isRefundVisible = false;
+    }
+  }
+
   getAllowed(allowed): string {
     return allowed = true ? '可以取消' : '不可取消' ;
   }
@@ -494,8 +546,59 @@ export class UserComponent implements OnInit {
     return refund = true ? '是' : '否' ;
   }
 
-  hideBookingDetail(): void {
-    this.isBookingDetailVisible = false;
+  doDelete(flag) {
+    if (flag === 'Refund') {
+      console.log(this.refundRadio);
+      if (this.refundRadio === '') {
+        this.modalService.confirm({ nzTitle: '提示', nzContent: '请先勾选需要提交的的乘客！' });
+        return;
+      }
+      if (this.refundSelectName.length === 0) {
+        this.modalService.confirm({ nzTitle: '提示', nzContent: '请在选中的乘客上，选择退票原因！' });
+        return;
+      }
+      const refundInput = {
+        'userId': this.refundInfo.userId + '',
+        'orderId': this.refundInfo.orderId,
+        'passengerId': '',
+        'refundCauseId': '',
+        'refundCause': '',
+        'ticketPrice': '',
+        'preRefundFee': '',
+        'preRefundPrice': '',
+      };
+      
+      this.dataRefund.forEach((item, i) => {
+        if (item.passengerName === this.refundRadio) {
+          let refundCauseId = '';
+          let refundCause = '';
+          this.refundSelectName.forEach((cell, j) => {
+            if (i === cell.index) {
+              refundCauseId = cell.id;
+              refundCause = cell.text;
+            }
+          })
+          refundInput.refundCauseId = refundCauseId;
+          refundInput.refundCause = refundCause;
+
+          refundInput.passengerId = item.passengerId;
+          refundInput.ticketPrice = item.ticketPrice;
+          refundInput.preRefundFee = item.preRefundFee;
+          refundInput.preRefundPrice = item.preRefundPrice;
+        }
+      });
+      console.log(refundInput);
+      this.bookingService.deleteRefundDetail(refundInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.modalService.success({ nzTitle: '退订成功', nzContent: res.message });
+          const operationInput = { op_category: '订单管理', op_page: '退订机票' , op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModel('Refund');
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    }
   }
 
   /* 展示修改弹框 */
@@ -509,6 +612,25 @@ export class UserComponent implements OnInit {
         this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
+  }
+
+  // 改变退订的数组
+  onRefundMsgChange(value, index) {
+    // this.refundSelectArr.forEach((item, i) => {
+    //   if (item.) {
+
+    //   }
+    // });
+    this.refundSelectArr.forEach((item, i) => {
+      if (i === index) {
+        console.log(item.msg + '===' + value);
+        if (item.msg === value) {
+          const tempJson = { index: i, text: item.msg, id: item.id };
+          this.refundSelectName.push(tempJson);
+        }
+      }
+    });
+    console.log(this.refundSelectName);
   }
 
   // 主面板分页表单

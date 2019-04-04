@@ -12,6 +12,7 @@ import { HttpResponse, HttpRequest, HttpClient, HttpHeaders } from '@angular/com
 import { filter } from 'rxjs/operators';
 import { GuideService } from '../public/service/guide.service';
 import { HelpService } from '../public/service/help.service';
+import { ProtocolService } from '../public/service/protocol.service';
 
 registerLocaleData(zh);
 
@@ -34,6 +35,7 @@ export class AppVersionComponent implements OnInit {
   shareForm: FormGroup;
   modifyGuideForm: FormGroup;
   modifyHelpForm: FormGroup;
+  addProtocolForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   // tslint:disable-next-line:max-line-length
@@ -42,12 +44,13 @@ export class AppVersionComponent implements OnInit {
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   // tslint:disable-next-line:max-line-length
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
-  helpDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '' };
+  helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '' };
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   dataContent = []; // 内容
   dataSystemSymbo = []; // 操作系统
   dataGuide = []; // 引导语
-  dataHelp = []; // 技能帮助
+  dataHelp = []; // 帮助管理
+  dataProtocol = []; // 协议管理
   beginDate = '';
   endDate = '';
   shareImageUrl01 = '';
@@ -59,8 +62,9 @@ export class AppVersionComponent implements OnInit {
   imageUrl = '';
   currentPanel = 'content';  // 当前面板 默认内容管理
   guideItem = { messageArr: [], buttonArr: [], imageArr: [], };
+  helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };
   currentAppId = '';  // 当前默认的APP信息
-  templateId = '';  // 技能帮助的模板Id
+  templateId = '';  // 帮助管理的模板Id
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -80,14 +84,18 @@ export class AppVersionComponent implements OnInit {
     ]
   };
   isSaveShareButton = false;
+  isSaveProtocolButton = false;
+  currentProtocol = '火车退票/改签协议';
   private timerList;
   private timerDetail;
   currentChanelId = '';
+  helpType = 'TRAVEL';
 
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private modalService: NzModalService,
+    private protocolService: ProtocolService,
     public localizationService: LocalizationService,
     private appversionService: AppversionService,
     private notification: NzNotificationService,
@@ -99,12 +107,7 @@ export class AppVersionComponent implements OnInit {
     private http: HttpClient,
   ) {
     this.commonService.nav[1].active = true;
-    this._initAddContentForm();
-    this._initAddGuideForm();
-    this._initAddHelpForm();
-    this._initShareForm();
-    this._initModifyGuideForm();
-    this._initModifyHelpForm();
+    this._initForm();
     this.currentChanelId = localStorage.getItem('currentAppHeader');
   }
 
@@ -195,56 +198,33 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'help') {
-      // this.bannerService.getBannerList().subscribe(res => {
-      //   this.dataBanner = JSON.parse(res.payload).reverse();
-      // });
-      const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '访问' };
+      this.helpService.getHelpList().subscribe(res => {
+        if (res.retcode === 0) {
+          this.dataHelp = JSON.parse(res.payload).reverse();
+          console.log(this.dataHelp);
+        }
+      });
+      const operationInput = { op_category: 'APP管理', op_page: '帮助管理', op_name: '访问' };
       this.commonService.updateOperationlog(operationInput).subscribe();
+    } else if (flag === 'protocol') {
+      this.protocolService.getProtocolList(this.currentProtocol).subscribe(res => {
+        this.dataProtocol = res.payload;
+      });
     }
   }
 
-  private _initAddContentForm(): void {
-    this.addContentForm = this.fb.group({
-      version: [''],
-      title: [''],
-      description: [''],
-      size: [''],
-      file: [''],
-      system_symbol: [''],
-      version_allowed: [''],
-      sub_title: [''],
-    });
-  }
-
-  _initShareForm() {
-    this.shareForm = this.fb.group({
-      wechatTitle: [''],
-      wechatContent: [''],
-      wechatHost: [''],
-      wechatUrl: [''],
-      linkTitle: [''],
-      linkUrl: [''],
-      linkHost: [''],
-      H5Title: [''],
-      H5Content: [''],
-    });
-  }
-
-  private _initAddGuideForm(): void {
-    this.addGuideForm = this.fb.group({
-      name: [''],
-      type: [''],
-    });
-  }
-
-  private _initAddHelpForm(): void {
-    this.addHelpForm = this.fb.group({
-      jump: [''],
-      title: [''],
-      site: [''],
-      order: [''],
-      url: [''],
-    });
+  private _initForm(): void {
+    this.addContentForm = this.fb.group({ version: [''], title: [''], description: [''], size: [''], file: [''],
+      system_symbol: [''], version_allowed: [''], sub_title: [''], });
+    this.shareForm = this.fb.group({ wechatTitle: [''], wechatContent: [''], wechatHost: [''], wechatUrl: [''],
+      linkTitle: [''], linkUrl: [''], linkHost: [''], H5Title: [''], H5Content: [''], });
+    this.addGuideForm = this.fb.group({ name: [''], type: [''], });
+    this.addHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''],
+      details_title: [''], details_describe: [''], });
+    this.modifyHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''],
+    details_title: [''], details_describe: [''], });
+    this.modifyGuideForm = this.fb.group({ title: [''], });
+    this.addProtocolForm = this.fb.group({ title: [''], content: [''], });
   }
 
   // 弹框
@@ -264,27 +244,32 @@ export class AppVersionComponent implements OnInit {
       this.guideItem.messageArr.splice(0, this.guideItem.messageArr.length);
       this.guideItem.buttonArr.splice(0, this.guideItem.buttonArr.length);
       this.guideItem.imageArr.splice(0, this.guideItem.imageArr.length);
-      this.fileList.splice(0, this.guideItem.imageArr.length);
-      this.showImageUrl = '';
     } else if (flag === 'help') {
       this.isAddHelpVisible = true;
-      this.helpDate = { // 清空
-        'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
-      };
+      this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '' };
+      this.helpItem.jumpArr.splice(0, this.helpItem.jumpArr.length);
+      this.helpItem.detailArr.splice(0, this.helpItem.detailArr.length);
+      this.helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };  // 清空后初始化
     }
+    this.fileList.splice(0, this.guideItem.imageArr.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
+    this.showImageUrl = '';
   }
 
-  hideAddModal(flag) {
+  hideModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = false;
     } else if (flag === 'guide') {
       this.isAddGuideVisible = false;
       this.isModifyGuideVisible = false;
-    } else if (flag === 'help') {
+    } else if (flag === 'addHelp') {
       this.isAddHelpVisible = false;
     } else if (flag === 'share') {  // 取消分享的保存功能
       this.isSaveShareButton = false;
+    } else if (flag === 'modifyHelp') {
+      this.isModifyHelpVisible = false;
+    } else if (flag === 'protocol') {
+      this.isSaveProtocolButton = false;
     }
   }
 
@@ -361,15 +346,15 @@ export class AppVersionComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '模板名称未填写' });
         result = false;
       }
-    } else if (flag === 'help') {
-      if (this.addHelpForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
-        result = false;
-      } else if (this.addHelpForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+    } else if (flag === 'addHelp') {
+      if (this.addHelpForm.controls['name'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能名称未填写' });
         result = false;
       } else if (this.addHelpForm.controls['order'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能排序未填写' });
+        result = false;
+      } else if (this.addHelpForm.controls['describe'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能介绍未填写' });
         result = false;
       }
     }
@@ -402,7 +387,7 @@ export class AppVersionComponent implements OnInit {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('content');
+          this.hideModal('content');
           this.loadData('content');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -540,49 +525,90 @@ export class AppVersionComponent implements OnInit {
         'sort': ''
       };
       this.guideItem.imageArr.push(imgItem);
-    } else if (flag === 'help') {
-      if (!this.verificationAdd('help')) {
-        return;
-      }
+    } else if (flag === 'addHelp') {
+      if (!this.verificationAdd('addHelp')) { return; }
+      const guides = [];  // 单独处理拿到的数组
+      this.helpItem.jumpArr.forEach(item => { guides.push(item.text); });
       const helpInput = {
-        'enabled': false, // 默认不可启用
-        'title': this.addHelpForm.controls['title'].value,
-        'site': this.addHelpForm.controls['site'].value,
-        'jump': this.addHelpForm.controls['jump'].value,
+        'describe': this.addHelpForm.controls['describe'].value,
+        'details': this.helpItem.detailArr,
+        'guides': guides,
         'image': this.imageUrl,
+        'name': this.addHelpForm.controls['name'].value,
         'order': this.addHelpForm.controls['order'].value,
-        'url': this.addHelpForm.controls['url'].value
+        'type': this.helpType
       };
       this.helpService.addHelp(helpInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '新增' };
+          const operationInput = { op_category: 'APP管理', op_page: '幫助管理', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('help');
+          this.hideModal('addHelp');
           this.loadData('help');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'modifyHelp') {
+      if (!this.verificationModify('addHelp')) {
+        return;
+      }
+      const guides = [];  // 单独处理拿到的数组
+      this.helpItem.jumpArr.forEach(item => { guides.push(item.text); });
+      const helpInput = {
+        'id': this.templateId,
+        'describe': this.modifyHelpForm.controls['describe'].value,
+        'details': this.helpItem.detailArr,
+        'guides': guides,
+        'image': this.imageUrl,
+        'name': this.modifyHelpForm.controls['name'].value,
+        'order': this.modifyHelpForm.controls['order'].value,
+        'type': this.helpType
+      };
+      this.helpService.updateHelp(helpInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '帮助管理', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('modifyHelp');
+          this.loadData('help');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'editProtocol') {
+      this.isSaveProtocolButton = true;
+    } else if (flag === 'saveProtocol') {
+      const protocolInput = {
+        'title': this.currentProtocol,
+        'content': encodeURI(this.replaceHtmlStr(this.addProtocolForm.controls['content'].value)).replace(/&/g, '%26')
+      };
+      this.protocolService.addProtocol(protocolInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '运维后台', op_page: '协议管理' , op_name: '保存' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.isSaveProtocolButton = false; // 保存成功后，变为编辑按钮
+          this.loadData('voice');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'previewProtocol') {
+      // tslint:disable-next-line:max-line-length
+      window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
+    } else if (flag === 'help_jump') {
+      const jumpItem = {
+        'text': ''
+      };
+      this.helpItem.jumpArr.push(jumpItem);
+    } else if (flag === 'help_detail') {
+      const detailItem = {
+        'title': '',
+        'describe': ''
+      };
+      this.helpItem.detailArr.push(detailItem);
     }
-  }
-
-  // 修改
-  _initModifyGuideForm() {
-    this.modifyGuideForm = this.fb.group({
-      title: [''],
-    });
-  }
-
-  // 修改
-  _initModifyHelpForm() {
-    this.modifyHelpForm = this.fb.group({
-      jump: [''],
-      title: [''],
-      site: [''],
-      order: [''],
-      url: [''],
-    });
   }
 
   // 修改 - 弹框
@@ -633,54 +659,25 @@ export class AppVersionComponent implements OnInit {
       this.fileList.push(file);
     } else if (flag === 'help') {
       const id = data.id;
+      this.helpItem.jumpArr.splice(0, this.helpItem.jumpArr.length);  // 先清空数组
+      this.helpItem.detailArr.splice(0, this.helpItem.jumpArr.length);
+      this.fileList.splice(0, this.fileList.length);
       this.isModifyHelpVisible = true;
       this.templateId = id;  // 用于修改
       this.helpService.getHelp(id).subscribe(res => {
         // 处理异常处理
-        this.helpDate = JSON.parse(res.payload);
-        this.helpDate.url = JSON.parse(res.payload).url;
+        this.helpDate = data;
         this.imageUrl = JSON.parse(res.payload).image;
-        const file: any = {
-          name: JSON.parse(res.payload).image
-        };
+        this.helpType = data.type;
+        this.imageUrl = data.image;
+        data.guides.forEach(item => {
+          let tempJson = { text: item };
+          this.helpItem.jumpArr.push(tempJson);
+        });
+        this.helpItem.detailArr = data.details;
+        const file: any = { name: JSON.parse(res.payload).image };
         this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl}/cms/help-ads/images/JSON.parse(res.payload).image`;
-      });
-    }
-  }
-
-  hideModifyModal(flag) {
-    if (flag === 'help') {
-      this.isModifyHelpVisible = false;
-    }
-  }
-
-  // 修改操作
-  doModify(flag) {
-    if (flag === 'help') {
-      if (!this.verificationModify('help')) {
-        return;
-      }
-      const jump = this.modifyHelpForm.controls['jump'].value;
-      const helpInput = {
-        'id': this.templateId,
-        'title': this.modifyHelpForm.controls['title'].value,
-        'jump': this.modifyHelpForm.controls['jump'].value,
-        'site': jump === 'APP' ? this.modifyHelpForm.controls['site'].value : '',
-        'url': jump === 'HTML' ? this.modifyHelpForm.controls['url'].value : '',
-        'order': this.modifyHelpForm.controls['order'].value,
-        'image': this.imageUrl
-      };
-      this.helpService.updateHelp(helpInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '修改' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('help');
-          this.loadData('help');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
       });
     }
   }
@@ -725,11 +722,15 @@ export class AppVersionComponent implements OnInit {
       this.guideItem.buttonArr.splice(id, 1);
     } else if (flag === 'guide_image') {
       this.guideItem.imageArr.splice(id, 1);
+    } else if (flag === 'help_jump') {
+      this.helpItem.jumpArr.splice(id, 1);
+    } else if (flag === 'help_detail') {
+      this.helpItem.detailArr.splice(id, 1);
     } else if (flag === 'help') {
       this.helpService.deleteHelp(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '技能帮助', op_name: '新增' };
+          const operationInput = { op_category: 'APP管理', op_page: '帮助管理', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('help');
         } else {
@@ -752,6 +753,18 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
         this.loadData('guide');
+      });
+    } else if (flag === 'help') {
+      const switchInput = { 'id': data.id, 'enable': data.enabled };
+      this.helpService.updateHelp(switchInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '帮助管理', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+        this.loadData('help');
       });
     }
   }
@@ -792,8 +805,8 @@ export class AppVersionComponent implements OnInit {
         flag = 'file';
         break;
       case 'help':
-        url = `/help/resources/images/`;
-        flag = 'file';
+        url = `/v1/cms/skills/images/`;
+        flag = 'image';
         break;
       default:
         break;
@@ -813,8 +826,7 @@ export class AppVersionComponent implements OnInit {
       this.currentPanel === 'guide' ? formData.append('imageKey', file.name) : 1;
     });
     // tslint:disable-next-line:max-line-length
-    const baseUrl = this.currentPanel === 'guide' ? this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) : this.commonService.baseUrl;
-    console.log(baseUrl);
+    const baseUrl = this.currentPanel === 'guide' || this.currentPanel === 'help' ? this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) : this.commonService.baseUrl;
     const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, { // 上传图需要区分，因为引导语不需要admin，而分享需要admin
       reportProgress: true,
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
@@ -848,12 +860,14 @@ export class AppVersionComponent implements OnInit {
             }
             this.loadData('share'); // 每次上传成功都重新加载数据
           } else if (this.currentPanel === 'guide') {  // 引导语
-            this.onGuideChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
+            this.onInputChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
             this.showImageUrl = url + '/api' + this.imageUrl;
+          } else if (this.currentPanel === 'help') {  // 引导语
+            this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           }
           this.notification.success( '提示', '上传成功' );
           // tslint:disable-next-line:max-line-length
-          const operationInput = { op_category: 'APP管理', op_page: this.currentPanel === 'share' ? '分享文案' : this.currentPanel === 'guide' ? '引导语模板' : this.currentPanel === 'help' ? '技能帮助' : '' , op_name: '上传图片' };
+          const operationInput = { op_category: 'APP管理', op_page: this.currentPanel === 'share' ? '分享文案' : this.currentPanel === 'guide' ? '引导语模板' : this.currentPanel === 'help' ? '帮助管理' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
@@ -864,7 +878,7 @@ export class AppVersionComponent implements OnInit {
   }
 
   // 针对结构进行数据的累加
-  onGuideChange(value, site, item) {
+  onInputChange(value, site, item) {
     if (site === 'messageSort') { // message 排序
       this.guideItem.messageArr.forEach(( cell, i ) => {
         // tslint:disable-next-line:no-unused-expression
@@ -910,8 +924,22 @@ export class AppVersionComponent implements OnInit {
         // tslint:disable-next-line:no-unused-expression
         i === item ? cell.imageKey = value : 1;
       });
+    } else if (site === 'helpJunp') {  // input help
+      this.helpItem.jumpArr.forEach(( cell, i ) => {
+        // tslint:disable-next-line:no-unused-expression
+        i === item ? cell.text = value : 1;
+      });
+    } else if (site === 'helpDetailTitle') {  // input help
+      this.helpItem.detailArr.forEach(( cell, i ) => {
+        // tslint:disable-next-line:no-unused-expression
+        i === item ? cell.title = value : 1;
+      });
+    } else if (site === 'helpDetailDesc') {  // input help
+      this.helpItem.detailArr.forEach(( cell, i ) => {
+        // tslint:disable-next-line:no-unused-expression
+        i === item ? cell.describe = value : 1;
+      });
     }
-    console.log(this.guideItem);
   }
 
   // 日期插件
@@ -937,13 +965,25 @@ export class AppVersionComponent implements OnInit {
     }
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
-    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '技能帮助' : '', op_name: '访问' };
+    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol' ? '协议管理' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
   // 用于区分分享文案下的三个上传图片的方法
   choosePng(flag) {
     this.currentCopywritingImage = flag;
+  }
+
+  chooseProtocol(flag) {
+    this.currentProtocol = flag;
+    this.loadData('protocol');
+  }
+
+  // 替换所有奇怪字符
+  replaceHtmlStr(str) {
+    return str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
+          .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
+          .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
   }
 
 }

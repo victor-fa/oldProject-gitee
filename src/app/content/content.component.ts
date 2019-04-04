@@ -79,7 +79,7 @@ export class ContentComponent implements OnInit {
   };
   dataContent = []; // 内容
   dataScreen = [];  // 首屏
-  dataOpen = [];  // 弹框
+  dataOpen = [];  // 弹窗
   dataBanner = [];  // 轮播
   currentCopywritingImage = '';
   currentAppId = '';  // 当前默认的APP信息
@@ -130,7 +130,7 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
         this.dataOpen = JSON.parse(res.payload).reverse();
-        const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '访问' };
+        const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
         console.log(this.dataOpen);
       });
@@ -188,7 +188,7 @@ export class ContentComponent implements OnInit {
     });
   }
 
-  // 新增内容 - 弹框
+  // 新增内容 - 弹窗
   showAddModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = true;
@@ -265,7 +265,7 @@ export class ContentComponent implements OnInit {
       }
     } else if (flag === 'open') {
       if (this.addOpenForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '弹框标题未填写' });
+        this.modalService.error({ nzTitle: '提示', nzContent: '弹窗标题未填写' });
         result = false;
       } else if (this.addOpenForm.controls['jump'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
@@ -374,7 +374,7 @@ export class ContentComponent implements OnInit {
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '新增' };
+          const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('open');
           this.loadData('open');
@@ -491,7 +491,7 @@ export class ContentComponent implements OnInit {
       }
     } else if (flag === 'open') {
       if (this.modifyOpenForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '弹框标题未填写' });
+        this.modalService.error({ nzTitle: '提示', nzContent: '弹窗标题未填写' });
         result = false;
       } else if (this.modifyOpenForm.controls['jump'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
@@ -538,7 +538,7 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  // 修改 - 弹框
+  // 修改 - 弹窗
   showModifyModal(data, flag) {
     if (flag === 'content') {
       const id = data.id;
@@ -565,7 +565,7 @@ export class ContentComponent implements OnInit {
       this.screenService.getScreen(id).subscribe(res => {
         // 处理异常处理
         this.screenDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '开屏弹框', op_name: '访问' };
+        const operationInput = { op_category: '内容管理', op_page: '开屏弹窗', op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
         this.screenDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
@@ -584,7 +584,7 @@ export class ContentComponent implements OnInit {
       this.openService.getOpen(id).subscribe(res => {
         // 处理异常处理
         this.openDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '访问' };
+        const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
         this.openDate.url = JSON.parse(res.payload).url;
         this.imageUrl = JSON.parse(res.payload).image;
@@ -704,7 +704,7 @@ export class ContentComponent implements OnInit {
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '修改' };
+          const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('open');
           this.loadData('open');
@@ -740,7 +740,7 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  // 删除 - 复用弹框
+  // 删除 - 复用弹窗
   showDeleteModal(data, flag) {
     this.modalService.confirm({
       nzTitle: '提示', nzContent: '您确定要删除该信息？',
@@ -775,7 +775,7 @@ export class ContentComponent implements OnInit {
       this.openService.deleteOpen(id).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '删除' };
+          const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('open');
         } else {
@@ -825,7 +825,7 @@ export class ContentComponent implements OnInit {
       this.openService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '内容管理', op_page: '首页弹框', op_name: '启用/不启用' };
+          const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -953,7 +953,7 @@ export class ContentComponent implements OnInit {
           this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           this.notification.success( '提示', '上传成功' );
           // tslint:disable-next-line:max-line-length
-          const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹框' : this.currentPanel === 'banner' ? '轮播图' : '' , op_name: '上传图片' };
+          const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹窗' : this.currentPanel === 'banner' ? '轮播图' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
@@ -983,7 +983,7 @@ export class ContentComponent implements OnInit {
     const operationInput = {
       op_category: '内容管理',
       // tslint:disable-next-line:max-line-length
-      op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹框' : flag === 'banner' ? '轮播图' : '',
+      op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹窗' : flag === 'banner' ? '轮播图' : '',
       op_name: '访问'
     };
     this.commonService.updateOperationlog(operationInput).subscribe();
