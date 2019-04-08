@@ -60,6 +60,7 @@ export class UserComponent implements OnInit {
   refundRadio = '';
   refundSelectArr = [];
   refundSelectName = [];
+  invoiceDetail = {};
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -285,6 +286,10 @@ export class UserComponent implements OnInit {
   showModel(flag, data) {
     if (flag === 'InvoiceDetail') {
       this.isInvoiceVisible = true;
+      this.userService.getInvoiceDetail(data.orderId).subscribe(res => {
+        console.log(JSON.parse(res.payload));
+        this.invoiceDetail = JSON.parse(res.payload);
+      });
     } if (flag === 'Refund') {
       this.isRefundVisible = true;
       this.refundInfo.userId = data.userId;
@@ -317,7 +322,7 @@ export class UserComponent implements OnInit {
             item.msg = msgArr;
           });
           this.dataRefund = personArr;
-          
+
           console.log(this.dataRefund);
           console.log(this.refundSelectArr);
         } else {
@@ -567,7 +572,7 @@ export class UserComponent implements OnInit {
         'preRefundFee': '',
         'preRefundPrice': '',
       };
-      
+
       this.dataRefund.forEach((item, i) => {
         if (item.passengerName === this.refundRadio) {
           let refundCauseId = '';

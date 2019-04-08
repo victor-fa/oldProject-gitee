@@ -216,69 +216,51 @@
           </div>
 
           <!-- 弹框 —— 信息 —— 发票详情 -->
-          <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="650" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModel('InvoiceDetail')">
-            <form>
+          <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModel('InvoiceDetail')">
+            <div *ngIf="invoiceDetail">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">发票状态：</div>
-                <div nz-col nzSpan="9">申请待开/在开中/已开</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">发票状态：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.state}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">发票类型：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.type}}</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">发票类型：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">开票金额：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoicePrice}}</div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+                <div nz-col nzSpan="4" class="right_alignment">公司名称：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.invoiceName}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">纳税人识别号：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.dutyparagraph}}</div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+                <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.email}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">手机号：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.phone}}</div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+                <div nz-col nzSpan="4" class="right_alignment">注册地址：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerAdd}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">注册电话：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerPhone}}</div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+                <div nz-col nzSpan="4" class="right_alignment">开户银行：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.bank}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">开户账户：</div>
+                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.account}}</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">名称：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">开票订单号：</div>
+                <div nz-col nzSpan="8">
+                  <span *ngFor="let item of invoiceDetail.orderIds; let i=index;">
+                    {{item}}<br>
+                  </span>
+                </div>
               </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">纳税人识别号：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">邮箱：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">手机号：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">注册地址：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">注册电话：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">开户银行：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">开户账户：</div>
-                <div nz-col nzSpan="9">123</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-            </form>
+            </div>
             <!-- 弹框和底部定制 -->
             <ng-template #invoiceDetailModalFooter>
               <button nz-button nzType="default" (click)="hideModel('InvoiceDetail')">取消</button>

@@ -15,10 +15,10 @@ import { AppServiceBase } from '../base/app-service.base';
  * 公用的
  */
 export class CommonService extends AppServiceBase {
-  // baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器不安全下使用
-  baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
+  baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器不安全下使用 测试环境
+  // baseUrl = 'https://xiaowu.centaurstech.com/api/admin';  // chrome浏览器不安全下使用 正式环境
+  // baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
   // baseUrl = 'http://localhost:8088/api/admin';  // nginx正式前端地址
-  // baseUrl = 'https://xiaowu.centaurstech.com/api';  // 订票 用户测试 内容测试
   dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
   // dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api';  // 数据中心正式【衡锐】
   // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https

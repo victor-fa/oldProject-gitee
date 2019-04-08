@@ -157,15 +157,18 @@ export class UserService extends AppServiceBase {
           const childrenArr = [];
           if (resultFull.responseText !== '') {
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
+              console.log(item);
               if (item.isVisible === true) {
                 menuArr.push(item.name);
               }
-              item.children.forEach(cell => {
-                console.log(cell.isVisible);
-                if (cell.isVisible === true) {
-                  childrenArr.push(cell.name);
-                }
-              });
+              if (item.children) {
+                item.children.forEach(cell => {
+                  console.log(cell.isVisible);
+                  if (cell.isVisible === true) {
+                    childrenArr.push(cell.name);
+                  }
+                });
+              }
             });
             localStorage.setItem('FullMenuResource', JSON.stringify(menuArr));
             that.commonService.fullMenuResource = JSON.stringify(menuArr);
@@ -221,6 +224,15 @@ export class UserService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}/v2/estimate/session?id=${id}&estimate=${estimate}`;
     return this.httpClient
       .get<Blob>(url, this.options);
+  }
+
+  /**
+   * 查看发票详情
+   */
+  getInvoiceDetail(orderId): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
+    return this.httpClient
+      .get<IResponse<any>>(url);
   }
 
 }
