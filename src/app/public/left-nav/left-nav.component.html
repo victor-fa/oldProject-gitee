@@ -19,10 +19,9 @@
         </ul>
       </nz-dropdown>
     </li>
-    <li nz-menu-item class="right_panle">
+    <li nz-menu-item class="right_panle" *ngIf="appHeaderAllow.length > 1">
       <nz-select [(ngModel)]="currentAppHeader" (ngModelChange)="currentAppHeaderOnChange($event, 'currentAppHeader')">
-        <nz-option required [nzLabel]="'你好小悟'" [nzValue]="'XIAOWU'"></nz-option>
-        <nz-option required [nzLabel]="'听听同学'" [nzValue]="'LENZE'"></nz-option>
+        <nz-option *ngFor="let item of appHeaderAllow; let i=index;" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
       </nz-select>
     </li>
   </ul>

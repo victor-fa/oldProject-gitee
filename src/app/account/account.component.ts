@@ -101,7 +101,7 @@ export class AccountComponent implements OnInit {
   loadData(flag) {
     if (flag === 'role') {
       this.accountService.getRolesList().subscribe(res => {
-        this.dataRole = JSON.parse(res.payload);
+        this.dataRole = JSON.parse(res.payload).reverse();
         if (this.dataRole.length === 0) {
           this.dataRole = [{id: '', name: '' }];
         }
@@ -126,7 +126,7 @@ export class AccountComponent implements OnInit {
       });
     } else if (flag === 'resource') {
       this.accountService.getFullResource().subscribe(res => {
-        this.dataResource = JSON.parse(res.payload);
+        this.dataResource = JSON.parse(res.payload);  // 不要最后一个
         this.dataResource.forEach((item, i) => {
           if (item.children) {
             if (item.children.length > 0) {
@@ -135,40 +135,42 @@ export class AccountComponent implements OnInit {
               });
             }
           }
-          if (i === 1) {
+          if (i === 0) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); });
-          } else if (i === 2) {
+            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); }); 
+          } else if (i === 1) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions2.push(unit); });
-          } else if (i === 3) {
+          } else if (i === 2) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions3.push(unit); });
-          } else if (i === 4) {
+          } else if (i === 3) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions4.push(unit); });
-          } else if (i === 5) {
+          } else if (i === 4) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions5.push(unit); });
-          } else if (i === 6) {
+          } else if (i === 5) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions6.push(unit); });
-          } else if (i === 7) {
+          } else if (i === 6) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions7.push(unit); });
-          } else if (i === 8) {
+          } else if (i === 7) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
             item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); });
           }
         });
+        console.log(this.allMenu);
+        console.log(this.checkOptions1);
       });
     } else if (flag === 'operationlog') {
       const operationlogItem = {
@@ -183,13 +185,12 @@ export class AccountComponent implements OnInit {
       this.accountService.getOperationlogList(operationlogItem).subscribe(res => {
         let dataOperationlog = [];
         if (this.unCheckVisit) {
-          JSON.parse(res.payload).forEach(item => {
-            if (item.opName !== '访问' || item.opName !== '查询') {
-              dataOperationlog.push(item);
-            }
+          JSON.parse(res.payload).reverse().forEach(item => {
+            if (item.opName === '访问') { return; }
+            dataOperationlog.push(item);
           });
         } else {
-          dataOperationlog = JSON.parse(res.payload);
+          dataOperationlog = JSON.parse(res.payload).reverse();
         }
         this.dataOperationlog = dataOperationlog;
       });
@@ -265,6 +266,91 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  // 验证
+  verification(falg, data) {
+    let result = true;
+    const MOBILE_REGEXP = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
+    if (falg === 'addRole') {
+      if (data.name === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false;
+      }
+      if (data.platforms.length === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false;
+      }
+      if (data.resIds.length === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false;
+      }
+      this.dataRole.forEach(item => { // 去重
+        if (item.name === data.name) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false;
+        }
+      });
+    } else if (falg === 'modifyRole') {
+      if (data.name === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false;
+      }
+      console.log(data);
+      if (data.platforms.length === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false;
+      }
+      if (data.resIds.length === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false;
+      }
+      this.dataRole.forEach(item => { // 去重
+        if (this.roleId !== item.id) {
+          if (item.name === data.name) {
+            this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false;
+          }
+        }
+      });
+    } else if (falg === 'addCustomer') {
+      if (data.username === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false;
+      }
+      if (!MOBILE_REGEXP.test(data.username)) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false;
+      }
+      if (data.realname === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false;
+      }
+      if (data.password === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false;
+      }
+      if (data.roleId === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false;
+      }
+      this.dataRole.forEach(item => { // 去重
+        if (item.name === data.username) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false;
+        }
+      });
+    } else if (falg === 'modifyCustomer') {
+      if (data.username === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false;
+      }
+      if (!MOBILE_REGEXP.test(data.username)) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false;
+      }
+      if (data.realname === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false;
+      }
+      if (data.password === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false;
+      }
+      if (data.roleId === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false;
+      }
+      this.dataRole.forEach(item => { // 去重
+        if (this.customerId !== item.id) {
+          if (item.name === data) {
+            this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false;
+          }
+        }
+      });
+    }
+    return result;
+  }
+
   doSave(flag) {
     if (flag === 'addRole') {
       const channelArr = [];
@@ -278,6 +364,7 @@ export class AccountComponent implements OnInit {
         platforms: channelArr,
         resIds: this.getResArr()
       };
+      if (!this.verification('addRole', rolesItem)) { return; } // 去重
       this.accountService.addRoles(rolesItem).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -300,8 +387,10 @@ export class AccountComponent implements OnInit {
         id: this.roleId,
         name: this.roleModifyForm.controls['name'].value,
         desc: this.roleModifyForm.controls['desc'].value,
+        platforms: channelArr,
         resIds: this.getResArr()
       };
+      if (!this.verification('modifyRole', rolesModifyItem)) { return; } // 去重
       this.accountService.modifyRole(rolesModifyItem).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
@@ -320,6 +409,7 @@ export class AccountComponent implements OnInit {
         roleId: this.customerAddForm.controls['roleId'].value,
         username: this.customerAddForm.controls['username'].value,
       };
+      if (!this.verification('addCustomer', customerItem)) { return; } // 去重
       this.accountService.addCustomer(customerItem).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
@@ -339,6 +429,7 @@ export class AccountComponent implements OnInit {
         roleId: this.customerModifyForm.controls['roleId'].value,
         username: this.customerModifyForm.controls['username'].value,
       };
+      if (!this.verification('modifyCustomer', customerItem)) { return; } // 去重
       this.accountService.modifyCustomer(customerItem).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });

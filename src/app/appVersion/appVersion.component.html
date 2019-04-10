@@ -728,18 +728,18 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24">
               <nz-radio-group [(ngModel)]="currentProtocol" (ngModelChange)="chooseProtocol($event)">
-                <label nz-radio nzValue="火车退票/改签协议">火车退票/改签协议</label>
-                <label nz-radio nzValue="火车票服务协议">火车票服务协议</label>
-                <label nz-radio nzValue="机票退改及行李额说明">机票退改及行李额说明</label>
-                <label nz-radio nzValue="关于齐悟">关于齐悟</label>
-                <label nz-radio nzValue="版本更新说明">版本更新说明</label>
-                <label nz-radio nzValue="版本功能介绍">版本功能介绍</label>
-                <label nz-radio nzValue="开票说明">开票说明</label>
-                <label nz-radio nzValue="充值协议">充值协议</label>
-                <label nz-radio nzValue="小额免密">小额免密</label>
-                <label nz-radio nzValue="小悟币和小悟豆说明">小悟币和小悟豆说明</label>
-                <label nz-radio nzValue="隐私协议">隐私协议</label>
-                <label nz-radio nzValue="用户协议">用户协议</label>
+                <label nz-radio nzValue="1">火车退票/改签协议</label>
+                <label nz-radio nzValue="2">火车票服务协议</label>
+                <label nz-radio nzValue="3">机票退改及行李额说明</label>
+                <label nz-radio nzValue="4">关于我们</label>
+                <label nz-radio nzValue="5">版本更新说明</label>
+                <label nz-radio nzValue="6">版本功能介绍</label>
+                <label nz-radio nzValue="7">开票说明</label>
+                <label nz-radio nzValue="8">充值协议</label>
+                <label nz-radio nzValue="9">小额免密</label>
+                <label nz-radio nzValue="10">币和豆</label>
+                <label nz-radio nzValue="11">隐私协议</label>
+                <label nz-radio nzValue="12">用户协议</label>
               </nz-radio-group>
             </div>
           </div>
@@ -747,10 +747,10 @@
             <form [formGroup]="addProtocolForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" *ngIf="!isSaveProtocolButton">
-                  <textarea rows="20" nz-input formControlName="content" [ngModel]="dataProtocol" disabled nzSize="default" style="background-color: #f5f5f5"></textarea>
+                  <textarea formControlName="content" [(ngModel)]="dataProtocol" disabled rows="20" nz-input style="background-color: #f5f5f5"></textarea>
                 </div>
                 <div nz-col nzSpan="24" *ngIf="isSaveProtocolButton">
-                  <textarea formControlName="describe" [(ngModel)]="emptyAdd[4]" rows="3" nz-input></textarea>
+                  <quill-editor formControlName="content" [(ngModel)]="dataProtocol" [modules]="config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
             </form>

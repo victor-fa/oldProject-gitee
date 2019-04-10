@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { CommonService } from '../public/service/common.service';
 import { DatePipe, registerLocaleData } from '@angular/common';
+import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import zh from '@angular/common/locales/zh';
-import { NzModalService, NzNotificationService, UploadFile, NzMessageService } from 'ng-zorro-antd';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { LocalizationService } from '../public/service/localization.service';
-import { ContentService } from '../public/service/content.service';
-import { AppversionService } from '../public/service/appVersion.service';
-import { ShareService } from '../public/service/share.service';
-import { HttpResponse, HttpRequest, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NzMessageService, NzModalService, NzNotificationService, UploadFile } from 'ng-zorro-antd';
 import { filter } from 'rxjs/operators';
+import { AppversionService } from '../public/service/appVersion.service';
+import { CommonService } from '../public/service/common.service';
 import { GuideService } from '../public/service/guide.service';
 import { HelpService } from '../public/service/help.service';
+import { LocalizationService } from '../public/service/localization.service';
 import { ProtocolService } from '../public/service/protocol.service';
+import { ShareService } from '../public/service/share.service';
 
 registerLocaleData(zh);
 
@@ -85,7 +84,7 @@ export class AppVersionComponent implements OnInit {
   };
   isSaveShareButton = false;
   isSaveProtocolButton = false;
-  currentProtocol = '火车退票/改签协议';
+  currentProtocol = '1';
   private timerList;
   private timerDetail;
   currentChanelId = '';
@@ -583,6 +582,7 @@ export class AppVersionComponent implements OnInit {
         'title': this.currentProtocol,
         'content': encodeURI(this.replaceHtmlStr(this.addProtocolForm.controls['content'].value)).replace(/&/g, '%26')
       };
+      console.log(protocolInput);
       this.protocolService.addProtocol(protocolInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
@@ -981,9 +981,15 @@ export class AppVersionComponent implements OnInit {
 
   // 替换所有奇怪字符
   replaceHtmlStr(str) {
-    return str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
-          .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
-          .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
+    let result = '';
+    if (str === null) {
+      result = '';
+    } else {
+      result = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
+      .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
+      .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
+    }
+    return result;
   }
 
 }

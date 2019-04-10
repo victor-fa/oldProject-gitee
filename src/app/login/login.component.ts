@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
 
   private _initForm = () => {
     this.loginForm = this.fb.group({
-      userName: ['', this.commonService.phoneNumValidator],
+      userName: [''],
       password: ['']
     });
   }

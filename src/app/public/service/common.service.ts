@@ -17,6 +17,8 @@ import { AppServiceBase } from '../base/app-service.base';
 export class CommonService extends AppServiceBase {
   baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器不安全下使用 测试环境
   // baseUrl = 'https://xiaowu.centaurstech.com/api/admin';  // chrome浏览器不安全下使用 正式环境
+  // baseUrl = 'http://sxf.sz1.chewrobot.com:4000/api/admin';  // nginx测试前端地址【局域网访问】
+  // baseUrl = 'http://sxf.sz1.chewrobot.com:3000/api/admin';  // nginx正式前端地址【局域网访问】
   // baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
   // baseUrl = 'http://localhost:8088/api/admin';  // nginx正式前端地址
   dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
@@ -135,76 +137,6 @@ export class CommonService extends AppServiceBase {
       m = '0' + month;
     }
     return m;
-  }
-
-  // 验证有效的手机号
-  phoneNumValidator = (control: FormControl): { [s: string]: boolean } => {
-    const MOBILE_REGEXP = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!MOBILE_REGEXP.test(control.value)) {
-      return { error: true, mobile: true };
-    }
-  }
-
-  /**
-   * 验证有效的账号 + 由数字或英文组成，8到12个字符
-   */
-  rightNumValidator = (control: FormControl): { [s: string]: boolean } => {
-    const REGEXP = /^[a-zA-Z0-9]{8,12}$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!REGEXP.test(control.value)) {
-      return { error: true, rightNum: true };
-    }
-  }
-
-  /**
-   * 验证有效的密码 + 由数字或英文组成，6到12个字符
-   */
-  rightPasswordValidator = (control: FormControl): { [s: string]: boolean } => {
-    const REGEXP = /^[a-zA-Z0-9]{6,12}$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!REGEXP.test(control.value)) {
-      return { error: true, rightNum: true };
-    }
-  }
-
-  /**
-   * 验证有效的用户名称 + 由中文或英文组成，不超过20个字符
-   */
-  userNameValidator = (control: FormControl): { [s: string]: boolean } => {
-    const REGEXP = /^[\u4e00-\u9fa5a-zA-Z]{0,20}$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!REGEXP.test(control.value)) {
-      return { error: true, userName: true };
-    }
-  }
-
-  /**
-   * 验证有效的用户名称 + 由中文或英文组成，不超过10个字符，超过2个字符（用于提示）
-   */
-  userNameValidator1 = (control: FormControl): { [s: string]: boolean } => {
-    const REGEXP = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!REGEXP.test(control.value)) {
-      return { error: true, userName: true };
-    }
-  }
-
-  /**
-   * 验证有效的规则名称 + 由数字或英文组成
-   */
-  rightRuleValidator = (control: FormControl): { [s: string]: boolean } => {
-    const REGEXP = /^[A-Za-z0-9\u4e00-\u9fa5]+$/;
-    if (!control.value) {
-      return { required: true };
-    } else if (!REGEXP.test(control.value)) {
-      return { error: true, rightRule: true };
-    }
   }
 
   /** 记录-管理员操作日志记录接口 */

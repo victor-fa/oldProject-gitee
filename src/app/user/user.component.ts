@@ -8,6 +8,7 @@ import { CommonService } from '../public/service/common.service';
 import { UserService } from '../public/service/user.service';
 import { Router } from '@angular/router';
 import { BookingService } from '../public/service/booking.service';
+import { AdjustService } from '../public/service/adjust.service';
 registerLocaleData(zh);
 
 @Component({
@@ -18,6 +19,8 @@ registerLocaleData(zh);
 export class UserComponent implements OnInit {
 
   userData: IUserInfoItemOutput[];
+  adjustData = [];
+  adjustDetail = [];
   searchUserForm: FormGroup;  // 查询表单
   searchUserItem = new UserSearchInput();
   userInfoId = '';
@@ -39,10 +42,13 @@ export class UserComponent implements OnInit {
   isExternalDetailVisible = false;
   isInvoiceVisible = false;
   isRefundVisible = false;
+  isAdjustDetailVisible = false;
+  isAdjustAddVisible = false;
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
   modifyBookingForm: FormGroup;  // 修改表单
+  addAdjustForm: FormGroup;  // 新增数据调整
   isFlightOrder = false;
   isHotelOrder = false;
   isTrainOrder = false;
@@ -61,11 +67,17 @@ export class UserComponent implements OnInit {
   refundSelectArr = [];
   refundSelectName = [];
   invoiceDetail = {};
+  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
+  beginDate = '';
+  endDate = '';
+  adjustType = 'BEAN';  // 针对查询的类型
+  adjustTypeAdd = 'BEAN'; // 针对新增面板的类型
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private modalService: NzModalService,
     private userService: UserService,
+    private adjustService: AdjustService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private bookingService: BookingService,
@@ -133,6 +145,22 @@ export class UserComponent implements OnInit {
       });
       this.doLastBooking = false;
       this.doFirstBooking = false;
+    } else if (flag === 'adjust') {
+      const adjustInput = {
+        adjustType: this.adjustType,
+        begin: this.beginDate,
+        end: this.endDate,
+      };
+      this.adjustService.getAdjustList(adjustInput).subscribe(res => {
+        if (res.retcode === 0) {
+          const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.adjustData = JSON.parse(res.payload);
+          console.log(this.adjustData);
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -250,19 +278,41 @@ export class UserComponent implements OnInit {
   }
 
   private _initForm(): void {
-    this.searchUserForm = this.fb.group({
-      userName: [''],
-      phoneNum: [''],
-    });
-    this.searchBookingForm = this.fb.group({
-      date: [''],
-      type: [''],
-      status: [''],
-      orderId: [''],
-    });
-    this.modifyBookingForm = this.fb.group({
-      updateType: [''],
-    });
+    this.searchUserForm = this.fb.group({ userName: [''], phoneNum: [''], });
+    this.searchBookingForm = this.fb.group({ date: [''], type: [''], status: [''], orderId: [''], });
+    this.modifyBookingForm = this.fb.group({ updateType: [''], });
+    this.addAdjustForm = this.fb.group({ adjustAmount: [''], adjustReason: [''], adjustType: [''], code: [''],
+      noticeAbstract: [''], noticeContent: [''], noticeTitle: [''], operater: [''], users: [''], });
+  }
+
+  doSave(flag) {
+    if (flag === 'adjustAdd') {
+      let users = [];
+      const user = this.addAdjustForm.controls['users'].value.replace(/\r/g,",").replace(/\n/g,",");
+      const adjustInput = {
+        adjustAmount: this.addAdjustForm.controls['adjustAmount'].value,
+        adjustReason: this.addAdjustForm.controls['adjustReason'].value,
+        adjustType: this.adjustTypeAdd,
+        code: this.addAdjustForm.controls['code'].value,
+        noticeAbstract: this.addAdjustForm.controls['noticeAbstract'].value,
+        noticeContent: this.addAdjustForm.controls['noticeContent'].value,
+        noticeTitle: this.addAdjustForm.controls['noticeTitle'].value,
+        operater: this.addAdjustForm.controls['operater'].value,
+        users: user.split(','),
+      };
+      console.log(adjustInput);
+      // this.adjustService.addAdjust(adjustInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '新增' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //     this.isSaveIOSVoiceButton = false; // 保存成功后，变为编辑按钮
+      //     this.loadData('voice');
+      //   } else {
+      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      //   }
+      // });
+    }
   }
 
   /* 设为拉黑状态 */
@@ -271,9 +321,7 @@ export class UserComponent implements OnInit {
       if (res.status === 200) {
         const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
         this.commonService.updateOperationlog(operationInput).subscribe();
-        setTimeout(() => {
-          this.loadData('user');
-        }, 1000);
+        setTimeout(() => { this.loadData('user'); }, 1000);
       }
     });
   }
@@ -287,8 +335,13 @@ export class UserComponent implements OnInit {
     if (flag === 'InvoiceDetail') {
       this.isInvoiceVisible = true;
       this.userService.getInvoiceDetail(data.orderId).subscribe(res => {
-        console.log(JSON.parse(res.payload));
-        this.invoiceDetail = JSON.parse(res.payload);
+        if (res.retcode === 0) {
+          if (res.payload) {
+            this.invoiceDetail = JSON.parse(res.payload);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } if (flag === 'Refund') {
       this.isRefundVisible = true;
@@ -299,7 +352,6 @@ export class UserComponent implements OnInit {
         if (res.retcode === 0) {
           const personArr = [];
           const msgArr = [];
-          console.log(JSON.parse(res.payload));
           JSON.parse(res.payload).forEach(item => {
             this.refundSelectArr.push({id: item.code, msg: item.msg});
           });
@@ -322,9 +374,6 @@ export class UserComponent implements OnInit {
             item.msg = msgArr;
           });
           this.dataRefund = personArr;
-
-          console.log(this.dataRefund);
-          console.log(this.refundSelectArr);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -339,7 +388,6 @@ export class UserComponent implements OnInit {
       this.orderStatus = data.state;
       this.bookingService.getBookingDetail(0, data.orderId).subscribe(res => {
         if (res.retcode === 0) {
-          console.log(JSON.parse(res.payload));
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           if (JSON.parse(res.payload).flightOrderReturn) {
@@ -401,6 +449,21 @@ export class UserComponent implements OnInit {
           this.modalService.info({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } if (flag === 'modifyBooking') {
+      this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
+        if (res.retcode === 0) {
+          this.modalService.success({ nzTitle: '修改成功', nzContent: res.message });
+          const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } if (flag === 'adjustDetail') {
+      this.isAdjustDetailVisible = true;
+      this.adjustDetail = data;
+    } if (flag === 'adjustAdd') {
+      this.isAdjustAddVisible = true;
     }
   }
 
@@ -533,27 +596,27 @@ export class UserComponent implements OnInit {
     this.isExternalDetailVisible = true;
   }
 
-  hideModel(flag) {
+  getAllowed(allowed): string { return allowed = true ? '可以取消' : '不可取消' ; }
+
+  getRefund(refund): string { return refund = true ? '是' : '否' ; }
+
+  hideModal(flag) {
     if (flag === 'InvoiceDetail') {
+      this.invoiceDetail = {};
       this.isInvoiceVisible = false;
     } else if (flag === 'BookingDetail') {
       this.isBookingDetailVisible = false;
     } else if (flag === 'Refund') {
       this.isRefundVisible = false;
+    } else if (flag === 'adjustDetail') {
+      this.isAdjustDetailVisible = false;
+    } else if (flag === 'adjustAdd') {
+      this.isAdjustAddVisible = false;
     }
-  }
-
-  getAllowed(allowed): string {
-    return allowed = true ? '可以取消' : '不可取消' ;
-  }
-
-  getRefund(refund): string {
-    return refund = true ? '是' : '否' ;
   }
 
   doDelete(flag) {
     if (flag === 'Refund') {
-      console.log(this.refundRadio);
       if (this.refundRadio === '') {
         this.modalService.confirm({ nzTitle: '提示', nzContent: '请先勾选需要提交的的乘客！' });
         return;
@@ -582,7 +645,7 @@ export class UserComponent implements OnInit {
               refundCauseId = cell.id;
               refundCause = cell.text;
             }
-          })
+          });
           refundInput.refundCauseId = refundCauseId;
           refundInput.refundCause = refundCause;
 
@@ -592,13 +655,12 @@ export class UserComponent implements OnInit {
           refundInput.preRefundPrice = item.preRefundPrice;
         }
       });
-      console.log(refundInput);
       this.bookingService.deleteRefundDetail(refundInput).subscribe(res => {
         if (res.retcode === 0) {
           this.modalService.success({ nzTitle: '退订成功', nzContent: res.message });
           const operationInput = { op_category: '订单管理', op_page: '退订机票' , op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModel('Refund');
+          this.hideModal('Refund');
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -606,36 +668,16 @@ export class UserComponent implements OnInit {
     }
   }
 
-  /* 展示修改弹框 */
-  doBookingModify(): void {
-    this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
-      if (res.retcode === 0) {
-        this.modalService.success({ nzTitle: '修改成功', nzContent: res.message });
-        const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-      } else {
-        this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
-  }
-
   // 改变退订的数组
   onRefundMsgChange(value, index) {
-    // this.refundSelectArr.forEach((item, i) => {
-    //   if (item.) {
-
-    //   }
-    // });
     this.refundSelectArr.forEach((item, i) => {
       if (i === index) {
-        console.log(item.msg + '===' + value);
         if (item.msg === value) {
           const tempJson = { index: i, text: item.msg, id: item.id };
           this.refundSelectName.push(tempJson);
         }
       }
     });
-    console.log(this.refundSelectName);
   }
 
   // 主面板分页表单
@@ -658,6 +700,20 @@ export class UserComponent implements OnInit {
     this.currentPanel = flag;
     const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户管理' : flag === 'booking' ? '订单查询' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
+  }
+
+  // 日期插件
+  onChange(result: Date): void {
+    // 正确选择数据
+    if (result[0] !== '' || result[1] !== '') {
+      this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+      this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+    }
+    // 手动点击清空
+    if (this.beginDate === null || this.endDate === null) {
+      this.beginDate = this.commonService.getDay(-7);
+      this.endDate = this.commonService.getDay(-1);
+    }
   }
 
 }

@@ -54,6 +54,8 @@ export enum cmsApiUrls {
   voiceList = '/cms/asr-configs',
   /** 语音配置 */
   protocolList = '/agreement',
+  /** 语音配置 */
+  adjustList = '/cms/adjusters',
 }
 
 /** APP版本 */

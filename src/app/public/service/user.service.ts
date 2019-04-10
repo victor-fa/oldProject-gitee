@@ -134,6 +134,7 @@ export class UserService extends AppServiceBase {
     localStorage.setItem('token', '');
     localStorage.setItem('FullMenuResource', '');
     localStorage.setItem('FullChildrenResource', '');
+    localStorage.setItem('AppHeaderAllow', '');
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
@@ -144,6 +145,7 @@ export class UserService extends AppServiceBase {
     result.onreadystatechange = function() {
       if (result.readyState !== 4 || result.status !== 200) {
         count += 1;
+        // tslint:disable-next-line:no-unused-expression
         count === 2 && result.status === 401 ? that.notification.blank('提示', '登录信息有误！', { nzStyle: { color : 'red' }}) : 1;
         return;
       }
@@ -156,6 +158,7 @@ export class UserService extends AppServiceBase {
           const menuArr = [];
           const childrenArr = [];
           if (resultFull.responseText !== '') {
+            localStorage.setItem('AppHeaderAllow', JSON.stringify(JSON.parse(JSON.parse(resultFull.responseText).payload).grantedPlatform));
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
               console.log(item);
               if (item.isVisible === true) {
@@ -172,7 +175,8 @@ export class UserService extends AppServiceBase {
             });
             localStorage.setItem('FullMenuResource', JSON.stringify(menuArr));
             that.commonService.fullMenuResource = JSON.stringify(menuArr);
-            localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr));
+            localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr)); // 正式
+            // tslint:disable-next-line:max-line-length
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
             setTimeout(() => {
               let target = 'appVersion';

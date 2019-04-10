@@ -45,6 +45,8 @@ export class NavigateComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else {
+      this.isSpinning = false;
     }
   }
 

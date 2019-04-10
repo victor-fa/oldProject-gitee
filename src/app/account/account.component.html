@@ -62,7 +62,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
-                  <font color="red">*</font>角色描述：
+                  角色描述：
                 </div>
                 <div nz-col nzSpan="20">
                   <textarea rows="2" formControlName="desc" [(ngModel)]="rolesItem.desc" maxlength="50" nz-input placeholder="输入角色描述，不超过100个字符"></textarea>
@@ -71,7 +71,7 @@
             </form>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down spacing">
-                权限设置：
+                <font color="red">*</font>权限设置：
               </div>
               <div nz-col nzSpan="10">
                 <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
@@ -174,7 +174,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
-                  <font color="red">*</font>角色描述：
+                  角色描述：
                 </div>
                 <div nz-col nzSpan="20">
                   <textarea rows="2" formControlName="desc" [(ngModel)]="rolesItem.desc" maxlength="50" nz-input placeholder="输入角色说明，不超过100个字符"></textarea>
@@ -183,7 +183,7 @@
             </form>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down spacing">
-                权限设置：
+                <font color="red">*</font>权限设置：
               </div>
               <div nz-col nzSpan="10">
                 <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
@@ -413,8 +413,8 @@
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                   <font color="red">*</font>员工账号：
                 </div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="username" maxlength="12" [(ngModel)]="customerItem.username" placeholder="输入员工账号" nzSize="default">
+                <div nz-col nzSpan="12" class="span_down">
+                  {{customerItem.username}}
                 </div>
               </div>
               <div nz-row class="search_panel">

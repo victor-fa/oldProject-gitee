@@ -99,14 +99,7 @@ export class ContentComponent implements OnInit {
     private http: HttpClient,
   ) {
     this.commonService.nav[5].active = true;
-    this._initAddContentForm();
-    this._initAddScreenForm();
-    this._initAddOpenForm();
-    this._initAddBannerForm();
-    this._initModifyContentForm();
-    this._initModifyScreenForm();
-    this._initModifyOpenForm();
-    this._initModifyBannerForm();
+    this._initForm();
   }
 
   ngOnInit() {
@@ -143,49 +136,23 @@ export class ContentComponent implements OnInit {
     }
   }
 
-  private _initAddContentForm(): void {
+  private _initForm(): void {
     this.addContentForm = this.fb.group({
-      title: [''],
-      type: [''],
-      url: [''],
-      abstractContent: [''],
-      content: [''],
-      publishTime: [''],
-      pseudonym: [''],
+      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
     });
-  }
-
-  private _initAddScreenForm(): void {
-    this.addScreenForm = this.fb.group({
-      title: [''],
-      jump: [''],
-      skip: [''],
-      site: [''],
-      duration: [''],
-      url: [''],
-    });
-  }
-
-  private _initAddOpenForm(): void {
+    this.addScreenForm = this.fb.group({ title: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], });
     this.addOpenForm = this.fb.group({
-      title: [''],
-      jump: [''],
-      site: [''],
-      order: [''],
-      url: [''],
-      displayModeForOpen: [''],
-      maxDisplay: ['']
+      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: ['']
     });
-  }
-
-  private _initAddBannerForm(): void {
-    this.addBannerForm = this.fb.group({
-      jump: [''],
-      title: [''],
-      site: [''],
-      order: [''],
-      url: [''],
+    this.addBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], });
+    this.modifyContentForm = this.fb.group({
+      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
     });
+    this.modifyScreenForm = this.fb.group({ title: [''], jump: [''], site: [''], skip: [''], duration: [''], url: [''], });
+    this.modifyOpenForm = this.fb.group({
+      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: ['']
+    });
+    this.modifyBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], });
   }
 
   // 新增内容 - 弹窗
@@ -407,55 +374,6 @@ export class ContentComponent implements OnInit {
         }
       });
     }
-  }
-
-  // 修改
-  _initModifyContentForm() {
-    this.modifyContentForm = this.fb.group({
-      title: [''],
-      type: [''],
-      url: [''],
-      abstractContent: [''],
-      content: [''],
-      publishTime: [''],
-      pseudonym: [''],
-    });
-  }
-
-  // 修改
-  _initModifyScreenForm() {
-    this.modifyScreenForm = this.fb.group({
-      title: [''],
-      jump: [''],
-      site: [''],
-      skip: [''],
-      duration: [''],
-      url: [''],
-    });
-  }
-
-  // 修改
-  _initModifyOpenForm() {
-    this.modifyOpenForm = this.fb.group({
-      title: [''],
-      jump: [''],
-      site: [''],
-      order: [''],
-      url: [''],
-      displayModeForOpen: [''],
-      maxDisplay: ['']
-    });
-  }
-
-  // 修改
-  _initModifyBannerForm() {
-    this.modifyBannerForm = this.fb.group({
-      jump: [''],
-      title: [''],
-      site: [''],
-      order: [''],
-      url: [''],
-    });
   }
 
   // 封装验证修改表单
