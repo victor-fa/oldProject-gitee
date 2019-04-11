@@ -863,6 +863,7 @@ export class AppVersionComponent implements OnInit {
             this.onInputChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
             this.showImageUrl = url + '/api' + this.imageUrl;
           } else if (this.currentPanel === 'help') {  // 引导语
+            // tslint:disable-next-line:max-line-length
             this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           }
           this.notification.success( '提示', '上传成功' );

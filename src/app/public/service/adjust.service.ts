@@ -42,16 +42,6 @@ export class AdjustService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
-  /** 删除单个 */
-  deleteAdjust(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/${id}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
-    return this.httpClient
-      .delete<IResponse<any>>(url, this.options);
-  }
-
   /** 添加单个 */
   addAdjust(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}`;
@@ -59,23 +49,30 @@ export class AdjustService extends AppServiceBase {
     const body = `adjustAmount=${data.adjustAmount}&adjustReason=${data.adjustReason}&adjustType=${data.adjustType}&code=${data.code}&noticeAbstract=${data.noticeAbstract}&noticeContent=${data.noticeContent}&noticeTitle=${data.noticeTitle}&operater=${data.operater}&users=${data.users}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .post<IResponse<any>>(url, data, this.options);
   }
 
-  /** 修改单个 */
-  updateAdjust(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/${data.id}`;
-    // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
+  /** 获取操作者列表 */
+  getOperaters(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/operaters`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取操作者列表 */
+  sendMsg(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/captcha?operater=${data}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
   }
 
 }

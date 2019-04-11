@@ -59,9 +59,9 @@
                 <td>{{data.updateTime | date:'yyyy-MM-dd HH:mm' }}</td>
                 <td>{{data.userPhone}}</td>
                 <td>
-                  <button nz-button nzType="primary" *ngIf="data.locked !== '已拉黑'" (click)="showModel('Blacklist', data)" style="margin-right: 10px;">拉黑</button>
+                  <button nz-button nzType="primary" *ngIf="data.locked !== '已拉黑'" (click)="showModal('Blacklist', data)" style="margin-right: 10px;">拉黑</button>
                   <button nz-button nzType="primary" *ngIf="data.locked === '已拉黑'" disabled style="margin-right: 10px;">拉黑</button>
-                  <button nz-button nzType="primary" (click)="showModel('UserInfo', data)" style="margin-right: 10px;">查看详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('UserInfo', data)" style="margin-right: 10px;">查看详情</button>
                 </td>
               </tr>
             </tbody>
@@ -191,9 +191,9 @@
                 <td nzTitle="婴儿:{{data.type.baby}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;小孩:{{data.type.child}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成人:{{data.type.major}}" nzPlacement="bottom" nz-tooltip><a>查看信息</a></td>
                 <td>{{data.remark}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModel('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
-                  <button nz-button nzType="primary" (click)="showModel('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
-                  <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModel('Refund', data)" style="margin-right: 10px;">退票</button>
+                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
+                  <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModal('Refund', data)" style="margin-right: 10px;">退票</button>
                 </td>
               </tr>
             </tbody>
@@ -956,7 +956,7 @@
                   </nz-select>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModel('modifyBooking', '')" style="margin-right: 10px;">修改</button></div>
+                <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModal('modifyBooking', '')" style="margin-right: 10px;">修改</button></div>
                 <div nz-col nzSpan="3"></div>
               </div>
             </form>
@@ -997,7 +997,7 @@
           </nz-modal>
 
         </nz-tab>
-        
+
         <nz-tab nzTitle="数据调整" (nzClick)="changePanel('adjust')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="7">
@@ -1006,17 +1006,17 @@
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="4">
               <nz-select [(ngModel)]="adjustType">
-                <nz-option required [nzLabel]="'小悟豆'" [nzValue]="'BEAN'"></nz-option>
-                <nz-option required [nzLabel]="'小悟币'" [nzValue]="'COIN'"></nz-option>
+                <nz-option required [nzLabel]="'小悟豆'" nzValue="BEAN"></nz-option>
+                <nz-option required [nzLabel]="'小悟币'" nzValue="COIN"></nz-option>
               </nz-select>
             </div>
             <div nz-col nzSpan="9"></div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showModel('adjustAdd', '')"><i class="anticon anticon-search"></i>新增发放</button>
+              <button nz-button nzType="primary" (click)="showModal('adjustAdd', '')"><i class="anticon anticon-search"></i>新增发放</button>
             </div>
           </div>
 
-          <nz-table #rowSelectionUserTable [nzData]="adjustData" [nzSimple]="true" [nzShowPagination]="false"><!-- [nzScroll]="{x:'1000px'}" -->
+          <nz-table #rowSelectionUserTable [nzData]="adjustData" [nzSimple]="true" [nzShowPagination]="false">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1034,16 +1034,16 @@
             <tbody>
               <tr *ngFor="let data of rowSelectionUserTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{data.updateTime | date:'yyyy-MM-dd HH:mm' }}</td>
-                <td>{{data.nickName}}</td>
-                <td>{{data.userId}}</td>
-                <td>{{data.locked}}</td>
-                <td>{{data.status}}</td>
-                <td>{{data.sentCount}}</td>
-                <td>{{data.userPhone}}</td>
+                <td>{{data.createDate | date:'yyyy-MM-dd' }}</td>
+                <td>{{data.createTime}}</td>
+                <td>{{data.all}}</td>
+                <td>{{data.failNum}}</td>
+                <td>{{data.adjustType === 'BEAN' ? '小悟豆' : data.adjustType === 'COIN' ? '小悟币' : 'null'}}</td>
+                <td>{{data.adjustAmount}}</td>
+                <td>{{data.adjustReason}}</td>
+                <td>{{data.operater.phone}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModel('adjustDetail', data)" style="margin-right: 10px;">查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('adjustDetail', data)" style="margin-right: 10px;">查看</button>
                 </td>
               </tr>
             </tbody>
@@ -1117,10 +1117,10 @@
                 <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="adjustTypeAdd" formControlName="adjustType">
                     <div nz-row class="search_panel">
-                      <div nz-col nzSpan="4"><label nz-radio nzValue="'BEAN'">小悟豆</label></div>
+                      <div nz-col nzSpan="4"><label nz-radio nzValue="BEAN">小悟豆</label></div>
                       <div nz-col nzSpan="4"><input nz-input maxlength="2" formControlName="adjustAmount" [ngModel]="''" nzSize="default"></div>
                       <div nz-col nzSpan="2"></div>
-                      <div nz-col nzSpan="4"><label nz-radio nzValue="'COIN'">小悟币</label></div>
+                      <div nz-col nzSpan="4"><label nz-radio nzValue="COIN">小悟币</label></div>
                       <div nz-col nzSpan="4"><input nz-input maxlength="2" formControlName="adjustAmount" [ngModel]="''" nzSize="default"></div>
                     </div>
                   </nz-radio-group>
@@ -1145,8 +1145,61 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #adjustAddModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('adjustAdd')">保存</button>
+              <button nz-button nzType="primary" (click)="showModal('adjustSend')">确定</button>
               <button nz-button nzType="default" (click)="hideModal('adjustAdd')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 发送 —— 执行发送 -->
+          <nz-modal [(nzVisible)]="isAdjustSendVisible" nzWidth="750" nzTitle="执行发送" [nzFooter]="adjustSendModalFooter" (nzOnCancel)="hideModal('adjustSend')">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="7" class="spthumbnailan_down">发送对象（总计x个）</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="7" class="spthumbnailan_down">奖励配置</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="7" class="spthumbnailan_down">附带消息</div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="7">
+                <textarea rows="5" nz-input [(ngModel)]="adjustSendData.users" [disabled]="true" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="7">
+                <textarea rows="5" nz-input [(ngModel)]="adjustSendData.config" [disabled]="true" zSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="7">
+                <textarea rows="5" nz-input [(ngModel)]="adjustSendData.noticeContent" [disabled]="true" zSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4">
+                <nz-select [(ngModel)]="operateObject.operater">
+                  <nz-option required *ngFor="let data of operatersData; let i=index;" [nzLabel]="data" [nzValue]="data"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="semdMesCodeText !== 60">{{semdMesCodeText === 60 ? '验证' : semdMesCodeText + 's'}}</button>
+              </div>
+            </div>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment span_down">
+                验证码：
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">
+                <input nz-input nzSize="default" maxlength="4" [(ngModel)]="operateObject.code">
+              </div>
+            </div>
+            <!-- 弹框和底部定制 -->
+            <ng-template #adjustSendModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('adjustSend')" [disabled]="operateObject.code.length !== 4">执行发送</button>
+              <button nz-button nzType="default" (click)="hideModal('adjustSend')">放弃</button>
             </ng-template>
           </nz-modal>
 
@@ -1155,54 +1208,54 @@
             <div *ngIf="adjustDetail">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2"></div>
-                <div nz-col nzSpan="5" class="span_down">发放日期：<br>{{adjustDetail.sendTime ? (adjustDetail.sendTime | date:'yyyy-MM-dd') : 'null'}}</div>
-                <div nz-col nzSpan="5" class="span_down">发放时间：<br>{{adjustDetail.sendTime ? (adjustDetail.sendTime | date:'HH:mm:ss') : 'null'}}</div>
-                <div nz-col nzSpan="5" class="span_down">发放人数：<br>{{adjustDetail.totalRevNum}}</div>
-                <div nz-col nzSpan="5" class="span_down">失败人数：<br>{{adjustDetail.errorRevL}}</div>
+                <div nz-col nzSpan="5" class="span_down">发放日期<br>{{adjustDetail.createDate ? (adjustDetail.createDate | date:'yyyy-MM-dd') : 'null'}}</div>
+                <div nz-col nzSpan="5" class="span_down">发放时间<br>{{adjustDetail.createTime}}</div>
+                <div nz-col nzSpan="5" class="span_down">发放人数<br>{{adjustDetail.all}}</div>
+                <div nz-col nzSpan="5" class="span_down">失败人数<br>{{adjustDetail.failNum}}</div>
                 <!-- adjustDetail.errorRevL.length -->
                 <div nz-col nzSpan="2"></div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="11" class="spthumbnailan_down">发送成功（总计x个）</div>
+                <div nz-col nzSpan="11" class="spthumbnailan_down">发送成功（总计{{adjustDetail.successNum}}个）</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="11" class="spthumbnailan_down">奖励配置</div>
                 <div nz-col nzSpan="1"></div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.successRevL" [disabled]="true" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.success" [disabled]="true" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.tempCouponName" [disabled]="true" zSize="default"></textarea>
+                  <textarea rows="5" nz-input [(ngModel)]="(adjustDetail.adjustType === 'BEAN' ? '小悟豆' : adjustDetail.adjustType === 'COIN' ? '小悟币' : null) + '*' + adjustDetail.adjustAmount" [disabled]="true" zSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
               </div>
 
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="11" class="spthumbnailan_down">失败对象(总计y个)</div>
+                <div nz-col nzSpan="11" class="spthumbnailan_down">失败对象(总计{{adjustDetail.failNum}}个)</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="11" class="spthumbnailan_down">附带消息</div>
                 <div nz-col nzSpan="1"></div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.errorRevL" [disabled]="true" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.fail" [disabled]="true" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.displayMessage" [disabled]="true" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.noticeContent" [disabled]="true" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
               </div>
-              
+
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="11" class="spthumbnailan_down">调整原因</div>
                 <div nz-col nzSpan="1"></div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.errorRevL" [disabled]="true" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.adjustReason" [disabled]="true" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
               </div>

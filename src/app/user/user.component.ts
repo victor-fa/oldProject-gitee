@@ -20,7 +20,8 @@ export class UserComponent implements OnInit {
 
   userData: IUserInfoItemOutput[];
   adjustData = [];
-  adjustDetail = [];
+  operatersData = [];
+  adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0 };
   searchUserForm: FormGroup;  // 查询表单
   searchUserItem = new UserSearchInput();
   userInfoId = '';
@@ -44,6 +45,7 @@ export class UserComponent implements OnInit {
   isRefundVisible = false;
   isAdjustDetailVisible = false;
   isAdjustAddVisible = false;
+  isAdjustSendVisible = false;
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
@@ -72,6 +74,9 @@ export class UserComponent implements OnInit {
   endDate = '';
   adjustType = 'BEAN';  // 针对查询的类型
   adjustTypeAdd = 'BEAN'; // 针对新增面板的类型
+  adjustSendData = {}; // 针对执行发送弹框的展示
+  operateObject = { code: '', operater: '' };
+  semdMesCodeText = 60;
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -156,7 +161,29 @@ export class UserComponent implements OnInit {
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.adjustData = JSON.parse(res.payload);
-          console.log(this.adjustData);
+          this.adjustData.forEach(item => {
+            item.createTime = item.createTime.replace(/-/g, ':');  // 创建日期格式化
+            item.all = Object.keys(item.result).length; // 发放人数
+            const fail = [];
+            for (var i in item.result) {
+              if (item.result[i] === false) {
+                fail.push(i);
+              }
+            }
+            item.failNum = fail.length; // 失败人数
+          })
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'operaters') {
+      this.adjustService.getOperaters().subscribe(res => {
+        if (res.retcode === 0) {
+          this.operatersData.splice(0, this.operatersData.length);
+          JSON.parse(res.payload).forEach(item => {
+            this.operatersData.push(item.phone);
+          });
+          this.operateObject.operater = this.operatersData[0];
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -286,33 +313,53 @@ export class UserComponent implements OnInit {
   }
 
   doSave(flag) {
-    if (flag === 'adjustAdd') {
-      let users = [];
-      const user = this.addAdjustForm.controls['users'].value.replace(/\r/g,",").replace(/\n/g,",");
+    if (flag === 'adjustSend') {
+      const user = this.addAdjustForm.controls['users'].value.replace(/\r/g, ',').replace(/\n/g, ',');
       const adjustInput = {
         adjustAmount: this.addAdjustForm.controls['adjustAmount'].value,
         adjustReason: this.addAdjustForm.controls['adjustReason'].value,
         adjustType: this.adjustTypeAdd,
-        code: this.addAdjustForm.controls['code'].value,
+        code: this.operateObject.code,
         noticeAbstract: this.addAdjustForm.controls['noticeAbstract'].value,
         noticeContent: this.addAdjustForm.controls['noticeContent'].value,
         noticeTitle: this.addAdjustForm.controls['noticeTitle'].value,
-        operater: this.addAdjustForm.controls['operater'].value,
+        operater: this.operateObject.operater,
         users: user.split(','),
       };
-      console.log(adjustInput);
-      // this.adjustService.addAdjust(adjustInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-      //     const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '新增' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //     this.isSaveIOSVoiceButton = false; // 保存成功后，变为编辑按钮
-      //     this.loadData('voice');
-      //   } else {
-      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      //   }
-      // });
+      this.adjustService.addAdjust(adjustInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('adjust');
+          this.hideModal('adjustAdd');
+          this.hideModal('adjustSend');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'sendMsg') {
+      this.countDown();
+      this.adjustService.sendMsg(this.operateObject.operater).subscribe(res => {
+        if (res.retcode === 0) {
+          this.countDown();
+          this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '发送短信' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
+  }
+
+  countDown() {
+    this.semdMesCodeText--;
+    if (this.semdMesCodeText === 0) {
+      this.semdMesCodeText = 60;
+      return;
+    }
+    setTimeout(() => { this.countDown(); }, 1000);
   }
 
   /* 设为拉黑状态 */
@@ -331,7 +378,7 @@ export class UserComponent implements OnInit {
 
   }
 
-  showModel(flag, data) {
+  showModal(flag, data) {
     if (flag === 'InvoiceDetail') {
       this.isInvoiceVisible = true;
       this.userService.getInvoiceDetail(data.orderId).subscribe(res => {
@@ -462,8 +509,32 @@ export class UserComponent implements OnInit {
     } if (flag === 'adjustDetail') {
       this.isAdjustDetailVisible = true;
       this.adjustDetail = data;
+      const success = [];
+      const fail = [];
+      this.adjustDetail.all = Object.keys(this.adjustDetail.result).length;
+      for (var i in this.adjustDetail.result) {
+        if (this.adjustDetail.result[i] === true) {
+          success.push(i);
+        } else if (this.adjustDetail.result[i] === false) {
+          fail.push(i);
+        }
+      }
+      this.adjustDetail.success = success.join('\n');
+      this.adjustDetail.fail = fail.join('\n');
+      this.adjustDetail.successNum = success.length;
+      this.adjustDetail.failNum = fail.length;
     } if (flag === 'adjustAdd') {
       this.isAdjustAddVisible = true;
+    } if (flag === 'adjustSend') {
+      this.loadData('operaters'); // 获取操作者列表数据
+      console.log(this.adjustTypeAdd);
+      this.adjustSendData = {
+        users: this.addAdjustForm.controls['users'].value,
+        // tslint:disable-next-line:max-line-length
+        config: (this.adjustTypeAdd === 'BEAN' ? '小悟豆' : this.adjustTypeAdd === 'COIN' ? '小悟币' : null) + '*' + this.addAdjustForm.controls['adjustAmount'].value,
+        noticeContent: this.addAdjustForm.controls['noticeContent'].value,
+      };
+      this.isAdjustSendVisible = true;
     }
   }
 
@@ -612,6 +683,8 @@ export class UserComponent implements OnInit {
       this.isAdjustDetailVisible = false;
     } else if (flag === 'adjustAdd') {
       this.isAdjustAddVisible = false;
+    } else if (flag === 'adjustSend') {
+      this.isAdjustSendVisible = false;
     }
   }
 
