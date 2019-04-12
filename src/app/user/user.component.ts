@@ -768,8 +768,7 @@ export class UserComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
     const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户管理' : flag === 'booking' ? '订单查询' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();

@@ -13,7 +13,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
             </div>
           </div>
-          <nz-table #contentTable [nzData]="dataContent">
+          <nz-table #contentTable [nzData]="dataContent" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -434,7 +434,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="guideDate.jumpType" (ngModelChange)="onInputChange($event, 'imageJumpType', i)">
-                    <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLE'"></nz-option>
+                    <nz-option required [nzLabel]="'不跳转&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'" [nzValue]="'DISABLE'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'WEB'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
@@ -444,7 +444,7 @@
                 <div nz-col nzSpan="4" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="guideDate.appDestinationType" (ngModelChange)="onInputChange($event, 'imageAppDestinationType', i)">
-                    <nz-option required [nzLabel]="'个人中心'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="'SETTINGS'"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="'ORDER_LIST'"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="'GENERAL_INFO'"></nz-option>
@@ -522,7 +522,7 @@
                   <font color="red">*</font>技能名称：
                 </div>
                 <div nz-col nzSpan="16">
-                  <input nz-input formControlName="name" [(ngModel)]="helpDate.title" placeholder="请输入技能标题" nzSize="default">
+                  <input nz-input formControlName="name" [(ngModel)]="helpDate.name" placeholder="请输入技能标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -563,7 +563,7 @@
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
-                  <input nz-input formControlName="order" placeholder="请输入技能排序" nzSize="default">
+                  <input nz-input formControlName="order" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
                 </div>
               </div>
               <ng-container *ngFor="let item of helpItem.jumpArr; let i=index;">
@@ -573,7 +573,7 @@
                   </div>
                   <div nz-col nzSpan="4" *ngIf="i > 0"></div>
                   <div nz-col nzSpan="16">
-                    <input nz-input formControlName="guides" (ngModelChange)="onInputChange($event, 'helpJunp', i)" placeholder="请输入外部跳转编辑" nzSize="default">
+                    <input nz-input formControlName="guides" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpJump', i)" placeholder="请输入外部跳转编辑" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2" class="span_down right_alignment">
                     <button nz-button nzType="primary" (click)="doSave('help_jump')" *ngIf="i === 0">添加</button>
@@ -584,7 +584,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">技能介绍：</div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="describe" [(ngModel)]="emptyAdd[4]" rows="3" nz-input></textarea>
+                  <textarea formControlName="describe" [(ngModel)]="helpDate.describe" rows="3" nz-input></textarea>
                 </div>
               </div>
               <ng-container *ngFor="let item of helpItem.detailArr; let i=index;">
@@ -594,7 +594,7 @@
                   <div nz-col nzSpan="16">
                     <div nz-col nzSpan="4" class="span_down right_alignment">标题：</div>
                     <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_title" (ngModelChange)="onInputChange($event, 'helpDetailTitle', i)" placeholder="请输入标题" nzSize="default">
+                      <input nz-input formControlName="details_title" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpDetailTitle', i)" placeholder="请输入标题" nzSize="default">
                     </div>
                     <div nz-col nzSpan="2" class="span_down right_alignment">
                       <button nz-button nzType="primary" (click)="doSave('help_detail')" *ngIf="i === 0">添加</button>
@@ -607,7 +607,7 @@
                   <div nz-col nzSpan="16">
                     <div nz-col nzSpan="4" class="span_down right_alignment">描述：</div>
                     <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_describe" (ngModelChange)="onInputChange($event, 'helpDetailDesc', i)" placeholder="请输入描述" nzSize="default">
+                      <input nz-input formControlName="details_describe" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpDetailDesc', i)" placeholder="请输入描述" nzSize="default">
                     </div>
                   </div>
                 </div>
@@ -667,7 +667,7 @@
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
-                  <input nz-input formControlName="order" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
+                  <input nz-input formControlName="order" type="text" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
                 </div>
               </div>
               <ng-container *ngFor="let item of helpItem.jumpArr; let i=index;">
@@ -677,7 +677,8 @@
                   </div>
                   <div nz-col nzSpan="4" *ngIf="i > 0"></div>
                   <div nz-col nzSpan="16">
-                    <input nz-input formControlName="guides" [(ngModel)]="helpItem.jumpArr[i].text" (ngModelChange)="onInputChange($event, 'helpJunp', i)" placeholder="请输入外部跳转编辑" nzSize="default">
+                    <input nz-input formControlName="guides" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpJump', i)" placeholder="请输入新的外部跳转编辑" nzSize="default">
+                    <br>{{item.text}}
                   </div>
                   <div nz-col nzSpan="2" class="span_down right_alignment">
                     <button nz-button nzType="primary" (click)="doSave('help_jump')" *ngIf="i === 0">添加</button>

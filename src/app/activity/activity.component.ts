@@ -701,8 +701,7 @@ export class ActivityComponent implements OnInit {
         if (data.checked === true) {
           couponArr.push(data);
           checkedCount++;
-          // tslint:disable-next-line:no-unused-expression
-          data.quantity ? quantityCount++ : 1 ;
+          if (data.quantity) { quantityCount++; }
         }
       });
       if (checkedCount === 0) { // 优惠券未勾选
@@ -786,8 +785,7 @@ export class ActivityComponent implements OnInit {
         return;
       }
       this.addBatchsendForm.controls['pendingRevL'].value.split('\n').forEach(item => {
-        // tslint:disable-next-line:no-unused-expression
-        !this.isPoneAvailable(item) ? count++ : 1 ;
+        if (!this.isPoneAvailable(item)) { count++; }
       });
       if (count > 0) {
         this.modalService.error({ nzTitle: '提示', nzContent: '输入的手机号码中有不符合要求的！' });
@@ -802,8 +800,7 @@ export class ActivityComponent implements OnInit {
         if (data.checked === true) {
           couponArr.push(data);
           checkedCount++;
-          // tslint:disable-next-line:no-unused-expression
-          data.quantity ? quantityCount++ : 1 ;
+          if (data.quantity) { quantityCount++; }
         }
       });
       if (checkedCount === 0) { // 优惠券未勾选
@@ -1286,16 +1283,14 @@ export class ActivityComponent implements OnInit {
 
   checkAllSearchCoupon(value: boolean): void {
     this.dataSearchCoupon.forEach(data => {
-      // tslint:disable-next-line:no-unused-expression
-      !data.disabled ? data.checked = value : 1;
+      if (!data.disabled) { data.checked = value; }
     });
     this.refreshSearchCouponStatus();
   }
 
   checkAll(value: boolean): void {
     this.displayData.forEach(category => {
-      // tslint:disable-next-line:no-unused-expression
-      !category.disabled ? category.checked = value : 1;
+      if (!category.disabled) { category.checked = value; }
     });
     this.refreshStatus();
   }
@@ -1352,8 +1347,7 @@ export class ActivityComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : '', op_name: '访问' };

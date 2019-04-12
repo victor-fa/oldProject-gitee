@@ -89,6 +89,7 @@ export class AppVersionComponent implements OnInit {
   private timerDetail;
   currentChanelId = '';
   helpType = 'TRAVEL';
+  limitModelChange = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -117,24 +118,16 @@ export class AppVersionComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnDestroy() {
-    if (this.timerList) {
-      clearInterval(this.timerList);
-    }
-    if (this.timerDetail) {
-      clearInterval(this.timerDetail);
-    }
+    if (this.timerList) { clearInterval(this.timerList); }
+    if (this.timerDetail) { clearInterval(this.timerDetail); }
   }
 
   loadData(flag) {
     if (flag === 'content') {
       const arr = [];
       this.appversionService.getAppversionList(this.currentChanelId).subscribe(res => {
-        if (JSON.parse(res.payload).android !== 'null') {
-          arr.push(JSON.parse(JSON.parse(res.payload).android));
-        }
-        if (JSON.parse(res.payload).ios !== 'null') {
-          arr.push(JSON.parse(JSON.parse(res.payload).ios));
-        }
+        if (JSON.parse(res.payload).android !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).android)); }
+        if (JSON.parse(res.payload).ios !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).ios)); }
         this.dataContent = arr;
         const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
@@ -173,8 +166,7 @@ export class AppVersionComponent implements OnInit {
           appList.forEach(item => {
             if (item.registryName === localStorage.getItem('currentAppHeader')) {
               this.currentAppId = item.id;
-              // tslint:disable-next-line:no-unused-expression
-              JSON.stringify(item.templates) !== '{}' ? templates = JSON.parse(item.templates) : 1;
+              if (JSON.stringify(item.templates) !== '{}') { templates = JSON.parse(item.templates); }
             }
           });
           this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
@@ -186,8 +178,7 @@ export class AppVersionComponent implements OnInit {
                 let enabled = false;
                 // tslint:disable-next-line:forin
                 for (const key in templates) {
-                  // tslint:disable-next-line:no-unused-expression
-                  key === cell.id ? enabled = templates[key] : 1; // 匹配APP的templates与模板接口查出来的Id
+                  if (key === cell.id) { enabled = templates[key]; } // 匹配APP的templates与模板接口查出来的Id
                 }
                 cell.enabled = enabled;
               });
@@ -246,11 +237,12 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'help') {
       this.isAddHelpVisible = true;
       this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '' };
+      this.helpType = 'TRAVEL';
       this.helpItem.jumpArr.splice(0, this.helpItem.jumpArr.length);
       this.helpItem.detailArr.splice(0, this.helpItem.detailArr.length);
       this.helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };  // 清空后初始化
     }
-    this.fileList.splice(0, this.guideItem.imageArr.length);
+    this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
     this.showImageUrl = '';
   }
@@ -430,24 +422,22 @@ export class AppVersionComponent implements OnInit {
       const tempallArr = [];
       const allArr = [];
       this.guideItem.messageArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? tempallArr.push(item) : 1; count++;
+        if (item) { tempallArr.push(item); }
       });
       this.guideItem.buttonArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? tempallArr.push(item) : 1; count++;
+        if (item) { tempallArr.push(item); }
       });
       this.guideItem.imageArr.forEach((item, i) => {
-        // tslint:disable-next-line:no-unused-expression
-        item ? tempallArr.push(item) : 1; count++;
+        if (item) { tempallArr.push(item); }
       });
 
-      // tslint:disable-next-line:no-unused-expression
-      tempallArr.forEach((item, i) => { (item.sort === i + 1) ? count++ : 1; });
-      if (count !== tempallArr.length) { // 解决不按序号排列的情况
-        this.modalService.error({ nzTitle: '提示', nzContent: '序号没有按顺序填写，或序号填写不完整' });
-        return;
-      }
+      tempallArr.forEach((item, i) => { if (item.sort === i + 1) { count++; }});
+      console.log(tempallArr);
+      console.log(count);
+      // if (count !== tempallArr.length) { // 解决不按序号排列的情况
+      //   this.modalService.error({ nzTitle: '提示', nzContent: '序号没有按顺序填写，或序号填写不完整' });
+      //   return;
+      // }
       tempallArr.forEach((item, i) => {
         // tslint:disable-next-line:radix
         if (parseInt(item.sort) === (i + 1)) { allArr.push(item); }  // 针对sort进行排序
@@ -478,7 +468,7 @@ export class AppVersionComponent implements OnInit {
                 this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
                 const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '新增' };
                 this.commonService.updateOperationlog(operationInput).subscribe();
-                this.isAddGuideVisible = false;
+                this.hideModal('guide');
                 this.loadData('guide');
               }
             });
@@ -490,39 +480,28 @@ export class AppVersionComponent implements OnInit {
         // 元素添加到模板
         const finalInput = { 'templateId': this.templateId, 'elements': allArr, 'name': this.addGuideForm.controls['name'].value };
         this.guideService.addXxxForGuide(finalInput).subscribe(res1 => {
-          // tslint:disable-next-line:max-line-length
-          res1.retcode === 0 ? this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } }) : this.modalService.error({ nzTitle: '提示', nzContent: res1.message });
-          const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '保存' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
+          if (res1.retcode === 0) {
+            // tslint:disable-next-line:max-line-length
+            res1.retcode === 0 ? this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } }) : this.modalService.error({ nzTitle: '提示', nzContent: res1.message });
+            const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '保存' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.hideModal('guide');
+            this.loadData('guide');
+          }
         });
       }
     } else if (flag === 'guide_message') {
-      const mesItem = {
-        'type': 'MESSAGE',
-        'text': '',
-        'sort': ''
-      };
+      const mesItem = { 'type': 'MESSAGE', 'text': '', 'sort': '' };
       this.guideItem.messageArr.push(mesItem);
     } else if (flag === 'guide_button') {
-      const butItem = {
-        'type': 'BUTTON',
-        'text': '',
-        'sort': ''
-      };
+      const butItem = { 'type': 'BUTTON', 'text': '', 'sort': '' };
       this.guideItem.buttonArr.push(butItem);
     } else if (flag === 'guide_image') {
       if (this.guideItem.imageArr.length === 1) { // 最多添加一个上传图片
         this.modalService.error({ nzTitle: '提示', nzContent: '暂时只支持上传一张' });
         return;
       }
-      const imgItem = {
-        'type': 'IMAGE',
-        'imageKey': '',
-        'jumpType': '',
-        'appDestinationType': '',
-        'webUrl': '',
-        'sort': ''
-      };
+      const imgItem = { 'type': 'IMAGE', 'imageKey': '', 'jumpType': '', 'appDestinationType': '', 'webUrl': '', 'sort': '' };
       this.guideItem.imageArr.push(imgItem);
     } else if (flag === 'addHelp') {
       if (!this.verificationAdd('addHelp')) { return; }
@@ -582,7 +561,6 @@ export class AppVersionComponent implements OnInit {
         'title': this.currentProtocol,
         'content': encodeURI(this.replaceHtmlStr(this.addProtocolForm.controls['content'].value)).replace(/&/g, '%26')
       };
-      console.log(protocolInput);
       this.protocolService.addProtocol(protocolInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
@@ -598,15 +576,10 @@ export class AppVersionComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
     } else if (flag === 'help_jump') {
-      const jumpItem = {
-        'text': ''
-      };
+      const jumpItem = { 'text': '' };
       this.helpItem.jumpArr.push(jumpItem);
     } else if (flag === 'help_detail') {
-      const detailItem = {
-        'title': '',
-        'describe': ''
-      };
+      const detailItem = { 'title': '', 'describe': '' };
       this.helpItem.detailArr.push(detailItem);
     }
   }
@@ -614,14 +587,12 @@ export class AppVersionComponent implements OnInit {
   // 修改 - 弹框
   showModifyModal(data, flag) {
     if (flag === 'guide') {
-      this.guideDate = { // 清空
-        // tslint:disable-next-line:max-line-length
-        'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': ''
-      };
+      // tslint:disable-next-line:max-line-length // 清空
+      this.guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
       this.guideItem.messageArr.splice(0, this.guideItem.messageArr.length);
       this.guideItem.buttonArr.splice(0, this.guideItem.buttonArr.length);
       this.guideItem.imageArr.splice(0, this.guideItem.imageArr.length);
-      this.fileList.splice(0, this.guideItem.imageArr.length);
+      this.fileList.splice(0, this.fileList.length);
       this.showImageUrl = '';
 
       this.templateId = data.id; // 用于修改
@@ -665,21 +636,36 @@ export class AppVersionComponent implements OnInit {
       this.isModifyHelpVisible = true;
       this.templateId = id;  // 用于修改
       this.helpService.getHelp(id).subscribe(res => {
-        // 处理异常处理
-        this.helpDate = data;
-        this.imageUrl = JSON.parse(res.payload).image;
-        this.helpType = data.type;
-        this.imageUrl = data.image;
-        data.guides.forEach(item => {
-          let tempJson = { text: item };
-          this.helpItem.jumpArr.push(tempJson);
-        });
-        this.helpItem.detailArr = data.details;
-        const file: any = { name: JSON.parse(res.payload).image };
-        this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
+        if (res.retcode === 0) {
+          this.cnaNotUseModelChange();
+          // 处理异常处理
+          this.helpDate = data;
+          this.imageUrl = JSON.parse(res.payload).image;
+          this.helpType = data.type;
+          this.imageUrl = data.image;
+          data.guides.forEach(item => {
+            const tempJson = { text: item };
+            this.helpItem.jumpArr.push(tempJson);
+          });
+          this.helpItem.detailArr = data.details;
+          const file: any = { name: JSON.parse(res.payload).image };
+          this.fileList.push(file);
+          // tslint:disable-next-line:max-line-length
+          this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
+          console.log(this.helpItem);
+        }
       });
     }
+  }
+
+  // 专门解决ngModel与ngModelChange互相冲突的情况
+  cnaNotUseModelChange() {
+    this.limitModelChange--;
+    if (this.limitModelChange === -1) {
+      this.limitModelChange = 1;
+      return;
+    }
+    setTimeout(() => { this.cnaNotUseModelChange(); }, 2000);
   }
 
   // 封装验证修改表单
@@ -755,7 +741,7 @@ export class AppVersionComponent implements OnInit {
         this.loadData('guide');
       });
     } else if (flag === 'help') {
-      const switchInput = { 'id': data.id, 'enable': data.enabled };
+      const switchInput = { 'id': data.id, 'enabled': data.enabled };
       this.helpService.updateHelp(switchInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
@@ -819,11 +805,9 @@ export class AppVersionComponent implements OnInit {
     const formData = new FormData();
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
-      // tslint:disable-next-line:no-unused-expression
-      this.currentPanel === 'share' ? formData.append('fileType', '0') : '1';
+      if (this.currentPanel === 'share') { formData.append('fileType', '0'); }
       // this.currentPanel === 'share' ? formData.append('fileType', this.currentCopywritingImage) : '1';
-      // tslint:disable-next-line:no-unused-expression
-      this.currentPanel === 'guide' ? formData.append('imageKey', file.name) : 1;
+      if (this.currentPanel === 'guide') { formData.append('imageKey', file.name); }
     });
     // tslint:disable-next-line:max-line-length
     const baseUrl = this.currentPanel === 'guide' || this.currentPanel === 'help' ? this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) : this.commonService.baseUrl;
@@ -882,64 +866,58 @@ export class AppVersionComponent implements OnInit {
   onInputChange(value, site, item) {
     if (site === 'messageSort') { // message 排序
       this.guideItem.messageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
+        if (i === item) { cell.sort = value; }
       });
     } else if (site === 'messageText') { // message
       this.guideItem.messageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.text = value : 1;
+        if (i === item) { cell.text = value; }
       });
     } else if (site === 'buttonSort') {  // button 排序
       this.guideItem.buttonArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
+        if (i === item) { cell.sort = value; }
       });
     } else if (site === 'buttonText') {  // button
       this.guideItem.buttonArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.text = value : 1;
+        if (i === item) { cell.text = value; }
       });
     } else if (site === 'imageSort') {  // image 排序
       this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.sort = value : 1;
+        if (i === item) { cell.sort = value; }
       });
     } else if (site === 'imageJumpType') {  // image TYPE
       this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.jumpType = value : 1;
+        if (i === item) { cell.jumpType = value; }
       });
     } else if (site === 'imageAppDestinationType') {  // image APP
       this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.appDestinationType = value : 1;
+        if (i === item) { cell.appDestinationType = value; }
       });
     } else if (site === 'imageWebUrl') {  // image WEB
       this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.webUrl = value : 1;
+        if (i === item) { cell.webUrl = value; }
       });
     } else if (site === 'imageImageKey') {  // image WEB
       this.guideItem.imageArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.imageKey = value : 1;
+        if (i === item) { cell.imageKey = value; }
       });
-    } else if (site === 'helpJunp') {  // input help
-      this.helpItem.jumpArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.text = value : 1;
-      });
+    } else if (site === 'helpJump') {  // input help
+      if (this.limitModelChange === 1) {
+        this.helpItem.jumpArr.forEach(( cell, i ) => {
+          if (i === item) { cell.text = value; }
+        });
+      }
     } else if (site === 'helpDetailTitle') {  // input help
-      this.helpItem.detailArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.title = value : 1;
-      });
+      if (this.limitModelChange === 1) {
+        this.helpItem.detailArr.forEach(( cell, i ) => {
+          if (i === item) { cell.title = value; }
+        });
+      }
     } else if (site === 'helpDetailDesc') {  // input help
-      this.helpItem.detailArr.forEach(( cell, i ) => {
-        // tslint:disable-next-line:no-unused-expression
-        i === item ? cell.describe = value : 1;
-      });
+      if (this.limitModelChange === 1) {
+        this.helpItem.detailArr.forEach(( cell, i ) => {
+          if (i === item) { cell.describe = value; }
+        });
+      }
     }
   }
 
@@ -959,8 +937,7 @@ export class AppVersionComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     if (flag !== 'share') {
       this.isSaveShareButton = false;
     }

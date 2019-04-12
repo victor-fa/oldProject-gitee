@@ -138,7 +138,7 @@ export class AccountComponent implements OnInit {
           if (i === 0) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); }); 
+            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); });
           } else if (i === 1) {
             this.allMenu.push({name: item.name, id: item.id});
             // tslint:disable-next-line:max-line-length
@@ -355,8 +355,7 @@ export class AccountComponent implements OnInit {
     if (flag === 'addRole') {
       const channelArr = [];
       this.checkOptionsChannel.forEach(item => {
-        // tslint:disable-next-line:no-unused-expression
-        item.checked === true ? channelArr.push(item.value) : 1;
+        if (item.checked === true) { channelArr.push(item.value); }
       });
       const rolesItem = {
         name: this.roleAddForm.controls['name'].value,
@@ -379,8 +378,7 @@ export class AccountComponent implements OnInit {
     } else if (flag === 'modifyRole') {
       const channelArr = [];
       this.checkOptionsChannel.forEach(item => {
-        // tslint:disable-next-line:no-unused-expression
-        item.checked === true ? channelArr.push(item.value) : 1;
+        if (item.checked === true) { channelArr.push(item.value); }
       });
       const resIdsArr = [];
       const rolesModifyItem = {
@@ -468,7 +466,6 @@ export class AccountComponent implements OnInit {
   private allCheckFalse(): void {
     this.allChecked1 = false; this.allChecked2 = false; this.allChecked3 = false; this.allChecked5 = false; this.allChecked4 = false;
     this.allChecked6 = false; this.allChecked6 = false; this.allChecked7 = false; this.allChecked8 = false;
-    // tslint:disable-next-line:no-unused-expression
     this.checkOptions1 = []; this.checkOptions2 = []; this.checkOptions3 = []; this.checkOptions4 = []; this.checkOptions5 = [];
     this.checkOptions6 = []; this.checkOptions7 = []; this.checkOptions8 = []; this.allMenu = [];  // 清空
     this.dataResource.forEach((item, i) => {
@@ -530,8 +527,7 @@ export class AccountComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : '', op_name: '访问' };

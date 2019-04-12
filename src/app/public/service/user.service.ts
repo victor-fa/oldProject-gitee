@@ -145,8 +145,7 @@ export class UserService extends AppServiceBase {
     result.onreadystatechange = function() {
       if (result.readyState !== 4 || result.status !== 200) {
         count += 1;
-        // tslint:disable-next-line:no-unused-expression
-        count === 2 && result.status === 401 ? that.notification.blank('提示', '登录信息有误！', { nzStyle: { color : 'red' }}) : 1;
+        if (count === 2 && result.status === 401) { that.notification.blank('提示', '登录信息有误！', { nzStyle: { color : 'red' }}); }
         return;
       }
       if (result.responseText !== '') {

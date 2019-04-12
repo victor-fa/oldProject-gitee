@@ -24,8 +24,7 @@ export class LeftNavComponent implements OnInit {
         this.appHeaderAllow.push({ id: item, name: '听听同学' });
       }
     });
-    // tslint:disable-next-line:no-unused-expression
-    tempKey === '' || tempKey === null ? localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id) : 1;
+    if (tempKey === '' || tempKey === null) { localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id); }
     this.currentAppHeader = localStorage.getItem('currentAppHeader'); // 用于清空缓存或者第一次打开后台系统时，拿到的初始值
   }
 

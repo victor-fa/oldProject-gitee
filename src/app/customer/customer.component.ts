@@ -187,8 +187,7 @@ export class CustomerComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
     const operationInput = {
       op_category: '客服中心',

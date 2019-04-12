@@ -243,8 +243,7 @@ export class OperateComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    // tslint:disable-next-line:no-unused-expression
-    flag !== this.currentPanel ? this.loadData(flag) : 1;
+    if (flag !== this.currentPanel) { this.loadData(flag); }
     if (flag !== 'voice') {
       this.isSaveIOSVoiceButton = false;
       this.isSaveANDROIDVoiceButton = false;
