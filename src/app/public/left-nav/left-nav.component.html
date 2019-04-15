@@ -10,7 +10,7 @@
       <nz-dropdown [nzPlacement]="'bottomRight'">
         <a nz-dropdown>
           <img src="assets/images/person_logo.png" class="person_logo" alt="">
-          <strong>管理员</strong>
+          <strong>{{currentUser}}</strong>
         </a>
         <ul nz-menu>
           <li nz-menu-item (click)="cancellation()">
@@ -72,8 +72,8 @@
         </span>
       </a>
     </li>
-    <li nz-submenu nz-tooltip *ngIf="haveMenuPermission('menu', '数据中心')" [ngClass]="{'active_panel': commonService.nav[0].active}" routerLinkActive="active">
-      <span title (click)="goDataCenter()">
+    <li nz-submenu nz-tooltip *ngIf="haveMenuPermission('menu', '数据中心')" (click)="goDataCenter()" [ngClass]="{'active_panel': commonService.nav[0].active}" routerLinkActive="active">
+      <span title>
         <i class="anticon anticon-bar-chart"></i><span>数据中心</span>
       </span>
       <ul>

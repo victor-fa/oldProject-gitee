@@ -1,12 +1,11 @@
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { IUserInfoItemOutput, SendMsgInput, UserSearchInput } from '../public/model/user.model';
 import { CommonService } from '../public/service/common.service';
+import { InvoiceService } from '../public/service/invoice.service';
 import { UserService } from '../public/service/user.service';
-import { Router } from '@angular/router';
 registerLocaleData(zh);
 
 @Component({
@@ -16,20 +15,22 @@ registerLocaleData(zh);
 })
 export class CustomerComponent implements OnInit {
 
-  phoneNum = '';
-  sendMsgForm: FormGroup;  // 发送短信表单
   sendScreenHeight = '';
   pageSize = 10;
   feedBackPageSize = 1000;
   feedbackInfo = [];
   oppositionInfo = [];
   agreeInfo = [];
+  invoiceTimeInfo = [];
+  invoiceLogInfo = [];
   oppositionPageSize = 1000;
   agreePageSize = 1000;
   isFeedBackVisible = false;
   isOppositionVisible = false;
   isAgreeVisible = false;
   currentOppositionAgreeId = '';  // 弹框后的id
+  searchInvoiceTimeForm: FormGroup;
+  searchInvoiceLogForm: FormGroup;
   tempFeedBack = {
     'words': '',
     'photo': '',
@@ -38,15 +39,22 @@ export class CustomerComponent implements OnInit {
   tempOpposition = { session: '' };
   tempAgree = { session: '' };
   currentPanel = 'feedback';
+  beginInvoiceTimeDate = '';
+  endInvoiceTimeDate = '';
+  beginInvoiceLogDate = '';
+  endInvoiceLogDate = '';
+  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private userService: UserService,
     private modalService: NzModalService,
     private notification: NzNotificationService,
+    private invoiceService: InvoiceService,
+    private datePipe: DatePipe,
   ) {
     this.commonService.nav[2].active = true;
-    this._initSendMsgForm();
+    this._initForm();
   }
 
   ngOnInit() {
@@ -95,7 +103,52 @@ export class CustomerComponent implements OnInit {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'invoiceTime') {
+      const invoiceTimeInput = {
+        minTime: this.beginInvoiceTimeDate,
+        maxTime: this.endInvoiceTimeDate,
+        orderId: this.searchInvoiceTimeForm.controls['orderId'].value,
+        orderType: this.searchInvoiceTimeForm.controls['orderType'].value,
+        phone: this.searchInvoiceTimeForm.controls['phone'].value,
+      };
+      this.invoiceService.getInvoiceTimeList(invoiceTimeInput).subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.invoiceTimeInfo = JSON.parse(res.payload);
+            const operationInput = { op_category: '客服中心', op_page: '开票时间管理' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            console.log(this.invoiceTimeInfo);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'invoiceLog') {
+      const invoiceTimeInput = {
+        minTime: this.beginInvoiceLogDate,
+        maxTime: this.endInvoiceLogDate,
+        orderId: this.searchInvoiceLogForm.controls['orderId'].value,
+        orderType: this.searchInvoiceLogForm.controls['orderType'].value,
+        phone: this.searchInvoiceLogForm.controls['phone'].value,
+      };
+      this.invoiceService.getInvoiceLogList(invoiceTimeInput).subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.invoiceLogInfo = JSON.parse(res.payload);
+            const operationInput = { op_category: '客服中心', op_page: '开票管理日志' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            console.log(this.invoiceLogInfo);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
+  }
+
+  private _initForm(): void {
+    this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
+    this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
   }
 
   // 反馈详情
@@ -130,40 +183,6 @@ export class CustomerComponent implements OnInit {
     this.isAgreeVisible = false;
   }
 
-  /* 显示发送提示 */
-  showSendMsgModal(): void {
-    const phoneNum = this.sendMsgForm.controls['phoneNum'].value;
-    if (phoneNum === '') {
-      this.modalService.error({ nzTitle: '提示', nzContent: '请填写手机号' });
-      return;
-    }
-    this.modalService.confirm({
-      nzTitle: '提示',
-      nzContent: '确定发送验证码给该手机号：' + phoneNum + '的用户吗？',
-      nzOkText: '确定',
-      nzOnOk: () => this.doSendMsg()
-    });
-  }
-
-  /* 发送短息 */
-  doSendMsg(): void {
-    const Base64 = require('js-base64').Base64;
-    const phoneNum = 'Basic ' + Base64.encode(this.sendMsgForm.controls['phoneNum'].value);
-    this.userService.sendMsg(phoneNum).subscribe(res => {
-      if (res.retcode === 0) {
-        this.modalService.success({ nzTitle: '获取成功', nzContent: '验证码为： ' + res.message, nzOkText: '知道了', });
-      } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      }
-    });
-  }
-
-  private _initSendMsgForm(): void {
-    this.sendMsgForm = this.fb.group({
-      phoneNum: [''],
-    });
-  }
-
   // 下载Excel模板
   getExcel(flag): void {
     const estimate = flag === 'opposition' ? false : true;
@@ -183,6 +202,48 @@ export class CustomerComponent implements OnInit {
         tempA.parentNode.removeChild(tempA);
       }
     });
+  }
+
+  // 日期插件
+  onChange(result, flag): void {
+    if (flag === 'invoiceTime') {
+      if (result === []) {
+        this.beginInvoiceTimeDate = '';
+        this.endInvoiceTimeDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginInvoiceTimeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
+        this.endInvoiceTimeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
+      }
+    } else if (flag === 'invoiceLog') {
+      if (result === []) {
+        this.beginInvoiceLogDate = '';
+        this.endInvoiceLogDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginInvoiceLogDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
+        this.endInvoiceLogDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
+      }
+    }
+  }
+
+  // 点击switch
+  clickSwitch(data, flag) {
+    if (flag === 'invoiceTime') {
+      console.log(data);
+      this.invoiceService.updateSwitch(data).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客服中心', op_page: '开票时间管理', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+        this.loadData('invoiceTime');
+      });
+    }
   }
 
   // 切换面板

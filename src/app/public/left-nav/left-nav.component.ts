@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LeftNavComponent implements OnInit {
 
   currentAppHeader = '';
+  currentUser = '';
   appHeaderAllow = [];
   fullMenuResource = JSON.parse(localStorage.getItem('FullMenuResource'));
   constructor(
@@ -29,6 +30,7 @@ export class LeftNavComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentUser = localStorage.getItem('currentUser');
   }
 
   // 专门处理全局的APP变量
@@ -46,7 +48,13 @@ export class LeftNavComponent implements OnInit {
 
   cancellation(): void {
     localStorage.removeItem('token');
-    this._router.navigate(['/login']);
+    localStorage.removeItem('token');
+    localStorage.removeItem('FullMenuResource');
+    localStorage.removeItem('FullChildrenResource');
+    localStorage.removeItem('AppHeaderAllow');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('dataCenterUrl');
+    window.location.href = '/login';
   }
 
   goDataCenter() {

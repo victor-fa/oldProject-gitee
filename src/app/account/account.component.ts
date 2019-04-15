@@ -425,7 +425,7 @@ export class AccountComponent implements OnInit {
         realname: this.customerModifyForm.controls['realname'].value,
         password: this.customerModifyForm.controls['password'].value,
         roleId: this.customerModifyForm.controls['roleId'].value,
-        username: this.customerModifyForm.controls['username'].value,
+        username: this.customerItem.username,
       };
       if (!this.verification('modifyCustomer', customerItem)) { return; } // 去重
       this.accountService.modifyCustomer(customerItem).subscribe(res => {

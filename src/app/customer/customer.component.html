@@ -62,29 +62,6 @@
           </nz-modal>
         </nz-tab>
 
-        <!-- <nz-tab nzTitle="发送短信" (nzClick)="changePanel('sendMsg')">
-          <form [formGroup]="sendMsgForm">
-            <div nz-row>
-              <div nz-col nzSpan="24"><br><br><br><br><br><br><br><br><br><br></div>
-            </div>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="6"></div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
-                手机号：
-              </div>
-              <div nz-col nzSpan="3">
-                <input nz-input maxlength="11" formControlName="phoneNum"
-                  placeholder="输入手机号" nzSize="default">
-              </div>
-              <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2">
-                <button nz-button nzType="primary" (click)="showSendMsgModal()"><i class="anticon anticon-message"></i>发送</button>
-              </div>
-            </div>
-            <div nz-row [ngStyle]="{'height': sendScreenHeight}"></div>
-          </form>
-        </nz-tab> -->
-
         <nz-tab nzTitle="点踩日志" (nzClick)="changePanel('opposition')" *ngIf="commonService.haveMenuPermission('children', '点踩日志')">
           <!-- <div nz-row class="search_panel">
             <div nz-col nzSpan="24">
@@ -229,6 +206,158 @@
               <button nz-button nzType="default" (click)="hideAgree()">取消</button>
             </ng-template>
           </nz-modal>
+        </nz-tab>
+
+        <nz-tab nzTitle="开票时间管理" (nzClick)="changePanel('invoiceTime')" *ngIf="commonService.haveMenuPermission('children', '开票时间管理')">
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchInvoiceTimeForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="phone" placeholder="输入订单编号"
+                  nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单号：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号"
+                  nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="orderType">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'机票'" [nzValue]="1"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" [nzValue]="2"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" [nzValue]="3"></nz-option>
+                  <nz-option required [nzLabel]="'打车'" [nzValue]="4"></nz-option>
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                订单时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'invoiceTime')"></nz-range-picker>
+              </div>
+
+            </form>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('invoiceTime')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+          <nz-table #rowInvoiceTimeTable [nzData]="invoiceTimeInfo.olderList" [nzSimple]="true">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>用户账号</th>
+                <th>用户昵称</th>
+                <th>订单号</th>
+                <th>订单类型</th>
+                <th>订单金额</th>
+                <th>订单出行时间</th>
+                <th>可开票状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowInvoiceTimeTable.data; let i=index;">
+                <td>{{i + 1}}</td>
+                <td>{{data.userAccountID}}</td>
+                <td>{{data.userName}}</td>
+                <td>{{data.orderId}}</td>
+                <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : 'null'}}</td>
+                <td>{{data.money}}</td>
+                <td>{{data.createTime}}</td>
+                <td>
+                  <nz-form-item>
+                    <nz-form-control>
+                      <nz-switch [(ngModel)]="data.drawBill" (click)="clickSwitch(data, 'invoiceTime')"></nz-switch>
+                    </nz-form-control>
+                  </nz-form-item>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
+        <nz-tab nzTitle="开票管理日志" (nzClick)="changePanel('invoiceLog')" *ngIf="commonService.haveMenuPermission('children', '开票时间管理')">
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchInvoiceLogForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="phone" placeholder="输入订单编号"
+                  nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单号：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号"
+                  nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="orderType">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'机票'" [nzValue]="1"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" [nzValue]="2"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" [nzValue]="3"></nz-option>
+                  <nz-option required [nzLabel]="'打车'" [nzValue]="4"></nz-option>
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                订单时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'invoiceLog')"></nz-range-picker>
+              </div>
+
+            </form>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('invoiceLog')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+          <nz-table #rowInvoiceTimeTable [nzData]="invoiceLogInfo.adminBillLogsList" [nzSimple]="true">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>用户账号</th>
+                <th>用户昵称</th>
+                <th>订单号</th>
+                <th>订单类型</th>
+                <th>订单金额</th>
+                <th>操作人</th>
+                <th>操作时间</th>
+                <th>操作动作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowInvoiceTimeTable.data; let i=index;">
+                <td>{{i + 1}}</td>
+                <td>{{data.userAccountID}}</td>
+                <td>{{data.userName}}</td>
+                <td>{{data.orderId}}</td>
+                <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : 'null'}}</td>
+                <td>{{data.money}}</td>
+                <td>{{data.adminName}}</td>
+                <td>{{data.operaTime}}</td>
+                <td>{{data.open === true ? '开启可开票状态' : '关闭可开票状态'}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
         </nz-tab>
 
       </nz-tabset>

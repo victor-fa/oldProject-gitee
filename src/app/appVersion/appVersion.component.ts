@@ -61,7 +61,7 @@ export class AppVersionComponent implements OnInit {
   imageUrl = '';
   currentPanel = 'content';  // 当前面板 默认内容管理
   guideItem = { messageArr: [], buttonArr: [], imageArr: [], };
-  helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };
+  helpItem = { jumpArr: [{ text: '' }, { text: '' }, { text: '' }], detailArr: [{ title: '', describe: '' }] };
   currentAppId = '';  // 当前默认的APP信息
   templateId = '';  // 帮助管理的模板Id
   config = {
@@ -240,7 +240,7 @@ export class AppVersionComponent implements OnInit {
       this.helpType = 'TRAVEL';
       this.helpItem.jumpArr.splice(0, this.helpItem.jumpArr.length);
       this.helpItem.detailArr.splice(0, this.helpItem.detailArr.length);
-      this.helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };  // 清空后初始化
+      this.helpItem = { jumpArr: [{ text: '' }, { text: '' }, { text: ''}], detailArr: [{ title: '', describe: '' }] };
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -255,6 +255,11 @@ export class AppVersionComponent implements OnInit {
       this.isModifyGuideVisible = false;
     } else if (flag === 'addHelp') {
       this.isAddHelpVisible = false;
+      this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '' };
+      this.helpType = 'TRAVEL';
+      this.helpItem.jumpArr.splice(0, this.helpItem.jumpArr.length);
+      this.helpItem.detailArr.splice(0, this.helpItem.detailArr.length);
+      this.helpItem = { jumpArr: [{ text: '' }], detailArr: [{ title: '', describe: '' }] };
     } else if (flag === 'share') {  // 取消分享的保存功能
       this.isSaveShareButton = false;
     } else if (flag === 'modifyHelp') {
@@ -348,6 +353,30 @@ export class AppVersionComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '技能介绍未填写' });
         result = false;
       }
+      this.helpItem.jumpArr.forEach((item, i) => {
+        if (item.text === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: `外部跳转编辑第${i + 1}个未填写` });
+          result = false;
+        }
+      });
+      this.helpItem.jumpArr.forEach((item, i) => {
+        if (item.text === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: `外部跳转编辑第${i + 1}个未填写` });
+          result = false;
+        }
+      });
+      this.helpItem.detailArr.forEach((item, i) => {
+        if (item.title === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: `详情页编辑的标题第${i + 1}个未填写` });
+          result = false;
+        }
+      });
+      this.helpItem.detailArr.forEach((item, i) => {
+        if (item.describe === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: `详情页编辑的描述第${i + 1}个未填写` });
+          result = false;
+        }
+      });
     }
     if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content') {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });

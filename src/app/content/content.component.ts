@@ -327,6 +327,7 @@ export class ContentComponent implements OnInit {
       if (!this.verificationAdd('open')) {
         return;
       }
+      const maxDisplay = this.addOpenForm.controls['maxDisplay'].value;
       const openInput = {
         'enabled': false, // 默认不可启用
         'title': this.addOpenForm.controls['title'].value,
@@ -336,7 +337,7 @@ export class ContentComponent implements OnInit {
         'order': this.addOpenForm.controls['order'].value,
         'url': this.addOpenForm.controls['url'].value,
         'displayMode': this.displayModeForOpen,
-        'maxDisplay': this.addOpenForm.controls['maxDisplay'].value
+        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay
       };
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -608,6 +609,7 @@ export class ContentComponent implements OnInit {
         return;
       }
       const jump = this.modifyOpenForm.controls['jump'].value;
+      const maxDisplay = this.modifyOpenForm.controls['maxDisplay'].value;
       const openInput = {
         'id': this.cmsId,
         'title': this.modifyOpenForm.controls['title'].value,
@@ -617,7 +619,7 @@ export class ContentComponent implements OnInit {
         'order': this.modifyOpenForm.controls['order'].value,
         'image': this.imageUrl,
         'displayMode': this.displayModeForOpen,
-        'maxDisplay': this.modifyOpenForm.controls['maxDisplay'].value !== undefined ? this.modifyOpenForm.controls['maxDisplay'].value : ''
+        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay
       };
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {

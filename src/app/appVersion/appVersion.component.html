@@ -495,9 +495,9 @@
                 <td>{{i+1}}</td>
                 <td>{{data.name}}</td>
                 <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/skills/images/' + data.image" class="thumbnail"></td>
-                <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
+                <td>{{data.type === 'TRAVEL'? '出行' : data.type === 'LIFE' ? '生活' : data.type === 'AMUSEMENT' ? '娱乐' : data.type === 'TOOL' ? '工具' : 'null'}}</td>
                 <td>{{data.order}}</td>
-                <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
+                <td nzTitle="【{{data.guides.join('】、【')}}】" nzPlacement="bottom" nz-tooltip><a>{{data.guides[0]}}</a></td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -700,6 +700,7 @@
                     <div nz-col nzSpan="4" class="span_down right_alignment">标题：</div>
                     <div nz-col nzSpan="16">
                       <input nz-input formControlName="details_title" [(ngModel)]="helpItem.detailArr[i].title" (ngModelChange)="onInputChange($event, 'helpDetailTitle', i)" placeholder="请输入标题" nzSize="default">
+                      <br>{{item.title}}
                     </div>
                     <div nz-col nzSpan="2" class="span_down right_alignment">
                       <button nz-button nzType="primary" (click)="doSave('help_detail')" *ngIf="i === 0">添加</button>
@@ -713,6 +714,7 @@
                     <div nz-col nzSpan="4" class="span_down right_alignment">描述：</div>
                     <div nz-col nzSpan="16">
                       <input nz-input formControlName="details_describe" [(ngModel)]="helpItem.detailArr[i].describe" (ngModelChange)="onInputChange($event, 'helpDetailDesc', i)" placeholder="请输入描述" nzSize="default">
+                      <br>{{item.describe}}
                     </div>
                   </div>
                 </div>

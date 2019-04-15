@@ -135,10 +135,13 @@ export class UserService extends AppServiceBase {
     localStorage.setItem('FullMenuResource', '');
     localStorage.setItem('FullChildrenResource', '');
     localStorage.setItem('AppHeaderAllow', '');
+    localStorage.setItem('currentUser', '');
+    localStorage.setItem('dataCenterUrl', '');
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
     formData.set('password', input.password);
+    localStorage.setItem('currentUser', input.userName);
     const that = this;
     let count = 0;  // 因为该方法会被掉4次，所以出此下策只提示一次
 
@@ -178,7 +181,43 @@ export class UserService extends AppServiceBase {
             // tslint:disable-next-line:max-line-length
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
             setTimeout(() => {
+              localStorage.setItem('dataCenterUrl', '');
+              let dataCenterUrl = 'app';
               let target = 'appVersion';
+              if (childrenArr.indexOf('App总览') <= -1) { // 不存在
+                dataCenterUrl = 'keepApp';
+                if (childrenArr.indexOf('App留存') <= -1) { // 不存在
+                  dataCenterUrl = 'overview';
+                  if (childrenArr.indexOf('BOT总览') <= -1) { // 不存在
+                    dataCenterUrl = 'product';
+                    if (childrenArr.indexOf('产品权限') <= -1) { // 不存在
+                      dataCenterUrl = 'error';
+                      if (childrenArr.indexOf('异常表述') <= -1) { // 不存在
+                        dataCenterUrl = 'ticket';
+                        if (childrenArr.indexOf('机票BOT') <= -1) { // 不存在
+                          dataCenterUrl = 'train';
+                          if (childrenArr.indexOf('火车BOT') <= -1) { // 不存在
+                            dataCenterUrl = 'hotel';
+                            if (childrenArr.indexOf('酒店BOT') <= -1) { // 不存在
+                              dataCenterUrl = 'weather';
+                              if (childrenArr.indexOf('天气BOT') <= -1) { // 不存在
+                                dataCenterUrl = 'navigate';
+                                if (childrenArr.indexOf('导航BOT') <= -1) { // 不存在
+                                  dataCenterUrl = 'taxi';
+                                  if (childrenArr.indexOf('打车BOT') <= -1) { // 不存在
+                                    dataCenterUrl = 'music';
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              localStorage.setItem('dataCenterUrl', dataCenterUrl); // 数据中心动态路由
               if (menuArr.indexOf('APP管理') <= -1) { // 不存在
                 target = 'customer';
                 if (menuArr.indexOf('客服中心') <= -1) { // 不存在

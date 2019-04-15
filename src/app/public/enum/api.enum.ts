@@ -52,10 +52,12 @@ export enum cmsApiUrls {
   helpList = '/cms/skills',
   /** 语音配置 */
   voiceList = '/cms/asr-configs',
-  /** 语音配置 */
+  /** 协议管理 */
   protocolList = '/agreement',
-  /** 语音配置 */
+  /** 数据调整 */
   adjustList = '/cms/adjusters',
+  /** 开票管理 */
+  invoiceList = '/order/invoice/manager',
 }
 
 /** APP版本 */

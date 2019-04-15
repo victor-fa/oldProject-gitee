@@ -14,66 +14,32 @@ import { NavigateComponent } from './navigate/navigate.component';
 import { TaxiComponent } from './taxi/taxi.component';
 import { MusicComponent } from './music/music.component';
 
-
+const pathUrl = localStorage.getItem('dataCenterUrl') + '';
+console.log(pathUrl);
 const routes: Routes = [
     {
         path: 'app',
         component: DataCenterComponent,
         children: [
-            {
-                path: 'app',
-                component: DataAppComponent,
-            },
-            {
-                path: 'keepApp',
-                component: KeepAppComponent,
-            },
-            {
-                path: 'overview',
-                component: DataOverviewComponent,
-            },
-            {
-                path: 'product',
-                component: ProductComponent,
-            },
-            {
-                path: 'error',
-                component: ErrorComponent,
-            },
-            {
-                path: 'ticket',
-                component: TicketComponent,
-            },
-            {
-                path: 'train',
-                component: TrainComponent,
-            },
-            {
-                path: 'hotel',
-                component: HotelComponent,
-            },
-            {
-                path: 'weather',
-                component: WeatherComponent,
-            },
-            {
-                path: 'navigate',
-                component: NavigateComponent,
-            },
-            {
-                path: 'taxi',
-                component: TaxiComponent,
-            },
-            {
-                path: 'music',
-                component: MusicComponent,
-            }
+            { path: 'app', component: DataAppComponent, },
+            { path: 'keepApp', component: KeepAppComponent, },
+            { path: 'overview', component: DataOverviewComponent, },
+            { path: 'product', component: ProductComponent, },
+            { path: 'error', component: ErrorComponent, },
+            { path: 'ticket', component: TicketComponent, },
+            { path: 'train', component: TrainComponent, },
+            { path: 'hotel', component: HotelComponent, },
+            { path: 'weather', component: WeatherComponent, },
+            { path: 'navigate', component: NavigateComponent, },
+            { path: 'taxi', component: TaxiComponent, },
+            { path: 'music', component: MusicComponent, },
+            { path: '**', redirectTo: pathUrl },
         ]
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [RouterModule.forChild([{ path: '', component: DataCenterComponent, children: routes }])],
     exports: [RouterModule]
 })
 export class DataCenterRoutingModule { }

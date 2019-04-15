@@ -573,7 +573,7 @@
               <div nz-row class="search_panel" *ngIf="displayModeForOpen === 'EVERY_DAY'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>请输入展示次数：</div>
                 <div nz-col nzSpan="11">
-                  <input nz-input placeholder="请输入展示次数" nzSize="default">
+                  <input nz-input placeholder="请输入展示次数" formControlName="maxDisplay" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="1" class="span_down right">次</div>
