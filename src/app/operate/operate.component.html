@@ -42,6 +42,7 @@
                 <th nzWidth="20px">可用小悟豆</th>
                 <th nzWidth="20px">预估价格</th>
                 <th nzWidth="20px">报警原因</th>
+                <th nzWidth="20px">报警时间</th>
                 <th nzWidth="20px">操作</th>
               </tr>
             </thead>
@@ -57,6 +58,7 @@
                 <td>{{data.availableBeans}}</td>
                 <td>{{data.estimate_price}}</td>
                 <td>{{data.monitorType !== null ? (data.monitorType === 0 ? '余额不足' : (data.monitorType === 1 ? '超出预估' : 'null')) : 'null'}}</td>
+                <td>{{data.createDate}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('taxi', data)"><i
                       class="anticon anticon-form"></i>详情</button>

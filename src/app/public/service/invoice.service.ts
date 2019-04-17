@@ -21,7 +21,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getInvoiceTimeList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}?pageSize=100`;
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}?pageSize=9999`;
     url += data.minTime ? '&minTime=' + data.minTime : '';
     url += data.maxTime ? '&maxTime=' + data.maxTime : '';
     url += data.orderId ? '&orderId=' + data.orderId : '';
@@ -36,7 +36,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getInvoiceLogList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}/logs?pageSize=100`;
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}/logs?pageSize=9999`;
     url += data.minTime ? '&minTime=' + data.minTime : '';
     url += data.maxTime ? '&maxTime=' + data.maxTime : '';
     url += data.orderId ? '&orderId=' + data.orderId : '';

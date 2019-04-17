@@ -4,8 +4,8 @@
 <nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
-      <th nzWidth="50px">序号</th>
-      <th nzWidth="100px">时间</th>
+      <th nzWidth="50px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="68px">时间</th>
       <th nzWidth="100px">新增安装数</th>
       <th nzWidth="100px">新增启动数</th>
       <th nzWidth="100px">新增注册数</th>
@@ -29,8 +29,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-      <td nzWidth="50px">{{i+1}}</td>
-      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+      <td nzWidth="100px" nzLeft="68px">{{data.date | date:'yy-MM-dd'}}</td>
       <td nzWidth="100px">{{data.dailyInstallation }}</td>
       <td nzWidth="100px">{{data.dailyNewLaunch}}</td>  <!-- 新增启动数 -->
       <td nzWidth="100px">{{data.dailyRegister}}</td>  <!-- 新增注册数 -->

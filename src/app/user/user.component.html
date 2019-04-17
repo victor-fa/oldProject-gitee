@@ -183,6 +183,7 @@
                 <td *ngIf="data.orderType === 2">火车</td>
                 <td *ngIf="data.orderType === 3">酒店</td>
                 <td *ngIf="data.orderType === 4">打车</td>
+                <td *ngIf="data.orderType === 5">充话费</td>
 
                 <td>{{data.createTime}}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
                 <td>{{data.total}}</td>
@@ -217,7 +218,7 @@
 
           <!-- 弹框 —— 信息 —— 发票详情 -->
           <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')">
-            <div *ngIf="invoiceDetail">
+            <div *ngIf="invoiceDetail.invoiceMsg">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">发票状态：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.state === 0 ? '开票失败' : invoiceDetail.state === 1 ? '已开票' : invoiceDetail.state === 2 ? '开票中' : invoiceDetail.state === 3 ? '待开票' : invoiceDetail.state === 4 ? '发票作废' : 'null'}}</div>
@@ -228,25 +229,25 @@
                 <div nz-col nzSpan="4" class="right_alignment">开票金额：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoicePrice}}</div>
               </div>
-              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+              <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">公司名称：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.invoiceName}}</div>
                 <div nz-col nzSpan="4" class="right_alignment">纳税人识别号：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.dutyParagraph}}</div>
               </div>
-              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+              <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.email}}</div>
                 <div nz-col nzSpan="4" class="right_alignment">手机号：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.phone}}</div>
               </div>
-              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+              <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">注册地址：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerAdd}}</div>
                 <div nz-col nzSpan="4" class="right_alignment">注册电话：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerPhone}}</div>
               </div>
-              <div nz-row class="search_panel" *ngIf="invoiceDetail.invoiceMsg">
+              <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">开户银行：</div>
                 <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.bank}}</div>
                 <div nz-col nzSpan="4" class="right_alignment">开户账户：</div>
@@ -259,6 +260,12 @@
                     {{item}}<br>
                   </span>
                 </div>
+              </div>
+            </div><div *ngIf="!invoiceDetail.invoiceMsg">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="10"></div>
+                <div nz-col nzSpan="4">暂无发票详情！</div>
+                <div nz-col nzSpan="10"></div>
               </div>
             </div>
             <!-- 弹框和底部定制 -->

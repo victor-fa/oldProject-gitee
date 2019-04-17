@@ -4,8 +4,8 @@
 <nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
-      <th nzWidth="50px">序号</th>
-      <th nzWidth="100px">时间</th>
+      <th nzWidth="50px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="83px">时间</th>
       <th nzWidth="100px">唤醒导航人次</th>
       <th nzWidth="100px">导航唤醒行为数</th>
       <th nzWidth="100px">导航对话轮数（总）</th>
@@ -24,8 +24,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-      <td nzWidth="50px">{{i+1}}</td>
-      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+      <td nzWidth="100px" nzLeft="83px">{{data.date | date:'yy-MM-dd'}}</td>
       <td nzWidth="100px">{{data.awakNavigationUsers }}</td>
       <td nzWidth="100px">{{data.awakNavigationCount}}</td>
       <td nzWidth="100px">{{data.navigationSessionCount}}</td>

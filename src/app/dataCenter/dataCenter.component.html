@@ -61,20 +61,85 @@
         </nz-tab>
 
         <!-- 弹框 —— 信息 —— 数据说明 -->
-        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="950" nzTitle="{{commonService.currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideExplain()">
+        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1050" nzTitle="{{commonService.currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideExplain()">
           <div nz-row class="search_panel" style="text-align: center;">
-            <img *ngIf="commonService.dataCenter[0].active === true" [src]="'assets/images/dataCenter_dataApp.png'">
-            <img *ngIf="commonService.dataCenter[1].active === true" [src]="'assets/images/dataCenter_keepapp.png'">
-            <img *ngIf="commonService.dataCenter[2].active === true" [src]="'assets/images/dataCenter_overview.png'">
-            <img *ngIf="commonService.dataCenter[3].active === true" [src]="'assets/images/dataCenter_product.png'">
-            <img *ngIf="commonService.dataCenter[4].active === true" [src]="'assets/images/dataCenter_error.png'">
-            <img *ngIf="commonService.dataCenter[5].active === true" [src]="'assets/images/dataCenter_ticket.png'">
-            <img *ngIf="commonService.dataCenter[6].active === true" [src]="'assets/images/dataCenter_train.png'">
-            <img *ngIf="commonService.dataCenter[7].active === true" [src]="'assets/images/dataCenter_hotel.png'">
-            <img *ngIf="commonService.dataCenter[8].active === true" [src]="'assets/images/dataCenter_weather.png'">
-            <img *ngIf="commonService.dataCenter[9].active === true" [src]="'assets/images/dataCenter_navigate.png'">
-            <img *ngIf="commonService.dataCenter[10].active === true" [src]="'assets/images/dataCenter_taxi.png'">
-            <img *ngIf="commonService.dataCenter[11].active === true" [src]="'assets/images/dataCenter_music.png'">
+            <div nz-col nzSpan="2">
+              <span style="line-height: 30px;">&nbsp;</span><br>
+              <ng-container *ngIf="commonService.dataCenter[0].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.dataApp; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[1].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.keepApp; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[2].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.overview; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[3].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.product; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[4].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.error; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[5].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.ticket; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[6].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.train; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[7].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.hotel; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[8].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.weather; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[9].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.navigate; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[10].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.taxi; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="commonService.dataCenter[11].active === true">
+                <ng-container *ngFor="let item of checkDataOptions.music; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                </ng-container>
+              </ng-container>
+            </div>
+            <div nz-col nzSpan="22">
+              <img *ngIf="commonService.dataCenter[0].active === true" [src]="'assets/images/dataCenter_dataApp.png'">
+              <img *ngIf="commonService.dataCenter[1].active === true" [src]="'assets/images/dataCenter_keepapp.png'">
+              <img *ngIf="commonService.dataCenter[2].active === true" [src]="'assets/images/dataCenter_overview.png'">
+              <img *ngIf="commonService.dataCenter[3].active === true" [src]="'assets/images/dataCenter_product.png'">
+              <img *ngIf="commonService.dataCenter[4].active === true" [src]="'assets/images/dataCenter_error.png'">
+              <img *ngIf="commonService.dataCenter[5].active === true" [src]="'assets/images/dataCenter_ticket.png'">
+              <img *ngIf="commonService.dataCenter[6].active === true" [src]="'assets/images/dataCenter_train.png'">
+              <img *ngIf="commonService.dataCenter[7].active === true" [src]="'assets/images/dataCenter_hotel.png'">
+              <img *ngIf="commonService.dataCenter[8].active === true" [src]="'assets/images/dataCenter_weather.png'">
+              <img *ngIf="commonService.dataCenter[9].active === true" [src]="'assets/images/dataCenter_navigate.png'">
+              <img *ngIf="commonService.dataCenter[10].active === true" [src]="'assets/images/dataCenter_taxi.png'">
+              <img *ngIf="commonService.dataCenter[11].active === true" [src]="'assets/images/dataCenter_music.png'">
+            </div>
           </div>
           <!-- 弹框和底部定制 -->
           <ng-template #ecplainModalFooter>

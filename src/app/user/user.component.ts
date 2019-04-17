@@ -136,6 +136,7 @@ export class UserComponent implements OnInit {
               const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
               this.commonService.updateOperationlog(operationInput).subscribe();
               this.dataOrder = JSON.parse(res.payload).orders;
+              console.log(this.dataOrder);
               this.totalBooking = JSON.parse(res.payload).total;
               this.allBookingSize = JSON.parse(res.payload).allSize;
               if (JSON.parse(res.payload).orders.length > 0) {
@@ -165,13 +166,13 @@ export class UserComponent implements OnInit {
             item.createTime = item.createTime.replace(/-/g, ':');  // 创建日期格式化
             item.all = Object.keys(item.result).length; // 发放人数
             const fail = [];
-            for (var i in item.result) {
+            for (let i in item.result) {
               if (item.result[i] === false) {
                 fail.push(i);
               }
             }
             item.failNum = fail.length; // 失败人数
-          })
+          });
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -202,6 +203,7 @@ export class UserComponent implements OnInit {
         if (res.payload !== '') {
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(JSON.parse(res.payload));
           this.dataOrder = JSON.parse(res.payload).orders;
           this.totalBooking = JSON.parse(res.payload).total;
           this.allBookingSize = JSON.parse(res.payload).allSize;

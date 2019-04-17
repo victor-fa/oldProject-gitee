@@ -4,8 +4,8 @@
 <nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
-      <th nzWidth="50px">序号</th>
-      <th nzWidth="100px">时间</th>
+      <th nzWidth="50px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="60px">时间</th>
       <th nzWidth="100px">新增安装数</th>
       <th nzWidth="100px">2日留存数</th>
       <th nzWidth="100px">3日留存数</th>
@@ -29,8 +29,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-      <td nzWidth="50px">{{i+1}}</td>
-      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+      <td nzWidth="100px" nzLeft="60px">{{data.date | date:'yy-MM-dd'}}</td>
       <td nzWidth="100px">{{data.day1RetentionUsers >= 0 ? data.day1RetentionUsers : 'null' }}</td>
       <td nzWidth="100px">{{data.day2RetentionUsers >= 0 ? data.day2RetentionUsers : 'null' }}</td>
       <td nzWidth="100px">{{data.day3RetentionUsers >= 0 ? data.day3RetentionUsers : 'null' }}</td>

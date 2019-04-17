@@ -4,8 +4,8 @@
 <nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3000px', y:'520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
-      <th nzWidth="50px">序号</th>
-      <th nzWidth="100px">时间</th>
+      <th nzWidth="50px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="63px">时间</th>
       <th nzWidth="100px">表述1人数</th>
       <th nzWidth="100px">表述2人数</th>
       <th nzWidth="100px">表述3人数</th>
@@ -32,8 +32,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-      <td nzWidth="50px">{{i+1}}</td>
-      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+      <td nzWidth="100px" nzLeft="63px">{{data.date | date:'yy-MM-dd'}}</td>
       <td nzWidth="100px">{{data.botException1Users}}</td>
       <td nzWidth="100px">{{data.botException2Users}}</td>
       <td nzWidth="100px">{{data.botException3Users}}</td>

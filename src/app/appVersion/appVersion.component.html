@@ -154,7 +154,7 @@
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">微信分享</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="wechatTitle" [(ngModel)]="dataShare.wechatTitle" *ngIf="isSaveShareButton" placeholder="输入标题" nzSize="default">
@@ -162,7 +162,7 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <textarea rows="5" nz-input formControlName="wechatContent" [(ngModel)]="dataShare.wechatContent" *ngIf="isSaveShareButton" placeholder="请输入内容" nzSize="default"></textarea>
@@ -171,7 +171,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>
-                  分享图片
+                  分享图片：
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="21">
@@ -192,7 +192,7 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="wechatHost" [(ngModel)]="dataShare.wechatHost" *ngIf="isSaveShareButton" placeholder="请输入域名路径" nzSize="default">
@@ -200,7 +200,7 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="wechatUrl" [(ngModel)]="dataShare.wechatUrl" *ngIf="isSaveShareButton" placeholder="请输入跳转链接" nzSize="default">
@@ -212,7 +212,7 @@
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">复制链接</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="linkTitle" [(ngModel)]="dataShare.linkTitle" *ngIf="isSaveShareButton" placeholder="输入标题" nzSize="default">
@@ -220,7 +220,7 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="linkHost" [(ngModel)]="dataShare.linkHost" *ngIf="isSaveShareButton" placeholder="输入域名路径" nzSize="default">
@@ -228,7 +228,7 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接</div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
                   <input nz-input maxlength="32" formControlName="linkUrl" [(ngModel)]="dataShare.linkUrl" *ngIf="isSaveShareButton" placeholder="输入跳转链接" nzSize="default">
@@ -283,7 +283,7 @@
                 <td>
                   <button nz-button nzType="primary" (click)="showModifyModal(data, 'guide')" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="doDelete(data.id, 'guide')" style="margin-right: 10px;"><i
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'guide')" style="margin-right: 10px;"><i
                       class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
@@ -494,7 +494,7 @@
               <tr *ngFor="let data of helpTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.name}}</td>
-                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/skills/images/' + data.image" class="thumbnail"></td>
+                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/skills/images/' + data.image" class="thumbnail" style="width: 32px"></td>
                 <td>{{data.type === 'TRAVEL'? '出行' : data.type === 'LIFE' ? '生活' : data.type === 'AMUSEMENT' ? '娱乐' : data.type === 'TOOL' ? '工具' : 'null'}}</td>
                 <td>{{data.order}}</td>
                 <td nzTitle="【{{data.guides.join('】、【')}}】" nzPlacement="bottom" nz-tooltip><a>{{data.guides[0]}}</a></td>
@@ -508,7 +508,7 @@
                 <td>
                   <button nz-button nzType="primary" (click)="showModifyModal(data, 'help')" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="doDelete(data.id, 'help')" style="margin-right: 10px;"><i
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'help')" style="margin-right: 10px;"><i
                       class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
@@ -566,52 +566,26 @@
                   <input nz-input formControlName="order" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
                 </div>
               </div>
-              <ng-container *ngFor="let item of helpItem.jumpArr; let i=index;">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4" class="span_down right_alignment" *ngIf="i === 0">
-                    <font color="red">*</font>外部跳转编辑：
-                  </div>
-                  <div nz-col nzSpan="4" *ngIf="i > 0"></div>
-                  <div nz-col nzSpan="16">
-                    <input nz-input formControlName="guides" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpJump', i)" placeholder="请输入外部跳转编辑" nzSize="default">
-                  </div>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">
-                    <button nz-button nzType="primary" (click)="doSave('help_jump')" *ngIf="i === 0">添加</button>
-                    <button nz-button nzType="primary" (click)="doDelete(i, 'help_jump')" *ngIf="i > 0">删除</button>
-                  </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <font color="red">*</font>外部跳转编辑：
                 </div>
-              </ng-container>
+                <div nz-col nzSpan="16">
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guides" rows="10" nz-input></textarea>
+                </div>
+              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">技能介绍：</div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="describe" [(ngModel)]="helpDate.describe" rows="3" nz-input></textarea>
+                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
-              <ng-container *ngFor="let item of helpItem.detailArr; let i=index;">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4" class="span_down right_alignment" *ngIf="i === 0">详情页编辑：</div>
-                  <div nz-col nzSpan="4" *ngIf="i > 0"></div>
-                  <div nz-col nzSpan="16">
-                    <div nz-col nzSpan="4" class="span_down right_alignment">标题：</div>
-                    <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_title" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpDetailTitle', i)" placeholder="请输入标题" nzSize="default">
-                    </div>
-                    <div nz-col nzSpan="2" class="span_down right_alignment">
-                      <button nz-button nzType="primary" (click)="doSave('help_detail')" *ngIf="i === 0">添加</button>
-                      <button nz-button nzType="primary" (click)="doDelete(i, 'help_detail')" *ngIf="i > 0">删除</button>
-                    </div>
-                  </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">详情页编辑：</div>
+                <div nz-col nzSpan="16">
+                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="config" [style]="{height: '350px'}"></quill-editor>
                 </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="16">
-                    <div nz-col nzSpan="4" class="span_down right_alignment">描述：</div>
-                    <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_describe" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpDetailDesc', i)" placeholder="请输入描述" nzSize="default">
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
+              </div>
             </form>
             <ng-template #addHelpModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addHelp')">保存</button>
@@ -670,55 +644,26 @@
                   <input nz-input formControlName="order" type="text" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
                 </div>
               </div>
-              <ng-container *ngFor="let item of helpItem.jumpArr; let i=index;">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4" class="span_down right_alignment" *ngIf="i === 0">
-                    <font color="red">*</font>外部跳转编辑：
-                  </div>
-                  <div nz-col nzSpan="4" *ngIf="i > 0"></div>
-                  <div nz-col nzSpan="16">
-                    <input nz-input formControlName="guides" [ngModel]="''" (ngModelChange)="onInputChange($event, 'helpJump', i)" placeholder="请输入新的外部跳转编辑" nzSize="default">
-                    <br>{{item.text}}
-                  </div>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">
-                    <button nz-button nzType="primary" (click)="doSave('help_jump')" *ngIf="i === 0">添加</button>
-                    <button nz-button nzType="primary" (click)="doDelete(i, 'help_jump')" *ngIf="i > 0">删除</button>
-                  </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <font color="red">*</font>外部跳转编辑：
                 </div>
-              </ng-container>
+                <div nz-col nzSpan="16">
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guideArr" rows="10" nz-input></textarea>
+                </div>
+              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">技能介绍：</div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="describe" [(ngModel)]="helpDate.describe" rows="3" nz-input></textarea>
+                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
-              <ng-container *ngFor="let item of helpItem.detailArr; let i=index;">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4" class="span_down right_alignment" *ngIf="i === 0">详情页编辑：</div>
-                  <div nz-col nzSpan="4" *ngIf="i > 0"></div>
-                  <div nz-col nzSpan="16">
-                    <div nz-col nzSpan="4" class="span_down right_alignment">标题：</div>
-                    <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_title" [(ngModel)]="helpItem.detailArr[i].title" (ngModelChange)="onInputChange($event, 'helpDetailTitle', i)" placeholder="请输入标题" nzSize="default">
-                      <br>{{item.title}}
-                    </div>
-                    <div nz-col nzSpan="2" class="span_down right_alignment">
-                      <button nz-button nzType="primary" (click)="doSave('help_detail')" *ngIf="i === 0">添加</button>
-                      <button nz-button nzType="primary" (click)="doDelete(i, 'help_detail')" *ngIf="i > 0">删除</button>
-                    </div>
-                  </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">详情页编辑：</div>
+                <div nz-col nzSpan="16">
+                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="config" [style]="{height: '350px'}"></quill-editor>
                 </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="16">
-                    <div nz-col nzSpan="4" class="span_down right_alignment">描述：</div>
-                    <div nz-col nzSpan="16">
-                      <input nz-input formControlName="details_describe" [(ngModel)]="helpItem.detailArr[i].describe" (ngModelChange)="onInputChange($event, 'helpDetailDesc', i)" placeholder="请输入描述" nzSize="default">
-                      <br>{{item.describe}}
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
+              </div>
             </form>
             <ng-template #modifyHelpModalFooter>
               <button nz-button nzType="primary" (click)="doSave('modifyHelp')">保存</button>

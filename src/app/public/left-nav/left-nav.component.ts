@@ -38,7 +38,11 @@ export class LeftNavComponent implements OnInit {
     if (flag === 'currentAppHeader') {
       localStorage.setItem('currentAppHeader', value);
     }
-    this._router.navigate(['/appVersion']);
+    if (this._router.url === '/appVersion') {
+      history.go(0);
+    } else {
+      this._router.navigate(['/appVersion']);
+    }
   }
 
   toggleCollapsed(): void {

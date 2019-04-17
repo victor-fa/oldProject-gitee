@@ -4,8 +4,8 @@
 <nz-table #rowSelectionTable [nzData]="commonService.commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
   <thead>
     <tr>
-      <th nzWidth="50px">序号</th>
-      <th nzWidth="100px">时间</th>
+      <th nzWidth="50px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="85px">时间</th>
       <th nzWidth="100px">唤醒酒店人次</th>
       <th nzWidth="100px">唤醒酒店行为数</th>
       <th nzWidth="100px">酒店订单推荐总数</th>
@@ -29,8 +29,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-      <td nzWidth="50px">{{i+1}}</td>
-      <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
+      <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+      <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
       <td nzWidth="100px">{{data.awakHotelUsers}}</td>
       <td nzWidth="100px">{{data.awakHotelCount}}</td>
       <td nzWidth="100px">{{data.hotelOrderRecommend}}</td>

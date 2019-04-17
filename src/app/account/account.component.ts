@@ -193,6 +193,7 @@ export class AccountComponent implements OnInit {
           dataOperationlog = JSON.parse(res.payload).reverse();
         }
         this.dataOperationlog = dataOperationlog;
+        console.log(res);
       });
     }
   }

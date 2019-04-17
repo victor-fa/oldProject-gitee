@@ -231,10 +231,8 @@
                 订单类型：
               </div>
               <div nz-col nzSpan="3">
-                <nz-select [ngModel]="''" formControlName="orderType">
-                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-select [ngModel]="1" formControlName="orderType">
                   <nz-option required [nzLabel]="'机票'" [nzValue]="1"></nz-option>
-                  <nz-option required [nzLabel]="'火车'" [nzValue]="2"></nz-option>
                   <nz-option required [nzLabel]="'酒店'" [nzValue]="3"></nz-option>
                   <nz-option required [nzLabel]="'打车'" [nzValue]="4"></nz-option>
                 </nz-select>

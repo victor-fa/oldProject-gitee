@@ -55,11 +55,11 @@ export class UserService extends AppServiceBase {
   getUserInfoListByType(pageSize, flag, id, type, infoId): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
+      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
     } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
+      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
     } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
+      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -160,6 +160,9 @@ export class UserService extends AppServiceBase {
           const menuArr = [];
           const childrenArr = [];
           if (resultFull.responseText !== '') {
+            if (JSON.parse(resultFull.responseText).payload === '') {
+              return;
+            }
             localStorage.setItem('AppHeaderAllow', JSON.stringify(JSON.parse(JSON.parse(resultFull.responseText).payload).grantedPlatform));
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
               console.log(item);
