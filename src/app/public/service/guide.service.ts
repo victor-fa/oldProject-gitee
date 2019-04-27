@@ -59,6 +59,7 @@ export class GuideService extends AppServiceBase {
   addXxxForGuide(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates/${data.templateId}`;
     const body = `elements=${JSON.stringify(data.elements)}&name=${data.name}`;
+
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
     };

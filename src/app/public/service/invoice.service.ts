@@ -66,4 +66,32 @@ export class InvoiceService extends AppServiceBase {
       .post<IResponse<any>>(url, body, this.options);
   }
 
+  /** 获取所有列表 */
+  getRechargeListForUser(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/deposit-history?pageSize=9999`;
+    url += data.phone ? '&phone=' + data.phone : '';
+    url += data.beginTime && data.beginTime !== null ? '&beginTime=' + data.beginTime : '';
+    url += data.endTime && data.endTime !== null ? '&endTime=' + data.endTime : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取所有列表 */
+  getInvoiceListForUser(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/invoice-history?pageSize=9999`;
+    url += data.createTimeBegin && data.createTimeBegin !== null ? '&createTimeBegin=' + data.createTimeBegin : '';
+    url += data.createTimeEnd && data.createTimeEnd !== null ? '&createTimeEnd=' + data.createTimeEnd : '';
+    url += data.phone ? '&phone=' + data.phone : '';
+    url += data.orderType && data.orderType !== '' ? '&orderType=' + data.orderType : '';
+    url += data.state && data.state !== '' ? '&state=' + data.state : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
 }

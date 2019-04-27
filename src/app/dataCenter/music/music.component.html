@@ -6,22 +6,22 @@
     <tr>
       <th nzWidth="50px" nzLeft="0px">序号</th>
       <th nzWidth="100px" nzLeft="74px">时间</th>
-      <th nzWidth="100px">唤醒音乐人次</th>
-      <th nzWidth="100px">唤醒音乐行为数</th>
-      <th nzWidth="100px">音乐对话轮数（总）</th>
-      <th nzWidth="100px">日最高音乐对话轮数</th>
-      <th nzWidth="100px">平均音乐对话轮数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.music[0].checked">唤醒音频人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.music[1].checked">唤醒音频行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.music[2].checked">音频对话轮数（总）</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.music[3].checked">日最高音频对话轮数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.music[4].checked">平均音频对话轮数</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
       <td nzWidth="100px" nzLeft="74px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.awakMusicUsers}}</td>
-      <td nzWidth="100px">{{data.awakMusicCount}}</td>
-      <td nzWidth="100px">{{data.musicSessionCount}}</td>
-      <td nzWidth="100px">{{data.musicSessionMax}}</td>
-      <td nzWidth="100px">{{data.awakMusicCount === 0 ? 0 : data.musicSessionCount / data.awakMusicCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.music[0].checked">{{data.awakMusicUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.music[1].checked">{{data.awakMusicCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.music[2].checked">{{data.musicSessionCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.music[3].checked">{{data.musicSessionMax}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.music[4].checked">{{data.awakMusicCount === 0 ? 0 : data.musicSessionCount / data.awakMusicCount}}</td>
     </tr>
   </tbody>
 </nz-table>

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/com
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { userApiUrls } from '../enum/api.enum';
+import { userApiUrls, cmsApiUrls } from '../enum/api.enum';
 import { LoginItemInput } from '../model/user.model';
 import { IResponse } from '../model/response.model';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
@@ -32,44 +32,15 @@ export class UserService extends AppServiceBase {
    * @param flag
    * @param id
    */
-  getUserInfoList(pageSize, flag, id): Observable<IResponse<any>> {
-    let url;
-    if (flag === '') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}`;
-    } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}&lastId=${id}`;
-    } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}/list?pageSize=${pageSize}&firstId=${id}`;
-    }
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
-  /**
-   * 获取所有列表
-   * @param flag
-   * @param id
-   * @param type
-   * @param infoId
-   */
-  getUserInfoListByType(pageSize, flag, id, type, infoId): Observable<IResponse<any>> {
-    let url;
-    if (flag === '') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}`;
-    } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}&firstId=${id}`;
-    } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${userApiUrls.users}?pageSize=${pageSize}&type=${type}&infoId=${infoId}&lastId=${id}`;
-    }
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
-  /**
-   * 查看用户详情
-   */
-  getUserInfo(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.userContact}?infoId=${id}`;
+  getUserInfoList( data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/user-info?pageSize=9999`;
+    url += data.locked ? '&locked=' + data.locked : '';
+    url += data.loginBegin && data.loginBegin !== null ? '&loginBegin=' + data.loginBegin : '';
+    url += data.loginEnd && data.loginEnd !== null ? '&loginEnd=' + data.loginEnd : '';
+    url += data.registerBegin && data.registerBegin !== null ? '&registerBegin=' + data.registerBegin : '';
+    url += data.registerEnd && data.registerEnd !== null ? '&registerEnd=' + data.registerEnd : '';
+    url += data.phone ? '&phone=' + data.phone : '';
+    url += data.userId ? '&userId=' + data.userId : '';
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -276,6 +247,19 @@ export class UserService extends AppServiceBase {
    */
   getInvoiceDetail(orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
+    return this.httpClient
+      .get<IResponse<any>>(url);
+  }
+
+  /**
+   * 查看常用信息
+   */
+  getUserCommonInfo(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/general-info?userId=${data.userId}`;
+    url += data.queryType ? '&queryType=' + data.queryType : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url);
   }

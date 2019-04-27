@@ -351,7 +351,7 @@
                 <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : 'null'}}</td>
                 <td>{{data.money}}</td>
                 <td>{{data.adminName}}</td>
-                <td>{{data.operaTime}}</td>
+                <td>{{data.operaTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>{{data.open === true ? '开启可开票状态' : '关闭可开票状态'}}</td>
               </tr>
             </tbody>

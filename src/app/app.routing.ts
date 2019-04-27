@@ -10,9 +10,9 @@ const routes: Routes = [
   { path: 'content', loadChildren: './content/content.module#ContentModule'},
   { path: 'preview', loadChildren: './preview/preview.module#PreviewModule'},
   { path: 'operate', loadChildren: './operate/operate.module#OperateModule'},
-  { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'},
   { path: 'activity', loadChildren: './activity/activity.module#ActivityModule'},
   { path: 'account', loadChildren: './account/account.module#AccountModule'},
+  { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'},
   // { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 

@@ -22,6 +22,11 @@
     }
   }
 
+  .invoice-line {
+    height: 1px;
+    background-color: #dddddd;
+  }
+
   .ant-table-tbody>tr>td,
   .ant-table-thead>tr>th {
     padding: 10px !important;

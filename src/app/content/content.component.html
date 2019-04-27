@@ -242,6 +242,7 @@
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">开屏标题</th>
                 <th nzWidth="20px">持续时间设置</th>
+                <th nzWidth="20px">到期时间</th>
                 <th nzWidth="20px">跳过状态</th>
                 <th nzWidth="20px">链接跳转状态</th>
                 <th nzWidth="20px">链接地址</th>
@@ -256,6 +257,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.duration}}s</td>
+                <td>{{data.expireTime}}</td>
                 <td>{{data.skip === true ? '可跳过' : '不可跳过' }}</td>
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
@@ -297,6 +299,14 @@
                 <div nz-col nzSpan="12">
                   <input nz-input maxlength="2" formControlName="duration" [(ngModel)]="screenDate.duration"
                     placeholder="请输入持续时间（单位：s）" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -393,6 +403,14 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>链接跳转状态：
                 </div>
                 <div nz-col nzSpan="12">
@@ -477,6 +495,7 @@
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">弹窗标题</th>
                 <th nzWidth="20px">跳转位置</th>
+                <th nzWidth="20px">到期时间</th>
                 <th nzWidth="20px">链接地址</th>
                 <!-- <th nzWidth="20px">排序状态</th> -->
                 <th nzWidth="20px">APP标识</th>
@@ -491,6 +510,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
+                <td>{{data.expireTime}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <!-- <td>{{data.order}}</td> -->
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
@@ -521,8 +541,7 @@
                   <font color="red">*</font>弹窗标题：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="title" [(ngModel)]="openDate.title"
-                    placeholder="请输入弹窗标题" nzSize="default">
+                  <input nz-input formControlName="title" [(ngModel)]="openDate.title" placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -535,6 +554,14 @@
                     <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="jumpForOpen === 'APP'">
@@ -639,6 +666,14 @@
                   </nz-select>
                 </div>
               </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
+                </div>
+              </div>
               <div nz-row class="search_panel" *ngIf="openDate.jump === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>APP标识：</div>
                 <div nz-col nzSpan="12">
@@ -732,6 +767,7 @@
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">轮播图标题</th>
                 <th nzWidth="20px">跳转位置</th>
+                <th nzWidth="20px">到期时间</th>
                 <th nzWidth="20px">链接地址</th>
                 <th nzWidth="20px">APP标识</th>
                 <th nzWidth="20px">排序状态</th>
@@ -745,6 +781,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
+                <td>{{data.expireTime}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td>{{data.order}}</td>
@@ -788,6 +825,14 @@
                     <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="jumpForBanner === 'APP'">
@@ -871,6 +916,14 @@
                     <nz-option required [nzLabel]="'跳转到网页'" [nzValue]="'HTML'"></nz-option>
                     <nz-option required [nzLabel]="'跳转到APP'" [nzValue]="'APP'"></nz-option>
                   </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  到期时间：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="bannerDate.jump === 'APP'">

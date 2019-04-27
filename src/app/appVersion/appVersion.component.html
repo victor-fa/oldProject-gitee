@@ -131,7 +131,7 @@
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="5" class="span_down right_alignment">*更新详情：</div>
                 <div nz-col nzSpan="12">
-                  <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" maxlength="50" nz-input placeholder="请输入更新详情"></textarea>
+                  <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情"></textarea>
                 </div>
                 <div nz-col nzSpan="4"></div>
               </div>
@@ -187,7 +187,7 @@
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="21">
-                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel1">
+                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：90*90&nbsp;&nbsp;限制大小：32K</font>
                 </div>
               </div>
@@ -195,7 +195,7 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
-                  <input nz-input maxlength="32" formControlName="wechatHost" [(ngModel)]="dataShare.wechatHost" *ngIf="isSaveShareButton" placeholder="请输入域名路径" nzSize="default">
+                  <input nz-input formControlName="wechatHost" [(ngModel)]="dataShare.wechatHost" *ngIf="isSaveShareButton" placeholder="请输入域名路径" nzSize="default">
                   {{!isSaveShareButton ? dataShare.wechatHost : ''}}
                 </div>
               </div>
@@ -203,7 +203,7 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
-                  <input nz-input maxlength="32" formControlName="wechatUrl" [(ngModel)]="dataShare.wechatUrl" *ngIf="isSaveShareButton" placeholder="请输入跳转链接" nzSize="default">
+                  <input nz-input formControlName="wechatUrl" [(ngModel)]="dataShare.wechatUrl" *ngIf="isSaveShareButton" placeholder="请输入跳转链接" nzSize="default">
                   {{!isSaveShareButton ? dataShare.wechatUrl : ''}}
                 </div>
               </div>
@@ -223,7 +223,7 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
-                  <input nz-input maxlength="32" formControlName="linkHost" [(ngModel)]="dataShare.linkHost" *ngIf="isSaveShareButton" placeholder="输入域名路径" nzSize="default">
+                  <input nz-input formControlName="linkHost" [(ngModel)]="dataShare.linkHost" *ngIf="isSaveShareButton" placeholder="输入域名路径" nzSize="default">
                   {{!isSaveShareButton ? dataShare.linkHost : ''}}
                 </div>
               </div>
@@ -231,7 +231,7 @@
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="9" class="span_down">
-                  <input nz-input maxlength="32" formControlName="linkUrl" [(ngModel)]="dataShare.linkUrl" *ngIf="isSaveShareButton" placeholder="输入跳转链接" nzSize="default">
+                  <input nz-input formControlName="linkUrl" [(ngModel)]="dataShare.linkUrl" *ngIf="isSaveShareButton" placeholder="输入跳转链接" nzSize="default">
                   {{!isSaveShareButton ? dataShare.linkUrl : ''}}
                 </div>
               </div>
@@ -333,7 +333,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4"></div>
                 <div nz-col nzSpan="12" class="span_down">
-                  <textarea rows="3" nz-input [ngModel]="guideItem.messageArr[i].text" (ngModelChange)="onInputChange($event, 'messageText', i)" maxlength="50" nzSize="default"></textarea>
+                  <textarea rows="3" nz-input [ngModel]="guideItem.messageArr[i].text" (ngModelChange)="onInputChange($event, 'messageText', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="4" class="span_down right_alignment">
@@ -366,7 +366,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4"></div>
                 <div nz-col nzSpan="12" class="span_down">
-                  <textarea rows="3" nz-input [ngModel]="guideItem.buttonArr[i].text" (ngModelChange)="onInputChange($event, 'buttonText', i)" maxlength="50" nzSize="default"></textarea>
+                  <textarea rows="3" nz-input [ngModel]="guideItem.buttonArr[i].text" (ngModelChange)="onInputChange($event, 'buttonText', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="4" class="span_down right_alignment">
@@ -403,7 +403,7 @@
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：702px*394px&nbsp;&nbsp;限制大小：500K</font>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750px*300px&nbsp;&nbsp;限制大小：500K</font>
                   </nz-upload>
                 </div>
                 <div nz-col nzSpan="1"></div>
@@ -419,13 +419,10 @@
                 <div nz-col nzSpan="4" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
-                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
+                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750px*300px&nbsp;&nbsp;限制大小：500K</font>
                 </div>
                 <div nz-col nzSpan="5"></div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
-                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')">删除</button>
-                </div>
               </div>
 
               <div nz-row class="search_panel">
@@ -442,16 +439,16 @@
               </div>
               <div nz-row class="search_panel" *ngIf="guideDate.jumpType === 'APP'">
                 <div nz-col nzSpan="4" class="span_down right_alignment">APP标识：</div>
-                <div nz-col nzSpan="12">
+                <div nz-col nzSpan="20">
                   <nz-select [(ngModel)]="guideDate.appDestinationType" (ngModelChange)="onInputChange($event, 'imageAppDestinationType', i)">
-                    <nz-option required [nzLabel]="'个人中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 设置'" [nzValue]="'SETTINGS'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的订单'" [nzValue]="'ORDER_LIST'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 常用信息'" [nzValue]="'GENERAL_INFO'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值'" [nzValue]="'CHARGE'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 我的账户'" [nzValue]="'ACCOUNT'"></nz-option>
-                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议'" [nzValue]="'ADVICE'"></nz-option>
-                    <nz-option required [nzLabel]="'对话流 > 帮助'" [nzValue]="'HELP'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="'SETTINGS'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单--------------------'" [nzValue]="'ORDER_LIST'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息--------------------'" [nzValue]="'GENERAL_INFO'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值------------'" [nzValue]="'CHARGE'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户--------------------'" [nzValue]="'ACCOUNT'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议-------'" [nzValue]="'ADVICE'"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助----------------------------'" [nzValue]="'HELP'"></nz-option>
                   </nz-select>
                 </div>
               </div>
@@ -563,7 +560,7 @@
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
-                  <input nz-input formControlName="order" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
+                  <input nz-input formControlName="order" [(ngModel)]="helpDate.order" placeholder="请输入技能排序，数字越大，技能排序越靠前" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -571,7 +568,7 @@
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="guides" [(ngModel)]="helpDate.guides" rows="10" nz-input></textarea>
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guides" placeholder="技能话术至少填写3句&#13;&#10;每句限制22字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -641,7 +638,7 @@
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
-                  <input nz-input formControlName="order" type="text" [(ngModel)]="helpDate.order" placeholder="请输入技能排序" nzSize="default">
+                  <input nz-input formControlName="order" type="text" [(ngModel)]="helpDate.order" placeholder="请输入技能排序，数字越大，技能排序越靠前" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -649,7 +646,7 @@
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="guides" [(ngModel)]="helpDate.guideArr" rows="10" nz-input></textarea>
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guideArr" placeholder="技能话术至少填写3句&#13;&#10;每句限制22字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -688,6 +685,10 @@
                 <label nz-radio nzValue="10">币和豆</label>
                 <label nz-radio nzValue="11">隐私协议</label>
                 <label nz-radio nzValue="12">用户协议</label>
+                <label nz-radio nzValue="13">闪送重量说明</label>
+                <label nz-radio nzValue="14">闪送服务协议</label>
+                <label nz-radio nzValue="15">打车服务协议</label>
+                <label nz-radio nzValue="16">话费服务协议</label>
               </nz-radio-group>
             </div>
           </div>

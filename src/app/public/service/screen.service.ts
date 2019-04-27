@@ -56,7 +56,7 @@ export class ScreenService extends AppServiceBase {
   addScreen(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&skip=${data.skip}&duration=${data.duration}&url=${data.url}&expireTime=${data.expireTime}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
@@ -69,7 +69,7 @@ export class ScreenService extends AppServiceBase {
   updateScreen(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}/${data.id}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}`;
+    const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}&skip=${data.skip}&image=${data.image}&expireTime=${data.expireTime}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })

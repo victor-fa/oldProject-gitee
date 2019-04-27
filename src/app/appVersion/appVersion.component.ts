@@ -169,7 +169,7 @@ export class AppVersionComponent implements OnInit {
           });
           this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
             if (result.retcode === 0) {
-              this.dataGuide = JSON.parse(result.payload);
+              this.dataGuide = JSON.parse(result.payload).reverse();
               const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '访问' };
               this.commonService.updateOperationlog(operationInput).subscribe();
               this.dataGuide.forEach((cell, i) => {
@@ -337,19 +337,29 @@ export class AppVersionComponent implements OnInit {
         result = false;
       }
     } else if (flag === 'addHelp') {
+      const guides = this.addHelpForm.controls['guides'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
       if (this.addHelpForm.controls['name'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '技能名称未填写' });
         result = false;
       } else if (this.addHelpForm.controls['order'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '技能排序未填写' });
         result = false;
-      } else if (this.addHelpForm.controls['describe'].value === '') {
+      } else if (this.addHelpForm.controls['describe'].value === '' || this.addHelpForm.controls['describe'].value === null) {
         this.modalService.error({ nzTitle: '提示', nzContent: '技能介绍未填写' });
         result = false;
-      } else if (this.addHelpForm.controls['details'].value === '') {
+      } else if (this.addHelpForm.controls['details'].value === '' || this.addHelpForm.controls['details'].value === null) {
         this.modalService.error({ nzTitle: '提示', nzContent: '详情页编辑未填写' });
         result = false;
+      } else if (guides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '外部跳转编辑至少填1个' });
+        result = false;
       }
+      guides.forEach(item => {
+        if (item === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '部跳转编辑有话术未填写' });
+          result = false;
+        }
+      });
     }
     if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content') {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
@@ -420,46 +430,40 @@ export class AppVersionComponent implements OnInit {
         'name': this.addGuideForm.controls['name'].value,
         'type': 'BEGINNNER_GUIDE',  // 目前暂时固定一种
       };
+      let allArr = [];
       let count = 0;
       const tempallArr = [];
-      const allArr = [];
-      this.guideItem.messageArr.forEach((item, i) => {
-        if (item) { tempallArr.push(item); }
-      });
-      this.guideItem.buttonArr.forEach((item, i) => {
-        if (item) { tempallArr.push(item); }
-      });
-      this.guideItem.imageArr.forEach((item, i) => {
-        if (item) { tempallArr.push(item); }
-      });
+      const checkSortArr = [];
+      this.guideItem.messageArr.forEach((item, i) => { if (item) { item.text && item.text !== '' ? tempallArr.push(item) : count += 1; } });
+      if (count > 0) { this.modalService.error({ nzTitle: '提示', nzContent: '对话配置不能为空' }); return; }
+      this.guideItem.buttonArr.forEach((item, i) => { if (item) { item.text && item.text !== '' ? tempallArr.push(item) : count += 1; } });
+      if (count > 0) { this.modalService.error({ nzTitle: '提示', nzContent: '表单配置不能为空' }); return; }
+      this.guideItem.imageArr.forEach((item, i) => { if (item) { item.imageKey !== '' ? tempallArr.push(item) : count += 1; }});
+      if (count > 0) { this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' }); return; }
 
-      tempallArr.forEach((item, i) => { if (item.sort === i + 1) { count++; }});
-      // if (count !== tempallArr.length) { // 解决不按序号排列的情况
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '序号没有按顺序填写，或序号填写不完整' });
-      //   return;
-      // }
       tempallArr.forEach((item, i) => {
-        // tslint:disable-next-line:radix
-        if (parseInt(item.sort) === (i + 1)) { allArr.push(item); }  // 针对sort进行排序
-      });
-      allArr.forEach((item, i) => {
-        // tslint:disable-next-line:radix
-        if (parseInt(item.sort) === (i + 1)) { delete item.sort; }  // 删除sort字段
-      });
+        item.sort ? checkSortArr.push(item.sort) : (count += 1);
+      }); // sort组成数组
+      if (count > 0) { this.modalService.error({ nzTitle: '提示', nzContent: '排序不能为空' }); return; }
+      const tempArr = checkSortArr.slice().sort();  // 进行排序
+      // tslint:disable-next-line:radix
+      for (let i = 0; i < checkSortArr.length; i++) { if (parseInt(tempArr[i]) === parseInt(tempArr[i + 1])) { count += 1; }}
+
+      if (count > 0) { this.modalService.error({ nzTitle: '提示', nzContent: '序号不可重复' }); return; }
+      allArr = tempallArr.sort(this.sortBySort);  // 根据sort排序
+      allArr.forEach(item => { if (item.webUrl && item.webUrl !== '') { item.webUrl = item.webUrl.replace(/&/g, '%26'); } });
 
       if (this.isModifyGuideVisible !== true) { // 只有新增需要绑定模板到APP上
         // 拿到模板Id
         this.guideService.addGuide(guideInput).subscribe(res => {
           if (res.retcode === 0) {
             const guideId = JSON.parse(res.payload).id;
-
             // 元素添加到模板
             const finalInput = { 'templateId': guideId, 'elements': allArr, 'name': this.addGuideForm.controls['name'].value };
             this.guideService.addXxxForGuide(finalInput).subscribe(res1 => {
               // tslint:disable-next-line:max-line-length
               res1.retcode === 0 ? this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } }) : this.modalService.error({ nzTitle: '提示', nzContent: res1.message });
             });
-
             // 给指定的APP绑定模板
             const guideInfo = { 'id': this.currentAppId, 'templateId': guideId };
             this.guideService.addGuideForApp(guideInfo).subscribe(result => {  // 新增一个模板给到默认的APP，不然看不到模板新增后的数据
@@ -526,7 +530,7 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'modifyHelp') {
-      if (!this.verificationModify('addHelp')) { return; }
+      if (!this.verificationModify('modifyHelp')) { return; }
       const guides = this.modifyHelpForm.controls['guides'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
       const helpInput = {
         'id': this.templateId,
@@ -649,17 +653,30 @@ export class AppVersionComponent implements OnInit {
   // 封装验证修改表单
   verificationModify(flag): boolean {
     let result = true;
-    if (flag === 'help') {
-      if (this.modifyHelpForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
-        result = false;
-      } else if (this.modifyHelpForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+    if (flag === 'modifyHelp') {
+      const guides = this.modifyHelpForm.controls['guides'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      if (this.modifyHelpForm.controls['name'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能名称未填写' });
         result = false;
       } else if (this.modifyHelpForm.controls['order'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能排序未填写' });
+        result = false;
+      } else if (this.modifyHelpForm.controls['describe'].value === '' || this.modifyHelpForm.controls['describe'].value === null) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '技能介绍未填写' });
+        result = false;
+      } else if (this.modifyHelpForm.controls['details'].value === '' || this.modifyHelpForm.controls['details'].value === null) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '详情页编辑未填写' });
+        result = false;
+      } else if (guides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '外部跳转编辑至少填1个' });
         result = false;
       }
+      guides.forEach(item => {
+        if (item === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '部跳转编辑有话术未填写' });
+          result = false;
+        }
+      });
     }
     if (this.fileList.length !== 1) {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
@@ -826,7 +843,8 @@ export class AppVersionComponent implements OnInit {
             }
           } else if (this.currentPanel === 'guide') {  // 引导语
             this.onInputChange(this.imageUrl, 'imageImageKey', 0);  // 上传成功后，将穿回来的信息丢给第一个图片
-            this.showImageUrl = url + '/api' + this.imageUrl;
+            // tslint:disable-next-line:max-line-length
+            this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/guide/resources/images/${this.imageUrl}`;
           } else if (this.currentPanel === 'help') {  // 引导语
             // tslint:disable-next-line:max-line-length
             this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
@@ -931,6 +949,11 @@ export class AppVersionComponent implements OnInit {
       .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
     }
     return result;
+  }
+
+  // 根据sort排序
+  sortBySort(a, b) {
+    return a.sort - b.sort;
   }
 
 }

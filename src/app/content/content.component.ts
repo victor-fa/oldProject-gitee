@@ -50,15 +50,15 @@ export class ContentComponent implements OnInit {
   displayModeForOpen = 'ONCE';
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
-  emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
+  emptyAdd = ['', '', '', '', '', '', '', '', ''];  // 清空新增表单
   fileList: UploadFile[] = [];
   imageUrl = '';
   showImageUrl = '';
   currentPanel = 'content';  // 当前面板 默认内容管理
   contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };
-  screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '' };
-  openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '' };
-  bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '' };
+  screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };
+  openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
+  bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -140,19 +140,19 @@ export class ContentComponent implements OnInit {
     this.addContentForm = this.fb.group({
       title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
     });
-    this.addScreenForm = this.fb.group({ title: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], });
+    this.addScreenForm = this.fb.group({ title: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
     this.addOpenForm = this.fb.group({
-      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: ['']
+      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: [''], expireTime: ['']
     });
-    this.addBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], });
+    this.addBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], expireTime: [''] });
     this.modifyContentForm = this.fb.group({
       title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
     });
-    this.modifyScreenForm = this.fb.group({ title: [''], jump: [''], site: [''], skip: [''], duration: [''], url: [''], });
+    this.modifyScreenForm = this.fb.group({ title: [''], jump: [''], site: [''], skip: [''], duration: [''], url: [''], expireTime: [''] });
     this.modifyOpenForm = this.fb.group({
-      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: ['']
+      title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: [''], expireTime: ['']
     });
-    this.modifyBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], });
+    this.modifyBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], expireTime: [''] });
   }
 
   // 新增内容 - 弹窗
@@ -165,17 +165,17 @@ export class ContentComponent implements OnInit {
     } else if (flag === 'screen') {
       this.isAddScreenVisible = true;
       this.screenDate = {  // 清空
-        'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': ''
+        'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': ''
       };
     } else if (flag === 'open') {
       this.isAddOpenVisible = true;
       this.openDate = {  // 清空
-        'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': ''
+        'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': ''
       };
     } else if (flag === 'banner') {
       this.isAddBannerVisible = true;
       this.bannerDate = { // 清空
-        'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': ''
+        'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': ''
       };
     }
     this.fileList.splice(0, this.fileList.length);
@@ -266,9 +266,6 @@ export class ContentComponent implements OnInit {
     return str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
           .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
           .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
-          // .replace(/&copy;/g, '©')
-          // .replace(/&reg;/g, '®').replace(/™/g, '™').replace(/&times;/g, '×')
-          // .replace(/&divide;/g, '÷')
   }
 
   // 新增操作
@@ -310,7 +307,8 @@ export class ContentComponent implements OnInit {
         'image': this.imageUrl,
         'skip': this.addScreenForm.controls['skip'].value,
         'duration': this.addScreenForm.controls['duration'].value,
-        'url': this.addScreenForm.controls['url'].value
+        'url': this.addScreenForm.controls['url'].value,
+        'expireTime': this.datePipe.transform(this.addScreenForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.screenService.addScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -337,7 +335,8 @@ export class ContentComponent implements OnInit {
         'order': this.addOpenForm.controls['order'].value,
         'url': this.addOpenForm.controls['url'].value,
         'displayMode': this.displayModeForOpen,
-        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay
+        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay,
+        'expireTime': this.datePipe.transform(this.addOpenForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.openService.addOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -361,7 +360,8 @@ export class ContentComponent implements OnInit {
         'jump': this.addBannerForm.controls['jump'].value,
         'image': this.imageUrl,
         'order': this.addBannerForm.controls['order'].value,
-        'url': this.addBannerForm.controls['url'].value
+        'url': this.addBannerForm.controls['url'].value,
+        'expireTime': this.datePipe.transform(this.addBannerForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.bannerService.addBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -591,7 +591,8 @@ export class ContentComponent implements OnInit {
         'duration': this.modifyScreenForm.controls['duration'].value,
         'url': jump === 'HTML' ? this.modifyScreenForm.controls['url'].value : '',
         'skip': this.modifyScreenForm.controls['skip'].value,
-        'image': this.imageUrl
+        'image': this.imageUrl,
+        'expireTime': this.datePipe.transform(this.modifyScreenForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.screenService.updateScreen(screenInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -619,7 +620,8 @@ export class ContentComponent implements OnInit {
         'order': this.modifyOpenForm.controls['order'].value,
         'image': this.imageUrl,
         'displayMode': this.displayModeForOpen,
-        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay
+        'maxDisplay': maxDisplay === undefined ? 0 : maxDisplay,
+        'expireTime': this.datePipe.transform(this.modifyOpenForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.openService.updateOpen(openInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -644,7 +646,8 @@ export class ContentComponent implements OnInit {
         'site': jump === 'APP' ? this.modifyBannerForm.controls['site'].value : '',  // 安卓 IOS 标识
         'url': jump === 'HTML' ? this.modifyBannerForm.controls['url'].value : '',
         'order': this.modifyBannerForm.controls['order'].value,
-        'image': this.imageUrl
+        'image': this.imageUrl,
+        'expireTime': this.datePipe.transform(this.modifyBannerForm.controls['expireTime'].value, 'yyyy-MM-dd HH:mm:ss')
       };
       this.bannerService.updateBanner(bannerInput).subscribe(res => {
         if (res.retcode === 0) {

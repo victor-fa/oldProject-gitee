@@ -56,7 +56,8 @@ export class OpenService extends AppServiceBase {
   addOpen(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.openList}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&displayMode=${data.displayMode}&maxDisplay=${data.maxDisplay}`;
+    let body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&displayMode=${data.displayMode}&maxDisplay=${data.maxDisplay}`;
+    body = body + (data.expireTime !== null ? ('&expireTime=' + data.expireTime) : '');
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
@@ -69,7 +70,8 @@ export class OpenService extends AppServiceBase {
   updateOpen(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.openList}/${data.id}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&displayMode=${data.displayMode}&maxDisplay=${data.maxDisplay}`;
+    let body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&displayMode=${data.displayMode}&maxDisplay=${data.maxDisplay}`;
+    body = body + (data.expireTime !== null ? ('&expireTime=' + data.expireTime) : '');
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })

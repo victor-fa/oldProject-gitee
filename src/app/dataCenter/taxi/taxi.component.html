@@ -6,60 +6,62 @@
     <tr>
       <th nzWidth="50px" nzLeft="0px">序号</th>
       <th nzWidth="100px" nzLeft="50px">时间</th>
-      <th nzWidth="100px">唤醒打车人次</th>
-      <th nzWidth="100px">唤醒打车行为数</th>
-      <th nzWidth="100px">打车订单推荐总数</th>
-      <th nzWidth="100px">首次打车订单推荐数</th>
-      <th nzWidth="100px">打车对话轮数（总）</th>
-      <th nzWidth="100px">日最高打车对话轮数</th>
-      <th nzWidth="100px">平均打车对话轮数</th>
-      <th nzWidth="100px">打车订单提交数</th>
-      <th nzWidth="100px">打车服务完成数</th>
-      <th nzWidth="100px">打车未遂取消行为数</th>
-      <th nzWidth="100px">打车超时取消行为数</th>
-      <th nzWidth="100px">打车服务中主动取消行为数</th>
-      <th nzWidth="100px">打车服务中被动取消行为数</th>
-      <th nzWidth="100px">打车订单请求率</th>
-      <th nzWidth="100px">打车订单提交率</th>
-      <th nzWidth="100px">打车订单服务完成率</th>
-      <th nzWidth="100px">打车未遂取消率</th>
-      <th nzWidth="100px">打车超时取消率</th>
-      <th nzWidth="100px">打车服务中主动取消率</th>
-      <th nzWidth="100px">打车服务中被动取消率</th>
-      <th nzWidth="100px">打车换平台</th>
-      <th nzWidth="100px">打车换车型</th>
-      <th nzWidth="100px">打车换价格</th>
-      <th nzWidth="100px">打车换接车速度</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[0].checked">唤醒打车人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[1].checked">唤醒打车行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[2].checked">打车订单推荐总数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[3].checked">首次打车订单推荐数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[4].checked">打车对话轮数（总）</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[5].checked">日最高打车对话轮数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[6].checked">平均打车对话轮数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[7].checked">打车订单请求数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[8].checked">打车订单提交数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[9].checked">打车服务完成数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[10].checked">打车未遂取消行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[11].checked">打车超时取消行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[12].checked">打车服务中主动取消行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[13].checked">打车服务中被动取消行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[14].checked">打车订单请求率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[15].checked">打车订单提交率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[16].checked">打车订单服务完成率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[17].checked">打车未遂取消率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[18].checked">打车超时取消率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[19].checked">打车服务中主动取消率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[20].checked">打车服务中被动取消率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[21].checked">打车换车型</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[22].checked">打车换价格</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[23].checked">打车换平台</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[24].checked">打车换接车速度</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
       <td nzWidth="100px" nzLeft="50px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.awakTaxisUsers}}</td>
-      <td nzWidth="100px">{{data.awakTaxisCount}}</td>
-      <td nzWidth="100px">{{data.taxiOrderRecommend}}</td>
-      <td nzWidth="100px">{{data.taxiOrderRecommendFirst}}</td>
-      <td nzWidth="100px">{{data.taxiSessionCount}}</td>
-      <td nzWidth="100px">{{data.taxiSessionMax}}</td>
-      <td nzWidth="100px">{{data.awakTaxisCount === 0 ? 0 : data.taxiSessionCount / data.awakTaxisCount}}</td>
-      <td nzWidth="100px">{{data.taxiOrderCommit}}</td>
-      <td nzWidth="100px">{{data.taxiOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.taxiCancelCar}}</td>
-      <td nzWidth="100px">{{data.taxiTimeoutCar}}</td>
-      <td nzWidth="100px">{{data.taxiCancelCarUser}}</td>
-      <td nzWidth="100px">{{data.taxiCancelCarDriver}}</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderQuery / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCommit / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCheckout / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiTimeoutCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarUser / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarDriver / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{data.taxiChangeCarPlatform}}</td>
-      <td nzWidth="100px">{{data.taxiChangeCarType}}</td>
-      <td nzWidth="100px">{{data.taxiChangeCarPrice}}</td>
-      <td nzWidth="100px">{{data.taxiFastCar}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[0].checked">{{data.awakTaxisUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[1].checked">{{data.awakTaxisCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[2].checked">{{data.taxiOrderRecommend}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[3].checked">{{data.taxiOrderRecommendFirst}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[4].checked">{{data.taxiSessionCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[5].checked">{{data.taxiSessionMax}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[6].checked">{{data.awakTaxisCount === 0 ? 0 : data.taxiSessionCount / data.awakTaxisCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[7].checked">{{data.taxiOrderQuery}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[8].checked">{{data.taxiOrderCommit}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[9].checked">{{data.taxiOrderCheckout}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[10].checked">{{data.taxiCancelCar}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[11].checked">{{data.taxiTimeoutCar}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[12].checked">{{data.taxiCancelCarUser}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[13].checked">{{data.taxiCancelCarDriver}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[14].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderQuery / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[15].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCommit / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[16].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiOrderCheckout / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[17].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[18].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiTimeoutCar / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[19].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarUser / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[20].checked">{{(data.awakTaxisCount === 0 ? 0 : (data.taxiCancelCarDriver / data.awakTaxisCount)) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[21].checked">{{data.taxiChangeCarType}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[22].checked">{{data.taxiChangeCarPrice}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[23].checked">{{data.taxiChangeCarPlatform}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.taxi[24].checked">{{data.taxiFastCar}}</td>
     </tr>
   </tbody>
 </nz-table>

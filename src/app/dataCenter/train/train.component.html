@@ -6,50 +6,50 @@
     <tr>
       <th nzWidth="50px" nzLeft="0px">序号</th>
       <th nzWidth="100px" nzLeft="85px">时间</th>
-      <th nzWidth="100px">唤醒火车人次</th>
-      <th nzWidth="100px">唤醒火车行为数</th>
-      <th nzWidth="100px">火车订单推荐总数</th>
-      <th nzWidth="100px">首次火车订单推荐数</th>
-      <th nzWidth="100px">火车对话轮数（总）</th>
-      <th nzWidth="100px">日最高火车对话轮数</th>
-      <th nzWidth="100px">火车订单请求数</th>
-      <th nzWidth="100px">火车订单提交数</th>
-      <th nzWidth="100px">火车订单成交数</th>
-      <th nzWidth="100px">火车订单出票数</th>
-      <th nzWidth="100px">火车退款数</th>
-      <th nzWidth="100px">火车订单请求率</th>
-      <th nzWidth="100px">火车订单提交率</th>
-      <th nzWidth="100px">火车成交率</th>
-      <th nzWidth="100px">火车退款率</th>
-      <th nzWidth="100px">火车换座席</th>
-      <th nzWidth="100px">火车换时间</th>
-      <th nzWidth="100px">火车换价格</th>
-      <th nzWidth="100px">火车换车类型</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[0].checked">唤醒火车人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[1].checked">唤醒火车行为数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[2].checked">火车订单推荐总数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[3].checked">首次火车订单推荐数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[4].checked">火车对话轮数（总）</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[5].checked">日最高火车对话轮数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[6].checked">火车订单请求数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[7].checked">火车订单提交数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[8].checked">火车订单成交数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[9].checked">火车订单出票数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[10].checked">火车退款数</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[11].checked">火车订单请求率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[12].checked">火车订单提交率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[13].checked">火车成交率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[14].checked">火车退款率</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[15].checked">火车换座席</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[16].checked">火车换时间</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[17].checked">火车换价格</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.train[18].checked">火车换车类型</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
       <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.awakTrainUsers}}</td>
-      <td nzWidth="100px">{{data.awakTrainCount}}</td>
-      <td nzWidth="100px">{{data.trainOrderRecommend}}</td>
-      <td nzWidth="100px">{{data.trainOrderRecommendFirst}}</td>
-      <td nzWidth="100px">{{data.trainSessionCount}}</td>
-      <td nzWidth="100px">{{data.trainSessionMax}}</td>
-      <td nzWidth="100px">{{data.trainOrderQuery}}</td>
-      <td nzWidth="100px">{{data.trainOrderCommit}}</td>
-      <td nzWidth="100px">{{data.trainOrderCheckout}}</td>
-      <td nzWidth="100px">{{data.trainOrderTicket}}</td>
-      <td nzWidth="100px">{{data.trainOrderRefund}}</td>
-      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderQuery / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCommit / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCheckout / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{(data.trainOrderTicket === 0 ? 0 : data.trainOrderRefund / data.trainOrderTicket) * 100 | number:"0.1-2"}}%</td>
-      <td nzWidth="100px">{{data.trainChangeSeat}}</td>
-      <td nzWidth="100px">{{data.trainChangeTime}}</td>
-      <td nzWidth="100px">{{data.trainChangePrice}}</td>
-      <td nzWidth="100px">{{data.trainChangeModel}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[0].checked">{{data.awakTrainUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[1].checked">{{data.awakTrainCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[2].checked">{{data.trainOrderRecommend}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[3].checked">{{data.trainOrderRecommendFirst}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[4].checked">{{data.trainSessionCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[5].checked">{{data.trainSessionMax}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[6].checked">{{data.trainOrderQuery}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[7].checked">{{data.trainOrderCommit}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[8].checked">{{data.trainOrderCheckout}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[9].checked">{{data.trainOrderTicket}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[10].checked">{{data.trainOrderRefund}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[11].checked">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderQuery / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[12].checked">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCommit / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[13].checked">{{(data.awakTrainCount === 0 ? 0 : data.trainOrderCheckout / data.awakTrainCount) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[14].checked">{{(data.trainOrderTicket === 0 ? 0 : data.trainOrderRefund / data.trainOrderTicket) * 100 | number:"0.1-2"}}%</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[15].checked">{{data.trainChangeSeat}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[16].checked">{{data.trainChangeTime}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[17].checked">{{data.trainChangePrice}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.train[18].checked">{{data.trainChangeModel}}</td>
     </tr>
   </tbody>
 </nz-table>

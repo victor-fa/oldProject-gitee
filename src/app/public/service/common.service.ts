@@ -63,6 +63,7 @@ export class CommonService extends AppServiceBase {
   fullMenuResource = localStorage.getItem('FullMenuResource') !== '' ? JSON.parse(localStorage.getItem('FullMenuResource')) : '';
   // tslint:disable-next-line:max-line-length
   fullChildrenResource = localStorage.getItem('FullChildrenResource') !== '' ? JSON.parse(localStorage.getItem('FullChildrenResource')) : '';
+  checkDataOptions = {};
 
   constructor(
     private _router: Router,
@@ -70,6 +71,32 @@ export class CommonService extends AppServiceBase {
     private injector: Injector,
   ) {
     super(injector);
+    this.checkDataOptions = {
+      // tslint:disable-next-line:max-line-length
+      'dataApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'keepApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true } ],
+      // tslint:disable-next-line:max-line-length
+      'overview': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'product': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'error': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'ticket': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'train': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'hotel': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'weather': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'navigate': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'taxi': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'music': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+    };
   }
 
   append(str: any) {
@@ -83,7 +110,7 @@ export class CommonService extends AppServiceBase {
   }
 
   changeDataCenter(flag, route): void {
-    const dataCenterTitle = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT', '打车BOT', '音乐BOT'];
+    const dataCenterTitle = ['APP', '留存', 'BOT总览', '产品', '异常表述', '机票BOT', '火车BOT', '酒店BOT', '天气BOT', '导航BOT', '打车BOT', '音频BOT'];
     this.needDataCenter = flag === this.currentDataCenter ? false : true;
     localStorage.setItem('isDataCenterSearch', 'false');
 
@@ -101,6 +128,7 @@ export class CommonService extends AppServiceBase {
     // }
     setTimeout(() => {
       this._router.navigate([route]);
+      // window.open(route, '_blank');
     }, 400);
   }
 
@@ -118,7 +146,7 @@ export class CommonService extends AppServiceBase {
     return tYear + '' + tMonth + '' + tDate;
   }
 
-  // 获取指定时间的日期 格式：yyyyMMdd
+  // 获取指定时间的日期 格式：yyyy-MM-dd
   getDayWithAcross(day): string {
     const today = new Date();
     const targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;

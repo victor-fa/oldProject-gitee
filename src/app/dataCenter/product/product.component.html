@@ -6,30 +6,32 @@
     <tr>
       <th nzWidth="50px" nzLeft="0px">序号</th>
       <th nzWidth="100px" nzLeft="85px">时间</th>
-      <th nzWidth="100px">位置权限</th>
-      <th nzWidth="100px">麦克风权限</th>
-      <th nzWidth="100px">通讯录权限</th>
-      <th nzWidth="100px">通话权限</th>
-      <th nzWidth="100px">相机权限</th>
-      <th nzWidth="100px">相册权限</th>
-      <th nzWidth="100px">点赞人次</th>
-      <th nzWidth="100px">点赞数量</th>
-      <th nzWidth="100px">点踩人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[0].checked">位置权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[1].checked">麦克风权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[2].checked">通讯录权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[3].checked">通话权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[4].checked">相机权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[5].checked">相册权限</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[6].checked">点赞人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[7].checked">点赞数量</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[8].checked">点踩人次</th>
+      <th nzWidth="100px" *ngIf="commonService.checkDataOptions.product[9].checked">点踩数量</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
       <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
       <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
-      <td nzWidth="100px">{{data.locationPermission}}</td>
-      <td nzWidth="100px">{{data.microphonePermission}}</td>
-      <td nzWidth="100px">{{data.contactsPermission}}</td>
-      <td nzWidth="100px">{{data.phonePermission}}</td>
-      <td nzWidth="100px">{{data.cameraPermission}}</td>
-      <td nzWidth="100px">{{data.galleryPermission}}</td>
-      <td nzWidth="100px">{{data.upvoteUsers}}</td>
-      <td nzWidth="100px">{{data.upvoteCount}}</td>
-      <td nzWidth="100px">{{data.downvoteUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[0].checked">{{data.locationPermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[1].checked">{{data.microphonePermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[2].checked">{{data.contactsPermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[3].checked">{{data.phonePermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[4].checked">{{data.cameraPermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[5].checked">{{data.galleryPermission}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[6].checked">{{data.upvoteUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[7].checked">{{data.upvoteCount}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[8].checked">{{data.downvoteUsers}}</td>
+      <td nzWidth="100px" *ngIf="commonService.checkDataOptions.product[9].checked">{{data.downvoteCount}}</td>
     </tr>
   </tbody>
 </nz-table>

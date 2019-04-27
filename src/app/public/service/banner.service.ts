@@ -56,7 +56,7 @@ export class BannerService extends AppServiceBase {
   addBanner(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
@@ -69,7 +69,7 @@ export class BannerService extends AppServiceBase {
   updateBanner(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}/${data.id}`;
     // tslint:disable-next-line:max-line-length
-    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}`;
+    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})

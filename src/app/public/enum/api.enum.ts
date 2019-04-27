@@ -58,6 +58,8 @@ export enum cmsApiUrls {
   adjustList = '/cms/adjusters',
   /** 开票管理 */
   invoiceList = '/order/invoice/manager',
+  /** 用户管理相关 */
+  mgmtList = '/cms/user-mgmt',
 }
 
 /** APP版本 */
