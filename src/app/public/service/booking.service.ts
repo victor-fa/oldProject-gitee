@@ -20,28 +20,29 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getBookingList(pageSize, flag, id, state?, orderType?, createTime?, orderId?): Observable<IResponse<any>> { // sortType?, sortKey?
+  getBookingList(pageSize, flag, id, queryType, state?, orderType?, createTime?, orderId?, phone?): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
       url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
-          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId);
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTime, orderId, phone);
     } else if (flag === 'last') {
       url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
-          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&lastId=' + id;
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTime, orderId, phone) + '&lastId=' + id;
     } else if (flag === 'first') {
       url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
-          + this.getBookingListUrl(pageSize, state, orderType, createTime, orderId) + '&preId=' + id;
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTime, orderId, phone) + '&preId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
-  getBookingListUrl(pageSize, state, orderType, createTime, orderId): string {
-    const url = '?pageSize=' + pageSize + (state ? '&state=' + state : '')
-    + (orderType ? '&orderType=' + orderType : '')
-    + (createTime ? '&createTime=' + createTime : '')
-    + (orderId ? '&orderId=' + orderId : '');
-
+  getBookingListUrl(queryType, pageSize, state, orderType, createTime, orderId, phone): string {
+    const url = '?pageSize=' + pageSize
+      + (state ? '&state=' + state : '')
+      + (orderType ? '&orderType=' + orderType : (queryType && queryType !== '' ? '&queryType=' + queryType : ''))
+      + (createTime ? '&createTime=' + createTime : '')
+      + (orderId ? '&orderId=' + orderId : '')
+      + (phone ? '&phone=' + phone : '');
     return url;
   }
 

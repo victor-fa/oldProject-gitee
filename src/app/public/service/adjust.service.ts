@@ -22,7 +22,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取所有列表 */
   getAdjustList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}?adjustType=${data.adjustType}`;
-    if (data.begin !== '') {
+    if (data.begin !== '' && data.begin !== null) {
       url = url + '&begin=' + data.begin + '&end=' + data.end;
     }
     this.setOption = {

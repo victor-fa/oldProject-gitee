@@ -3,7 +3,7 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
-        <nz-tab nzTitle="用户管理" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+        <nz-tab nzTitle="用户信息" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '用户信息')">
           <form [formGroup]="searchUserForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -12,15 +12,15 @@
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="userId" maxlength="10" placeholder="输入用户名" nzSize="default">
               </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">注册时间：</div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
+              </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 手机账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="phone" maxlength="11" placeholder="输入手机号" nzSize="default">
-              </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">注册时间：</div>
-              <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="2">
@@ -29,17 +29,17 @@
             </div>
 
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="2" class="span_down right_alignment">登录时间：</div>
-              <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
-              </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">用户状态：</div>
-              <div nz-col nzSpan="2">
+              <div nz-col nzSpan="3">
                 <nz-select [(ngModel)]="userLocked" formControlName="locked">
                   <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
                   <nz-option required [nzLabel]="'正常'" nzValue="false"></nz-option>
                   <nz-option required [nzLabel]="'冻结'" nzValue="true"></nz-option>
                 </nz-select>
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">登录时间：</div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
               </div>
             </div>
           </form>
@@ -82,7 +82,7 @@
                 <td>{{data.locked === true ? '冻结' : data.locked === false ? '正常' : 'null' }}</td>
                 <td><a (click)="showModal('goRecharge', data)">查看</a></td>
                 <td><a (click)="showModal('goInvoice', data)">查看</a></td>
-                <td><a>查看</a></td>
+                <td><a (click)="showModal('goBooking', data)">查看</a></td>
                 <td><a (click)="showModal('userCommon', data)">查看</a></td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('UserInfo', data)" style="margin-right: 10px;">查看</button>
@@ -274,32 +274,33 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #userInfoCommonVisibleModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('UserInfoCommon')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('UserCommon')">取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="订单管理" (nzClick)="changePanel('booking')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+        <nz-tab nzTitle="实体服务订单" (nzClick)="changePanel('bookingHypostatic')" *ngIf="commonService.haveMenuPermission('children', '实体订单管理')">
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="status" placeholder="输入用户账号" nzSize="default">
+                <input nz-input [(ngModel)]="bookingPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 订票类型：
               </div>
               <div nz-col nzSpan="2">
-                <nz-select [ngModel]="''" formControlName="type">
+                <nz-select [(ngModel)]="bookingType" formControlName="type">
                   <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
                   <nz-option required [nzLabel]="'机票'" [nzValue]="'1'"></nz-option>
                   <nz-option required [nzLabel]="'火车'" [nzValue]="'2'"></nz-option>
                   <nz-option required [nzLabel]="'酒店'" [nzValue]="'3'"></nz-option>
                   <nz-option required [nzLabel]="'打车'" [nzValue]="'4'"></nz-option>
+                  <nz-option required [nzLabel]="'闪送'" [nzValue]="'8'"></nz-option>
                 </nz-select>
               </div>
 
@@ -309,19 +310,23 @@
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="status">
                   <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'待支付'" [nzValue]="'0'"></nz-option>
-                  <nz-option *ngIf="1 > 2" required [nzLabel]="'出票中'" [nzValue]="'1'"></nz-option>
-                  <nz-option required [nzLabel]="'待出行'" [nzValue]="'2'"></nz-option>
-                  <nz-option required [nzLabel]="'已出行'" [nzValue]="'3'"></nz-option>
-                  <nz-option required [nzLabel]="'出票失败'" [nzValue]="'4'"></nz-option>
-                  <nz-option required [nzLabel]="'退款中'" [nzValue]="'5'"></nz-option>
-                  <nz-option required [nzLabel]="'已退款'" [nzValue]="'6'"></nz-option>
-                  <nz-option required [nzLabel]="'已取消'" [nzValue]="'7'"></nz-option>
-                  <nz-option required [nzLabel]="'交易关闭'" [nzValue]="'8'"></nz-option>
-                  <nz-option required [nzLabel]="'改签中'" [nzValue]="'9'"></nz-option>
-                  <nz-option required [nzLabel]="'占座中'" [nzValue]="'10'"></nz-option>
-                  <nz-option required [nzLabel]="'取消中'" [nzValue]="'11'"></nz-option>
-                  <nz-option required [nzLabel]="'退票中'" [nzValue]="'12'"></nz-option>
+                  <nz-option required [nzValue]="'0'" [nzLabel]="'待支付'"></nz-option>
+                  <nz-option required [nzValue]="'1'" [nzLabel]="bookingType === '3' ? '等待酒店确认' : bookingType === '4' ? '进行中' : bookingType === '8' ? '已接单' : '出票中'"></nz-option>
+                  <nz-option required [nzValue]="'2'" [nzLabel]="bookingType === '4' ? '已接单' : bookingType === '8' ? '配送中' : '待出行'"></nz-option>
+                  <nz-option required [nzValue]="'3'" [nzLabel]="bookingType === '4' ||  bookingType === '8' ? '已完成' : '已出行'"></nz-option>
+                  <nz-option required [nzValue]="'4'" [nzLabel]="bookingType === '1' ||  bookingType === '2' ? '出票失败' : ''"></nz-option>
+                  <nz-option required [nzValue]="'5'" [nzLabel]="'退款中'" *ngIf="bookingType === '1' || bookingType === '2' || bookingType === '3' || bookingType === '8'"></nz-option>
+                  <nz-option required [nzValue]="'6'" [nzLabel]="bookingType === '8' ? '交易失败' : '已退款'" *ngIf="bookingType === '1' || bookingType === '2' || bookingType === '3' || bookingType === '8'"></nz-option>
+                  <nz-option required [nzValue]="'7'" [nzLabel]="'已取消'"></nz-option>
+                  <nz-option required [nzValue]="'8'" [nzLabel]="bookingType === '3' ? '预定失败' : bookingType === '8' ? '交易关闭' : '交易失败'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'9'" [nzLabel]="'改签中'"></nz-option> -->
+                  <nz-option required [nzValue]="'10'" [nzLabel]="bookingType === '4' ? '呼叫中' : bookingType === '8' ? '等待接单' : '占座中'" *ngIf="bookingType === '2' || bookingType === '4' || bookingType === '8'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'11'" [nzLabel]="'取消中'"></nz-option> -->
+                  <nz-option required [nzValue]="'12'" [nzLabel]="bookingType === '3' ? '退订中' : '退票中'" *ngIf="bookingType === '1' || bookingType === '2' || bookingType === '3'"></nz-option>
+                  <nz-option required [nzValue]="'13'" [nzLabel]="bookingType === '3' ? '预定失败 退款中' : bookingType === '8' ? '交易失败 退款中' : '出票失败 退款中'" *ngIf="bookingType === '1' || bookingType === '2' || bookingType === '3' || bookingType === '8'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'14'" [nzLabel]="'退款失败'"></nz-option> -->
+                  <nz-option required [nzValue]="'15'" [nzLabel]="bookingType === '4' ? '司机抵达' : '已到达寄件地址'" *ngIf="bookingType === '4' || bookingType === '8'"></nz-option>
+                  <nz-option required [nzValue]="'16'" [nzLabel]="'已取消'" *ngIf="bookingType === '8'"></nz-option>
                 </nz-select>
               </div>
 
@@ -329,7 +334,7 @@
                 订单生成日期：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
+                <nz-date-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-date-picker>
               </div>
             </div>
 
@@ -359,24 +364,25 @@
                 <th>订单价格</th>
                 <th>支付方式</th>
                 <th>内部订单号</th>
-                <th>企业管家订单号</th>
+                <th>供应商订单号</th>
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionBookingTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.aaaaa}}</td>
-                <td>{{data.aaaaa}}</td>
-                <td>{{data.state === 0 ? '待支付' : data.state === 1 ? '出票中' : data.state === 2 ? '已出行' : data.state === 3 ? '已出行' : data.state === 4 ? '出票失败' : data.state === 4 ? '待支付' : data.state === 5 ? '退款中' : data.state === 6 ? '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? '交易关闭' : data.state === 9 ? '改签中' : data.state === 10 ? '占座中' : data.state === 11 ? '取消中' : data.state === 12 ? '退票中' : 'null' }}</td>
-                <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : data.orderType === 5 ? '充话费' : data.orderType === 8 ? '闪送' : 'null'}}</td>
+                <td>{{data.account}}</td>
+                <td>{{data.nickname}}</td>
+                <td>{{data.state === 0 ? '待支付' : data.state === 1 ? bookingType === '3' ? '等待酒店确认' : bookingType === '8' ? '已接单' : '出票中' : data.state === 2 ? bookingType === '4' ? '已接单' : bookingType === '8' ? '配送中' : '已出行' : data.state === 3 ? bookingType === '4' || bookingType === '8' ? '已完成' : '已出行' : data.state === 4 ? '出票失败' : data.state === 5 ? '退款中' : data.state === 6 ? bookingType === '8' ? '交易失败' : '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? bookingType === '3' ? '预定失败' : '交易关闭' : data.state === 9 ? '改签中' : data.state === 10 ? bookingType === '4' ? '呼叫中' : bookingType === '8' ? '等待接单' : '占座中' : data.state === 11 ? '取消中' : data.state === 12 ? bookingType === '3' ? '退订中' : '退票中' : data.state === 13 ? bookingType === '3' ? '预订失败 退款中' : bookingType === '8' ? '交易失败 退款中' : '出票失败 退票中' : data.state === 14 ? '' : data.state === 15 ? bookingType === '4' ? '司机抵达' : '已到达寄件地址' : data.state === 16 ? '已取消' : 'null' }}</td>
+                <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : data.orderType === 8 ? '闪送' : 'null'}}</td>
                 <td>{{data.createTime}}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
                 <td>{{data.total}}</td>
                 <td>{{data.paymentType === 1 ? '支付宝' : data.paymentType === 2 ? '微信' : data.paymentType === 3 ? (data.currencyTypeOfWallet === 1 ? '小悟币' : '小悟豆') : 'null' }}</td>
                 <td>{{data.orderId}}</td>
                 <td>{{data.actualId}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
+                  <button *ngIf="data.orderType !== 8" nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
+                  <button *ngIf="data.orderType === 8" nz-button nzType="primary" (click)="showModal('orderDetail', data)" style="margin-right: 10px;">订单详情</button>
                   <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
                   <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModal('Refund', data)" style="margin-right: 10px;">退票</button>
                 </td>
@@ -400,797 +406,445 @@
             <div nz-col nzSpan="1" *ngIf="changeBookingPage === allBookingSize || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
 
-          <!-- 弹框 —— 信息 —— 发票详情 -->
-          <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')">
-            <div *ngIf="invoiceDetail.invoiceMsg">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">发票状态：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.state === 0 ? '开票失败' : invoiceDetail.state === 1 ? '已开票' : invoiceDetail.state === 2 ? '开票中' : invoiceDetail.state === 3 ? '待开票' : invoiceDetail.state === 4 ? '发票作废' : 'null'}}</div>
-                <div nz-col nzSpan="4" class="right_alignment">发票类型：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.type === 1 ? '企业' : invoiceDetail.type === 2 ? '个人' : 'null'}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">开票金额：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoicePrice}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">公司名称：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.invoiceName}}</div>
-                <div nz-col nzSpan="4" class="right_alignment">纳税人识别号：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.dutyParagraph}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.email}}</div>
-                <div nz-col nzSpan="4" class="right_alignment">手机号：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.phone}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">注册地址：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerAdd}}</div>
-                <div nz-col nzSpan="4" class="right_alignment">注册电话：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerPhone}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">开户银行：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.bank}}</div>
-                <div nz-col nzSpan="4" class="right_alignment">开户账户：</div>
-                <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.account}}</div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="right_alignment">开票订单号：</div>
-                <div nz-col nzSpan="8">
-                  <span *ngFor="let item of invoiceDetail.orderIds; let i=index;">
-                    {{item}}<br>
-                  </span>
-                </div>
-              </div>
-            </div><div *ngIf="!invoiceDetail.invoiceMsg">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="10"></div>
-                <div nz-col nzSpan="4">暂无发票详情！</div>
-                <div nz-col nzSpan="10"></div>
-              </div>
-            </div>
-            <!-- 弹框和底部定制 -->
-            <ng-template #invoiceDetailModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('InvoiceDetail')">取消</button>
-            </ng-template>
-          </nz-modal>
+        </nz-tab>
 
-          <!-- 弹框 —— 信息 —— 订单详情 -->
-          <nz-modal [(nzVisible)]="isBookingDetailVisible" nzWidth="750" nzTitle="订单详情" [nzFooter]="bookingDetailModalFooter" (nzOnCancel)="hideModal('BookingDetail')">
-            <form [formGroup]="modifyBookingForm">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">订单id：</div>
-                <div nz-col nzSpan="9">{{orderId}}</div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-
-              <!-- 机票信息 -->
-              <div *ngIf="isFlightOrder">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">目的机场位置：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.arr_airport}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">目的城市：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.arr_city}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">到达时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.arr_date}} {{dataDetail.arr_time}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">机票类型：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.cabin_type}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.contact}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.contact_mobile}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">始发机场：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.dept_airport}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">始发城市：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.dept_city}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">始发时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.dept_date}} {{dataDetail.dept_time}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">所在航班：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.flight_com}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div *ngFor="let item of dataDetail.flight_order_passengers; let i=index;" style="background-color: whitesmoke;">
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}姓名：</div>
-                    <div nz-col nzSpan="9">{{item.name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}属性：</div>
-                    <div nz-col nzSpan="9">{{item.age_type}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}生日：</div>
-                    <div nz-col nzSpan="9">{{item.birthday}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}证件号：</div>
-                    <div nz-col nzSpan="9">{{item.card_no}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}性别：</div>
-                    <div nz-col nzSpan="9" *ngIf="item.sex === '1'">男</div>
-                    <div nz-col nzSpan="9" *ngIf="item.sex === '2'">女</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">旅程时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.flight_times}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">航班类型：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.flight_type}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">企业管家编号：</div>
-                  <div nz-col nzSpan="9"><a (click)="showExternal(1, dataDetail.no)">{{dataDetail.no}}</a></div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单价格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.amount}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单类型：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_type}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">备注：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.remark}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 0">待支付</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 1">出票中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 2">待出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 3">已出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 4">出票失败</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 5">退款中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 6">已退款</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 7">已取消</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 8">交易关闭</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 9">改签中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 10">占座中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 11">取消中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 12">退票中</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-              </div>
-
-              <!-- 酒店信息 -->
-              <div *ngIf="isHotelOrder">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">到达时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.arrival_date}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">是否可取消：</div>
-                  <div nz-col nzSpan="9" *ngIf="dataDetail.cancel_policy.allowed === true">可以取消</div>
-                  <div nz-col nzSpan="9" *ngIf="dataDetail.cancel_policy.allowed === false">不可取消</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">取消说明：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.cancel_policy.penalty_type_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">取消时限：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.cancel_policy.time_limit}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">手续费：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.detail.penalty}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">最晚到达时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.cancel_policy.time_limit}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.contact_mobile}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人姓名：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.contact_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单创建时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.createAt}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div *ngFor="let item of dataDetail.customers; let i=index;" style="background-color: whitesmoke;">
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">入住成员{{i}}：</div>
-                    <div nz-col nzSpan="9">{{item.name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">离开时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.departure_date}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单价格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.order_amount}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店订单编号：</div>
-                  <div nz-col nzSpan="9"><a (click)="showExternal(3, dataDetail.hotelOrderReturn.no)">{{dataDetail.hotelOrderReturn.no}}</a></div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店订单状态：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.state_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店订单创建时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.created_at}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店所在城市：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotel_city}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店编号：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotel_id}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店名称：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotel_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店评价：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.hotel_score}}分</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">最晚到达时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.latest_arrival_time}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间类型：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.bed_type}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间容纳人数：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.capacity}}人</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间小孩人数：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.children}}人</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间是否有早餐：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.meal}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间规格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.rate_type_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间占地面积：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.roomArea}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">房间特色：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.order_room.room_type_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <!-- <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店所在区：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.peripheral_information}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div> -->
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">预订房间数量：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.room_nums}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">信息来源：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.source}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">酒店星级：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.stars_level}}星级</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">用户Id：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.userId}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 0">待支付</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 1">出票中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 2">待出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 3">已出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 4">出票失败</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 5">退款中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 6">已退款</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 7">已取消</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 8">交易关闭</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 9">改签中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 10">占座中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 11">取消中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 12">退票中</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-              </div>
-
-              <!-- 火车信息 -->
-              <div *ngIf="isTrainOrder">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单创建时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.created_at}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单编号：</div>
-                  <div nz-col nzSpan="9"><a (click)="showExternal(2, dataDetail.no)">{{dataDetail.no}}</a></div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">到达时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.arrival_at}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">到达城市：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.arrival_city_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">变更差价：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.change_price_diff}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">变更服务价格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.change_service_charge}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.contact_mobile}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">联系人姓名：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.contacts}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">出发时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.departure_at}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">出发城市：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.departure_city_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">出发站台：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.from_station}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">到达站台：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.to_station}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">火车编号：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.service_order.train_no}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div *ngFor="let item of dataDetail.service_order.tickets; let i=index;" style="background-color: whitesmoke;">
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款价：</div>
-                    <div nz-col nzSpan="9">{{item.estimate_refund_price}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}变更价格：</div>
-                    <div nz-col nzSpan="9">{{item.estimate_refund_service_charge}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}编号：</div>
-                    <div nz-col nzSpan="9">{{item.id}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}价格：</div>
-                    <div nz-col nzSpan="9">{{item.price}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款费用：</div>
-                    <div nz-col nzSpan="9">{{item.refund_price}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款服务费：</div>
-                    <div nz-col nzSpan="9">{{item.refund_service_charge}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}座位类型：</div>
-                    <div nz-col nzSpan="9">{{item.seat_category}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}状态：</div>
-                    <div nz-col nzSpan="9">{{item.state_name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}生日：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.birthday}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}编号：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.id_no}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}身份证：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.id_type_name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}姓名：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}类型：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.passenger_type_name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}是否退款：</div>
-                    <div nz-col nzSpan="9" *ngIf="item.passenger.refund === true">是</div>
-                    <div nz-col nzSpan="9" *ngIf="item.passenger.refund === false">否</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                  <div nz-row class="search_panel">
-                    <div nz-col nzSpan="4"></div>
-                    <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}性别：</div>
-                    <div nz-col nzSpan="9">{{item.passenger.sex_name}}</div>
-                    <div nz-col nzSpan="4"></div>
-                  </div>
-                </div>
-
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单情况：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.state_name}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 0">待支付</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 1">出票中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 2">待出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 3">已出行</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 4">出票失败</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 5">退款中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 6">已退款</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 7">已取消</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 8">交易关闭</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 9">改签中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 10">占座中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 11">取消中</div>
-                  <div nz-col nzSpan="9" *ngIf="orderStatus === 12">退票中</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-              </div>
-
-              <!-- 打车信息 -->
-              <div *ngIf="isTaxiOrder">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单状态：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.state}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单生成时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.createTime}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">预估价格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.estimatePrice}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">内部订单号：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.orderId}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">出发地：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.deptAdd}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">目的地：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.arrAdd}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">用户账号：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.userPhone}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">用户昵称：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.userName}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">打车平台：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.source}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">司机电话：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.driverPhone}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">车牌号码：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.carNo}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">订单类型：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.orderType}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">出行时间：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.startTime}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">实付价格：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.paymentPrice}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="7" class="right_alignment">企业管家订单号：</div>
-                  <div nz-col nzSpan="9">{{dataDetail.actualId}}</div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-              </div>
-
-              <div nz-row class="search_panel" *ngIf="!isHotelOrder">
-                <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="7" class="right_alignment">修改订单状态：</div>
-                <div nz-col nzSpan="6" class="right_alignment">
-                  <nz-select [ngModel]="''" formControlName="updateType">
-                    <nz-option [nzLabel]="'-------无-------'" [nzValue]="''"></nz-option>
-                    <nz-option required [nzLabel]="'出票中 => 待出行'" [nzValue]="'1'"></nz-option>
-                    <nz-option *ngIf="!isTrainOrder" required [nzLabel]="'退票中 => 退款中'" [nzValue]="'2'"></nz-option>
-                  </nz-select>
-                </div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModal('modifyBooking', '')" style="margin-right: 10px;">修改</button></div>
-                <div nz-col nzSpan="3"></div>
-              </div>
-            </form>
-            <!-- 弹框和底部定制 待出行且为酒店时 才可取消订单 -->
-            <ng-template #bookingDetailModalFooter>
-              <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()">取消订单</button>
-              <button nz-button nzType="default" (click)="hideModal('BookingDetail')">取消</button>
-            </ng-template>
-          </nz-modal>
-
-          <!-- 弹框 —— 信息 —— 退票申请 -->
-          <nz-modal [(nzVisible)]="isRefundVisible" nzWidth="950" nzTitle="退票申请" [nzFooter]="refundModalFooter" (nzOnCancel)="hideModal('Refund')">
+        <nz-tab nzTitle="数字服务订单" (nzClick)="changePanel('bookingDigital')" *ngIf="commonService.haveMenuPermission('children', '数字服务订单')">
+          <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="24">选择退票机票</div>
-            </div>
-            <div nz-row class="search_panel" *ngFor="let data of dataRefund; let i=index;">
-              <div nz-col nzSpan="1">
-                <nz-radio-group [(ngModel)]="refundRadio">
-                  <label nz-radio [nzValue]="data.passengerName"></label>
-                </nz-radio-group>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                用户账号：
               </div>
-              <div nz-col nzSpan="2" style="font-weight: bold;">乘客{{i+1}}</div>
-              <div nz-col nzSpan="2">{{data.passengerName}}</div>
-              <div nz-col nzSpan="2" style="font-weight: bold;">证件号{{i+1}}</div>
-              <div nz-col nzSpan="7">{{data.cardNum}}</div>
-              <div nz-col nzSpan="2" style="font-weight: bold;">退票原因</div>
-              <div nz-col nzSpan="8">
-                <nz-select [ngModel]="data.msg" (ngModelChange)="onRefundMsgChange($event, i)">
-                  <nz-option required *ngFor="let item of data.msg; let i=index;" [nzLabel]="item" [nzValue]="item"></nz-option>
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="phone" placeholder="输入用户账号" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                订票类型：
+              </div>
+              <div nz-col nzSpan="2">
+                <nz-select [(ngModel)]="bookingType" formControlName="type">
+                  <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'充话费'" [nzValue]="'5'"></nz-option>
+                  <nz-option required [nzLabel]="'恋爱运势'" [nzValue]="'6'"></nz-option>
+                  <nz-option required [nzLabel]="'月运势'" [nzValue]="'7'"></nz-option>
                 </nz-select>
               </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单状态：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [ngModel]="''" formControlName="status">
+                  <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzValue]="'0'" [nzLabel]="'待支付'" *ngIf="bookingType === '6' || bookingType === '7'"></nz-option>
+                  <nz-option required [nzValue]="'1'" [nzLabel]="'充值中'" *ngIf="bookingType === '5'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'2'" [nzLabel]="'待放映'"></nz-option> -->
+                  <nz-option required [nzValue]="'3'" [nzLabel]="'已完成'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'4'" [nzLabel]="'出票失败'"></nz-option> -->
+                  <nz-option required [nzValue]="'5'" [nzLabel]="'充值失败 退款中'" *ngIf="bookingType === '5'"></nz-option>
+                  <nz-option required [nzValue]="'6'" [nzLabel]="'已退款'" *ngIf="bookingType === '5'"></nz-option>
+                  <nz-option required [nzValue]="'7'" [nzLabel]="'已取消'" *ngIf="bookingType === '6' || bookingType === '7'"></nz-option>
+                  <nz-option required [nzValue]="'8'" [nzLabel]="'交易关闭'"></nz-option>
+                  <!-- <nz-option required [nzValue]="'9'" [nzLabel]="'改签中'"></nz-option> -->
+                  <!-- <nz-option required [nzValue]="'10'" [nzLabel]="'占座中'"></nz-option> -->
+                  <!-- <nz-option required [nzValue]="'11'" [nzLabel]="'取消中'"></nz-option> -->
+                  <!-- <nz-option required [nzValue]="'12'" [nzLabel]="'退票中'"></nz-option> -->
+                  <nz-option required [nzValue]="'13'" [nzLabel]="'充值失败 退款中'" *ngIf="bookingType === '5'"></nz-option>
+                  <!-- <nz-option required [nzLabel]="'退款失败'"></nz-option> -->
+                  <!-- <nz-option required [nzLabel]="'司机抵达'"></nz-option> -->
+                  <!-- <nz-option required [nzLabel]="'超时取消'"></nz-option> -->
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                订单生成日期：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-date-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-date-picker>
+              </div>
             </div>
-            <!-- 弹框和底部定制 -->
-            <ng-template #refundModalFooter>
-              <button nz-button nzType="primary" (click)="doDelete('Refund')">提交</button>
-              <button nz-button nzType="default" (click)="hideModal('Refund')">取消</button>
-            </ng-template>
-          </nz-modal>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                订单编号：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="17"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="doSearch('booking')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+            </div>
+          </form>
+
+          <nz-table #rowSelectionBooking2Table [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>用户账号</th>
+                <th>用户昵称</th>
+                <th>订单状态</th>
+                <th>订票类型</th>
+                <th>订单生成日期</th>
+                <th>订单价格</th>
+                <th>支付方式</th>
+                <th>内部订单号</th>
+                <th>供应商订单号</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionBooking2Table.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.account}}</td>
+                <td>{{data.nickname}}</td>
+                <td>{{data.state === 0 ? '待支付' : data.state === 1 ? '充值中' : data.state === 3 ? '已完成' : data.state === 5 ? '充值失败 退款中' : data.state === 6 ? '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? '交易关闭' : data.state === 13 ? '充值失败 退款中' : 'null' }}</td>
+                <td>{{data.orderType === 5 ? '充话费' : data.orderType === 6 ? '恋爱运势' : data.orderType === 7 ? '月运势' : 'null'}}</td>
+                <td>{{data.createTime}}</td><!-- | date:'yy-MM-dd HH:mm:ss' -->
+                <td>{{data.total}}</td>
+                <td>{{data.paymentType === 1 ? '支付宝' : data.paymentType === 2 ? '微信' : data.paymentType === 3 ? (data.currencyTypeOfWallet === 1 ? '小悟币' : '小悟豆') : 'null' }}</td>
+                <td>{{data.orderId}}</td>
+                <td>{{data.actualId}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('orderDetail', data)" style="margin-right: 10px;">订单详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
+                  <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModal('Refund', data)" style="margin-right: 10px;">退票</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div nz-row style="margin: 10px 0;line-height: 30px;">
+            <div nz-col nzSpan="12"></div>
+            <div nz-col nzSpan="2">
+              <nz-select [(ngModel)]="bookingPageSize">
+                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
+                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
+                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
+                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== 1 && totalBooking !== 0"><button nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changeBookingPage === 1 || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
+            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== allBookingSize && totalBooking !== 0"><button nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1" *ngIf="changeBookingPage === allBookingSize || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+          </div>
 
         </nz-tab>
+
+        <!-- 弹框 —— 信息 —— 发票详情 -->
+        <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')">
+          <div *ngIf="invoiceDetail.invoiceMsg">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">发票状态：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.state === 0 ? '开票失败' : invoiceDetail.state === 1 ? '已开票' : invoiceDetail.state === 2 ? '开票中' : invoiceDetail.state === 3 ? '待开票' : invoiceDetail.state === 4 ? '发票作废' : 'null'}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">发票类型：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.type === 1 ? '企业' : invoiceDetail.type === 2 ? '个人' : 'null'}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">开票金额：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoicePrice}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">公司名称：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.invoiceName}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">纳税人识别号：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.dutyParagraph}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.email}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">手机号：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.phone}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">注册地址：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerAdd}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">注册电话：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.registerPhone}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">开户银行：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.bank}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">开户账户：</div>
+              <div nz-col nzSpan="8">{{invoiceDetail.invoiceMsg.account}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment">开票订单号：</div>
+              <div nz-col nzSpan="8">
+                <span *ngFor="let item of invoiceDetail.orderIds; let i=index;">
+                  {{item}}<br>
+                </span>
+              </div>
+            </div>
+          </div><div *ngIf="!invoiceDetail.invoiceMsg">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="10"></div>
+              <div nz-col nzSpan="4">暂无发票详情！</div>
+              <div nz-col nzSpan="10"></div>
+            </div>
+          </div>
+          <!-- 弹框和底部定制 -->
+          <ng-template #invoiceDetailModalFooter>
+            <button nz-button nzType="default" (click)="hideModal('InvoiceDetail')">取消</button>
+          </ng-template>
+        </nz-modal>
+
+        <!-- 弹框 —— 信息 —— 订单详情 -->
+        <nz-modal [(nzVisible)]="isBookingDetailVisible" nzWidth="750" nzTitle="订单详情" [nzFooter]="bookingDetailModalFooter" (nzOnCancel)="hideModal('BookingDetail')">
+          <form [formGroup]="modifyBookingForm">
+            <div nz-row class="search_panel" *ngIf="orderId && orderId !== ''"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单id：</div> <div nz-col nzSpan="9">{{orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+
+            <!-- 机票信息 -->
+            <div *ngIf="isFlightOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">目的机场位置：</div> <div nz-col nzSpan="9">{{dataDetail.arr_airport}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">目的城市：</div> <div nz-col nzSpan="9">{{dataDetail.arr_city}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">到达时间：</div> <div nz-col nzSpan="9">{{dataDetail.arr_date}} {{dataDetail.arr_time}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">机票类型：</div> <div nz-col nzSpan="9">{{dataDetail.cabin_type}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人：</div> <div nz-col nzSpan="9">{{dataDetail.contact}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div> <div nz-col nzSpan="9">{{dataDetail.contact_mobile}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">机场名称：</div> <div nz-col nzSpan="9">{{dataDetail.dept_airport}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">始发城市：</div> <div nz-col nzSpan="9">{{dataDetail.dept_city}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">始发时间：</div> <div nz-col nzSpan="9">{{dataDetail.dept_date}} {{dataDetail.dept_time}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">所在航班：</div> <div nz-col nzSpan="9">{{dataDetail.flight_com}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div *ngFor="let item of dataDetail.flight_order_passengers; let i=index;" style="background-color: whitesmoke;">
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}姓名：</div> <div nz-col nzSpan="9">{{item.name}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}属性：</div> <div nz-col nzSpan="9">{{item.age_type}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}生日：</div> <div nz-col nzSpan="9">{{item.birthday}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}证件号：</div> <div nz-col nzSpan="9">{{item.card_no}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}性别：</div> <div nz-col nzSpan="9" *ngIf="item.sex === '1'">男</div> <div nz-col nzSpan="9" *ngIf="item.sex === '2'">女</div> <div nz-col nzSpan="4"></div> </div>
+              </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">旅程时间：</div> <div nz-col nzSpan="9">{{dataDetail.flight_times}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">航班类型：</div> <div nz-col nzSpan="9">{{dataDetail.flight_type}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">企业管家编号：</div> <div nz-col nzSpan="9"><a (click)="showExternal(1, dataDetail.no)">{{dataDetail.no}}</a></div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单价格：</div> <div nz-col nzSpan="9">{{dataDetail.amount}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单类型：</div> <div nz-col nzSpan="9">{{dataDetail.order_type}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">备注：</div> <div nz-col nzSpan="9">{{dataDetail.remark}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div> <div nz-col nzSpan="9">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '出票中' : orderStatus === 2 ? '待出行' : orderStatus === 3 ? '已出行' : orderStatus === 4 ? '出票失败' : orderStatus === 5 ? '退款中' : orderStatus === 6 ? '已退款' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易失败' : orderStatus === 12 ? '退票中' : orderStatus === 13 ? '出票失败 退款中' : 'null' }}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 酒店信息 -->
+            <div *ngIf="isHotelOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">到达时间：</div> <div nz-col nzSpan="9">{{dataDetail.arrival_date}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">是否可取消：</div> <div nz-col nzSpan="9" *ngIf="dataDetail.cancel_policy.allowed === true">可以取消</div> <div nz-col nzSpan="9" *ngIf="dataDetail.cancel_policy.allowed === false">不可取消</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">取消说明：</div> <div nz-col nzSpan="9">{{dataDetail.cancel_policy.penalty_type_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">取消时限：</div> <div nz-col nzSpan="9">{{dataDetail.cancel_policy.time_limit}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">手续费：</div> <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.detail.penalty}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">最晚到达时间：</div> <div nz-col nzSpan="9">{{dataDetail.cancel_policy.time_limit}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div> <div nz-col nzSpan="9">{{dataDetail.contact_mobile}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人姓名：</div> <div nz-col nzSpan="9">{{dataDetail.contact_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单创建时间：</div> <div nz-col nzSpan="9">{{dataDetail.createAt}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div *ngFor="let item of dataDetail.customers; let i=index;" style="background-color: whitesmoke;">
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">入住成员{{i}}：</div> <div nz-col nzSpan="9">{{item.name}}</div> <div nz-col nzSpan="4"></div> </div>
+              </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">离开时间：</div> <div nz-col nzSpan="9">{{dataDetail.departure_date}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单价格：</div> <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.order_amount}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店订单编号：</div> <div nz-col nzSpan="9"><a (click)="showExternal(3, dataDetail.hotelOrderReturn.no)">{{dataDetail.hotelOrderReturn.no}}</a></div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店订单状态：</div> <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.state_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店订单创建时间：</div> <div nz-col nzSpan="9">{{dataDetail.hotelOrderReturn.created_at}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店所在城市：</div> <div nz-col nzSpan="9">{{dataDetail.hotel_city}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店编号：</div> <div nz-col nzSpan="9">{{dataDetail.hotel_id}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店名称：</div> <div nz-col nzSpan="9">{{dataDetail.hotel_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店评价：</div> <div nz-col nzSpan="9">{{dataDetail.hotel_score}}分</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">最晚到达时间：</div> <div nz-col nzSpan="9">{{dataDetail.latest_arrival_time}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间类型：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.bed_type}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间容纳人数：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.capacity}}人</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间小孩人数：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.children}}人</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间是否有早餐：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.meal}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间规格：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.rate_type_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间占地面积：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.roomArea}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">房间特色：</div> <div nz-col nzSpan="9">{{dataDetail.order_room.room_type_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">预订房间数量：</div> <div nz-col nzSpan="9">{{dataDetail.room_nums}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">信息来源：</div> <div nz-col nzSpan="9">{{dataDetail.source}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">酒店星级：</div> <div nz-col nzSpan="9">{{dataDetail.stars_level}}星级</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">用户Id：</div> <div nz-col nzSpan="9">{{dataDetail.userId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div> <div nz-col nzSpan="9">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '等待酒店确认' : orderStatus === 2 ? '待出行' : orderStatus === 3 ? '已出行' : orderStatus === 5 ? '退款中' : orderStatus === 6 ? '已退款' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '预定失败' : orderStatus === 12 ? '退订中' : orderStatus === 13 ? '预订失败 退款中' : 'null' }}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 火车信息 -->
+            <div *ngIf="isTrainOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单创建时间：</div> <div nz-col nzSpan="9">{{dataDetail.created_at}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单编号：</div> <div nz-col nzSpan="9"><a (click)="showExternal(2, dataDetail.no)">{{dataDetail.no}}</a></div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">到达时间：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.arrival_at}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">到达城市：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.arrival_city_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">变更差价：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.change_price_diff}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">变更服务价格：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.change_service_charge}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人电话：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.contact_mobile}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">联系人姓名：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.contacts}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出发时间：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.departure_at}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出发城市：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.departure_city_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出发站台：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.from_station}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">到达站台：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.to_station}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">火车编号：</div> <div nz-col nzSpan="9">{{dataDetail.service_order.train_no}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div *ngFor="let item of dataDetail.service_order.tickets; let i=index;" style="background-color: whitesmoke;">
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款价：</div> <div nz-col nzSpan="9">{{item.estimate_refund_price}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}变更价格：</div> <div nz-col nzSpan="9">{{item.estimate_refund_service_charge}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}编号：</div> <div nz-col nzSpan="9">{{item.id}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}价格：</div> <div nz-col nzSpan="9">{{item.price}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款费用：</div> <div nz-col nzSpan="9">{{item.refund_price}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}退款服务费：</div> <div nz-col nzSpan="9">{{item.refund_service_charge}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}座位类型：</div> <div nz-col nzSpan="9">{{item.seat_category}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车票{{i+1}}状态：</div> <div nz-col nzSpan="9">{{item.state_name}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}生日：</div> <div nz-col nzSpan="9">{{item.passenger.birthday}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}编号：</div> <div nz-col nzSpan="9">{{item.passenger.id_no}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}身份证：</div> <div nz-col nzSpan="9">{{item.passenger.id_type_name}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}姓名：</div> <div nz-col nzSpan="9">{{item.passenger.name}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}类型：</div> <div nz-col nzSpan="9">{{item.passenger.passenger_type_name}}</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}是否退款：</div> <div nz-col nzSpan="9" *ngIf="item.passenger.refund === true">是</div> <div nz-col nzSpan="9" *ngIf="item.passenger.refund === false">否</div> <div nz-col nzSpan="4"></div> </div>
+                <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">乘客{{i+1}}性别：</div> <div nz-col nzSpan="9">{{item.passenger.sex_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              </div>
+
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单情况：</div> <div nz-col nzSpan="9">{{dataDetail.state_name}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">当前订单状态：</div> <div nz-col nzSpan="9">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '出票中' : orderStatus === 2 ? '待出行' : orderStatus === 3 ? '已出行' : orderStatus === 4 ? '出票失败' : orderStatus === 5 ? '退款中' : orderStatus === 6 ? '已退款' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易关闭' : orderStatus === 10 ? '占座中' : orderStatus === 13 ? '出票失败 退款中' : 'null' }}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 打车信息 -->
+            <div *ngIf="isTaxiOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单状态：</div> <div nz-col nzSpan="9">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '进行中' : orderStatus === 2 ? '已接单' : orderStatus === 3 ? '已完成' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易失败' : orderStatus === 10 ? '呼叫中' : orderStatus === 15 ? '司机抵达' : 'null' }}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">预估价格：</div> <div nz-col nzSpan="9">{{dataDetail.estimatePrice}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">内部订单号：</div> <div nz-col nzSpan="9">{{dataDetail.orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出发地：</div> <div nz-col nzSpan="9">{{dataDetail.deptAdd}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">目的地：</div> <div nz-col nzSpan="9">{{dataDetail.arrAdd}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">用户账号：</div> <div nz-col nzSpan="9">{{dataDetail.userPhone}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">用户昵称：</div> <div nz-col nzSpan="9">{{dataDetail.userName}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">打车平台：</div> <div nz-col nzSpan="9">{{dataDetail.source}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">司机电话：</div> <div nz-col nzSpan="9">{{dataDetail.driverPhone}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">车牌号码：</div> <div nz-col nzSpan="9">{{dataDetail.carNo}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单类型：</div> <div nz-col nzSpan="9">{{dataDetail.orderType}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出行时间：</div> <div nz-col nzSpan="9">{{dataDetail.startTime}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">实付价格：</div> <div nz-col nzSpan="9">{{dataDetail.paymentPrice}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">供应商订单号：</div> <div nz-col nzSpan="9">{{dataDetail.actualId}}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 闪送信息 -->
+            <div *ngIf="isDeliveryOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单编号：</div> <div nz-col nzSpan="9">{{dataDetail.orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单状态：</div> <div nz-col nzSpan="9">{{dataDetail.state === 0 ? '待支付' : dataDetail.state === 1 ? '已接单' : dataDetail.state === 2 ? '配送中' : dataDetail.state === 3 ? '已完成' : dataDetail.state === 5 ? '退款中' : dataDetail.state === 6 ? '交易失败' : dataDetail.state === 7 ? '已取消' : dataDetail.state === 8 ? '交易关闭' : dataDetail.state === 10 ? '等待接单' : dataDetail.state === 13 ? '交易失败 退款中' : dataDetail.state === 15 ? '已到达寄件地址' : dataDetail.state === 16 ? '已取消' : 'null'}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单状态描述：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">付款方式：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">付款方式描述：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">付款状态：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">付款金额：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单创建时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">业务信息：</div> <div nz-col nzSpan="9">{{dataDetail.content}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单失败原因：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件人姓名：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件人手机：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件城市：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件地址：</div> <div nz-col nzSpan="9">{{dataDetail.startAdd}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件经度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">寄件纬度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件人姓名：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件人手机：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件城市：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件地址：</div> <div nz-col nzSpan="9">{{dataDetail.endAdd}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件经度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">收件纬度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">物品名称：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">物品重量：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">加价金额：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">预约上门取件时间：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">取消费用：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员姓名：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员电话：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">取件密码：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员轨迹信息：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员所在纬度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员所在经度：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">闪送员所在位置的时间：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">备注信息：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 充话费信息 -->
+            <div *ngIf="isPhoneBillOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">要充值的手机号：</div> <div nz-col nzSpan="9">{{dataDetail.orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">充值金额：</div> <div nz-col nzSpan="9">{{dataDetail.paymentTotal}}元</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">商家订单号：</div> <div nz-col nzSpan="9">{{dataDetail.paymentId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单号：</div> <div nz-col nzSpan="9">{{dataDetail.orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">总金额：</div> <div nz-col nzSpan="9">{{dataDetail.paymentTotal}}元</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">充值状态：</div> <div nz-col nzSpan="9">{{dataDetail.state === 1 ? '已接单' : dataDetail.state === 3 ? '已完成' : dataDetail.state === 5 ? '充值失败 退款中' : dataDetail.state === 6 ? '已退款' : dataDetail.state === 8 ? '交易关闭' : dataDetail.state === 13 ? '充值失败 退款中' : 'null'}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <!-- 星座订单信息 -->
+            <div *ngIf="isConstellationOrder">
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单编号：</div> <div nz-col nzSpan="9">{{dataDetail.orderId}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单类型：</div> <div nz-col nzSpan="9">{{dataDetail.orderType === 6 ? '月运势' : dataDetail.orderType === 7 ? '恋爱运势' : null}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单价格：</div> <div nz-col nzSpan="9">{{dataDetail.paymentTotal}}元</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">订单状态：</div> <div nz-col nzSpan="9">{{dataDetail.state === 0 ? '待支付' : dataDetail.state === 3 ? '已完成' : dataDetail.state === 7 ? '已取消' : dataDetail.state === 8 ? '交易关闭' : 'null'}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">出生日期：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">性别：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">所在城市：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">现居地：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">开始日期：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">结束日期：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">角色1：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="4"></div> <div nz-col nzSpan="7" class="right_alignment">角色2：</div> <div nz-col nzSpan="9">{{dataDetail.aaaaaa}}</div> <div nz-col nzSpan="4"></div> </div>
+            </div>
+
+            <div nz-row class="search_panel" *ngIf="!isHotelOrder">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="7" class="right_alignment">修改订单状态：</div>
+              <div nz-col nzSpan="6" class="right_alignment">
+                <nz-select [ngModel]="''" formControlName="updateType">
+                  <nz-option [nzLabel]="'-------无-------'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'出票中 => 待出行'" [nzValue]="'1'"></nz-option>
+                  <nz-option *ngIf="!isTrainOrder" required [nzLabel]="'退票中 => 退款中'" [nzValue]="'2'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModal('modifyBooking', '')" style="margin-right: 10px;">修改</button></div>
+              <div nz-col nzSpan="3"></div>
+            </div>
+          </form>
+          <!-- 弹框和底部定制 待出行且为酒店时 才可取消订单 -->
+          <ng-template #bookingDetailModalFooter>
+            <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()">取消订单</button>
+            <button nz-button nzType="default" (click)="hideModal('BookingDetail')">取消</button>
+          </ng-template>
+        </nz-modal>
+
+        <!-- 弹框 —— 信息 —— 退票申请 -->
+        <nz-modal [(nzVisible)]="isRefundVisible" nzWidth="950" nzTitle="退票申请" [nzFooter]="refundModalFooter" (nzOnCancel)="hideModal('Refund')">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="24">选择退票机票</div>
+          </div>
+          <div nz-row class="search_panel" *ngFor="let data of dataRefund; let i=index;">
+            <div nz-col nzSpan="1">
+              <nz-radio-group [(ngModel)]="refundRadio">
+                <label nz-radio [nzValue]="data.passengerName"></label>
+              </nz-radio-group>
+            </div>
+            <div nz-col nzSpan="2" style="font-weight: bold;">乘客{{i+1}}</div>
+            <div nz-col nzSpan="2">{{data.passengerName}}</div>
+            <div nz-col nzSpan="2" style="font-weight: bold;">证件号{{i+1}}</div>
+            <div nz-col nzSpan="7">{{data.cardNum}}</div>
+            <div nz-col nzSpan="2" style="font-weight: bold;">退票原因</div>
+            <div nz-col nzSpan="8">
+              <nz-select [ngModel]="data.msg" (ngModelChange)="onRefundMsgChange($event, i)">
+                <nz-option required *ngFor="let item of data.msg; let i=index;" [nzLabel]="item" [nzValue]="item"></nz-option>
+              </nz-select>
+            </div>
+          </div>
+          <!-- 弹框和底部定制 -->
+          <ng-template #refundModalFooter>
+            <button nz-button nzType="primary" (click)="doDelete('Refund')">提交</button>
+            <button nz-button nzType="default" (click)="hideModal('Refund')">取消</button>
+          </ng-template>
+        </nz-modal>
 
         <nz-tab nzTitle="数据调整" (nzClick)="changePanel('adjust')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="7">
-              <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
+              <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'adjust')"></nz-range-picker>
             </div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="4">
               <nz-select [(ngModel)]="adjustType">
+                <nz-option required [nzLabel]="'---全部---'" nzValue="ALL"></nz-option>
                 <nz-option required [nzLabel]="'小悟豆'" nzValue="BEAN"></nz-option>
                 <nz-option required [nzLabel]="'小悟币'" nzValue="COIN"></nz-option>
               </nz-select>
@@ -1456,7 +1110,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="充值记录" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+        <nz-tab nzTitle="充值记录" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
           <form [formGroup]="searchRechargeForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
@@ -1494,7 +1148,7 @@
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
                 <td>{{data.amount}}</td>
-                <td>{{data.presentAmount}}</td>
+                <td>{{data.presentAmount ? data.presentAmount * 100 : '0'}}</td>
                 <td>{{data.paymentType === 'WECHAT_PAY' ? '微信支付' : data.paymentType === 'ALI_PAY' ? '支付宝支付' : 'null'}}</td>
                 <td>{{data.status === 'WAITING_FOR_PAY' ? '待支付' : data.status === 'paid' ? '已支付' : data.status === 'DEPOSITED' ? '已充值' : 'null' }}</td>
                 <td>{{data.createTime }}</td>
@@ -1504,7 +1158,7 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="开票记录" (nzClick)="changePanel('invoice')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+        <nz-tab nzTitle="开票记录" (nzClick)="changePanel('invoice')" *ngIf="commonService.haveMenuPermission('children', '开票记录')">
           <form [formGroup]="searchInvoiceForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
@@ -1535,7 +1189,7 @@
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">充值时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'invoice')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'invoice')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('invoice', '')"><i class="anticon anticon-search"></i>查询</button>
@@ -1575,7 +1229,7 @@
           </nz-table>
 
           <!-- 弹框 —— 信息 —— 开票详情 -->
-          <nz-modal [(nzVisible)]="isInvoiceDetailVisible" nzWidth="950" nzTitle="开票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('invoiceInfoDetail')">
+          <nz-modal [(nzVisible)]="isInvoiceDetailVisible" nzWidth="950" nzTitle="开票详情" [nzFooter]="invoiceDetail1ModalFooter" (nzOnCancel)="hideModal('invoiceInfoDetail')">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div> <div nz-col nzSpan="8">{{invoiceItem.account}}</div>
               <div nz-col nzSpan="4" class="right_alignment">用户昵称：</div> <div nz-col nzSpan="8">{{invoiceItem.nickname}}</div>
@@ -1619,8 +1273,8 @@
               </tbody>
             </nz-table>
             <!-- 弹框和底部定制 -->
-            <ng-template #invoiceDetailModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('invoiceDetail')">取消</button>
+            <ng-template #invoiceDetail1ModalFooter>
+              <button nz-button nzType="default" (click)="hideModal('invoiceInfoDetail')">取消</button>
             </ng-template>
           </nz-modal>
 

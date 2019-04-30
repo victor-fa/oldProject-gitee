@@ -284,7 +284,7 @@
           </nz-table>
         </nz-tab>
 
-        <nz-tab nzTitle="开票管理日志" (nzClick)="changePanel('invoiceLog')" *ngIf="commonService.haveMenuPermission('children', '开票时间管理')">
+        <nz-tab nzTitle="开票管理日志" (nzClick)="changePanel('invoiceLog')" *ngIf="commonService.haveMenuPermission('children', '开票记录')">
           <div nz-row class="search_panel">
             <form [formGroup]="searchInvoiceLogForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
