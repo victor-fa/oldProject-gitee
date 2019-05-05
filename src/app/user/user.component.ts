@@ -1,15 +1,13 @@
-import { registerLocaleData, DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { IUserInfoItemOutput, SendMsgInput, UserSearchInput } from '../public/model/user.model';
-import { CommonService } from '../public/service/common.service';
-import { UserService } from '../public/service/user.service';
-import { Router } from '@angular/router';
-import { BookingService } from '../public/service/booking.service';
 import { AdjustService } from '../public/service/adjust.service';
+import { BookingService } from '../public/service/booking.service';
+import { CommonService } from '../public/service/common.service';
 import { InvoiceService } from '../public/service/invoice.service';
+import { UserService } from '../public/service/user.service';
 registerLocaleData(zh);
 
 @Component({
@@ -19,13 +17,12 @@ registerLocaleData(zh);
 })
 export class UserComponent implements OnInit {
 
-  userData: IUserInfoItemOutput[];
+  userData = [];
   adjustData = [];
   operatersData = [];
   // tslint:disable-next-line:max-line-length
   adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
   searchUserForm: FormGroup;  // 查询表单
-  searchUserItem = new UserSearchInput();
   userInfoId = '';
   userInfoDetail = [];
   totalUser = 0;
@@ -171,8 +168,8 @@ export class UserComponent implements OnInit {
       setTimeout(() => {
         let id = 0;
         let pageFlag = '';
-        if (this.doLastBooking) { id = this.lastBookingId; pageFlag = 'last'; }
-        if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
+        if (this.doLastBooking) { id = this.lastBookingId; console.log(this.lastBookingId); pageFlag = 'last'; }  // 下一页
+        if (this.doFirstBooking) { id = this.firstBookingId; console.log(this.firstBookingId); pageFlag = 'first'; }  // 上一页
         // tslint:disable-next-line:max-line-length
         const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
         this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType).subscribe(res => {
@@ -182,13 +179,13 @@ export class UserComponent implements OnInit {
                 const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
                 this.commonService.updateOperationlog(operationInput).subscribe();
                 // tslint:disable-next-line:max-line-length
-                this.dataOrder = pageFlag === 'last' || pageFlag === '' ? JSON.parse(res.payload).orders : JSON.parse(res.payload).orders.reverse();
+                this.dataOrder = pageFlag === 'last' || pageFlag === '' ? JSON.parse(res.payload).orders : JSON.parse(res.payload).orders;
                 console.log(this.dataOrder);
                 this.totalBooking = JSON.parse(res.payload).total;
                 this.allBookingSize = JSON.parse(res.payload).allSize;
                 if (JSON.parse(res.payload).orders.length > 0) {
-                  this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的userId
-                  this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的userId
+                  this.firstBookingId = JSON.parse(res.payload).orders[0].id;  // 最前面的Id
+                  this.lastBookingId = JSON.parse(res.payload).orders[JSON.parse(res.payload).orders.length - 1].id;  // 最后面的Id
                 }
               }
             }
@@ -543,12 +540,16 @@ export class UserComponent implements OnInit {
         if (res.retcode === 0) {
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(JSON.parse(res.payload));
           if (JSON.parse(res.payload).flightOrderReturn) {
             this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
             this.isFlightOrder = true;
             this.isHotelOrder = false;
             this.isTrainOrder = false;
             this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
           }
           if (JSON.parse(res.payload).hotelOrder) {
             this.dataDetail = JSON.parse(res.payload).hotelOrder;
@@ -556,6 +557,9 @@ export class UserComponent implements OnInit {
             this.isHotelOrder = true;
             this.isTrainOrder = false;
             this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
           }
           if (JSON.parse(res.payload).trainOrderReturn) {
             this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
@@ -563,6 +567,9 @@ export class UserComponent implements OnInit {
             this.isHotelOrder = false;
             this.isTrainOrder = true;
             this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
           }
           if (JSON.parse(res.payload).taxiOrderDetailResponse) {
             this.dataDetail = JSON.parse(res.payload).taxiOrderDetailResponse;
@@ -570,8 +577,50 @@ export class UserComponent implements OnInit {
             this.isHotelOrder = false;
             this.isTrainOrder = false;
             this.isTaxiOrder = true;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
           }
-          console.log(this.dataDetail);
+          if (JSON.parse(res.payload).expressOrderDetailResponse) {
+            this.dataDetail = JSON.parse(res.payload).expressOrderDetailResponse;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+            this.isDeliveryOrder = true;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
+          }
+          if (JSON.parse(res.payload).phoneChargeOrder) {
+            this.dataDetail = JSON.parse(res.payload).phoneChargeOrder;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = true;
+            this.isConstellationOrder = false;
+          }
+          if (JSON.parse(res.payload).pairOrder) {
+            this.dataDetail = JSON.parse(res.payload).pairOrder;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = true;
+          }
+          if (JSON.parse(res.payload).fortuneOrder) {
+            this.dataDetail = JSON.parse(res.payload).fortuneOrder;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = true;
+          }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -647,27 +696,6 @@ export class UserComponent implements OnInit {
       this.bookingPhone = data.account;
       setTimeout(() => { this.doSearch('booking'); }, 1000);
       this.tabsetJson.currentNum = 1; // 实体服务订单
-    } if (flag === 'orderDetail') {  // 查看详情
-      this.dataDetail = data;
-      this.isBookingDetailVisible = true;
-      this.isFlightOrder = false;
-      this.isHotelOrder = false;
-      this.isTrainOrder = false;
-      this.isTaxiOrder = false;
-      if (data.orderType === 8) { // 闪送
-        this.isDeliveryOrder = true;
-        this.isPhoneBillOrder = false;
-        this.isConstellationOrder = false;
-      } else if (data.orderType === 5) {  // 充话费
-        this.isDeliveryOrder = false;
-        this.isPhoneBillOrder = true;
-        this.isConstellationOrder = false;
-      } else if (data.orderType === 6 || data.orderType === 7) {  // 恋爱
-        this.isDeliveryOrder = false;
-        this.isPhoneBillOrder = false;
-        this.isConstellationOrder = true;
-      }
-      console.log(this.dataDetail);
     }
   }
 
@@ -908,6 +936,7 @@ export class UserComponent implements OnInit {
   // 切换面板
   changePanel(flag): void {
     this.changeBookingPage = 1;
+    this.bookingType = '';  // 重置公用的订票类型
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
     const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户管理' : flag === 'booking' ? '订单查询' : '', op_name: '访问' };

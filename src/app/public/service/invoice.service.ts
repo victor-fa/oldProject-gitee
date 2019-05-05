@@ -82,8 +82,8 @@ export class InvoiceService extends AppServiceBase {
   /** 获取所有列表 */
   getInvoiceListForUser(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/invoice-history?pageSize=9999`;
-    url += data.createTimeBegin && data.createTimeBegin !== null ? '&createTimeBegin=' + data.createTimeBegin : '';
-    url += data.createTimeEnd && data.createTimeEnd !== null ? '&createTimeEnd=' + data.createTimeEnd : '';
+    url += data.createTimeBegin && data.createTimeBegin.indexOf('null') === -1  ? '&createTimeBegin=' + data.createTimeBegin : '';
+    url += data.createTimeEnd && data.createTimeEnd.indexOf('null') === -1 ? '&createTimeEnd=' + data.createTimeEnd : '';
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.orderType && data.orderType !== '' ? '&orderType=' + data.orderType : '';
     url += data.state && data.state !== '' ? '&state=' + data.state : '';

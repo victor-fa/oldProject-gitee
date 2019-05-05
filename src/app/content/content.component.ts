@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../public/service/common.service';
 import { DatePipe, registerLocaleData } from '@angular/common';
+import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import zh from '@angular/common/locales/zh';
-import { NzMessageService, UploadFile, NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { LocalizationService } from '../public/service/localization.service';
-import { ContentService } from '../public/service/content.service';
-import { HttpRequest, HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NzMessageService, NzModalService, NzNotificationService, UploadFile } from 'ng-zorro-antd';
 import { filter } from 'rxjs/operators';
-import { ScreenService } from '../public/service/screen.service';
-import { OpenService } from '../public/service/open.service';
 import { BannerService } from '../public/service/banner.service';
-import { ReturnStatement } from '@angular/compiler';
+import { CommonService } from '../public/service/common.service';
+import { ContentService } from '../public/service/content.service';
+import { LocalizationService } from '../public/service/localization.service';
+import { OpenService } from '../public/service/open.service';
+import { ScreenService } from '../public/service/screen.service';
 
 registerLocaleData(zh);
 

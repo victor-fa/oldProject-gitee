@@ -1,13 +1,12 @@
-import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
+import { Router } from '@angular/router';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { userApiUrls, cmsApiUrls } from '../enum/api.enum';
-import { LoginItemInput } from '../model/user.model';
+import { cmsApiUrls, userApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { LoginItemInput } from '../model/user.model';
 import { CommonService } from './common.service';
 
 @Injectable({

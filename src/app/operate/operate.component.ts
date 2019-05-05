@@ -1,11 +1,11 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../public/service/common.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { LocalizationService } from '../public/service/localization.service';
 import { AppversionService } from '../public/service/appVersion.service';
+import { CommonService } from '../public/service/common.service';
+import { LocalizationService } from '../public/service/localization.service';
 import { VoiceService } from '../public/service/voice.service';
 
 registerLocaleData(zh);

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { userApiUrls, bookingApiUrls } from '../enum/api.enum';
+import { bookingApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { CommonService } from './common.service';
 

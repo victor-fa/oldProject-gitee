@@ -1,4 +1,4 @@
-import { registerLocaleData, DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';

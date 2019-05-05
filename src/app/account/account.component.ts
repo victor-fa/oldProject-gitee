@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { ModifyBookingInput } from '../public/model/booking.model';
 import { AccountService } from '../public/service/account.service';
 import { CommonService } from '../public/service/common.service';
 registerLocaleData(zh);
@@ -24,7 +23,7 @@ export class AccountComponent implements OnInit {
   displayData = [];
   allChecked = false;
   indeterminate = false;
-  modifyItem = new ModifyBookingInput();
+  modifyItem = {};
   total = 0;
   allSize = 0;
   changePage = 1;
@@ -582,14 +581,14 @@ export class AccountComponent implements OnInit {
   // 设置具体哪些勾选的权限
   setResArr(data) {
     data.forEach(element => {
-      this.checkOptions1.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions2.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions3.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions4.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions5.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions6.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions7.forEach(item => { item.value === element ? item.checked = true : 1; });
-      this.checkOptions8.forEach(item => { item.value === element ? item.checked = true : 1; });
+      this.checkOptions1.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions2.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions3.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions4.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions5.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions6.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions7.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions8.forEach(item => { if (item.value === element) { item.checked = true; } });
     });
   }
 
