@@ -170,6 +170,7 @@ export class AppVersionComponent implements OnInit {
           this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
             if (result.retcode === 0) {
               this.dataGuide = JSON.parse(result.payload).reverse();
+              console.log(this.dataGuide);
               const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '访问' };
               this.commonService.updateOperationlog(operationInput).subscribe();
               this.dataGuide.forEach((cell, i) => {

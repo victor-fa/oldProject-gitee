@@ -297,7 +297,7 @@ export class UserComponent implements OnInit {
   }
 
   /* 加载信息 */
-  private loadDataByKey(state, type, createTime, orderId, phone): void {
+  private loadDataByKey(state, type, createTimeBegin, createTimeEnd, orderId, phone): void {
     setTimeout(() => {
       let id = 0;
       let pageFlag = '';
@@ -305,7 +305,7 @@ export class UserComponent implements OnInit {
       if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
       const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
       // tslint:disable-next-line:max-line-length
-      this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType, state, type, createTime, orderId, phone).subscribe(res => {
+      this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType, state, type, createTimeBegin, createTimeEnd, orderId, phone).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload !== '') {
             const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
@@ -358,18 +358,21 @@ export class UserComponent implements OnInit {
   doSearch(flag) {
     if (flag === 'booking') {
       const searchBookingItem = {
-        'date': this.beginBookingDate,
+        'createTimeBegin': this.beginBookingDate,
+        'createTimeEnd': this.endBookingDate,
         'type': this.searchBookingForm.controls['type'].value,
         'status': this.searchBookingForm.controls['status'].value,
         'orderId': this.searchBookingForm.controls['orderId'].value,
         'phone': this.searchBookingForm.controls['phone'].value
       };
-      if ((searchBookingItem.date === '' || searchBookingItem.date === null) && searchBookingItem.type === ''
+      if ((searchBookingItem.createTimeBegin === '' || searchBookingItem.createTimeBegin === null)
+          && (searchBookingItem.createTimeEnd === '' || searchBookingItem.createTimeEnd === null)
+          && searchBookingItem.type === ''
           && searchBookingItem.status === '' && searchBookingItem.orderId === '' && searchBookingItem.phone === '') {
         this.currentPanel === 'bookingHypostatic' ? this.loadData('bookingHypostatic') :  this.loadData('bookingDigital');
       } else {
         // tslint:disable-next-line:max-line-length
-        this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.date, searchBookingItem.orderId, searchBookingItem.phone);
+        this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.createTimeBegin, searchBookingItem.createTimeEnd, searchBookingItem.orderId, searchBookingItem.phone);
       }
     }
   }
@@ -947,12 +950,12 @@ export class UserComponent implements OnInit {
   onChange(result, flag): void {
     if (flag === 'booking') {
       if (result !== '') {
-        this.beginBookingDate = this.datePipe.transform(result, 'yyyy-MM-dd');
-        // this.endBookingDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
+        this.beginBookingDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
+        this.endBookingDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
       }
       if (this.beginBookingDate === null) {
         this.beginBookingDate = null;
-        // this.endBookingDate = this.commonService.getDayWithAcross(0);
+        this.endBookingDate = null;
       }
     } else if (flag === 'adjust') {
       if (result[0] !== '' || result[1] !== '') {
