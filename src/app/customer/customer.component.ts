@@ -23,6 +23,7 @@ export class CustomerComponent implements OnInit {
   agreeInfo = [];
   invoiceTimeInfo = [];
   invoiceLogInfo = [];
+  businessInfo = [];
   oppositionPageSize = 1000;
   agreePageSize = 1000;
   isFeedBackVisible = false;
@@ -31,6 +32,7 @@ export class CustomerComponent implements OnInit {
   currentOppositionAgreeId = '';  // 弹框后的id
   searchInvoiceTimeForm: FormGroup;
   searchInvoiceLogForm: FormGroup;
+  searchBusinessForm: FormGroup;
   tempFeedBack = {
     'words': '',
     'photo': '',
@@ -43,6 +45,8 @@ export class CustomerComponent implements OnInit {
   endInvoiceTimeDate = '';
   beginInvoiceLogDate = '';
   endInvoiceLogDate = '';
+  beginBusinessDate = '';
+  endBusinessDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   constructor(
     private fb: FormBuilder,
@@ -143,12 +147,33 @@ export class CustomerComponent implements OnInit {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'business') {
+      const businessInput = {
+        startDate: this.beginBusinessDate,
+        endDate: this.endBusinessDate,
+        phone: this.searchBusinessForm.controls['phone'].value,
+        content: this.searchBusinessForm.controls['content'].value,
+        name: this.searchBusinessForm.controls['name'].value,
+      };
+      this.invoiceService.getBusinessList(businessInput).subscribe(res => {
+        if (res.payload !== '') {
+          if (res.status === 200) {
+            this.businessInfo = JSON.parse(res.payload);
+            const operationInput = { op_category: '客服中心', op_page: '商务合作' , op_name: '访问' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            console.log(this.businessInfo);
+          }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
   private _initForm(): void {
     this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
+    this.searchBusinessForm = this.fb.group({ phone: [''], name: [''], content: [''], date: [''], });
   }
 
   // 反馈详情
@@ -225,6 +250,16 @@ export class CustomerComponent implements OnInit {
       if (result[0] !== '' || result[1] !== '') {
         this.beginInvoiceLogDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
         this.endInvoiceLogDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
+      }
+    } else if (flag === 'business') {
+      if (result === []) {
+        this.beginBusinessDate = '';
+        this.endBusinessDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
+        this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
       }
     }
   }

@@ -768,17 +768,17 @@
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">订单价格：</div> <div nz-col nzSpan="9">{{dataDetail.amount}}元</div> </div>
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> </div>
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">订单状态：</div> <div nz-col nzSpan="9">{{dataDetail.state === 0 ? '待支付' : dataDetail.state === 3 ? '已完成' : dataDetail.state === 7 ? '已取消' : dataDetail.state === 8 ? '交易关闭' : 'null'}}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">出生日期1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[0].birth}}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">出生日期2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1].birth}}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">性别1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1].gender === 0 ? '女' : '男' }}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">性别2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1].gender === 0 ? '女' : '男' }}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">出生日期1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[0] ? dataDetail.createPairOrders[0].birth : 'null'}}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder && dataDetail.createPairOrders[1]"> <div nz-col nzSpan="11" class="right_alignment">出生日期2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1] ? dataDetail.createPairOrders[1].birth : 'null'}}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder && dataDetail.createPairOrders[1]"> <div nz-col nzSpan="11" class="right_alignment">性别1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1] ? (dataDetail.createPairOrders[1].gender === 0 ? '女' : '男') : 'null' }}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder && dataDetail.createPairOrders[1]"> <div nz-col nzSpan="11" class="right_alignment">性别2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1] ? (dataDetail.createPairOrders[1].gender === 0 ? '女' : '男') : 'null' }}</div> </div>
               <div nz-row class="search_panel" *ngIf="dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">性别：</div> <div nz-col nzSpan="9">{{dataDetail.createFortuneOrder.gender === '0' ? '女' : '男' }}</div> </div>
               <div nz-row class="search_panel" *ngIf="dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">所在城市：</div> <div nz-col nzSpan="9">{{dataDetail.createFortuneOrder.birthLocation1}} {{dataDetail.createFortuneOrder.birthLocation2}}</div> </div>
               <div nz-row class="search_panel" *ngIf="dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">现居地：</div> <div nz-col nzSpan="9">{{dataDetail.createFortuneOrder.birthLocation2}}</div> </div>
               <div nz-row class="search_panel" *ngIf="dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">开始日期：</div> <div nz-col nzSpan="9">{{dataDetail.startDate}}</div> </div>
               <div nz-row class="search_panel" *ngIf="dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">结束日期：</div> <div nz-col nzSpan="9">{{dataDetail.endDate}}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">角色1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1].birth}}</div> </div>
-              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder"> <div nz-col nzSpan="11" class="right_alignment">角色2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1].birth}}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder && dataDetail.createPairOrders[1]"> <div nz-col nzSpan="11" class="right_alignment">角色1：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1] ? dataDetail.createPairOrders[1].birth : 'null'}}</div> </div>
+              <div nz-row class="search_panel" *ngIf="!dataDetail.createFortuneOrder && dataDetail.createPairOrders[1]"> <div nz-col nzSpan="11" class="right_alignment">角色2：</div> <div nz-col nzSpan="9">{{dataDetail.createPairOrders[1] ? dataDetail.createPairOrders[1].birth : 'null'}}</div> </div>
             </div>
 
             <div nz-row class="search_panel" *ngIf="!isHotelOrder">
@@ -854,7 +854,7 @@
             </div>
           </div>
 
-          <nz-table #rowSelectionUserTable [nzData]="adjustData" [nzSimple]="true" [nzShowPagination]="false">
+          <nz-table #rowSelectionUserTable [nzData]="adjustData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1125,7 +1125,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionRechargeTable [nzData]="rechargeData" [nzSimple]="true" [nzShowPagination]="true">
+          <nz-table #rowSelectionRechargeTable [nzData]="rechargeData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1193,7 +1193,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionInvoiceTable [nzData]="invoiceData" [nzSimple]="true" [nzShowPagination]="true">
+          <nz-table #rowSelectionInvoiceTable [nzData]="invoiceData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>

@@ -328,7 +328,7 @@
               <button nz-button nzType="primary" (click)="loadData('invoiceLog')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #rowInvoiceTimeTable [nzData]="invoiceLogInfo.adminBillLogsList" [nzSimple]="true">
+          <nz-table #rowInvoiceLogTable [nzData]="invoiceLogInfo.adminBillLogsList" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -343,7 +343,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowInvoiceTimeTable.data; let i=index;">
+              <tr *ngFor="let data of rowInvoiceLogTable.data; let i=index;">
                 <td>{{i + 1}}</td>
                 <td>{{data.userAccountID}}</td>
                 <td>{{data.userName}}</td>
@@ -353,6 +353,64 @@
                 <td>{{data.adminName}}</td>
                 <td>{{data.operaTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>{{data.open === true ? '开启可开票状态' : '关闭可开票状态'}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
+        <nz-tab nzTitle="商务合作" (nzClick)="changePanel('business')" *ngIf="commonService.haveMenuPermission('children', '开票记录')">
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchBusinessForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                人名查询：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="name" placeholder="输入人名查询" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                联系内容查询：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input maxlength="32" formControlName="content" placeholder="输入联系内容查询" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                电话号码查询：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="phone" placeholder="输入电话号码查询" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                日期查询：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'business')"></nz-range-picker>
+              </div>
+
+            </form>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('business')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+          <nz-table #rowBusinessTable [nzData]="businessInfo" [nzSimple]="true">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>时间</th>
+                <th>手机号</th>
+                <th>姓名</th>
+                <th>联系内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowBusinessTable.data; let i=index;">
+                <td>{{i + 1}}</td>
+                <td>{{data.createDate}}</td>
+                <td>{{data.phone}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.content}}</td>
               </tr>
             </tbody>
           </nz-table>

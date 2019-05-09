@@ -49,6 +49,21 @@ export class InvoiceService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取所有列表 */
+  getBusinessList(data): Observable<IResponse<any>> {
+    let url = `http://aliyun-sz3.chewrobot.com:41008/v2/api/business/cooperation?page=0&pageSize=999`;
+    url += data.startDate && data.startDate !== null ? '&startDate=' + data.startDate : '';
+    url += data.endDate && data.endDate !== null ? '&endDate=' + data.endDate : '';
+    url += data.phone ? '&phone=' + data.phone : '';
+    url += data.content ? '&content=' + data.content : '';
+    url += data.name ? '&name=' + data.name : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
   /** 修改启用状态 */
   updateSwitch(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}`;
