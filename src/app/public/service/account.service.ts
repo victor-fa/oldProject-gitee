@@ -121,7 +121,7 @@ export class AccountService extends AppServiceBase {
 
   /** 查询-管理员操作日志查询接口 */
   getOperationlogList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/audit/list?size=8`
+    const url = `${this.commonService.baseUrl}/audit/list?page=0&size=999`
         + (data.op_category ? '&op_category=' + data.op_category : '')
         + (data.op_page ? '&op_page=' + data.op_page : '')
         + (data.op_time_end ? '&op_time_end=' + data.op_time_end : '')

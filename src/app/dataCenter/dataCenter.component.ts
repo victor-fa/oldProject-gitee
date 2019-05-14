@@ -1,11 +1,11 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { DataCenterService } from '../public/service/dataCenter.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { Router } from '@angular/router';
 
 registerLocaleData(zh);
 
@@ -26,15 +26,21 @@ export class DataCenterComponent implements OnInit {
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = '';
   endDate = '';
-  myDate = new Date();
-  localStorageTime = localStorage.getItem('dataCenterTime');
   isSpinning = false;
+  currentPanel = 'dataApp';
+  commonDataCenter: any = [];
+  dataCenterStatus = 'all';
+  currentTitle = 'APP总览';
+  checkDataOptions = {};
+  currentTabNum = 0;
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
     private modalService: NzModalService,
     private fb: FormBuilder,
     private datePipe: DatePipe,
+    private router: Router,
+    private routerParams: ActivatedRoute,
     private notification: NzNotificationService,
     private _router: Router,
   ) {
@@ -42,6 +48,32 @@ export class DataCenterComponent implements OnInit {
     this._initSearchForm();
     this.beginDate = this.commonService.getDay(-7);
     this.endDate = this.commonService.getDay(-1);
+    this.checkDataOptions = {
+      // tslint:disable-next-line:max-line-length
+      'dataApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'keepApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true } ],
+      // tslint:disable-next-line:max-line-length
+      'overview': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'product': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'error': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'ticket': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'train': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'hotel': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'weather': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'navigate': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'taxi': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      // tslint:disable-next-line:max-line-length
+      'music': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+    };
   }
 
   ngOnInit() {
@@ -49,50 +81,92 @@ export class DataCenterComponent implements OnInit {
   }
 
   initData(): void {
-    const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
-    localStorage.setItem('beginDate', this.beginDate);
-    localStorage.setItem('endDate', this.endDate);
+    // this.doSearch();
+    this.routerParams.queryParams.subscribe((params: ParamMap) => {
+      this.currentTabNum = params['currentTab'] - 1;
+    });
+    switch (Number(this.currentTabNum) + 1) {
+      case 1:
+        this.currentPanel = 'dataApp';
+        break;
+      case 2:
+        console.log('keepApp');
+        this.currentPanel = 'keepApp';
+        break;
+      case 3:
+        this.currentPanel = 'overview';
+        break;
+      case 4:
+        this.currentPanel = 'product';
+        break;
+      case 5:
+        this.currentPanel = 'error';
+        break;
+      case 6:
+        this.currentPanel = 'ticket';
+        break;
+      case 7:
+        this.currentPanel = 'train';
+        break;
+      case 8:
+        this.currentPanel = 'hotel';
+        break;
+      case 9:
+        this.currentPanel = 'weather';
+        break;
+      case 10:
+        this.currentPanel = 'navigate';
+        break;
+      case 11:
+        this.currentPanel = 'taxi';
+        break;
+      case 12:
+        this.currentPanel = 'music';
+        break;
+      default:
+        break;
+    }
+    this.doSearch();
   }
 
   // 获取单元数据
   loadUnitData(platform, origin): void {
-    const currentTime = this.myDate.getFullYear() + '-' + (this.myDate.getMonth() + 1) + '-' + this.myDate.getDate(); // 用于比较时间
     let flag = 'user-behavior';
-    switch (this.commonService.currentTitle) {
-      case 'APP':
+    switch (this.currentPanel) {
+      case 'dataApp':
         flag = 'user-behavior';
         break;
-      case '留存':
+      case 'keepApp':
         flag = 'retentions';
         break;
-      case 'BOT总览':
+      case 'overview':
         flag = 'bot-awaken';
         break;
-      case '产品':
+      case 'product':
         flag = 'user-behavior';
         break;
-      case '异常表述':
+      case 'error':
         flag = 'bot-exception';
         break;
-      case '机票BOT':
+      case 'ticket':
         flag = 'flight-bot';
         break;
-      case '火车BOT':
+      case 'train':
         flag = 'train-bot';
         break;
-      case '酒店BOT':
+      case 'hotel':
         flag = 'hotel-bot';
         break;
-      case '天气BOT':
+      case 'weather':
         flag = 'weather-bot';
         break;
-      case '导航BOT':
+      case 'navigate':
         flag = 'navigation-bot';
         break;
-      case '打车BOT':
+      case 'taxi':
         flag = 'taxi-bot';
         break;
-      case '音频BOT':
+      case 'music':
         flag = 'music-bot';
         break;
       default:
@@ -101,10 +175,14 @@ export class DataCenterComponent implements OnInit {
     this.isSpinning = true; // loading
     this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
       if (res.retcode === 0 && res.status !== 500) {
-        localStorage.setItem('dataCenter', res.payload);
-        this.commonService.commonDataCenter = JSON.parse(res.payload).reverse();
-        localStorage.setItem('dataCenterTime', currentTime);
+        this.commonDataCenter = JSON.parse(res.payload).reverse();
         this.isSpinning = false;  // loading
+        const operationInput = {
+          op_category: '数据中心',
+          op_page: this.currentTitle,
+          op_name: '访问'
+        };
+        this.commonService.updateOperationlog(operationInput).subscribe();
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }
@@ -113,15 +191,12 @@ export class DataCenterComponent implements OnInit {
 
   // 查询
   doSearch(): void {
-    const params = this.searchForm.controls['status'].value;
-    this.commonService.dataCenterStatus = params;
-    this.commonService.needDataCenter = false;
+    const params = this.searchForm.controls['status'].value === '' ? 'all' : this.searchForm.controls['status'].value;
+    this.dataCenterStatus = params;
     if (params === 'all') {
       const platform = '';
       const origin = '';
       this.loadUnitData(platform, origin);
-      localStorage.setItem('beginDate', this.beginDate);
-      localStorage.setItem('endDate', this.endDate);
       localStorage.setItem('isDataCenterSearch', 'true');
     } else {
       if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
@@ -161,6 +236,13 @@ export class DataCenterComponent implements OnInit {
 
   hideExplain() {
     this.isExplainVisiable = false;
+  }
+
+  // 切换面板
+  changePanel(flag): void {
+    if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch(); }
+    // tslint:disable-next-line:max-line-length
+    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : '';
   }
 
 }

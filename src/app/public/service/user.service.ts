@@ -40,8 +40,7 @@ export class UserService extends AppServiceBase {
     url += data.registerEnd && data.registerEnd !== null ? '&registerEnd=' + data.registerEnd : '';
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.userId ? '&userId=' + data.userId : '';
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
+    return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
   /**
@@ -49,8 +48,11 @@ export class UserService extends AppServiceBase {
    */
   getFeedBackInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
-      .get<IResponse<any>>(url);
+      .get<IResponse<any>>(url, this.options);
   }
 
   /**
@@ -58,8 +60,10 @@ export class UserService extends AppServiceBase {
    */
   getOppositionInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/v2/estimate?estimate=false&page=0&pageSize=2000`;
-    return this.httpClient
-      .get<IResponse<any>>(url);
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
   /**
@@ -67,8 +71,10 @@ export class UserService extends AppServiceBase {
    */
   getAgreeInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/v2/estimate?estimate=true&page=0&pageSize=2000`;
-    return this.httpClient
-      .get<IResponse<any>>(url);
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
   /**
@@ -79,7 +85,6 @@ export class UserService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${userApiUrls.users}`;
     const body = `infoId=${infoId}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' })
     };
     return this.httpClient
@@ -106,7 +111,6 @@ export class UserService extends AppServiceBase {
     localStorage.setItem('FullChildrenResource', '');
     localStorage.setItem('AppHeaderAllow', '');
     localStorage.setItem('currentUser', '');
-    localStorage.setItem('dataCenterUrl', '');
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
@@ -154,43 +158,7 @@ export class UserService extends AppServiceBase {
             // tslint:disable-next-line:max-line-length
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
             setTimeout(() => {
-              localStorage.setItem('dataCenterUrl', '');
-              let dataCenterUrl = 'app';
               let target = 'appVersion';
-              if (childrenArr.indexOf('App总览') <= -1) { // 不存在
-                dataCenterUrl = 'keepApp';
-                if (childrenArr.indexOf('App留存') <= -1) { // 不存在
-                  dataCenterUrl = 'overview';
-                  if (childrenArr.indexOf('BOT总览') <= -1) { // 不存在
-                    dataCenterUrl = 'product';
-                    if (childrenArr.indexOf('产品权限') <= -1) { // 不存在
-                      dataCenterUrl = 'error';
-                      if (childrenArr.indexOf('异常表述') <= -1) { // 不存在
-                        dataCenterUrl = 'ticket';
-                        if (childrenArr.indexOf('机票BOT') <= -1) { // 不存在
-                          dataCenterUrl = 'train';
-                          if (childrenArr.indexOf('火车BOT') <= -1) { // 不存在
-                            dataCenterUrl = 'hotel';
-                            if (childrenArr.indexOf('酒店BOT') <= -1) { // 不存在
-                              dataCenterUrl = 'weather';
-                              if (childrenArr.indexOf('天气BOT') <= -1) { // 不存在
-                                dataCenterUrl = 'navigate';
-                                if (childrenArr.indexOf('导航BOT') <= -1) { // 不存在
-                                  dataCenterUrl = 'taxi';
-                                  if (childrenArr.indexOf('打车BOT') <= -1) { // 不存在
-                                    dataCenterUrl = 'music';
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              localStorage.setItem('dataCenterUrl', dataCenterUrl); // 数据中心动态路由
               if (menuArr.indexOf('APP管理') <= -1) { // 不存在
                 target = 'customer';
                 if (menuArr.indexOf('客服中心') <= -1) { // 不存在

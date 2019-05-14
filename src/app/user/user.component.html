@@ -708,6 +708,7 @@
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">订单类型：</div> <div nz-col nzSpan="9">{{dataDetail.orderType}}</div> </div>
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">出行时间：</div> <div nz-col nzSpan="9">{{dataDetail.startTime}}</div> </div>
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">实付价格：</div> <div nz-col nzSpan="9">{{dataDetail.paymentPrice}}</div> </div>
+              <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">平台订单号：</div> <div nz-col nzSpan="9">{{dataDetail.sourceId}}</div> </div>
               <div nz-row class="search_panel"> <div nz-col nzSpan="11" class="right_alignment">供应商订单号：</div> <div nz-col nzSpan="9">{{dataDetail.actualId}}</div> </div>
             </div>
 
@@ -1235,8 +1236,8 @@
               <div nz-col nzSpan="4" class="right_alignment">申请时间：</div> <div nz-col nzSpan="8">{{invoiceItem.createTime}}</div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="4" class="right_alignment">开票状态：</div> <div nz-col nzSpan="8">{{invoiceItem.state}}</div>
-              <div nz-col nzSpan="4" class="right_alignment">开票类型：</div> <div nz-col nzSpan="8">{{invoiceItem.type}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">开票状态：</div> <div nz-col nzSpan="8">{{invoiceItem.state === 0 ? '开票失败' : invoiceItem.state === 1 ? '已开票' : invoiceItem.state === 2 ? '开票中' : invoiceItem.state === 3 ? '待开票' : 'null'}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">开票类型：</div> <div nz-col nzSpan="8">{{invoiceItem.orderType === 'FlightOrder' ? '机票' : invoiceItem.orderType === 'HotelOrder' ? '酒店' : invoiceItem.orderType === 'TaxiOrder' ? '打车' : invoiceItem.orderType === 'ExpressOrde' ? '闪送' : 'null'}}</div>
             </div>
             <div *ngIf="invoiceItem.invoiceMsg">
               <div nz-row class="search_panel">

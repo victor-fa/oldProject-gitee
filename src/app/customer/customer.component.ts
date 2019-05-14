@@ -258,8 +258,8 @@ export class CustomerComponent implements OnInit {
         return;
       }
       if (result[0] !== '' || result[1] !== '') {
-        this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
+        this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
       }
     }
   }

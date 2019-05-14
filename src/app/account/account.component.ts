@@ -184,12 +184,12 @@ export class AccountComponent implements OnInit {
       this.accountService.getOperationlogList(operationlogItem).subscribe(res => {
         let dataOperationlog = [];
         if (this.unCheckVisit) {
-          JSON.parse(res.payload).reverse().forEach(item => {
+          JSON.parse(res.payload).forEach(item => {
             if (item.opName === '访问') { return; }
             dataOperationlog.push(item);
           });
         } else {
-          dataOperationlog = JSON.parse(res.payload).reverse();
+          dataOperationlog = JSON.parse(res.payload);
         }
         this.dataOperationlog = dataOperationlog;
       });

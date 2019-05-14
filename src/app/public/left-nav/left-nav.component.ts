@@ -57,7 +57,6 @@ export class LeftNavComponent implements OnInit {
     localStorage.removeItem('FullChildrenResource');
     localStorage.removeItem('AppHeaderAllow');
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('dataCenterUrl');
     window.location.href = '/login';
   }
 
