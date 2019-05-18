@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 interface Footer {
     brand: string;
     certificate: string;
+    jiaoyou: string;
 }
 
 @Component({
@@ -22,11 +23,13 @@ export class FooterComponent {
     footers: Footer[] = [
         {
             brand: '深圳市人马互动科技有限公司',
-            certificate: '粤ICP备16128928号'
+            certificate: '粤ICP备16128928号',
+            jiaoyou: '交游天下'
         },
         {
             brand: 'Centaurs Technologies Co., Ltd.',
-            certificate: '粤ICP备16128928号'
+            certificate: '粤ICP备16128928号',
+            jiaoyou: '交游天下'
         }
     ];
 
