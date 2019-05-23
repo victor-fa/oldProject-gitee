@@ -142,34 +142,36 @@ export class ActivityComponent implements OnInit {
   }
 
   loadData(flag) {
+    this.isSpinning = true; // loading
     if (flag === 'activity') {
       this.searchActivityItem.actName = this.searchActivityForm.controls['actName'].value;
       this.searchActivityItem.actStatus = this.searchActivityForm.controls['actStatus'].value;
       this.activityService.getActivityList(this.searchActivityItem).subscribe(res => {
-        if (res.payload === '') {
+        if (res.retcode === 0 && res.status !== 500 && res.payload !== '') {
+          this.isSpinning = false;
+          this.dataActivity = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.dataActivity.forEach(data => {
+            let actGiftNo = '';
+            let count = 0;
+            if (data.actTypeBo && data.actTypeBo !== undefined) {
+              actGiftNo = data.actTypeBo.actGiftNo;
+            }
+            if (data.actGiftRuleConfigL) {
+              data.actGiftRuleConfigL.forEach(item => {
+                if (item.actCouponRulePoL && item.actGiftNo === actGiftNo) {
+                  item.actCouponRulePoL.forEach(cell => {
+                    count += cell.quantity;
+                  });
+                }
+              });
+            }
+            data.allQuantity = count;
+          });
+        } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          return;
         }
-        this.dataActivity = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.dataActivity.forEach(data => {
-          let actGiftNo = '';
-          let count = 0;
-          if (data.actTypeBo && data.actTypeBo !== undefined) {
-            actGiftNo = data.actTypeBo.actGiftNo;
-          }
-          if (data.actGiftRuleConfigL) {
-            data.actGiftRuleConfigL.forEach(item => {
-              if (item.actCouponRulePoL && item.actGiftNo === actGiftNo) {
-                item.actCouponRulePoL.forEach(cell => {
-                  count += cell.quantity;
-                });
-              }
-            });
-          }
-          data.allQuantity = count;
-        });
       });
     } else if (flag === 'couponInActivity') {
       if (this.beginCouponDate === null) {
@@ -184,34 +186,49 @@ export class ActivityComponent implements OnInit {
         ctimeEnd: this.endCouponDate + 'T23:59:59.999Z',
       };
       this.couponService.getCouponList(searchCouponItem).subscribe(res => {
-        if (res.payload === '') {
+        if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
+          this.isSpinning = false;
+          if (res.payload === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+            return;
+          }
+          this.dataSearchCoupon = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          return;
         }
-        this.dataSearchCoupon = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'newCoupon') {
       this.activityService.getNewCouponList(this.baseInfoId).subscribe(res => {
-        this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
-        if (res.payload === '' || res.payload === 'null') {
-          return;
+        if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
+          this.isSpinning = false;
+          this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
+          if (res.payload === '' || res.payload === 'null') {
+            return;
+          }
+          this.couponListArr = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.couponListArr.forEach(item => {
+            const tempObject = { value: item.actGiftNo, label: item.actGiftNo };
+            this.actGiftNoArr.push(tempObject);
+          });
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
-        this.couponListArr = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.couponListArr.forEach(item => {
-          const tempObject = { value: item.actGiftNo, label: item.actGiftNo };
-          this.actGiftNoArr.push(tempObject);
-        });
       });
     } else if (flag === 'coupon') {
       this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
-        this.dataCoupon = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        console.log(this.dataCoupon);
+        if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
+          this.isSpinning = false;
+          this.dataCoupon = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.dataCoupon);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'batchsendList') {
       const batchsend = {
@@ -219,14 +236,19 @@ export class ActivityComponent implements OnInit {
         sendEndTime: this.endBatchsendDate
       };
       this.batchsendService.getBatchsendList(batchsend).subscribe(res => {
-        this.dataBatchsend = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        if (this.dataBatchsend.length > 0) {
-          this.dataBatchsend.forEach(item => {
-            // tslint:disable-next-line:max-line-length
-            item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
-          });
+        if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
+          this.isSpinning = false;
+          this.dataBatchsend = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          if (this.dataBatchsend.length > 0) {
+            this.dataBatchsend.forEach(item => {
+              // tslint:disable-next-line:max-line-length
+              item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
+            });
+          }
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'couponInBatchsend') {
@@ -242,23 +264,23 @@ export class ActivityComponent implements OnInit {
         ctimeEnd: this.endCouponInBatchsendDate + 'T23:59:59.999Z',
       };
       this.couponService.getCouponList(searchCouponItem).subscribe(res => {
-        if (res.payload === '') {
+        if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
+          this.isSpinning = false;
+          this.dataSearchCouponInBatchsend = JSON.parse(res.payload);
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          return;
         }
-        this.dataSearchCouponInBatchsend = JSON.parse(res.payload);
-        const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
       });
     } else if (flag === 'bean') {
-      this.isSpinning = true; // loading
       const beanInput = {
         title: this.searchBeanForm.controls['title'].value,
         beginTime: this.beginBeanDate,
         endTime: this.endBeanDate
       };
       this.xiaowubeanService.getXiaowubeanList(beanInput).subscribe(res => {
-        if (res.retcode === 0 && res.status !== 500) {
+        if (res.retcode === 0 && res.status === 200) {
           this.beanData = JSON.parse(res.payload);
           const operationInput = { op_category: '活动管理', op_page: '充值送豆', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();

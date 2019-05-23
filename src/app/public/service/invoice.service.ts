@@ -51,7 +51,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getBusinessList(data): Observable<IResponse<any>> {
-    let url = `http://account-center-test.chewrobot.com/api/admin/business/cooperation?page=0&pageSize=999`;
+    let url = `${this.commonService.baseUrl}/business/cooperation?page=0&pageSize=999`;
     url += data.startDate && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate && data.endDate !== null ? '&endDate=' + data.endDate : '';
     url += data.phone ? '&phone=' + data.phone : '';

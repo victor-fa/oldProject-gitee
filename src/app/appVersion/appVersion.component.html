@@ -13,7 +13,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
             </div>
           </div>
-          <nz-table #contentTable [nzData]="dataContent" [nzScroll]="{x:'1800px'}">
+          <nz-table #contentTable [nzData]="dataContent" [nzScroll]="{x:'1800px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -45,6 +45,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
           <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="750" nzTitle="新增APP版本" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('content')">
@@ -258,7 +261,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('guide')"><i class="anticon anticon-file-add"></i>新增模板</button>
             </div>
           </div>
-          <nz-table #guideTable [nzData]="dataGuide">
+          <nz-table #guideTable [nzData]="dataGuide" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -289,6 +292,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
           <nz-modal [(nzVisible)]="isAddGuideVisible || isModifyGuideVisible" nzWidth="950" nzTitle="{{isModifyGuideVisible ? '修改模板' : '新增模板'}}" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideModal('guide')">
             <form [formGroup]="addGuideForm">
@@ -403,7 +409,7 @@
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>选择文件</span>
                     </button>
-                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750px*300px&nbsp;&nbsp;限制大小：500K</font>
+                    <font color="#cccccc">&nbsp;&nbsp;建议尺寸：702px*400px&nbsp;&nbsp;限制大小：500K</font>
                   </nz-upload>
                 </div>
                 <div nz-col nzSpan="1"></div>
@@ -419,7 +425,7 @@
                 <div nz-col nzSpan="4" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
-                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750px*300px&nbsp;&nbsp;限制大小：500K</font>
+                  <font color="#cccccc">&nbsp;&nbsp;建议尺寸：702px*400px&nbsp;&nbsp;限制大小：500K</font>
                 </div>
                 <div nz-col nzSpan="5"></div>
                 <div nz-col nzSpan="1"></div>
@@ -474,7 +480,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('help')"><i class="anticon anticon-file-add"></i>新增技能</button>
             </div>
           </div>
-          <nz-table #helpTable [nzData]="dataHelp">
+          <nz-table #helpTable [nzData]="dataHelp" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -511,6 +517,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
           <nz-modal [(nzVisible)]="isAddHelpVisible" nzWidth="1150" nzTitle="新增技能" [nzFooter]="addHelpModalFooter" (nzOnCancel)="hideModal('addHelp')">
             <form [formGroup]="addHelpForm">
@@ -568,7 +577,7 @@
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="guides" [(ngModel)]="helpDate.guides" placeholder="技能话术至少填写3句&#13;&#10;每句限制22字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guides" placeholder="技能话术至少填写3句&#13;&#10;每句限制20字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -646,7 +655,7 @@
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
-                  <textarea formControlName="guides" [(ngModel)]="helpDate.guideArr" placeholder="技能话术至少填写3句&#13;&#10;每句限制22字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
+                  <textarea formControlName="guides" [(ngModel)]="helpDate.guideArr" placeholder="技能话术至少填写3句&#13;&#10;每句限制20字符&#13;&#10;以换行进行区分" rows="10" nz-input></textarea>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -675,7 +684,7 @@
               <nz-radio-group [(ngModel)]="currentProtocol" (ngModelChange)="chooseProtocol($event)">
                 <label nz-radio nzValue="1">火车退票/改签协议</label>
                 <label nz-radio nzValue="2">火车票服务协议</label>
-                <label nz-radio nzValue="3">机票退改及行李额说明</label>
+                <!-- <label nz-radio nzValue="3">机票退改及行李额说明</label> -->
                 <label nz-radio nzValue="4">关于我们</label>
                 <label nz-radio nzValue="5">版本更新说明</label>
                 <label nz-radio nzValue="6">版本功能介绍</label>
@@ -718,20 +727,21 @@
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="流程点引导" (nzClick)="changePanel('flowPoint')" *ngIf="commonService.haveMenuPermission('children', '协议管理')">
+        <nz-tab nzTitle="流程点引导" (nzClick)="changePanel('flowPoint')" *ngIf="commonService.haveMenuPermission('children', '流程点引导')">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('flowPoint')"><i class="anticon anticon-file-add"></i>新建流程点</button>
             </div>
           </div>
-          <nz-table #flowPointTable [nzData]="dataFlowPoint">
+          <nz-table #flowPointTable [nzData]="dataFlowPoint" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">bot功能</th>
                 <th nzWidth="20px">流程点名称</th>
                 <th nzWidth="20px">对应后台返回话术</th>
+                <th nzWidth="20px">指引语</th>
                 <th nzWidth="20px">修改时间</th>
                 <th nzWidth="20px">启用状态</th>
                 <th nzWidth="20px">操作</th>
@@ -740,20 +750,20 @@
             <tbody>
               <tr *ngFor="let data of flowPointTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.name}}</td>
-                <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/skills/images/' + data.image" class="thumbnail" style="width: 32px"></td>
-                <td>{{data.type === 'TRAVEL'? '出行' : data.type === 'LIFE' ? '生活' : data.type === 'AMUSEMENT' ? '娱乐' : data.type === 'TOOL' ? '工具' : 'null'}}</td>
-                <td>{{data.order}}</td>
-                <td nzTitle="{{data.guides.join('、')}}" nzPlacement="bottom" nz-tooltip><a>{{data.guides[0]}}</a></td>
+                <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.botMsg}}</td>
+                <td nzTitle="{{data.guide ? data.guide.join(',') : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guide ? data.guide[0] : ''}}</a></td>
+                <td>{{data.mtime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'flowPoint')"></nz-switch>
+                      <nz-switch [(ngModel)]="data.status" (click)="clickSwitch(data, 'flowPoint')"></nz-switch>
                     </nz-form-control>
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'flowPoint')" style="margin-right: 10px;"><i
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'modifyFlowPoint')" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
                   <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'flowPoint')" style="margin-right: 10px;"><i
                       class="anticon anticon-delete"></i>删除</button>
@@ -761,6 +771,133 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <!-- 弹框 —— 新增 —— 新增流程点引导 -->
+          <nz-modal [(nzVisible)]="isAddFlowPointVisible" nzWidth="750" nzTitle="新增流程点引导" [nzFooter]="addFlowPointModalFooter" (nzOnCancel)="hideModal('addFlowPoint')">
+            <form [formGroup]="addFlowPointForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">bot选择：</div>
+                <div nz-col nzSpan="12" class="span_down">
+                  <nz-select [(ngModel)]="flowPointDate.botName" formControlName="botName">
+                    <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
+                    <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
+                    <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
+                    <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
+                    <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
+                    <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
+                    <nz-option required [nzLabel]="'电影票'" nzValue="TAXI"></nz-option>
+                    <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
+                    <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
+                    <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
+                    <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
+                    <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
+                    <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
+                    <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">流程点名称：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">对应后台话术：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="5" class="span_down right_alignment">设置指引语：</div>
+                <div nz-col nzSpan="12">
+                  <textarea rows="4" formControlName="guide" [ngModel]="flowPointDate.guideArr" nz-input placeholder="请输入指引语"></textarea>
+                </div>
+                <div nz-col nzSpan="4"></div>
+              </div>
+
+            </form>
+            <!-- 弹框和底部定制 -->
+            <ng-template #addFlowPointModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addFlowPoint')">保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addFlowPoint')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 修改 —— 修改流程点引导 -->
+          <nz-modal [(nzVisible)]="isModifyFlowPointVisible" nzWidth="750" nzTitle="修改流程点引导" [nzFooter]="modifyFlowPointModalFooter" (nzOnCancel)="hideModal('modifyFlowPoint')">
+              <form [formGroup]="modifyFlowPointForm">
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="3"></div>
+                  <div nz-col nzSpan="5" class="span_down right_alignment">bot选择：</div>
+                  <div nz-col nzSpan="12" class="span_down">
+                    <nz-select [ngModel]="flowPointDate.botName" formControlName="botName">
+                      <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
+                      <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
+                      <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
+                      <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
+                      <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
+                      <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
+                      <nz-option required [nzLabel]="'电影票'" nzValue="TAXI"></nz-option>
+                      <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
+                      <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
+                      <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
+                      <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
+                      <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
+                      <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
+                      <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                    </nz-select>
+                  </div>
+                  <div nz-col nzSpan="4"></div>
+                </div>
+
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="3"></div>
+                  <div nz-col nzSpan="5" class="span_down right_alignment">流程点名称：</div>
+                  <div nz-col nzSpan="12">
+                    <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
+                  </div>
+                  <div nz-col nzSpan="4"></div>
+                </div>
+
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="3"></div>
+                  <div nz-col nzSpan="5" class="span_down right_alignment">对应后台话术：</div>
+                  <div nz-col nzSpan="12">
+                    <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
+                  </div>
+                  <div nz-col nzSpan="4"></div>
+                </div>
+
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="3"></div>
+                  <div nz-col nzSpan="5" class="span_down right_alignment">设置指引语：</div>
+                  <div nz-col nzSpan="12">
+                    <textarea rows="4" formControlName="guide" [ngModel]="flowPointDate.guideArr" nz-input placeholder="请输入指引语"></textarea>
+                  </div>
+                  <div nz-col nzSpan="4"></div>
+                </div>
+
+              </form>
+              <!-- 弹框和底部定制 -->
+              <ng-template #modifyFlowPointModalFooter>
+                <button nz-button nzType="primary" (click)="doSave('modifyFlowPoint')">保存</button>
+                <button nz-button nzType="default" (click)="hideModal('modifyFlowPoint')">取消</button>
+              </ng-template>
+            </nz-modal>
         </nz-tab>
 
       </nz-tabset>

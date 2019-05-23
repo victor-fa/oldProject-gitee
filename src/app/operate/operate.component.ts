@@ -37,6 +37,7 @@ export class OperateComponent implements OnInit {
   isSaveANDROIDVoiceButton = false;
   voiceIOSRadioValue = 'baidu';
   voiceANDROIDRadioValue = 'baidu';
+  isSpinning = false;
   private timerList;
   private timerDetail;
 
@@ -75,29 +76,40 @@ export class OperateComponent implements OnInit {
   }
 
   loadData(flag) {
+    this.isSpinning = true;
     if (flag === 'taxi') {
       this.taxiItem.orderId = this.searchTaxiForm.controls['orderId'].value;
       this.taxiItem.startTime = this.beginDate;
       this.taxiItem.endTime = this.endDate;
       this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
-        this.dataTaxi = JSON.parse(res.payload);
-        const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0) {
+          this.isSpinning = false;
+          this.dataTaxi = JSON.parse(res.payload).reverse();
+          const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'voice') {
       this.voiceService.getVoiceList().subscribe(res => {
-        this.dataVoice = JSON.parse(res.payload);
-        const operationInput = { op_category: '运维后台', op_page: '语音配置' , op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.dataVoice.forEach(item => {
-          if (item.system === 'IOS') {
-            this.currentIOSVoiceId = item.id;
-            this.voiceIOSRadioValue = item.supplier;
-          } else if (item.system === 'ANDROID') {
-            this.currentANDROIDVoiceId = item.id;
-            this.voiceANDROIDRadioValue = item.supplier;
-          }
-        });
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataVoice = JSON.parse(res.payload);
+          const operationInput = { op_category: '运维后台', op_page: '语音配置' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.dataVoice.forEach(item => {
+            if (item.system === 'IOS') {
+              this.currentIOSVoiceId = item.id;
+              this.voiceIOSRadioValue = item.supplier;
+            } else if (item.system === 'ANDROID') {
+              this.currentANDROIDVoiceId = item.id;
+              this.voiceANDROIDRadioValue = item.supplier;
+            }
+          });
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     }
   }

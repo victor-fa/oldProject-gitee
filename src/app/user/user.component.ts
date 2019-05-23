@@ -106,6 +106,7 @@ export class UserComponent implements OnInit {
   bookingPhone = ''; // 用户管理跳实体服务订单传值
   userLocked = '';  // 用户状态下拉
   bookingType = '';
+  isSpinning = false;
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -147,6 +148,7 @@ export class UserComponent implements OnInit {
    * 查询全部
    */
   private loadData(flag): void {
+    this.isSpinning = true;
     if (flag === 'user') {
       const userInput = { locked: this.userLocked, loginBegin: this.begUserLoginDate,
         loginEnd: this.endUserLoginDate, registerBegin: this.begUserRegisterDate,
@@ -155,11 +157,10 @@ export class UserComponent implements OnInit {
         userId: this.searchUserForm.controls['userId'].value
       };
       this.userService.getUserInfoList(userInput).subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.userData = JSON.parse(res.payload);
-            console.log(this.userData);
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.userData = JSON.parse(res.payload);
+          console.log(this.userData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -173,7 +174,8 @@ export class UserComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
         this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType).subscribe(res => {
-          if (res.retcode === 0) {
+          if (res.retcode === 0 && res.status === 200) {
+            this.isSpinning = false;
             if (res.payload) {
               if (res.payload !== '') {
                 const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
@@ -203,7 +205,8 @@ export class UserComponent implements OnInit {
         end: this.endAdjustDate,
       };
       this.adjustService.getAdjustList(adjustInput).subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.adjustData = JSON.parse(res.payload).reverse();
@@ -224,7 +227,8 @@ export class UserComponent implements OnInit {
       });
     } else if (flag === 'operaters') {
       this.adjustService.getOperaters().subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           this.operatersData.splice(0, this.operatersData.length);
           JSON.parse(res.payload).forEach(item => {
             this.operatersData.push(item.phone);
@@ -240,7 +244,8 @@ export class UserComponent implements OnInit {
         phone: this.searchRechargeForm.controls['phone'].value
       };
       this.invoiceService.getRechargeListForUser(rechargeInput).subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           this.rechargeData = JSON.parse(res.payload).reverse();
           console.log(this.rechargeData);
         } else {
@@ -255,7 +260,8 @@ export class UserComponent implements OnInit {
       };
       console.log(invoiceInput);
       this.invoiceService.getInvoiceListForUser(invoiceInput).subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           this.invoiceData = JSON.parse(res.payload).reverse();
           console.log(this.invoiceData);
         } else {
@@ -265,7 +271,8 @@ export class UserComponent implements OnInit {
     } else if (flag === 'userInfoCommon') {
       const commonInput = { userId: this.commonUserId, queryType: this.currentUserCommonTab, };
       this.userService.getUserCommonInfo(commonInput).subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           if (res.payload) {
             if (this.currentUserCommonTab === 'TRAVELER') {
               this.userInfoCommonData = JSON.parse(res.payload).reverse();

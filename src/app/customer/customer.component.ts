@@ -19,9 +19,9 @@ export class CustomerComponent implements OnInit {
   pageSize = 10;
   feedBackPageSize = 1000;
   feedbackInfo = [];
-  oppositionInfo = [];
+  oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   agreeInfo = [];
-  invoiceTimeInfo = [];
+  invoiceTimeInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   invoiceLogInfo = [];
   businessInfo = [];
   oppositionPageSize = 1000;
@@ -29,15 +29,14 @@ export class CustomerComponent implements OnInit {
   isFeedBackVisible = false;
   isOppositionVisible = false;
   isAgreeVisible = false;
+  isBatchDownloadVisible = false;
   currentOppositionAgreeId = '';  // 弹框后的id
   searchInvoiceTimeForm: FormGroup;
   searchInvoiceLogForm: FormGroup;
   searchBusinessForm: FormGroup;
-  tempFeedBack = {
-    'words': '',
-    'photo': '',
-    'number': ''
-  };
+  batchDownloadForm: FormGroup;
+  batchDownloadDate = { 'botName': '', 'number': '', 'estimate': '', 'date': '', 'userPhone': '' };
+  tempFeedBack = { 'words': '', 'photo': '', 'number': '' };
   tempOpposition = { session: '' };
   tempAgree = { session: '' };
   currentPanel = 'feedback';
@@ -47,7 +46,13 @@ export class CustomerComponent implements OnInit {
   endInvoiceLogDate = '';
   beginBusinessDate = '';
   endBusinessDate = '';
+  beginBatchFirstDate = '';
+  endBatchFirstDate = '';
+  beginBatchSecondDate = '';
+  endBatchSecondDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
+  isSpinning = false;
+  currentBatchSelected = '1';
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -71,38 +76,77 @@ export class CustomerComponent implements OnInit {
    * 查询全部
    */
   private loadData(flag): void {
+    this.isSpinning = true;
     if (flag === 'feedback') {
       this.userService.getFeedBackInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.feedbackInfo = JSON.parse(res.payload).reverse();
-            const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.feedbackInfo = JSON.parse(res.payload).reverse();
+          console.log(this.feedbackInfo);
+          const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'opposition') {
       this.userService.getOppositionInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.oppositionInfo = JSON.parse(res.payload);
-            const operationInput = { op_category: '客服中心', op_page: '点踩日志' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.oppositionInfo = JSON.parse(res.payload);
+          this.oppositionInfo.forEach(item => {
+            if (item.session !== undefined) {
+              const ask = [];
+              const answer = [];
+              item.session.forEach(cell => {
+                if (cell.businessAnswer !== undefined) {  // 齐悟回答
+                  ask.push(cell.businessAnswer);
+                }
+                if (cell.ask !== undefined) { // 子bot回答
+                  answer.push(cell.ask);
+                }
+                if (cell.cpsAnswer !== undefined) { // 问
+                  answer.push(cell.cpsAnswer);
+                }
+                item.ask = ask;
+                item.answer = answer;
+              });
+            }
+          });
+          console.log(this.oppositionInfo);
+          const operationInput = { op_category: '客服中心', op_page: '点踩日志' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'agree') {
       this.userService.getAgreeInfo().subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.agreeInfo = JSON.parse(res.payload);
-            const operationInput = { op_category: '客服中心', op_page: '点赞日志' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.agreeInfo = JSON.parse(res.payload);
+          this.agreeInfo.forEach(item => {
+            if (item.session !== undefined) {
+              const ask = [];
+              const answer = [];
+              item.session.forEach(cell => {
+                if (cell.businessAnswer !== undefined) {  // 齐悟回答
+                  ask.push(cell.businessAnswer);
+                }
+                if (cell.ask !== undefined) { // 子bot回答
+                  answer.push(cell.ask);
+                }
+                if (cell.cpsAnswer !== undefined) { // 问
+                  answer.push(cell.cpsAnswer);
+                }
+                item.ask = ask;
+                item.answer = answer;
+              });
+            }
+          });
+          console.log(this.agreeInfo);
+          const operationInput = { op_category: '客服中心', op_page: '点赞日志' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -116,13 +160,12 @@ export class CustomerComponent implements OnInit {
         phone: this.searchInvoiceTimeForm.controls['phone'].value,
       };
       this.invoiceService.getInvoiceTimeList(invoiceTimeInput).subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.invoiceTimeInfo = JSON.parse(res.payload);
-            const operationInput = { op_category: '客服中心', op_page: '开票时间管理' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-            console.log(this.invoiceTimeInfo);
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.invoiceTimeInfo = JSON.parse(res.payload);
+          const operationInput = { op_category: '客服中心', op_page: '开票时间管理' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.invoiceTimeInfo);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -136,13 +179,12 @@ export class CustomerComponent implements OnInit {
         phone: this.searchInvoiceLogForm.controls['phone'].value,
       };
       this.invoiceService.getInvoiceLogList(invoiceTimeInput).subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.invoiceLogInfo = JSON.parse(res.payload);
-            const operationInput = { op_category: '客服中心', op_page: '开票管理日志' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-            console.log(this.invoiceLogInfo);
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.invoiceLogInfo = JSON.parse(res.payload);
+          const operationInput = { op_category: '客服中心', op_page: '开票管理日志' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.invoiceLogInfo);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -156,13 +198,12 @@ export class CustomerComponent implements OnInit {
         name: this.searchBusinessForm.controls['name'].value,
       };
       this.invoiceService.getBusinessList(businessInput).subscribe(res => {
-        if (res.payload !== '') {
-          if (res.status === 200) {
-            this.businessInfo = JSON.parse(res.payload);
-            const operationInput = { op_category: '客服中心', op_page: '商务合作' , op_name: '访问' };
-            this.commonService.updateOperationlog(operationInput).subscribe();
-            console.log(this.businessInfo);
-          }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.businessInfo = JSON.parse(res.payload);
+          const operationInput = { op_category: '客服中心', op_page: '商务合作' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.businessInfo);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -174,59 +215,101 @@ export class CustomerComponent implements OnInit {
     this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchBusinessForm = this.fb.group({ phone: [''], name: [''], content: [''], date: [''], });
+    this.batchDownloadForm = this.fb.group({ botName: [''], number: [''], estimate: [''], date: [''], userPhone: [''], selected: [''] });
   }
 
-  // 反馈详情
-  showFeedbackInfo(data): void {
-    this.isFeedBackVisible = true;
-    this.tempFeedBack = data;
+  showModal(data, flag) {
+    if (flag === 'opposition') {
+      this.isOppositionVisible = true;
+      this.tempOpposition = data;
+      this.currentOppositionAgreeId = data.id;
+    } else if (flag === 'batchDownload') {
+      this.isBatchDownloadVisible = true;
+    } else if (flag === 'feedBack') {
+      this.isFeedBackVisible = true;
+      this.tempFeedBack = data;
+    } else if (flag === 'agree') {
+      this.isAgreeVisible = true;
+      this.tempAgree = data;
+      this.currentOppositionAgreeId = data.id;
+    }
   }
 
-  hideFeedBack(): void {
-    this.isFeedBackVisible = false;
-  }
-
-  // 点踩详情
-  showOppositionInfo(data): void {
-    this.isOppositionVisible = true;
-    this.tempOpposition = data;
-    this.currentOppositionAgreeId = data.id;
-  }
-
-  hideOpposition(): void {
-    this.isOppositionVisible = false;
-  }
-
-  // 点赞详情
-  showAgreeInfo(data): void {
-    this.isAgreeVisible = true;
-    this.tempAgree = data;
-    this.currentOppositionAgreeId = data.id;
-  }
-
-  hideAgree(): void {
-    this.isAgreeVisible = false;
+  hideModal(flag) {
+    if (flag === 'opposition') {
+      this.isOppositionVisible = false;
+    } else if (flag === 'batchDownload') {
+      this.isBatchDownloadVisible = false;
+    } else if (flag === 'feedBack') {
+      this.isFeedBackVisible = false;
+    } else if (flag === 'agree') {
+      this.isAgreeVisible = false;
+    }
   }
 
   // 下载Excel模板
   getExcel(flag): void {
-    const estimate = flag === 'opposition' ? false : true;
-    const fileName = flag === 'opposition' ? '点踩对话日志' : '点赞对话日志';
-    this.userService.getExcel(this.currentOppositionAgreeId, estimate).subscribe(res => {
-      const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
-      const a = document.createElement('a');
-      a.id = 'tempId';
-      document.body.appendChild(a);
-      a.download = fileName + '.xls';
-      a.href = URL.createObjectURL(blob);
-      a.click();
-      const tempA = document.getElementById('tempId');
-      const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
-      this.commonService.updateOperationlog(operationInput).subscribe();
-      if (tempA) {
-        tempA.parentNode.removeChild(tempA);
+    if (flag === 'opposition' || flag === 'agree') {
+      const estimate = flag === 'opposition' ? false : true;
+      const fileName = flag === 'opposition' ? '点踩对话日志' : '点赞对话日志';
+      this.userService.getExcel(this.currentOppositionAgreeId, estimate).subscribe(res => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+        const a = document.createElement('a');
+        a.id = 'tempId';
+        document.body.appendChild(a);
+        a.download = fileName + '.xls';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        const tempA = document.getElementById('tempId');
+        const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (tempA) {
+          tempA.parentNode.removeChild(tempA);
+        }
+      });
+    } else {
+      const fileName = flag === 'allOpposition' ? '点踩对话日志' : '点赞对话日志';
+      const estimate = flag === 'opposition' ? false : true;
+      let batchInput = {};
+      if (this.currentBatchSelected === '1') {
+        batchInput = {
+          selected: 1,
+          estimate: estimate,
+          number: this.batchDownloadForm.controls['number'].value,
+        };
+      } else if (this.currentBatchSelected === '2') {
+        batchInput = {
+          selected: 2,
+          estimate: estimate,
+          startDate: this.beginBatchFirstDate,
+          endDate: this.endBatchFirstDate,
+        };
+      } else if (this.currentBatchSelected === '3') {
+        batchInput = {
+          selected: 3,
+          estimate: estimate,
+          botName: this.batchDownloadForm.controls['botName'].value,
+          userPhone: this.batchDownloadForm.controls['userPhone'].value,
+          startDate1: this.beginBatchSecondDate,
+          endDate1: this.endBatchSecondDate,
+        };
       }
-    });
+      this.userService.getBatchExcel(batchInput).subscribe(res => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+        const a = document.createElement('a');
+        a.id = 'tempId';
+        document.body.appendChild(a);
+        a.download = fileName + '.xls';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        const tempA = document.getElementById('tempId');
+        const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (tempA) {
+          tempA.parentNode.removeChild(tempA);
+        }
+      });
+    }
   }
 
   // 日期插件
@@ -261,7 +344,28 @@ export class CustomerComponent implements OnInit {
         this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
         this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
       }
+    } else if (flag === 'batchDownloadFirst') {
+      if (result === []) {
+        this.beginBatchFirstDate = '';
+        this.endBatchFirstDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginBatchFirstDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endBatchFirstDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
+      }
+    } else if (flag === 'batchDownloadSecond') {
+      if (result === []) {
+        this.beginBatchSecondDate = '';
+        this.endBatchSecondDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginBatchSecondDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endBatchSecondDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
+      }
     }
+
   }
 
   // 点击switch

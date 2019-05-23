@@ -29,7 +29,7 @@
               <button nz-button nzType="primary" (click)="loadData('taxi')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #taxiTable [nzData]="dataTaxi">
+          <nz-table #taxiTable [nzData]="dataTaxi" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -66,6 +66,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
           <!-- 弹框 —— 详情 —— 打车路径 -->
           <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')">

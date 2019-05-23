@@ -200,11 +200,29 @@ export class UserService extends AppServiceBase {
   /** 获取点赞点踩Excel模板接口 */
   getExcel(id, estimate) {
     const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8' });
-    this.setOption = {
-      headers: head,
-      responseType: 'blob'
-    };
+    this.setOption = { headers: head, responseType: 'blob' };
     const url = `${this.commonService.baseUrl}/v2/estimate/session?id=${id}&estimate=${estimate}`;
+    return this.httpClient
+      .get<Blob>(url, this.options);
+  }
+
+  /** 获取点赞点踩Excel模板接口 */
+  getBatchExcel(data) {
+    const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8' });
+    this.setOption = { headers: head, responseType: 'blob' };
+    // tslint:disable-next-line:max-line-length
+    let url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v2/estimate/session?estimate=${data.estimate}`;
+    if (data.selected === 1) { url += data.number ? '&number=' + data.number : ''; }
+    if (data.selected === 2) {
+      url += data.startDate ? '&startDate=' + data.startDate : '';
+      url += data.endDate ? '&endDate=' + data.endDate : '';
+    }
+    if (data.selected === 3) {
+      url += data.botName ? '&botName=' + data.botName : '';
+      url += data.userPhone ? '&userPhone=' + data.userPhone : '';
+      url += data.startDate1 ? '&startDate1=' + data.startDate1 : '';
+      url += data.endDate1 ? '&endDate1=' + data.endDate1 : '';
+    }
     return this.httpClient
       .get<Blob>(url, this.options);
   }

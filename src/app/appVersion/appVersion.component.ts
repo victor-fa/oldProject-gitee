@@ -12,6 +12,7 @@ import { HelpService } from '../public/service/help.service';
 import { LocalizationService } from '../public/service/localization.service';
 import { ProtocolService } from '../public/service/protocol.service';
 import { ShareService } from '../public/service/share.service';
+import { FlowpointService } from '../public/service/flowpoint.service';
 
 registerLocaleData(zh);
 
@@ -26,8 +27,10 @@ export class AppVersionComponent implements OnInit {
   isAddContentVisible = false;
   isAddGuideVisible = false;
   isAddHelpVisible = false;
+  isAddFlowPointVisible = false;
   isModifyGuideVisible = false;
   isModifyHelpVisible = false;
+  isModifyFlowPointVisible = false;
   addContentForm: FormGroup;
   addGuideForm: FormGroup;
   addHelpForm: FormGroup;
@@ -35,6 +38,8 @@ export class AppVersionComponent implements OnInit {
   modifyGuideForm: FormGroup;
   modifyHelpForm: FormGroup;
   addProtocolForm: FormGroup;
+  addFlowPointForm: FormGroup;
+  modifyFlowPointForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   // tslint:disable-next-line:max-line-length
@@ -43,6 +48,8 @@ export class AppVersionComponent implements OnInit {
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   // tslint:disable-next-line:max-line-length
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
+  // tslint:disable-next-line:max-line-length
+  flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guide': [], 'guideArr': [] };
   helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   dataContent = []; // 内容
@@ -50,6 +57,7 @@ export class AppVersionComponent implements OnInit {
   dataGuide = []; // 引导语
   dataHelp = []; // 帮助管理
   dataProtocol = []; // 协议管理
+  dataFlowPoint = []; // 流程点引导
   beginDate = '';
   endDate = '';
   shareImageUrl01 = '';
@@ -89,12 +97,14 @@ export class AppVersionComponent implements OnInit {
   currentChanelId = '';
   helpType = 'TRAVEL';
   limitModelChange = 1;
+  isSpinning = false;
 
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
     private modalService: NzModalService,
     private protocolService: ProtocolService,
+    private flowpointService: FlowpointService,
     public localizationService: LocalizationService,
     private appversionService: AppversionService,
     private notification: NzNotificationService,
@@ -122,82 +132,119 @@ export class AppVersionComponent implements OnInit {
   }
 
   loadData(flag) {
+    this.isSpinning = true; // loading
     if (flag === 'content') {
       const arr = [];
       this.appversionService.getAppversionList(this.currentChanelId).subscribe(res => {
-        if (JSON.parse(res.payload).android !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).android)); }
-        if (JSON.parse(res.payload).ios !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).ios)); }
-        this.dataContent = arr;
-        const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          if (JSON.parse(res.payload).android !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).android)); }
+          if (JSON.parse(res.payload).ios !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).ios)); }
+          this.dataContent = arr;
+          const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'system') {
       const arrSystem = [];
       this.appversionService.getSystemSymbolList().subscribe(res => {
-        arrSystem.push(JSON.parse(res.payload).ANDROID);
-        arrSystem.push(JSON.parse(res.payload).IOS);
-        this.dataSystemSymbo = arrSystem;
-        const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          arrSystem.push(JSON.parse(res.payload).ANDROID);
+          arrSystem.push(JSON.parse(res.payload).IOS);
+          this.dataSystemSymbo = arrSystem;
+          const operationInput = { op_category: 'APP管理', op_page: '版本更新', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'share') {
       this.shareImageUrl01 = '';
       this.shareImageUrl02 = '';
       this.shareImageUrl03 = '';
       this.shareService.getShareList().subscribe(res => {
-        this.dataShare = JSON.parse(res.payload);
-        const operationInput = { op_category: 'APP管理', op_page: '分享文案', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        if (this.currentPanel === 'share') {
-          const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/copywriter/upload/`;
-          this.shareImageUrl01 = `${url}?fileName=wechatPhoto`;
-          this.shareImageUrl02 = `${url}?fileName=H5NavigatePhoto`;
-          this.shareImageUrl03 = `${url}?fileName=H5Photo`;
-          this.fileList.splice(0, this.fileList.length);
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataShare = JSON.parse(res.payload);
+          const operationInput = { op_category: 'APP管理', op_page: '分享文案', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          if (this.currentPanel === 'share') {
+            const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/copywriter/upload/`;
+            this.shareImageUrl01 = `${url}?fileName=wechatPhoto`;
+            this.shareImageUrl02 = `${url}?fileName=H5NavigatePhoto`;
+            this.shareImageUrl03 = `${url}?fileName=H5Photo`;
+            this.fileList.splice(0, this.fileList.length);
+          }
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'guide') {
       this.guideService.getGuideAppList().subscribe(res => {
-        if (res.retcode === 0) {
-          const appList = JSON.parse(res.payload);
-          let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
-          appList.forEach(item => {
-            if (item.registryName === localStorage.getItem('currentAppHeader')) {
-              this.currentAppId = item.id;
-              if (JSON.stringify(item.templates) !== '{}') { templates = JSON.parse(item.templates); }
-            }
-          });
-          this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
-            if (result.retcode === 0) {
-              this.dataGuide = JSON.parse(result.payload).reverse();
-              console.log(this.dataGuide);
-              const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '访问' };
-              this.commonService.updateOperationlog(operationInput).subscribe();
-              this.dataGuide.forEach((cell, i) => {
-                let enabled = false;
-                // tslint:disable-next-line:forin
-                for (const key in templates) {
-                  if (key === cell.id) { enabled = templates[key]; } // 匹配APP的templates与模板接口查出来的Id
-                }
-                cell.enabled = enabled;
-              });
-            }
-          });
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          if (res.retcode === 0) {
+            const appList = JSON.parse(res.payload);
+            let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
+            appList.forEach(item => {
+              if (item.registryName === localStorage.getItem('currentAppHeader')) {
+                this.currentAppId = item.id;
+                if (JSON.stringify(item.templates) !== '{}') { templates = JSON.parse(item.templates); }
+              }
+            });
+            this.guideService.getGuideList(this.currentAppId).subscribe(result => { // 查当前APP的id下有多少个模板
+              if (result.retcode === 0) {
+                this.dataGuide = JSON.parse(result.payload).reverse();
+                console.log(this.dataGuide);
+                const operationInput = { op_category: 'APP管理', op_page: '引导语模板', op_name: '访问' };
+                this.commonService.updateOperationlog(operationInput).subscribe();
+                this.dataGuide.forEach((cell, i) => {
+                  let enabled = false;
+                  // tslint:disable-next-line:forin
+                  for (const key in templates) {
+                    if (key === cell.id) { enabled = templates[key]; } // 匹配APP的templates与模板接口查出来的Id
+                  }
+                  cell.enabled = enabled;
+                });
+              }
+            });
+          }
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'help') {
       this.helpService.getHelpList().subscribe(res => {
-        if (res.retcode === 0) {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
           this.dataHelp = JSON.parse(res.payload).reverse();
           console.log(this.dataHelp);
-
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
       const operationInput = { op_category: 'APP管理', op_page: '帮助管理', op_name: '访问' };
       this.commonService.updateOperationlog(operationInput).subscribe();
     } else if (flag === 'protocol') {
       this.protocolService.getProtocolList(this.currentProtocol).subscribe(res => {
-        this.dataProtocol = res.payload;
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataProtocol = res.payload;
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'flowPoint') {
+      this.flowpointService.getFlowpointList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataFlowPoint = JSON.parse(res.payload);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     }
   }
@@ -208,12 +255,12 @@ export class AppVersionComponent implements OnInit {
     this.shareForm = this.fb.group({ wechatTitle: [''], wechatContent: [''], wechatHost: [''], wechatUrl: [''],
       linkTitle: [''], linkUrl: [''], linkHost: [''], H5Title: [''], H5Content: [''], });
     this.addGuideForm = this.fb.group({ name: [''], type: [''], });
-    this.addHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''],
-      details: [''] });
-    this.modifyHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''],
-    details: [''] });
+    this.addHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''], details: [''] });
+    this.modifyHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''], details: [''] });
     this.modifyGuideForm = this.fb.group({ title: [''], });
     this.addProtocolForm = this.fb.group({ title: [''], content: [''], });
+    this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guide: [''], });
+    this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guide: [''], });
   }
 
   // 弹框
@@ -237,6 +284,9 @@ export class AppVersionComponent implements OnInit {
       this.isAddHelpVisible = true;
       this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
       this.helpType = 'TRAVEL';
+    } else if (flag === 'flowPoint') {
+      this.isAddFlowPointVisible = true;
+      this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guide': [], 'guideArr': [] };
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -261,6 +311,10 @@ export class AppVersionComponent implements OnInit {
       this.helpType = 'TRAVEL';
     } else if (flag === 'protocol') {
       this.isSaveProtocolButton = false;
+    } else if (flag === 'addFlowPoint') {
+      this.isAddFlowPointVisible = false;
+    } else if (flag === 'modifyFlowPoint') {
+      this.isModifyFlowPointVisible = false;
     }
   }
 
@@ -357,12 +411,69 @@ export class AppVersionComponent implements OnInit {
       }
       guides.forEach(item => {
         if (item === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '部跳转编辑有话术未填写' });
+          this.modalService.error({ nzTitle: '提示', nzContent: '外部跳转编辑有话术未填写' });
+          result = false;
+        }
+      });
+    } else if (flag === 'addFlowPoint') {
+      let guides = [];
+      if (this.addFlowPointForm.controls['guide'].value !== '') {
+        guides = this.addFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      }
+      if (this.addFlowPointForm.controls['botName'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: 'bot选择未选择' });
+        result = false;
+      } else if (this.addFlowPointForm.controls['process'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '流程点名称未填写' });
+        result = false;
+      } else if (this.addFlowPointForm.controls['botMsg'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '对应后台话术未填写' });
+        result = false;
+      } else if (guides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语至少填1个' });
+        result = false;
+      }
+      guides.forEach(item => {
+        if (item === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
+          result = false;
+        }
+        if (item.length > 36) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过36个字符' });
+          result = false;
+        }
+      });
+    } else if (flag === 'modifyFlowPoint') {
+      let guides = [];
+      if (this.modifyFlowPointForm.controls['guide'].value !== '') {
+        guides = this.modifyFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      }
+      if (this.modifyFlowPointForm.controls['botName'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: 'bot选择未选择' });
+        result = false;
+      } else if (this.modifyFlowPointForm.controls['process'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '流程点名称未填写' });
+        result = false;
+      } else if (this.modifyFlowPointForm.controls['botMsg'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '对应后台话术未填写' });
+        result = false;
+      } else if (guides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语至少填1个' });
+        result = false;
+      }
+      guides.forEach(item => {
+        if (item === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
+          result = false;
+        }
+        if (item.length > 36) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过36个字符' });
           result = false;
         }
       });
     }
-    if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content') {
+    if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content'
+      && flag !== 'addFlowPoint' && flag !== 'modifyFlowPoint') {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
       result = false;
     }
@@ -575,6 +686,49 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'previewProtocol') {
       // tslint:disable-next-line:max-line-length
       window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
+    } else if (flag === 'addFlowPoint') {
+      if (!this.verificationAdd('addFlowPoint')) { return; }
+      const guides = this.addFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      const flowPointInput = {
+        'botName': this.addFlowPointForm.controls['botName'].value,
+        'process': this.addFlowPointForm.controls['process'].value,
+        'status': false,
+        'botMsg': this.addFlowPointForm.controls['botMsg'].value,
+        'guide': guides
+      };
+      this.flowpointService.addFlowpoint(flowPointInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '流程点引导', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('addFlowPoint');
+          this.loadData('flowPoint');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'modifyFlowPoint') {
+      if (!this.verificationAdd('modifyFlowPoint')) { return; }
+      const guides = this.modifyFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      const flowPointInput = {
+        'id': this.flowPointDate.id,
+        'botName': this.modifyFlowPointForm.controls['botName'].value,
+        'process': this.modifyFlowPointForm.controls['process'].value,
+        'status': false,
+        'botMsg': this.modifyFlowPointForm.controls['botMsg'].value,
+        'guide': guides
+      };
+      this.flowpointService.modifyFlowpoint(flowPointInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '流程点引导', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('modifyFlowPoint');
+          this.loadData('flowPoint');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -638,6 +792,10 @@ export class AppVersionComponent implements OnInit {
       this.fileList.push(file);
       // tslint:disable-next-line:max-line-length
       this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
+    } else if (flag === 'modifyFlowPoint') {
+      this.isModifyFlowPointVisible = true;
+      this.flowPointDate = data;
+      this.flowPointDate.guideArr = data.guide.join('\n');
     }
   }
 
@@ -674,7 +832,11 @@ export class AppVersionComponent implements OnInit {
       }
       guides.forEach(item => {
         if (item === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '部跳转编辑有话术未填写' });
+          this.modalService.error({ nzTitle: '提示', nzContent: '外部跳转编辑有话术未填写' });
+          result = false;
+        }
+        if (item.length > 20) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '外部跳转编辑有话术不得超过20个字符' });
           result = false;
         }
       });
@@ -723,6 +885,17 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'flowPoint') {
+      this.flowpointService.deleteFlowpoint(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '流程点引导', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('flowPoint');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -751,6 +924,25 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
         this.loadData('help');
+      });
+    } else if (flag === 'flowPoint') {
+      const switchInput = {
+        'id': data.id,
+        'botName': data.botName,
+        'process': data.process,
+        'status': data.status,
+        'botMsg': data.botMsg,
+        'guide': data.guide
+      };
+      this.flowpointService.modifyFlowpoint(switchInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '流程点引导', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+        this.loadData('flowPoint');
       });
     }
   }

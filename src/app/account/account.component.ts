@@ -15,6 +15,7 @@ registerLocaleData(zh);
 })
 export class AccountComponent implements OnInit {
 
+  isSpinning = false;
   dataRole = [{id: '', name: '' }];  // 权限
   dataCustomer = [{roleId: '', roleName: '' }];  // 员工
   dataOperationlog = [{roleId: '', roleName: ''}];  // 操作日志
@@ -98,11 +99,17 @@ export class AccountComponent implements OnInit {
   }
 
   loadData(flag) {
+    this.isSpinning = true;
     if (flag === 'role') {
       this.accountService.getRolesList().subscribe(res => {
-        this.dataRole = JSON.parse(res.payload).reverse();
-        if (this.dataRole.length === 0) {
-          this.dataRole = [{id: '', name: '' }];
+        if (res.retcode === 0 && res.status !== 500) {
+          this.isSpinning = false;
+          this.dataRole = JSON.parse(res.payload).reverse();
+          if (this.dataRole.length === 0) {
+            this.dataRole = [{id: '', name: '' }];
+          }
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     } else if (flag === 'customer') {
@@ -112,64 +119,75 @@ export class AccountComponent implements OnInit {
         roleId: this.searchCustomerForm.controls['roleId'].value
       };
       this.accountService.getCustomerList(customerItem).subscribe(res => {
-        this.dataCustomer = JSON.parse(res.payload);
-        this.dataCustomer.forEach(item => {
-          let roleName = '';
-          this.dataRole.forEach(cell => {
-            if (item.roleId === cell.id) {
-              roleName = cell.name;
-            }
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataCustomer = JSON.parse(res.payload);
+          this.dataCustomer.forEach(item => {
+            let roleName = '';
+            this.dataRole.forEach(cell => {
+              if (item.roleId === cell.id) {
+                roleName = cell.name;
+              }
+            });
+            item.roleName = roleName;
           });
-          item.roleName = roleName;
-        });
+          console.log(this.dataCustomer);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'resource') {
       this.accountService.getFullResource().subscribe(res => {
-        this.dataResource = JSON.parse(res.payload);  // 不要最后一个
-        this.dataResource.forEach((item, i) => {
-          if (item.children) {
-            if (item.children.length > 0) {
-              item.children.forEach(element => {
-                this.dataResourceChildren.push(element);
-              });
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataResource = JSON.parse(res.payload);  // 不要最后一个
+          this.dataResource.forEach((item, i) => {
+            if (item.children) {
+              if (item.children.length > 0) {
+                item.children.forEach(element => {
+                  this.dataResourceChildren.push(element);
+                });
+              }
             }
-          }
-          if (i === 0) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); });
-          } else if (i === 1) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions2.push(unit); });
-          } else if (i === 2) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions3.push(unit); });
-          } else if (i === 3) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions4.push(unit); });
-          } else if (i === 4) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions5.push(unit); });
-          } else if (i === 5) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions6.push(unit); });
-          } else if (i === 6) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions7.push(unit); });
-          } else if (i === 7) {
-            this.allMenu.push({name: item.name, id: item.id});
-            // tslint:disable-next-line:max-line-length
-            item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); });
-          }
-        });
-        console.log(this.allMenu);
-        console.log(this.checkOptions1);
+            if (i === 0) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); });
+            } else if (i === 1) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions2.push(unit); });
+            } else if (i === 2) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions3.push(unit); });
+            } else if (i === 3) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions4.push(unit); });
+            } else if (i === 4) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions5.push(unit); });
+            } else if (i === 5) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions6.push(unit); });
+            } else if (i === 6) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions7.push(unit); });
+            } else if (i === 7) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); });
+            }
+          });
+          console.log(this.allMenu);
+          console.log(this.checkOptions1);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'operationlog') {
       const operationlogItem = {
@@ -182,16 +200,21 @@ export class AccountComponent implements OnInit {
         op_time_end: this.endDate,  // 结束
       };
       this.accountService.getOperationlogList(operationlogItem).subscribe(res => {
-        let dataOperationlog = [];
-        if (this.unCheckVisit) {
-          JSON.parse(res.payload).forEach(item => {
-            if (item.opName === '访问') { return; }
-            dataOperationlog.push(item);
-          });
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          let dataOperationlog = [];
+          if (this.unCheckVisit) {
+            JSON.parse(res.payload).forEach(item => {
+              if (item.opName === '访问') { return; }
+              dataOperationlog.push(item);
+            });
+          } else {
+            dataOperationlog = JSON.parse(res.payload);
+          }
+          this.dataOperationlog = dataOperationlog;
         } else {
-          dataOperationlog = JSON.parse(res.payload);
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
-        this.dataOperationlog = dataOperationlog;
       });
     }
   }

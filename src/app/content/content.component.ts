@@ -11,6 +11,7 @@ import { ContentService } from '../public/service/content.service';
 import { LocalizationService } from '../public/service/localization.service';
 import { OpenService } from '../public/service/open.service';
 import { ScreenService } from '../public/service/screen.service';
+import { PersonalService } from '../public/service/personal.service';
 
 registerLocaleData(zh);
 
@@ -33,18 +34,23 @@ export class ContentComponent implements OnInit {
   isModifyOpenVisible = false;
   isAddBannerVisible = false;
   isModifyBannerVisible = false;
+  isAddPersonalVisible = false;
+  isModifyPersonalVisible = false;
   avatarUrl: string;
   addContentForm: FormGroup;
   addScreenForm: FormGroup;
   addOpenForm: FormGroup;
   addBannerForm: FormGroup;
+  addPersonalForm: FormGroup;
   modifyContentForm: FormGroup;
   modifyScreenForm: FormGroup;
   modifyOpenForm: FormGroup;
   modifyBannerForm: FormGroup;
+  modifyPersonalForm: FormGroup;
   jumpForScreen = 'DISABLED';
   jumpForOpen = 'DISABLED';
   jumpForBanner = 'DISABLED';
+  jumpForPersonal = 'DISABLED';
   displayModeForOpen = 'ONCE';
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
@@ -57,6 +63,7 @@ export class ContentComponent implements OnInit {
   screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };
   openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
+  personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' };
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -79,8 +86,10 @@ export class ContentComponent implements OnInit {
   dataScreen = [];  // 首屏
   dataOpen = [];  // 弹窗
   dataBanner = [];  // 轮播
+  dataPersonal = [];  // 个人中心
   currentCopywritingImage = '';
   currentAppId = '';  // 当前默认的APP信息
+  isSpinning = false;
 
   constructor(
     private fb: FormBuilder,
@@ -91,6 +100,7 @@ export class ContentComponent implements OnInit {
     private contentService: ContentService,
     private screenService: ScreenService,
     private bannerService: BannerService,
+    private personalService: PersonalService,
     private openService: OpenService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
@@ -106,30 +116,63 @@ export class ContentComponent implements OnInit {
   }
 
   loadData(flag) {
+    this.isSpinning = true;
     if (flag === 'content') {
       this.contentService.getContentList().subscribe(res => {
-        this.dataContent = JSON.parse(res.payload).reverse();
-        const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataContent = JSON.parse(res.payload).reverse();
+          const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'screen') {
       this.screenService.getScreenList().subscribe(res => {
-        this.dataScreen = JSON.parse(res.payload).reverse();
-        const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataScreen = JSON.parse(res.payload).reverse();
+          const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
-        this.dataOpen = JSON.parse(res.payload).reverse();
-        const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        console.log(this.dataOpen);
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataOpen = JSON.parse(res.payload).reverse();
+          const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.dataOpen);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
-        this.dataBanner = JSON.parse(res.payload).reverse();
-        const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataBanner = JSON.parse(res.payload).reverse();
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'personal') {
+      this.personalService.getPersonalList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataPersonal = JSON.parse(res.payload).reverse();
+          console.log(this.dataPersonal);
+          const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
       });
     }
   }
@@ -143,6 +186,7 @@ export class ContentComponent implements OnInit {
       title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: [''], expireTime: ['']
     });
     this.addBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], expireTime: [''] });
+    this.addPersonalForm = this.fb.group({ jump: [''], title: [''], site: [''], url: [''], expireTime: [''] });
     this.modifyContentForm = this.fb.group({
       title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
     });
@@ -151,6 +195,7 @@ export class ContentComponent implements OnInit {
       title: [''], jump: [''], site: [''], order: [''], url: [''], displayModeForOpen: [''], maxDisplay: [''], expireTime: ['']
     });
     this.modifyBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], expireTime: [''] });
+    this.modifyPersonalForm = this.fb.group({ jump: [''], title: [''], site: [''], url: [''], expireTime: [''] });
   }
 
   // 新增内容 - 弹窗
@@ -175,6 +220,11 @@ export class ContentComponent implements OnInit {
       this.bannerDate = { // 清空
         'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': ''
       };
+    } else if (flag === 'personal') {
+      this.isAddPersonalVisible = true;
+      this.personalDate = { // 清空
+        'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': ''
+      };
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -191,6 +241,8 @@ export class ContentComponent implements OnInit {
       this.isAddOpenVisible = false;
     } else if (flag === 'banner') {
       this.isAddBannerVisible = false;
+    } else if (flag === 'personal') {
+      this.isAddPersonalVisible = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -249,6 +301,14 @@ export class ContentComponent implements OnInit {
         result = false;
       } else if (this.addBannerForm.controls['order'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        result = false;
+      }
+    } else if (flag === 'banner') {
+      if (this.addPersonalForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
+        result = false;
+      } else if (this.addPersonalForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
         result = false;
       }
     }
@@ -372,6 +432,31 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'personal') {
+      if (!this.verificationAdd('personal')) {
+        return;
+      }
+      const personalInput = {
+        'enabled': false, // 默认不可启用
+        'title': this.addPersonalForm.controls['title'].value,
+        'site': this.addPersonalForm.controls['site'].value,
+        'jump': this.addPersonalForm.controls['jump'].value,
+        'image': this.imageUrl,
+        'url': this.addPersonalForm.controls['url'].value,
+        // tslint:disable-next-line:max-line-length
+        'expireTime': this.datePipe.transform(this.addPersonalForm.controls['expireTime'].value, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(this.addPersonalForm.controls['expireTime'].value, 'HH:mm:ss') + 'Z'
+      };
+      this.personalService.addPersonal(personalInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideAddModal('personal');
+          this.loadData('personal');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -427,6 +512,14 @@ export class ContentComponent implements OnInit {
         result = false;
       } else if (this.modifyBannerForm.controls['order'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        result = false;
+      }
+    } else if (flag === 'personal') {
+      if (this.modifyPersonalForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '广告图标题未填写' });
+        result = false;
+      } else if (this.modifyPersonalForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
         result = false;
       }
     }
@@ -530,7 +623,21 @@ export class ContentComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/banner-ads/images/${this.imageUrl}`;
       });
+    } else if (flag === 'personal') {
+      const id = data.id;
+      this.isModifyPersonalVisible = true;
+      this.cmsId = id;  // 用于修改
+      // 处理异常处理
+      this.personalDate = data;
+      this.imageUrl = data.image;
+      const file: any = {
+        name: data.image
+      };
+      this.fileList.push(file);
+      // tslint:disable-next-line:max-line-length
+      this.showImageUrl = `${this.imageUrl}`;
     }
+
   }
 
   hideModifyModal(flag) {
@@ -542,6 +649,8 @@ export class ContentComponent implements OnInit {
       this.isModifyOpenVisible = false;
     } else if (flag === 'banner') {
       this.isModifyBannerVisible = false;
+    } else if (flag === 'personal') {
+      this.isModifyPersonalVisible = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -658,6 +767,33 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'personal') {
+      if (!this.verificationModify('personal')) {
+        return;
+      }
+      const jump = this.modifyPersonalForm.controls['jump'].value;
+      const personalInput = {
+        'id': this.cmsId,
+        'title': this.modifyPersonalForm.controls['title'].value,
+        'jump': this.modifyPersonalForm.controls['jump'].value,
+        'site': jump === 'APP' ? this.modifyPersonalForm.controls['site'].value : '',  // 安卓 IOS 标识
+        'url': jump === 'HTML' ? this.modifyPersonalForm.controls['url'].value : '',
+        'image': this.imageUrl,
+        'enabled': false,
+        // tslint:disable-next-line:max-line-length
+        'expireTime': this.datePipe.transform(this.modifyPersonalForm.controls['expireTime'].value, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(this.modifyPersonalForm.controls['expireTime'].value, 'HH:mm:ss') + 'Z'
+      };
+      this.personalService.updatePersonal(personalInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModifyModal('personal');
+          this.loadData('personal');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -714,6 +850,17 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'personal') {
+      this.personalService.deletePersonal(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('personal');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -763,6 +910,29 @@ export class ContentComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
         this.loadData('banner');
+      });
+    } else if (flag === 'personal') {
+      // tslint:disable-next-line:max-line-length
+      const personalInput = {
+        'id': data.id,
+        'title': data.title,
+        'jump': data.jump,
+        'site': data.site,
+        'url': data.url,
+        'image': data.image,
+        'enabled': data.enabled,
+        // tslint:disable-next-line:max-line-length
+        'expireTime': this.datePipe.transform(data.expireTime, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(data.expireTime, 'HH:mm:ss') + 'Z'
+      };
+      this.personalService.updatePersonal(personalInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+        this.loadData('personal');
       });
     }
   }
@@ -849,6 +1019,10 @@ export class ContentComponent implements OnInit {
         url = `/v1/cms/banner-ads/images/`;
         flag = 'image';
         break;
+      case 'personal':
+        url = `/api/personal/center/advertising/img`;
+        flag = 'file';
+        break;
       default:
         break;
     }
@@ -870,11 +1044,15 @@ export class ContentComponent implements OnInit {
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           this.imageUrl = event.body.payload; // 不仅用于下面的showImageUrl的拼接，还有其他接口会用到新增修改等操作
-          // tslint:disable-next-line:max-line-length
-          this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
+          if (this.currentPanel === 'personal') {
+            this.showImageUrl = `${this.imageUrl}`;
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
+          }
           this.notification.success( '提示', '上传成功' );
           // tslint:disable-next-line:max-line-length
-          const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹窗' : this.currentPanel === 'banner' ? '轮播图' : '' , op_name: '上传图片' };
+          const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹窗' : this.currentPanel === 'banner' ? '轮播图' : this.currentPanel === 'personal' ? '个人中心' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
@@ -903,7 +1081,7 @@ export class ContentComponent implements OnInit {
     const operationInput = {
       op_category: '内容管理',
       // tslint:disable-next-line:max-line-length
-      op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹窗' : flag === 'banner' ? '轮播图' : '',
+      op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹窗' : flag === 'banner' ? '轮播图' : flag === 'personal' ? '个人中心' : '',
       op_name: '访问'
     };
     this.commonService.updateOperationlog(operationInput).subscribe();

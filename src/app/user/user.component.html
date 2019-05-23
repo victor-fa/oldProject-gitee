@@ -44,7 +44,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [nzScroll]="{x:'1800px'}">
+          <nz-table #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [nzScroll]="{x:'1800px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -92,6 +92,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
           <!-- 弹框 —— 信息 —— 用户详情 -->
           <nz-modal [(nzVisible)]="isUserInfoDetailVisible" nzWidth="950" nzTitle="用户详情" [nzFooter]="userInfoDetailVisibleModalFooter" (nzOnCancel)="hideModal('UserInfo')">

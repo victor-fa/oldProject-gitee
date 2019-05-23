@@ -11,7 +11,7 @@
               <button nz-button nzType="primary" (click)="showModal('addRole', '')"><i class="anticon anticon-file-add"></i>新增角色</button>
             </div>
           </div>
-          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
+          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -32,6 +32,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
           <div nz-row style="margin: 10px 0;line-height: 30px;">
             <div nz-col nzSpan="16"></div>
             <div nz-col nzSpan="2">
@@ -321,7 +324,7 @@
             </div>
           </div>
 
-          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false">
+          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -344,6 +347,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
           <div nz-row style="margin: 10px 0;line-height: 30px;">
             <div nz-col nzSpan="16"></div>
             <div nz-col nzSpan="2">
@@ -517,7 +523,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionOperationlogTable [nzData]="dataOperationlog" [nzSimple]="true">
+          <nz-table #rowSelectionOperationlogTable [nzData]="dataOperationlog" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -547,6 +553,9 @@
               </tr>
             </tbody>
           </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
 
         </nz-tab>
 

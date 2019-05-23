@@ -60,6 +60,10 @@ export enum cmsApiUrls {
   invoiceList = '/order/invoice/manager',
   /** 用户管理相关 */
   mgmtList = '/cms/user-mgmt',
+  /** 流程点引导 */
+  flowpointList = '/guide/bottom',
+  /** 个人中心 */
+  personalList = '/personal/center/advertising',
 }
 
 /** APP版本 */
