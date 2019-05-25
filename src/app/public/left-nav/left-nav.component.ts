@@ -23,7 +23,11 @@ export class LeftNavComponent implements OnInit {
         this.appHeaderAllow.push({ id: item, name: '你好小悟' });
       } else if (item === 'LENZE') {
         this.appHeaderAllow.push({ id: item, name: '听听同学' });
+        this.appHeaderAllow.push({ id: 'WATER_WORLD_6', name: '沃特沃德6' });
       }
+      //  else if (item === 'WATER_WORLD_6') {
+      //   this.appHeaderAllow.push({ id: item, name: '沃特沃德6' });
+      // }
     });
     if (tempKey === '' || tempKey === null) { localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id); }
     this.currentAppHeader = localStorage.getItem('currentAppHeader'); // 用于清空缓存或者第一次打开后台系统时，拿到的初始值

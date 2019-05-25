@@ -24,6 +24,9 @@ export class ActivityService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/list?page=0&pageSize=10`
     + (data.actName ? '&actName=' + data.actName : '')
     + (data.actStatus ? '&actStatus=' + data.actStatus : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -31,6 +34,9 @@ export class ActivityService extends AppServiceBase {
   /** 获取单个活动 */
   getActivity(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/info?id=${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,6 +44,9 @@ export class ActivityService extends AppServiceBase {
   /** 获取新增后的红包信息 */
   getNewCouponList(actRuleId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift?actRuleId=${actRuleId}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -45,6 +54,9 @@ export class ActivityService extends AppServiceBase {
   /** 删除单个活动 */
   deleteActivity(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}?id=${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -52,6 +64,9 @@ export class ActivityService extends AppServiceBase {
   /** 删除单个活动奖励 */
   deleteCouponArr(actRuleId, actGiftNo): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift?actRuleId=${actRuleId}&actGiftNo=${actGiftNo}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -60,7 +75,7 @@ export class ActivityService extends AppServiceBase {
   addActivity(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
@@ -70,7 +85,7 @@ export class ActivityService extends AppServiceBase {
   saveActivity(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
@@ -80,7 +95,7 @@ export class ActivityService extends AppServiceBase {
   addCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
@@ -90,7 +105,7 @@ export class ActivityService extends AppServiceBase {
   updateCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
@@ -101,7 +116,7 @@ export class ActivityService extends AppServiceBase {
     // tslint:disable-next-line:max-line-length
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/img?actRuleId=${data.imageResPos[0].actRuleId}&imageNo=${data.imageResPos[0].imageNo}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);

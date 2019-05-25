@@ -58,8 +58,11 @@ export class UserService extends AppServiceBase {
   /**
    * 查看点踩
    */
-  getOppositionInfo(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/v2/estimate?estimate=false&page=0&pageSize=2000`;
+  getOppositionInfo(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/v2/estimate?estimate=false&page=0&pageSize=2000`;
+    url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
+    url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
+    url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -69,8 +72,11 @@ export class UserService extends AppServiceBase {
   /**
    * 查看点赞
    */
-  getAgreeInfo(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/v2/estimate?estimate=true&page=0&pageSize=2000`;
+  getAgreeInfo(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/v2/estimate?estimate=true&page=0&pageSize=2000`;
+    url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
+    url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
+    url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -218,13 +224,12 @@ export class UserService extends AppServiceBase {
       url += data.endDate ? '&endDate=' + data.endDate : '';
     }
     if (data.selected === 3) {
-      url += data.botName ? '&botName=' + data.botName : '';
       url += data.userPhone ? '&userPhone=' + data.userPhone : '';
       url += data.startDate1 ? '&startDate1=' + data.startDate1 : '';
       url += data.endDate1 ? '&endDate1=' + data.endDate1 : '';
     }
     return this.httpClient
-      .get<Blob>(url, this.options);
+      .get<any>(url, this.options);
   }
 
   /**
@@ -232,6 +237,9 @@ export class UserService extends AppServiceBase {
    */
   getInvoiceDetail(orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url);
   }

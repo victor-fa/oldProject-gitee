@@ -22,6 +22,9 @@ export class GuideService extends AppServiceBase {
   /** 获取所有列表 */
   getGuideAppList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -29,6 +32,9 @@ export class GuideService extends AppServiceBase {
   /** 获取指定APP的模板列表 */
   getGuideList(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates?channelId=${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,7 +44,8 @@ export class GuideService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates`;
     const body = `name=${data.name}&type=${data.type}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
@@ -49,7 +56,8 @@ export class GuideService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${data.id}/template`;
     const body = `templateId=${data.templateId}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -59,9 +67,8 @@ export class GuideService extends AppServiceBase {
   addXxxForGuide(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/templates/${data.templateId}`;
     const body = `elements=${JSON.stringify(data.elements)}&name=${data.name}`;
-
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -70,6 +77,9 @@ export class GuideService extends AppServiceBase {
   /** 从APP中删除模板 */
   deleteGuideFromApp(appId, templateId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${appId}/template/${templateId}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -79,9 +89,9 @@ export class GuideService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.guideList}/channels/${data.id}/template-enable`;
     const body = `templateId=${data.templateId}&enable=${data.enable}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
-    // tslint:disable-next-line:max-line-length
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }

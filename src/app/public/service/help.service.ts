@@ -22,6 +22,9 @@ export class HelpService extends AppServiceBase {
   /** 获取所有列表 */
   getHelpList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -29,6 +32,9 @@ export class HelpService extends AppServiceBase {
   /** 获取单个 */
   getHelp(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -36,6 +42,9 @@ export class HelpService extends AppServiceBase {
   /** 删除单个 */
   deleteHelp(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

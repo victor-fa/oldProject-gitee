@@ -56,7 +56,7 @@
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
                 <div nz-col nzSpan="12" class="span_down">
-                  {{currentChanelId === 'XIAOWU' ? '小悟' : (currentChanelId === 'LENZE' ? '伦茨' : 'null')}}
+                  {{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : 'null'}}
                 </div>
                 <div nz-col nzSpan="4"></div>
               </div>
@@ -729,7 +729,29 @@
 
         <nz-tab nzTitle="流程点引导" (nzClick)="changePanel('flowPoint')" *ngIf="commonService.haveMenuPermission('children', '流程点引导')">
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="19">
+              <nz-select [(ngModel)]="flowPointBotName">
+                <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
+                <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
+                <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
+                <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
+                <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
+                <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
+                <nz-option required [nzLabel]="'电影票'" nzValue="MOVIE"></nz-option>
+                <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
+                <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
+                <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
+                <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
+                <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
+                <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
+                <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
+                <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('flowPoint')"><i class="anticon anticon-file-search"></i>查询</button>
+            </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('flowPoint')"><i class="anticon anticon-file-add"></i>新建流程点</button>
             </div>
@@ -750,7 +772,7 @@
             <tbody>
               <tr *ngFor="let data of flowPointTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName}}</td>
+                <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName === 'CHAT' ? '闲聊' : data.botName === 'OTHER' ? '其他' : data.botName}}</td>
                 <td>{{data.process}}</td>
                 <td>{{data.botMsg}}</td>
                 <td nzTitle="{{data.guide ? data.guide.join(',') : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guide ? data.guide[0] : ''}}</a></td>
@@ -797,6 +819,8 @@
                     <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
                     <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
                     <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                    <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
+                    <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
                   </nz-select>
                 </div>
                 <div nz-col nzSpan="4"></div>
@@ -859,6 +883,8 @@
                       <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
                       <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
                       <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                      <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
+                      <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
                     </nz-select>
                   </div>
                   <div nz-col nzSpan="4"></div>

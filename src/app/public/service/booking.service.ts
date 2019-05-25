@@ -58,7 +58,9 @@ export class BookingService extends AppServiceBase {
   /** 获取退票详情 */
   getRefundDetail(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/flight/refund?orderId=${data.orderId}`;
-    // const url = `${this.commonService.baseUrl}/order/flight/refund?orderId=f20190329185732052790102`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -66,10 +68,8 @@ export class BookingService extends AppServiceBase {
   /** 退票 */
   deleteRefundDetail(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/flight/refund`;
-    // tslint:disable-next-line:max-line-length
-    // const body = `userId=${data.userId}&orderId=${data.orderId}&passengerId=${data.passengerId}&refundCauseId=${data.refundCauseId}&refundCause=${data.refundCause}&ticketPrice=${data.ticketPrice}&preRefundFee=${data.preRefundFee}&preRefundPrice=${data.preRefundPrice}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient.post<IResponse<any>>(url, data, this.options);
   }
@@ -79,7 +79,8 @@ export class BookingService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${bookingApiUrls.orderDetail}`;
     const body = `updateType=${updateType}&orderId=${orderId}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);

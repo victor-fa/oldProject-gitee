@@ -28,6 +28,9 @@ export class CouponService extends AppServiceBase {
     + (searchItem.couponCategory ? '&couponCategory=' + searchItem.couponCategory : '')
     + (searchItem.ctimeStart ? '&ctimeStart=' + searchItem.ctimeStart : '')
     + (searchItem.ctimeEnd ? '&ctimeEnd=' + searchItem.ctimeEnd : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -35,6 +38,9 @@ export class CouponService extends AppServiceBase {
   /** 获取单个 */
   getCoupon(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/info?couponId=${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -42,6 +48,9 @@ export class CouponService extends AppServiceBase {
   /** 删除单个 */
   deleteCoupon(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -50,7 +59,7 @@ export class CouponService extends AppServiceBase {
   addCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
@@ -60,7 +69,7 @@ export class CouponService extends AppServiceBase {
   updateCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
@@ -71,7 +80,8 @@ export class CouponService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/${id}`;
     const body = `enabled=${enabled}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     // tslint:disable-next-line:max-line-length
     return this.httpClient

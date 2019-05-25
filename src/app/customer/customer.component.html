@@ -22,7 +22,7 @@
                 <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? '0' : data.photo.length) : '0'}}</td>
                 <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
                 <td nzWidth="100px">
-                  <button nz-button nzType="primary" (click)="showModal(data, 'feedback')" style="margin-right: 10px;">查看详情</button>
+                  <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;">查看详情</button>
                 </td>
               </tr>
             </tbody>
@@ -67,7 +67,25 @@
 
         <nz-tab nzTitle="点踩日志" (nzClick)="changePanel('opposition')" *ngIf="commonService.haveMenuPermission('children', '点踩日志')">
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="21"></div>
+            <form [formGroup]="oppositionSearchForm">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input maxlength="32" formControlName="userPhone" placeholder="输入用户账号" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                上传时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchOpposition')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="loadData('opposition')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('', 'batchDownload')"><i class="anticon anticon-download"></i>批量导出</button>
             </div>
@@ -91,13 +109,13 @@
                 <td>{{i + 1}}</td>
                 <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.nickName ? data.nickName : data.userId}}</td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[0].businessAnswer !== undefined ? data.ask.join('】、【') : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[0].businessAnswer !== undefined ? data.session[0].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[0].cpsAnswer !== undefined ? data.answer.join('】、【') : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[0].cpsAnswer !== undefined ? data.session[0].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td>{{data.session !== undefined ? data.session[0].business === 'FLIGHT' ? '机票' : data.session[0].business === 'TRAIN' ? '火车票' : data.session[0].business === 'HOTEL' ? '酒店' : data.session[0].business === 'NAVIGATION' ? '导航' : data.session[0].business === 'TAXI' ? '打车' : data.session[0].business === 'MOVIE' ? '电影票' : data.session[0].business === 'ERRAND' ? '闪送' : data.session[0].business === 'WEATHER' ? '天气' : data.session[0].business === 'MUSIC' ? '音乐' : data.session[0].business === 'CALL' ? '打电话' : data.session[0].business === 'RECHARGE' ? '充话费' : data.session[0].business === 'NEWS' ? '新闻' : data.session[0].business === 'HOROSCOPE' ? '星座' : 'null' : 'null'}}</td>
+                <td>{{data.session !== undefined ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'opposition')" style="margin-right: 10px;">查看详情</button>
@@ -153,7 +171,7 @@
         </nz-tab>
 
         <!-- 弹框 —— 导出 —— 批量导出 -->
-        <nz-modal [(nzVisible)]="isBatchDownloadVisible" nzWidth="950" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')">
+        <nz-modal [(nzVisible)]="isBatchDownloadVisible" nzWidth="750" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')">
           <form [formGroup]="batchDownloadForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="6">
@@ -166,7 +184,7 @@
               <div nz-col nzSpan="18">
                 <div nz-row class="search_panel" style="margin-bottom: 17px;">
                   <div nz-col nzSpan="12">
-                    <input nz-input nzSize="default" formControlName="number">
+                    <input nz-input nzSize="default" formControlName="number" placeholder="输入数量">
                   </div>
                   <div nz-col nzSpan="12" class="span_down">
                     &nbsp;&nbsp;条
@@ -178,38 +196,15 @@
                   </div>
                 </div>
                 <div nz-row class="search_panel" style="margin-bottom: 17px;">
-                  <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <div nz-col nzSpan="4" class="span_down">
                     用户账号：
                   </div>
                   <div nz-col nzSpan="12">
-                    <input nz-input formControlName="userPhone" nzSize="default">
+                    <input nz-input formControlName="userPhone" nzSize="default" placeholder="输入用户账号">
                   </div>
                 </div>
                 <div nz-row class="search_panel" style="margin-bottom: 17px;">
-                  <div nz-col nzSpan="4" class="span_down right_alignment">
-                    业务BOT：
-                  </div>
-                  <div nz-col nzSpan="12">
-                    <nz-select [ngModel]="batchDownloadDate.botName" formControlName="botName">
-                      <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
-                      <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
-                      <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
-                      <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
-                      <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
-                      <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
-                      <nz-option required [nzLabel]="'电影票'" nzValue="TAXI"></nz-option>
-                      <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
-                      <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
-                      <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
-                      <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
-                      <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
-                      <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
-                      <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
-                    </nz-select>
-                  </div>
-                </div>
-                <div nz-row class="search_panel" style="margin-bottom: 17px;">
-                  <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <div nz-col nzSpan="4" class="span_down">
                     时间范围：
                   </div>
                   <div nz-col nzSpan="12">
@@ -221,13 +216,30 @@
           </form>
           <!-- 弹框和底部定制 -->
           <ng-template #batchDownloadModalFooter>
-            <button nz-button nzType="primary" (click)="getExcel('allOpposition')"><i class="anticon anticon-download"></i>导出点踩对话日志</button>
+            <button nz-button nzType="primary" (click)="getExcel('allOpposition')"><i class="anticon anticon-download"></i>导出{{currentPanel === "opposition" ? '点踩' : '点赞'}}对话日志</button>
           </ng-template>
         </nz-modal>
 
         <nz-tab nzTitle="点赞日志" (nzClick)="changePanel('agree')" *ngIf="commonService.haveMenuPermission('children', '点赞日志')">
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="21"></div>
+            <form [formGroup]="agreeSearchForm">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input maxlength="32" formControlName="userPhone" placeholder="输入用户账号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                上传时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchAgree')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="1"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="loadData('agree')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('', 'batchDownload')"><i class="anticon anticon-download"></i>批量导出</button>
             </div>
@@ -251,13 +263,13 @@
                 <td>{{i + 1}}</td>
                 <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.nickName ? data.nickName : data.userId}}</td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[0].businessAnswer !== undefined ? data.ask.join('】、【') : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[0].businessAnswer !== undefined ? data.session[0].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[0].cpsAnswer !== undefined ? data.answer.join('】、【') : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[0].cpsAnswer !== undefined ? data.session[0].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td>{{data.session !== undefined ? data.session[0].business === 'FLIGHT' ? '机票' : data.session[0].business === 'TRAIN' ? '火车票' : data.session[0].business === 'HOTEL' ? '酒店' : data.session[0].business === 'NAVIGATION' ? '导航' : data.session[0].business === 'TAXI' ? '打车' : data.session[0].business === 'MOVIE' ? '电影票' : data.session[0].business === 'ERRAND' ? '闪送' : data.session[0].business === 'WEATHER' ? '天气' : data.session[0].business === 'MUSIC' ? '音乐' : data.session[0].business === 'CALL' ? '打电话' : data.session[0].business === 'RECHARGE' ? '充话费' : data.session[0].business === 'NEWS' ? '新闻' : data.session[0].business === 'HOROSCOPE' ? '星座' : 'null' : 'null'}}</td>
+                <td>{{data.session !== undefined ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'agree')" style="margin-right: 10px;">查看详情</button>

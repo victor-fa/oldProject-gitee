@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
@@ -24,6 +24,9 @@ export class DataCenterService extends AppServiceBase {
         + '?begin=' + begin + '&end=' + end
         + (platform !== '' ? '&platform=' + platform : '')
         + (origin !== '' ? '&origin=' + origin : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

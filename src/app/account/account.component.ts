@@ -57,7 +57,8 @@ export class AccountComponent implements OnInit {
   rootRes = []; // 组装二级
   checkOptionsChannel = [
     { label: '你好小悟', value: 'XIAOWU', checked: false },
-    { label: '听听同学', value: 'LENZE', checked: false }
+    { label: '听听同学', value: 'LENZE', checked: false },
+    { label: '沃特沃德6', value: 'WATER_WORLD_6', checked: false }
   ];
   /* 规则配置 */
   allChecked1 = false; // 个人中心
@@ -249,6 +250,8 @@ export class AccountComponent implements OnInit {
             this.checkOptionsChannel[0].checked = true;
           } else if (item === 'LENZE') {
             this.checkOptionsChannel[1].checked = true;
+          } else if (item === 'WATER_WORLD_6') {
+            this.checkOptionsChannel[2].checked = true;
           }
         });
       }
@@ -511,7 +514,8 @@ export class AccountComponent implements OnInit {
 
     this.checkOptionsChannel = [
       { label: '你好小悟', value: 'XIAOWU', checked: false },
-      { label: '听听同学', value: 'LENZE', checked: false }
+      { label: '听听同学', value: 'LENZE', checked: false },
+      { label: '沃特沃德6', value: 'WATER_WORLD_6', checked: false }
     ];
   }
   /* 权限配置 */

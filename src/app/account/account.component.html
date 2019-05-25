@@ -11,7 +11,7 @@
               <button nz-button nzType="primary" (click)="showModal('addRole', '')"><i class="anticon anticon-file-add"></i>新增角色</button>
             </div>
           </div>
-          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -34,22 +34,6 @@
           </nz-table>
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
-          </div>
-          <div nz-row style="margin: 10px 0;line-height: 30px;">
-            <div nz-col nzSpan="16"></div>
-            <div nz-col nzSpan="2">
-              <nz-select [(ngModel)]="pageSize">
-                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
-                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
-                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
-                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
-              </nz-select>
-            </div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
 
           <!-- 弹框 —— 新增 —— 新增角色 -->
@@ -324,7 +308,7 @@
             </div>
           </div>
 
-          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -336,35 +320,21 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionCustomerTable.data; let i=index;">
-                <td *ngIf="data.baseAcc !== true">{{i+1}}</td>
-                <td *ngIf="data.baseAcc !== true">{{data.realname}}</td>
-                <td *ngIf="data.baseAcc !== true">{{data.username}}</td>
-                <td *ngIf="data.baseAcc !== true">{{data.roleName}}</td>
-                <td *ngIf="data.baseAcc !== true">
-                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" style="margin-right: 10px;">编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)">删除</button>
+                <td>{{i+1}}</td>
+                <td>{{data.realname}}</td>
+                <td>{{data.username}}</td>
+                <td>{{data.roleName}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === false" style="margin-right: 10px;">编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === true" style="margin-right: 10px;" disabled>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === false">删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === true" disabled>删除</button>
                 </td>
               </tr>
             </tbody>
           </nz-table>
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
-          </div>
-          <div nz-row style="margin: 10px 0;line-height: 30px;">
-            <div nz-col nzSpan="16"></div>
-            <div nz-col nzSpan="2">
-              <nz-select [(ngModel)]="pageSize">
-                <nz-option required [nzLabel]="'5'" [nzValue]="5"></nz-option>
-                <nz-option required [nzLabel]="'10'" [nzValue]="10"></nz-option>
-                <nz-option required [nzLabel]="'20'" [nzValue]="20"></nz-option>
-                <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
-              </nz-select>
-            </div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== 1 && total !== 0"><button nz-button nzType="primary" (click)="lastPage()"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === 1 || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="4">当前为 {{changePage}} / {{allSize}} 页 &nbsp;&nbsp; 共 {{total}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changePage !== allSize && total !== 0"><button nz-button nzType="primary" (click)="nextPage()"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changePage === allSize || total === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
           </div>
 
           <!-- 弹框 —— 新增 —— 新增员工 -->

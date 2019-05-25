@@ -6,6 +6,7 @@ import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { InvoiceService } from '../public/service/invoice.service';
 import { UserService } from '../public/service/user.service';
+import { LoggerService } from 'ng-zorro-antd/core/util/logger/logger.service';
 registerLocaleData(zh);
 
 @Component({
@@ -35,6 +36,8 @@ export class CustomerComponent implements OnInit {
   searchInvoiceLogForm: FormGroup;
   searchBusinessForm: FormGroup;
   batchDownloadForm: FormGroup;
+  oppositionSearchForm: FormGroup;
+  agreeSearchForm: FormGroup;
   batchDownloadDate = { 'botName': '', 'number': '', 'estimate': '', 'date': '', 'userPhone': '' };
   tempFeedBack = { 'words': '', 'photo': '', 'number': '' };
   tempOpposition = { session: '' };
@@ -50,6 +53,10 @@ export class CustomerComponent implements OnInit {
   endBatchFirstDate = '';
   beginBatchSecondDate = '';
   endBatchSecondDate = '';
+  beginOppositionDate = '';
+  endOppositionDate = '';
+  beginAgreeDate = '';
+  endAgreeDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   isSpinning = false;
   currentBatchSelected = '1';
@@ -90,7 +97,12 @@ export class CustomerComponent implements OnInit {
         }
       });
     } else if (flag === 'opposition') {
-      this.userService.getOppositionInfo().subscribe(res => {
+      const oppositionInput = {
+        userPhone: this.oppositionSearchForm.controls['userPhone'].value,
+        startDate: this.beginOppositionDate,
+        endDate: this.endOppositionDate
+      };
+      this.userService.getOppositionInfo(oppositionInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.oppositionInfo = JSON.parse(res.payload);
@@ -121,7 +133,12 @@ export class CustomerComponent implements OnInit {
         }
       });
     } else if (flag === 'agree') {
-      this.userService.getAgreeInfo().subscribe(res => {
+      const agreeInput = {
+        userPhone: this.agreeSearchForm.controls['userPhone'].value,
+        startDate: this.beginAgreeDate,
+        endDate: this.endAgreeDate
+      };
+      this.userService.getAgreeInfo(agreeInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.agreeInfo = JSON.parse(res.payload);
@@ -215,7 +232,9 @@ export class CustomerComponent implements OnInit {
     this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchBusinessForm = this.fb.group({ phone: [''], name: [''], content: [''], date: [''], });
-    this.batchDownloadForm = this.fb.group({ botName: [''], number: [''], estimate: [''], date: [''], userPhone: [''], selected: [''] });
+    this.batchDownloadForm = this.fb.group({ number: [''], estimate: [''], date: [''], userPhone: [''], selected: [''] });
+    this.oppositionSearchForm = this.fb.group({ userPhone: [''], date: [''] });
+    this.agreeSearchForm = this.fb.group({ userPhone: [''], date: [''] });
   }
 
   showModal(data, flag) {
@@ -268,8 +287,8 @@ export class CustomerComponent implements OnInit {
         }
       });
     } else {
-      const fileName = flag === 'allOpposition' ? '点踩对话日志' : '点赞对话日志';
-      const estimate = flag === 'opposition' ? false : true;
+      const fileName = this.currentPanel === 'opposition' ? '点踩对话日志' : '点赞对话日志';
+      const estimate = this.currentPanel === 'opposition' ? false : true;
       let batchInput = {};
       if (this.currentBatchSelected === '1') {
         batchInput = {
@@ -285,21 +304,23 @@ export class CustomerComponent implements OnInit {
           endDate: this.endBatchFirstDate,
         };
       } else if (this.currentBatchSelected === '3') {
+        if (!this.verification('allDownload')) { return; }
         batchInput = {
           selected: 3,
           estimate: estimate,
-          botName: this.batchDownloadForm.controls['botName'].value,
           userPhone: this.batchDownloadForm.controls['userPhone'].value,
           startDate1: this.beginBatchSecondDate,
           endDate1: this.endBatchSecondDate,
         };
       }
       this.userService.getBatchExcel(batchInput).subscribe(res => {
+        console.log(res);
         const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+        console.log(blob);
         const a = document.createElement('a');
         a.id = 'tempId';
         document.body.appendChild(a);
-        a.download = fileName + '.xls';
+        a.download = fileName + '.csv';
         a.href = URL.createObjectURL(blob);
         a.click();
         const tempA = document.getElementById('tempId');
@@ -310,6 +331,21 @@ export class CustomerComponent implements OnInit {
         }
       });
     }
+  }
+
+  // 封装验证新增
+  verification(flag): boolean {
+    let result = true;
+    if (flag === 'allDownload') {
+      if (this.batchDownloadForm.controls['userPhone'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '用户账号未填写' });
+        result = false;
+      } else if (this.beginBatchSecondDate === '' || this.beginBatchSecondDate === null) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '时间范围未选择' });
+        result = false;
+      }
+    }
+    return result;
   }
 
   // 日期插件
@@ -364,14 +400,32 @@ export class CustomerComponent implements OnInit {
         this.beginBatchSecondDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
         this.endBatchSecondDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
       }
+    } else if (flag === 'searchOpposition') {
+      if (result === []) {
+        this.beginOppositionDate = '';
+        this.endOppositionDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginOppositionDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endOppositionDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
+      }
+    } else if (flag === 'searchAgree') {
+      if (result === []) {
+        this.beginAgreeDate = '';
+        this.endAgreeDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginAgreeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endAgreeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
+      }
     }
-
   }
 
   // 点击switch
   clickSwitch(data, flag) {
     if (flag === 'invoiceTime') {
-      console.log(data);
       this.invoiceService.updateSwitch(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });

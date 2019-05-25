@@ -23,7 +23,6 @@ export class ScreenService extends AppServiceBase {
   getScreenList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.screenList}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient

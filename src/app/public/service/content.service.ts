@@ -23,7 +23,6 @@ export class ContentService extends AppServiceBase {
   getContentList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -34,7 +33,6 @@ export class ContentService extends AppServiceBase {
   getContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
@@ -45,7 +43,6 @@ export class ContentService extends AppServiceBase {
   deleteContent(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${id}`;
     this.setOption = {
-      // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient

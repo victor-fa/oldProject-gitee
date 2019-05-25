@@ -98,6 +98,7 @@ export class AppVersionComponent implements OnInit {
   helpType = 'TRAVEL';
   limitModelChange = 1;
   isSpinning = false;
+  flowPointBotName = '';
 
   constructor(
     private fb: FormBuilder,
@@ -166,7 +167,7 @@ export class AppVersionComponent implements OnInit {
       this.shareImageUrl02 = '';
       this.shareImageUrl03 = '';
       this.shareService.getShareList().subscribe(res => {
-        if (res.retcode === 0 && res.status === 200) {
+        if (res.retcode === 0 && res.status === 200 && res.payload !== 'null') {
           this.isSpinning = false;
           this.dataShare = JSON.parse(res.payload);
           const operationInput = { op_category: 'APP管理', op_page: '分享文案', op_name: '访问' };
@@ -241,7 +242,18 @@ export class AppVersionComponent implements OnInit {
       this.flowpointService.getFlowpointList().subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataFlowPoint = JSON.parse(res.payload);
+          if (this.flowPointBotName !== '') {
+            const tempArr = [];
+            JSON.parse(res.payload).forEach(item => {
+              if (item.botName === this.flowPointBotName) {
+                tempArr.push(item);
+              }
+            });
+            this.dataFlowPoint = tempArr;
+          } else {
+            this.dataFlowPoint = JSON.parse(res.payload);
+          }
+          console.log(this.dataFlowPoint);
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -942,7 +954,7 @@ export class AppVersionComponent implements OnInit {
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
-        this.loadData('flowPoint');
+        // this.loadData('flowPoint');
       });
     }
   }

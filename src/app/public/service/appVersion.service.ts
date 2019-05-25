@@ -22,6 +22,9 @@ export class AppversionService extends AppServiceBase {
   /** 获取APP版本 */
   getAppversionList(searchItem): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}?app-channel-id=${searchItem}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -29,6 +32,9 @@ export class AppversionService extends AppServiceBase {
   /** 获取单个 */
   getAppversion(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/info?appversionId=${id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -37,7 +43,7 @@ export class AppversionService extends AppServiceBase {
   addAppversion(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
@@ -46,6 +52,9 @@ export class AppversionService extends AppServiceBase {
   /** 获取操作系统 */
   getSystemSymbolList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/system_symbol`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -53,6 +62,9 @@ export class AppversionService extends AppServiceBase {
   /** 获取渠道 */
   getChannelList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.appVersionList}/channel`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -63,6 +75,9 @@ export class AppversionService extends AppServiceBase {
     + (data.orderId ? '?orderId=' + data.orderId : '')
     + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
     + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

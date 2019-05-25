@@ -260,7 +260,8 @@ export class OperateComponent implements OnInit {
       this.isSaveIOSVoiceButton = false;
       this.isSaveANDROIDVoiceButton = false;
     }
-    this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : '听听同学';
+    // tslint:disable-next-line:max-line-length
+    this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : localStorage.getItem('currentAppHeader') === 'LENZE' ? '听听同学' : '沃特沃德6';
     this.currentPanel = flag;
     const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
