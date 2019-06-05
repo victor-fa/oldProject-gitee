@@ -2,7 +2,7 @@
 <div class="user" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
   <nz-card style="width: 100%;">
     <nz-card-tab>
-      <nz-tabset nzSize="large">
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabset">
 
         <nz-tab nzTitle="用户反馈" (nzClick)="changePanel('feedback')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" [(nzPageSize)]="feedBackPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
@@ -109,13 +109,13 @@
                 <td>{{i + 1}}</td>
                 <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.nickName ? data.nickName : data.userId}}</td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td>{{data.session !== undefined ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
+                <td>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'opposition')" style="margin-right: 10px;">查看详情</button>
@@ -263,13 +263,13 @@
                 <td>{{i + 1}}</td>
                 <td>{{data.phone ? data.phone : data.userId}}</td>
                 <td>{{data.nickName ? data.nickName : data.userId}}</td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.answer[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].cpsAnswer !== undefined ? data.session[data.session.length - 1].cpsAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td nzTitle="【{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.session !== undefined ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
+                <td nzTitle="【{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.ask[0] : 'null' : 'null'}}】" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].businessAnswer !== undefined ? data.session[data.session.length - 1].businessAnswer.substring(0, 7) + '……' : 'null' : 'null'}}</a>
                 </td>
-                <td>{{data.session !== undefined ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
+                <td>{{data.session !== undefined && data.session.length > 0 ? data.session[data.session.length - 1].business === 'FLIGHT' ? '机票' : data.session[data.session.length - 1].business === 'TRAIN' ? '火车票' : data.session[data.session.length - 1].business === 'HOTEL' ? '酒店' : data.session[data.session.length - 1].business === 'NAVIGATION' ? '导航' : data.session[data.session.length - 1].business === 'TAXI' ? '打车' : data.session[data.session.length - 1].business === 'MOVIE' ? '电影票' : data.session[data.session.length - 1].business === 'ERRAND' ? '闪送' : data.session[data.session.length - 1].business === 'WEATHER' ? '天气' : data.session[data.session.length - 1].business === 'MUSIC' ? '音乐' : data.session[data.session.length - 1].business === 'CALL' ? '打电话' : data.session[data.session.length - 1].business === 'RECHARGE' ? '充话费' : data.session[data.session.length - 1].business === 'NEWS' ? '新闻' : data.session[data.session.length - 1].business === 'HOROSCOPE' ? '星座' : data.session[data.session.length - 1].business === 'FREE_CHAT' ? '聊天' : data.session[data.session.length - 1].business === 'NAVICAR' ? '导航' : 'null' : 'null'}}</td>
                 <td>{{data.date}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'agree')" style="margin-right: 10px;">查看详情</button>
@@ -528,7 +528,9 @@
                 <td>{{data.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>{{data.phone}}</td>
                 <td>{{data.name}}</td>
-                <td>{{data.content}}</td>
+                <td nzTitle="{{data.content}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.content.length > 12 ? data.content.substring(0, 12) + '…' : data.content}}</a>
+                </td>
               </tr>
             </tbody>
           </nz-table>

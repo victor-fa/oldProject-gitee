@@ -60,6 +60,7 @@ export class CustomerComponent implements OnInit {
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   isSpinning = false;
   currentBatchSelected = '1';
+  currentTabset = 0;
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -77,6 +78,16 @@ export class CustomerComponent implements OnInit {
     this.loadData('feedback');  // 反馈信息
     this.changePanel('feedback');
     this.sendScreenHeight = (window.screen.height - 524) + 'px';
+    if (localStorage.getItem('batchDownload') !== undefined) {
+      if (localStorage.getItem('batchDownload') === 'opposition') {
+        this.changePanel('opposition');
+        this.currentTabset = 1;
+      } else if (localStorage.getItem('batchDownload') === 'agree') {
+        this.changePanel('agree');
+        this.currentTabset = 2;
+      }
+      localStorage.setItem('batchDownload', '');
+    }
   }
 
   /**
@@ -103,6 +114,7 @@ export class CustomerComponent implements OnInit {
         endDate: this.endOppositionDate
       };
       this.userService.getOppositionInfo(oppositionInput).subscribe(res => {
+        console.log(res);
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.oppositionInfo = JSON.parse(res.payload);
@@ -313,22 +325,27 @@ export class CustomerComponent implements OnInit {
           endDate1: this.endBatchSecondDate,
         };
       }
-      this.userService.getBatchExcel(batchInput).subscribe(res => {
-        console.log(res);
-        const blob = new Blob([res], { type: 'application/vnd.ms-excel;charset=UTF-8' });
-        console.log(blob);
-        const a = document.createElement('a');
-        a.id = 'tempId';
-        document.body.appendChild(a);
-        a.download = fileName + '.csv';
-        a.href = URL.createObjectURL(blob);
-        a.click();
-        const tempA = document.getElementById('tempId');
-        const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        if (tempA) {
-          tempA.parentNode.removeChild(tempA);
+      this.userService.getBatchExcel(batchInput).subscribe(result => {
+        if (result.type === 'application/json') {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: '下载失败' });
+        } else if (result.type === 'text/csv') {
+          const blob = new Blob([result], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+          console.log(blob);
+          const a = document.createElement('a');
+          a.id = 'tempId';
+          document.body.appendChild(a);
+          a.download = fileName + '.csv';
+          a.href = URL.createObjectURL(blob);
+          a.click();
+          const tempA = document.getElementById('tempId');
+          const operationInput = { op_category: '客服中心', op_page: fileName , op_name: '下载' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          if (tempA) {
+            tempA.parentNode.removeChild(tempA);
+          }
         }
+        localStorage.setItem('batchDownload', this.currentPanel === 'opposition' ? 'opposition' : 'agree');
+        setTimeout(() => { window.location.reload(); }, 2000);
       });
     }
   }

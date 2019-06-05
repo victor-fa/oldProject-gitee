@@ -445,7 +445,7 @@
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 姓名：
               </div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-col nzSpan="2" class="span_down">
                 <input nz-input maxlength="32" formControlName="realname" placeholder="输入姓名" nzSize="default">
               </div>
 
@@ -455,8 +455,10 @@
               <div nz-col nzSpan="7" class="span_down spacing right_alignment">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'operationlog')"></nz-range-picker>
               </div>
-              <div nz-col nzSpan="1"></div>
 
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                角色名称：
+              </div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="role_id">
                   <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
@@ -466,26 +468,29 @@
             </div>
 
             <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                一级菜单：
+              </div>
               <div nz-col nzSpan="4">
                 <nz-select [ngModel]="''" formControlName="op_category">
                   <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
                   <nz-option *ngFor="let item of dataResource; let i=index;" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="1"></div>
-
-              <div nz-col nzSpan="6">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                二级菜单：
+              </div>
+              <div nz-col nzSpan="5">
                 <nz-select [ngModel]="''" formControlName="op_page">
                   <nz-option [nzLabel]="'----无----'" [nzValue]="''"></nz-option>
                   <nz-option *ngFor="let item of dataResourceChildren; let i=index;" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="1"></div>
 
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 <label nz-checkbox [(nzChecked)]="unCheckVisit" formControlName="unCheckVisit">不看-访问</label><br>
               </div>
-              <div nz-col nzSpan="6"></div>
+              <div nz-col nzSpan="5"></div>
 
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="loadData('operationlog')" style="margin-right: 10px;"><i class="anticon anticon-search"></i>查询</button>

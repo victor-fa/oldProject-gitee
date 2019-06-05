@@ -41,7 +41,7 @@
                 <td>{{data.system_symbol}}</td>
                 <td>{{data.version}}</td>
                 <td>{{data.version_allowed}}</td>
-                <td>{{data.description}}</td>
+                <td nzTitle="{{data.description}}" nzPlacement="bottom" nz-tooltip><a>{{data.description.length > 12 ? data.description.substring(0, 12) : data.description}}</a></td>
               </tr>
             </tbody>
           </nz-table>
@@ -698,6 +698,7 @@
                 <label nz-radio nzValue="14">闪送服务协议</label>
                 <label nz-radio nzValue="15">打车服务协议</label>
                 <label nz-radio nzValue="16">话费服务协议</label>
+                <label nz-radio nzValue="17">电影票服务协议</label>
               </nz-radio-group>
             </div>
           </div>

@@ -205,7 +205,7 @@ export class UserService extends AppServiceBase {
 
   /** 获取点赞点踩Excel模板接口 */
   getExcel(id, estimate) {
-    const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8' });
+    const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;' });
     this.setOption = { headers: head, responseType: 'blob' };
     const url = `${this.commonService.baseUrl}/v2/estimate/session?id=${id}&estimate=${estimate}`;
     return this.httpClient

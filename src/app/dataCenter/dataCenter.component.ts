@@ -21,18 +21,23 @@ export class DataCenterComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   isExplainVisiable = false;
-  searchForm: FormGroup;  // 查询表单
+  isSessionLogSearchVisiable = true; // 用于切换对话日志搜索
+  isSessionLineVisiable = false;  // 显隐行列
+  searchDataCenterForm: FormGroup;
+  searchSessionLogForm: FormGroup;
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = '';
   endDate = '';
   isSpinning = false;
-  currentPanel = 'dataApp';
+  currentPanel = 'sessionLog';
   commonDataCenter: any = [];
+  sessionLogData: any = [];
   dataCenterStatus = 'all';
   currentTitle = 'APP总览';
   checkDataOptions = {};
   currentTabNum = 0;
+  currentSessionBusiness = 1; // 对话日志下的类型
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
@@ -45,7 +50,7 @@ export class DataCenterComponent implements OnInit {
     private _router: Router,
   ) {
     this.commonService.nav[0].active = true;
-    this._initSearchForm();
+    this._initForm();
     this.beginDate = this.commonService.getDay(-7);
     this.endDate = this.commonService.getDay(-1);
     this.checkDataOptions = {
@@ -81,52 +86,53 @@ export class DataCenterComponent implements OnInit {
   }
 
   initData(): void {
-    // this.doSearch();
     this.routerParams.queryParams.subscribe((params: ParamMap) => {
       this.currentTabNum = params['currentTab'] - 1;
     });
     switch (Number(this.currentTabNum) + 1) {
       case 1:
-        this.currentPanel = 'dataApp';
+        this.currentPanel = 'sessionLog';
         break;
       case 2:
-        console.log('keepApp');
-        this.currentPanel = 'keepApp';
+        this.currentPanel = 'dataApp';
         break;
       case 3:
-        this.currentPanel = 'overview';
+        this.currentPanel = 'keepApp';
         break;
       case 4:
-        this.currentPanel = 'product';
+        this.currentPanel = 'overview';
         break;
       case 5:
-        this.currentPanel = 'error';
+        this.currentPanel = 'product';
         break;
       case 6:
-        this.currentPanel = 'ticket';
+        this.currentPanel = 'error';
         break;
       case 7:
-        this.currentPanel = 'train';
+        this.currentPanel = 'ticket';
         break;
       case 8:
-        this.currentPanel = 'hotel';
+        this.currentPanel = 'train';
         break;
       case 9:
-        this.currentPanel = 'weather';
+        this.currentPanel = 'hotel';
         break;
       case 10:
-        this.currentPanel = 'navigate';
+        this.currentPanel = 'weather';
         break;
       case 11:
-        this.currentPanel = 'taxi';
+        this.currentPanel = 'navigate';
         break;
       case 12:
+        this.currentPanel = 'taxi';
+        break;
+      case 13:
         this.currentPanel = 'music';
         break;
       default:
         break;
     }
-    this.doSearch();
+    this.doSearch(this.currentPanel === 'sessionLog' ? 'sessionLog' : 'dataCenter');
   }
 
   // 获取单元数据
@@ -190,22 +196,26 @@ export class DataCenterComponent implements OnInit {
   }
 
   // 查询
-  doSearch(): void {
-    const params = this.searchForm.controls['status'].value === '' ? 'all' : this.searchForm.controls['status'].value;
-    this.dataCenterStatus = params;
-    if (params === 'all') {
-      const platform = '';
-      const origin = '';
-      this.loadUnitData(platform, origin);
-      localStorage.setItem('isDataCenterSearch', 'true');
-    } else {
-      if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
-        this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });
-        return;
+  doSearch(flag): void {
+    if (flag === 'dataCenter') {
+      const params = this.searchDataCenterForm.controls['status'].value === '' ? 'all' : this.searchDataCenterForm.controls['status'].value;
+      this.dataCenterStatus = params;
+      if (params === 'all') {
+        const platform = '';
+        const origin = '';
+        this.loadUnitData(platform, origin);
+        localStorage.setItem('isDataCenterSearch', 'true');
+      } else {
+        if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
+          this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });
+          return;
+        }
+        const origin = params.substring(0, params.indexOf('-'));
+        const platform = params.substring(params.indexOf('-') + 1, params.length);
+        this.loadUnitData(platform, origin);
       }
-      const origin = params.substring(0, params.indexOf('-'));
-      const platform = params.substring(params.indexOf('-') + 1, params.length);
-      this.loadUnitData(platform, origin);
+    } else if (flag === 'sessionLog') {
+      console.log('sessionLog');
     }
   }
 
@@ -223,26 +233,37 @@ export class DataCenterComponent implements OnInit {
     }
   }
 
-  private _initSearchForm(): void {
-    this.searchForm = this.fb.group({
-      date: [''],
-      status: [''],
-    });
+  private _initForm(): void {
+    this.searchDataCenterForm = this.fb.group({ date: [''], status: [''], });
+    this.searchSessionLogForm = this.fb.group({ date: [''], status: [''], });
   }
 
-  shouExplain() {
-    this.isExplainVisiable = true;
+  // 展开数据说明
+  shouSomething(flag) {
+    if (flag === 'explain') {
+      this.isExplainVisiable = true;
+    } else if (flag === 'sessionLog') {
+      this.isSessionLogSearchVisiable = this.isSessionLogSearchVisiable === true ? false : true;
+    }
   }
 
-  hideExplain() {
-    this.isExplainVisiable = false;
+  // 关闭数据说明
+  hideSomething(flag) {
+    if (flag === 'explain') {
+      this.isExplainVisiable = false;
+    }
   }
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch(); }
+    if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch(flag === 'sessionLog' ? 'sessionLog' : 'dataCenter'); }
     // tslint:disable-next-line:max-line-length
-    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : '';
+    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : flag === 'sessionLog' ? '对话日志' : '';
+  }
+
+  // 选择对话日志的业务类型
+  chooseSessionBusiness(flag) {
+    this.currentSessionBusiness = flag;
   }
 
 }

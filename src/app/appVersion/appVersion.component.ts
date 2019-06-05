@@ -179,6 +179,8 @@ export class AppVersionComponent implements OnInit {
             this.shareImageUrl03 = `${url}?fileName=H5Photo`;
             this.fileList.splice(0, this.fileList.length);
           }
+        } else if (res.payload === 'null') {
+
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -450,8 +452,8 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
           result = false;
         }
-        if (item.length > 36) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过36个字符' });
+        if (item.length > 18) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过18个字符' });
           result = false;
         }
       });
@@ -478,8 +480,8 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
           result = false;
         }
-        if (item.length > 36) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过36个字符' });
+        if (item.length > 18) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过18个字符' });
           result = false;
         }
       });

@@ -1020,7 +1020,7 @@ export class ContentComponent implements OnInit {
         flag = 'image';
         break;
       case 'personal':
-        url = `/api/personal/center/advertising/img`;
+        url = `/personal/center/advertising/img`;
         flag = 'file';
         break;
       default:
