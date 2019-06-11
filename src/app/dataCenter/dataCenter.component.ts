@@ -21,18 +21,15 @@ export class DataCenterComponent implements OnInit {
   allChecked = false;
   indeterminate = false;
   isExplainVisiable = false;
-  isSessionLogSearchVisiable = true; // 用于切换对话日志搜索
   isSessionLineVisiable = false;  // 显隐行列
   searchDataCenterForm: FormGroup;
-  searchSessionLogForm: FormGroup;
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = '';
   endDate = '';
   isSpinning = false;
-  currentPanel = 'sessionLog';
+  currentPanel = 'dataApp';
   commonDataCenter: any = [];
-  sessionLogData: any = [];
   dataCenterStatus = 'all';
   currentTitle = 'APP总览';
   checkDataOptions = {};
@@ -91,48 +88,45 @@ export class DataCenterComponent implements OnInit {
     });
     switch (Number(this.currentTabNum) + 1) {
       case 1:
-        this.currentPanel = 'sessionLog';
-        break;
-      case 2:
         this.currentPanel = 'dataApp';
         break;
-      case 3:
+      case 2:
         this.currentPanel = 'keepApp';
         break;
-      case 4:
+      case 3:
         this.currentPanel = 'overview';
         break;
-      case 5:
+      case 4:
         this.currentPanel = 'product';
         break;
-      case 6:
+      case 5:
         this.currentPanel = 'error';
         break;
-      case 7:
+      case 6:
         this.currentPanel = 'ticket';
         break;
-      case 8:
+      case 7:
         this.currentPanel = 'train';
         break;
-      case 9:
+      case 8:
         this.currentPanel = 'hotel';
         break;
-      case 10:
+      case 9:
         this.currentPanel = 'weather';
         break;
-      case 11:
+      case 10:
         this.currentPanel = 'navigate';
         break;
-      case 12:
+      case 11:
         this.currentPanel = 'taxi';
         break;
-      case 13:
+      case 12:
         this.currentPanel = 'music';
         break;
       default:
         break;
     }
-    this.doSearch(this.currentPanel === 'sessionLog' ? 'sessionLog' : 'dataCenter');
+    this.doSearch('dataCenter');
   }
 
   // 获取单元数据
@@ -214,8 +208,6 @@ export class DataCenterComponent implements OnInit {
         const platform = params.substring(params.indexOf('-') + 1, params.length);
         this.loadUnitData(platform, origin);
       }
-    } else if (flag === 'sessionLog') {
-      console.log('sessionLog');
     }
   }
 
@@ -235,15 +227,12 @@ export class DataCenterComponent implements OnInit {
 
   private _initForm(): void {
     this.searchDataCenterForm = this.fb.group({ date: [''], status: [''], });
-    this.searchSessionLogForm = this.fb.group({ date: [''], status: [''], });
   }
 
   // 展开数据说明
   shouSomething(flag) {
     if (flag === 'explain') {
       this.isExplainVisiable = true;
-    } else if (flag === 'sessionLog') {
-      this.isSessionLogSearchVisiable = this.isSessionLogSearchVisiable === true ? false : true;
     }
   }
 
@@ -256,13 +245,14 @@ export class DataCenterComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch(flag === 'sessionLog' ? 'sessionLog' : 'dataCenter'); }
+    if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch('dataCenter'); }
     // tslint:disable-next-line:max-line-length
-    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : flag === 'sessionLog' ? '对话日志' : '';
+    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : '';
   }
 
   // 选择对话日志的业务类型
-  chooseSessionBusiness(flag) {
+  chooseSessionBusiness(val, flag) {
+    console.log(val);
     this.currentSessionBusiness = flag;
   }
 

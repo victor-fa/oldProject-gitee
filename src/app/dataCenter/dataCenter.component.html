@@ -1,9 +1,9 @@
 <app-left-nav></app-left-nav>
 <div class="dataCenter" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
-  <form [formGroup]="searchDataCenterForm" *ngIf="currentPanel !== 'sessionLog'"><!-- 数据中心查询 -->
+  <form [formGroup]="searchDataCenterForm">
     <div nz-row class="search_panel">
       <div nz-col nzSpan="3">
-        <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle"></i>数据说明？</button>
+        <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
       </div>
       <div nz-col nzSpan="3" class="span_down right_alignment">
         查询日期范围：
@@ -27,162 +27,11 @@
       </div>
     </div>
   </form>
-  <form [formGroup]="searchSessionLogForm" *ngIf="currentPanel === 'sessionLog'"><!-- 对话日志查询 -->
-    <div nz-row class="search_panel">
-      <div nz-col nzSpan="2" class="span_down right_alignment">
-        日期范围：
-      </div>
-      <div nz-col nzSpan="7" class="span_down">
-        <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
-      </div>
-
-      <div nz-col nzSpan="12"></div>
-      <div nz-col nzSpan="3">
-        <button nz-button nzType="primary" (click)="shouSomething('sessionLog')">
-          <i class="anticon anticon-plus-circle" *ngIf="!isSessionLogSearchVisiable"></i>
-          <i class="anticon anticon-minus-circle" *ngIf="isSessionLogSearchVisiable"></i>
-          {{isSessionLogSearchVisiable ? '收起' : '展开'}}筛选区
-        </button>
-      </div>
-    </div>
-    <div style="background-color: #F7F7F7;padding: 10px 0 1px 10px;margin-bottom: 10px;" *ngIf="isSessionLogSearchVisiable">
-      <div nz-row class="search_panel">
-        <div nz-col nzSpan="24">
-          <nz-radio-group [(ngModel)]="currentSessionBusiness" (ngModelChange)="chooseSessionBusiness($event)" formControlName="status">
-            <label nz-radio nzValue="1">全选</label>
-            <label nz-radio nzValue="2">闲聊</label>
-            <label nz-radio nzValue="3">机票</label>
-            <label nz-radio nzValue="4">火车</label>
-            <label nz-radio nzValue="5">酒店</label>
-            <label nz-radio nzValue="6">天气</label>
-            <label nz-radio nzValue="7">闪送</label>
-            <label nz-radio nzValue="8">电影</label>
-            <label nz-radio nzValue="9">打车</label>
-            <label nz-radio nzValue="10">星座</label>
-            <label nz-radio nzValue="11">音乐</label>
-            <label nz-radio nzValue="12">新闻</label>
-            <label nz-radio nzValue="13">健身</label>
-            <label nz-radio nzValue="14">导航</label>
-            <label nz-radio nzValue="15">XX</label>
-            <label nz-radio nzValue="16">XX</label>
-          </nz-radio-group>
-        </div>
-      </div>
-      <div nz-row class="search_panel">
-        <div nz-col nzSpan="3">
-          <input nz-input formControlName="date" type="text" placeholder="输入关键词或用户ID" nzSize="default">
-        </div>
-        <div nz-col nzSpan="2" class="span_down right_alignment">标记：</div>
-        <div nz-col nzSpan="4" class="span_down">
-          <nz-radio-group [(ngModel)]="currentSessionBusiness" (ngModelChange)="chooseSessionBusiness($event)" formControlName="status">
-            <label nz-radio nzValue="1">未标记</label>
-            <label nz-radio nzValue="2">已标记</label>
-          </nz-radio-group>
-        </div>
-        <div nz-col nzSpan="2" class="span_down right_alignment">
-          异常回答：
-        </div>
-        <div nz-col nzSpan="3">
-          <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
-            <nz-option [nzLabel]="'不筛选'" [nzValue]="'all'"></nz-option>
-            <nz-option required [nzLabel]="'全部异常话术'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
-            <nz-option required [nzLabel]="'后端问题话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
-            <nz-option required [nzLabel]="'业务bot晚会话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
-            <nz-option required [nzLabel]="'闲聊兜底话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
-          </nz-select>
-        </div>
-        <div nz-col nzSpan="2" class="span_down right_alignment">重复回答：<a>></a>&nbsp;</div>
-        <div nz-col nzSpan="1">
-          <input nz-input formControlName="date" type="text" nzSize="default">
-        </div>
-        <div nz-col nzSpan="1" class="span_down">&nbsp;次</div>
-        <div nz-col nzSpan="2" class="span_down right_alignment">响应时长：<a>></a>&nbsp;</div>
-        <div nz-col nzSpan="1">
-          <input nz-input formControlName="date" type="text" nzSize="default">
-        </div>
-        <div nz-col nzSpan="1" class="span_down">&nbsp;ms</div>
-      </div>
-    </div>
-    <div nz-row class="search_panel">
-      <div nz-col nzSpan="3">
-        <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
-          <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
-          <nz-option required [nzLabel]="'问答对'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
-          <nz-option required [nzLabel]="'多伦对话'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
-          <nz-option required [nzLabel]="'完整上下文'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
-        </nz-select>
-      </div>
-      <div nz-col nzSpan="1"></div>
-      <div nz-col nzSpan="3">
-        <button nz-button nzType="primary" (click)="doSearch('sessionLog')"><i class="anticon anticon-search"></i>查询</button>
-      </div>
-      <div nz-col nzSpan="4" class="span_down">共搜索到 4080 条数据</div>
-      <div nz-col nzSpan="7"></div>
-      <div nz-col nzSpan="3" class="span_down right_alignment">
-        <label nz-checkbox [(nzChecked)]="isSessionLineVisiable" formControlName="status">展示隐藏列</label><br>
-      </div>
-      <div nz-col nzSpan="3">
-        <button nz-button nzType="primary" (click)="doSearch('sessionLog')"><i class="anticon anticon-export"></i>导出</button>
-      </div>
-    </div>
-  </form>
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabNum">
-        <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('sessionLog')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
-          <ng-template #dataAppTemplate>对话日志 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
-            <thead>
-              <tr>
-                <th nzWidth="50px">序号</th>
-                <th nzWidth="100px">用户ID</th>
-                <th nzWidth="100px">日期</th>
-                <th nzWidth="100px">时间</th>
-                <th nzWidth="100px">用户问询</th>
-                <th nzWidth="100px">BOT</th>
-                <th nzWidth="100px">回答</th>
-                <th nzWidth="100px">操作</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">会话ID</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">意图ID</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">对话ID</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">中控回答</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">总耗时</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">子BOT耗时</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">中控耗时</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">异常回答</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">重复回答</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">会话轮数</th>
-                <th nzWidth="100px" *ngIf="isSessionLineVisiable">会话内意图数量</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td nzWidth="50px">{{i+1}}</td>
-                <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-                <td nzWidth="100px" *ngIf="isSessionLineVisiable">{{data.aaaaa}}</td>
-              </tr>
-            </tbody>
-          </nz-table>
-        </nz-tab>
-
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('dataApp')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
-          <ng-template #dataAppTemplate>APP总览 <a href="/dataCenter?currentTab=2" target="_blank">-></a></ng-template>
+          <ng-template #dataAppTemplate><i class="anticon anticon-appstore-o"></i>APP总览 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -238,7 +87,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="keepAppTemplate" (nzClick)="changePanel('keepApp')" *ngIf="commonService.haveMenuPermission('children', 'App留存')">
-          <ng-template #keepAppTemplate>App留存 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
+          <ng-template #keepAppTemplate><i class="anticon anticon-heart-o"></i>App留存 <a href="/dataCenter?currentTab=2" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -303,7 +152,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="overviewTemplate" (nzClick)="changePanel('overview')" *ngIf="commonService.haveMenuPermission('children', 'BOT总览')">
-          <ng-template #overviewTemplate>BOT总览 <a href="/dataCenter?currentTab=4" target="_blank">-></a></ng-template>
+          <ng-template #overviewTemplate><i class="anticon anticon-area-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -355,7 +204,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="productTemplate" (nzClick)="changePanel('product')" *ngIf="commonService.haveMenuPermission('children', '产品权限')">
-          <ng-template #productTemplate>产品权限 <a href="/dataCenter?currentTab=5" target="_blank">-></a></ng-template>
+          <ng-template #productTemplate><i class="anticon anticon-trophy"></i>产品权限 <a href="/dataCenter?currentTab=4" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -393,7 +242,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="errorTemplate" (nzClick)="changePanel('error')" *ngIf="commonService.haveMenuPermission('children', '异常表述')">
-          <ng-template #errorTemplate>异常表述 <a href="/dataCenter?currentTab=6" target="_blank">-></a></ng-template>
+          <ng-template #errorTemplate><i class="anticon anticon-exception"></i>异常表述 <a href="/dataCenter?currentTab=5" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3000px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -457,7 +306,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="ticketTemplate" (nzClick)="changePanel('ticket')" *ngIf="commonService.haveMenuPermission('children', '机票BOT')">
-          <ng-template #ticketTemplate>机票BOT <a href="/dataCenter?currentTab=7" target="_blank">-></a></ng-template>
+          <ng-template #ticketTemplate><i class="anticon anticon-idcard"></i>机票BOT <a href="/dataCenter?currentTab=6" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -513,7 +362,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="trainTemplate" (nzClick)="changePanel('train')" *ngIf="commonService.haveMenuPermission('children', '火车BOT')">
-          <ng-template #trainTemplate>火车BOT <a href="/dataCenter?currentTab=8" target="_blank">-></a></ng-template>
+          <ng-template #trainTemplate><i class="anticon anticon-credit-card"></i>火车BOT <a href="/dataCenter?currentTab=7" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -569,7 +418,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="hotelTemplate" (nzClick)="changePanel('hotel')" *ngIf="commonService.haveMenuPermission('children', '酒店BOT')">
-          <ng-template #hotelTemplate>酒店BOT <a href="/dataCenter?currentTab=9" target="_blank">-></a></ng-template>
+          <ng-template #hotelTemplate><i class="anticon anticon-home"></i>酒店BOT <a href="/dataCenter?currentTab=8" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -625,7 +474,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="weatherTemplate" (nzClick)="changePanel('weather')" *ngIf="commonService.haveMenuPermission('children', '天气BOT')">
-          <ng-template #weatherTemplate>天气BOT <a href="/dataCenter?currentTab=10" target="_blank">-></a></ng-template>
+          <ng-template #weatherTemplate><i class="anticon anticon-cloud-o"></i>天气BOT <a href="/dataCenter?currentTab=9" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
@@ -657,7 +506,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="navigateTemplate" (nzClick)="changePanel('navigate')" *ngIf="commonService.haveMenuPermission('children', '导航BOT')">
-          <ng-template #navigateTemplate>导航BOT <a href="/dataCenter?currentTab=11" target="_blank">-></a></ng-template>
+          <ng-template #navigateTemplate><i class="anticon anticon-environment-o"></i>导航BOT <a href="/dataCenter?currentTab=10" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -703,7 +552,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="taxiTemplate" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车BOT')">
-          <ng-template #taxiTemplate>打车BOT <a href="/dataCenter?currentTab=12" target="_blank">-></a></ng-template>
+          <ng-template #taxiTemplate><i class="anticon anticon-car"></i>打车BOT <a href="/dataCenter?currentTab=11" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -771,7 +620,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="musicTemplate" (nzClick)="changePanel('music')" *ngIf="commonService.haveMenuPermission('children', '音乐BOT')">
-          <ng-template #musicTemplate>音乐BOT <a href="/dataCenter?currentTab=13" target="_blank">-></a></ng-template>
+          <ng-template #musicTemplate><i class="anticon anticon-sound"></i>音乐BOT <a href="/dataCenter?currentTab=12" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -881,7 +730,7 @@
           </div>
           <!-- 弹框和底部定制 -->
           <ng-template #ecplainModalFooter>
-            <button nz-button nzType="default" (click)="hideSomething('explain')">关闭</button>
+            <button nz-button nzType="default" (click)="hideSomething('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
           </ng-template>
         </nz-modal>
 

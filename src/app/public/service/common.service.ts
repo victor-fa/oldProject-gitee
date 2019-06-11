@@ -37,6 +37,7 @@ export class CommonService extends AppServiceBase {
     { active: false },
     { active: false },
     { active: false },
+    { active: false },
     { active: false }
   ];
   fullMenuResource = localStorage.getItem('FullMenuResource') !== '' ? JSON.parse(localStorage.getItem('FullMenuResource')) : '';

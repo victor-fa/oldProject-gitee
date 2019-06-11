@@ -3,7 +3,8 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
-        <nz-tab nzTitle="用户信息" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '用户信息')">
+        <nz-tab [nzTitle]="userTemplate" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '用户信息')">
+          <ng-template #userTemplate><i class="anticon anticon-user"></i>用户信息</ng-template>
           <form [formGroup]="searchUserForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -85,8 +86,8 @@
                 <td><a (click)="showModal('goBooking', data)">查看</a></td>
                 <td><a (click)="showModal('userCommon', data)">查看</a></td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('UserInfo', data)" style="margin-right: 10px;">查看</button>
-                  <button nz-button nzType="primary" *ngIf="data.locked === false" (click)="showModal('Blacklist', data)" style="margin-right: 10px;">冻结</button>
+                  <button nz-button nzType="primary" (click)="showModal('UserInfo', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button nz-button nzType="primary" *ngIf="data.locked === false" (click)="showModal('Blacklist', data)" style="margin-right: 10px;"><i class="anticon anticon-warning"></i>冻结</button>
                   <button nz-button nzType="primary" *ngIf="data.locked === true" disabled style="margin-right: 10px;">冻结</button>
                 </td>
               </tr>
@@ -162,7 +163,7 @@
             </nz-table> -->
             <!-- 弹框和底部定制 -->
             <ng-template #userInfoDetailVisibleModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('UserInfo')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('UserInfo')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -271,13 +272,14 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #userInfoCommonVisibleModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('UserCommon')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('UserCommon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="实体服务订单" (nzClick)="changePanel('bookingHypostatic')" *ngIf="commonService.haveMenuPermission('children', '实体订单管理')">
+        <nz-tab [nzTitle]="bookingHypostaticTemplate" (nzClick)="changePanel('bookingHypostatic')" *ngIf="commonService.haveMenuPermission('children', '实体订单管理')">
+          <ng-template #bookingHypostaticTemplate><i class="anticon anticon-inbox"></i>实体服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -378,8 +380,8 @@
                 <td>{{data.orderId}}</td>
                 <td>{{data.actualId}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
-                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>订单详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>发票详情</button>
                   <!-- <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModal('Refund', data)" style="margin-right: 10px;">退票</button> -->
                 </td>
               </tr>
@@ -404,7 +406,8 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="数字服务订单" (nzClick)="changePanel('bookingDigital')" *ngIf="commonService.haveMenuPermission('children', '数字服务订单')">
+        <nz-tab [nzTitle]="bookingDigitalTemplate" (nzClick)="changePanel('bookingDigital')" *ngIf="commonService.haveMenuPermission('children', '数字服务订单')">
+          <ng-template #bookingDigitalTemplate><i class="anticon anticon-qrcode"></i>数字服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -503,8 +506,8 @@
                 <td>{{data.orderId}}</td>
                 <td>{{data.actualId}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;">订单详情</button>
-                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;">发票详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('BookingDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>订单详情</button>
+                  <button nz-button nzType="primary" (click)="showModal('InvoiceDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>发票详情</button>
                   <!-- <button nz-button nzType="primary" *ngIf="data.state === 2 && (data.orderType === 0 || data.orderType === 1)" (click)="showModal('Refund', data)" style="margin-right: 10px;">退票</button> -->
                 </td>
               </tr>
@@ -583,7 +586,7 @@
           </div>
           <!-- 弹框和底部定制 -->
           <ng-template #invoiceDetailModalFooter>
-            <button nz-button nzType="default" (click)="hideModal('InvoiceDetail')">取消</button>
+            <button nz-button nzType="default" (click)="hideModal('InvoiceDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
           </ng-template>
         </nz-modal>
 
@@ -796,14 +799,14 @@
                 </nz-select>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModal('modifyBooking', '')" style="margin-right: 10px;">修改</button></div>
+              <div nz-col nzSpan="3"><button nz-button nzType="primary" (click)="showModal('modifyBooking', '')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button></div>
               <div nz-col nzSpan="3"></div>
             </div>
           </form>
           <!-- 弹框和底部定制 待出行且为酒店时 才可取消订单 -->
           <ng-template #bookingDetailModalFooter>
-            <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()">取消订单</button>
-            <button nz-button nzType="default" (click)="hideModal('BookingDetail')">取消</button>
+            <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()"><i class="anticon anticon-close-circle-o"></i>取消订单</button>
+            <button nz-button nzType="default" (click)="hideModal('BookingDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
           </ng-template>
         </nz-modal>
 
@@ -832,11 +835,12 @@
           <!-- 弹框和底部定制 -->
           <ng-template #refundModalFooter>
             <button nz-button nzType="primary" (click)="doDelete('Refund')">提交</button>
-            <button nz-button nzType="default" (click)="hideModal('Refund')">取消</button>
+            <button nz-button nzType="default" (click)="hideModal('Refund')"><i class="anticon anticon-close-circle-o"></i>取消</button>
           </ng-template>
         </nz-modal>
 
-        <nz-tab nzTitle="数据调整" (nzClick)="changePanel('adjust')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+        <nz-tab [nzTitle]="adjustTemplate" (nzClick)="changePanel('adjust')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
+          <ng-template #adjustTemplate><i class="anticon anticon-calculator"></i>数据调整</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="7">
               <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'adjust')"></nz-range-picker>
@@ -854,7 +858,7 @@
               <button nz-button nzType="primary" (click)="loadData('adjust')"><i class="anticon anticon-search"></i>查询</button>
             </div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showModal('adjustAdd', '')"><i class="anticon anticon-add"></i>新增发放</button>
+              <button nz-button nzType="primary" (click)="showModal('adjustAdd', '')"><i class="anticon anticon-file-add"></i>新增发放</button>
             </div>
           </div>
 
@@ -885,7 +889,7 @@
                 <td nzTitle="{{data.adjustReason}}" nzPlacement="bottom" nz-tooltip><a>详细原因</a></td>
                 <td>{{data.operater.phone}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('adjustDetail', data)" style="margin-right: 10px;">查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('adjustDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
               </tr>
             </tbody>
@@ -987,8 +991,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #adjustAddModalFooter>
-              <button nz-button nzType="primary" (click)="showModal('adjustSend')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('adjustAdd')">取消</button>
+              <button nz-button nzType="primary" (click)="showModal('adjustSend')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('adjustAdd')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1104,13 +1108,14 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #adjustDetailModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('adjustDetail')">关闭</button>
+              <button nz-button nzType="default" (click)="hideModal('adjustDetail')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="充值记录" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
+        <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
+          <ng-template #rechargeTemplate><i class="anticon anticon-red-envelope"></i>充值记录</ng-template>
           <form [formGroup]="searchRechargeForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
@@ -1158,7 +1163,8 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="开票记录" (nzClick)="changePanel('invoice')" *ngIf="commonService.haveMenuPermission('children', '开票记录')">
+        <nz-tab [nzTitle]="invoiceTemplate" (nzClick)="changePanel('invoice')" *ngIf="commonService.haveMenuPermission('children', '开票记录')">
+          <ng-template #invoiceTemplate><i class="anticon anticon-file"></i>开票记录</ng-template>
           <form [formGroup]="searchInvoiceForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
@@ -1222,7 +1228,7 @@
                 <td>{{data.state === 0 ? '开票失败' : data.state === 1 ? '已开票' : data.state === 2 ? '开票中' : data.state === 3 ? '待开票' : 'null'}}</td>
                 <td>{{data.createTime}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('invoiceInfoDetail', data)" style="margin-right: 10px;">查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('invoiceInfoDetail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
               </tr>
             </tbody>
@@ -1274,7 +1280,7 @@
             </nz-table>
             <!-- 弹框和底部定制 -->
             <ng-template #invoiceDetail1ModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('invoiceInfoDetail')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('invoiceInfoDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

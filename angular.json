@@ -39,7 +39,8 @@
               "src/assets/images/dataCenter_taxi.png",
               "src/assets/images/dataCenter_ticket.png",
               "src/assets/images/dataCenter_train.png",
-              "src/assets/images/dataCenter_weather.png"
+              "src/assets/images/dataCenter_weather.png",
+              "src/assets/images/sessionAnalysis.png"
             ],
             "styles": [
               "src/scss/index.scss"

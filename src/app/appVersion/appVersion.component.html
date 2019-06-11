@@ -3,7 +3,8 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="版本更新" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '版本更新')">
+        <nz-tab [nzTitle]="contentTemplate" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '版本更新')">
+          <ng-template #contentTemplate><i class="anticon anticon-cloud-upload-o"></i>版本更新</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19"></div>
             <div nz-col nzSpan="2">
@@ -142,14 +143,15 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addContentModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('content')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('content')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('content')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="分享文案" (nzClick)="changePanel('share')" *ngIf="commonService.haveMenuPermission('children', '分享文案')">
+        <nz-tab [nzTitle]="shareTemplate" (nzClick)="changePanel('share')" *ngIf="commonService.haveMenuPermission('children', '分享文案')">
+          <ng-template #shareTemplate><i class="anticon anticon-share-alt"></i>分享文案</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="shareForm">
 
@@ -243,18 +245,19 @@
                 <div nz-col nzSpan="20"></div>
                 <div nz-col nzSpan="2" *ngIf="!isSaveShareButton"></div>
                 <div nz-col nzSpan="2">
-                  <button *ngIf="!isSaveShareButton" nz-button nzType="primary" (click)="doSave('editShare')">编辑</button>
-                  <button *ngIf="isSaveShareButton" nz-button nzType="primary" (click)="doSave('share')">保存</button>
+                  <button *ngIf="!isSaveShareButton" nz-button nzType="primary" (click)="doSave('editShare')"><i class="anticon anticon-form"></i>编辑</button>
+                  <button *ngIf="isSaveShareButton" nz-button nzType="primary" (click)="doSave('share')"><i class="anticon anticon-save"></i>保存</button>
                 </div>
                 <div nz-col nzSpan="2" *ngIf="isSaveShareButton">
-                  <button nz-button nzType="primary" (click)="hideModal('share')">取消</button>
+                  <button nz-button nzType="primary" (click)="hideModal('share')"><i class="anticon anticon-close-circle-o"></i>取消</button>
                 </div>
               </div>
             </form>
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="引导语模板" (nzClick)="changePanel('guide')" *ngIf="commonService.haveMenuPermission('children', '引导语模板')">
+        <nz-tab [nzTitle]="guideTemplate" (nzClick)="changePanel('guide')" *ngIf="commonService.haveMenuPermission('children', '引导语模板')">
+          <ng-template #guideTemplate><i class="anticon anticon-tag-o"></i>引导语模板</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -284,10 +287,8 @@
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'guide')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'guide')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'guide')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'guide')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -332,7 +333,7 @@
               </div>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2" class="span_down right_alignment">
-                <button nz-button nzType="primary" (click)="doSave('guide_message')">添加</button>
+                <button nz-button nzType="primary" (click)="doSave('guide_message')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
             <ng-container *ngFor="let item of guideItem.messageArr; let i=index;">
@@ -347,7 +348,7 @@
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="2" class="span_down right_alignment">
-                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_message')">删除</button>
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_message')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
             </ng-container>
@@ -365,7 +366,7 @@
               </div>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2" class="span_down right_alignment">
-                <button nz-button nzType="primary" (click)="doSave('guide_button')">添加</button>
+                <button nz-button nzType="primary" (click)="doSave('guide_button')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
             <ng-container *ngFor="let item of guideItem.buttonArr; let i=index;">
@@ -380,7 +381,7 @@
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="2" class="span_down right_alignment">
-                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_button')">删除</button>
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_button')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
             </ng-container>
@@ -398,7 +399,7 @@
               </div>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2" class="span_down right_alignment">
-                <button nz-button nzType="primary" (click)="doSave('guide_image')">添加</button>
+                <button nz-button nzType="primary" (click)="doSave('guide_image')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
             <ng-container *ngFor="let item of guideItem.imageArr; let i=index;">
@@ -418,7 +419,7 @@
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="2" class="span_down right_alignment">
-                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')">删除</button>
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="fileList.length >= 1">
@@ -466,14 +467,15 @@
               </div>
             </ng-container>
             <ng-template #addGuideModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('guide')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('guide')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('guide')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('guide')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="帮助管理" (nzClick)="changePanel('help')" *ngIf="commonService.haveMenuPermission('children', '帮助管理')">
+        <nz-tab [nzTitle]="helpTemplate" (nzClick)="changePanel('help')" *ngIf="commonService.haveMenuPermission('children', '帮助管理')">
+          <ng-template #helpTemplate><i class="anticon anticon-question-circle-o"></i>帮助管理</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -594,8 +596,8 @@
               </div>
             </form>
             <ng-template #addHelpModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addHelp')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('addHelp')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addHelp')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addHelp')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -672,13 +674,14 @@
               </div>
             </form>
             <ng-template #modifyHelpModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('modifyHelp')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyHelp')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('modifyHelp')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyHelp')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>
 
-        <nz-tab nzTitle="协议管理" (nzClick)="changePanel('protocol')" *ngIf="commonService.haveMenuPermission('children', '协议管理')">
+        <nz-tab [nzTitle]="protocolTemplate" (nzClick)="changePanel('protocol')" *ngIf="commonService.haveMenuPermission('children', '协议管理')">
+          <ng-template #protocolTemplate><i class="anticon anticon-info-circle-o"></i>协议与介绍管理</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24">
               <nz-radio-group [(ngModel)]="currentProtocol" (ngModelChange)="chooseProtocol($event)">
@@ -696,9 +699,11 @@
                 <label nz-radio nzValue="12">用户协议</label>
                 <label nz-radio nzValue="13">闪送重量说明</label>
                 <label nz-radio nzValue="14">闪送服务协议</label>
-                <label nz-radio nzValue="15">打车服务协议</label>
+                <label nz-radio nzValue="15">用车服务协议</label>
                 <label nz-radio nzValue="16">话费服务协议</label>
                 <label nz-radio nzValue="17">电影票服务协议</label>
+                <label nz-radio nzValue="18">关于你好小悟</label>
+                <label nz-radio nzValue="19"><a>用户服务协议</a></label>
               </nz-radio-group>
             </div>
           </div>
@@ -716,19 +721,20 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2">
-              <button *ngIf="!isSaveProtocolButton" nz-button nzType="primary" (click)="doSave('editProtocol', '')">编辑</button>
-              <button *ngIf="isSaveProtocolButton" nz-button nzType="primary" (click)="doSave('saveProtocol', '')">保存</button>
+              <button *ngIf="!isSaveProtocolButton" nz-button nzType="primary" (click)="doSave('editProtocol', '')"><i class="anticon anticon-form"></i>编辑</button>
+              <button *ngIf="isSaveProtocolButton" nz-button nzType="primary" (click)="doSave('saveProtocol', '')"><i class="anticon anticon-save"></i>保存</button>
             </div>
             <div nz-col nzSpan="2" *ngIf="isSaveProtocolButton">
-              <button nz-button nzType="primary" (click)="hideModal('protocol')">取消</button>
+              <button nz-button nzType="primary" (click)="hideModal('protocol')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </div>
             <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="doSave('previewProtocol', '')">预览</button>
+              <button nz-button nzType="primary" (click)="doSave('previewProtocol', '')"><i class="anticon anticon-eye-o"></i>预览</button>
             </div>
           </div>
         </nz-tab>
 
-        <nz-tab nzTitle="流程点引导" (nzClick)="changePanel('flowPoint')" *ngIf="commonService.haveMenuPermission('children', '流程点引导')">
+        <nz-tab [nzTitle]="flowPointTemplate" (nzClick)="changePanel('flowPoint')" *ngIf="commonService.haveMenuPermission('children', '流程点引导')">
+          <ng-template #flowPointTemplate><i class="anticon anticon-customer-service"></i>流程点引导</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19">
               <nz-select [(ngModel)]="flowPointBotName">
@@ -751,7 +757,7 @@
               </nz-select>
             </div>
             <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="loadData('flowPoint')"><i class="anticon anticon-file-search"></i>查询</button>
+              <button nz-button nzType="primary" (click)="loadData('flowPoint')"><i class="anticon anticon-search"></i>查询</button>
             </div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('flowPoint')"><i class="anticon anticon-file-add"></i>新建流程点</button>
@@ -775,7 +781,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName === 'CHAT' ? '闲聊' : data.botName === 'OTHER' ? '其他' : data.botName}}</td>
                 <td>{{data.process}}</td>
-                <td>{{data.botMsg}}</td>
+                <td nzTitle="{{data.botMsg ? data.botMsg : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.botMsg ? data.botMsg.substring(0, 8) + '…' : ''}}</a></td>
                 <td nzTitle="{{data.guide ? data.guide.join(',') : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guide ? data.guide[0] : ''}}</a></td>
                 <td>{{data.mtime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
@@ -857,8 +863,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addFlowPointModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addFlowPoint')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('addFlowPoint')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addFlowPoint')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addFlowPoint')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -921,8 +927,8 @@
               </form>
               <!-- 弹框和底部定制 -->
               <ng-template #modifyFlowPointModalFooter>
-                <button nz-button nzType="primary" (click)="doSave('modifyFlowPoint')">保存</button>
-                <button nz-button nzType="default" (click)="hideModal('modifyFlowPoint')">取消</button>
+                <button nz-button nzType="primary" (click)="doSave('modifyFlowPoint')"><i class="anticon anticon-save"></i>保存</button>
+                <button nz-button nzType="default" (click)="hideModal('modifyFlowPoint')"><i class="anticon anticon-close-circle-o"></i>取消</button>
               </ng-template>
             </nz-modal>
         </nz-tab>

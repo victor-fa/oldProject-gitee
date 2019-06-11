@@ -1,0 +1,197 @@
+<app-left-nav></app-left-nav>
+<div class="sessionAnalysis" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+        <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('sessionLog')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
+          <ng-template #dataAppTemplate><i class="anticon anticon-message"></i>对话日志</ng-template>
+          <form [formGroup]="searchSessionLogForm" *ngIf="currentPanel === 'sessionLog'"><!-- 对话日志查询 -->
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                日期范围：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+              </div>
+              <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
+                </div>
+              <div nz-col nzSpan="9"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="shouSomething('sessionLog')">
+                  <i class="anticon anticon-plus-circle-o" *ngIf="!isSessionLogSearchVisiable"></i>
+                  <i class="anticon anticon-minus-circle-o" *ngIf="isSessionLogSearchVisiable"></i>
+                  {{isSessionLogSearchVisiable ? '收起' : '展开'}}筛选区
+                </button>
+              </div>
+            </div>
+            <div style="background-color: #F7F7F7;padding: 10px 0px 0px 10px;margin-bottom: 10px;" *ngIf="isSessionLogSearchVisiable">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="24">
+                  <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="chooseSessionBusiness($event, '')">
+                    <div nz-row>
+                      <div nz-col nzSpan="24">
+                        <label nz-checkbox nzValue="1" [ngModel]="true">全选</label>
+                        <label nz-checkbox nzValue="2">闲聊</label>
+                        <label nz-checkbox nzValue="3">机票</label>
+                        <label nz-checkbox nzValue="4">火车</label>
+                        <label nz-checkbox nzValue="5">酒店</label>
+                        <label nz-checkbox nzValue="6">天气</label>
+                        <label nz-checkbox nzValue="7">闪送</label>
+                        <label nz-checkbox nzValue="8">电影</label>
+                        <label nz-checkbox nzValue="9">打车</label>
+                        <label nz-checkbox nzValue="10">星座</label>
+                        <label nz-checkbox nzValue="11">音乐</label>
+                        <label nz-checkbox nzValue="12">新闻</label>
+                        <label nz-checkbox nzValue="14">导航</label>
+                      </div>
+                    </div>
+                  </nz-checkbox-wrapper>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2">
+                  <input nz-input formControlName="date" type="text" placeholder="关键词搜问句" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2">
+                  <input nz-input formControlName="date" type="text" placeholder="关键词搜回答" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2">
+                  <input nz-input formControlName="date" type="text" placeholder="输入用户ID" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down right_alignment">标记：</div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="chooseSessionBusiness($event, '')">
+                    <div nz-row>
+                      <div nz-col nzSpan="12" class="span_down"><label nz-checkbox nzValue="1">未标记</label></div>
+                      <div nz-col nzSpan="12" class="span_down"><label nz-checkbox nzValue="2">已标记</label></div>
+                    </div>
+                  </nz-checkbox-wrapper>
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  异常回答：
+                </div>
+                <div nz-col nzSpan="2">
+                  <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
+                    <nz-option [nzLabel]="'不筛选'" [nzValue]="'all'"></nz-option>
+                    <nz-option required [nzLabel]="'全部异常话术'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
+                    <nz-option required [nzLabel]="'后端问题话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+                    <nz-option required [nzLabel]="'业务bot挽回话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+                    <nz-option required [nzLabel]="'闲聊兜底话术'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">会话内意图数&nbsp;<a>></a></div>
+                <div nz-col nzSpan="1">
+                  <input nz-input formControlName="date" type="text" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">&nbsp;个&nbsp;&nbsp;&nbsp;重复回答&nbsp;<a>></a></div>
+                <div nz-col nzSpan="1">
+                  <input nz-input formControlName="date" type="text" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">&nbsp;次&nbsp;&nbsp;&nbsp;响应时长&nbsp;<a>></a>&nbsp;</div>
+                <div nz-col nzSpan="1">
+                  <input nz-input formControlName="date" type="text" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down">&nbsp;ms</div>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
+                  <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
+                  <nz-option required [nzLabel]="'问答对'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+                  <nz-option required [nzLabel]="'多伦对话'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
+                  <nz-option required [nzLabel]="'完整上下文'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSearch('sessionLog')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+              <div nz-col nzSpan="4" class="span_down">共搜索到 4080 条数据</div>
+              <div nz-col nzSpan="11"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="doSearch('sessionLog')"><i class="anticon anticon-export"></i>导出</button>
+              </div>
+            </div>
+          </form>
+          <nz-table #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px">序号</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[0].checked">用户ID</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[1].checked">日期</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[2].checked">时间</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[3].checked">用户问询</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[4].checked">BOT</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[5].checked">回答</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[6].checked">操作</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[7].checked">会话ID</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[8].checked">意图ID</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[9].checked">对话ID</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[10].checked">中控回答</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[11].checked">总耗时</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[12].checked">子BOT耗时</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[13].checked">中控耗时</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[14].checked">异常回答</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[15].checked">重复回答</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[16].checked">会话轮数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[17].checked">会话内意图数量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                <td nzWidth="50px">{{i+1}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.date | date:'yy-MM-dd'}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[1].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[2].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[3].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[4].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[5].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[6].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[7].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[8].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[9].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[10].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[11].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[12].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[13].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[14].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[15].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[16].checked">{{data.aaaaa}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[17].checked">{{data.aaaaa}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
+        <!-- 弹框 —— 信息 —— 数据说明 -->
+        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="shouSomething('explain')">
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="2">
+                <span style="line-height: 30px;">&nbsp;</span><br>
+                <ng-container *ngIf="currentPanel === 'sessionLog'">
+                  <ng-container *ngFor="let item of checkDataOptions.sessionAnalysis; let i=index;">
+                    <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                  </ng-container>
+                </ng-container>
+              </div>
+              <div nz-col nzSpan="22">
+                <img *ngIf="currentPanel === 'sessionLog'" [src]="'assets/images/sessionAnalysis.png'">
+              </div>
+            </div>
+            <!-- 弹框和底部定制 -->
+            <ng-template #ecplainModalFooter>
+              <button nz-button nzType="default" (click)="shouSomething('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
+      </nz-tabset>
+      <div class="spin" *ngIf="isSpinning">
+        <nz-spin [nzSize]="'large'"></nz-spin>
+      </div>
+    </nz-card-tab>
+  </nz-card>
+</div>
+

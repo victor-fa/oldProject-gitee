@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'activity', loadChildren: './activity/activity.module#ActivityModule'},
   { path: 'account', loadChildren: './account/account.module#AccountModule'},
   { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'},
+  { path: 'sessionAnalysis', loadChildren: './sessionAnalysis/sessionAnalysis.module#SessionAnalysisModule'},
   // { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 

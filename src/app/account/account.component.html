@@ -3,7 +3,8 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="权限配置" (nzClick)="changePanel('role')" *ngIf="commonService.haveMenuPermission('children', '权限配置')">
+        <nz-tab [nzTitle]="roleTemplate" (nzClick)="changePanel('role')" *ngIf="commonService.haveMenuPermission('children', '权限配置')">
+          <ng-template #roleTemplate><i class="anticon anticon-key"></i>权限配置</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21">
             </div>
@@ -26,8 +27,8 @@
                 <td>{{data.name}}</td>
                 <td>{{data.desc}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyRole', data)" style="margin-right: 10px;">编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteRole', data)">删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyRole', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteRole', data)"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -144,8 +145,8 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #addModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addRole')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('addRole')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addRole')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('addRole')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -257,15 +258,16 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyRoleModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('modifyRole')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyRole')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('modifyRole')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyRole')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
 
-        <nz-tab nzTitle="员工配置" (nzClick)="changePanel('customer')" *ngIf="commonService.haveMenuPermission('children', '员工配置')">
+        <nz-tab [nzTitle]="customerTemplate" (nzClick)="changePanel('customer')" *ngIf="commonService.haveMenuPermission('children', '员工配置')">
+          <ng-template #customerTemplate><i class="anticon anticon-solution"></i>员工配置</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchCustomerForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -325,10 +327,10 @@
                 <td>{{data.username}}</td>
                 <td>{{data.roleName}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === false" style="margin-right: 10px;">编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === true" style="margin-right: 10px;" disabled>编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === false">删除</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === true" disabled>删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === false" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === true" style="margin-right: 10px;" disabled><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === false"><i class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === true" disabled><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -379,8 +381,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addRoleModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addCustomer')">确认</button>
-              <button nz-button nzType="default" (click)="hideModal('addCustomer')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addCustomer')"><i class="anticon anticon-save"></i>确认</button>
+              <button nz-button nzType="default" (click)="hideModal('addCustomer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -424,15 +426,16 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyCustomerModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('modifyCustomer')">确认修改</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyCustomer')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('modifyCustomer')"><i class="anticon anticon-save"></i>确认修改</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyCustomer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
 
-        <nz-tab nzTitle="操作日志" (nzClick)="changePanel('operationlog')" *ngIf="commonService.haveMenuPermission('children', '操作日志')">
+        <nz-tab [nzTitle]="operationlogTemplate" (nzClick)="changePanel('operationlog')" *ngIf="commonService.haveMenuPermission('children', '操作日志')">
+          <ng-template #operationlogTemplate><i class="anticon anticon-file-text"></i>操作日志</ng-template>
           <form [formGroup]="searchOperationlogForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">

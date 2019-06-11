@@ -3,7 +3,8 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="发文章" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '发文章')">
+        <nz-tab [nzTitle]="contentTemplate" nzTitle="发文章" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '发文章')">
+          <ng-template #contentTemplate><i class="anticon anticon-file-text"></i>发文章</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -41,8 +42,8 @@
                 <td>
                   <button nz-button nzType="primary" (click)="showModifyModal(data, 'content')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
                   <button nz-button nzType="primary" (click)="showDeleteModal(data, 'content')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
-                  <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i class="anticon anticon-eye"></i>预览</button>
-                  <button nz-button nzType="primary" *ngIf="data.url === ''" (click)="doGetContentUrl(data)" style="margin-right: 10px;">获取地址</button>
+                  <button nz-button nzType="primary" (click)="doPreviewContent(data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>预览</button>
+                  <button nz-button nzType="primary" *ngIf="data.url === ''" (click)="doGetContentUrl(data)" style="margin-right: 10px;"><i class="anticon anticon-link"></i>获取地址</button>
                 </td>
               </tr>
             </tbody>
@@ -134,9 +135,9 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #addContentModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('content')">保存</button>
-              <button nz-button nzType="primary" (click)="doPreviewContentAdd()">预览</button>
-              <button nz-button nzType="default" (click)="hideAddModal('content')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('content')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="primary" (click)="doPreviewContentAdd()"><i class="anticon anticon-eye-o"></i>预览</button>
+              <button nz-button nzType="default" (click)="hideAddModal('content')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -224,15 +225,16 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #modifyContentModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('content')">保存</button>
-              <button nz-button nzType="primary" (click)="doPreviewContentModify()">预览</button>
-              <button nz-button nzType="default" (click)="hideModifyModal('content')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('content')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="primary" (click)="doPreviewContentModify()"><i class="anticon anticon-eye-o"></i>预览</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('content')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="开屏启动" (nzClick)="changePanel('screen')" *ngIf="commonService.haveMenuPermission('children', '开屏启动')">
+        <nz-tab [nzTitle]="screenTemplate" (nzClick)="changePanel('screen')" *ngIf="commonService.haveMenuPermission('children', '开屏启动')">
+          <ng-template #screenTemplate><i class="anticon anticon-desktop"></i>开屏启动</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -274,10 +276,8 @@
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'screen')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'screen')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'screen')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'screen')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -381,8 +381,8 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #addScreenModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('screen')">保存</button>
-              <button nz-button nzType="default" (click)="hideAddModal('screen')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('screen')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideAddModal('screen')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -481,14 +481,15 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #modifyScreenModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('screen')">保存</button>
-              <button nz-button nzType="default" (click)="hideModifyModal('screen')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('screen')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('screen')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="首页弹窗" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹窗')">
+        <nz-tab [nzTitle]="openTemplate" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹窗')">
+          <ng-template #openTemplate><i class="anticon anticon-scan"></i>首页弹框</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -646,8 +647,8 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #addOpenModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('open')">保存</button>
-              <button nz-button nzType="default" (click)="hideAddModal('open')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('open')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideAddModal('open')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -756,14 +757,15 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #modifyOpenModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('open')">保存</button>
-              <button nz-button nzType="default" (click)="hideModifyModal('open')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('open')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('open')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="轮播图" (nzClick)="changePanel('banner')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
+        <nz-tab [nzTitle]="bannerTemplate" (nzClick)="changePanel('banner')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
+          <ng-template #bannerTemplate><i class="anticon anticon-picture"></i>轮播图</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -901,8 +903,8 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #addBannerModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('banner')">保存</button>
-              <button nz-button nzType="default" (click)="hideAddModal('banner')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('banner')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideAddModal('banner')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -992,14 +994,15 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #modifyBannerModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('banner')">保存</button>
-              <button nz-button nzType="default" (click)="hideModifyModal('banner')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('banner')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('banner')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="个人中心" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
+        <nz-tab [nzTitle]="personalTemplate" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
+          <ng-template #personalTemplate><i class="anticon anticon-user"></i>个人中心</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
@@ -1126,8 +1129,8 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #addPersonalModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('personal')">保存</button>
-              <button nz-button nzType="default" (click)="hideAddModal('personal')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('personal')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideAddModal('personal')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1208,8 +1211,8 @@
             </form>
             <!-- 弹窗和底部定制 -->
             <ng-template #modifyPersonalModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('personal')">保存</button>
-              <button nz-button nzType="default" (click)="hideModifyModal('personal')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('personal')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModifyModal('personal')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

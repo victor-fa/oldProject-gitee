@@ -33,7 +33,7 @@
     <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', 'APP管理')" [ngClass]="{'active_panel': commonService.nav[1].active}">
       <a class="common-button" routerLink="/appVersion" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-appstore"></i><span>APP管理</span>
+          <i class="anticon anticon-appstore-o" twoToneColor="#ffffff"></i><span>APP管理</span>
         </span>
       </a>
     </li>
@@ -75,7 +75,14 @@
     <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '数据中心')" [ngClass]="{'active_panel': commonService.nav[0].active}">
       <a class="common-button" routerLink="/dataCenter" routerLinkActive="active">
         <span title>
-          <i class="anticon anticon-shop"></i><span>数据中心</span>
+          <i class="anticon anticon-database"></i><span>数据中心</span>
+        </span>
+      </a>
+    </li>
+    <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '数据中心')" [ngClass]="{'active_panel': commonService.nav[8].active}">
+      <a class="common-button" routerLink="/sessionAnalysis" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-line-chart"></i><span>对话分析</span>
         </span>
       </a>
     </li>

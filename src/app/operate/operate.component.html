@@ -3,7 +3,8 @@
   <nz-card style="width: 100%;">
     <nz-card-tab>
       <nz-tabset nzSize="large">
-        <nz-tab nzTitle="打车监控" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
+        <nz-tab [nzTitle]="taxiTemplate" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
+          <ng-template #taxiTemplate><i class="anticon anticon-car"></i>打车监控</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
@@ -121,7 +122,7 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #taxiDetailModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('taxi')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('taxi')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -129,7 +130,8 @@
         </nz-tab>
 
 
-        <nz-tab nzTitle="ASR语音切换" (nzClick)="changePanel('voice')" *ngIf="commonService.haveMenuPermission('children', 'ASR语音切换')">
+        <nz-tab [nzTitle]="voiceTemplate" (nzClick)="changePanel('voice')" *ngIf="commonService.haveMenuPermission('children', 'ASR语音切换')">
+          <ng-template #voiceTemplate><i class="anticon anticon-sound"></i>ASR语音切换</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
@@ -145,11 +147,11 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2">
-              <button *ngIf="!isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceIOS', '')">编辑</button>
-              <button *ngIf="isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceIOS', '')">保存</button>
+              <button *ngIf="!isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceIOS', '')"><i class="anticon anticon-form"></i>编辑</button>
+              <button *ngIf="isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceIOS', '')"><i class="anticon anticon-save"></i>保存</button>
             </div>
             <div nz-col nzSpan="2" *ngIf="isSaveIOSVoiceButton">
-              <button nz-button nzType="primary" (click)="hideModal('voicceIOS')">取消</button>
+              <button nz-button nzType="primary" (click)="hideModal('voicceIOS')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </div>
           </div>
 
@@ -168,11 +170,11 @@
           </div>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2">
-              <button *ngIf="!isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceANDROID', '')">编辑</button>
-              <button *ngIf="isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceANDROID', '')">保存</button>
+              <button *ngIf="!isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceANDROID', '')"><i class="anticon anticon-form"></i>编辑</button>
+              <button *ngIf="isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceANDROID', '')"><i class="anticon anticon-save"></i>保存</button>
             </div>
             <div nz-col nzSpan="2" *ngIf="isSaveANDROIDVoiceButton">
-              <button nz-button nzType="primary" (click)="hideModal('voicceANDROID')">取消</button>
+              <button nz-button nzType="primary" (click)="hideModal('voicceANDROID')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </div>
           </div>
         </nz-tab>

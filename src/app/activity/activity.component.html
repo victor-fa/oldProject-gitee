@@ -4,7 +4,8 @@
     <nz-card-tab>
       <nz-tabset nzSize="large">
 
-        <nz-tab nzTitle="优惠券配置" (nzClick)="changePanel('coupon')" *ngIf="commonService.haveMenuPermission('children', '优惠券配置')">
+        <nz-tab [nzTitle]="couponTemplate" (nzClick)="changePanel('coupon')" *ngIf="commonService.haveMenuPermission('children', '优惠券配置')">
+          <ng-template #couponTemplate><i class="anticon anticon-gift"></i>优惠券配置</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchCouponForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -88,7 +89,7 @@
                   <button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('previewCoupon', data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-eye"></i>查看</button>
+                      class="anticon anticon-eye-o"></i>查看</button>
                 </td>
               </tr>
             </tbody>
@@ -240,8 +241,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addCouponModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('coupon')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('coupon')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('coupon')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('coupon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -391,8 +392,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyCouponModalFooter>
-              <button nz-button nzType="primary" (click)="doModify('coupon')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyCoupon')">取消</button>
+              <button nz-button nzType="primary" (click)="doModify('coupon')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyCoupon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -526,12 +527,13 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #previewCouponModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('previewCoupon')">取消</button>
+              <button nz-button nzType="default" (click)="hideModal('previewCoupon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>
 
-        <nz-tab nzTitle="优惠券活动" (nzClick)="changePanel('activity')" *ngIf="commonService.haveMenuPermission('children', '优惠券活动')">
+        <nz-tab [nzTitle]="activityTemplate" (nzClick)="changePanel('activity')" *ngIf="commonService.haveMenuPermission('children', '优惠券活动')">
+          <ng-template #activityTemplate><i class="anticon anticon-shop"></i>优惠券活动</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchActivityForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -586,10 +588,8 @@
                 <td>{{data.actTypeBo !== undefined && data.actTypeBo.consumedQuantity !== undefined ? data.actTypeBo.consumedQuantity + '/' : 'null'}}{{data.actTypeBo !== undefined && data.actTypeBo.perUserQuantity !== undefined ? data.actTypeBo.perUserQuantity : ''}}</td>
                 <!-- <td>{{data.actTypeBo !== undefined && data.actTypeBo.consumedQuantity !== undefined ? data.actTypeBo.consumedQuantity : ''}}</td> -->
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyActivity', data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="doDelete(data, 'activity')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyActivity', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="doDelete(data, 'activity')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -648,8 +648,8 @@
                 </div>
                 <div nz-col nzSpan="7"></div>
                 <div nz-col nzSpan="3">
-                  <button *ngIf="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')" disabled><i class="anticon anticon-eye"></i>活动页预览</button>
-                  <button *ngIf="baseInfoId !== ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye"></i>活动页预览</button>
+                  <button *ngIf="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')" disabled><i class="anticon anticon-eye-o"></i>活动页预览</button>
+                  <button *ngIf="baseInfoId !== ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye-o"></i>活动页预览</button>
                 </div>
               </div>
 
@@ -988,8 +988,8 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #addContentModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('activity')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('activity')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('activity')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('activity')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1077,8 +1077,8 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #couponModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('couponInActivity')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('couponInActivity')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('couponInActivity')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('couponInActivity')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1104,13 +1104,14 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #previewFooter>
-              <button nz-button nzType="default" (click)="hideModal('preview')">关闭</button>
+              <button nz-button nzType="default" (click)="hideModal('preview')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
         </nz-tab>
 
-        <nz-tab nzTitle="批量发放" (nzClick)="changePanel('batchsendList')" *ngIf="commonService.haveMenuPermission('children', '批量发放')">
+        <nz-tab [nzTitle]="batchsendListTemplate" (nzClick)="changePanel('batchsendList')" *ngIf="commonService.haveMenuPermission('children', '批量发放')">
+          <ng-template #batchsendListTemplate><i class="anticon anticon-fork"></i>批量发放</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">
               查询范围：
@@ -1150,8 +1151,7 @@
                 <td>{{data.totalRevNum}}</td>
                 <td>{{data.displayMessage}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('detail', data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-eye"></i>查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('detail', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
               </tr>
             </tbody>
@@ -1235,8 +1235,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addBatchsendModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('batchsendList')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('batchsendList')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('batchsendList')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('batchsendList')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1325,8 +1325,8 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #couponModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('couponInBatchsend')">确定</button>
-              <button nz-button nzType="default" (click)="hideModal('couponInBatchsend')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('couponInBatchsend')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('couponInBatchsend')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1374,7 +1374,7 @@
             </div>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyBatchsendModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('detailBatchsend')">关闭</button>
+              <button nz-button nzType="default" (click)="hideModal('detailBatchsend')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
@@ -1426,7 +1426,8 @@
 
         </nz-tab>
 
-        <nz-tab nzTitle="充值送豆" (nzClick)="changePanel('bean')" *ngIf="commonService.haveMenuPermission('children', '充值送豆')">
+        <nz-tab [nzTitle]="beanTemplate" (nzClick)="changePanel('bean')" *ngIf="commonService.haveMenuPermission('children', '充值送豆')">
+          <ng-template #beanTemplate><i class="anticon anticon-pay-circle-o"></i>充值送豆</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchBeanForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -1480,7 +1481,7 @@
                 <td>{{data.createTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('searchBean', data)" style="margin-right: 10px;"><i
-                      class="anticon anticon-eye"></i>查看</button>
+                      class="anticon anticon-eye-o"></i>查看</button>
                   <button nz-button nzType="primary" (click)="showModal('modifyBean', data)" style="margin-right: 10px;"><i
                       class="anticon anticon-form"></i>编辑</button>
                 </td>
@@ -1569,8 +1570,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #addBeanModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addBean')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('addBean')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addBean')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addBean')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1656,8 +1657,8 @@
             </form>
             <!-- 弹框和底部定制 -->
             <ng-template #modifyBeanModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('modifyBean')">保存</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyBean')">取消</button>
+              <button nz-button nzType="primary" (click)="doSave('modifyBean')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyBean')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -1734,7 +1735,7 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #searchBeanModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('searchBean')">关闭</button>
+              <button nz-button nzType="default" (click)="hideModal('searchBean')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
