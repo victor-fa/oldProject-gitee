@@ -9,18 +9,26 @@
             <thead>
               <tr>
                 <th nzWidth="100px">序号</th>
+                <th nzWidth="100px">用户账号</th>
+                <th nzWidth="100px">用户昵称</th>
                 <th nzWidth="100px">问题描述</th>
-                <th nzWidth="100px">图片（张）</th>
-                <th nzWidth="100px">手机号或邮箱</th>
+                <th nzWidth="100px">微信</th>
+                <th nzWidth="100px">邮箱</th>
+                <th nzWidth="100px">QQ</th>
+                <th nzWidth="100px">反馈时间</th>
                 <th nzWidth="100px">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowFeedBackTable.data; let i=index;">
                 <td nzWidth="100px">{{i + 1}}</td>
+                <td nzWidth="100px">{{data.phone}}</td>
+                <td nzWidth="100px">{{data.nickName}}</td>
                 <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
-                <td nzWidth="100px">{{data.photo ? (data.photo.length === 0 ? '0' : data.photo.length) : '0'}}</td>
-                <td nzWidth="100px">{{data.number ? data.number : 'null'}}</td>
+                <td nzWidth="100px">{{data.wxNumber}}</td>
+                <td nzWidth="100px">{{data.email}}</td>
+                <td nzWidth="100px">{{data.qq}}</td>
+                <td nzWidth="100px">{{data.date}}</td>
                 <td nzWidth="100px">
                   <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看详情</button>
                 </td>
@@ -33,27 +41,37 @@
 
           <!-- 弹框 —— 信息 —— 反馈详情 -->
           <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideModal('feedBack')">
-            <form style="font-size: 0.4rem;line-height: 1rem;">
+            <form>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">问题描述：</div>
-                <div nz-col nzSpan="12">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">用户账号：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.phone ? tempFeedBack.phone : 'null'}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">用户昵称：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.nickName ? tempFeedBack.nickName : 'null'}}</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">手机号或邮箱：</div>
-                <div nz-col nzSpan="12">{{tempFeedBack.number ? tempFeedBack.number : 'null'}}</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">反馈时间：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.date ? tempFeedBack.date : 'null'}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">微信：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.wxNumber ? tempFeedBack.wxNumber : 'null'}}</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="8" class="right_alignment">图片（张）：</div>
-                <div nz-col nzSpan="12">{{!tempFeedBack.photo ? 'null' : ''}}</div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="4" class="right_alignment">QQ：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.qq ? tempFeedBack.qq : 'null'}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.email ? tempFeedBack.email : 'null'}}</div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
+                <div nz-col nzSpan="20">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="right_alignment">上传图片：</div>
+                <div nz-col nzSpan="20">{{!tempFeedBack.photo ? 'null' : ''}}</div>
               </div>
               <ng-container *ngIf="tempFeedBack.photo">
                 <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
-                   <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="12"><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/feedback/img/' + item" style="width: 350px;"></div>
+                  <div nz-col nzSpan="6"></div>
+                  <div nz-col nzSpan="14"><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/feedback/img/' + item" style="width: 350px;"></div>
                   <div nz-col nzSpan="4"></div>
                 </div>
               </ng-container>

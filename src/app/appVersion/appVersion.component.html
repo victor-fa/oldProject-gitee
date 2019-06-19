@@ -782,7 +782,7 @@
                 <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName === 'CHAT' ? '闲聊' : data.botName === 'OTHER' ? '其他' : data.botName}}</td>
                 <td>{{data.process}}</td>
                 <td nzTitle="{{data.botMsg ? data.botMsg : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.botMsg ? data.botMsg.substring(0, 8) + '…' : ''}}</a></td>
-                <td nzTitle="{{data.guide ? data.guide.join(',') : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guide ? data.guide[0] : ''}}</a></td>
+                <td nzTitle="{{data.guideArr ? data.guideArr : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guideArr ? data.guideArr[0] : ''}}</a></td>
                 <td>{{data.mtime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
                   <nz-form-item>
@@ -808,8 +808,7 @@
           <nz-modal [(nzVisible)]="isAddFlowPointVisible" nzWidth="750" nzTitle="新增流程点引导" [nzFooter]="addFlowPointModalFooter" (nzOnCancel)="hideModal('addFlowPoint')">
             <form [formGroup]="addFlowPointForm">
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">bot选择：</div>
+                <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
                 <div nz-col nzSpan="12" class="span_down">
                   <nz-select [(ngModel)]="flowPointDate.botName" formControlName="botName">
                     <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
@@ -830,37 +829,57 @@
                     <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="8"></div>
               </div>
 
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">流程点名称：</div>
-                <div nz-col nzSpan="12">
+                <div nz-col nzSpan="4" class="span_down right_alignment">流程点名称：</div>
+                <div nz-col nzSpan="18">
                   <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
                 </div>
-                <div nz-col nzSpan="4"></div>
               </div>
 
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">对应后台话术：</div>
-                <div nz-col nzSpan="12">
+                <div nz-col nzSpan="4" class="span_down right_alignment">对应后台话术：</div>
+                <div nz-col nzSpan="18">
                   <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
                 </div>
-                <div nz-col nzSpan="4"></div>
               </div>
-
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">设置指引语：</div>
-                <div nz-col nzSpan="12">
-                  <textarea rows="4" formControlName="guide" [ngModel]="flowPointDate.guideArr" nz-input placeholder="请输入指引语"></textarea>
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
-
             </form>
+
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">指引语设置：</div>
+              <div nz-col nzSpan="10" class="span_down">
+                APP对用户说的话
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4" class="span_down">
+                排序
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                <button nz-button nzType="primary" (click)="doSave('flow_guides')"><i class="anticon anticon-file-add"></i>添加</button>
+              </div>
+              <div nz-col nzSpan="2"></div>
+            </div>
+            <ng-container *ngFor="let item of flowPointDate.guides; let i=index;">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4"></div>
+                <div nz-col nzSpan="10" class="span_down">
+                  <textarea rows="3" nz-input [ngModel]="flowPointDate.guides[i].text" (ngModelChange)="onInputChange($event, 'flowGuide', i)" nzSize="default"></textarea>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4" class="span_down right_alignment">
+                  <input nz-input [ngModel]="flowPointDate.guides[i].sort" (ngModelChange)="onInputChange($event, 'flowSort', i)" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doDelete(i, 'flow_guides')"><i class="anticon anticon-delete"></i>删除</button>
+                </div>
+                <div nz-col nzSpan="2"></div>
+              </div>
+            </ng-container>
+
             <!-- 弹框和底部定制 -->
             <ng-template #addFlowPointModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addFlowPoint')"><i class="anticon anticon-save"></i>保存</button>
@@ -872,8 +891,7 @@
           <nz-modal [(nzVisible)]="isModifyFlowPointVisible" nzWidth="750" nzTitle="修改流程点引导" [nzFooter]="modifyFlowPointModalFooter" (nzOnCancel)="hideModal('modifyFlowPoint')">
               <form [formGroup]="modifyFlowPointForm">
                 <div nz-row class="search_panel">
-                  <div nz-col nzSpan="3"></div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment">bot选择：</div>
+                  <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
                   <div nz-col nzSpan="12" class="span_down">
                     <nz-select [ngModel]="flowPointDate.botName" formControlName="botName">
                       <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
@@ -894,37 +912,56 @@
                       <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
                     </nz-select>
                   </div>
-                  <div nz-col nzSpan="4"></div>
+                  <div nz-col nzSpan="8"></div>
                 </div>
 
                 <div nz-row class="search_panel">
-                  <div nz-col nzSpan="3"></div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment">流程点名称：</div>
-                  <div nz-col nzSpan="12">
+                  <div nz-col nzSpan="4" class="span_down right_alignment">流程点名称：</div>
+                  <div nz-col nzSpan="18">
                     <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="4"></div>
                 </div>
 
                 <div nz-row class="search_panel">
-                  <div nz-col nzSpan="3"></div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment">对应后台话术：</div>
-                  <div nz-col nzSpan="12">
+                  <div nz-col nzSpan="4" class="span_down right_alignment">对应后台话术：</div>
+                  <div nz-col nzSpan="18">
                     <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
-
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="3"></div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment">设置指引语：</div>
-                  <div nz-col nzSpan="12">
-                    <textarea rows="4" formControlName="guide" [ngModel]="flowPointDate.guideArr" nz-input placeholder="请输入指引语"></textarea>
-                  </div>
-                  <div nz-col nzSpan="4"></div>
                 </div>
 
               </form>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="span_down right_alignment">指引语设置：</div>
+                <div nz-col nzSpan="10" class="span_down">
+                  APP对用户说的话
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4" class="span_down">
+                  排序
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  <button nz-button nzType="primary" (click)="doSave('flow_guides')"><i class="anticon anticon-file-add"></i>添加</button>
+                </div>
+                <div nz-col nzSpan="2"></div>
+              </div>
+              <ng-container *ngFor="let item of flowPointDate.guides; let i=index;">
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="4"></div>
+                  <div nz-col nzSpan="10" class="span_down">
+                    <textarea rows="3" nz-input [ngModel]="flowPointDate.guideArr[i]" (ngModelChange)="onInputChange($event, 'flowGuide', i)" nzSize="default"></textarea>
+                  </div>
+                  <div nz-col nzSpan="1"></div>
+                  <div nz-col nzSpan="4" class="span_down right_alignment">
+                    <input nz-input [ngModel]="i+1" (ngModelChange)="onInputChange($event, 'flowSort', i)" nzSize="default">
+                  </div>
+                  <div nz-col nzSpan="1"></div>
+                  <div nz-col nzSpan="2" class="span_down right_alignment">
+                    <button nz-button nzType="primary" (click)="doDelete(i, 'flow_guides')"><i class="anticon anticon-delete"></i>删除</button>
+                  </div>
+                  <div nz-col nzSpan="2"></div>
+                </div>
+              </ng-container>
               <!-- 弹框和底部定制 -->
               <ng-template #modifyFlowPointModalFooter>
                 <button nz-button nzType="primary" (click)="doSave('modifyFlowPoint')"><i class="anticon anticon-save"></i>保存</button>

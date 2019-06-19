@@ -48,8 +48,7 @@ export class AppVersionComponent implements OnInit {
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   // tslint:disable-next-line:max-line-length
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
-  // tslint:disable-next-line:max-line-length
-  flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guide': [], 'guideArr': [] };
+  flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
   helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   dataContent = []; // 内容
@@ -247,13 +246,29 @@ export class AppVersionComponent implements OnInit {
           if (this.flowPointBotName !== '') {
             const tempArr = [];
             JSON.parse(res.payload).forEach(item => {
+              const guideArr = [];
+              item.guides.forEach(cell => {
+                guideArr.push(cell.join('\n'));
+              });
+              item.guideArr = guideArr;
               if (item.botName === this.flowPointBotName) {
                 tempArr.push(item);
               }
             });
             this.dataFlowPoint = tempArr;
           } else {
-            this.dataFlowPoint = JSON.parse(res.payload);
+            const tempArr = [];
+            JSON.parse(res.payload).forEach(item => {
+              const guideArr = [];
+              if (item.guides) {
+                item.guides.forEach(cell => {
+                  guideArr.push(cell.join('\n'));
+                });
+                item.guideArr = guideArr;
+              }
+              tempArr.push(item);
+            });
+            this.dataFlowPoint = tempArr;
           }
           console.log(this.dataFlowPoint);
         } else {
@@ -273,8 +288,8 @@ export class AppVersionComponent implements OnInit {
     this.modifyHelpForm = this.fb.group({ describe: [''], guides: [''], image: [''], name: [''], order: [''], type: [''], details: [''] });
     this.modifyGuideForm = this.fb.group({ title: [''], });
     this.addProtocolForm = this.fb.group({ title: [''], content: [''], });
-    this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guide: [''], });
-    this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guide: [''], });
+    this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
+    this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
   }
 
   // 弹框
@@ -300,7 +315,8 @@ export class AppVersionComponent implements OnInit {
       this.helpType = 'TRAVEL';
     } else if (flag === 'flowPoint') {
       this.isAddFlowPointVisible = true;
-      this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guide': [], 'guideArr': [] };
+      // tslint:disable-next-line:max-line-length
+      this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -327,8 +343,12 @@ export class AppVersionComponent implements OnInit {
       this.isSaveProtocolButton = false;
     } else if (flag === 'addFlowPoint') {
       this.isAddFlowPointVisible = false;
+      // tslint:disable-next-line:max-line-length
+      this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     } else if (flag === 'modifyFlowPoint') {
       this.isModifyFlowPointVisible = false;
+      // tslint:disable-next-line:max-line-length
+      this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     }
   }
 
@@ -430,10 +450,17 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'addFlowPoint') {
-      let guides = [];
-      if (this.addFlowPointForm.controls['guide'].value !== '') {
-        guides = this.addFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
-      }
+      const guideArr = this.flowPointDate.guides;
+      const finalGuides = []; // 获取最终结果
+      guideArr.sort(function(a, b) {return a.sort - b.sort; });
+      guideArr.forEach((item, i) => {
+        if (item.text !== '' && item.sort !== '') {
+          finalGuides.push(item.text.replace(/\r/g, ',').replace(/\n/g, ',').split(','));
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: '指引语或排序未填写' });
+          result = false;
+        }
+      });
       if (this.addFlowPointForm.controls['botName'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: 'bot选择未选择' });
         result = false;
@@ -443,25 +470,30 @@ export class AppVersionComponent implements OnInit {
       } else if (this.addFlowPointForm.controls['botMsg'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '对应后台话术未填写' });
         result = false;
-      } else if (guides.length < 1) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语至少填1个' });
+      } else if (finalGuides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '指引语设置至少填1个' });
         result = false;
       }
-      guides.forEach(item => {
-        if (item === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
-          result = false;
-        }
-        if (item.length > 18) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过18个字符' });
+      finalGuides.forEach(item => {
+        item.forEach(cell => {
+          if (cell.length > 18) {
+            this.modalService.error({ nzTitle: '提示', nzContent: '指引语设置不得超过18个字符' });
+            result = false;
+          }
+        });
+      });
+    } else if (flag === 'modifyFlowPoint') {
+      const guideArr = this.flowPointDate.guides;
+      const finalGuides = []; // 获取最终结果
+      guideArr.sort(function(a, b) {return a.sort - b.sort; });
+      guideArr.forEach((item, i) => {
+        if (item.text !== '' && item.sort !== '') {
+          finalGuides.push(item.text.replace(/\r/g, ',').replace(/\n/g, ',').split(','));
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: '指引语或排序未填写' });
           result = false;
         }
       });
-    } else if (flag === 'modifyFlowPoint') {
-      let guides = [];
-      if (this.modifyFlowPointForm.controls['guide'].value !== '') {
-        guides = this.modifyFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
-      }
       if (this.modifyFlowPointForm.controls['botName'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: 'bot选择未选择' });
         result = false;
@@ -471,19 +503,17 @@ export class AppVersionComponent implements OnInit {
       } else if (this.modifyFlowPointForm.controls['botMsg'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '对应后台话术未填写' });
         result = false;
-      } else if (guides.length < 1) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语至少填1个' });
+      } else if (finalGuides.length < 1) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '指引语设置至少填1个' });
         result = false;
       }
-      guides.forEach(item => {
-        if (item === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语未填写' });
-          result = false;
-        }
-        if (item.length > 18) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '设置指引语不得超过18个字符' });
-          result = false;
-        }
+      finalGuides.forEach(item => {
+        item.forEach(cell => {
+          if (cell.length > 18) {
+            this.modalService.error({ nzTitle: '提示', nzContent: '指引语设置不得超过18个字符' });
+            result = false;
+          }
+        });
       });
     }
     if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content'
@@ -702,14 +732,20 @@ export class AppVersionComponent implements OnInit {
       window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
     } else if (flag === 'addFlowPoint') {
       if (!this.verificationAdd('addFlowPoint')) { return; }
-      const guides = this.addFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      const guideArr = this.flowPointDate.guides;
+      const finalGuides = []; // 获取最终结果
+      guideArr.sort(function(a, b) {return a.sort - b.sort; });
+      guideArr.forEach((item, i) => {
+        finalGuides.push(item.text.replace(/\r/g, ',').replace(/\n/g, ',').split(','));
+      });
       const flowPointInput = {
         'botName': this.addFlowPointForm.controls['botName'].value,
         'process': this.addFlowPointForm.controls['process'].value,
         'status': false,
         'botMsg': this.addFlowPointForm.controls['botMsg'].value,
-        'guide': guides
+        'guides': finalGuides
       };
+      console.log(flowPointInput);
       this.flowpointService.addFlowpoint(flowPointInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -723,15 +759,21 @@ export class AppVersionComponent implements OnInit {
       });
     } else if (flag === 'modifyFlowPoint') {
       if (!this.verificationAdd('modifyFlowPoint')) { return; }
-      const guides = this.modifyFlowPointForm.controls['guide'].value.replace(/\r/g, ',').replace(/\n/g, ',').split(',');
+      const guideArr = this.flowPointDate.guides;
+      const finalGuides = []; // 获取最终结果
+      guideArr.sort(function(a, b) {return a.sort - b.sort; });
+      guideArr.forEach((item, i) => {
+        finalGuides.push(item.text.replace(/\r/g, ',').replace(/\n/g, ',').split(','));
+      });
       const flowPointInput = {
         'id': this.flowPointDate.id,
         'botName': this.modifyFlowPointForm.controls['botName'].value,
         'process': this.modifyFlowPointForm.controls['process'].value,
         'status': false,
         'botMsg': this.modifyFlowPointForm.controls['botMsg'].value,
-        'guide': guides
+        'guides': finalGuides
       };
+      console.log(flowPointInput);
       this.flowpointService.modifyFlowpoint(flowPointInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -743,6 +785,10 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'flow_guides') {
+      const guideItem = { 'text': '', 'sort': '' };
+      this.flowPointDate.guides.push(guideItem);
+      console.log(this.flowPointDate);
     }
   }
 
@@ -795,7 +841,6 @@ export class AppVersionComponent implements OnInit {
       this.fileList.splice(0, this.fileList.length);
       this.isModifyHelpVisible = true;
       this.templateId = id;  // 用于修改
-
       this.cnaNotUseModelChange();
       this.helpDate = data;
       this.helpDate.guideArr = data.guides.join('\n');
@@ -809,7 +854,17 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'modifyFlowPoint') {
       this.isModifyFlowPointVisible = true;
       this.flowPointDate = data;
-      this.flowPointDate.guideArr = data.guide.join('\n');
+      const tempArr = [];
+      const guideArr = [];
+      if (data.guides) {
+        data.guides.forEach(item => {
+          tempArr.push(item.join('\n'));
+          guideArr.push({'text': item.join('\n')});
+        });
+      }
+      this.flowPointDate.guideArr = tempArr;
+      this.flowPointDate.guides = guideArr;
+      console.log(this.flowPointDate);
     }
   }
 
@@ -910,6 +965,8 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'flow_guides') {
+      this.flowPointDate.guides.splice(id, 1);
     }
   }
 
@@ -1105,6 +1162,14 @@ export class AppVersionComponent implements OnInit {
     } else if (site === 'imageImageKey') {  // image WEB
       this.guideItem.imageArr.forEach(( cell, i ) => {
         if (i === item) { cell.imageKey = value; }
+      });
+    } else if (site === 'flowGuide') {  // flow text
+      this.flowPointDate.guides.forEach(( cell, i ) => {
+        if (i === item) { cell.text = value; }
+      });
+    } else if (site === 'flowSort') {  // flow sort
+      this.flowPointDate.guides.forEach(( cell, i ) => {
+        if (i === item) { cell.sort = value; }
       });
     }
   }
