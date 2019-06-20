@@ -13,6 +13,7 @@ import { LocalizationService } from '../public/service/localization.service';
 import { ProtocolService } from '../public/service/protocol.service';
 import { ShareService } from '../public/service/share.service';
 import { FlowpointService } from '../public/service/flowpoint.service';
+import { QqCustomerService } from '../public/service/qqCustomer.service';
 
 registerLocaleData(zh);
 
@@ -40,12 +41,14 @@ export class AppVersionComponent implements OnInit {
   addProtocolForm: FormGroup;
   addFlowPointForm: FormGroup;
   modifyFlowPointForm: FormGroup;
+  qqCustomerForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   // tslint:disable-next-line:max-line-length
   contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': '' };
   // tslint:disable-next-line:max-line-length
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
+  dataQQCustomer = { 'contact_qq': '' };
   // tslint:disable-next-line:max-line-length
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
   flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
@@ -90,6 +93,7 @@ export class AppVersionComponent implements OnInit {
   };
   isSaveShareButton = false;
   isSaveProtocolButton = false;
+  isSaveQQCustomerButton = false;
   currentProtocol = '1';
   private timerList;
   private timerDetail;
@@ -108,6 +112,7 @@ export class AppVersionComponent implements OnInit {
     public localizationService: LocalizationService,
     private appversionService: AppversionService,
     private notification: NzNotificationService,
+    private qqCustomerService: QqCustomerService,
     private helpService: HelpService,
     private guideService: GuideService,
     private datePipe: DatePipe,
@@ -275,6 +280,17 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'qqCustomer') {
+      this.qqCustomerService.getQqCustomerList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataQQCustomer = res.payload;
+          const operationInput = { op_category: 'APP管理', op_page: '客服QQ', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -290,6 +306,7 @@ export class AppVersionComponent implements OnInit {
     this.addProtocolForm = this.fb.group({ title: [''], content: [''], });
     this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
     this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
+    this.qqCustomerForm = this.fb.group({ contact_qq: [''] });
   }
 
   // 弹框
@@ -349,6 +366,8 @@ export class AppVersionComponent implements OnInit {
       this.isModifyFlowPointVisible = false;
       // tslint:disable-next-line:max-line-length
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
+    } else if (flag === 'qqCustomer') {
+      this.isSaveQQCustomerButton = false;
     }
   }
 
@@ -515,9 +534,14 @@ export class AppVersionComponent implements OnInit {
           }
         });
       });
+    } else if (flag === 'qqCustomer') {
+      if (this.qqCustomerForm.controls['contact_qq'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: 'QQ号未填写' });
+        result = false;
+      }
     }
     if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content'
-      && flag !== 'addFlowPoint' && flag !== 'modifyFlowPoint') {
+      && flag !== 'addFlowPoint' && flag !== 'modifyFlowPoint' && flag !== 'qqCustomer') {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
       result = false;
     }
@@ -789,6 +813,26 @@ export class AppVersionComponent implements OnInit {
       const guideItem = { 'text': '', 'sort': '' };
       this.flowPointDate.guides.push(guideItem);
       console.log(this.flowPointDate);
+    } else if (flag === 'editQQCustomer') {
+      this.isSaveQQCustomerButton = true;
+    } else if (flag === 'qqCustomer') {
+      if (!this.verificationAdd('qqCustomer')) {
+        return;
+      }
+      const qqInput = {
+        'contact_qq': this.qqCustomerForm.controls['contact_qq'].value,
+      };
+      this.qqCustomerService.modifyQqCustomer(qqInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '客服QQ', op_name: '保存' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.isSaveQQCustomerButton = false; // 保存成功后，变为编辑按钮
+          this.loadData('qqCustomer');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -1003,7 +1047,7 @@ export class AppVersionComponent implements OnInit {
         'process': data.process,
         'status': data.status,
         'botMsg': data.botMsg,
-        'guide': data.guide
+        'guides': data.guides
       };
       this.flowpointService.modifyFlowpoint(switchInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -1194,9 +1238,12 @@ export class AppVersionComponent implements OnInit {
     if (flag !== 'share') {
       this.isSaveShareButton = false;
     }
+    if (flag !== 'qqCustomer') {
+      this.isSaveQQCustomerButton = false;
+    }
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
-    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol' ? '协议管理' : '', op_name: '访问' };
+    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

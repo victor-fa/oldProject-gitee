@@ -64,6 +64,8 @@ export enum cmsApiUrls {
   flowpointList = '/guide/bottom',
   /** 个人中心 */
   personalList = '/personal/center/advertising',
+  /** 客服QQ */
+  qqCustomerList = '/contact_qq',
 }
 
 /** APP版本 */

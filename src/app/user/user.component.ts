@@ -60,6 +60,7 @@ export class UserComponent implements OnInit {
   isDeliveryOrder = false;
   isPhoneBillOrder = false;
   isConstellationOrder = false;
+  isMovieOrder = false;
   lastBookingId = 0;
   firstBookingId = 0;
   totalBooking = 0;
@@ -560,6 +561,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).hotelOrder) {
             this.dataDetail = JSON.parse(res.payload).hotelOrder;
@@ -570,6 +572,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).trainOrderReturn) {
             this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
@@ -580,6 +583,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).taxiOrderDetailResponse) {
             this.dataDetail = JSON.parse(res.payload).taxiOrderDetailResponse;
@@ -590,6 +594,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).expressOrderDetailResponse) {
             this.dataDetail = JSON.parse(res.payload).expressOrderDetailResponse;
@@ -600,6 +605,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = true;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).phoneChargeOrder) {
             this.dataDetail = JSON.parse(res.payload).phoneChargeOrder;
@@ -610,6 +616,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = true;
             this.isConstellationOrder = false;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).pairOrder) {
             this.dataDetail = JSON.parse(res.payload).pairOrder;
@@ -620,6 +627,7 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = true;
+            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).fortuneOrder) {
             this.dataDetail = JSON.parse(res.payload).fortuneOrder;
@@ -630,6 +638,18 @@ export class UserComponent implements OnInit {
             this.isDeliveryOrder = false;
             this.isPhoneBillOrder = false;
             this.isConstellationOrder = true;
+            this.isMovieOrder = false;
+          }
+          if (JSON.parse(res.payload).movieOrder) {
+            this.dataDetail = JSON.parse(res.payload).movieOrder;
+            this.isFlightOrder = false;
+            this.isHotelOrder = false;
+            this.isTrainOrder = false;
+            this.isTaxiOrder = false;
+            this.isDeliveryOrder = false;
+            this.isPhoneBillOrder = false;
+            this.isConstellationOrder = false;
+            this.isMovieOrder = true;
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });

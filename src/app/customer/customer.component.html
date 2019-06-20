@@ -24,7 +24,9 @@
                 <td nzWidth="100px">{{i + 1}}</td>
                 <td nzWidth="100px">{{data.phone}}</td>
                 <td nzWidth="100px">{{data.nickName}}</td>
-                <td nzWidth="100px">{{data.words ? data.words : 'null'}}</td>
+                <td nzTitle="{{data.words}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.words ? data.words.length > 12 ? data.words.substring(0, 12) + '…' : data.words : 'null'}}</a>
+                </td>
                 <td nzWidth="100px">{{data.wxNumber}}</td>
                 <td nzWidth="100px">{{data.email}}</td>
                 <td nzWidth="100px">{{data.qq}}</td>
