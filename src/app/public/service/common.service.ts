@@ -13,23 +13,26 @@ import { IResponse } from '../model/response.model';
  * 公用的
  */
 export class CommonService extends AppServiceBase {
-  baseUrl = 'http://account-center-test.chewrobot.com/api/admin';  // chrome浏览器不安全下使用 测试环境
-  // baseUrl = 'https://xiaowu.centaurstech.com/api/admin';  // chrome浏览器不安全下使用 正式环境
+  currentServer = 'http://account-center-test.chewrobot.com'; // 切换服务器地址为测试
+  // currentServer = 'http://xiaowu.centaurstech.com'; // 切换服务器地址为正式
+
+  baseUrl = this.currentServer + '/api/admin';  // chrome浏览器不安全下使用
   // baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问】
   // baseUrl = 'http://192.168.1.250:3000/api/admin';  // nginx正式前端地址【局域网访问】
   // baseUrl = 'http://192.168.4.100:5000/api/admin';  // nginx正式前端地址【博士研发部专用访问】
   // baseUrl = 'http://localhost:8086/api/admin';  // nginx测试前端地址
   // baseUrl = 'http://localhost:8088/api/admin';  // nginx正式前端地址
-  dataCenterUrl = 'http://account-center-test.chewrobot.com:46004/api';  // 数据中心测试【衡锐】
-  // dataCenterUrl = 'http://xiaowu.centaurstech.com:46004/api';  // 数据中心正式【衡锐】
+  dataCenterUrl = this.currentServer + ':46004/api';  // 数据中心【衡锐】
+  taxiRouteUrl = this.currentServer + ':41005/api';  // 打车路径【宇辉】
+  // logsRouteUrl = this.currentServer + ':6667/api/admin';  // 对话日志【衡锐】
+  logsRouteUrl = this.currentServer + ':46008/api';  // 对话日志【衡锐】
   // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
-  taxiRouteUrl = 'http://account-center-test.chewrobot.com:41005/api';  // 打车路径测试【宇辉】
-  // taxiRouteUrl = 'http://xiaowu.centaurstech.com:41005/api';  // 打车路径正式【宇辉】
 
   list: string[] = [];
   isLeftNavClose = false;
   isCollapsed = false;
   nav = [    // 大菜单的下标状态
+    { active: false },
     { active: false },
     { active: false },
     { active: false },

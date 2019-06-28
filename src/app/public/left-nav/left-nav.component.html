@@ -51,6 +51,13 @@
         </span>
       </a>
     </li>
+    <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '客户管理')" [ngClass]="{'active_panel': commonService.nav[9].active}">
+      <a class="common-button" routerLink="/consumer" routerLinkActive="active">
+        <span title>
+          <i class="anticon anticon-team"></i><span>客户管理</span>
+        </span>
+      </a>
+    </li>
     <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '运维后台')" [ngClass]="{'active_panel': commonService.nav[4].active}">
       <a class="common-button" routerLink="/operate" routerLinkActive="active">
         <span title>
@@ -79,7 +86,7 @@
         </span>
       </a>
     </li>
-    <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '数据中心')" [ngClass]="{'active_panel': commonService.nav[8].active}">
+    <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '对话分析')" [ngClass]="{'active_panel': commonService.nav[8].active}">
       <a class="common-button" routerLink="/sessionAnalysis" routerLinkActive="active">
         <span title>
           <i class="anticon anticon-line-chart"></i><span>对话分析</span>

@@ -66,6 +66,11 @@ export enum cmsApiUrls {
   personalList = '/personal/center/advertising',
   /** 客服QQ */
   qqCustomerList = '/contact_qq',
+  /** 对话日志 */
+  // sessionLogList = '/chat-logs',
+  sessionLogList = '/logs',
+  /** 客户管理 */
+  consumerList = '/customer/channel',
 }
 
 /** APP版本 */

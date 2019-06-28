@@ -77,6 +77,10 @@ export class AccountComponent implements OnInit {
   checkOptions7 = [];
   allChecked8 = false;
   checkOptions8 = [];
+  allChecked9 = false;
+  checkOptions9 = [];
+  allChecked10 = false;
+  checkOptions10 = [];
   allMenu = [];
   /* 规则配置 */
 
@@ -182,6 +186,14 @@ export class AccountComponent implements OnInit {
               this.allMenu.push({name: item.name, id: item.id});
               // tslint:disable-next-line:max-line-length
               item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); });
+            } else if (i === 8) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions9.push(unit); });
+            } else if (i === 9) {
+              this.allMenu.push({name: item.name, id: item.id});
+              // tslint:disable-next-line:max-line-length
+              item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions10.push(unit); });
             }
           });
           console.log(this.allMenu);
@@ -485,14 +497,20 @@ export class AccountComponent implements OnInit {
     if (flag === 'flag7') { this.allChecked7 ? this.checkOptions7.forEach(item => item.checked = true) : this.checkOptions7.forEach(item => item.checked = false); }
     // tslint:disable-next-line:max-line-length
     if (flag === 'flag8') { this.allChecked8 ? this.checkOptions8.forEach(item => item.checked = true) : this.checkOptions8.forEach(item => item.checked = false); }
+    // tslint:disable-next-line:max-line-length
+    if (flag === 'flag9') { this.allChecked9 ? this.checkOptions9.forEach(item => item.checked = true) : this.checkOptions9.forEach(item => item.checked = false); }
+    // tslint:disable-next-line:max-line-length
+    if (flag === 'flag10') { this.allChecked10 ? this.checkOptions10.forEach(item => item.checked = true) : this.checkOptions10.forEach(item => item.checked = false); }
   }
 
   // 去除所有的多选
   private allCheckFalse(): void {
     this.allChecked1 = false; this.allChecked2 = false; this.allChecked3 = false; this.allChecked5 = false; this.allChecked4 = false;
-    this.allChecked6 = false; this.allChecked6 = false; this.allChecked7 = false; this.allChecked8 = false;
+    this.allChecked6 = false; this.allChecked6 = false; this.allChecked7 = false; this.allChecked8 = false; this.allChecked9 = false;
+    this.allChecked10 = false;
     this.checkOptions1 = []; this.checkOptions2 = []; this.checkOptions3 = []; this.checkOptions4 = []; this.checkOptions5 = [];
-    this.checkOptions6 = []; this.checkOptions7 = []; this.checkOptions8 = []; this.allMenu = [];  // 清空
+    this.checkOptions6 = []; this.checkOptions7 = []; this.checkOptions8 = []; this.checkOptions9 = []; this.checkOptions10 = [];
+    this.allMenu = [];  // 清空
     this.dataResource.forEach((item, i) => {
       // tslint:disable-next-line:max-line-length
       if (i === 1) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); }); }
@@ -510,6 +528,10 @@ export class AccountComponent implements OnInit {
       if (i === 7) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions7.push(unit); }); }
       // tslint:disable-next-line:max-line-length
       if (i === 8) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); }); }
+      // tslint:disable-next-line:max-line-length
+      if (i === 9) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions9.push(unit); }); }
+      // tslint:disable-next-line:max-line-length
+      if (i === 10) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions10.push(unit); }); }
     });
 
     this.checkOptionsChannel = [
@@ -585,7 +607,7 @@ export class AccountComponent implements OnInit {
   // 获取一、二级菜单
   getResArr() {
     const finalArr = [];
-    const arr1 = [], arr2 = [], arr3 = [], arr4 = [], arr5 = [], arr6 = [], arr7 = [], arr8 = [];
+    const arr1 = [], arr2 = [], arr3 = [], arr4 = [], arr5 = [], arr6 = [], arr7 = [], arr8 = [], arr9 = [], arr10 = [];
     this.checkOptions1.forEach(item => { if (item.checked) { finalArr.push(item.value); arr1.push(item.id); } });
     this.checkOptions2.forEach(item => { if (item.checked) { finalArr.push(item.value); arr2.push(item.id); } });
     this.checkOptions3.forEach(item => { if (item.checked) { finalArr.push(item.value); arr3.push(item.id); } });
@@ -594,6 +616,8 @@ export class AccountComponent implements OnInit {
     this.checkOptions6.forEach(item => { if (item.checked) { finalArr.push(item.value); arr6.push(item.id); } });
     this.checkOptions7.forEach(item => { if (item.checked) { finalArr.push(item.value); arr7.push(item.id); } });
     this.checkOptions8.forEach(item => { if (item.checked) { finalArr.push(item.value); arr8.push(item.id); } });
+    this.checkOptions9.forEach(item => { if (item.checked) { finalArr.push(item.value); arr9.push(item.id); } });
+    this.checkOptions10.forEach(item => { if (item.checked) { finalArr.push(item.value); arr10.push(item.id); } });
     if (arr1.length > 0) { finalArr.push(this.allMenu[0].id); }
     if (arr2.length > 0) { finalArr.push(this.allMenu[1].id); }
     if (arr3.length > 0) { finalArr.push(this.allMenu[2].id); }
@@ -602,6 +626,8 @@ export class AccountComponent implements OnInit {
     if (arr6.length > 0) { finalArr.push(this.allMenu[5].id); }
     if (arr7.length > 0) { finalArr.push(this.allMenu[6].id); }
     if (arr8.length > 0) { finalArr.push(this.allMenu[7].id); }
+    if (arr9.length > 0) { finalArr.push(this.allMenu[8].id); }
+    if (arr10.length > 0) { finalArr.push(this.allMenu[9].id); }
     return finalArr;
   }
 
@@ -616,6 +642,7 @@ export class AccountComponent implements OnInit {
       this.checkOptions6.forEach(item => { if (item.value === element) { item.checked = true; } });
       this.checkOptions7.forEach(item => { if (item.value === element) { item.checked = true; } });
       this.checkOptions8.forEach(item => { if (item.value === element) { item.checked = true; } });
+      this.checkOptions9.forEach(item => { if (item.value === element) { item.checked = true; } });
     });
   }
 

@@ -163,22 +163,29 @@ export class UserService extends AppServiceBase {
             localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr)); // 正式
             // tslint:disable-next-line:max-line-length
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
+            console.log(menuArr);
             setTimeout(() => {
               let target = 'appVersion';
               if (menuArr.indexOf('APP管理') <= -1) { // 不存在
                 target = 'customer';
                 if (menuArr.indexOf('客服中心') <= -1) { // 不存在
-                  target = 'user';
-                  if (menuArr.indexOf('用户管理') <= -1) { // 不存在
-                    target = 'operate';
-                    if (menuArr.indexOf('运维后台') <= -1) { // 不存在
-                      target = 'content';
-                      if (menuArr.indexOf('内容管理') <= -1) { // 不存在
-                        target = 'activity';
-                        if (menuArr.indexOf('活动管理') <= -1) { // 不存在
-                          target = 'dataCenter';
-                          if (menuArr.indexOf('数据中心') <= -1) { // 不存在
-                            target = 'account';
+                  target = 'consumer';
+                  if (menuArr.indexOf('客户管理') <= -1) { // 不存在
+                    target = 'user';
+                    if (menuArr.indexOf('用户管理') <= -1) { // 不存在
+                      target = 'operate';
+                      if (menuArr.indexOf('运维后台') <= -1) { // 不存在
+                        target = 'content';
+                        if (menuArr.indexOf('内容管理') <= -1) { // 不存在
+                          target = 'activity';
+                          if (menuArr.indexOf('活动管理') <= -1) { // 不存在
+                            target = 'dataCenter';
+                            if (menuArr.indexOf('数据中心') <= -1) { // 不存在
+                              target = 'sessionAnalysis';
+                              if (menuArr.indexOf('对话分析') <= -1) { // 不存在
+                                target = 'account';
+                              }
+                            }
                           }
                         }
                       }
@@ -255,6 +262,17 @@ export class UserService extends AppServiceBase {
     };
     return this.httpClient
       .get<IResponse<any>>(url);
+  }
+
+  /** 获取所有列表 */
+  getLatestLogin(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/user/login-history?pageSize=9999`;
+    url += data.userId ? '&userId=' + data.userId : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
   }
 
 }

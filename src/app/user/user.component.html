@@ -79,7 +79,7 @@
                 <td>{{data.blockedBeans}}</td>
                 <td>{{data.autoPayment === true ? '开启' : data.autoPayment === false ? '关闭' : 'null'}}</td>
                 <td>{{data.registerAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{data.latestLoginAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td><a (click)="showModal('latestLoginAt', data)">{{data.latestLoginAt | date:'yyyy-MM-dd HH:mm:ss' }}</a></td>
                 <td>{{data.locked === true ? '冻结' : data.locked === false ? '正常' : 'null' }}</td>
                 <td><a (click)="showModal('goRecharge', data)">查看</a></td>
                 <td><a (click)="showModal('goInvoice', data)">查看</a></td>
@@ -273,6 +273,36 @@
             <!-- 弹框和底部定制 -->
             <ng-template #userInfoCommonVisibleModalFooter>
               <button nz-button nzType="default" (click)="hideModal('UserCommon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <!-- 弹框 —— 信息 —— 登录详情 -->
+          <nz-modal [(nzVisible)]="isLatestLoginVisible" nzWidth="750" nzTitle="登录详情" [nzFooter]="userLatestLoginAtModalFooter" (nzOnCancel)="hideModal('latestLoginAt')">
+            <nz-table #rowLatestLoginTable [nzData]="latestLoginData" [nzSimple]="true" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>登录时间</th>
+                  <th>登录地点</th>
+                  <th>登录设备</th>
+                  <th>登录的APP版本</th>
+                  <th>登录的渠道</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of rowLatestLoginTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.loginTime}}</td>
+                  <td>{{data.address}}</td>
+                  <td>{{data.equipment}}</td>
+                  <td>{{data.appVersion}}</td>
+                  <td>{{data.appChannelId}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <!-- 弹框和底部定制 -->
+            <ng-template #userLatestLoginAtModalFooter>
+              <button nz-button nzType="default" (click)="hideModal('latestLoginAt')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

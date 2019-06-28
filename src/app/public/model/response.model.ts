@@ -1,4 +1,5 @@
 export interface IResponse<T> {
+  count?: number;
   status: number;
   retcode: number;
   message: string;

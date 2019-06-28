@@ -10,7 +10,7 @@ import { CommonService } from './common.service';
   providedIn: 'root'
 })
 
-export class QqCustomerService extends AppServiceBase {
+export class ConsumerService extends AppServiceBase {
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
@@ -20,8 +20,8 @@ export class QqCustomerService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getQqCustomerList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.qqCustomerList}`;
+  getConsumerList(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}/list`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -29,14 +29,16 @@ export class QqCustomerService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
-  /** 修改单个 */
-  modifyQqCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.qqCustomerList}?contact_qq=${data.contact_qq}`;
+  /** 添加单个 */
+  addConsumer(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}`;
+    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}`;
     this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
     return this.httpClient
-      .put<IResponse<any>>(url, data, this.options);
+      .put<IResponse<any>>(url, body, this.options);
   }
 
 }

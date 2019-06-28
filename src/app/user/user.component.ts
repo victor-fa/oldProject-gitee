@@ -46,6 +46,7 @@ export class UserComponent implements OnInit {
   isAdjustDetailVisible = false;
   isAdjustAddVisible = false;
   isAdjustSendVisible = false;
+  isLatestLoginVisible = false;
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
@@ -100,11 +101,13 @@ export class UserComponent implements OnInit {
   rechargeData = [];
   invoiceData = [];
   invoiceItem = {};
+  latestLoginData = [];
   commonUserId = '';  // 常用信息的用户id
   userInfoCommonData = [];
   rechargePhone = ''; // 用户管理跳充值记录传值
   invoicePhone = ''; // 用户管理跳开票记录传值
   bookingPhone = ''; // 用户管理跳实体服务订单传值
+  latestLoginInfo = ''; // 用户管理跳登录详情
   userLocked = '';  // 用户状态下拉
   bookingType = '';
   isSpinning = false;
@@ -297,6 +300,20 @@ export class UserComponent implements OnInit {
             }
             console.log(this.userInfoCommonData);
           }
+        } else {
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'latestLoginAt') {
+      const latestLoginInput = {
+        userId: this.latestLoginInfo,
+      };
+      console.log(latestLoginInput);
+      this.userService.getLatestLogin(latestLoginInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.latestLoginData = JSON.parse(res.payload).reverse();
+          console.log(this.latestLoginData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -726,6 +743,10 @@ export class UserComponent implements OnInit {
       this.bookingPhone = data.account;
       setTimeout(() => { this.doSearch('booking'); }, 1000);
       this.tabsetJson.currentNum = 1; // 实体服务订单
+    } if (flag === 'latestLoginAt') {  // 查看登录信息
+      this.latestLoginInfo = data.userId;
+      setTimeout(() => { this.loadData('latestLoginAt'); }, 1000);
+      this.isLatestLoginVisible = true;
     }
   }
 
@@ -882,6 +903,8 @@ export class UserComponent implements OnInit {
       this.isUserInfoCommonVisible = false;
     } else if (flag === 'invoiceInfoDetail') {
       this.isInvoiceDetailVisible = false;
+    } else if (flag === 'latestLoginAt') {
+      this.isLatestLoginVisible = false;
     }
   }
 
