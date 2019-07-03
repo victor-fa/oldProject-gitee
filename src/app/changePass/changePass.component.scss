@@ -1,0 +1,51 @@
+.top_nav {
+  position: absolute;
+  width: 100%;
+  .left_panel {
+    .qiwu_logo {
+      width: 1.5rem;
+      margin: 20px;
+    }
+  }
+}
+.changePass {
+  width: 100%;
+  margin: 0 auto;
+  .login_panel {
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+    .center {
+      width: 475px;
+      background: #fff;
+      padding: 20px;
+      border: 1px solid #9A9A9A;
+      .title_panel {
+        text-align: center;
+      }
+      .cell_panel {
+        padding: 10px 0;
+      }
+    }
+  }
+}
+[nz-button] {
+  margin-bottom: 12px;
+}
+.ant-tooltip-inner {
+  background-color: #ffffff!important;
+  color: #000000;
+}
+
+.span_down {
+  line-height: 30px;
+}

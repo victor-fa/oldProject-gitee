@@ -97,6 +97,16 @@ export class UserService extends AppServiceBase {
       .post<IResponse<any>>(url, body, this.options);
   }
 
+  /** 解冻用户 */
+  unlockUser(infoId): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${userApiUrls.users}/${infoId}/unlock`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, this.options);
+  }
+
   /** 发送伪验证码 */
   sendMsg(phone): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.sms}`;
@@ -208,6 +218,20 @@ export class UserService extends AppServiceBase {
     };
     result.open('POST', `${this.commonService.baseUrl}/process_login`, true);
     result.send(formData);
+  }
+
+  /** 修改密码 */
+  changePass(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/auth/info/pwd/modify`;
+    const body = `oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`;
+    this.setOption = {
+      headers: new HttpHeaders({
+        'App-Channel-Id': localStorage.getItem('currentAppHeader'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
   }
 
   /** 获取点赞点踩Excel模板接口 */

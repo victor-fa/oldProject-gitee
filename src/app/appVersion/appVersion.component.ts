@@ -245,6 +245,8 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'flowPoint') {
+      console.log(this.flowPointBotName);
+
       this.flowpointService.getFlowpointList().subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -252,9 +254,11 @@ export class AppVersionComponent implements OnInit {
             const tempArr = [];
             JSON.parse(res.payload).forEach(item => {
               const guideArr = [];
-              item.guides.forEach(cell => {
-                guideArr.push(cell.join('\n'));
-              });
+              if (item.guides) {
+                item.guides.forEach(cell => {
+                  guideArr.push(cell.join('\n'));
+                });
+              }
               item.guideArr = guideArr;
               if (item.botName === this.flowPointBotName) {
                 tempArr.push(item);

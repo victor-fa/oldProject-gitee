@@ -54,6 +54,7 @@ export class LeftNavComponent implements OnInit {
     this.commonService.isLeftNavClose = !this.commonService.isLeftNavClose;
   }
 
+  // 注销退出
   cancellation(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('token');
@@ -62,6 +63,11 @@ export class LeftNavComponent implements OnInit {
     localStorage.removeItem('AppHeaderAllow');
     localStorage.removeItem('currentUser');
     window.location.href = '/login';
+  }
+
+  // 修改密码
+  modifyPwd() {
+    window.location.href = '/changePass';
   }
 
   goDataCenter() {

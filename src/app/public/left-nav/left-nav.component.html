@@ -13,6 +13,9 @@
           <strong>{{currentUser}}</strong>
         </a>
         <ul nz-menu>
+          <li nz-menu-item (click)="modifyPwd()">
+            <a>修改密码</a>
+          </li>
           <li nz-menu-item (click)="cancellation()">
             <a>注销/退出</a>
           </li>
