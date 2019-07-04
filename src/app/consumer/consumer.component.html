@@ -15,12 +15,15 @@
                 <input nz-input formControlName="userPhone" placeholder="输入客户ID" nzSize="default">
               </div>
             </form> -->
-            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="19"></div>
             <!-- <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
             </div> -->
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
             <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showAddModal('consumer')"><i class="anticon anticon-file-add"></i>新增客户</button>
+              <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-file-add"></i>新增客户</button>
             </div>
           </div>
           <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
@@ -34,7 +37,10 @@
                 <th nzWidth="20px">Client ID</th>
                 <th nzWidth="20px">登录类型</th>
                 <th nzWidth="20px">BOT名称</th>
+                <th nzWidth="20px">Payment Key</th>
+                <th nzWidth="20px">短信签名</th>
                 <th nzWidth="20px">创建时间</th>
+                <th nzWidth="20px">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -47,7 +53,12 @@
                 <td>{{data.clientId}}</td>
                 <td>{{data.loginType === 0 ? '不需要登录' : '需要登录'}}</td>
                 <td>{{data.robot}}</td>
+                <td>{{data.paymentKey ? data.paymentKey : 'null'}}</td>
+                <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                </td>
               </tr>
             </tbody>
           </nz-table>
@@ -55,7 +66,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideAddModal('consumer')">
+          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')">
             <form [formGroup]="addConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -81,6 +92,22 @@
                   <input nz-input formControlName="robot" [(ngModel)]="consumerDate.robot" placeholder="请输入BOT名称" nzSize="default">
                 </div>
               </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  Payment Key：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="paymentKey" [(ngModel)]="consumerDate.paymentKey" placeholder="请输入Payment Key" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  短信签名：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
+                </div>
+              </div>
             </form>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -94,8 +121,65 @@
               </div>
             </div>
             <ng-template #addConsumerModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('consumer')"><i class="anticon anticon-save"></i>保存</button>
-              <button nz-button nzType="default" (click)="hideAddModal('consumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+              <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addConsumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="isModifyConsumerVisible" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')">
+            <form [formGroup]="modifyConsumerForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  客户ID：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.appChannel}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  客户名称：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.appChannelName}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  BOT名称：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.robot}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  Payment Key：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="paymentKey" [(ngModel)]="consumerDate.paymentKey" placeholder="请输入Payment Key" nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  短信签名：
+                </div>
+                <div nz-col nzSpan="12">
+                  <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
+                </div>
+              </div>
+            </form>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="8" class="span_down right_alignment">
+                登录类型：
+              </div>
+              <div nz-col nzSpan="12" class="span_down">
+                {{consumerDate.robot === 1 ? '需要登录' : '不需要登录'}}
+              </div>
+            </div>
+            <ng-template #modifyConsumerModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyConsumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>

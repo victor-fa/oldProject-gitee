@@ -70,7 +70,7 @@ export class ChangePassComponent implements OnInit {
         const operationInput = { op_category: '修改密码', op_page: '修改密码', op_name: '修改' };
         this.commonService.updateOperationlog(operationInput).subscribe();
         this.modalService.success({ nzTitle: '提示', nzContent: '修改密码成功！' });
-        // this.router.navigateByUrl('login');
+        this.router.navigateByUrl('login');
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       }

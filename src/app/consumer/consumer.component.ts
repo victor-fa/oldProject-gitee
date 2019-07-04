@@ -17,9 +17,11 @@ registerLocaleData(zh);
 export class ConsumerComponent implements OnInit {
 
   isAddConsumerVisible = false;
+  isModifyConsumerVisible = false;
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0 };
+  modifyConsumerForm: FormGroup;
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
   dataConsumer = []; // 客户
   isSpinning = false;
 
@@ -58,21 +60,35 @@ export class ConsumerComponent implements OnInit {
   private _initForm(): void {
     // tslint:disable-next-line:max-line-length
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''] });
+    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''] });
+    this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''] });
   }
 
   // 新增内容 - 弹窗
-  showAddModal(flag) {
-    if (flag === 'consumer') {
+  showModal(flag, data) {
+    if (flag === 'addConsumer') {
       this.isAddConsumerVisible = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0 };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };  // 清空
+    } else if (flag === 'modifyConsumer') {
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
+      this.consumerDate = {
+        'appChannel': data.appChannel,
+        'appChannelName': data.appChannelName,
+        'robot': data.robot,
+        'loginType': data.loginType,
+        'paymentKey': data.paymentKey,
+        'smsSign': data.smsSignType
+      };
+      this.isModifyConsumerVisible = true;
     }
   }
 
   // 隐藏
-  hideAddModal(flag) {
-    if (flag === 'consumer') {
+  hideModal(flag) {
+    if (flag === 'addConsumer') {
       this.isAddConsumerVisible = false;
+    } else if (flag === 'modifyConsumer') {
+      this.isModifyConsumerVisible = false;
     }
   }
 
@@ -96,7 +112,7 @@ export class ConsumerComponent implements OnInit {
 
   // 新增操作
   doSave(flag): void {
-    if (flag === 'consumer') {
+    if (flag === 'addConsumer') {
       if (!this.verificationAdd('consumer')) {
         return;
       }
@@ -105,19 +121,61 @@ export class ConsumerComponent implements OnInit {
         'appChannelName': this.addConsumerForm.controls['appChannelName'].value,
         'loginType': this.consumerDate.loginType,
         'robot': this.addConsumerForm.controls['robot'].value,
+        'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
+        'smsSign': this.addConsumerForm.controls['smsSign'].value,
       };
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('consumer');
+          this.hideModal('addConsumer');
+          this.loadData('consumer');
+          setTimeout(() => {
+            this.addPaymengSms(consumerInput);
+          }, 3000);
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'modifyConsumer') {
+      const consumerInput = {
+        'appChannel': this.consumerDate.appChannel,
+        'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
+        'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
+      };
+      this.addPaymengSms(consumerInput);
+    }
+  }
+
+  addPaymengSms(data) {
+    if (data.paymentKey !== '' && data.paymentKey !== undefined) {
+      const paymentInput = {
+        id: data.appChannel,
+        paymentKey: data.paymentKey,
+      };
+      this.consumerService.addPayment(paymentInput).subscribe(res => {
+        if (res.retcode === 0) {
           this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     }
+    if (data.smsSign !== '' && data.smsSign !== undefined) {
+      const smsInput = {
+        id: data.appChannel,
+        smsSign: data.smsSign,
+      };
+      this.consumerService.addSms(smsInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.loadData('consumer');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    }
+    this.hideModal('modifyConsumer');
   }
 
 }

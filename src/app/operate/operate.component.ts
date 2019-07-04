@@ -7,6 +7,7 @@ import { AppversionService } from '../public/service/appVersion.service';
 import { CommonService } from '../public/service/common.service';
 import { LocalizationService } from '../public/service/localization.service';
 import { VoiceService } from '../public/service/voice.service';
+import { Router } from '@angular/router';
 
 registerLocaleData(zh);
 
@@ -19,15 +20,19 @@ export class OperateComponent implements OnInit {
 
   isTaxiDetailVisible = false;
   searchTaxiForm: FormGroup;
+  searchTaxiStateForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   dataTaxi = [];  // 打车路径
   dataVoice = [];  // 语音配置
+  dataTaxiState = [];  // 打车路径
   // tslint:disable-next-line:max-line-length
   currentTaxi = { 'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'availableAmount': '', 'availableBeans': '', 'estimate_price': '', 'source': '', 'monitorType': 0 };
   taxiItem = { 'orderId': '', 'startTime': '', 'endTime': '' };
-  beginDate = '';
-  endDate = '';
+  beginTaxiDate = '';
+  endTaxiDate = '';
+  beginTaxiStateDate = '';
+  endTaxiStateDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   currentPanel = 'content';  // 当前面板 默认
   currentChannelName = '你好小悟';
@@ -40,6 +45,7 @@ export class OperateComponent implements OnInit {
   isSpinning = false;
   private timerList;
   private timerDetail;
+  taxiOrderState = '';
 
   constructor(
     private fb: FormBuilder,
@@ -50,12 +56,13 @@ export class OperateComponent implements OnInit {
     private appversionService: AppversionService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
+    private router: Router,
   ) {
     this.commonService.nav[4].active = true;
-    this._initSearchTaxiForm();
+    this._initForm();
     this.timerList = setInterval(() => {
       this.loadData('taxi');
-    }, 15000);
+    }, 20000);
   }
 
   ngOnInit() {
@@ -79,8 +86,8 @@ export class OperateComponent implements OnInit {
     this.isSpinning = true;
     if (flag === 'taxi') {
       this.taxiItem.orderId = this.searchTaxiForm.controls['orderId'].value;
-      this.taxiItem.startTime = this.beginDate;
-      this.taxiItem.endTime = this.endDate;
+      this.taxiItem.startTime = this.beginTaxiDate;
+      this.taxiItem.endTime = this.endTaxiDate;
       this.appversionService.getTaxiList(this.taxiItem).subscribe(res => {
         if (res.retcode === 0) {
           this.isSpinning = false;
@@ -111,14 +118,31 @@ export class OperateComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'taxiState') {
+      const taxiStateInput = {
+        startTime: this.beginTaxiStateDate,
+        endTime: this.endTaxiStateDate,
+        orderId: this.searchTaxiStateForm.controls['orderId'].value,
+        state: this.searchTaxiStateForm.controls['state'].value,
+      };
+      this.appversionService.getTaxiStateList(taxiStateInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.isSpinning = false;
+          // this.dataTaxiState = JSON.parse(res.payload).reverse();
+          this.dataTaxiState = [{}];
+          console.log(this.dataTaxiState);
+          const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
-  private _initSearchTaxiForm(): void {
-    this.searchTaxiForm = this.fb.group({
-      orderId: [''],
-      date: ['']
-    });
+  private _initForm(): void {
+    this.searchTaxiForm = this.fb.group({ orderId: [''], date: [''] });
+    this.searchTaxiStateForm = this.fb.group({ orderId: [''], date: [''], state: [''] });
   }
 
   // 弹框
@@ -237,18 +261,34 @@ export class OperateComponent implements OnInit {
     }
   }
 
+  // 跳转到实体订单
+  goTaxtOrder(data) {
+    this.router.navigateByUrl('/user?taxiOrderId=' + data.orderId);
+  }
+
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'taxi') {
       if (result === []) {
-        this.beginDate = '';
-        this.endDate = '';
+        this.beginTaxiDate = '';
+        this.endTaxiDate = '';
         return;
       }
       // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
-        this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
-        this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        this.beginTaxiDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+        this.endTaxiDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+      }
+    } else if (flag === 'taxiState') {
+      if (result === []) {
+        this.beginTaxiStateDate = '';
+        this.endTaxiStateDate = '';
+        return;
+      }
+      // 正确选择数据
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginTaxiStateDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+        this.endTaxiStateDate = this.datePipe.transform(result[1], 'yyyyMMdd');
       }
     }
   }
@@ -263,7 +303,8 @@ export class OperateComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : localStorage.getItem('currentAppHeader') === 'LENZE' ? '听听同学' : '沃特沃德6';
     this.currentPanel = flag;
-    const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : '', op_name: '访问' };
+    // tslint:disable-next-line:max-line-length
+    const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : flag === 'taxiState' ? '打车状态监控' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

@@ -82,4 +82,17 @@ export class AppversionService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取打车状态监控列表 */
+  getTaxiStateList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.taxiStateList}?pageSize=999`
+    + (data.startTime ? '&startTime=' + data.startTime : '')
+    + (data.endTime ? '&endTime=' + data.endTime : '')
+    + (data.orderId ? '&orderId=' + data.orderId : '')
+    + (data.state ? '&state=' + data.state : '');
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
 }

@@ -126,7 +126,6 @@
             </ng-template>
           </nz-modal>
 
-
         </nz-tab>
 
 
@@ -177,6 +176,80 @@
               <button nz-button nzType="primary" (click)="hideModal('voicceANDROID')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </div>
           </div>
+        </nz-tab>
+
+
+        <nz-tab [nzTitle]="taxiStateTemplate" (nzClick)="changePanel('taxiState')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
+          <ng-template #taxiStateTemplate><i class="anticon anticon-car"></i>打车状态监控</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="22">
+              <form [formGroup]="searchTaxiStateForm">
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                  订单号：
+                </div>
+                <div nz-col nzSpan="4">
+                  <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号"
+                    nzSize="default">
+                </div>
+                <div nz-col nzSpan="1">
+                </div>
+                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                  订单状态：
+                </div>
+                <div nz-col nzSpan="4">
+                  <nz-select [(ngModel)]="taxiOrderState" formControlName="state">
+                    <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                    <nz-option required [nzLabel]="'待出行'" [nzValue]="'DAICHUXING'"></nz-option>
+                    <nz-option required [nzLabel]="'司机到达'" [nzValue]="'SIJIDAODA'"></nz-option>
+                    <nz-option required [nzLabel]="'出票中'" [nzValue]="'CHUPIAOZHONG'"></nz-option>
+                    <nz-option required [nzLabel]="'占座中'" [nzValue]="'ZHANZUOZHONG'"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="1">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  报警时间：
+                </div>
+                <div nz-col nzSpan="8" class="span_down">
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taxiState')"></nz-range-picker>
+                </div>
+
+              </form>
+            </div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('taxiState')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+          <nz-table #taxiStateTable [nzData]="dataTaxiState" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">订单号</th>
+                <th nzWidth="20px">用户账号</th>
+                <th nzWidth="20px">用户昵称</th>
+                <th nzWidth="20px">订单状态</th>
+                <th nzWidth="20px">报警时间</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of taxiStateTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.orderId}}</td>
+                <td>{{data.userPhone}}</td>
+                <td>{{data.userNickName}}</td>
+                <td>{{data.orderType}}</td>
+                <td>{{data.alertTime}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="goTaxtOrder(data)"><i class="anticon anticon-form"></i>查看</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
         </nz-tab>
 
       </nz-tabset>

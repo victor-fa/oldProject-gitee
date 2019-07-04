@@ -21,8 +21,8 @@ export class SessionAnalysisComponent implements OnInit {
   searchSessionLogForm: FormGroup;
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  beginDate = '';
-  endDate = '';
+  beginDate = this.commonService.getDayWithAcross(-3) + ' 00:00:00';
+  endDate = this.commonService.getDayWithAcross(-1) + ' 23:59:59';
   isSpinning = false;
   currentPanel = 'sessionLog';
   sessionLogFlag = 0;
@@ -43,6 +43,8 @@ export class SessionAnalysisComponent implements OnInit {
   sessionLogPageSize = 10;
   lastSessionLogId = 0;
   firstSessionLogId = 0;
+  currentSessionLogId = ''; // 用于标记后查询当前页
+  currentSessionLogFlag = ''; // 用于标记后查询当前页
   constructor(
     public commonService: CommonService,
     private sessionLogService: SessionLogService,
@@ -52,8 +54,6 @@ export class SessionAnalysisComponent implements OnInit {
   ) {
     this.commonService.nav[8].active = true;
     this._initForm();
-    this.beginDate = null;
-    this.endDate = null;
     this.checkDataOptions = {
       // tslint:disable-next-line:max-line-length
       'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
@@ -74,6 +74,8 @@ export class SessionAnalysisComponent implements OnInit {
       let pageFlag = '';
       if (this.doLastSessionLog) { id = this.lastSessionLogId; pageFlag = 'last'; }  // 下一页
       if (this.doFirstSessionLog) { id = this.firstSessionLogId; pageFlag = 'first'; }  // 上一页
+      this.currentSessionLogId = id + ''; // 获取当前的id
+      this.currentSessionLogFlag = pageFlag;  // 获取当前的翻页状态
       const logInput = {
         'start': this.beginDate,
         'end': this.endDate,
@@ -95,7 +97,7 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareThird': this.conpareThird,
         'pageFlag': pageFlag
       };
-      // console.log(logInput);
+      console.log(logInput);
       this.sessionLogService.getSessionLogList(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -108,6 +110,48 @@ export class SessionAnalysisComponent implements OnInit {
           console.log(this.sessionLogData);
           this.firstSessionLogId = JSON.parse(res.payload)[0].id;  // 最前面的Id
           this.lastSessionLogId = JSON.parse(res.payload)[JSON.parse(res.payload).length - 1].id;  // 最后面的Id
+          const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          // this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+      this.doLastSessionLog = false;
+      this.doFirstSessionLog = false;
+    } else if (flag === 'currentSessionLog') {
+      const logInput = {
+        'start': this.beginDate,
+        'end': this.endDate,
+        'bots': this.currentSessionBusiness,
+        'uid': this.searchSessionLogForm.controls['uid'].value,
+        'ask': this.searchSessionLogForm.controls['ask'].value,
+        'answer': this.searchSessionLogForm.controls['answer'].value,
+        'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false,
+        'abnormalType': this.abnormalType,
+        'intentionNum': this.searchSessionLogForm.controls['intentionNum'].value,
+        'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
+        'cost': this.searchSessionLogForm.controls['cost'].value,
+        'level': this.sessionLogLevel,
+        'lastId': this.currentSessionLogId,
+        'firstId': this.currentSessionLogId,
+        'pageSize': this.sessionLogPageSize,
+        'conpareFirst': this.conpareFirst,
+        'conpareSecond': this.conpareSecond,
+        'conpareThird': this.conpareThird,
+        'pageFlag': this.currentSessionLogFlag
+      };
+      console.log(logInput);
+      console.log('321213');
+      this.sessionLogService.getSessionLogList(logInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.totalSessionLog = res.count;
+          this.allSessionLogSize = Math.round(res.count / this.sessionLogPageSize);
+          this.sessionLogData = JSON.parse(res.payload).reverse();
+          this.sessionLogData.forEach(item => {
+            item.sessionDuration = this.formatDuring(item.sessionDuration);
+          });
+          console.log(this.sessionLogData);
           const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
@@ -247,8 +291,7 @@ export class SessionAnalysisComponent implements OnInit {
       const logInput = { id: val.id, flag: val.flag === true ? false : true };
       this.sessionLogService.updateSessionLog(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
-          this.changeSessionLogPage = 1;
-          this.loadData('sessionLog');
+          this.loadData('currentSessionLog');
           const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '标记/不标记' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {

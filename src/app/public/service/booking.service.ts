@@ -40,7 +40,8 @@ export class BookingService extends AppServiceBase {
   getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone): string {
     const url = '?pageSize=' + pageSize
       + (state ? '&state=' + state : '')
-      + (orderType ? '&orderType=' + orderType : (queryType && queryType !== '' ? '&queryType=' + queryType : ''))
+      // tslint:disable-next-line:max-line-length
+      + (orderType ? (orderType.length > 3 ? '&subType=' + orderType : '&orderType=' + orderType) : (queryType && queryType !== '' ? '&queryType=' + queryType : ''))
       + (createTimeBegin ? '&createTimeBegin=' + createTimeBegin : '')
       + (createTimeEnd ? '&createTimeEnd=' + createTimeEnd : '')
       + (orderId ? '&orderId=' + orderId : '')

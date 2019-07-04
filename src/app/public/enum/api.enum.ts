@@ -79,6 +79,8 @@ export enum appVersionApiUrls {
   appVersionList = '/app/version',
   /** 获取打车路径 */
   taxiList = '/monitor/taxi/list',
+  /** 获取打车状态监控路径 */
+  taxiStateList = '/order/alert',
 }
 
 /** 活动管理 */

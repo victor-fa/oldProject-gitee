@@ -8,6 +8,7 @@ import { BookingService } from '../public/service/booking.service';
 import { CommonService } from '../public/service/common.service';
 import { InvoiceService } from '../public/service/invoice.service';
 import { UserService } from '../public/service/user.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 registerLocaleData(zh);
 
 @Component({
@@ -107,9 +108,28 @@ export class UserComponent implements OnInit {
   rechargePhone = ''; // 用户管理跳充值记录传值
   invoicePhone = ''; // 用户管理跳开票记录传值
   bookingPhone = ''; // 用户管理跳实体服务订单传值
+  bookingOrderId = ''; // 打车状态监控跳实体服务订单传值
   latestLoginInfo = ''; // 用户管理跳登录详情
   userLocked = '';  // 用户状态下拉
   bookingType = '';
+  bookingTypeKeys = ['5', '6', '7', '8'];
+  bookingTypeNodes = [
+    { title: '充话费', key: '5' },
+    { title: '恋爱运势', key: '6',
+      children: [
+        {title: '快速脱单', key: 'APP_SINGLE', },
+        {title: '情侣合盘', key: 'APP_COUPLE', }
+      ]
+    },
+    { title: '月运势', key: '7',
+      children: [
+        {title: '30天运势', key: 'APP_SUBSCRIPTION30', },
+        {title: '60天运势', key: 'APP_SUBSCRIPTION60', },
+        {title: '90天运势', key: 'APP_SUBSCRIPTION90', }
+      ]
+    },
+    { title: '电影票', key: '9' }
+  ];
   isSpinning = false;
   config = {
     toolbar: [
@@ -139,6 +159,7 @@ export class UserComponent implements OnInit {
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private bookingService: BookingService,
+    private routerParams: ActivatedRoute,
   ) {
     this.commonService.nav[3].active = true;
     this._initForm();
@@ -146,6 +167,11 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.loadData('user');
+    this.routerParams.queryParams.subscribe((params: ParamMap) => {
+      if (params['taxiOrderId'] && params['taxiOrderId'] !== undefined) {
+        this.showModal('goBookingFromTaxi', params['taxiOrderId']);
+      }
+    });
   }
 
   /**
@@ -387,7 +413,7 @@ export class UserComponent implements OnInit {
         'createTimeEnd': this.endBookingDate,
         'type': this.searchBookingForm.controls['type'].value,
         'status': this.searchBookingForm.controls['status'].value,
-        'orderId': this.searchBookingForm.controls['orderId'].value,
+        'orderId': this.bookingOrderId,
         'phone': this.searchBookingForm.controls['phone'].value
       };
       if ((searchBookingItem.createTimeBegin === '' || searchBookingItem.createTimeBegin === null)
@@ -763,6 +789,10 @@ export class UserComponent implements OnInit {
       this.latestLoginInfo = data.userId;
       setTimeout(() => { this.loadData('latestLoginAt'); }, 1000);
       this.isLatestLoginVisible = true;
+    } if (flag === 'goBookingFromTaxi') {
+      this.bookingOrderId = data;
+      setTimeout(() => { this.doSearch('booking'); }, 1000);
+      this.tabsetJson.currentNum = 1; // 实体服务订单
     }
   }
 
