@@ -245,14 +245,14 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'flowPoint') {
-      console.log(this.flowPointBotName);
-
       this.flowpointService.getFlowpointList().subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           if (this.flowPointBotName !== '') {
             const tempArr = [];
             JSON.parse(res.payload).forEach(item => {
+              console.log(item);
+
               const guideArr = [];
               if (item.guides) {
                 item.guides.forEach(cell => {

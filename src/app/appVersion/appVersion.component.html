@@ -737,24 +737,24 @@
           <ng-template #flowPointTemplate><i class="anticon anticon-customer-service"></i>流程点引导</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="19">
-              <nz-select [(ngModel)]="flowPointBotName">
-                <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
-                <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
-                <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
-                <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
-                <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
-                <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
-                <nz-option required [nzLabel]="'电影票'" nzValue="MOVIE"></nz-option>
-                <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
-                <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
-                <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
-                <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
-                <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
-                <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
-                <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
-                <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
-                <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
-              </nz-select>
+              <nz-radio-group [(ngModel)]="flowPointBotName">
+                <label nz-radio nzValue="">全部</label>
+                <label nz-radio nzValue="FLIGHT">机票</label>
+                <label nz-radio nzValue="TRAIN">火车票</label>
+                <label nz-radio nzValue="HOTEL">酒店</label>
+                <label nz-radio nzValue="NAVIGATION">导航</label>
+                <label nz-radio nzValue="TAXI">打车</label>
+                <label nz-radio nzValue="MOVIE">电影票</label>
+                <label nz-radio nzValue="ERRAND">闪送</label>
+                <label nz-radio nzValue="WEATHER">天气</label>
+                <label nz-radio nzValue="MUSIC">音乐</label>
+                <label nz-radio nzValue="CALL">打电话</label>
+                <label nz-radio nzValue="RECHARGE">充话费</label>
+                <label nz-radio nzValue="NEWS">新闻</label>
+                <label nz-radio nzValue="HOROSCOPE">星座</label>
+                <label nz-radio nzValue="CHAT">闲聊</label>
+                <label nz-radio nzValue="OTHER">其他</label>
+              </nz-radio-group>
             </div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('flowPoint')"><i class="anticon anticon-search"></i>查询</button>
@@ -810,24 +810,23 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
                 <div nz-col nzSpan="12" class="span_down">
-                  <nz-select [(ngModel)]="flowPointDate.botName" formControlName="botName">
-                    <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
-                    <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
-                    <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
-                    <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
-                    <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
-                    <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
-                    <nz-option required [nzLabel]="'电影票'" nzValue="TAXI"></nz-option>
-                    <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
-                    <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
-                    <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
-                    <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
-                    <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
-                    <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
-                    <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
-                    <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
-                    <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
-                  </nz-select>
+                  <nz-radio-group [(ngModel)]="flowPointDate.botName" formControlName="botName">
+                    <label nz-radio nzValue="FLIGHT">机票</label>
+                    <label nz-radio nzValue="TRAIN">火车票</label>
+                    <label nz-radio nzValue="HOTEL">酒店</label>
+                    <label nz-radio nzValue="NAVIGATION">导航</label>
+                    <label nz-radio nzValue="TAXI">打车</label>
+                    <label nz-radio nzValue="MOVIE">电影票</label>
+                    <label nz-radio nzValue="ERRAND">闪送</label>
+                    <label nz-radio nzValue="WEATHER">天气</label>
+                    <label nz-radio nzValue="MUSIC">音乐</label>
+                    <label nz-radio nzValue="CALL">打电话</label>
+                    <label nz-radio nzValue="RECHARGE">充话费</label>
+                    <label nz-radio nzValue="NEWS">新闻</label>
+                    <label nz-radio nzValue="HOROSCOPE">星座</label>
+                    <label nz-radio nzValue="CHAT">闲聊</label>
+                    <label nz-radio nzValue="OTHER">其他</label>
+                  </nz-radio-group>
                 </div>
                 <div nz-col nzSpan="8"></div>
               </div>
@@ -893,24 +892,23 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
                 <div nz-col nzSpan="12" class="span_down">
-                  <nz-select [ngModel]="flowPointDate.botName" formControlName="botName">
-                    <nz-option required [nzLabel]="'——从列表中选择BOT——'" nzValue=""></nz-option>
-                    <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
-                    <nz-option required [nzLabel]="'火车票'" nzValue="TRAIN"></nz-option>
-                    <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
-                    <nz-option required [nzLabel]="'导航'" nzValue="NAVIGATION"></nz-option>
-                    <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
-                    <nz-option required [nzLabel]="'电影票'" nzValue="TAXI"></nz-option>
-                    <nz-option required [nzLabel]="'闪送'" nzValue="ERRAND"></nz-option>
-                    <nz-option required [nzLabel]="'天气'" nzValue="WEATHER"></nz-option>
-                    <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
-                    <nz-option required [nzLabel]="'打电话'" nzValue="CALL"></nz-option>
-                    <nz-option required [nzLabel]="'充话费'" nzValue="RECHARGE"></nz-option>
-                    <nz-option required [nzLabel]="'新闻'" nzValue="NEWS"></nz-option>
-                    <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
-                    <nz-option required [nzLabel]="'闲聊'" nzValue="CHAT"></nz-option>
-                    <nz-option required [nzLabel]="'其他'" nzValue="OTHER"></nz-option>
-                  </nz-select>
+                  <nz-radio-group [(ngModel)]="flowPointDate.botName" formControlName="botName">
+                    <label nz-radio nzValue="FLIGHT">机票</label>
+                    <label nz-radio nzValue="TRAIN">火车票</label>
+                    <label nz-radio nzValue="HOTEL">酒店</label>
+                    <label nz-radio nzValue="NAVIGATION">导航</label>
+                    <label nz-radio nzValue="TAXI">打车</label>
+                    <label nz-radio nzValue="MOVIE">电影票</label>
+                    <label nz-radio nzValue="ERRAND">闪送</label>
+                    <label nz-radio nzValue="WEATHER">天气</label>
+                    <label nz-radio nzValue="MUSIC">音乐</label>
+                    <label nz-radio nzValue="CALL">打电话</label>
+                    <label nz-radio nzValue="RECHARGE">充话费</label>
+                    <label nz-radio nzValue="NEWS">新闻</label>
+                    <label nz-radio nzValue="HOROSCOPE">星座</label>
+                    <label nz-radio nzValue="CHAT">闲聊</label>
+                    <label nz-radio nzValue="OTHER">其他</label>
+                  </nz-radio-group>
                 </div>
                 <div nz-col nzSpan="8"></div>
               </div>

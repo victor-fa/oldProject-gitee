@@ -120,10 +120,16 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">免密支付：</div>
               <div nz-col nzSpan="8">{{userInfoDetail.autoPayment === true ? '开启' : userInfoDetail.autoPayment === false ? '关闭' : 'null'}}</div>
-              <div nz-col nzSpan="4" class="right_alignment">用户状态：</div>
-              <div nz-col nzSpan="8">{{userInfoDetail.locked === true ? '冻结' : userInfoDetail.locked === false ? '正常' : 'null' }}</div>
+              <div nz-col nzSpan="4" class="right_alignment">免密每单限额：</div>
+              <div nz-col nzSpan="8">{{userInfoDetail.autoPaymentCeiling}}</div>
             </div>
             <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="right_alignment">免密每日限额：</div>
+                <div nz-col nzSpan="8">{{userInfoDetail.autoPaymentDailyTotal}}</div>
+                <div nz-col nzSpan="4" class="right_alignment">用户状态：</div>
+                <div nz-col nzSpan="8">{{userInfoDetail.locked === true ? '冻结' : userInfoDetail.locked === false ? '正常' : 'null' }}</div>
+            <div nz-row class="search_panel">
+            </div>
               <div nz-col nzSpan="4" class="right_alignment">注册时间：</div>
               <div nz-col nzSpan="8">{{userInfoDetail.registerAt | date:'yyyy-MM-dd HH:mm:ss'}}</div>
               <div nz-col nzSpan="4" class="right_alignment">登录时间：</div>

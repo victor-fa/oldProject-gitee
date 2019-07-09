@@ -74,7 +74,16 @@ export class DataCenterComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       'taxi': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
       // tslint:disable-next-line:max-line-length
-      'music': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, ],
+      'music': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'horoscope': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'recharge': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'errand': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'movie': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      'tts': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
   }
 
@@ -123,6 +132,21 @@ export class DataCenterComponent implements OnInit {
       case 12:
         this.currentPanel = 'music';
         break;
+      case 13:
+        this.currentPanel = 'horoscope';
+        break;
+      case 14:
+        this.currentPanel = 'recharge';
+        break;
+      case 15:
+        this.currentPanel = 'errand';
+        break;
+      case 16:
+        this.currentPanel = 'movie';
+        break;
+      case 17:
+        this.currentPanel = 'tts';
+        break;
       default:
         break;
     }
@@ -169,13 +193,34 @@ export class DataCenterComponent implements OnInit {
       case 'music':
         flag = 'music-bot';
         break;
+      case 'horoscope':
+        flag = 'horoscope-bot';
+        break;
+      case 'recharge':
+        flag = 'recharge-bot';
+        break;
+      case 'errand':
+        flag = 'errand-bot';
+        break;
+      case 'movie':
+        flag = 'movie-bot';
+        break;
+      case 'tts':
+        flag = 'tts-switch';
+        break;
       default:
         break;
     }
     this.isSpinning = true; // loading
     this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
+      this.commonDataCenter.splice(0, this.commonDataCenter.length);  // 清空
       if (res.retcode === 0 && res.status !== 500) {
-        this.commonDataCenter = JSON.parse(res.payload).reverse();
+        // tslint:disable-next-line:max-line-length
+        flag === 'tts-switch' ? this.commonDataCenter[0] = JSON.parse(res.payload) : this.commonDataCenter = JSON.parse(res.payload).reverse()
+        if (flag === 'tts-switch') {
+          this.commonDataCenter[0].date = this.beginDate;
+        }
+        console.log(this.commonDataCenter);
         this.isSpinning = false;  // loading
         const operationInput = {
           op_category: '数据中心',
@@ -247,7 +292,11 @@ export class DataCenterComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch('dataCenter'); }
     // tslint:disable-next-line:max-line-length
-    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' : flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT' : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' : flag === 'music' ? '音乐BOT' : '';
+    this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' :
+     flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT'
+     : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' :
+     flag === 'music' ? '音乐BOT' : flag === 'horoscope' ? '星座BOT' : flag === 'recharge' ? '闪送BOT' : flag === 'errand' ? '充话费BOT' :
+      flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : '';
   }
 
   // 选择对话日志的业务类型

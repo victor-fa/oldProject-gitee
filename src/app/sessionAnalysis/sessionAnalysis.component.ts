@@ -16,13 +16,16 @@ registerLocaleData(zh);
 })
 export class SessionAnalysisComponent implements OnInit {
 
-  isSessionLogSearchVisiable = false; // 用于切换对话日志搜索
+  allSessionBusinessChecked = false;
+  indeterminate = true;
+  checkOptionsOne = [];
+  isSessionLogSearchVisiable = true; // 用于切换对话日志搜索
   isExplainVisiable = false;
   searchSessionLogForm: FormGroup;
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  beginDate = this.commonService.getDayWithAcross(-3) + ' 00:00:00';
-  endDate = this.commonService.getDayWithAcross(-1) + ' 23:59:59';
+  beginDate = this.commonService.getDayWithAcross(-2) + ' 00:00:00';
+  endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
   isSpinning = false;
   currentPanel = 'sessionLog';
   sessionLogFlag = 0;
@@ -58,6 +61,19 @@ export class SessionAnalysisComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
+    this.checkOptionsOne = [
+      { label: '闲聊', value: 'FREE_CHAT', checked: false },
+      { label: '机票', value: 'FLIGHT', checked: false },
+      { label: '火车', value: 'TRAIN', checked: false },
+      { label: '酒店', value: 'HOTEL', checked: false },
+      { label: '天气', value: 'WEATHER', checked: false },
+      { label: '闪送', value: 'ERRAND', checked: false },
+      { label: '电影', value: 'MOVIE', checked: false },
+      { label: '星座', value: 'HOROSCOPE', checked: false },
+      { label: '音乐', value: 'MUSIC', checked: false },
+      { label: '新闻', value: 'NEWS', checked: false },
+      { label: '导航打车', value: 'NAVICAR', checked: false }
+    ];
   }
 
   ngOnInit() {
@@ -79,7 +95,7 @@ export class SessionAnalysisComponent implements OnInit {
       const logInput = {
         'start': this.beginDate,
         'end': this.endDate,
-        'bots': this.currentSessionBusiness,
+        'bots': this.chooseSessionBusiness(),
         'uid': this.searchSessionLogForm.controls['uid'].value,
         'ask': this.searchSessionLogForm.controls['ask'].value,
         'answer': this.searchSessionLogForm.controls['answer'].value,
@@ -103,7 +119,7 @@ export class SessionAnalysisComponent implements OnInit {
           this.isSpinning = false;
           this.totalSessionLog = res.count;
           this.allSessionLogSize = Math.round(res.count / this.sessionLogPageSize);
-          this.sessionLogData = JSON.parse(res.payload).reverse();
+          this.sessionLogData = JSON.parse(res.payload);
           this.sessionLogData.forEach(item => {
             item.sessionDuration = this.formatDuring(item.sessionDuration);
           });
@@ -122,7 +138,7 @@ export class SessionAnalysisComponent implements OnInit {
       const logInput = {
         'start': this.beginDate,
         'end': this.endDate,
-        'bots': this.currentSessionBusiness,
+        'bots': this.chooseSessionBusiness(),
         'uid': this.searchSessionLogForm.controls['uid'].value,
         'ask': this.searchSessionLogForm.controls['ask'].value,
         'answer': this.searchSessionLogForm.controls['answer'].value,
@@ -147,7 +163,7 @@ export class SessionAnalysisComponent implements OnInit {
           this.isSpinning = false;
           this.totalSessionLog = res.count;
           this.allSessionLogSize = Math.round(res.count / this.sessionLogPageSize);
-          this.sessionLogData = JSON.parse(res.payload).reverse();
+          this.sessionLogData = JSON.parse(res.payload);
           this.sessionLogData.forEach(item => {
             item.sessionDuration = this.formatDuring(item.sessionDuration);
           });
@@ -222,7 +238,7 @@ export class SessionAnalysisComponent implements OnInit {
 
   private _initForm(): void {
     this.searchSessionLogForm = this.fb.group({ date: [''], bots: [''], uid: [''], ask: [''], answer: [''], flag: [''],
-        abnormalType: [''], intentionNum: [''], repetitionNum: [''], cost: [''], level: ['']});
+        abnormalType: [''], intentionNum: [''], repetitionNum: [''], cost: [''], level: [''], checkA: false, checkB: []});
   }
 
   // 展开数据说明
@@ -242,8 +258,13 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   // 选择对话日志的业务类型
-  chooseSessionBusiness(val, flag) {
-    this.currentSessionBusiness = val;
+  chooseSessionBusiness() {
+    const result = [];
+    this.checkOptionsOne.forEach(item => {
+      // tslint:disable-next-line:no-unused-expression
+      item.checked === true ? result.push(item.value) : '';
+    });
+    return result;
   }
 
   // 选择切换大小于号
@@ -301,4 +322,34 @@ export class SessionAnalysisComponent implements OnInit {
     }
   }
 
+  updateAllChecked(): void {
+    this.indeterminate = false;
+    if (this.allSessionBusinessChecked) {
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: true
+        };
+      });
+    } else {
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: false
+        };
+      });
+    }
+  }
+
+  updateSingleChecked(): void {
+    if (this.checkOptionsOne.every(item => item.checked === false)) {
+      this.allSessionBusinessChecked = false;
+      this.indeterminate = false;
+    } else if (this.checkOptionsOne.every(item => item.checked === true)) {
+      this.allSessionBusinessChecked = true;
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
+    }
+  }
 }
