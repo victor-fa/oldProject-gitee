@@ -61,7 +61,7 @@
                 <div nz-col nzSpan="2">
                   <nz-select [(ngModel)]="abnormalType" formControlName="abnormalType">
                     <nz-option [nzLabel]="'不筛选'" [nzValue]="''"></nz-option>
-                    <nz-option [nzLabel]="'全部异常话术'" [nzValue]="'all'"></nz-option>
+                    <nz-option [nzLabel]="'全部异常话术'" [nzValue]="'ALL'"></nz-option>
                     <nz-option [nzLabel]="'后端问题话术'" [nzValue]="'BACK_END'"></nz-option>
                     <nz-option [nzLabel]="'业务bot挽回话术'" [nzValue]="'BUSINESS_BOT_DETAINMENT'"></nz-option>
                     <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
@@ -134,6 +134,8 @@
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
                 <td nzWidth="30px">{{i+1}}</td>
+                <!-- -->
+                <!-- <td nzWidth="60px" [ngStyle]="{'background-color': sessionLogData[i].intentionId === sessionLogData[i === 0 ? i : i-1].intentionId ? '#E0F5EB' : '#FFCCCC' }" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td> -->
                 <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td>
                 <td nzWidth="50px" *ngIf="checkDataOptions.sessionAnalysis[1].checked">{{data.create | date:'yy-MM-dd'}}</td>
                 <td nzWidth="50px" *ngIf="checkDataOptions.sessionAnalysis[2].checked">{{data.create | date:'HH:mm:ss'}}</td>

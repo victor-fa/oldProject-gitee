@@ -59,7 +59,7 @@ export class SessionAnalysisComponent implements OnInit {
     this._initForm();
     this.checkDataOptions = {
       // tslint:disable-next-line:max-line-length
-      'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
     this.checkOptionsOne = [
       { label: '闲聊', value: 'FREE_CHAT', checked: false },
@@ -72,7 +72,10 @@ export class SessionAnalysisComponent implements OnInit {
       { label: '星座', value: 'HOROSCOPE', checked: false },
       { label: '音乐', value: 'MUSIC', checked: false },
       { label: '新闻', value: 'NEWS', checked: false },
-      { label: '导航打车', value: 'NAVICAR', checked: false }
+      { label: '导航打车', value: 'NAVICAR', checked: false },
+      { label: '充话费', value: 'RECHARGE', checked: false },
+      { label: '打电话', value: 'CALL', checked: false },
+      { label: '提问', value: 'AIUI_CHAT', checked: false }
     ];
   }
 
@@ -208,7 +211,7 @@ export class SessionAnalysisComponent implements OnInit {
         const a = document.createElement('a');
         a.id = 'tempId';
         document.body.appendChild(a);
-        a.download = '对话日志.xls';
+        a.download = '对话日志' + this.datePipe.transform(new Date(), 'yyyy-MM-dd HH-mm-ss') + '.xls';
         a.href = URL.createObjectURL(blob);
         a.click();
         const tempA = document.getElementById('tempId');

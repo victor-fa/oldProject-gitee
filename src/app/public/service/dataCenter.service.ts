@@ -21,7 +21,7 @@ export class DataCenterService extends AppServiceBase {
   /** 获取单元 正式 */
   getUnitList(begin, end, platform, origin, flag): Observable<IResponse<any>> {
     const url = `${this.commonService.dataCenterUrl}/v2/counts/` + flag
-        + (flag === 'tts-switch' ? ('?date=' + begin) : ('?begin=' + begin + '&end=' + end))
+        + ('?begin=' + begin + '&end=' + end)
         + (platform !== '' ? '&platform=' + platform : '')
         + (origin !== '' ? '&origin=' + origin : '');
     this.setOption = {

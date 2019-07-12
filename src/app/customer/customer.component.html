@@ -30,7 +30,7 @@
                 <td nzWidth="100px">{{data.wxNumber}}</td>
                 <td nzWidth="100px">{{data.email}}</td>
                 <td nzWidth="100px">{{data.qq}}</td>
-                <td nzWidth="100px">{{data.date}}</td>
+                <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
                 <td nzWidth="100px">
                   <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看详情</button>
                 </td>
@@ -500,7 +500,7 @@
           </div>
         </nz-tab>
 
-        <nz-tab [nzTitle]="businessTemplate" (nzClick)="changePanel('business')" *ngIf="commonService.haveMenuPermission('children', '商务合作')">
+        <nz-tab [nzTitle]="businessTemplate" (nzClick)="changePanel('business')" *ngIf="commonService.haveMenuPermission('children', '商务合作') && currentAppHeader === 'XIAOWU'">
           <ng-template #businessTemplate><i class="anticon anticon-team"></i>商务合作</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchBusinessForm">

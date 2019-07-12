@@ -17,8 +17,13 @@
       <div nz-col nzSpan="4">
         <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
           <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
-          <nz-option required [nzLabel]="'XIAOWU-IOS-TESTFLIGHT'" [nzValue]="'XIAOWU-IOS-TESTFLIGHT'"></nz-option>
-          <nz-option required [nzLabel]="'XIAOWU-ANDROID-FIRIM'" [nzValue]="'XIAOWU-ANDROID-FIRIM'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'XIAOWU'" required [nzLabel]="'XIAOWU-IOS-APPSTORE'" [nzValue]="'XIAOWU-IOS-APPSTORE'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'XIAOWU'" required [nzLabel]="'XIAOWU-Android_fir'" [nzValue]="'XIAOWU-Android_fir'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'LENZE'" required [nzLabel]="'LENZE-IOS-APPSTORE'" [nzValue]="'LENZE-IOS-APPSTORE'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'LENZE'" required [nzLabel]="'LENZE-Android_fir'" [nzValue]="'LENZE-Android_fir'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'WATER_WORLD_6'" required [nzLabel]="'WATER_WORLD_6-IOS-APPSTORE'" [nzValue]="'WATER_WORLD_6-IOS-APPSTORE'"></nz-option>
+          <nz-option *ngIf="currentChannel === 'WATER_WORLD_6'" required [nzLabel]="'WATER_WORLD_6-Android_fir'" [nzValue]="'WATER_WORLD_6-Android_fir'"></nz-option>
+
         </nz-select>
       </div>
       <div nz-col nzSpan="2"></div>
@@ -679,7 +684,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="horoscopeTemplate" (nzClick)="changePanel('horoscope')" *ngIf="commonService.haveMenuPermission('children', '星座BOT')">
-          <ng-template #horoscopeTemplate><i class="anticon anticon-sound"></i>星座BOT <a href="/dataCenter?currentTab=13" target="_blank">-></a></ng-template>
+          <ng-template #horoscopeTemplate><i class="anticon anticon-star-o"></i>星座BOT <a href="/dataCenter?currentTab=13" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -737,7 +742,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充话费BOT')">
-          <ng-template #rechargeTemplate><i class="anticon anticon-sound"></i>充话费BOT <a href="/dataCenter?currentTab=14" target="_blank">-></a></ng-template>
+          <ng-template #rechargeTemplate><i class="anticon anticon-phone"></i>充话费BOT <a href="/dataCenter?currentTab=14" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -767,7 +772,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="errandTemplate" (nzClick)="changePanel('errand')" *ngIf="commonService.haveMenuPermission('children', '闪送BOT')">
-          <ng-template #errandTemplate><i class="anticon anticon-sound"></i>闪送BOT <a href="/dataCenter?currentTab=15" target="_blank">-></a></ng-template>
+          <ng-template #errandTemplate><i class="anticon anticon-rocket"></i>闪送BOT <a href="/dataCenter?currentTab=15" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -805,7 +810,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="movieTemplate" (nzClick)="changePanel('movie')" *ngIf="commonService.haveMenuPermission('children', '电影票BOT')">
-          <ng-template #movieTemplate><i class="anticon anticon-sound"></i>电影票BOT <a href="/dataCenter?currentTab=16" target="_blank">-></a></ng-template>
+          <ng-template #movieTemplate><i class="anticon anticon-barcode"></i>电影票BOT <a href="/dataCenter?currentTab=16" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -851,7 +856,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="ttsTemplate" (nzClick)="changePanel('tts')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
-          <ng-template #ttsTemplate><i class="anticon anticon-sound"></i>APP功能BOT <a href="/dataCenter?currentTab=17" target="_blank">-></a></ng-template>
+          <ng-template #ttsTemplate><i class="anticon anticon-api"></i>APP功能BOT <a href="/dataCenter?currentTab=17" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>

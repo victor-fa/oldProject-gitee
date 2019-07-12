@@ -61,6 +61,7 @@ export class CustomerComponent implements OnInit {
   isSpinning = false;
   currentBatchSelected = '1';
   currentTabset = 0;
+  currentAppHeader = '';
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -71,6 +72,7 @@ export class CustomerComponent implements OnInit {
     private datePipe: DatePipe,
   ) {
     this.commonService.nav[2].active = true;
+    this.currentAppHeader = localStorage.getItem('currentAppHeader');
     this._initForm();
   }
 

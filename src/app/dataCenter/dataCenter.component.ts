@@ -35,6 +35,7 @@ export class DataCenterComponent implements OnInit {
   checkDataOptions = {};
   currentTabNum = 0;
   currentSessionBusiness = 1; // 对话日志下的类型
+  currentChannel = '';
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
@@ -50,6 +51,7 @@ export class DataCenterComponent implements OnInit {
     this._initForm();
     this.beginDate = this.commonService.getDay(-7);
     this.endDate = this.commonService.getDay(-1);
+    this.currentChannel = localStorage.getItem('currentAppHeader');
     this.checkDataOptions = {
       // tslint:disable-next-line:max-line-length
       'dataApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
@@ -215,11 +217,7 @@ export class DataCenterComponent implements OnInit {
     this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
       this.commonDataCenter.splice(0, this.commonDataCenter.length);  // 清空
       if (res.retcode === 0 && res.status !== 500) {
-        // tslint:disable-next-line:max-line-length
-        flag === 'tts-switch' ? this.commonDataCenter[0] = JSON.parse(res.payload) : this.commonDataCenter = JSON.parse(res.payload).reverse()
-        if (flag === 'tts-switch') {
-          this.commonDataCenter[0].date = this.beginDate;
-        }
+        this.commonDataCenter = JSON.parse(res.payload).reverse();
         console.log(this.commonDataCenter);
         this.isSpinning = false;  // loading
         const operationInput = {
@@ -245,10 +243,6 @@ export class DataCenterComponent implements OnInit {
         this.loadUnitData(platform, origin);
         localStorage.setItem('isDataCenterSearch', 'true');
       } else {
-        if ((Number(this.endDate) - Number(this.beginDate)) >= 30) {  // 限制查询条件
-          this.modalService.confirm({ nzTitle: '提示', nzContent: '查询范围只能在该月范围内' });
-          return;
-        }
         const origin = params.substring(0, params.indexOf('-'));
         const platform = params.substring(params.indexOf('-') + 1, params.length);
         this.loadUnitData(platform, origin);
