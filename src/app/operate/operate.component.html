@@ -238,7 +238,7 @@
                 <td>{{data.orderId}}</td>
                 <td>{{data.userPhone}}</td>
                 <td>{{data.userNickName}}</td>
-                <td>{{data.orderType}}</td>
+                <td>{{data.state === 'DAICHUXING' ? '待出行' : data.state === 'SIJIDAODA' ? '司机到达' : data.state === 'CHUPIAOZHONG' ? '出票中' : data.state === 'ZHANZUOZHONG' ? '占座中' : '' }}</td>
                 <td>{{data.alertTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="goTaxtOrder(data)"><i class="anticon anticon-form"></i>查看</button>

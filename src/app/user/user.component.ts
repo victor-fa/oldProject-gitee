@@ -51,7 +51,6 @@ export class UserComponent implements OnInit {
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
-  modifyBookingForm: FormGroup;  // 修改表单
   addAdjustForm: FormGroup;  // 新增数据调整
   searchRechargeForm: FormGroup;  // 查询充值记录
   searchInvoiceForm: FormGroup; // 查询开票记录
@@ -431,7 +430,6 @@ export class UserComponent implements OnInit {
   private _initForm(): void {
     this.searchUserForm = this.fb.group({ userId: [''], phone: [''], locked: [''], date: [''], });
     this.searchBookingForm = this.fb.group({ date: [''], type: [''], status: [''], orderId: [''], phone: [''], });
-    this.modifyBookingForm = this.fb.group({ updateType: [''], });
     this.addAdjustForm = this.fb.group({ adjustAmount: [''], adjustReason: [''], adjustType: [''], code: [''],
       noticeAbstract: [''], noticeContent: [''], noticeTitle: [''], operater: [''], users: [''], });
     this.searchRechargeForm = this.fb.group({ phone: [''], date: [''], });
@@ -719,16 +717,6 @@ export class UserComponent implements OnInit {
       this.userInfoDetail = data;
       console.log(this.userInfoDetail);
       this.isUserInfoDetailVisible = true;
-    } if (flag === 'modifyBooking') {
-      this.bookingService.updateBookingInfo(this.modifyBookingForm.controls['updateType'].value, this.orderId).subscribe(res => {
-        if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '修改成功', nzContent: res.message });
-          const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '修改' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
-      });
     } if (flag === 'adjustDetail') {
       this.isAdjustDetailVisible = true;
       this.adjustDetail = data;

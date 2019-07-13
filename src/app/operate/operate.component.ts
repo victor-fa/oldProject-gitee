@@ -128,8 +128,7 @@ export class OperateComponent implements OnInit {
       this.appversionService.getTaxiStateList(taxiStateInput).subscribe(res => {
         if (res.retcode === 0) {
           this.isSpinning = false;
-          // this.dataTaxiState = JSON.parse(res.payload).reverse();
-          this.dataTaxiState = [{}];
+          this.dataTaxiState = JSON.parse(res.payload).reverse();
           console.log(this.dataTaxiState);
           const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();

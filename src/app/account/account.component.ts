@@ -547,10 +547,14 @@ export class AccountComponent implements OnInit {
     if (flag === 'deleteRole') {
       this.accountService.deleteRole(data).subscribe(res => {  // 删除角色
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '权限后台', op_page: '权限配置', op_name: '删除' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.loadData('role');
+          if (res.payload === 'true') {
+            this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: '权限后台', op_page: '权限配置', op_name: '删除' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.loadData('role');
+          } else {
+            this.notification.error( '提示', '该角色下有员工账号，无法删除', { nzStyle: { color : 'red' } });
+          }
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }

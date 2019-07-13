@@ -6,10 +6,7 @@
         <nz-tab [nzTitle]="contentTemplate" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '版本更新')">
           <ng-template #contentTemplate><i class="anticon anticon-cloud-upload-o"></i>版本更新</ng-template>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="19"></div>
-            <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="loadData('content')"><i class="anticon anticon-search"></i>查询</button>
-            </div>
+            <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增APP版本</button>
             </div>

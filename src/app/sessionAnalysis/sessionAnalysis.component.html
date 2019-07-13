@@ -133,41 +133,40 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td nzWidth="30px">{{i+1}}</td>
-                <!-- -->
-                <!-- <td nzWidth="60px" [ngStyle]="{'background-color': sessionLogData[i].intentionId === sessionLogData[i === 0 ? i : i-1].intentionId ? '#E0F5EB' : '#FFCCCC' }" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td> -->
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td>
-                <td nzWidth="50px" *ngIf="checkDataOptions.sessionAnalysis[1].checked">{{data.create | date:'yy-MM-dd'}}</td>
-                <td nzWidth="50px" *ngIf="checkDataOptions.sessionAnalysis[2].checked">{{data.create | date:'HH:mm:ss'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[3].checked">{{data.ask}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[4].checked">{{data.business}}</td>
-                <td nzWidth="200px" *ngIf="checkDataOptions.sessionAnalysis[5].checked" nzTitle="{{data.businessAnswer}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">{{i+1}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td>
+                <!-- <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[0].checked">{{data.uid}}</td> -->
+                <td nzWidth="50px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[1].checked">{{data.create | date:'yy-MM-dd'}}</td>
+                <td nzWidth="50px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[2].checked">{{data.create | date:'HH:mm:ss'}}</td>
+                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[3].checked">{{data.ask}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[4].checked">{{data.business}}</td>
+                <td nzWidth="200px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[5].checked" nzTitle="{{data.businessAnswer}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.businessAnswer ? data.businessAnswer.length > 60 ? data.businessAnswer.substring(0, 60) + '…' : data.businessAnswer : 'null'}}</a>
                 </td>
-                <td nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[6].checked">
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[6].checked">
                   <button *ngIf="!data.flag" nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>标记</button>
                   <button *ngIf="data.flag" nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>已标记</button>
                 </td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[7].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[7].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.sessionId ? data.sessionId.length > 6 ? data.sessionId.substring(0, 6) + '…' : data.sessionId : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[8].checked" nzTitle="{{data.intentionId}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[8].checked" nzTitle="{{data.intentionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.intentionId ? data.intentionId.length > 6 ? data.intentionId.substring(0, 6) + '…' : data.intentionId : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[9].checked" nzTitle="{{data.id}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[9].checked" nzTitle="{{data.id}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.id ? data.id.length > 6 ? data.id.substring(0, 6) + '…' : data.id : 'null'}}</a>
                 </td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[10].checked" nzTitle="{{data.cpsAnswer}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[10].checked" nzTitle="{{data.cpsAnswer}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.cpsAnswer ? data.cpsAnswer.length > 12 ? data.cpsAnswer.substring(0, 12) + '…' : data.cpsAnswer : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[11].checked">{{data.businessCost + data.cpsCost}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[12].checked">{{data.businessCost}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[13].checked">{{data.cpsCost}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[14].checked">{{data.abnormalStatement}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[15].checked">{{data.repeatedCounter}}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[16].checked">{{data.sessionRoundsNum  }}</td>
-                <td nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[17].checked">{{data.sessionIntentionsNum}}</td>
-                <td nzWidth="100px">{{data.sessionDuration}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[11].checked">{{data.businessCost + data.cpsCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[12].checked">{{data.businessCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[13].checked">{{data.cpsCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[14].checked">{{data.abnormalStatement}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[15].checked">{{data.repeatedCounter}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[16].checked">{{data.sessionRoundsNum  }}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[17].checked">{{data.sessionIntentionsNum}}</td>
+                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">{{data.sessionDuration}}</td>
               </tr>
             </tbody>
           </nz-table>

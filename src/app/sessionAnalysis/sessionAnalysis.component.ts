@@ -24,7 +24,7 @@ export class SessionAnalysisComponent implements OnInit {
   searchSessionLogForm: FormGroup;
   pageSize = 100;
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  beginDate = this.commonService.getDayWithAcross(-2) + ' 00:00:00';
+  beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
   endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
   isSpinning = false;
   currentPanel = 'sessionLog';
@@ -34,7 +34,7 @@ export class SessionAnalysisComponent implements OnInit {
   currentTitle = '对话日志';
   currentSessionBusiness = []; // 对话日志下的类型
   checkDataOptions = {};
-  sessionLogData = [];
+  sessionLogData = [{sessionDuration: '', color: false, sessionId: ''}];
   conpareFirst = '<';
   conpareSecond = '<';
   conpareThird = '<';
@@ -123,7 +123,15 @@ export class SessionAnalysisComponent implements OnInit {
           this.totalSessionLog = res.count;
           this.allSessionLogSize = Math.round(res.count / this.sessionLogPageSize);
           this.sessionLogData = JSON.parse(res.payload);
-          this.sessionLogData.forEach(item => {
+          for (let i = 0; i < this.sessionLogData.length - 1; i++) {
+            this.sessionLogData[0].color = true;
+            if (this.sessionLogData[i].sessionId === this.sessionLogData[i + 1].sessionId) {
+              this.sessionLogData[i + 1].color = this.sessionLogData[i].color;
+            } else {
+              this.sessionLogData[i + 1].color = !this.sessionLogData[i].color;
+            }
+          }
+          this.sessionLogData.forEach((item, index) => {
             item.sessionDuration = this.formatDuring(item.sessionDuration);
           });
           console.log(this.sessionLogData);
@@ -132,7 +140,7 @@ export class SessionAnalysisComponent implements OnInit {
           const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
-          // this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
+          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
       this.doLastSessionLog = false;
@@ -211,7 +219,7 @@ export class SessionAnalysisComponent implements OnInit {
         const a = document.createElement('a');
         a.id = 'tempId';
         document.body.appendChild(a);
-        a.download = '对话日志' + this.datePipe.transform(new Date(), 'yyyy-MM-dd HH-mm-ss') + '.xls';
+        a.download = '对话日志' + this.datePipe.transform(new Date(), 'yyyy-MM-dd HH-mm-ss') + '.xlsx';
         a.href = URL.createObjectURL(blob);
         a.click();
         const tempA = document.getElementById('tempId');
@@ -234,8 +242,8 @@ export class SessionAnalysisComponent implements OnInit {
     }
     // 手动点击清空
     if (this.beginDate === null || this.endDate === null) {
-      this.beginDate = null;
-      this.endDate = null;
+      this.beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
+      this.endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
     }
   }
 

@@ -773,7 +773,6 @@ export class AppVersionComponent implements OnInit {
         'botMsg': this.addFlowPointForm.controls['botMsg'].value,
         'guides': finalGuides
       };
-      console.log(flowPointInput);
       this.flowpointService.addFlowpoint(flowPointInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -801,7 +800,6 @@ export class AppVersionComponent implements OnInit {
         'botMsg': this.modifyFlowPointForm.controls['botMsg'].value,
         'guides': finalGuides
       };
-      console.log(flowPointInput);
       this.flowpointService.modifyFlowpoint(flowPointInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -814,7 +812,7 @@ export class AppVersionComponent implements OnInit {
         }
       });
     } else if (flag === 'flow_guides') {
-      const guideItem = { 'text': '', 'sort': '' };
+      const guideItem = { 'text': '', 'sort': this.flowPointDate.guides.length };
       this.flowPointDate.guides.push(guideItem);
       console.log(this.flowPointDate);
     } else if (flag === 'editQQCustomer') {
@@ -905,9 +903,9 @@ export class AppVersionComponent implements OnInit {
       const tempArr = [];
       const guideArr = [];
       if (data.guides) {
-        data.guides.forEach(item => {
+        data.guides.forEach((item, index) => {
           tempArr.push(item.join('\n'));
-          guideArr.push({'text': item.join('\n')});
+          guideArr.push({'text': item.join('\n'), 'sort': index});
         });
       }
       this.flowPointDate.guideArr = tempArr;
@@ -1015,6 +1013,7 @@ export class AppVersionComponent implements OnInit {
       });
     } else if (flag === 'flow_guides') {
       this.flowPointDate.guides.splice(id, 1);
+      this.flowPointDate.guideArr.splice(id, 1);
     }
   }
 
