@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
 import { IResponse } from '../model/response.model';
-import { operateApiUrls } from '../enum/api.enum';
+import { activityApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 获取所有列表 */
   getXiaowubeanList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}`
+    const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}`
       + '?a=1' + (data.title ? '&title=' + data.title : '')
       + (data.beginTime ? '&beginTime=' + data.beginTime : '')
       + (data.endTime ? '&endTime=' + data.endTime : '');
@@ -34,7 +34,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 获取单个 */
   getXiaowubean(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}/${id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}/${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -44,7 +44,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 添加单个 */
   addXiaowubean(data, flag): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
       // tslint:disable-next-line:max-line-length
@@ -63,7 +63,7 @@ export class XiaowubeanService extends AppServiceBase {
 
   /** 修改单个 */
   updateXiaowubean(data, flag): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${operateApiUrls.xiaowubeanList}/${data.id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}/${data.id}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
       // tslint:disable-next-line:max-line-length

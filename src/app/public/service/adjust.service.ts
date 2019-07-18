@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { userApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class AdjustService extends AppServiceBase {
 
   /** 获取所有列表 */
   getAdjustList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}?adjustType=${data.adjustType}&pageSize=999`;
+    let url = `${this.commonService.baseUrl}${userApiUrls.adjustList}?adjustType=${data.adjustType}&pageSize=999`;
     if (data.begin !== '' && data.begin !== null) {
       url = url + '&begin=' + data.begin + '&end=' + data.end;
     }
@@ -34,7 +34,7 @@ export class AdjustService extends AppServiceBase {
 
   /** 获取单个 */
   getAdjust(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/${id}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -44,7 +44,7 @@ export class AdjustService extends AppServiceBase {
 
   /** 添加单个 */
   addAdjust(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}`;
     // tslint:disable-next-line:max-line-length
     const body = `adjustAmount=${data.adjustAmount}&adjustReason=${data.adjustReason}&adjustType=${data.adjustType}&code=${data.code}&noticeAbstract=${data.noticeAbstract}&noticeContent=${data.noticeContent}&noticeTitle=${data.noticeTitle}&operater=${data.operater}&users=${data.users}`;
     this.setOption = {
@@ -57,7 +57,7 @@ export class AdjustService extends AppServiceBase {
 
   /** 获取操作者列表 */
   getOperaters(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/operaters`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/operaters`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
@@ -67,7 +67,7 @@ export class AdjustService extends AppServiceBase {
 
   /** 获取操作者列表 */
   sendMsg(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.adjustList}/captcha?operater=${data}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/captcha?operater=${data}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };

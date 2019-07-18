@@ -1,0 +1,130 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppServiceBase } from '../base/app-service.base';
+import { newsApiUrls } from '../enum/api.enum';
+import { IResponse } from '../model/response.model';
+import { CommonService } from './common.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class NewsService extends AppServiceBase {
+  constructor(
+    private httpClient: HttpClient,
+    private injector: Injector,
+    private commonService: CommonService,
+  ) {
+    super(injector);
+  }
+
+  /** 获取所有列表 */
+  getTaggingNewsList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?page=0`;
+    url += data.status && data.status !== null ? '&status=' + data.status : '&status=NEW,MARKED';
+    url += data.uploadTimeCeil && data.uploadTimeCeil !== '' ? '&uploadTimeCeil=' + data.uploadTimeCeil : '';
+    url += data.uploadTimeFloor && data.uploadTimeFloor !== '' ? '&uploadTimeFloor=' + data.uploadTimeFloor : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }),
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取所有列表 */
+  getTaggingNewsById(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }),
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 提交词集 */
+  submitSpeech(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/submit`;
+    const body = `id=${data.id}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 提交词集 */
+  submitWords(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/words`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+    };
+    return this.httpClient
+      .put<IResponse<any>>(url, data.words, this.options);
+  }
+
+  /** 获取所有列表 */
+  getManualAuditList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?page=0`;
+    url += data.submitter && data.submitter !== null ? '&submitter=' + data.submitter : '';
+    url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED,UPDATED';
+    url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
+    url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }),
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 提交词集 */
+  updateLoading(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/merge`;
+    const body = `id=${data.id}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 审核通过 */
+  confirmSpeech(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/confirm`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, data.words, this.options);
+  }
+
+  /** 获取所有列表 */
+  getNewsThesaurusList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?pageSize=0`;
+    url += data.type && data.type !== '' ? '&type=' + data.type : '';
+    url += data.name && data.name !== null ? '&name=' + data.name : '';
+    // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
+    // url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }),
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取所有列表 */
+  updateNewWords(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }),
+    };
+    return this.httpClient
+      .put<IResponse<any>>(url, data.newsWord, this.options);
+  }
+
+}

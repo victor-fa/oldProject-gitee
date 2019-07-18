@@ -336,7 +336,7 @@ export class ActivityComponent implements OnInit {
       discountPrice: [''], timeLimitType: [''], });
   }
 
-  // 新增内容 - 弹框
+  // 弹框
   showModal(flag, data) {
     if (flag === 'addActivity') { // 新增活动
       this.isAddActivityVisible = true;

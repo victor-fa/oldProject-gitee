@@ -66,7 +66,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')">
+          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzWidth="750" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')">
             <form [formGroup]="addConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -94,6 +94,17 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  登录类型：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="aaa" [(ngModel)]="consumerDate.loginType">
+                    <label nz-radio nzValue="1">需要登录</label>
+                    <label nz-radio nzValue="0">不需要登录</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   Payment Key：
                 </div>
                 <div nz-col nzSpan="12">
@@ -108,18 +119,15 @@
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
               </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  序列号：
+                </div>
+                <div nz-col nzSpan="12">
+                  <textarea rows="5" nz-input formControlName="keys" [(ngModel)]="consumerDate.keys" placeholder="请输入序列号，以换行符区分不同的序列号" nzSize="default"></textarea>
+                </div>
+              </div>
             </form>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="8" class="span_down right_alignment">
-                登录类型：
-              </div>
-              <div nz-col nzSpan="12">
-                <nz-radio-group [(ngModel)]="consumerDate.loginType">
-                  <label nz-radio nzValue="1">需要登录</label>
-                  <label nz-radio nzValue="0">不需要登录</label>
-                </nz-radio-group>
-              </div>
-            </div>
             <ng-template #addConsumerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('addConsumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
@@ -154,6 +162,14 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  登录类型：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.robot === 1 ? '需要登录' : '不需要登录'}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   Payment Key：
                 </div>
                 <div nz-col nzSpan="12">
@@ -168,15 +184,14 @@
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
               </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  序列号：
+                </div>
+                <div nz-col nzSpan="12">
+                </div>
+              </div>
             </form>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="8" class="span_down right_alignment">
-                登录类型：
-              </div>
-              <div nz-col nzSpan="12" class="span_down">
-                {{consumerDate.robot === 1 ? '需要登录' : '不需要登录'}}
-              </div>
-            </div>
             <ng-template #modifyConsumerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('modifyConsumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>

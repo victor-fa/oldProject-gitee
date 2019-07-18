@@ -4,6 +4,8 @@
 
 /** 用户模块 */
 export enum userApiUrls {
+  /** 用户管理相关 */
+  mgmtList = '/cms/user-mgmt',
   /** 获取全部账号 */
   users = '/user/info',
   /** 获取账号详情 */
@@ -18,18 +20,12 @@ export enum userApiUrls {
   register = '/users/register',
   /** 登出当前账号 */
   logout = '/users/logout',
-  /** 角色 */
-  roles = '/role',
-  /** 管理账号 */
-  acc = '/acc',
-}
-
-/** 订单模块 */
-export enum bookingApiUrls {
   /** 获取全部订单 */
   orderList = '/order/list',
   /** 获取订单详情 */
   orderDetail = '/order/detail',
+  /** 数据调整 */
+  adjustList = '/cms/adjusters',
 }
 
 /** 内容模块 */
@@ -42,45 +38,52 @@ export enum cmsApiUrls {
   openList = '/cms/main-page-ads',
   /** 获取cms */
   bannerList = '/cms/banner-ads',
-  /** 获取优惠券 */
-  couponList = '/couponrule',
-  /** 分享 */
-  shareList = '/copywriter',
-  /** 引导语 */
-  guideList = '/guide/management',
-  /** 帮助管理 */
-  helpList = '/cms/skills',
-  /** 语音配置 */
-  voiceList = '/cms/asr-configs',
-  /** 协议管理 */
-  protocolList = '/agreement',
-  /** 数据调整 */
-  adjustList = '/cms/adjusters',
-  /** 开票管理 */
-  invoiceList = '/order/invoice/manager',
-  /** 用户管理相关 */
-  mgmtList = '/cms/user-mgmt',
-  /** 流程点引导 */
-  flowpointList = '/guide/bottom',
   /** 个人中心 */
   personalList = '/personal/center/advertising',
-  /** 客服QQ */
-  qqCustomerList = '/contact_qq',
-  /** 对话日志 */
-  // sessionLogList = '/chat-logs',
-  sessionLogList = '/logs',
-  /** 客户管理 */
-  consumerList = '/customer/channel',
 }
 
 /** APP版本 */
 export enum appVersionApiUrls {
   /** 获取最新 */
   appVersionList = '/app/version',
+  /** 分享 */
+  shareList = '/copywriter',
+  /** 引导语 */
+  guideList = '/guide/management',
+  /** 帮助管理 */
+  helpList = '/cms/skills',
+  /** 协议管理 */
+  protocolList = '/agreement',
+  /** 流程点引导 */
+  flowpointList = '/guide/bottom',
+  /** 客服QQ */
+  qqCustomerList = '/contact_qq',
+}
+
+/** 客服中心 */
+export enum customerApiUrls {
+  /** 开票管理 */
+  invoiceList = '/order/invoice/manager',
+}
+
+/** 客户中心 */
+export enum consumerApiUrls {
+  /** 客户管理 */
+  consumerList = '/customer/channel',
+  /** 客户管理 序列号 */
+  consumerKey = '/guest/key',
+}
+
+/** 运维后台 */
+export enum operatenApiUrls {
   /** 获取打车路径 */
   taxiList = '/monitor/taxi/list',
-  /** 获取打车状态监控路径 */
-  taxiStateList = '/order/alert',
+  /** 获取订单状态监控路径 */
+  orderStateList = '/order/alert',
+  /** 获取订单状态设置 */
+  orderStateSettingList = '/order/monitor',
+  /** 语音配置 */
+  voiceList = '/cms/asr-configs',
 }
 
 /** 活动管理 */
@@ -89,6 +92,10 @@ export enum activityApiUrls {
   activityList = '/actrule',
   /** 发放管理 */
   batchsendList = '/pushrule',
+  /** 获取优惠券 */
+  couponList = '/couponrule',
+  /** 重置送豆 */
+  xiaowubeanList = '/wallet/promotions',
 }
 
 /** 数据中心模块 */
@@ -97,8 +104,26 @@ export enum dataCenterApiUrls {
   dataCenterList = '/dataCenter',
 }
 
-/** 运营模块 */
-export enum operateApiUrls {
-  /** 重置送豆 */
-  xiaowubeanList = '/wallet/promotions',
+/** 对话分析 */
+export enum sessionAnalysisApiUrls {
+  /** 对话日志 */
+  sessionLogList = '/logs',
+}
+
+/** 权限后台 */
+export enum accountApiUrls {
+  /** 角色 */
+  roles = '/role',
+  /** 员工 */
+  acc = '/acc',
+  /** 操作日志 */
+  audit = '/audit/list',
+}
+
+/** 新闻词库 */
+export enum newsApiUrls {
+  /** 新闻词库 */
+  newsList = '/news/word-sets',
+  /** 新闻词库 */
+  newsWordList = '/news/words',
 }

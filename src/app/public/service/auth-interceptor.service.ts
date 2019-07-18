@@ -1,8 +1,6 @@
-import { HttpRequest, HttpHandler, HttpInterceptor, HttpErrorResponse } from '@angular/common/http/http';
-import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { appVersionApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class ProtocolService extends AppServiceBase {
 
   /** 获取所有列表 */
   getProtocolList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.protocolList}?title=${data}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.protocolList}?title=${data}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
@@ -32,7 +32,7 @@ export class ProtocolService extends AppServiceBase {
 
   /** 添加单个 */
   addProtocol(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.protocolList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.protocolList}`;
     // tslint:disable-next-line:max-line-length
     const body = `title=${data.title}&content=${data.content}`;
     this.setOption = {

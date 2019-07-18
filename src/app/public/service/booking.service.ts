@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { bookingApiUrls } from '../enum/api.enum';
+import { userApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { CommonService } from './common.service';
 
@@ -24,13 +24,13 @@ export class BookingService extends AppServiceBase {
   getBookingList(pageSize, flag, id, queryType, state?, orderType?, createTimeBegin?, createTimeEnd?, orderId?, phone?): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
-      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
+      url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
           + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone);
     } else if (flag === 'last') {
-      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
+      url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
           + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone) + '&lastId=' + id;
     } else if (flag === 'first') {
-      url = `${this.commonService.baseUrl}${bookingApiUrls.orderList}`
+      url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
           + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone) + '&preId=' + id;
     }
     return this.httpClient
@@ -51,7 +51,7 @@ export class BookingService extends AppServiceBase {
 
   /** 获取订单详情 */
   getBookingDetail(orderType, orderId): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${bookingApiUrls.orderDetail}?orderType=${orderType}&orderId=${orderId}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.orderDetail}?orderType=${orderType}&orderId=${orderId}`;
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -77,7 +77,7 @@ export class BookingService extends AppServiceBase {
 
   /** 更新订单状态 */
   updateBookingInfo(updateType, orderId): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${bookingApiUrls.orderDetail}`;
+    const url = `${this.commonService.baseUrl}${userApiUrls.orderDetail}`;
     const body = `updateType=${updateType}&orderId=${orderId}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length

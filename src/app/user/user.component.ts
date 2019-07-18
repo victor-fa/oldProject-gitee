@@ -107,7 +107,7 @@ export class UserComponent implements OnInit {
   rechargePhone = ''; // 用户管理跳充值记录传值
   invoicePhone = ''; // 用户管理跳开票记录传值
   bookingPhone = ''; // 用户管理跳实体服务订单传值
-  bookingOrderId = ''; // 打车状态监控跳实体服务订单传值
+  bookingOrderId = ''; // 跳实体服务订单传值
   latestLoginInfo = ''; // 用户管理跳登录详情
   userLocked = '';  // 用户状态下拉
   bookingType = '';
@@ -985,7 +985,7 @@ export class UserComponent implements OnInit {
       this.bookingService.deleteRefundDetail(refundInput).subscribe(res => {
         if (res.retcode === 0) {
           this.modalService.success({ nzTitle: '退订成功', nzContent: res.message });
-          const operationInput = { op_category: '订单管理', op_page: '退订机票' , op_name: '删除' };
+          const operationInput = { op_category: '用户管理', op_page: '退订机票' , op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('Refund');
         } else {

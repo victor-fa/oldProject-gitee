@@ -879,6 +879,40 @@
           </nz-table>
         </nz-tab>
 
+        <nz-tab [nzTitle]="reminderTemplate" (nzClick)="changePanel('reminder')" *ngIf="commonService.haveMenuPermission('children', '事项提醒BOT')">
+          <ng-template #reminderTemplate><i class="anticon anticon-mobile"></i>事项提醒BOT <a href="/dataCenter?currentTab=18" target="_blank">-></a></ng-template>
+          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px" nzLeft="0px">序号</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[0].checked">日期</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">唤醒事项提醒人次</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">唤醒事项提醒行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">闹钟增加</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">闹钟删除</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">闹钟查找</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">事项提醒增加</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">事项提醒删除</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">事项提醒查找</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[0].checked">{{data.date}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.awakMatterUsers}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.awakMatterCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterAddClockCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterDeleteClockCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterFindClockCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterAddItemCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterDeleteItemCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.reminder[3].checked">{{data.matterFindItemCount}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
         <!-- 弹框 —— 信息 —— 数据说明 -->
         <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')">
           <div nz-row class="search_panel" style="text-align: center;">

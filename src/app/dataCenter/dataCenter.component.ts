@@ -86,6 +86,8 @@ export class DataCenterComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       'movie': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
       'tts': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      // tslint:disable-next-line:max-line-length
+      'reminder': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
   }
 
@@ -99,56 +101,41 @@ export class DataCenterComponent implements OnInit {
     });
     switch (Number(this.currentTabNum) + 1) {
       case 1:
-        this.currentPanel = 'dataApp';
-        break;
+        this.currentPanel = 'dataApp'; break;
       case 2:
-        this.currentPanel = 'keepApp';
-        break;
+        this.currentPanel = 'keepApp'; break;
       case 3:
-        this.currentPanel = 'overview';
-        break;
+        this.currentPanel = 'overview'; break;
       case 4:
-        this.currentPanel = 'product';
-        break;
+        this.currentPanel = 'product'; break;
       case 5:
-        this.currentPanel = 'error';
-        break;
+        this.currentPanel = 'error'; break;
       case 6:
-        this.currentPanel = 'ticket';
-        break;
+        this.currentPanel = 'ticket'; break;
       case 7:
-        this.currentPanel = 'train';
-        break;
+        this.currentPanel = 'train'; break;
       case 8:
-        this.currentPanel = 'hotel';
-        break;
+        this.currentPanel = 'hotel'; break;
       case 9:
-        this.currentPanel = 'weather';
-        break;
+        this.currentPanel = 'weather'; break;
       case 10:
-        this.currentPanel = 'navigate';
-        break;
+        this.currentPanel = 'navigate'; break;
       case 11:
-        this.currentPanel = 'taxi';
-        break;
+        this.currentPanel = 'taxi'; break;
       case 12:
-        this.currentPanel = 'music';
-        break;
+        this.currentPanel = 'music'; break;
       case 13:
-        this.currentPanel = 'horoscope';
-        break;
+        this.currentPanel = 'horoscope'; break;
       case 14:
-        this.currentPanel = 'recharge';
-        break;
+        this.currentPanel = 'recharge'; break;
       case 15:
-        this.currentPanel = 'errand';
-        break;
+        this.currentPanel = 'errand'; break;
       case 16:
-        this.currentPanel = 'movie';
-        break;
+        this.currentPanel = 'movie'; break;
       case 17:
-        this.currentPanel = 'tts';
-        break;
+        this.currentPanel = 'tts'; break;
+      case 18:
+        this.currentPanel = 'reminder'; break;
       default:
         break;
     }
@@ -160,56 +147,41 @@ export class DataCenterComponent implements OnInit {
     let flag = 'user-behavior';
     switch (this.currentPanel) {
       case 'dataApp':
-        flag = 'user-behavior';
-        break;
+        flag = 'user-behavior'; break;
       case 'keepApp':
-        flag = 'retentions';
-        break;
+        flag = 'retentions'; break;
       case 'overview':
-        flag = 'bot-awaken';
-        break;
+        flag = 'bot-awaken'; break;
       case 'product':
-        flag = 'user-behavior';
-        break;
+        flag = 'user-behavior'; break;
       case 'error':
-        flag = 'bot-exception';
-        break;
+        flag = 'bot-exception'; break;
       case 'ticket':
-        flag = 'flight-bot';
-        break;
+        flag = 'flight-bot'; break;
       case 'train':
-        flag = 'train-bot';
-        break;
+        flag = 'train-bot'; break;
       case 'hotel':
-        flag = 'hotel-bot';
-        break;
+        flag = 'hotel-bot'; break;
       case 'weather':
-        flag = 'weather-bot';
-        break;
+        flag = 'weather-bot'; break;
       case 'navigate':
-        flag = 'navigation-bot';
-        break;
+        flag = 'navigation-bot'; break;
       case 'taxi':
-        flag = 'taxi-bot';
-        break;
+        flag = 'taxi-bot'; break;
       case 'music':
-        flag = 'music-bot';
-        break;
+        flag = 'music-bot'; break;
       case 'horoscope':
-        flag = 'horoscope-bot';
-        break;
+        flag = 'horoscope-bot'; break;
       case 'recharge':
-        flag = 'recharge-bot';
-        break;
+        flag = 'recharge-bot'; break;
       case 'errand':
-        flag = 'errand-bot';
-        break;
+        flag = 'errand-bot'; break;
       case 'movie':
-        flag = 'movie-bot';
-        break;
+        flag = 'movie-bot'; break;
       case 'tts':
-        flag = 'tts-switch';
-        break;
+        flag = 'tts-switch'; break;
+      case 'reminder':
+        flag = 'matter-bot'; break;
       default:
         break;
     }
@@ -220,11 +192,7 @@ export class DataCenterComponent implements OnInit {
         this.commonDataCenter = JSON.parse(res.payload).reverse();
         console.log(this.commonDataCenter);
         this.isSpinning = false;  // loading
-        const operationInput = {
-          op_category: '数据中心',
-          op_page: this.currentTitle,
-          op_name: '访问'
-        };
+        const operationInput = { op_category: '数据中心', op_page: this.currentTitle, op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
       } else {
         this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -290,7 +258,7 @@ export class DataCenterComponent implements OnInit {
      flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT'
      : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' :
      flag === 'music' ? '音乐BOT' : flag === 'horoscope' ? '星座BOT' : flag === 'recharge' ? '闪送BOT' : flag === 'errand' ? '充话费BOT' :
-      flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : '';
+      flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : flag === 'reminder' ? '事项提醒BOT' : '';
   }
 
   // 选择对话日志的业务类型

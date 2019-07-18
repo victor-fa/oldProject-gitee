@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { cmsApiUrls } from '../enum/api.enum';
+import { customerApiUrls, userApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { CommonService } from './common.service';
 
@@ -21,7 +21,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getInvoiceTimeList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${customerApiUrls.invoiceList}?pageSize=9999`;
     url += data.minTime ? '&minTime=' + data.minTime : '';
     url += data.maxTime ? '&maxTime=' + data.maxTime : '';
     url += data.orderId ? '&orderId=' + data.orderId : '';
@@ -36,7 +36,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getInvoiceLogList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}/logs?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${customerApiUrls.invoiceList}/logs?pageSize=9999`;
     url += data.minTime ? '&minTime=' + data.minTime : '';
     url += data.maxTime ? '&maxTime=' + data.maxTime : '';
     url += data.orderId ? '&orderId=' + data.orderId : '';
@@ -66,7 +66,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 修改启用状态 */
   updateSwitch(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.invoiceList}`;
+    const url = `${this.commonService.baseUrl}${customerApiUrls.invoiceList}`;
     const body = {
       admin: localStorage.getItem('currentUser'),
       drawBill: data.drawBill,
@@ -83,7 +83,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getRechargeListForUser(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/deposit-history?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/deposit-history?pageSize=9999`;
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.beginTime && data.beginTime !== null ? '&beginTime=' + data.beginTime : '';
     url += data.endTime && data.endTime !== null ? '&endTime=' + data.endTime : '';
@@ -96,7 +96,7 @@ export class InvoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getInvoiceListForUser(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/invoice-history?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/invoice-history?pageSize=9999`;
     url += data.createTimeBegin && data.createTimeBegin.indexOf('null') === -1  ? '&createTimeBegin=' + data.createTimeBegin : '';
     url += data.createTimeEnd && data.createTimeEnd.indexOf('null') === -1 ? '&createTimeEnd=' + data.createTimeEnd : '';
     url += data.phone ? '&phone=' + data.phone : '';

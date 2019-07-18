@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { appVersionApiUrls, operatenApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { appVersionApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -71,7 +71,7 @@ export class AppversionService extends AppServiceBase {
 
   /** 获取打车路径列表 */
   getTaxiList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.taxiRouteUrl}${appVersionApiUrls.taxiList}`
+    const url = `${this.commonService.taxiRouteUrl}${operatenApiUrls.taxiList}`
     + (data.orderId ? '?orderId=' + data.orderId : '')
     + (data.startTime ? (data.orderId ? '&startTime=' : '?startTime=') + data.startTime : '')
     + (data.endTime ? (data.orderId || data.startTime ? '&endTime=' : '?endTime=') + data.endTime : '');
@@ -82,12 +82,13 @@ export class AppversionService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
-  /** 获取打车状态监控列表 */
-  getTaxiStateList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${appVersionApiUrls.taxiStateList}?pageSize=999`
+  /** 获取列表 */
+  getOrderStateList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${operatenApiUrls.orderStateList}?pageSize=999`
     + (data.startTime ? '&startTime=' + data.startTime : '')
     + (data.endTime ? '&endTime=' + data.endTime : '')
     + (data.orderId ? '&orderId=' + data.orderId : '')
+    + (data.orderType ? '&orderType=' + data.orderType : '')
     + (data.state ? '&state=' + data.state : '');
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
@@ -95,4 +96,28 @@ export class AppversionService extends AppServiceBase {
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
+
+  /** 获取列表 */
+  getOrderStateSettingList(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${operatenApiUrls.orderStateSettingList}?pageSize=999`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取列表 */
+  modifyOrderStateSetting(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${operatenApiUrls.orderStateSettingList}`;
+    // tslint:disable-next-line:max-line-length
+    const body = `id=${data.id}&low=${data.low}&high=${data.high}`;
+    this.setOption = {
+      // tslint:disable-next-line:max-line-length
+      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
 }

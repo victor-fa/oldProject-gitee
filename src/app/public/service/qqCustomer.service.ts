@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { appVersionApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class QqCustomerService extends AppServiceBase {
 
   /** 获取所有列表 */
   getQqCustomerList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.qqCustomerList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.qqCustomerList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -31,7 +31,7 @@ export class QqCustomerService extends AppServiceBase {
 
   /** 修改单个 */
   modifyQqCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.qqCustomerList}?contact_qq=${data.contact_qq}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.qqCustomerList}?contact_qq=${data.contact_qq}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };

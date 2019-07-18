@@ -137,7 +137,7 @@ export class SessionAnalysisComponent implements OnInit {
           console.log(this.sessionLogData);
           this.firstSessionLogId = JSON.parse(res.payload)[0].id;  // 最前面的Id
           this.lastSessionLogId = JSON.parse(res.payload)[JSON.parse(res.payload).length - 1].id;  // 最后面的Id
-          const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '访问' };
+          const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -179,7 +179,7 @@ export class SessionAnalysisComponent implements OnInit {
             item.sessionDuration = this.formatDuring(item.sessionDuration);
           });
           console.log(this.sessionLogData);
-          const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '访问' };
+          const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           // this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -223,8 +223,8 @@ export class SessionAnalysisComponent implements OnInit {
         a.href = URL.createObjectURL(blob);
         a.click();
         const tempA = document.getElementById('tempId');
-        // const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '下载' };
-        // this.commonService.updateOperationlog(operationInput).subscribe();
+        const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '导出Excel' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
         if (tempA) {
           tempA.parentNode.removeChild(tempA);
         }
@@ -324,7 +324,7 @@ export class SessionAnalysisComponent implements OnInit {
       this.sessionLogService.updateSessionLog(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.loadData('currentSessionLog');
-          const operationInput = { op_category: '客服中心', op_page: '对话日志' , op_name: '标记/不标记' };
+          const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '标记/不标记' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });

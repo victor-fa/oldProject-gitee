@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { sessionAnalysisApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 获取所有列表 */
   getSessionLogList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.logsRouteUrl}${cmsApiUrls.sessionLogList}?pageSize=${data.pageSize}`;
+    let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
     url += data.end && data.start !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
@@ -45,7 +45,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 修改单个 */
   updateSessionLog(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.logsRouteUrl}${cmsApiUrls.sessionLogList}/${data.id}/flag`;
+    const url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/${data.id}/flag`;
     const body = `flag=${data.flag}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
@@ -57,7 +57,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 导出Excel */
   getExcel(data) {
-    let url = `${this.commonService.logsRouteUrl}${cmsApiUrls.sessionLogList}/file?pageSize=${data.pageSize}`;
+    let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/file?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
     url += data.end && data.start !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];

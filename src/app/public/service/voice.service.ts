@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { operatenApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class VoiceService extends AppServiceBase {
 
   /** 获取所有列表 */
   getVoiceList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.voiceList}`;
+    const url = `${this.commonService.baseUrl}${operatenApiUrls.voiceList}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
@@ -32,7 +32,7 @@ export class VoiceService extends AppServiceBase {
 
   /** 修改单个 */
   updateVoice(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.voiceList}/${data.id}`;
+    const url = `${this.commonService.baseUrl}${operatenApiUrls.voiceList}/${data.id}`;
     const body = `supplier=${data.supplier}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length

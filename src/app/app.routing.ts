@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'account', loadChildren: './account/account.module#AccountModule'},
   { path: 'dataCenter', loadChildren: './dataCenter/dataCenter.module#DataCenterModule'},
   { path: 'consumer', loadChildren: './consumer/consumer.module#ConsumerModule'},
+  { path: 'news', loadChildren: './news/news.module#NewsModule'},
   { path: 'sessionAnalysis', loadChildren: './sessionAnalysis/sessionAnalysis.module#SessionAnalysisModule'},
   // { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];

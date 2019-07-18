@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { consumerApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 获取所有列表 */
   getConsumerList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}/list?pageSize=999`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/list?pageSize=999`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -31,7 +31,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 添加单个 */
   addConsumer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}`;
     const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
@@ -43,7 +43,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 添加Payment Key */
   addPayment(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}/payment`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/payment`;
     const body = `appChannel=${data.id}&paymentKey=${data.paymentKey}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
@@ -55,7 +55,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 添加sms */
   addSms(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.consumerList}/sms`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/sms`;
     const body = `appChannel=${data.id}&smsSignType=${data.smsSign}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length
@@ -63,6 +63,16 @@ export class ConsumerService extends AppServiceBase {
     };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 添加key */
+  addKey(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerKey}`;
+    this.setOption = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': data.id })
+    };
+    return this.httpClient
+      .post<IResponse<any>>(url, data.keys, this.options);
   }
 
 }

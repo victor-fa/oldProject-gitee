@@ -60,11 +60,12 @@ export class ConsumerComponent implements OnInit {
   private _initForm(): void {
     // tslint:disable-next-line:max-line-length
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''] });
+    // tslint:disable-next-line:max-line-length
+    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''] });
   }
 
-  // 新增内容 - 弹窗
+  // 弹窗
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.isAddConsumerVisible = true;
@@ -123,6 +124,7 @@ export class ConsumerComponent implements OnInit {
         'robot': this.addConsumerForm.controls['robot'].value,
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
+        'keys': this.addConsumerForm.controls['keys'].value.split('\n'),
       };
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -156,7 +158,7 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addPayment(paymentInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.loadData('consumer');
+          // this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -169,12 +171,27 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addSms(smsInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.loadData('consumer');
+          // this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
     }
+    if (data.keys !== '' && data.keys !== undefined) {
+      const keysInput = {
+        id: data.appChannel,
+        keys: data.keys,
+      };
+      console.log(keysInput);
+      this.consumerService.addKey(keysInput).subscribe(res => {
+        if (res.retcode === 0) {
+          // this.loadData('consumer');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    }
+    this.loadData('consumer');
     this.hideModal('modifyConsumer');
   }
 

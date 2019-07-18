@@ -198,7 +198,7 @@ export class ContentComponent implements OnInit {
     this.modifyPersonalForm = this.fb.group({ jump: [''], title: [''], site: [''], url: [''], expireTime: [''] });
   }
 
-  // 新增内容 - 弹窗
+  // 弹窗
   showAddModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = true;

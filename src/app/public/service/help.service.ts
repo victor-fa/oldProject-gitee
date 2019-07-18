@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { appVersionApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class HelpService extends AppServiceBase {
 
   /** 获取所有列表 */
   getHelpList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -31,7 +31,7 @@ export class HelpService extends AppServiceBase {
 
   /** 获取单个 */
   getHelp(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${id}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -41,7 +41,7 @@ export class HelpService extends AppServiceBase {
 
   /** 删除单个 */
   deleteHelp(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${id}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -51,7 +51,7 @@ export class HelpService extends AppServiceBase {
 
   /** 添加单个 */
   addHelp(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -61,7 +61,7 @@ export class HelpService extends AppServiceBase {
 
   /** 修改单个 */
   updateHelp(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.helpList}/${data.id}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${data.id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };

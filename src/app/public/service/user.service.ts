@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { cmsApiUrls, userApiUrls } from '../enum/api.enum';
+import { userApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
 import { LoginItemInput } from '../model/user.model';
 import { CommonService } from './common.service';
@@ -32,7 +32,7 @@ export class UserService extends AppServiceBase {
    * @param id
    */
   getUserInfoList( data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/user-info?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/user-info?pageSize=9999`;
     url += data.locked ? '&locked=' + data.locked : '';
     url += data.loginBegin && data.loginBegin !== null ? '&loginBegin=' + data.loginBegin : '';
     url += data.loginEnd && data.loginEnd !== null ? '&loginEnd=' + data.loginEnd : '';
@@ -279,7 +279,7 @@ export class UserService extends AppServiceBase {
    * 查看常用信息
    */
   getUserCommonInfo(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${cmsApiUrls.mgmtList}/general-info?userId=${data.userId}`;
+    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/general-info?userId=${data.userId}`;
     url += data.queryType ? '&queryType=' + data.queryType : '';
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })

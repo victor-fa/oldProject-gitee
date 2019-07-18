@@ -19,20 +19,23 @@ registerLocaleData(zh);
 export class OperateComponent implements OnInit {
 
   isTaxiDetailVisible = false;
+  orderStateSettingVisible = false;
   searchTaxiForm: FormGroup;
-  searchTaxiStateForm: FormGroup;
+  searchOrderStateForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   dataTaxi = [];  // 打车路径
   dataVoice = [];  // 语音配置
-  dataTaxiState = [];  // 打车路径
+  dataOrderState = [];  // 打车路径
+  dataOrderStateSetting = []; // 订单状态设置
   // tslint:disable-next-line:max-line-length
   currentTaxi = { 'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'availableAmount': '', 'availableBeans': '', 'estimate_price': '', 'source': '', 'monitorType': 0 };
+  currentOrderStateSetting = { 'id': '', 'orderType': '', 'state': '', 'lowTime': '', 'highTime': '', 'time1': '0', 'time2': '0' };
   taxiItem = { 'orderId': '', 'startTime': '', 'endTime': '' };
   beginTaxiDate = '';
   endTaxiDate = '';
-  beginTaxiStateDate = '';
-  endTaxiStateDate = '';
+  beginOrderStateDate = '';
+  endOrderStateDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   currentPanel = 'content';  // 当前面板 默认
   currentChannelName = '你好小悟';
@@ -46,6 +49,7 @@ export class OperateComponent implements OnInit {
   private timerList;
   private timerDetail;
   taxiOrderState = '';
+  taxiOrderType = '';
 
   constructor(
     private fb: FormBuilder,
@@ -103,7 +107,7 @@ export class OperateComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataVoice = JSON.parse(res.payload);
-          const operationInput = { op_category: '运维后台', op_page: '语音配置' , op_name: '访问' };
+          const operationInput = { op_category: '运维后台', op_page: 'ASR语音配置' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.dataVoice.forEach(item => {
             if (item.system === 'IOS') {
@@ -118,19 +122,36 @@ export class OperateComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'taxiState') {
-      const taxiStateInput = {
-        startTime: this.beginTaxiStateDate,
-        endTime: this.endTaxiStateDate,
-        orderId: this.searchTaxiStateForm.controls['orderId'].value,
-        state: this.searchTaxiStateForm.controls['state'].value,
+    } else if (flag === 'orderState') {
+      const orderStateInput = {
+        startTime: this.beginOrderStateDate,
+        endTime: this.endOrderStateDate,
+        orderId: this.searchOrderStateForm.controls['orderId'].value,
+        state: this.searchOrderStateForm.controls['state'].value,
+        orderType: this.searchOrderStateForm.controls['orderType'].value,
       };
-      this.appversionService.getTaxiStateList(taxiStateInput).subscribe(res => {
+      this.appversionService.getOrderStateList(orderStateInput).subscribe(res => {
         if (res.retcode === 0) {
           this.isSpinning = false;
-          this.dataTaxiState = JSON.parse(res.payload).reverse();
-          console.log(this.dataTaxiState);
-          const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
+          this.dataOrderState = JSON.parse(res.payload).reverse();
+          console.log(this.dataOrderState);
+          const operationInput = { op_category: '运维后台', op_page: '订单状态监控' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
+    } else if (flag === 'orderStateSetting') {
+      this.appversionService.getOrderStateSettingList().subscribe(res => {
+        if (res.retcode === 0) {
+          this.isSpinning = false;
+          this.dataOrderStateSetting = JSON.parse(res.payload).reverse();
+          this.dataOrderStateSetting.forEach(item => {
+            item.lowTime = Math.round(item.lowTime / 60000);
+            item.highTime = Math.round(item.highTime / 60000);
+          });
+          console.log(this.dataOrderStateSetting);
+          const operationInput = { op_category: '运维后台', op_page: '订单状态设置' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
@@ -141,7 +162,7 @@ export class OperateComponent implements OnInit {
 
   private _initForm(): void {
     this.searchTaxiForm = this.fb.group({ orderId: [''], date: [''] });
-    this.searchTaxiStateForm = this.fb.group({ orderId: [''], date: [''], state: [''] });
+    this.searchOrderStateForm = this.fb.group({ orderId: [''], date: [''], state: [''], orderType: [''] });
   }
 
   // 弹框
@@ -150,9 +171,9 @@ export class OperateComponent implements OnInit {
       this.isTaxiDetailVisible = true;
       this.currentTaxi = data;
       console.log(this.currentTaxi);
-      if (this.timerList) {
-        clearInterval(this.timerList);
-      }
+      // if (this.timerList) {
+      //   clearInterval(this.timerList);
+      // }
       this.loadData('taxi');
       let mainMap, mainRoute;
       let mainPoints = [];
@@ -190,6 +211,11 @@ export class OperateComponent implements OnInit {
           route.search(); // 查询导航路径并开启拖拽导航
         });
       }, 15000);
+    } else if (flag === 'orderStateSetting') {
+      this.orderStateSettingVisible = true;
+      this.currentOrderStateSetting = data;
+      this.currentOrderStateSetting.time1 = '0';
+      this.currentOrderStateSetting.time2 = '0';
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
   }
@@ -216,6 +242,8 @@ export class OperateComponent implements OnInit {
       this.isSaveIOSVoiceButton = false;
     } else if (flag === 'voicceANDROID') {
       this.isSaveANDROIDVoiceButton = false;
+    } else if (flag === 'orderStateSetting') {
+      this.orderStateSettingVisible = false;
     }
   }
 
@@ -257,6 +285,27 @@ export class OperateComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'modifyOrderStateSetting') {
+      const time1 = this.currentOrderStateSetting.time1;
+      const time2 = this.currentOrderStateSetting.time2;
+      const lowTime = Number(this.currentOrderStateSetting.lowTime);
+      const highTime = Number(this.currentOrderStateSetting.highTime);
+      const input = {
+        'id': this.currentOrderStateSetting.id,
+        'low': time1 === '0' ? lowTime * 60000 : time1 === '1' ? lowTime * 3600000 : time1 === '2' ? lowTime * 86400000 : '',
+        'high': time2 === '0' ? highTime * 60000 : time2 === '1' ? highTime * 3600000 : time2 === '2' ? highTime * 86400000 : '',
+      };
+      this.appversionService.modifyOrderStateSetting(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '运维后台', op_page: '订单状态设置' , op_name: '修改状态监控' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('orderStateSetting');
+          this.loadData('orderStateSetting');
+        } else {
+          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        }
+      });
     }
   }
 
@@ -278,16 +327,16 @@ export class OperateComponent implements OnInit {
         this.beginTaxiDate = this.datePipe.transform(result[0], 'yyyyMMdd');
         this.endTaxiDate = this.datePipe.transform(result[1], 'yyyyMMdd');
       }
-    } else if (flag === 'taxiState') {
+    } else if (flag === 'orderState') {
       if (result === []) {
-        this.beginTaxiStateDate = '';
-        this.endTaxiStateDate = '';
+        this.beginOrderStateDate = '';
+        this.endOrderStateDate = '';
         return;
       }
       // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
-        this.beginTaxiStateDate = this.datePipe.transform(result[0], 'yyyyMMdd');
-        this.endTaxiStateDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        this.beginOrderStateDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+        this.endOrderStateDate = this.datePipe.transform(result[1], 'yyyyMMdd');
       }
     }
   }
@@ -303,7 +352,7 @@ export class OperateComponent implements OnInit {
     this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : localStorage.getItem('currentAppHeader') === 'LENZE' ? '听听同学' : '沃特沃德6';
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
-    const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : flag === 'taxiState' ? '打车状态监控' : '', op_name: '访问' };
+    const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : flag === 'orderState' ? '订单状态监控' : flag === 'orderStateSetting' ? '订单状态设置' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

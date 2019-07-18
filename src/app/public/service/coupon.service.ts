@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { activityApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class CouponService extends AppServiceBase {
 
   /** 获取所有列表 */
   getCouponList(searchItem): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/list`
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/list`
     + '?page=0&pageSize=10'
     + (searchItem.couponName ? '&couponName=' + searchItem.couponName : '')
     + (searchItem.discountType ? '&discountType=' + searchItem.discountType : '')
@@ -37,7 +37,7 @@ export class CouponService extends AppServiceBase {
 
   /** 获取单个 */
   getCoupon(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/info?couponId=${id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/info?couponId=${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -47,7 +47,7 @@ export class CouponService extends AppServiceBase {
 
   /** 删除单个 */
   deleteCoupon(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/${id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -57,7 +57,7 @@ export class CouponService extends AppServiceBase {
 
   /** 添加单个 */
   addCoupon(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -67,7 +67,7 @@ export class CouponService extends AppServiceBase {
 
   /** 修改单个 */
   updateCoupon(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -77,7 +77,7 @@ export class CouponService extends AppServiceBase {
 
   /** 修改启用状态 */
   updateSwitch(id, enabled): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.couponList}/${id}`;
+    const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/${id}`;
     const body = `enabled=${enabled}`;
     this.setOption = {
       // tslint:disable-next-line:max-line-length

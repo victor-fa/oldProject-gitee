@@ -1,9 +1,9 @@
-import { Injectable, Injector } from '@angular/core';
-import { AppServiceBase } from '../base/app-service.base';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AppServiceBase } from '../base/app-service.base';
+import { accountApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { userApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class AccountService extends AppServiceBase {
 
   /** 获取全部角色 */
   getRolesList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}/list`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}/list`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -31,7 +31,7 @@ export class AccountService extends AppServiceBase {
 
   /** 新增角色 */
   addRoles(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -41,7 +41,7 @@ export class AccountService extends AppServiceBase {
 
   /** 修改角色 */
   modifyRole(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -51,7 +51,7 @@ export class AccountService extends AppServiceBase {
 
   /** 删除角色 */
   deleteRole(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.roles}?id=${data.id}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}?id=${data.id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -69,7 +69,7 @@ export class AccountService extends AppServiceBase {
       roleId = data.roleId ? data.roleId : '';
       username = data.username ? data.username : '';
     }
-    const url = `${this.commonService.baseUrl}${userApiUrls.acc}/list` + (realname ? '?realname=' + realname : '')
+    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}/list` + (realname ? '?realname=' + realname : '')
         + (roleId ? (realname ? '&roleId=' : '?roleId=') + roleId : '')
         + (username ? (realname || roleId ? '&username=' : '?username=') + username : '');
     this.setOption = {
@@ -81,7 +81,7 @@ export class AccountService extends AppServiceBase {
 
   /** 新增员工 */
   addCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -91,7 +91,7 @@ export class AccountService extends AppServiceBase {
 
   /** 修改员工 */
   modifyCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.acc}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -101,7 +101,7 @@ export class AccountService extends AppServiceBase {
 
   /** 删除员工 */
   deleteCustomer(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${userApiUrls.acc}?id=${data.id}`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}?id=${data.id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -121,7 +121,7 @@ export class AccountService extends AppServiceBase {
 
   /** 查询-管理员操作日志查询接口 */
   getOperationlogList(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/audit/list?page=0&size=999`
+    const url = `${this.commonService.baseUrl}${accountApiUrls.audit}?page=0&size=999`
         + (data.op_category ? '&op_category=' + data.op_category : '')
         + (data.op_page ? '&op_page=' + data.op_page : '')
         + (data.op_time_end ? '&op_time_end=' + data.op_time_end : '')

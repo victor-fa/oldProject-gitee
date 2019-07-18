@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
+import { appVersionApiUrls } from '../enum/api.enum';
 import { IResponse } from '../model/response.model';
-import { cmsApiUrls } from '../enum/api.enum';
 import { CommonService } from './common.service';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class FlowpointService extends AppServiceBase {
 
   /** 获取所有列表 */
   getFlowpointList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.flowpointList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.flowpointList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -31,7 +31,7 @@ export class FlowpointService extends AppServiceBase {
 
   /** 添加单个 */
   addFlowpoint(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.flowpointList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.flowpointList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
@@ -41,7 +41,7 @@ export class FlowpointService extends AppServiceBase {
 
   /** 修改单个 */
   modifyFlowpoint(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.flowpointList}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.flowpointList}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
     };
@@ -51,7 +51,7 @@ export class FlowpointService extends AppServiceBase {
 
   /** 删除单个 */
   deleteFlowpoint(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${cmsApiUrls.flowpointList}?id=${id}`;
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.flowpointList}?id=${id}`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
