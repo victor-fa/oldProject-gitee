@@ -269,29 +269,29 @@
 
         <nz-tab [nzTitle]="errorTemplate" (nzClick)="changePanel('error')" *ngIf="commonService.haveMenuPermission('children', '异常表述')">
           <ng-template #errorTemplate><i class="anticon anticon-exception"></i>异常表述 <a href="/dataCenter?currentTab=5" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3000px', y:'520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3600px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
                 <th nzWidth="100px" nzLeft="63px">时间</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[0].checked">表述1行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[1].checked">表述2行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[2].checked">表述3行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[3].checked">表述4行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[4].checked">表述5行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[5].checked">表述6行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[6].checked">表述7行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[7].checked">表述8行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">表述9行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[9].checked">表述1人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[10].checked">表述2人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[11].checked">表述3人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[12].checked">表述4人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[13].checked">表述5人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[14].checked">表述6人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[15].checked">表述7人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[16].checked">表述8人数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.error[17].checked">表述9人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[0].checked">【后台崩溃】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[1].checked">【后台更新】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[2].checked">【引擎卡顿】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[3].checked">【后台网络差】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[4].checked">【当前BOT识别问题】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[5].checked">【弱网络】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[6].checked">【网络请求超时】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[7].checked">【无网络连接】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">【后台供应商故障】行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[9].checked">【后台崩溃】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[10].checked">【后台更新】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[11].checked">【引擎卡顿】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[12].checked">【后台网络差】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[13].checked">【当前BOT识别问题】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[14].checked">【弱网络】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[15].checked">【网络请求超时】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[16].checked">【无网络连接】人数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.error[17].checked">【后台供应商故障】人数</th>
               </tr>
             </thead>
             <tbody>
@@ -300,22 +300,23 @@
                 <td nzWidth="100px" nzLeft="63px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[0].checked">{{data.botException1Count}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[1].checked">{{data.botException2Count}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[2].checked">{{data.botException5Count}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[2].checked">{{data.botException8Count}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[3].checked">{{data.botException7Count}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[4].checked">{{data.botException8Count}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[5].checked">{{data.botException4Count}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[6].checked">{{data.botException3Count}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[4].checked">{{data.botException3Count}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[5].checked">{{data.botException10Count}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[6].checked">{{data.botException5Count}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[7].checked">{{data.botException6Count}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">{{data.botException9Count}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">{{data.botException11Count}}</td>
+
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[9].checked">{{data.botException1Users}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[10].checked">{{data.botException2Users}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[11].checked">{{data.botException5Users}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[11].checked">{{data.botException8Users}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[12].checked">{{data.botException7Users}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[13].checked">{{data.botException8Users}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[14].checked">{{data.botException4Users}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[15].checked">{{data.botException3Users}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[13].checked">{{data.botException3Users}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[14].checked">{{data.botException10Users}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[15].checked">{{data.botException5Users}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[16].checked">{{data.botException6Users}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.error[17].checked">{{data.botException9Users}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.error[17].checked">{{data.botException11Users}}</td>
                 <!-- 规则切换如下，去掉4、9
                 表述1	表述1
                 表述2	表述2

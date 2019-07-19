@@ -244,7 +244,7 @@ export class UserComponent implements OnInit {
             item.createTime = item.createTime.replace(/-/g, ':');  // 创建日期格式化
             item.all = Object.keys(item.result).length; // 发放人数
             const fail = [];
-            for (let i in item.result) {
+            for (const i in item.result) {
               if (item.result[i] === false) { fail.push(i); }
             }
             item.failNum = fail.length; // 失败人数
@@ -723,7 +723,7 @@ export class UserComponent implements OnInit {
       const success = [];
       const fail = [];
       this.adjustDetail.all = Object.keys(this.adjustDetail.result).length;
-      for (let i in this.adjustDetail.result) {
+      for (const i in this.adjustDetail.result) {
         if (this.adjustDetail.result[i] === true) {
           success.push(i);
         } else if (this.adjustDetail.result[i] === false) {

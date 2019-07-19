@@ -22,7 +22,6 @@ export class NewsComponent implements OnInit {
   isSortSpeechVisible = false;
   isManualAuditVisible = false;
   isUploadAuditVisible = false;
-  isNewsThesaurusVisible = false;
   taggingNewsSearchForm: FormGroup;
   manualAuditSearchForm: FormGroup;
   newsThesaurusSearchForm: FormGroup;
@@ -33,7 +32,6 @@ export class NewsComponent implements OnInit {
   dataManualAudit = [];
   dataNewsThesaurus = [];
   uploadMarkedData = {type: 'PERSON'};
-  newsThesaurusData = {type: 'PERSON'};
   isSpinning = false;
   beginSortSpeechDate = '';
   endSortSpeechDate = '';
@@ -66,13 +64,13 @@ export class NewsComponent implements OnInit {
     if (flag === 'taggingNews') {
       const taggingNewsInput = {
         status: this.taggingNewsSearchForm.controls['status'].value,
-        uploadTimeCeil: this.beginSortSpeechDate,
-        uploadTimeFloor: this.endSortSpeechDate,
+        uploadTimeCeil: this.endSortSpeechDate,
+        uploadTimeFloor: this.beginSortSpeechDate,
       };
       this.newsService.getTaggingNewsList(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataTaggingNews = JSON.parse(res.payload).content;
+          this.dataTaggingNews = JSON.parse(res.payload).content.reverse();
           console.log(this.dataTaggingNews);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -84,13 +82,13 @@ export class NewsComponent implements OnInit {
       const manualAuditInput = {
         submitter: this.manualAuditSearchForm.controls['submitter'].value,
         status: this.manualAuditSearchForm.controls['status'].value,
-        submitTimeCeil: this.beginTaggingNewsDate,
-        submitTimeFloor: this.endTaggingNewsDate,
+        submitTimeCeil: this.endTaggingNewsDate,
+        submitTimeFloor: this.beginTaggingNewsDate,
       };
       this.newsService.getManualAuditList(manualAuditInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataManualAudit = JSON.parse(res.payload).content;
+          this.dataManualAudit = JSON.parse(res.payload).content.reverse();
           console.log(this.dataManualAudit);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -102,8 +100,8 @@ export class NewsComponent implements OnInit {
       const newsThesaurusInput = {
         name: this.newsThesaurusSearchForm.controls['name'].value,
         type: this.newsThesaurusSearchForm.controls['type'].value,
-        submitTimeCeil: this.beginTaggingNewsDate,
-        submitTimeFloor: this.endTaggingNewsDate,
+        submitTimeCeil: this.endTaggingNewsDate,
+        submitTimeFloor: this.beginTaggingNewsDate,
       };
       this.newsService.getNewsThesaurusList(newsThesaurusInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -153,6 +151,7 @@ export class NewsComponent implements OnInit {
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
     } else if (flag === 'uploadAudit') {  // 上传审核
+      this.fileList.splice(0, this.fileList.length);
       this.isUploadAuditVisible = true;
     } else if (flag === 'manualAudit') {
       this.tempId = data.id;
@@ -178,10 +177,6 @@ export class NewsComponent implements OnInit {
         nzTitle: '确认更新', nzContent: '确认更新到词库吗？', nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
-    } else if (flag === 'modifyNewsThesaurus') {  // 修改词性
-      this.tempId = data.word;
-      this.newsThesaurusData.type = data.type;
-      this.isNewsThesaurusVisible = true;
     } else if (flag === 'deleteNewsThesaurus') {
       this.modalService.confirm({
         nzTitle: '确认删除', nzContent: '确认删除该词条吗？', nzCancelText: '取消',
@@ -251,8 +246,6 @@ export class NewsComponent implements OnInit {
       this.isManualAuditVisible = false;
     } else if (flag === 'uploadMarked') {
       this.isUploadAuditVisible = false;
-    } else if (flag === 'modifyNewsThesaurus') {
-      this.isNewsThesaurusVisible = false;
     }
   }
 
@@ -275,7 +268,7 @@ export class NewsComponent implements OnInit {
   }
 
   // 新增操作
-  doSave(flag): void {
+  doSave(flag, data): void {
     if (flag === 'sortSpeech') {
       const arr = [];
       this.dataSortSpeech.forEach(item => {
@@ -289,7 +282,7 @@ export class NewsComponent implements OnInit {
           const operationInput = { op_category: '新闻词库', op_page: (flag === 'sortSpeech' ? '人工标注' : '人工审核'), op_name: '词条分类' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('sortSpeech');
-          this.loadData('sortSpeech');
+          setTimeout(() => {this.loadData('taggingNews'); }, 500);
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -313,13 +306,13 @@ export class NewsComponent implements OnInit {
         }
       });
     } else if (flag === 'modifyNewsThesaurus') {
-      const deleteInput = {newsWord: {type: this.newsThesaurusData.type, word: this.tempId}, };
+      const deleteInput = {newsWord: {type: data.type, word: data.word} };
+      console.log(deleteInput);
       this.newsService.updateNewWords(deleteInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('modifyNewsThesaurus');
           setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });

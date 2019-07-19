@@ -124,8 +124,9 @@ export class ConsumerComponent implements OnInit {
         'robot': this.addConsumerForm.controls['robot'].value,
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
-        'keys': this.addConsumerForm.controls['keys'].value.split('\n'),
+        'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
       };
+
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -158,7 +159,6 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addPayment(paymentInput).subscribe(res => {
         if (res.retcode === 0) {
-          // this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -171,7 +171,6 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addSms(smsInput).subscribe(res => {
         if (res.retcode === 0) {
-          // this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -182,10 +181,8 @@ export class ConsumerComponent implements OnInit {
         id: data.appChannel,
         keys: data.keys,
       };
-      console.log(keysInput);
       this.consumerService.addKey(keysInput).subscribe(res => {
         if (res.retcode === 0) {
-          // this.loadData('consumer');
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }

@@ -52,7 +52,7 @@
                 <td>{{data.uploadTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('sortSpeech', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>词条分类</button>
-                  <button nz-button nzType="primary" (click)="showModal('submitTagAudit', data)" [disabled]="data.status !== 'NEW'" style="margin-right: 10px;"><i class="anticon anticon-form"></i>提交审核</button>
+                  <button nz-button nzType="primary" (click)="showModal('submitTagAudit', data)" [disabled]="data.status === 'NEW'" style="margin-right: 10px;"><i class="anticon anticon-form"></i>提交审核</button>
                 </td>
               </tr>
             </tbody>
@@ -103,7 +103,7 @@
               </div>
             </div>
             <ng-template #sortSpeechFooter>
-              <button nz-button nzType="primary" (click)="doSave('sortSpeech')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="primary" (click)="doSave('sortSpeech', '')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('sortSpeech')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -209,7 +209,7 @@
               </div>
             </div>
             <ng-template #manualAuditFooter>
-              <button nz-button nzType="primary" (click)="doSave('manualAudit')"><i class="anticon anticon-save"></i>审核通过</button>
+              <button nz-button nzType="primary" (click)="doSave('manualAudit', '')"><i class="anticon anticon-save"></i>审核通过</button>
               <button nz-button nzType="default" (click)="hideModal('manualAudit')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -238,7 +238,6 @@
               </div>
             </div>
             <ng-template #uploadMarkedFooter>
-              <button nz-button nzType="primary" (click)="doSave('uploadMarked')"><i class="anticon anticon-save"></i>上传</button>
               <button nz-button nzType="default" (click)="hideModal('uploadMarked')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -282,21 +281,21 @@
               <tr>
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">词条</th>
-                <th nzWidth="20px">词性</th>
                 <th nzWidth="20px">修改词性</th>
-                <th nzWidth="20px">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of newsThesaurus.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.word}}</td>
-                <td>{{data.type === 'ADDRESS' ? '地名' : data.type === 'PERSON' ? '人名' : data.type === 'EVENT' ? '事件' : data.type === 'INVALID' ? '无效' : ''}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyNewsThesaurus', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
-                </td>
-                <td>
-                  <button nz-button nzType="primary" (click)="showModal('deleteNewsThesaurus', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>删除</button>
+                  <nz-radio-group [(ngModel)]="data.type">
+                    <label nz-radio nzValue="PERSON">人名</label>
+                    <label nz-radio nzValue="ADDRESS">地名</label>
+                    <label nz-radio nzValue="EVENT">事件</label>
+                    <label nz-radio nzValue="INVALID">无效</label>
+                  </nz-radio-group>
+                  <button nz-button nzType="primary" (click)="doSave('modifyNewsThesaurus', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>保存</button>
                 </td>
               </tr>
             </tbody>
@@ -305,25 +304,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isNewsThesaurusVisible" nzTitle="修改词性" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('modifyNewsThesaurus')">
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="4" class="span_down spacing right_alignment">
-                词性类型：
-              </div>
-              <div nz-col nzSpan="20">
-                <nz-radio-group [(ngModel)]="newsThesaurusData.type">
-                  <label nz-radio nzValue="PERSON">人名</label>
-                  <label nz-radio nzValue="ADDRESS">地名</label>
-                  <label nz-radio nzValue="EVENT">事件</label>
-                  <label nz-radio nzValue="INVALID">无效</label>
-                </nz-radio-group>
-              </div>
-            </div>
-            <ng-template #uploadMarkedFooter>
-              <button nz-button nzType="primary" (click)="doSave('modifyNewsThesaurus')"><i class="anticon anticon-save"></i>保存</button>
-              <button nz-button nzType="default" (click)="hideModal('modifyNewsThesaurus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
-            </ng-template>
-          </nz-modal>
         </nz-tab>
 
 
