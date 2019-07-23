@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'consumer', loadChildren: './consumer/consumer.module#ConsumerModule'},
   { path: 'news', loadChildren: './news/news.module#NewsModule'},
   { path: 'sessionAnalysis', loadChildren: './sessionAnalysis/sessionAnalysis.module#SessionAnalysisModule'},
-  // { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
+  { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 
 @NgModule({

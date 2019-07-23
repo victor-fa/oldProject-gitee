@@ -965,7 +965,7 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab [nzTitle]="qqCustomerTemplate" (nzClick)="changePanel('qqCustomer')" *ngIf="commonService.haveMenuPermission('children', '流程点引导')">
+        <nz-tab [nzTitle]="qqCustomerTemplate" (nzClick)="changePanel('qqCustomer')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
           <ng-template #qqCustomerTemplate><i class="anticon anticon-qq"></i>客服QQ</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="qqCustomerForm">
@@ -994,6 +994,147 @@
                 </div>
               </div>
             </form>
+          </div>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="taskCenterTemplate" (nzClick)="changePanel('taskCenter')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
+          <ng-template #taskCenterTemplate><i class="anticon anticon-customer-service"></i>任务中心</ng-template>
+          <form [formGroup]="searchTaskCenterForm">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                任务名称：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">任务类型：</div>
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="userLocked" formControlName="aaa">
+                  <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
+                  <nz-option required [nzLabel]="'新手'" nzValue="false"></nz-option>
+                  <nz-option required [nzLabel]="'每日'" nzValue="true"></nz-option>
+                  <nz-option required [nzLabel]="'活动'" nzValue="123"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">创建时间：</div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="aaa" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenter')"></nz-range-picker>
+              </div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="loadData('taskCenter')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="showAddModal('taskCenter')"><i class="anticon anticon-file-add"></i>新增任务</button>
+              </div>
+            </div>
+          </form>
+          <nz-table #taskCenterTable [nzData]="dataTaskCenter" *ngIf="!isSpinning" [nzScroll]="{x:'2800px'}">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">任务类型</th>
+                <th nzWidth="20px">任务名称</th>
+                <th nzWidth="20px">次数限制</th>
+                <th nzWidth="20px">任务奖励1</th>
+                <th nzWidth="20px">任务奖励2</th>
+                <th nzWidth="20px">任务奖励3</th>
+                <th nzWidth="20px">任务行为</th>
+                <th nzWidth="20px">任务描述</th>
+                <th nzWidth="20px">任务排序</th>
+                <th nzWidth="20px">开启状态</th>
+                <th nzWidth="20px">创建时间</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of taskCenterTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'modifyTaskCenter')" style="margin-right: 10px;"><i
+                      class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'taskCenter')" style="margin-right: 10px;"><i
+                      class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="taskLogsTemplate" (nzClick)="changePanel('taskLogs')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
+          <ng-template #taskLogsTemplate><i class="anticon anticon-customer-service"></i>任务日志</ng-template>
+          <form [formGroup]="searchTaskLogsForm">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down right_alignment">完成时间：</div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="aaa" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                用户ID：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                任务名称：
+              </div>
+              <div nz-col nzSpan="2">
+                <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="loadData('taskLogs')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+            </div>
+          </form>
+          <nz-table #taskLogsTable [nzData]="dataTaskLogs" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">完成时间</th>
+                <th nzWidth="20px">用户ID</th>
+                <th nzWidth="20px">用户账号</th>
+                <th nzWidth="20px">用户昵称</th>
+                <th nzWidth="20px">任务名称</th>
+                <th nzWidth="20px">任务奖励1</th>
+                <th nzWidth="20px">任务奖励2</th>
+                <th nzWidth="20px">任务奖励3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of taskLogsTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+                <td>{{data.process}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
         </nz-tab>
 

@@ -42,6 +42,8 @@ export class AppVersionComponent implements OnInit {
   addFlowPointForm: FormGroup;
   modifyFlowPointForm: FormGroup;
   qqCustomerForm: FormGroup;
+  searchTaskCenterForm: FormGroup;
+  searchTaskLogsForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   // tslint:disable-next-line:max-line-length
@@ -60,8 +62,10 @@ export class AppVersionComponent implements OnInit {
   dataHelp = []; // 帮助管理
   dataProtocol = []; // 协议管理
   dataFlowPoint = []; // 流程点引导
-  beginDate = '';
-  endDate = '';
+  dataTaskCenter = [{}];  // 任务中心
+  dataTaskLogs = [{}];  // 任务日志
+  beginTaskCenterDate = '';
+  endTaskCenterDate = '';
   shareImageUrl01 = '';
   shareImageUrl02 = '';
   shareImageUrl03 = '';
@@ -295,6 +299,10 @@ export class AppVersionComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'taskCenter') {
+      this.isSpinning = false;
+    } else if (flag === 'taskLogs') {
+      this.isSpinning = false;
     }
   }
 
@@ -311,6 +319,8 @@ export class AppVersionComponent implements OnInit {
     this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
     this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
     this.qqCustomerForm = this.fb.group({ contact_qq: [''] });
+    this.searchTaskCenterForm = this.fb.group({ aaa: [''] });
+    this.searchTaskLogsForm = this.fb.group({ aaa: [''] });
   }
 
   // 弹框
@@ -338,6 +348,10 @@ export class AppVersionComponent implements OnInit {
       this.isAddFlowPointVisible = true;
       // tslint:disable-next-line:max-line-length
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
+    } else if (flag === 'taskCenter') {
+
+    } else if (flag === 'taskLogs') {
+
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -1222,16 +1236,18 @@ export class AppVersionComponent implements OnInit {
   }
 
   // 日期插件
-  onChange(result): void {
-    if (result === []) {
-      this.beginDate = '';
-      this.endDate = '';
-      return;
-    }
-    // 正确选择数据
-    if (result[0] !== '' || result[1] !== '') {
-      this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
-      this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+  onChange(result, flag): void {
+    if (flag === 'taskCenter') {
+      if (result === []) {
+        this.beginTaskCenterDate = '';
+        this.endTaskCenterDate = '';
+        return;
+      }
+      // 正确选择数据
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+        this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+      }
     }
   }
 
@@ -1246,7 +1262,7 @@ export class AppVersionComponent implements OnInit {
     }
     this.currentPanel = flag;
     // tslint:disable-next-line:max-line-length
-    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : '', op_name: '访问' };
+    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : flag === 'taskCenter' ? '任务中心' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

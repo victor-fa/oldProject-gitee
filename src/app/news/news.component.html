@@ -32,7 +32,7 @@
               <button nz-button nzType="primary" (click)="loadData('taggingNews')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #taggingNewsTable [nzData]="dataTaggingNews" *ngIf="!isSpinning">
+          <nz-table #taggingNewsTable [nzData]="dataTaggingNews" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -77,7 +77,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" (nzPageSizeChange)="sortSpeechPage">
+                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -111,7 +111,7 @@
 
 
         <nz-tab [nzTitle]="manualAuditTemplate" (nzClick)="changePanel('manualAudit')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
-          <ng-template #manualAuditTemplate><i class="anticon anticon-tag-o"></i>人工审核</ng-template>
+          <ng-template #manualAuditTemplate><i class="anticon anticon-exception"></i>人工审核</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="manualAuditSearchForm">
 
@@ -130,7 +130,7 @@
                   <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
                   <nz-option required [nzLabel]="'未审核'" [nzValue]="'SUBMITTED'"></nz-option>
                   <nz-option required [nzLabel]="'已审核'" [nzValue]="'CONFIRMED'"></nz-option>
-                  <nz-option required [nzLabel]="'已更新'" [nzValue]="'UPDATED'"></nz-option>
+                  <!-- <nz-option required [nzLabel]="'已更新'" [nzValue]="'UPDATED'"></nz-option> -->
                 </nz-select>
               </div>
 
@@ -149,7 +149,7 @@
               <button nz-button nzType="primary" (click)="showModal('uploadAudit')"><i class="anticon anticon-search"></i>上传审核</button>
             </div>
           </div>
-          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning">
+          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -161,11 +161,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of manualAuditTable.data; let i=index;">
-                <td>{{i+1}}</td>
-                <td>{{data.submitter}}</td>
-                <td>{{data.totalCount}}</td>
-                <td>{{data.submitTime}}</td>
-                <td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{i+1}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.submitter}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.totalCount}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.submitTime}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">
                   <button nz-button nzType="primary" (click)="showModal(data.status === 'SUBMITTED' || data.status === 'CONFIRMED' ? 'manualAudit' : data.status === 'CONFIRMED' ? '' : '', data)" [disabled]="data.status === 'UPDATED'" style="margin-right: 10px;">
                     <i class="anticon anticon-form"></i>{{data.status === 'SUBMITTED' ? '待审核' : data.status === 'CONFIRMED' || data.status === 'UPDATED' ? '已审核' : ''}}
                   </button>
@@ -183,7 +183,7 @@
           <nz-modal [(nzVisible)]="isManualAuditVisible" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning">
+                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -246,7 +246,7 @@
 
 
         <nz-tab [nzTitle]="newsThesaurusTemplate" (nzClick)="changePanel('newsThesaurus')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
-          <ng-template #newsThesaurusTemplate><i class="anticon anticon-tag-o"></i>新闻词库</ng-template>
+          <ng-template #newsThesaurusTemplate><i class="anticon anticon-inbox"></i>新闻词库</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="newsThesaurusSearchForm">
 
@@ -276,7 +276,7 @@
               <button nz-button nzType="primary" (click)="loadData('newsThesaurus')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning">
+          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -310,7 +310,7 @@
 
 
         <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻NER')">
-          <ng-template #newsNERTemplate><i class="anticon anticon-tag-o"></i>新闻NER</ng-template>
+          <ng-template #newsNERTemplate><i class="anticon anticon-code-o"></i>新闻NER</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="newsNERSearchForm">
 
@@ -334,7 +334,7 @@
               <button nz-button nzType="primary" (click)="loadData('newsNER')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #newsNERTable [nzData]="datanewsNER" *ngIf="!isSpinning">
+          <nz-table #newsNERTable [nzData]="datanewsNER" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>

@@ -1000,7 +1000,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="personalTemplate" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
+        <nz-tab [nzTitle]="personalTemplate" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '个人中心')">
           <ng-template #personalTemplate><i class="anticon anticon-user"></i>个人中心</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>

@@ -206,13 +206,12 @@ export class DataCenterComponent implements OnInit {
       const params = this.searchDataCenterForm.controls['status'].value === '' ? 'all' : this.searchDataCenterForm.controls['status'].value;
       this.dataCenterStatus = params;
       if (params === 'all') {
-        const platform = '';
-        const origin = '';
-        this.loadUnitData(platform, origin);
+        this.loadUnitData('', '');
         localStorage.setItem('isDataCenterSearch', 'true');
       } else {
         const origin = params.substring(0, params.indexOf('-'));
-        const platform = params.substring(params.indexOf('-') + 1, params.length);
+        // const platform = params.substring(params.indexOf('-') + 1, params.length);
+        const platform = params.indexOf('IOS') > -1 ? 'IOS' : params.indexOf('Android') > -1 ? 'Android' : '';
         this.loadUnitData(platform, origin);
       }
     }
@@ -253,6 +252,7 @@ export class DataCenterComponent implements OnInit {
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.currentPanel = flag; this.doSearch('dataCenter'); }
+    localStorage.setItem('dataCenterTab', flag);
     // tslint:disable-next-line:max-line-length
     this.currentTitle = flag === 'dataApp' ? 'APP总览' : flag === 'keepApp' ? 'App留存' : flag === 'overview' ? 'BOT总览' :
      flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT'

@@ -42,8 +42,53 @@ export class LeftNavComponent implements OnInit {
     if (flag === 'currentAppHeader') {
       localStorage.setItem('currentAppHeader', value);
     }
+
     if (this._router.url === '/appVersion') {
       history.go(0);
+    } else if (this._router.url.indexOf('/dataCenter') > -1) {
+      const dataCenterTab = localStorage.getItem('dataCenterTab');
+      let number = 1;
+      switch (dataCenterTab) {
+        case 'dataApp':
+          number = 1; break;
+        case 'keepApp':
+          number = 2; break;
+        case 'overview':
+          number = 3; break;
+        case 'product':
+          number = 4; break;
+        case 'error':
+          number = 5; break;
+        case 'ticket':
+          number = 6; break;
+        case 'train':
+          number = 7; break;
+        case 'hotel':
+          number = 8; break;
+        case 'weather':
+          number = 9; break;
+        case 'navigate':
+          number = 10; break;
+        case 'taxi':
+          number = 11; break;
+        case 'music':
+          number = 12; break;
+        case 'horoscope':
+          number = 13; break;
+        case 'recharge':
+          number = 14; break;
+        case 'errand':
+          number = 15; break;
+        case 'movie':
+          number = 16; break;
+        case 'tts':
+          number = 17; break;
+        case 'reminder':
+          number = 18; break;
+        default:
+          break;
+      }
+      window.location.href = '/dataCenter?currentTab=' + number;
     } else {
       this._router.navigate(['/appVersion']);
     }
@@ -68,10 +113,6 @@ export class LeftNavComponent implements OnInit {
   // 修改密码
   modifyPwd() {
     window.location.href = '/changePass';
-  }
-
-  goDataCenter() {
-    this._router.navigate(['/dataCenter/app']);
   }
 
   // 判断一级是否有权限

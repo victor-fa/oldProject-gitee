@@ -6,7 +6,6 @@ import { CoreModule } from './core/core.module';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
-import { AppSessionService } from './public/service/app.session.service';
 import { LocalizationService } from './public/service/localization.service';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { LocalizationService } from './public/service/localization.service';
       CommonModule
    ],
    providers: [
-      AppSessionService,
       LocalizationService
    ],
    bootstrap: [

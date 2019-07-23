@@ -8,14 +8,27 @@ import { Router } from '@angular/router';
 })
 export class PageNotFoundComponent implements OnInit {
 
+  count = 5;
+  private timer;
   constructor(
     private router: Router,
-  ) { }
+  ) {
+    this.timer = setInterval(() => {
+      this.count -= 1;
+    }, 1000);
+  }
 
   ngOnInit() {
     setTimeout(() => {
-      this.router.navigateByUrl('booking');
+      this.router.navigateByUrl('appVersion');
     }, 5000);
+  }
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 
 }

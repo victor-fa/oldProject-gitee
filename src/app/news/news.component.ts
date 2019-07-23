@@ -17,8 +17,6 @@ registerLocaleData(zh);
 })
 export class NewsComponent implements OnInit {
 
-  @Input()
-  private sortSpeechPage = 0;
   isSortSpeechVisible = false;
   isManualAuditVisible = false;
   isUploadAuditVisible = false;
@@ -70,7 +68,7 @@ export class NewsComponent implements OnInit {
       this.newsService.getTaggingNewsList(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataTaggingNews = JSON.parse(res.payload).content.reverse();
+          this.dataTaggingNews = JSON.parse(res.payload).content;
           console.log(this.dataTaggingNews);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -88,7 +86,7 @@ export class NewsComponent implements OnInit {
       this.newsService.getManualAuditList(manualAuditInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataManualAudit = JSON.parse(res.payload).content.reverse();
+          this.dataManualAudit = JSON.parse(res.payload).content;
           console.log(this.dataManualAudit);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -325,11 +323,11 @@ export class NewsComponent implements OnInit {
   beforeUpload = (file: UploadFile): boolean => {
     const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
     // const isPng = suffix === '.doc' || suffix === '.docx' ? true : false;
-    const isPng = suffix === '.txt' ? true : false;
+    const isPng = suffix === '.txt' || suffix === '.TXT' || suffix === '.csv' || suffix === '.CSV' ? true : false;
     const isMoreThanTen = file.size < 512000 ? true : false;  // 512000
     if (!isPng) {
       // this.msg.error('您只能上传.doc、.docx文件');
-      this.msg.error('您只能上传.txt文件');
+      this.msg.error('您只能上传.txt或.csv文件');
     } else if (!isMoreThanTen) {
       this.msg.error('您只能上传不超过500K文件');
     } else {
@@ -380,6 +378,21 @@ export class NewsComponent implements OnInit {
     );
   }
 
+  // currentPageDataChange(
+  //   $event: Array<{
+  //     name: string;
+  //     age: number;
+  //     address: string;
+  //     checked: boolean;
+  //     expand: boolean;
+  //     description: string;
+  //   }>
+  // ): void {
+  //   console.log($event);
+  //   // this.displayData = $event;
+  //   // this.refreshStatus();
+  // }
+
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'taggingNews') {
@@ -395,6 +408,10 @@ export class NewsComponent implements OnInit {
       }
     } else if (flag === 'sortPage') {
       console.log(result);
+      console.log(this.dataSortSpeech);
+      this.dataSortSpeech.forEach(item => {
+        item.type = result;
+      });
     } else if (flag === 'sortCell') {
       console.log(result);
     } else if (flag === 'manualAudit') {
