@@ -38,6 +38,7 @@ export class NewsComponent implements OnInit {
   tempId = '';
   currentPanel = 'taggingNews';
   fileList: UploadFile[] = [];
+  dataSortPage = 1; // 词性分类的页码
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +55,15 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('taggingNews');
+    const tabFlag = [{label: '人工标注', value: 'taggingNews'}, {label: '人工审核', value: 'manualAudit'},
+        {label: '新闻词库', value: 'newsThesaurus'}, {label: '新闻NER', value: 'newsNER'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   loadData(flag) {
@@ -334,9 +343,7 @@ export class NewsComponent implements OnInit {
       this.fileList.push(file);
       this.handleUpload();
       this.hideModal('uploadMarked');
-      setTimeout(() => {
-        this.loadData('manualAudit');
-      }, 500);
+      setTimeout(() => {this.loadData('manualAudit'); }, 500);
     }
     return false;
   }
@@ -345,37 +352,33 @@ export class NewsComponent implements OnInit {
   handleUpload(): void {
     const url = `${this.commonService.baseUrl}/news/word-sets/marked/${this.uploadMarkedData.type}`;
     const flag = 'file';
-    // 文件数量不可超过1个，超过一个则提示
-    if (this.fileList.length > 1) {
-      this.notification.error(
-        '提示', '您上传的文件超过一个！'
-      );
-      return;
-    }
-    const formData = new FormData();
-    this.fileList.forEach((file: any) => {
-      formData.append(flag, file);
-    });
-    const req = new HttpRequest('POST', url, formData, {
-      reportProgress: true,
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
-    });
-    this.http
-      .request(req)
-      .pipe(filter(e => e instanceof HttpResponse))
-      .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
-        if (event.body.retcode === 0) {
-          console.log(event);
-          this.notification.success( '提示', '上传成功' );
-          const operationInput = { op_category: '新闻词库', op_page: '人工审核', op_name: '上传审核文件' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
+    for (let i = 0; i < this.fileList.length; i++) {
+      const formData = new FormData();
+      this.fileList.forEach((file: any, index) => {
+        if (index === i) {
+          formData.append(flag, file);
         }
-        formData.delete(flag);
-      },
-      err => { formData.delete(flag); }
-    );
+      });
+      const req = new HttpRequest('POST', url, formData, {
+        reportProgress: true,
+        headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
+      });
+      this.http
+        .request(req)
+        .pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.retcode === 0) {
+            this.notification.success( '提示', '上传成功' );
+            const operationInput = { op_category: '新闻词库', op_page: '人工审核', op_name: '上传审核文件' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+          } else {
+            this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
+          }
+          formData.delete(flag);
+        },
+        err => { formData.delete(flag); }
+      );
+    }
   }
 
   // currentPageDataChange(
@@ -407,13 +410,13 @@ export class NewsComponent implements OnInit {
         this.endSortSpeechDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
       }
     } else if (flag === 'sortPage') {
-      console.log(result);
-      console.log(this.dataSortSpeech);
-      this.dataSortSpeech.forEach(item => {
-        item.type = result;
+      const begin = this.dataSortPage * 10 - 10;
+      const end = this.dataSortPage * 10 - 1;
+      this.dataSortSpeech.forEach((item, index) => {
+        if (index >= begin && index <= end) {
+          item.type = result;
+        }
       });
-    } else if (flag === 'sortCell') {
-      console.log(result);
     } else if (flag === 'manualAudit') {
       if (result === []) {
         this.beginTaggingNewsDate = '';

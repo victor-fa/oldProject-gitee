@@ -37,7 +37,7 @@ export class OperateComponent implements OnInit {
   beginOrderStateDate = '';
   endOrderStateDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
-  currentPanel = 'content';  // 当前面板 默认
+  currentPanel = 'taxi';  // 当前面板 默认
   currentChannelName = '你好小悟';
   currentIOSVoiceId = ''; // 拿到id
   currentANDROIDVoiceId = ''; // 拿到id
@@ -70,10 +70,15 @@ export class OperateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('content');
-    this.loadData('system');
-    this.loadData('channel');
-    this.loadData('taxi');
+    const tabFlag = [{label: '打车监控', value: 'taxi'}, {label: 'ASR语音切换', value: 'voice'},
+        {label: '订单状态监控', value: 'orderState'}, {label: '订单状态设置', value: 'orderStateSetting'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   // tslint:disable-next-line:use-life-cycle-interface

@@ -111,8 +111,16 @@ export class ContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('content');
-    this.changePanel('content');
+    const tabFlag = [{label: '发文章', value: 'content'}, {label: '开屏启动', value: 'screen'},
+        {label: '首页弹窗', value: 'open'}, {label: '轮播图', value: 'banner'},
+        {label: '个人中心', value: 'personal'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   loadData(flag) {

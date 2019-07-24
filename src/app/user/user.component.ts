@@ -111,8 +111,9 @@ export class UserComponent implements OnInit {
   latestLoginInfo = ''; // 用户管理跳登录详情
   userLocked = '';  // 用户状态下拉
   bookingType = '';
-  bookingTypeKeys = ['5', '6', '7', '8'];
+  bookingTypeKeys = ['', '5', '6', '7', '8'];
   bookingTypeNodes = [
+    { title: '全部', key: '' },
     { title: '充话费', key: '5' },
     { title: '恋爱运势', key: '6',
       children: [
@@ -165,7 +166,17 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('user');
+    const tabFlag = [{label: '用户信息', value: 'user'}, {label: '实体订单管理', value: 'bookingHypostatic'},
+    {label: '数字服务订单', value: 'bookingDigital'},  {label: '数据调整', value: 'adjust'},
+    {label: '充值记录', value: 'recharge'}, {label: '开票记录', value: 'invoice'}
+  ];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
     this.routerParams.queryParams.subscribe((params: ParamMap) => {
       if (params['taxiOrderId'] && params['taxiOrderId'] !== undefined) {
         this.showModal('goBookingFromTaxi', params['taxiOrderId']);

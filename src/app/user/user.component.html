@@ -381,7 +381,7 @@
                 订单编号：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+                <input nz-inputbookingOrderId [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
               <div nz-col nzSpan="17"></div>
               <div nz-col nzSpan="2">
@@ -478,7 +478,7 @@
                 订单编号：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="orderId" placeholder="输入订单编号" nzSize="default">
+                <input nz-input [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 订单状态：
@@ -697,7 +697,7 @@
 
           <!-- 打车信息 -->
           <div *ngIf="isTaxiOrder">
-            <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">订单状态：</div> <div nz-col nzSpan="7">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '进行中' : orderStatus === 2 ? '已接单' : orderStatus === 3 ? '已完成' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易失败' : orderStatus === 10 ? '呼叫中' : orderStatus === 15 ? '司机抵达' : 'null' }}</div> <div nz-col nzSpan="5" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="7">{{dataDetail.createTime}}</div> </div>
+            <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">订单状态：</div> <div nz-col nzSpan="7">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '出票中' : orderStatus === 2 ? '已接单' : orderStatus === 3 ? '已完成' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易关闭' : orderStatus === 10 ? '呼叫中' : orderStatus === 15 ? '司机抵达' : 'null' }}</div> <div nz-col nzSpan="5" class="right_alignment">订单生成时间：</div> <div nz-col nzSpan="7">{{dataDetail.createTime}}</div> </div>
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">预估价格：</div> <div nz-col nzSpan="7">{{dataDetail.estimatePrice}}</div> <div nz-col nzSpan="5" class="right_alignment">内部订单号：</div> <div nz-col nzSpan="7">{{dataDetail.orderId}}</div> </div>
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">出发地：</div> <div nz-col nzSpan="7">{{dataDetail.deptAdd}}</div> <div nz-col nzSpan="5" class="right_alignment">目的地：</div> <div nz-col nzSpan="7">{{dataDetail.arrAdd}}</div> </div>
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">用户账号：</div> <div nz-col nzSpan="7">{{dataDetail.userPhone}}</div> <div nz-col nzSpan="5" class="right_alignment">用户昵称：</div> <div nz-col nzSpan="7">{{dataDetail.userName}}</div> </div>

@@ -21,7 +21,7 @@ export class AccountService extends AppServiceBase {
 
   /** 获取全部角色 */
   getRolesList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}/list`;
+    const url = `${this.commonService.baseUrl}${accountApiUrls.roles}/list?size=999`;
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };
@@ -69,9 +69,9 @@ export class AccountService extends AppServiceBase {
       roleId = data.roleId ? data.roleId : '';
       username = data.username ? data.username : '';
     }
-    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}/list` + (realname ? '?realname=' + realname : '')
-        + (roleId ? (realname ? '&roleId=' : '?roleId=') + roleId : '')
-        + (username ? (realname || roleId ? '&username=' : '?username=') + username : '');
+    const url = `${this.commonService.baseUrl}${accountApiUrls.acc}/list?size=999` + (realname ? '&realname=' + realname : '')
+        + (roleId ? (realname ? '&roleId=' : '&roleId=') + roleId : '')
+        + (username ? (realname || roleId ? '&username=' : '&username=') + username : '');
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };

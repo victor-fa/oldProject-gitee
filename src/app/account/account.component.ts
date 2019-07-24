@@ -100,8 +100,15 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('role');
-    this.changePanel('role');
+    const tabFlag = [{label: '权限配置', value: 'role'}, {label: '员工配置', value: 'activity'},
+        {label: '操作日志', value: 'operationlog'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
     this.loadData('resource');
   }
 

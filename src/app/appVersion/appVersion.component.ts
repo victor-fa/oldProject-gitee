@@ -130,8 +130,18 @@ export class AppVersionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('content');
-    this.changePanel('content');
+    const tabFlag = [{label: '版本更新', value: 'content'}, {label: '分享文案', value: 'share'},
+        {label: '引导语模板', value: 'guide'}, {label: '帮助管理', value: 'help'},
+        {label: '协议管理', value: 'protocol'}, {label: '流程点引导', value: 'flowPoint'},
+        {label: '客服QQ', value: 'qqCustomer'}, {label: '任务中心', value: 'taskCenter'},
+        {label: '任务日志', value: 'taskLogs'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   // tslint:disable-next-line:use-life-cycle-interface

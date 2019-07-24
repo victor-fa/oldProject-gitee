@@ -16,7 +16,6 @@ registerLocaleData(zh);
 })
 export class CustomerComponent implements OnInit {
 
-  sendScreenHeight = '';
   pageSize = 10;
   feedBackPageSize = 1000;
   feedbackInfo = [];
@@ -77,9 +76,19 @@ export class CustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('feedback');  // 反馈信息
-    this.changePanel('feedback');
-    this.sendScreenHeight = (window.screen.height - 524) + 'px';
+    const tabFlag = [{label: '用户反馈', value: 'feedback'}, {label: '点踩日志', value: 'opposition'},
+        {label: '点赞日志', value: 'agree'}, {label: '开票时间管理', value: 'invoiceTime'},
+        {label: '开票日志管理', value: 'invoiceLog'}, {label: '商务合作', value: 'business'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {
+        targetFlag = i;
+        break;
+      }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);  // 反馈信息
+    this.changePanel(tabFlag[targetFlag].value);
     if (localStorage.getItem('batchDownload') !== undefined) {
       if (localStorage.getItem('batchDownload') === 'opposition') {
         this.changePanel('opposition');

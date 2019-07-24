@@ -137,8 +137,15 @@ export class ActivityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('coupon');
-    this.changePanel('coupon');
+    const tabFlag = [{label: '优惠券配置', value: 'coupon'}, {label: '优惠券活动', value: 'activity'},
+        {label: '批量发放', value: 'batchsendList'}, {label: '充值送豆', value: 'bean'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   loadData(flag) {

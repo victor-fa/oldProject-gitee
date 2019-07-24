@@ -48,6 +48,7 @@ export class SessionAnalysisComponent implements OnInit {
   firstSessionLogId = 0;
   currentSessionLogId = ''; // 用于标记后查询当前页
   currentSessionLogFlag = ''; // 用于标记后查询当前页
+  dateRange = [];
   constructor(
     public commonService: CommonService,
     private sessionLogService: SessionLogService,
@@ -61,6 +62,7 @@ export class SessionAnalysisComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
+    this.dateRange = [this.beginDate, this.endDate];
     this.checkOptionsOne = [
       { label: '闲聊', value: 'FREE_CHAT', checked: false },
       { label: '机票', value: 'FLIGHT', checked: false },
@@ -80,7 +82,14 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('sessionLog');
+    const tabFlag = [{label: '对话日志', value: 'sessionLog'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
+    this.changePanel(tabFlag[targetFlag].value);
   }
 
   /**

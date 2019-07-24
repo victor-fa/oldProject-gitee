@@ -37,7 +37,13 @@ export class ConsumerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData('consumer');
+    const tabFlag = [{label: '客户管理', value: 'consumer'}];
+    let targetFlag = 0;
+    for (let i = 0; i < tabFlag.length; i++) {
+      if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
+    }
+    console.log(tabFlag[targetFlag].value);
+    this.loadData(tabFlag[targetFlag].value);
   }
 
   loadData(flag) {

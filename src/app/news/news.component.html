@@ -77,7 +77,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="dataSortPage">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -90,7 +90,7 @@
                       <td>{{i+1}}</td>
                       <td>{{data.word}}</td>
                       <td>
-                        <nz-radio-group [(ngModel)]="data.type" (ngModelChange)="onChange({result: $event, index: data.index}, 'sortCell')">
+                        <nz-radio-group [(ngModel)]="data.type">
                           <label nz-radio nzValue="PERSON">人名</label>
                           <label nz-radio nzValue="ADDRESS">地名</label>
                           <label nz-radio nzValue="EVENT">事件</label>
@@ -234,6 +234,7 @@
                   <button nz-button>
                     <i class="anticon anticon-upload"></i><span>选择文件</span>
                   </button>
+                  每个文件内最多包含10000个词条
                 </nz-upload>
               </div>
             </div>
