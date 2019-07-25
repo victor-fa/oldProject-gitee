@@ -42,7 +42,7 @@
           </div>
 
           <!-- 弹框 —— 信息 —— 反馈详情 -->
-          <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideModal('feedBack')">
+          <nz-modal [(nzVisible)]="isFeedBackVisible" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideModal('feedBack')" nzMaskClosable="false">
             <form>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">用户账号：</div>
@@ -149,7 +149,7 @@
           </div>
 
           <!-- 弹框 —— 信息 —— 点踩对话日志详情 -->
-          <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="1400" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideModal('opposition')">
+          <nz-modal [(nzVisible)]="isOppositionVisible" nzWidth="1400" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideModal('opposition')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-download"></i>导出点踩对话日志</button>
@@ -192,7 +192,7 @@
         </nz-tab>
 
         <!-- 弹框 —— 导出 —— 批量导出 -->
-        <nz-modal [(nzVisible)]="isBatchDownloadVisible" nzWidth="750" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')">
+        <nz-modal [(nzVisible)]="isBatchDownloadVisible" nzWidth="750" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')" nzMaskClosable="false">
           <form [formGroup]="batchDownloadForm">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="6">
@@ -304,7 +304,7 @@
           </div>
 
           <!-- 弹框 —— 信息 —— 点赞对话日志详情 -->
-          <nz-modal [(nzVisible)]="isAgreeVisible" nzWidth="1400" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideModal('agree')">
+          <nz-modal [(nzVisible)]="isAgreeVisible" nzWidth="1400" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideModal('agree')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-download"></i>导出点赞对话日志</button>

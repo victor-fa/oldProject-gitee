@@ -38,7 +38,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增角色 -->
-          <nz-modal [(nzVisible)]="isAddRoleVisible" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')">
+          <nz-modal [(nzVisible)]="isAddRoleVisible" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')" nzMaskClosable="false">
             <form [formGroup]="roleAddForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
@@ -175,7 +175,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改角色 -->
-          <nz-modal [(nzVisible)]="isModifyRoleVisible" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')">
+          <nz-modal [(nzVisible)]="isModifyRoleVisible" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')" nzMaskClosable="false">
             <form [formGroup]="roleModifyForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
@@ -380,8 +380,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增员工 -->
-          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter"
-            (nzOnCancel)="hideModal('addCustomer')">
+          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter" (nzOnCancel)="hideModal('addCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerAddForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
@@ -427,7 +426,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改用户信息 -->
-          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')">
+          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerModifyForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">

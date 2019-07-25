@@ -99,7 +99,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增优惠券 -->
-          <nz-modal [(nzVisible)]="isAddCouponVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" nzClosable="false" (nzOnCancel)="hideModal('coupon')">
+          <nz-modal [(nzVisible)]="isAddCouponVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter (nzOnCancel)="hideModal('coupon')" nzMaskClosable="false">
             <form [formGroup]="addCouponForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -247,7 +247,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 编辑优惠券 -->
-          <nz-modal [(nzVisible)]="isModifyCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" nzClosable="false" (nzOnCancel)="hideModal('modifyCoupon')">
+          <nz-modal [(nzVisible)]="isModifyCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" (nzOnCancel)="hideModal('modifyCoupon')" nzMaskClosable="false">
             <form [formGroup]="modifyCouponForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -398,7 +398,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看优惠券 -->
-          <nz-modal [(nzVisible)]="isPreviewCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="previewCouponModalFooter" nzClosable="false" (nzOnCancel)="hideModal('previewCoupon')">
+          <nz-modal [(nzVisible)]="isPreviewCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="previewCouponModalFooter" (nzOnCancel)="hideModal('previewCoupon')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
             </div>
@@ -599,7 +599,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增活动 -->
-          <nz-modal [(nzVisible)]="isAddActivityVisible" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" nzClosable="false" (nzOnCancel)="hideModal('activity')">
+          <nz-modal [(nzVisible)]="isAddActivityVisible" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
             <form [formGroup]="addActivityForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -994,7 +994,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查询 —— 红包编组选择区(读取红包列表） -->
-          <nz-modal [(nzVisible)]="isCouponVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" nzClosable="false" (nzOnCancel)="hideModal('couponInActivity')">
+          <nz-modal [(nzVisible)]="isCouponVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInActivity')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <form [formGroup]="searchCouponInActivityForm">
                 <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -1083,7 +1083,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 活动页预览 -->
-          <nz-modal [(nzVisible)]="isPreviewVisible" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" nzClosable="false" (nzOnCancel)="hideModal('preview')">
+          <nz-modal [(nzVisible)]="isPreviewVisible" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" (nzOnCancel)="hideModal('preview')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
                 {{modifyctivityItem.actName}}
@@ -1161,7 +1161,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="isAddBatchsendVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" nzClosable="false" (nzOnCancel)="hideModal('batchsendList')">
+          <nz-modal [(nzVisible)]="isAddBatchsendVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" (nzOnCancel)="hideModal('batchsendList')" nzMaskClosable="false">
             <form [formGroup]="addBatchsendForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
@@ -1241,7 +1241,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查询 —— 红包编组选择区(读取红包列表） -->
-          <nz-modal [(nzVisible)]="isCouponInBatchsendVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" nzClosable="false" (nzOnCancel)="hideModal('couponInBatchsend')">
+          <nz-modal [(nzVisible)]="isCouponInBatchsendVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInBatchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <form [formGroup]="searchCouponInBatchsendForm">
                 <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -1331,7 +1331,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看发放情况 -->
-          <nz-modal [(nzVisible)]="isDetailBatchsendVisible" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" nzClosable="false" (nzOnCancel)="hideModal('detailBatchsend')">
+          <nz-modal [(nzVisible)]="isDetailBatchsendVisible" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" (nzOnCancel)="hideModal('detailBatchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="5" class="span_down">发放日期：<br>{{batchsendData.sendTime ? (batchsendData.sendTime | date:'yyyy-MM-dd') : 'null'}}</div>
@@ -1379,7 +1379,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 发送 —— 执行发送 -->
-          <nz-modal [(nzVisible)]="isBatchsendVisible" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModalFooter" nzClosable="false" (nzOnCancel)="hideModal('batchsend')">
+          <nz-modal [(nzVisible)]="isBatchsendVisible" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModalFooter" (nzOnCancel)="hideModal('batchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="6">发送对象(总计x个)</div>
@@ -1493,7 +1493,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增活动 -->
-          <nz-modal [(nzVisible)]="isAddBeanVisible" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" nzClosable="false" (nzOnCancel)="hideModal('addBean')">
+          <nz-modal [(nzVisible)]="isAddBeanVisible" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" (nzOnCancel)="hideModal('addBean')" nzMaskClosable="false">
             <form [formGroup]="addBeanForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -1576,7 +1576,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改活动 -->
-          <nz-modal [(nzVisible)]="isModifyBeanVisible" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" nzClosable="false" (nzOnCancel)="hideModal('modifyBean')">
+          <nz-modal [(nzVisible)]="isModifyBeanVisible" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" (nzOnCancel)="hideModal('modifyBean')" nzMaskClosable="false">
             <form [formGroup]="modifyBeanForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -1663,7 +1663,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看活动 -->
-          <nz-modal [(nzVisible)]="isSearchBeanVisible" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" nzClosable="false" (nzOnCancel)="hideModal('searchBean')">
+          <nz-modal [(nzVisible)]="isSearchBeanVisible" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" (nzOnCancel)="hideModal('searchBean')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
             </div>

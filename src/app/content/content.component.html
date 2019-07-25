@@ -53,7 +53,7 @@
           </div>
 
           <!-- 弹窗 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addContentModalFooter" nzClosable="false">
+          <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideAddModal('content')" nzMaskClosable="false">
             <form [formGroup]="addContentForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
@@ -142,8 +142,7 @@
           </nz-modal>
 
           <!-- 弹窗 —— 修改 —— 修改内容 -->
-          <nz-modal [(nzVisible)]="isModifyContentVisible" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyContentModalFooter"
-            nzClosable="false">
+          <nz-modal [(nzVisible)]="isModifyContentVisible" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyContentModalFooter" (nzOnCancel)="hideModifyModal('content')" nzMaskClosable="false">
             <form [formGroup]="modifyContentForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
@@ -287,7 +286,7 @@
           </div>
 
           <!-- 弹窗 —— 新增 —— 新增开屏 -->
-          <nz-modal [(nzVisible)]="isAddScreenVisible" nzWidth="750" nzTitle="新增开屏" [nzFooter]="addScreenModalFooter" (nzOnCancel)="hideAddModal('screen')">
+          <nz-modal [(nzVisible)]="isAddScreenVisible" nzWidth="750" nzTitle="新增开屏" [nzFooter]="addScreenModalFooter" (nzOnCancel)="hideAddModal('screen')" nzMaskClosable="false">
             <form [formGroup]="addScreenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -387,7 +386,7 @@
           </nz-modal>
 
           <!-- 弹窗 —— 修改 —— 修改开屏 -->
-          <nz-modal [(nzVisible)]="isModifyScreenVisible" nzWidth="750" nzTitle="修改开屏" [nzFooter]="modifyScreenModalFooter" (nzOnCancel)="hideModifyModal('screen')">
+          <nz-modal [(nzVisible)]="isModifyScreenVisible" nzWidth="750" nzTitle="修改开屏" [nzFooter]="modifyScreenModalFooter" (nzOnCancel)="hideModifyModal('screen')" nzMaskClosable="false">
             <form [formGroup]="modifyScreenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -544,7 +543,7 @@
           </div>
 
           <!-- 弹窗 —— 新增 —— 新增弹窗 -->
-          <nz-modal [(nzVisible)]="isAddOpenVisible" nzWidth="750" nzTitle="新增弹窗" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')">
+          <nz-modal [(nzVisible)]="isAddOpenVisible" nzWidth="750" nzTitle="新增弹窗" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')" nzMaskClosable="false">
             <form [formGroup]="addOpenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -653,7 +652,7 @@
           </nz-modal>
 
           <!-- 弹窗 —— 修改 —— 修改弹窗 -->
-          <nz-modal [(nzVisible)]="isModifyOpenVisible" nzWidth="750" nzTitle="修改弹窗" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')">
+          <nz-modal [(nzVisible)]="isModifyOpenVisible" nzWidth="750" nzTitle="修改弹窗" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')" nzMaskClosable="false">
             <form [formGroup]="modifyOpenForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -818,7 +817,7 @@
           </div>
 
           <!-- 弹窗 —— 新增 —— 新增轮播图 -->
-          <nz-modal [(nzVisible)]="isAddBannerVisible" nzWidth="750" nzTitle="新增轮播图" [nzFooter]="addBannerModalFooter" (nzOnCancel)="hideAddModal('banner')">
+          <nz-modal [(nzVisible)]="isAddBannerVisible" nzWidth="750" nzTitle="新增轮播图" [nzFooter]="addBannerModalFooter" (nzOnCancel)="hideAddModal('banner')" nzMaskClosable="false">
             <form [formGroup]="addBannerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -909,7 +908,7 @@
           </nz-modal>
 
           <!-- 弹窗 —— 修改 —— 修改轮播图 -->
-          <nz-modal [(nzVisible)]="isModifyBannerVisible" nzWidth="750" nzTitle="修改轮播图" [nzFooter]="modifyBannerModalFooter" (nzOnCancel)="hideModifyModal('banner')">
+          <nz-modal [(nzVisible)]="isModifyBannerVisible" nzWidth="750" nzTitle="修改轮播图" [nzFooter]="modifyBannerModalFooter" (nzOnCancel)="hideModifyModal('banner')" nzMaskClosable="false">
             <form [formGroup]="modifyBannerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -1052,7 +1051,7 @@
           </div>
 
           <!-- 弹窗 —— 新增 —— 新增广告图 -->
-          <nz-modal [(nzVisible)]="isAddPersonalVisible" nzWidth="750" nzTitle="新增广告图" [nzFooter]="addPersonalModalFooter" (nzOnCancel)="hideAddModal('personal')">
+          <nz-modal [(nzVisible)]="isAddPersonalVisible" nzWidth="750" nzTitle="新增广告图" [nzFooter]="addPersonalModalFooter" (nzOnCancel)="hideAddModal('personal')" nzMaskClosable="false">
             <form [formGroup]="addPersonalForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -1134,7 +1133,7 @@
           </nz-modal>
 
           <!-- 弹窗 —— 修改 —— 修改广告图 -->
-          <nz-modal [(nzVisible)]="isModifyPersonalVisible" nzWidth="750" nzTitle="修改广告图" [nzFooter]="modifyPersonalModalFooter" (nzOnCancel)="hideModifyModal('personal')">
+          <nz-modal [(nzVisible)]="isModifyPersonalVisible" nzWidth="750" nzTitle="修改广告图" [nzFooter]="modifyPersonalModalFooter" (nzOnCancel)="hideModifyModal('personal')" nzMaskClosable="false">
             <form [formGroup]="modifyPersonalForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">

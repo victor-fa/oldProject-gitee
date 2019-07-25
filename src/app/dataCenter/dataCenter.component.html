@@ -915,7 +915,7 @@
         </nz-tab>
 
         <!-- 弹框 —— 信息 —— 数据说明 -->
-        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')">
+        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')" nzMaskClosable="false">
           <div nz-row class="search_panel" style="text-align: center;">
             <div nz-col nzSpan="2">
               <span style="line-height: 30px;">&nbsp;</span><br>

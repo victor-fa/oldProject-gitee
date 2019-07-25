@@ -61,7 +61,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isSortSpeechVisible" nzWidth="750" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')">
+          <nz-modal [(nzVisible)]="isSortSpeechVisible" nzWidth="750" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 标注本页：
@@ -180,7 +180,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isManualAuditVisible" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')">
+          <nz-modal [(nzVisible)]="isManualAuditVisible" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
                 <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
@@ -214,7 +214,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="isUploadAuditVisible" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')">
+          <nz-modal [(nzVisible)]="isUploadAuditVisible" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down spacing right_alignment">
                 词性类型：

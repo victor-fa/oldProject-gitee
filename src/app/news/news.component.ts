@@ -133,6 +133,7 @@ export class NewsComponent implements OnInit {
 
   // 弹窗
   showModal(flag, data) {
+    // ['张三','李四','王五'].sort((a, b) => a.localeCompare(b, 'zh-Hans-CN', {sensitivity: 'accent'}))
     if (flag === 'sortSpeech') {
       this.tempId = data.id;
       const taggingNewsInput = {
@@ -141,7 +142,9 @@ export class NewsComponent implements OnInit {
       this.newsService.getTaggingNewsById(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataSortSpeech = JSON.parse(res.payload).words;
+          // tslint:disable-next-line:max-line-length
+          this.dataSortSpeech = JSON.parse(res.payload).words.sort(this.sortWords);
+          console.log(this.dataSortSpeech);
           this.dataSortSpeech.forEach((item, index) => {
             item.index = index;
           });
@@ -168,7 +171,7 @@ export class NewsComponent implements OnInit {
       this.newsService.getTaggingNewsById(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataSortSpeech = JSON.parse(res.payload).words;
+          this.dataSortSpeech = JSON.parse(res.payload).words.sort(this.sortWords);
           this.dataSortSpeech.forEach((item, index) => {
             item.index = index;
           });
@@ -395,6 +398,11 @@ export class NewsComponent implements OnInit {
   //   // this.displayData = $event;
   //   // this.refreshStatus();
   // }
+
+  // 针对中文进行排序
+  sortWords(a, b) {
+    return a.word.localeCompare(b.word, 'zh-Hans-CN', {sensitivity: 'accent'});
+  }
 
   // 日期插件
   onChange(result, flag): void {

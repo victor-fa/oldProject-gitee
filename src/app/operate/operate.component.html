@@ -72,7 +72,7 @@
           </div>
 
           <!-- 弹框 —— 详情 —— 打车路径 -->
-          <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')">
+          <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="8">
                 <div nz-row class="search_panel">
@@ -296,7 +296,7 @@
           </div>
 
           <!-- 弹框 —— 详情 —— 修改状态监控 -->
-          <nz-modal [(nzVisible)]="orderStateSettingVisible" nzWidth="750" nzTitle="修改状态监控" [nzFooter]="orderStateSettingModalFooter" (nzOnCancel)="hideModal('orderStateSetting')">
+          <nz-modal [(nzVisible)]="orderStateSettingVisible" nzWidth="750" nzTitle="修改状态监控" [nzFooter]="orderStateSettingModalFooter" (nzOnCancel)="hideModal('orderStateSetting')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="8" class="span_down right_alignment">
                 BOT名称：
