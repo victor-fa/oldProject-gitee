@@ -36,6 +36,7 @@ export class DataCenterComponent implements OnInit {
   currentTabNum = 0;
   currentSessionBusiness = 1; // 对话日志下的类型
   currentChannel = '';
+  checkAllChannel = false;
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
@@ -186,7 +187,16 @@ export class DataCenterComponent implements OnInit {
         break;
     }
     this.isSpinning = true; // loading
-    this.dataCenterService.getUnitList(this.beginDate, this.endDate, platform, origin, flag).subscribe(res => {
+    // checkAllChannel
+    const input = {
+      begin: this.beginDate,
+      end: this.endDate,
+      platform: platform,
+      origin: origin,
+      flag: flag,
+      checkAllChannel: this.checkAllChannel,
+    };
+    this.dataCenterService.getUnitList(input).subscribe(res => {
       this.commonDataCenter.splice(0, this.commonDataCenter.length);  // 清空
       if (res.retcode === 0 && res.status !== 500) {
         this.commonDataCenter = JSON.parse(res.payload).reverse();

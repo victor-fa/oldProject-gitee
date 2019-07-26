@@ -32,6 +32,8 @@ export class AppVersionComponent implements OnInit {
   isModifyGuideVisible = false;
   isModifyHelpVisible = false;
   isModifyFlowPointVisible = false;
+  isAddTackCenterVisible = false;
+  isModifyTackCenterVisible = false;
   addContentForm: FormGroup;
   addGuideForm: FormGroup;
   addHelpForm: FormGroup;
@@ -106,6 +108,23 @@ export class AppVersionComponent implements OnInit {
   limitModelChange = 1;
   isSpinning = false;
   flowPointBotName = '';
+  addTaskCenter = {
+    taskType: 'day',
+    taskBehavior: 'ticket',
+    checkLimitNumber: false,
+    jumpAPP: false,
+    jumpWeb: false,
+    jumpOpen: false,
+    checkBean: false,
+    checkExperience: false,
+    checkSkill: false,
+    checkFixedmount: false,
+    checkPercentage: false,
+    checkFixedExperience: false,
+    checkFixedSkill: false,
+    activityRule: 'recharge',
+    checkActivityBean: false,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -359,9 +378,9 @@ export class AppVersionComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     } else if (flag === 'taskCenter') {
-
+      this.isAddTackCenterVisible = true;
     } else if (flag === 'taskLogs') {
-
+      this.isModifyTackCenterVisible = true;
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -396,6 +415,10 @@ export class AppVersionComponent implements OnInit {
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     } else if (flag === 'qqCustomer') {
       this.isSaveQQCustomerButton = false;
+    } else if (flag === 'taskCenter') {
+      this.isAddTackCenterVisible = false;
+    } else if (flag === 'taskLogs') {
+      this.isModifyTackCenterVisible = false;
     }
   }
 

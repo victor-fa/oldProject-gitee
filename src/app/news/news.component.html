@@ -38,6 +38,10 @@
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">词条数</th>
                 <th nzWidth="20px">已分类词条数</th>
+                <th nzWidth="20px">人名</th>
+                <th nzWidth="20px">地名</th>
+                <th nzWidth="20px">事件</th>
+                <th nzWidth="20px">无效</th>
                 <th nzWidth="20px">标注状态</th>
                 <th nzWidth="20px">上传时间</th>
                 <th nzWidth="20px">操作</th>
@@ -48,6 +52,10 @@
                 <td>{{i+1}}</td>
                 <td>{{data.totalCount}}</td>
                 <td>{{data.markedCount}}</td>
+                <td>{{data.personMarkedCount}}</td>
+                <td>{{data.addressMarkedCount}}</td>
+                <td>{{data.eventMarkedCount}}</td>
+                <td>{{data.invalidMarkedCount}}</td>
                 <td>{{data.status === 'NEW' ? '未完成' : data.status === 'MARKED' ? '已完成' : ''}}</td>
                 <td>{{data.uploadTime}}</td>
                 <td>
@@ -77,7 +85,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="dataSortPage">
+                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -149,12 +157,16 @@
               <button nz-button nzType="primary" (click)="showModal('uploadAudit')"><i class="anticon anticon-search"></i>上传审核</button>
             </div>
           </div>
-          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataManualAuditPage">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
                 <th nzWidth="20px">提交审核来源</th>
                 <th nzWidth="20px">词条数</th>
+                <th nzWidth="20px">人名</th>
+                <th nzWidth="20px">地名</th>
+                <th nzWidth="20px">事件</th>
+                <th nzWidth="20px">无效</th>
                 <th nzWidth="20px">提交时间</th>
                 <th nzWidth="20px">操作</th>
               </tr>
@@ -164,6 +176,10 @@
                 <td *ngIf="!(data.status === 'UPDATED')">{{i+1}}</td>
                 <td *ngIf="!(data.status === 'UPDATED')">{{data.submitter}}</td>
                 <td *ngIf="!(data.status === 'UPDATED')">{{data.totalCount}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.personMarkedCount}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.addressMarkedCount}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.eventMarkedCount}}</td>
+                <td *ngIf="!(data.status === 'UPDATED')">{{data.invalidMarkedCount}}</td>
                 <td *ngIf="!(data.status === 'UPDATED')">{{data.submitTime}}</td>
                 <td *ngIf="!(data.status === 'UPDATED')">
                   <button nz-button nzType="primary" (click)="showModal(data.status === 'SUBMITTED' || data.status === 'CONFIRMED' ? 'manualAudit' : data.status === 'CONFIRMED' ? '' : '', data)" [disabled]="data.status === 'UPDATED'" style="margin-right: 10px;">
@@ -277,7 +293,7 @@
               <button nz-button nzType="primary" (click)="loadData('newsThesaurus')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [nzFooter]="newsThesaurusFooter" [(nzPageIndex)]="pageNum.dataNewsThesaurusPage">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -301,6 +317,14 @@
               </tr>
             </tbody>
           </nz-table>
+          <ng-template #newsThesaurusFooter>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3">人名：{{paramNewsThesaurus.person}}</div>
+              <div nz-col nzSpan="3">地名：{{paramNewsThesaurus.address}}</div>
+              <div nz-col nzSpan="3">事件：{{paramNewsThesaurus.event}}</div>
+              <div nz-col nzSpan="3">无效：{{paramNewsThesaurus.invalid}}</div>
+            </div>
+          </ng-template>
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>

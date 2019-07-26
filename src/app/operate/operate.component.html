@@ -72,7 +72,8 @@
           </div>
 
           <!-- 弹框 —— 详情 —— 打车路径 -->
-          <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车路径详情" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="isTaxiDetailVisible" nzWidth="1150" nzTitle="打车监控" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')" nzMaskClosable="false">
+              <!-- 打车路径详情 -->
             <div nz-row class="search_panel">
               <div nz-col nzSpan="8">
                 <div nz-row class="search_panel">
@@ -179,7 +180,8 @@
         </nz-tab>
 
 
-        <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '订单状态监控')">
+        <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
+            <!-- 订单状态监控 -->
           <ng-template #orderStateTemplate><i class="anticon anticon-car"></i>订单状态监控</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="22">
@@ -265,7 +267,8 @@
 
 
 
-        <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '订单状态设置')">
+        <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
+            <!-- 订单状态设置 -->
           <ng-template #orderStateSettingTemplate><i class="anticon anticon-car"></i>订单状态设置</ng-template>
           <nz-table #orderStateSettingTable [nzData]="dataOrderStateSetting" *ngIf="!isSpinning">
             <thead>

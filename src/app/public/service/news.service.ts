@@ -21,7 +21,7 @@ export class NewsService extends AppServiceBase {
 
   /** 获取所有列表 */
   getTaggingNewsList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?number=99999`;
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?size=99999`;
     url += data.status && data.status !== null ? '&status=' + data.status : '&status=NEW,MARKED';
     url += data.uploadTimeCeil && data.uploadTimeCeil !== '' ? '&uploadTimeCeil=' + data.uploadTimeCeil : '';
     url += data.uploadTimeFloor && data.uploadTimeFloor !== '' ? '&uploadTimeFloor=' + data.uploadTimeFloor : '';
@@ -67,7 +67,7 @@ export class NewsService extends AppServiceBase {
 
   /** 获取所有列表 */
   getManualAuditList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?number=99999`;
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?size=99999`;
     url += data.submitter && data.submitter !== null ? '&submitter=' + data.submitter : '';
     url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED,UPDATED';
     url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
@@ -104,7 +104,7 @@ export class NewsService extends AppServiceBase {
 
   /** 获取所有列表 */
   getNewsThesaurusList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?number=99999`;
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?size=99999`;
     url += data.type && data.type !== '' ? '&type=' + data.type : '';
     url += data.name && data.name !== null ? '&name=' + data.name : '';
     // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';

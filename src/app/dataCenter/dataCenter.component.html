@@ -11,7 +11,7 @@
       <div nz-col nzSpan="7" class="span_down">
         <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
       </div>
-      <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+      <div nz-col nzSpan="1" class="span_down spacing right_alignment">
         来源：
       </div>
       <div nz-col nzSpan="4">
@@ -26,7 +26,9 @@
 
         </nz-select>
       </div>
-      <div nz-col nzSpan="2"></div>
+      <div nz-col nzSpan="3" class="span_down right_alignment">
+        <label nz-checkbox [(nzChecked)]="checkAllChannel">全部渠道</label>
+      </div>
       <div nz-col nzSpan="3">
         <button nz-button nzType="primary" (click)="doSearch('dataCenter')"><i class="anticon anticon-search"></i>查询</button>
       </div>

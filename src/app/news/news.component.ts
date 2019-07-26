@@ -29,6 +29,7 @@ export class NewsComponent implements OnInit {
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
+  paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
   isSpinning = false;
   beginSortSpeechDate = '';
@@ -38,7 +39,11 @@ export class NewsComponent implements OnInit {
   tempId = '';
   currentPanel = 'taggingNews';
   fileList: UploadFile[] = [];
-  dataSortPage = 1; // 词性分类的页码
+  pageNum = {
+    dataSortPage: 1,
+    dataManualAuditPage: 1,
+    dataNewsThesaurusPage: 1,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -92,6 +97,7 @@ export class NewsComponent implements OnInit {
         submitTimeCeil: this.endTaggingNewsDate,
         submitTimeFloor: this.beginTaggingNewsDate,
       };
+      this.pageNum.dataManualAuditPage = this.pageNum.dataManualAuditPage === 0 ? 1 : this.pageNum.dataManualAuditPage;
       this.newsService.getManualAuditList(manualAuditInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -110,10 +116,18 @@ export class NewsComponent implements OnInit {
         submitTimeCeil: this.endTaggingNewsDate,
         submitTimeFloor: this.beginTaggingNewsDate,
       };
+      this.pageNum.dataNewsThesaurusPage = this.pageNum.dataNewsThesaurusPage === 0 ? 1 : this.pageNum.dataNewsThesaurusPage;
       this.newsService.getNewsThesaurusList(newsThesaurusInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataNewsThesaurus = JSON.parse(res.payload).content;
+          this.paramNewsThesaurus = {
+            person: JSON.parse(res.payload).personElememts,
+            address: JSON.parse(res.payload).addressElements,
+            event: JSON.parse(res.payload).eventElements,
+            invalid: JSON.parse(res.payload).invalidElements
+          };
+          console.log(this.paramNewsThesaurus);
           console.log(this.dataNewsThesaurus);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -418,8 +432,8 @@ export class NewsComponent implements OnInit {
         this.endSortSpeechDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
       }
     } else if (flag === 'sortPage') {
-      const begin = this.dataSortPage * 10 - 10;
-      const end = this.dataSortPage * 10 - 1;
+      const begin = this.pageNum.dataSortPage * 10 - 10;
+      const end = this.pageNum.dataSortPage * 10 - 1;
       this.dataSortSpeech.forEach((item, index) => {
         if (index >= begin && index <= end) {
           item.type = result;
@@ -441,7 +455,7 @@ export class NewsComponent implements OnInit {
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) { this.loadData(flag); }
+    if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
     const operationInput = {
       op_category: '内容管理',

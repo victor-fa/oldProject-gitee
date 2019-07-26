@@ -19,11 +19,12 @@ export class DataCenterService extends AppServiceBase {
   }
 
   /** 获取单元 正式 */
-  getUnitList(begin, end, platform, origin, flag): Observable<IResponse<any>> {
-    const url = `${this.commonService.dataCenterUrl}/v2/counts/` + flag
-        + ('?begin=' + begin + '&end=' + end)
-        + (platform !== '' ? '&platform=' + platform : '')
-        + (origin !== '' ? '&origin=' + origin : '&origin=' + localStorage.getItem('currentAppHeader'));
+  getUnitList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.dataCenterUrl}/v2/counts/` + data.flag
+        + ('?begin=' + data.begin + '&end=' + data.end)
+        + (data.platform !== '' ? '&platform=' + data.platform : '')
+        // tslint:disable-next-line:max-line-length
+        + (data.checkAllChannel === true ? '' : (data.origin !== '' ? '&origin=' + data.origin : '&origin=' + localStorage.getItem('currentAppHeader')));
     this.setOption = {
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
     };

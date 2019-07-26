@@ -1036,7 +1036,7 @@
                 <th nzWidth="20px">任务名称</th>
                 <th nzWidth="20px">次数限制</th>
                 <th nzWidth="20px">任务奖励1</th>
-                <th nzWidth="20px">任务奖励2</th>
+              <th nzWidth="20px">任务奖励2</th>
                 <th nzWidth="20px">任务奖励3</th>
                 <th nzWidth="20px">任务行为</th>
                 <th nzWidth="20px">任务描述</th>
@@ -1072,6 +1072,190 @@
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
+
+          <nz-modal [(nzVisible)]="isAddTackCenterVisible" nzWidth="1150" nzTitle="新增任务" [nzFooter]="addTackCenterFooter" (nzOnCancel)="hideModal('taskCenter')" nzMaskClosable="false">
+            <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务规则</b></div></div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">任务类型：</div>
+              <div nz-col nzSpan="21" class="span_down">
+                <nz-radio-group [(ngModel)]="addTaskCenter.taskType">
+                  <label nz-radio nzValue="day">每日</label>
+                  <label nz-radio nzValue="new">新手</label>
+                  <label nz-radio nzValue="activity">活动</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div *ngIf="addTaskCenter.taskType === 'day' || addTaskCenter.taskType === 'new'">
+              <div nz-row class="search_panel" *ngIf="addTaskCenter.taskType === 'day'">
+                <div nz-col nzSpan="3" class="span_down right_alignment">任务行为：</div>
+                <div nz-col nzSpan="21" class="span_down">
+                  <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
+                    <label nz-radio nzValue="ticket">机票订单</label><label nz-radio nzValue="aaaaa">火车订单</label>
+                    <label nz-radio nzValue="aaaaa">酒店订单</label><label nz-radio nzValue="aaaaa">打车订单</label>
+                    <label nz-radio nzValue="aaaaa">闪送订单</label><label nz-radio nzValue="aaaaa">星座订单</label>
+                    <label nz-radio nzValue="aaaaa">充话费订单</label><label nz-radio nzValue="aaaaa">查询天气</label>
+                    <label nz-radio nzValue="aaaaa">听音频</label><label nz-radio nzValue="aaaaa">点踩/点赞</label>
+                    <label nz-radio nzValue="aaaaa">使用导航</label><label nz-radio nzValue="aaaaa">打电话</label>
+                    <label nz-radio nzValue="aaaaa">分享一次给朋友</label><label nz-radio nzValue="aaaaa">查看今日运势</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="addTaskCenter.taskType === 'new'">
+                <div nz-col nzSpan="3" class="span_down right_alignment">次数限制：</div>
+                <div nz-col nzSpan="21" class="span_down">
+                  <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
+                    <label nz-radio nzValue="ticket">新手教学任务</label><label nz-radio nzValue="aaaaa">听音频</label>
+                    <label nz-radio nzValue="aaaaa">充话费</label><label nz-radio nzValue="aaaaa">使用导航</label>
+                    <label nz-radio nzValue="aaaaa">打电话</label><label nz-radio nzValue="aaaaa">听新闻</label>
+                    <label nz-radio nzValue="aaaaa">购买机票</label><label nz-radio nzValue="aaaaa">购买火车票</label>
+                    <label nz-radio nzValue="aaaaa">订酒店</label><label nz-radio nzValue="aaaaa">首次打车</label>
+                    <label nz-radio nzValue="aaaaa">闪送订单</label><label nz-radio nzValue="aaaaa">星座订单</label>
+                    <label nz-radio nzValue="aaaaa">电影票订单</label><label nz-radio nzValue="aaaaa">设置支付密码</label>
+                    <label nz-radio nzValue="aaaaa">开通免密支付</label><label nz-radio nzValue="aaaaa">填写-出行人</label>
+                    <label nz-radio nzValue="aaaaa">填写-常用联系人</label><label nz-radio nzValue="aaaaa">填写-常用地址</label>
+                    <label nz-radio nzValue="aaaaa">填写-配送地址</label><label nz-radio nzValue="aaaaa">填写-发票抬头</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">次数限制：</div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <label nz-checkbox [(nzChecked)]="addTaskCenter.checkLimitNumber">{{addTaskCenter.taskType === 'day' ? '每日' : addTaskCenter.taskType === 'new' ? '终身仅' : ''}}</label>
+                </div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down">次</div>
+              </div>
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务信息</b></div></div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">任务名称：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">任务描述：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">任务排序：</div>
+                <div nz-col nzSpan="1" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down" style="text-align: center;">~</div>
+                <div nz-col nzSpan="1" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="1">&nbsp;</div>
+                <div nz-col nzSpan="18" class="span_down">x-y，x为前置数字，y为后置数字。任务在后台的配置顺序，x越小越靠前，如果同时出现多个x，则y越小越靠前</div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">任务icon：</div>
+                <div nz-col nzSpan="1" class="span_down">
+                </div>
+              </div>
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务跳转</b></div></div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.jumpAPP">跳转到APP</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.jumpWeb">跳转到网页</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.jumpOpen">提示弹窗</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务奖励</b></div></div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkBean">小悟豆</label></div>
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkFixedmount">固定金额</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down">&nbsp;</div>
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkPercentage">百分比</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down">%</div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkExperience">经验</label></div>
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkFixedExperience">固定经验</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkSkill">技能点</label></div>
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkFixedSkill">固定技能点</label></div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+            </div>
+            <div *ngIf="addTaskCenter.taskType === 'activity'">
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>活动信息</b></div></div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">活动名称：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <input nz-input nzSize="default" placeholder="活动名称，最多20字">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">活动时间：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenter')"></nz-range-picker>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">活动描述：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                  <textarea rows="4" nz-input></textarea>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">活动图片：</div>
+                <div nz-col nzSpan="6" class="span_down">
+                </div>
+              </div>
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>活动规则</b></div></div>
+              <div nz-row class="search_panel">
+                <nz-radio-group [(ngModel)]="addTaskCenter.activityRule">
+                  <label nz-radio nzValue="recharge">充值活动</label>
+                  <label nz-radio nzValue="login">登录活动</label>
+                  <label nz-radio nzValue="Invitation">邀请好友</label>
+                  <label nz-radio nzValue="taxi">打车挑战</label>
+                  <label nz-radio nzValue="consumption">消费活动</label>
+                </nz-radio-group>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down right_alignment">充值金额 = </div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">小悟豆</label></div>
+                </div>
+              </div>
+
+            </div>
+            <ng-template #addTackCenterFooter>
+              <button nz-button nzType="primary" (click)="doSave('taskCenter', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('taskCenter')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
         <nz-tab [nzTitle]="taskLogsTemplate" (nzClick)="changePanel('taskLogs')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
@@ -1082,21 +1266,15 @@
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="aaa" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
-                用户ID：
-              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">用户ID：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
-                用户账号：
-              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
-                任务名称：
-              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">任务名称：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="aaa" placeholder="输入任务名称" nzSize="default">
               </div>
