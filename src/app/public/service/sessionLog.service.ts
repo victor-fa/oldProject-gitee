@@ -23,9 +23,9 @@ export class SessionLogService extends AppServiceBase {
   getSessionLogList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
-    url += data.end && data.start !== null ? '&end=' + data.end : '';
+    url += data.end && data.end !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
-    url += data.uid && data.uid !== '' ? '&uid=' + data.uid : '';
+    url += data.uid && data.uid !== '' ? '&uid=' + encodeURI(data.uid).replace(/\+/g, '%2B') : '';
     url += data.ask && data.ask !== '' ? '&ask=' + data.ask : '';
     url += data.answer && data.answer !== '' ? '&answer=' + data.answer : '';
     url += data.flag !== '' ? '&flag=' + data.flag : '';
@@ -59,7 +59,7 @@ export class SessionLogService extends AppServiceBase {
   getExcel(data) {
     let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/file?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
-    url += data.end && data.start !== null ? '&end=' + data.end : '';
+    url += data.end && data.end !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
     url += data.uid && data.uid !== '' ? '&uid=' + data.uid : '';
     url += data.ask && data.ask !== '' ? '&ask=' + data.ask : '';

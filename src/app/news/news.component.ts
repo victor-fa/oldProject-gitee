@@ -26,6 +26,7 @@ export class NewsComponent implements OnInit {
   newsNERSearchForm: FormGroup;
   sortSpeechDate = { 'type': '' };
   dataSortSpeech = [{word: '', type: '', index: 0}];
+  dataManualAuditModel = [{word: '', type: '', index: 0}];
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
@@ -44,6 +45,7 @@ export class NewsComponent implements OnInit {
     dataManualAuditPage: 1,
     dataNewsThesaurusPage: 1,
   };
+  manualAuditSearchData = {word: '', type: ''};
 
   constructor(
     private fb: FormBuilder,
@@ -147,7 +149,6 @@ export class NewsComponent implements OnInit {
 
   // 弹窗
   showModal(flag, data) {
-    // ['张三','李四','王五'].sort((a, b) => a.localeCompare(b, 'zh-Hans-CN', {sensitivity: 'accent'}))
     if (flag === 'sortSpeech') {
       this.tempId = data.id;
       const taggingNewsInput = {
@@ -177,25 +178,44 @@ export class NewsComponent implements OnInit {
     } else if (flag === 'uploadAudit') {  // 上传审核
       this.fileList.splice(0, this.fileList.length);
       this.isUploadAuditVisible = true;
-    } else if (flag === 'manualAudit') {
-      this.tempId = data.id;
+    } else if (flag === 'manualAudit' || flag === 'manualAuditModel') {
+      this.tempId = flag === 'manualAuditModel' ? this.tempId : data.id;
+      this.dataManualAuditModel.splice(0, this.dataManualAuditModel.length);
       const taggingNewsInput = {
-        id: data.id,
+        id: this.tempId,
       };
+      const word = this.manualAuditSearchData.word;
+      const type = this.manualAuditSearchData.type;
       this.newsService.getTaggingNewsById(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataSortSpeech = JSON.parse(res.payload).words.sort(this.sortWords);
-          this.dataSortSpeech.forEach((item, index) => {
+          const dataManualAuditModel = JSON.parse(res.payload).words.sort(this.sortWords);
+          if (word !== '' || type !== '') { // 有查询条件
+            const tempData = [];
+            if (word === '' && type !== '') { // 只有type
+              dataManualAuditModel.forEach((item, index) => { if (item.type === type) { tempData.push(item); } });
+            } else if (word !== '' && type === '') { // 只有word
+              dataManualAuditModel.forEach((item, index) => { if (item.word === word) { tempData.push(item); } });
+            } else if (word !== '' && type !== '') { // 有type有word
+              // tslint:disable-next-line:max-line-length
+              dataManualAuditModel.forEach((item, index) => { if (item.word === word && item.type === type) { tempData.push(item); } });
+            }
+            this.dataManualAuditModel = tempData;
+          } else {
+            this.dataManualAuditModel = dataManualAuditModel;
+          }
+          this.dataManualAuditModel.forEach((item, index) => {
             item.index = index;
           });
-          const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.dataManualAuditModel);
+          // const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
+          // this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      this.isManualAuditVisible = true;
+      // tslint:disable-next-line:no-unused-expression
+      flag === 'manualAuditModel' ? '' : this.isManualAuditVisible = true;
     } else if (flag === 'updateLoading') {
       this.modalService.confirm({
         nzTitle: '确认更新', nzContent: '确认更新到词库吗？', nzCancelText: '取消',
@@ -268,6 +288,7 @@ export class NewsComponent implements OnInit {
       this.isSortSpeechVisible = false;
     } else if (flag === 'manualAudit') {
       this.isManualAuditVisible = false;
+      this.manualAuditSearchData = {word: '', type: ''};  // 重置
     } else if (flag === 'uploadMarked') {
       this.isUploadAuditVisible = false;
     }
@@ -313,7 +334,7 @@ export class NewsComponent implements OnInit {
       });
     } else if (flag === 'manualAudit') {
       const arr = [];
-      this.dataSortSpeech.forEach(item => {
+      this.dataManualAuditModel.forEach(item => {
         arr.push({word: item.word, type: item.type });
       });
       const confirmInput = {id: this.tempId, words: arr };

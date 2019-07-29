@@ -1245,10 +1245,58 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down right_alignment">充值金额 = </div>
                 <div nz-col nzSpan="3" class="span_down">
-                  <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">小悟豆</label></div>
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">小悟豆</label></div>
+                <div nz-col nzSpan="2" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">固定金额</label></div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">经验</label></div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">技能点</label></div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <input nz-input nzSize="default">
                 </div>
               </div>
-
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down"></div>
+                <div nz-col nzSpan="2" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">百分比</label></div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+                <div nz-col nzSpan="1" class="span_down">%</div>
+              </div>
+              <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>活动跳转</b></div></div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">跳转到App</label></div>
+                <div nz-col nzSpan="5" class="span_down">
+                  <nz-select [(ngModel)]="guideDate.appDestinationType">
+                    <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="'SETTINGS'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的订单--------------------'" [nzValue]="'ORDER_LIST'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 常用信息--------------------'" [nzValue]="'GENERAL_INFO'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户 > 充值------------'" [nzValue]="'CHARGE'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 我的账户--------------------'" [nzValue]="'ACCOUNT'"></nz-option>
+                    <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议-------'" [nzValue]="'ADVICE'"></nz-option>
+                    <nz-option required [nzLabel]="'对话流 > 帮助---------------------------'" [nzValue]="'HELP'"></nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">跳转到网页</label></div>
+                <div nz-col nzSpan="5" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3" class="span_down"><label nz-checkbox [(nzChecked)]="addTaskCenter.checkActivityBean">提示弹窗</label></div>
+                <div nz-col nzSpan="5" class="span_down">
+                  <input nz-input nzSize="default">
+                </div>
+              </div>
             </div>
             <ng-template #addTackCenterFooter>
               <button nz-button nzType="primary" (click)="doSave('taskCenter', '')"><i class="anticon anticon-save"></i>保存</button>

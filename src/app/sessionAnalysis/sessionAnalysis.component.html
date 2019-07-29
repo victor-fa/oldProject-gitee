@@ -39,24 +39,24 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="16">
-                  <div nz-col nzSpan="8">
+                  <div nz-col nzSpan="7">
                     <input nz-input formControlName="ask" type="text" placeholder="关键词搜问句" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="8">
+                  <div nz-col nzSpan="7">
                     <input nz-input formControlName="answer" type="text" placeholder="关键词搜回答" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2">
                     <input nz-input formControlName="uid" type="text" placeholder="输入用户ID" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="1" class="span_down right_alignment">标记：</div>
-                  <div nz-col nzSpan="1" class="span_down">
+                  <div nz-col nzSpan="1" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
+                  <div nz-col nzSpan="3" class="span_down">
                     <nz-select [(ngModel)]="sessionLogFlag" formControlName="flag">
                       <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
                       <nz-option required [nzLabel]="'已标记'" [nzValue]="1"></nz-option>
                       <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
                     </nz-select>
                   </div>
-                  <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -3px;">
+                  <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">
                     异常回答：
                   </div>
                   <div nz-col nzSpan="2">
@@ -70,20 +70,20 @@
                   </div>
                 </div>
                 <div nz-col nzSpan="8">
-                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -3px;">
+                  <div nz-col nzSpan="6" class="span_down right_alignment" style="letter-spacing: -2px;">
                     会话内意图数&nbsp;<a (click)="chooseSessionCompare($event, 'conpareFirst')" style="letter-spacing: 7px;font-weight: bold;">{{conpareFirst === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="2" style="margin-right: -15px;">
                     <input nz-input formControlName="intentionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -3px;">
-                    个&nbsp;&nbsp;&nbsp;重复回答&nbsp;<a (click)="chooseSessionCompare($event, 'conpareSecond')" style="letter-spacing: 7px;font-weight: bold;">{{conpareSecond === '<' ? '<' : '>'}}</a>
+                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -2px;">
+                    重复回答&nbsp;<a (click)="chooseSessionCompare($event, 'conpareSecond')" style="letter-spacing: 7px;font-weight: bold;">{{conpareSecond === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="2" style="margin-right: -15px;">
                     <input nz-input formControlName="repetitionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -3px;">
-                    次&nbsp;&nbsp;&nbsp;响应时长&nbsp;<a (click)="chooseSessionCompare($event, 'conpareThird')" style="letter-spacing: 7px;font-weight: bold;">{{conpareThird === '<' ? '<' : '>'}}</a>&nbsp;
+                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -2px;">
+                    响应时长&nbsp;<a (click)="chooseSessionCompare($event, 'conpareThird')" style="letter-spacing: 7px;font-weight: bold;">{{conpareThird === '<' ? '<' : '>'}}</a>&nbsp;
                   </div>
                   <div nz-col nzSpan="2">
                     <input nz-input formControlName="cost" type="text" nzSize="default">

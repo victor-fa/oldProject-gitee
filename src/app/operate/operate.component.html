@@ -123,6 +123,7 @@
 
             <!-- 弹框和底部定制 -->
             <ng-template #taxiDetailModalFooter>
+              <button nz-button nzType="default" (click)="refreshMap()"><i class="anticon anticon-refresh"></i>刷新</button>
               <button nz-button nzType="default" (click)="hideModal('taxi')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -182,7 +183,7 @@
 
         <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
             <!-- 订单状态监控 -->
-          <ng-template #orderStateTemplate><i class="anticon anticon-car"></i>订单状态监控</ng-template>
+          <ng-template #orderStateTemplate><i class="anticon anticon-eye-o"></i>订单状态监控</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="22">
               <form [formGroup]="searchOrderStateForm">
@@ -269,7 +270,7 @@
 
         <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
             <!-- 订单状态设置 -->
-          <ng-template #orderStateSettingTemplate><i class="anticon anticon-car"></i>订单状态设置</ng-template>
+          <ng-template #orderStateSettingTemplate><i class="anticon anticon-setting"></i>订单状态设置</ng-template>
           <nz-table #orderStateSettingTable [nzData]="dataOrderStateSetting" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -286,8 +287,8 @@
                 <td>{{i+1}}</td>
                 <td>{{data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'PAIR_ORDER' ? '恋爱运势' : data.orderType === 'FORTUNE_ORDER' ? '月运势' : ''}}</td>
                 <td>{{data.state === 'CHUPIAOZHONG' ? '出票中' : data.state === 'TUIKUANZHONG' ? '退款中' : data.state === 'DAIZHIFU' ? '待支付' : data.state === 'DAICHUXING' ? '待出行' : data.state === 'CHUPIAOSHIBAI' ? '出票失败' : data.state === 'YIQUXIAO' ? '已取消' : data.state === 'YITUIKUAN' ? '已退款' : data.state === 'YICHUXING' ? '已出行' : data.state === 'JIAOYIGUANBI' ? '交易关闭' : data.state === 'GAIQIANZHONG' ? '改签中' : data.state === 'ZHANZUOZHONG' ? '占座中' : data.state === 'QUXIAOZHONG' ? '取消中' : data.state === 'TUIPIAOZHONG' ? '退票中' : data.state === 'CHUPIAOSHIBAITUIKUANZHONG' ? '出票失败退款中' : data.state === 'TUIKUANSHIBAI' ? '退款失败' : data.state === 'SIJIDAODA' ? '司机已到达' : data.state === 'CHAOSHIQUXIAO' ? '超时取消' : ''}}</td>
-                <td>{{data.lowTime}}分钟</td>
-                <td>{{data.highTime}}分钟</td>
+                <td>{{data.lowTimeDes}}</td>
+                <td>{{data.highTimeDes}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('orderStateSetting', data)"><i class="anticon anticon-form"></i>修改</button>
                 </td>

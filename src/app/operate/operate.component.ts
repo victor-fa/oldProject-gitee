@@ -46,8 +46,6 @@ export class OperateComponent implements OnInit {
   voiceIOSRadioValue = 'baidu';
   voiceANDROIDRadioValue = 'baidu';
   isSpinning = false;
-  private timerList;
-  private timerDetail;
   taxiOrderState = '';
   taxiOrderType = '';
 
@@ -64,9 +62,6 @@ export class OperateComponent implements OnInit {
   ) {
     this.commonService.nav[4].active = true;
     this._initForm();
-    this.timerList = setInterval(() => {
-      this.loadData('taxi');
-    }, 20000);
   }
 
   ngOnInit() {
@@ -79,16 +74,6 @@ export class OperateComponent implements OnInit {
     console.log(tabFlag[targetFlag].value);
     this.loadData(tabFlag[targetFlag].value);
     this.changePanel(tabFlag[targetFlag].value);
-  }
-
-  // tslint:disable-next-line:use-life-cycle-interface
-  ngOnDestroy() {
-    if (this.timerList) {
-      clearInterval(this.timerList);
-    }
-    if (this.timerDetail) {
-      clearInterval(this.timerDetail);
-    }
   }
 
   loadData(flag) {
@@ -138,7 +123,7 @@ export class OperateComponent implements OnInit {
       this.appversionService.getOrderStateList(orderStateInput).subscribe(res => {
         if (res.retcode === 0) {
           this.isSpinning = false;
-          this.dataOrderState = JSON.parse(res.payload).reverse();
+          this.dataOrderState = JSON.parse(res.payload);
           console.log(this.dataOrderState);
           const operationInput = { op_category: '运维后台', op_page: '订单状态监控' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -150,9 +135,11 @@ export class OperateComponent implements OnInit {
       this.appversionService.getOrderStateSettingList().subscribe(res => {
         if (res.retcode === 0) {
           this.isSpinning = false;
-          this.dataOrderStateSetting = JSON.parse(res.payload).reverse();
+          this.dataOrderStateSetting = JSON.parse(res.payload).reverse().sort(this.sortOrderType);
           this.dataOrderStateSetting.forEach(item => {
+            item.lowTimeDes = this.getDuration(item.lowTime);
             item.lowTime = Math.round(item.lowTime / 60000);
+            item.highTimeDes = this.getDuration(item.highTime);
             item.highTime = Math.round(item.highTime / 60000);
           });
           console.log(this.dataOrderStateSetting);
@@ -175,10 +162,6 @@ export class OperateComponent implements OnInit {
     if (flag === 'taxi') {
       this.isTaxiDetailVisible = true;
       this.currentTaxi = data;
-      console.log(this.currentTaxi);
-      // if (this.timerList) {
-      //   clearInterval(this.timerList);
-      // }
       this.loadData('taxi');
       let mainMap, mainRoute;
       let mainPoints = [];
@@ -197,25 +180,7 @@ export class OperateComponent implements OnInit {
         mainRoute = new AMap.DragRoute(mainMap, mainPath, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
         mainRoute.search(); // 查询导航路径并开启拖拽导航
       });
-      this.timerDetail = setInterval(() => {
-        let map, route;
-        let points = [];
-        for (let i = 0; i < this.dataTaxi.length; i++) {
-          if (this.dataTaxi[i].orderId === data.orderId) {
-            points = this.dataTaxi[i].path.points;
-          }
-        }
-        // 基本地图加载
-        map = new AMap.Map('container', {
-          resizeEnable: true
-        });
-        // 绘制初始路径
-        const path = this.getPointRoute(points);
-        map.plugin('AMap.DragRoute', function() {
-          route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
-          route.search(); // 查询导航路径并开启拖拽导航
-        });
-      }, 15000);
+      setTimeout(() => {this.refreshMap(); }, 500);
     } else if (flag === 'orderStateSetting') {
       this.orderStateSettingVisible = true;
       this.currentOrderStateSetting = data;
@@ -237,12 +202,7 @@ export class OperateComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'taxi') {
       this.isTaxiDetailVisible = false;
-      if (this.timerDetail) {
-        clearInterval(this.timerDetail);
-      }
-      this.timerList = setInterval(() => {
-        this.loadData('taxi');
-      }, 15000);
+      this.loadData('taxi');
     } else if (flag === 'voicceIOS') {
       this.isSaveIOSVoiceButton = false;
     } else if (flag === 'voicceANDROID') {
@@ -346,6 +306,11 @@ export class OperateComponent implements OnInit {
     }
   }
 
+  // 针对orderType进行排序
+  sortOrderType(a, b) {
+    return b.orderType.charCodeAt(0) - a.orderType.charCodeAt(0);
+  }
+
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
@@ -359,6 +324,40 @@ export class OperateComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : flag === 'orderState' ? '订单状态监控' : flag === 'orderStateSetting' ? '订单状态设置' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
+  }
+
+  // 刷新地图
+  refreshMap() {
+    let map, route;
+    let points = [];
+    for (let i = 0; i < this.dataTaxi.length; i++) {
+      if (this.dataTaxi[i].orderId === this.currentTaxi.orderId) {
+        points = this.dataTaxi[i].path.points;
+      }
+    }
+    // 基本地图加载
+    map = new AMap.Map('container', { resizeEnable: true });
+    // 绘制初始路径
+    const path = this.getPointRoute(points);
+    map.plugin('AMap.DragRoute', function() {
+      route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
+      route.search(); // 查询导航路径并开启拖拽导航
+    });
+  }
+
+  // 毫秒转换
+  getDuration(my_time) {
+    const days    = my_time / 1000 / 60 / 60 / 24;
+    const daysRound = Math.floor(days);
+    const hours = my_time / 1000 / 60 / 60 - (24 * daysRound);
+    const hoursRound = Math.floor(hours);
+    const minutes = my_time / 1000 / 60 - (24 * 60 * daysRound) - (60 * hoursRound);
+    const minutesRound = Math.floor(minutes);
+    const seconds = my_time / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+    // const time = hoursRound + '小时' + minutesRound + '分' + seconds;
+    // tslint:disable-next-line:max-line-length
+    const time = (daysRound === 0 ? '' : daysRound + '天') + (hoursRound === 0 ? '' : hoursRound + '小时') + (minutesRound === 0 ? '' : minutesRound + '分钟');
+    return time;
   }
 
 }

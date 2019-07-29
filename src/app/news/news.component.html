@@ -198,8 +198,34 @@
 
           <nz-modal [(nzVisible)]="isManualAuditVisible" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
             <div nz-row class="search_panel">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                词条名称：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input [(ngModel)]="manualAuditSearchData.word" placeholder="输入词条名称" nzSize="default">
+              </div>
+
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                词条类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="manualAuditSearchData.type">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'人名'" [nzValue]="'PERSON'"></nz-option>
+                  <nz-option required [nzLabel]="'地名'" [nzValue]="'ADDRESS'"></nz-option>
+                  <nz-option required [nzLabel]="'事件'" [nzValue]="'EVENT'"></nz-option>
+                  <nz-option required [nzLabel]="'无效'" [nzValue]="'INVALID'"></nz-option>
+                </nz-select>
+              </div>
+
+              <div nz-col nzSpan="12"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="showModal('manualAuditModel')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table #manualAuditModelTable [(nzData)]="dataManualAuditModel" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -208,7 +234,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let data of sortSpeechTable.data; let i=index;">
+                    <tr *ngFor="let data of manualAuditModelTable.data; let i=index;">
                       <td>{{i+1}}</td>
                       <td>{{data.word}}</td>
                       <td>

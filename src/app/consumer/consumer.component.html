@@ -66,7 +66,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzWidth="750" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
             <form [formGroup]="addConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -134,7 +134,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="isModifyConsumerVisible" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="isModifyConsumerVisible" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
             <form [formGroup]="modifyConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -189,6 +189,7 @@
                   序列号：
                 </div>
                 <div nz-col nzSpan="12">
+                  <textarea rows="5" nz-input formControlName="keys" [(ngModel)]="consumerDate.keys" placeholder="请输入序列号，以换行符区分不同的序列号" nzSize="default"></textarea>
                 </div>
               </div>
             </form>
