@@ -25,9 +25,7 @@ export class AdjustService extends AppServiceBase {
     if (data.begin !== '' && data.begin !== null) {
       url = url + '&begin=' + data.begin + '&end=' + data.end;
     }
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -35,9 +33,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取单个 */
   getAdjust(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/${id}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -45,12 +41,8 @@ export class AdjustService extends AppServiceBase {
   /** 添加单个 */
   addAdjust(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}`;
-    // tslint:disable-next-line:max-line-length
     const body = `adjustAmount=${data.adjustAmount}&adjustReason=${data.adjustReason}&adjustType=${data.adjustType}&code=${data.code}&noticeAbstract=${data.noticeAbstract}&noticeContent=${data.noticeContent}&noticeTitle=${data.noticeTitle}&operater=${data.operater}&users=${data.users}`;
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -58,9 +50,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取操作者列表 */
   getOperaters(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/operaters`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -68,9 +58,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取操作者列表 */
   sendMsg(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/captcha?operater=${data}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

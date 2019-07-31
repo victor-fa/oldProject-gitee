@@ -7,7 +7,6 @@ import { UserService } from '../public/service/user.service';
 import { Router } from '@angular/router';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'app-changePass',
   templateUrl: './changePass.component.html',
   styleUrls: ['./changePass.component.scss']
@@ -34,7 +33,6 @@ export class ChangePassComponent implements OnInit {
 
   onSubmit($event, { value, valid }): void {
     $event.preventDefault();
-    // tslint:disable-next-line:forin
     for (const key in this.changePassForm.controls) {
       this.changePassForm.controls[key].markAsDirty();
     }

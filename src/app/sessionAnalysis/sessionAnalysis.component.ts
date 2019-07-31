@@ -9,7 +9,6 @@ import { NzModalService } from 'ng-zorro-antd';
 registerLocaleData(zh);
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'app-sessionAnalysis',
   templateUrl: './sessionAnalysis.component.html',
   styleUrls: ['./sessionAnalysis.component.scss']
@@ -59,7 +58,6 @@ export class SessionAnalysisComponent implements OnInit {
     this.commonService.nav[8].active = true;
     this._initForm();
     this.checkDataOptions = {
-      // tslint:disable-next-line:max-line-length
       'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
     this.dateRange = [this.beginDate, this.endDate];
@@ -278,7 +276,7 @@ export class SessionAnalysisComponent implements OnInit {
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.currentPanel = flag; this.loadData('sessionLog'); }
-    // tslint:disable-next-line:max-line-length
+
     this.currentTitle = flag === 'sessionLog' ? '对话日志' : '';
   }
 
@@ -286,7 +284,6 @@ export class SessionAnalysisComponent implements OnInit {
   chooseSessionBusiness() {
     const result = [];
     this.checkOptionsOne.forEach(item => {
-      // tslint:disable-next-line:no-unused-expression
       item.checked === true ? result.push(item.value) : '';
     });
     return result;
@@ -325,7 +322,6 @@ export class SessionAnalysisComponent implements OnInit {
 
   // 毫秒转 分 秒
   formatDuring(mss) {
-    // tslint:disable-next-line:radix
     const minutes = Math.round(Number((mss % (1000 * 60 * 60)) / (1000 * 60)));
     const seconds = Math.round((mss % (1000 * 60)) / 1000);
     return minutes + '分钟' + seconds + '秒 ';

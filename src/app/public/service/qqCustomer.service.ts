@@ -22,9 +22,7 @@ export class QqCustomerService extends AppServiceBase {
   /** 获取所有列表 */
   getQqCustomerList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.qqCustomerList}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -32,9 +30,7 @@ export class QqCustomerService extends AppServiceBase {
   /** 修改单个 */
   modifyQqCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.qqCustomerList}?contact_qq=${data.contact_qq}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }

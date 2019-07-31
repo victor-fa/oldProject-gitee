@@ -64,24 +64,7 @@ export class ContentComponent implements OnInit {
   openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' };
-  config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],                                         // remove formatting button
-      ['link', 'video']                         // link and image, video
-    ]
-  };
+  config = {};
   dataContent = []; // 内容
   dataScreen = [];  // 首屏
   dataOpen = [];  // 弹窗
@@ -108,6 +91,7 @@ export class ContentComponent implements OnInit {
   ) {
     this.commonService.nav[5].active = true;
     this._initForm();
+    this.config = this.commonService.config;
   }
 
   ngOnInit() {
@@ -210,29 +194,19 @@ export class ContentComponent implements OnInit {
   showAddModal(flag) {
     if (flag === 'content') {
       this.isAddContentVisible = true;
-      this.contentDate = {  // 清空
-        'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': ''
-      };
+      this.contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };  // 清空
     } else if (flag === 'screen') {
       this.isAddScreenVisible = true;
-      this.screenDate = {  // 清空
-        'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': ''
-      };
+      this.screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };  // 清空
     } else if (flag === 'open') {
       this.isAddOpenVisible = true;
-      this.openDate = {  // 清空
-        'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': ''
-      };
+      this.openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };  // 清空
     } else if (flag === 'banner') {
       this.isAddBannerVisible = true;
-      this.bannerDate = { // 清空
-        'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': ''
-      };
+      this.bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
     } else if (flag === 'personal') {
       this.isAddPersonalVisible = true;
-      this.personalDate = { // 清空
-        'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': ''
-      };
+      this.personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -451,7 +425,6 @@ export class ContentComponent implements OnInit {
         'jump': this.addPersonalForm.controls['jump'].value,
         'image': this.imageUrl,
         'url': this.addPersonalForm.controls['url'].value,
-        // tslint:disable-next-line:max-line-length
         'expireTime': this.datePipe.transform(this.addPersonalForm.controls['expireTime'].value, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(this.addPersonalForm.controls['expireTime'].value, 'HH:mm:ss') + 'Z'
       };
       this.personalService.addPersonal(personalInput).subscribe(res => {
@@ -573,7 +546,6 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).thumbnail
         };
         this.fileList.push(file);
-        // tslint:disable-next-line:max-line-length
         this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/notices/thumbnails/${this.imageUrl}`;
       });
     } else if (flag === 'screen') {
@@ -591,7 +563,6 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        // tslint:disable-next-line:max-line-length
         this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/start-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'open') {
@@ -610,7 +581,6 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        // tslint:disable-next-line:max-line-length
         this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/main-page-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'banner') {
@@ -628,7 +598,6 @@ export class ContentComponent implements OnInit {
           name: JSON.parse(res.payload).image
         };
         this.fileList.push(file);
-        // tslint:disable-next-line:max-line-length
         this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/banner-ads/images/${this.imageUrl}`;
       });
     } else if (flag === 'personal') {
@@ -642,7 +611,6 @@ export class ContentComponent implements OnInit {
         name: data.image
       };
       this.fileList.push(file);
-      // tslint:disable-next-line:max-line-length
       this.showImageUrl = `${this.imageUrl}`;
     }
 
@@ -788,7 +756,6 @@ export class ContentComponent implements OnInit {
         'url': jump === 'HTML' ? this.modifyPersonalForm.controls['url'].value : '',
         'image': this.imageUrl,
         'enabled': false,
-        // tslint:disable-next-line:max-line-length
         'expireTime': this.datePipe.transform(this.modifyPersonalForm.controls['expireTime'].value, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(this.modifyPersonalForm.controls['expireTime'].value, 'HH:mm:ss') + 'Z'
       };
       this.personalService.updatePersonal(personalInput).subscribe(res => {
@@ -807,10 +774,7 @@ export class ContentComponent implements OnInit {
 
   // 删除 - 复用弹窗
   showDeleteModal(data, flag) {
-    this.modalService.confirm({
-      nzTitle: '提示', nzContent: '您确定要删除该信息？',
-      nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag)
-    });
+    this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag) });
   }
 
   doDelete(id, flag) {
@@ -873,17 +837,6 @@ export class ContentComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
   // 点击switch
   clickSwitch(data, flag) {
     if (flag === 'screen') {
@@ -920,7 +873,6 @@ export class ContentComponent implements OnInit {
         this.loadData('banner');
       });
     } else if (flag === 'personal') {
-      // tslint:disable-next-line:max-line-length
       const personalInput = {
         'id': data.id,
         'title': data.title,
@@ -929,7 +881,6 @@ export class ContentComponent implements OnInit {
         'url': data.url,
         'image': data.image,
         'enabled': data.enabled,
-        // tslint:disable-next-line:max-line-length
         'expireTime': this.datePipe.transform(data.expireTime, 'yyyy-MM-dd') + 'T' + this.datePipe.transform(data.expireTime, 'HH:mm:ss') + 'Z'
       };
       this.personalService.updatePersonal(personalInput).subscribe(res => {
@@ -947,9 +898,7 @@ export class ContentComponent implements OnInit {
 
   // 预览新增
   doPreviewContentAdd() {
-    if (!this.verificationAdd('content')) {
-      return;
-    }
+    if (!this.verificationAdd('content')) { return; }
     const url = this.addContentForm.controls['url'].value;
     if (url) {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
@@ -981,7 +930,6 @@ export class ContentComponent implements OnInit {
 
   // 获取地址
   doGetContentUrl(data) {
-    // tslint:disable-next-line:max-line-length
     window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/content-detail.html?id=${data.id}&channelId=${localStorage.getItem('currentAppHeader')}`);
   }
 
@@ -1038,7 +986,6 @@ export class ContentComponent implements OnInit {
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
     });
-    // tslint:disable-next-line:max-line-length
     const req = new HttpRequest('POST', `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}`, formData, {
       reportProgress: true,
       headers: new HttpHeaders({
@@ -1055,11 +1002,9 @@ export class ContentComponent implements OnInit {
           if (this.currentPanel === 'personal') {
             this.showImageUrl = `${this.imageUrl}`;
           } else {
-            // tslint:disable-next-line:max-line-length
             this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
           }
           this.notification.success( '提示', '上传成功' );
-          // tslint:disable-next-line:max-line-length
           const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹窗' : this.currentPanel === 'banner' ? '轮播图' : this.currentPanel === 'personal' ? '个人中心' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else {
@@ -1088,7 +1033,6 @@ export class ContentComponent implements OnInit {
     this.currentPanel = flag;
     const operationInput = {
       op_category: '内容管理',
-      // tslint:disable-next-line:max-line-length
       op_page: flag === 'content' ? '内容发布' : flag === 'screen' ? '开屏启动' : flag === 'open' ? '首页弹窗' : flag === 'banner' ? '轮播图' : flag === 'personal' ? '个人中心' : '',
       op_name: '访问'
     };

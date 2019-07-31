@@ -34,11 +34,9 @@ export class AccountComponent implements OnInit {
   endDate = '';
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   unCheckVisit = false; // 不看访问
-
   allRoleChecked = false;
   indeterminateRole = false;
   isAddCustomerVisible = false;
-
   frameworkOption: any;
   isAddRoleVisible = false; // 新增角色
   isModifyRoleVisible = false;  // 修改角色
@@ -133,6 +131,7 @@ export class AccountComponent implements OnInit {
         roleId: this.searchCustomerForm.controls['roleId'].value
       };
       this.accountService.getCustomerList(customerItem).subscribe(res => {
+        console.log(res);
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataCustomer = JSON.parse(res.payload);
@@ -484,27 +483,16 @@ export class AccountComponent implements OnInit {
 
   // 全选/全不选
   updateAllChecked(flag): void {
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag1') { this.allChecked1 ? this.checkOptions1.forEach(item => item.checked = true) : this.checkOptions1.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag2') { this.allChecked2 ? this.checkOptions2.forEach(item => item.checked = true) : this.checkOptions2.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag3') { this.allChecked3 ? this.checkOptions3.forEach(item => item.checked = true) : this.checkOptions3.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag4') { this.allChecked4 ? this.checkOptions4.forEach(item => item.checked = true) : this.checkOptions4.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag5') { this.allChecked5 ? this.checkOptions5.forEach(item => item.checked = true) : this.checkOptions5.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag6') { this.allChecked6 ? this.checkOptions6.forEach(item => item.checked = true) : this.checkOptions6.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag7') { this.allChecked7 ? this.checkOptions7.forEach(item => item.checked = true) : this.checkOptions7.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag8') { this.allChecked8 ? this.checkOptions8.forEach(item => item.checked = true) : this.checkOptions8.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag9') { this.allChecked9 ? this.checkOptions9.forEach(item => item.checked = true) : this.checkOptions9.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag10') { this.allChecked10 ? this.checkOptions10.forEach(item => item.checked = true) : this.checkOptions10.forEach(item => item.checked = false); }
-    // tslint:disable-next-line:max-line-length
     if (flag === 'flag11') { this.allChecked11 ? this.checkOptions11.forEach(item => item.checked = true) : this.checkOptions11.forEach(item => item.checked = false); }
   }
 
@@ -518,30 +506,18 @@ export class AccountComponent implements OnInit {
     this.checkOptions11 = [];
     this.allMenu = [];  // 清空
     this.dataResource.forEach((item, i) => {
-      // tslint:disable-next-line:max-line-length
       if (i === 1) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions1.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 2) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions2.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 3) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions3.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 4) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions4.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 5) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions5.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 6) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions6.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 7) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions7.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 8) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions8.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 9) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions9.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 10) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions10.push(unit); }); }
-      // tslint:disable-next-line:max-line-length
       if (i === 11) { this.allMenu.push({name: item.name, id: item.id}); item.children.forEach(cell => { const unit = { label: cell.name, value: cell.id }; this.checkOptions11.push(unit); }); }
     });
-
     this.checkOptionsChannel = [
       { label: '你好小悟', value: 'XIAOWU', checked: false },
       { label: '听听同学', value: 'LENZE', checked: false },
@@ -589,7 +565,6 @@ export class AccountComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
@@ -604,9 +579,7 @@ export class AccountComponent implements OnInit {
       }
       // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
-        // tslint:disable-next-line:max-line-length
         this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T' + this.datePipe.transform(result[0], 'HH:mm:ss.SSS') + 'Z';
-        // tslint:disable-next-line:max-line-length
         this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T' + this.datePipe.transform(result[1], 'HH:mm:ss.SSS') + 'Z';
       }
       if (this.beginDate.indexOf('null') > -1) {  // 处理有null的情况

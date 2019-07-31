@@ -36,9 +36,7 @@ export class SessionLogService extends AppServiceBase {
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
     url += data.lastId && data.lastId !== '' && data.pageFlag === 'last' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' && data.firstId !== 0 && data.pageFlag === 'first' ? '&firstId=' + data.firstId : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -47,10 +45,7 @@ export class SessionLogService extends AppServiceBase {
   updateSessionLog(data): Observable<IResponse<any>> {
     const url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/${data.id}/flag`;
     const body = `flag=${data.flag}`;
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')})
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -72,10 +67,7 @@ export class SessionLogService extends AppServiceBase {
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
     url += data.lastId && data.lastId !== '' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' ? '&firstId=' + data.firstId : '';
-    const head = new Headers({
-      'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;',
-      'App-Channel-Id': localStorage.getItem('currentAppHeader')
-    });
+    const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') });
     this.setOption = { headers: head, responseType: 'blob' };
     return this.httpClient
       .get<Blob>(url, this.options);

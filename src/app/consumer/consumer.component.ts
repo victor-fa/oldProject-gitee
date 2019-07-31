@@ -64,9 +64,7 @@ export class ConsumerComponent implements OnInit {
   }
 
   private _initForm(): void {
-    // tslint:disable-next-line:max-line-length
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    // tslint:disable-next-line:max-line-length
     this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''] });
   }
@@ -152,7 +150,6 @@ export class ConsumerComponent implements OnInit {
         'appChannel': this.consumerDate.appChannel,
         'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
         'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
-        // tslint:disable-next-line:max-line-length
         'keys': this.modifyConsumerForm.controls['keys'].value !== undefined ? this.modifyConsumerForm.controls['keys'].value.split('\n') : '',
       };
       this.addPaymengSms(consumerInput);

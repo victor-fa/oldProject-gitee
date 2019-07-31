@@ -21,7 +21,6 @@ export class UserComponent implements OnInit {
   userData = [];
   adjustData = [];
   operatersData = [];
-  // tslint:disable-next-line:max-line-length
   adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
   searchUserForm: FormGroup;  // 查询表单
   userInfoId = '';
@@ -131,24 +130,7 @@ export class UserComponent implements OnInit {
     { title: '电影票', key: '9' }
   ];
   isSpinning = false;
-  config = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],                                         // remove formatting button
-      ['link', 'video']                         // link and image, video
-    ]
-  };
+  config = {};
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -163,6 +145,7 @@ export class UserComponent implements OnInit {
   ) {
     this.commonService.nav[3].active = true;
     this._initForm();
+    this.config = this.commonService.config;
   }
 
   ngOnInit() {
@@ -211,7 +194,6 @@ export class UserComponent implements OnInit {
         let pageFlag = '';
         if (this.doLastBooking) { id = this.lastBookingId; console.log(this.lastBookingId); pageFlag = 'last'; }  // 下一页
         if (this.doFirstBooking) { id = this.firstBookingId; console.log(this.firstBookingId); pageFlag = 'first'; }  // 上一页
-        // tslint:disable-next-line:max-line-length
         const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
         this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType).subscribe(res => {
           if (res.retcode === 0 && res.status === 200) {
@@ -220,7 +202,6 @@ export class UserComponent implements OnInit {
               if (res.payload !== '') {
                 const operationInput = { op_category: '用户管理', op_page: '服务订单查询' , op_name: '访问' };
                 this.commonService.updateOperationlog(operationInput).subscribe();
-                // tslint:disable-next-line:max-line-length
                 this.dataOrder = pageFlag === 'last' || pageFlag === '' ? JSON.parse(res.payload).orders : JSON.parse(res.payload).orders;
                 console.log(this.dataOrder);
                 this.totalBooking = JSON.parse(res.payload).total;
@@ -365,7 +346,6 @@ export class UserComponent implements OnInit {
       if (this.doLastBooking) { id = this.lastBookingId; pageFlag = 'last'; }
       if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
       const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
-      // tslint:disable-next-line:max-line-length
       this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType, state, type, createTimeBegin, createTimeEnd, orderId, phone).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload !== '') {
@@ -432,7 +412,6 @@ export class UserComponent implements OnInit {
           && searchBookingItem.status === '' && searchBookingItem.orderId === '' && searchBookingItem.phone === '') {
         this.currentPanel === 'bookingHypostatic' ? this.loadData('bookingHypostatic') :  this.loadData('bookingDigital');
       } else {
-        // tslint:disable-next-line:max-line-length
         this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.createTimeBegin, searchBookingItem.createTimeEnd, searchBookingItem.orderId, searchBookingItem.phone);
       }
     }
@@ -746,7 +725,7 @@ export class UserComponent implements OnInit {
       this.adjustDetail.successNum = success.length;
       this.adjustDetail.failNum = fail.length;
     } if (flag === 'adjustAdd') {
-      // tslint:disable-next-line:max-line-length
+
       this.adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
       this.adjustTypeAdd = 'BEAN';
       this.isAdjustAddVisible = true;
@@ -758,7 +737,6 @@ export class UserComponent implements OnInit {
       this.loadData('operaters'); // 获取操作者列表数据
       this.adjustSendData = {
         users: this.addAdjustForm.controls['users'].value,
-        // tslint:disable-next-line:max-line-length
         config: (this.adjustTypeAdd === 'BEAN' ? '小悟豆' : this.adjustTypeAdd === 'COIN' ? '小悟币' : null) + '*' + this.addAdjustForm.controls['adjustAmount'].value,
         noticeContent: this.replaceHtmlStr(this.addAdjustForm.controls['noticeContent'].value).replace(/&/g, '%26'),
       };

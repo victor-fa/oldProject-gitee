@@ -58,6 +58,8 @@ export enum appVersionApiUrls {
   flowpointList = '/guide/bottom',
   /** 客服QQ */
   qqCustomerList = '/contact_qq',
+  /** 任务模块 */
+  taskList = '/tasks',
 }
 
 /** 客服中心 */

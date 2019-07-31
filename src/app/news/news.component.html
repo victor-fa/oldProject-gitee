@@ -286,8 +286,6 @@
           </nz-modal>
         </nz-tab>
 
-
-
         <nz-tab [nzTitle]="newsThesaurusTemplate" (nzClick)="changePanel('newsThesaurus')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
           <ng-template #newsThesaurusTemplate><i class="anticon anticon-inbox"></i>新闻词库</ng-template>
           <div nz-row class="search_panel">
@@ -319,7 +317,7 @@
               <button nz-button nzType="primary" (click)="loadData('newsThesaurus')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [nzFooter]="newsThesaurusFooter" [(nzPageIndex)]="pageNum.dataNewsThesaurusPage">
+          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [nzFooter]="newsThesaurusFooter" [nzPageIndex]="pageNum.dataNewsThesaurusPage">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -356,8 +354,6 @@
           </div>
 
         </nz-tab>
-
-
 
 
         <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻NER')">

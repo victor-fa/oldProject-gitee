@@ -471,7 +471,6 @@ export class CustomerComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '客服中心', op_page: flag === 'feedback' ? '用户反馈' : flag === 'opposition' ? '点踩日志' : flag === 'agree' ? '点赞日志' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }

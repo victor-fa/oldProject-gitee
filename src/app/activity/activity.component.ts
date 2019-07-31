@@ -57,15 +57,12 @@ export class ActivityComponent implements OnInit {
   actGiftNoArr = [{ value: '', label: '---选择红包组---' }];  // 用于下拉当前有的红包组
   couponGiftNo = '';  // 修改红包组时候，传值到弹框中
   isModifyModelShow = false;  // 针对修改弹框的标识
-  // tslint:disable-next-line:max-line-length
   modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '' };
-
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   couponBeginDate = '';
   couponEndDate = '';
-  // tslint:disable-next-line:max-line-length
   couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
   dataCoupon = []; // 内容
   couponAllChecked = false;
@@ -83,7 +80,6 @@ export class ActivityComponent implements OnInit {
     { name : '打车', value : 'taxi', checked : true, disabled: false }
   ];
   currentPanel = 'coupon';
-
   isAddBatchsendVisible = false;
   isDetailBatchsendVisible = false;
   isCouponInBatchsendVisible = false;
@@ -95,21 +91,17 @@ export class ActivityComponent implements OnInit {
   beginCouponInBatchsendDate = null; // 红包日期选择
   endCouponInBatchsendDate = null;
   allSearchCouponInBatchsendChecked = false; // 用于table多选
-  // tslint:disable-next-line:max-line-length
   batchsendData = { 'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': [] };
   dataSearchCouponInBatchsend = [];
   dataBatchsend = []; // 内容
   couponListArrInBatchsend = []; // 最底部的活动奖励配置数组
-  // tslint:disable-next-line:max-line-length
   finalBatchsendData = { 'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': [] };
-
   beanData = [];
   beanPageSize = 100;
   isSpinning = false;
   isAddBeanVisible = false;
   isModifyBeanVisible = false;
   isSearchBeanVisible = false;
-  // tslint:disable-next-line:max-line-length
   beanItem = { 'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '', 'giftPercent': 1, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: '' };
   addBeanForm: FormGroup;
   searchBeanForm: FormGroup;
@@ -250,7 +242,6 @@ export class ActivityComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           if (this.dataBatchsend.length > 0) {
             this.dataBatchsend.forEach(item => {
-              // tslint:disable-next-line:max-line-length
               item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
             });
           }
@@ -350,7 +341,6 @@ export class ActivityComponent implements OnInit {
       this.isModifyModelShow = false;
       this.beginRuleDate = ''; // 模板1日期选择
       this.endRuleDate = '';
-      // tslint:disable-next-line:max-line-length
       this.modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '' };
     } else if (flag === 'modifyActivity') { // 修改活动
       this.baseInfoId = data.id;
@@ -407,7 +397,7 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'coupon') { // 优惠券的展开弹框
       this.isAddCouponVisible = true;
       this.couponRadioValue = 'fix_start_end';  // 重置时间限制（单选）
-      // tslint:disable-next-line:max-line-length
+
       this.couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
     } else if (flag === 'modifyCoupon') { // 修改优惠券弹框
       const id = data.couponId;
@@ -435,7 +425,6 @@ export class ActivityComponent implements OnInit {
       });
     } else if (flag === 'addBatchsend') {
       this.batchsendData = {  // 清空
-        // tslint:disable-next-line:max-line-length
         'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
       };
       this.loadData('couponInBatchsend');
@@ -1333,7 +1322,6 @@ export class ActivityComponent implements OnInit {
   getCouponNumber(event, data) {
     this.dataSearchCoupon.forEach(item => {
       if (item.couponId === data.couponId) {
-        // tslint:disable-next-line:radix
         item.quantity = parseInt(event);
       }
     });
@@ -1377,7 +1365,6 @@ export class ActivityComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    // tslint:disable-next-line:max-line-length
     const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }

@@ -33,22 +33,10 @@ export class CommonService extends AppServiceBase {
   list: string[] = [];
   isLeftNavClose = false;
   isCollapsed = false;
-  nav = [    // 大菜单的下标状态
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false },
-    { active: false }
-  ];
+  nav = [ { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false } ]; // 大菜单的下标状态
   fullMenuResource = localStorage.getItem('FullMenuResource') !== '' ? JSON.parse(localStorage.getItem('FullMenuResource')) : '';
-  // tslint:disable-next-line:max-line-length
   fullChildrenResource = localStorage.getItem('FullChildrenResource') !== '' ? JSON.parse(localStorage.getItem('FullChildrenResource')) : '';
+  config = { toolbar: [ ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'script': 'sub'}, { 'script': 'super' }], [{ 'indent': '-1'}, { 'indent': '+1' }], [{ 'direction': 'rtl' }], [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], [{ 'header': [1, 2, 3, 4, 5, 6, false] }], [{ 'color': [] }, { 'background': [] }], [{ 'font': [] }], [{ 'align': [] }], ['clean'], ['link', 'video'] ]};
 
   constructor(
     private _router: Router,
@@ -58,14 +46,10 @@ export class CommonService extends AppServiceBase {
     super(injector);
   }
 
-  append(str: any) {
-    this.list.push(str);
-  }
+  append(str: any) { this.list.push(str); }
 
   menuNativeToFalse(): void {
-    this.nav.forEach(item => {
-      item.active = false;
-    });
+    this.nav.forEach(item => { item.active = false; });
   }
 
   // 获取指定时间的日期 格式：yyyyMMdd
@@ -76,7 +60,6 @@ export class CommonService extends AppServiceBase {
     const tYear = today.getFullYear();
     let tMonth = today.getMonth().toString();
     let tDate = today.getDate().toString();
-    // tslint:disable-next-line:radix
     tMonth = this.doHandleMonth(parseInt(tMonth) + 1);
     tDate = this.doHandleMonth(tDate);
     return tYear + '' + tMonth + '' + tDate;
@@ -90,7 +73,6 @@ export class CommonService extends AppServiceBase {
     const tYear = today.getFullYear();
     let tMonth = today.getMonth().toString();
     let tDate = today.getDate().toString();
-    // tslint:disable-next-line:radix
     tMonth = this.doHandleMonth(parseInt(tMonth) + 1);
     tDate = this.doHandleMonth(tDate);
     return tYear + '-' + tMonth + '-' + tDate;
@@ -107,9 +89,7 @@ export class CommonService extends AppServiceBase {
   /** 记录-管理员操作日志记录接口 */
   updateOperationlog(data): Observable<IResponse<any>> {
     const url = `${this.baseUrl}/audit?op_category=${data.op_category}&op_page=${data.op_page}&op_name=${data.op_name}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }
@@ -118,11 +98,39 @@ export class CommonService extends AppServiceBase {
   haveMenuPermission(flag, data) {
     let result = false;
     this.fullChildrenResource.forEach(item => {
-      if (item === data) {
-        result = true;
-      }
+      if (item === data) { result = true; }
     });
     return result;
   }
 
+  // 删除null以及''的对象
+  deleteEmptyProperty(object) {
+    for (const i in object) {
+      const value = object[i];
+      if (typeof value === 'object') {
+        if (Array.isArray(value)) {
+          if (value.length == 0) {
+            delete object[i];
+            continue;
+          }
+        }
+        this.deleteEmptyProperty(value);
+        if (this.isEmpty(value)) {
+          delete object[i];
+        }
+      } else {
+        if (value === '' || value === null || value === undefined) {
+          delete object[i];
+        } else {
+        }
+      }
+    }
+    return object;
+  }
+
+  // 判断json对象的值是否为空
+  isEmpty(object) {
+    for (const name in object) { return false; }
+    return true;
+  }
 }

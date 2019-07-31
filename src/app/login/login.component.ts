@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit($event, { value, valid }): void {
     $event.preventDefault();
-    // tslint:disable-next-line:forin
     for (const key in this.loginForm.controls) {
       this.loginForm.controls[key].markAsDirty();
     }

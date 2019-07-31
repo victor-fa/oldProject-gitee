@@ -27,9 +27,7 @@ export class InvoiceService extends AppServiceBase {
     url += data.orderId ? '&orderId=' + data.orderId : '';
     url += data.orderType ? '&orderType=' + data.orderType : '';
     url += data.phone ? '&phone=' + data.phone : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -42,9 +40,7 @@ export class InvoiceService extends AppServiceBase {
     url += data.orderId ? '&orderId=' + data.orderId : '';
     url += data.orderType ? '&orderType=' + data.orderType : '';
     url += data.phone ? '&phone=' + data.phone : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -57,9 +53,7 @@ export class InvoiceService extends AppServiceBase {
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.content ? '&content=' + data.content : '';
     url += data.name ? '&name=' + data.name : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -72,11 +66,8 @@ export class InvoiceService extends AppServiceBase {
       drawBill: data.drawBill,
       orderId: data.orderId
     };
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
-    // tslint:disable-next-line:max-line-length
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -87,9 +78,7 @@ export class InvoiceService extends AppServiceBase {
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.beginTime && data.beginTime !== null ? '&beginTime=' + data.beginTime : '';
     url += data.endTime && data.endTime !== null ? '&endTime=' + data.endTime : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -102,9 +91,7 @@ export class InvoiceService extends AppServiceBase {
     url += data.phone ? '&phone=' + data.phone : '';
     url += data.orderType && data.orderType !== '' ? '&orderType=' + data.orderType : '';
     url += data.state && data.state !== '' ? '&state=' + data.state : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

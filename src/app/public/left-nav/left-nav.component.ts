@@ -49,42 +49,24 @@ export class LeftNavComponent implements OnInit {
       const dataCenterTab = localStorage.getItem('dataCenterTab');
       let number = 1;
       switch (dataCenterTab) {
-        case 'dataApp':
-          number = 1; break;
-        case 'keepApp':
-          number = 2; break;
-        case 'overview':
-          number = 3; break;
-        case 'product':
-          number = 4; break;
-        case 'error':
-          number = 5; break;
-        case 'ticket':
-          number = 6; break;
-        case 'train':
-          number = 7; break;
-        case 'hotel':
-          number = 8; break;
-        case 'weather':
-          number = 9; break;
-        case 'navigate':
-          number = 10; break;
-        case 'taxi':
-          number = 11; break;
-        case 'music':
-          number = 12; break;
-        case 'horoscope':
-          number = 13; break;
-        case 'recharge':
-          number = 14; break;
-        case 'errand':
-          number = 15; break;
-        case 'movie':
-          number = 16; break;
-        case 'tts':
-          number = 17; break;
-        case 'reminder':
-          number = 18; break;
+        case 'dataApp': number = 1; break;
+        case 'keepApp': number = 2; break;
+        case 'overview': number = 3; break;
+        case 'product': number = 4; break;
+        case 'error': number = 5; break;
+        case 'ticket': number = 6; break;
+        case 'train': number = 7; break;
+        case 'hotel': number = 8; break;
+        case 'weather': number = 9; break;
+        case 'navigate': number = 10; break;
+        case 'taxi': number = 11; break;
+        case 'music': number = 12; break;
+        case 'horoscope': number = 13; break;
+        case 'recharge': number = 14; break;
+        case 'errand': number = 15; break;
+        case 'movie': number = 16; break;
+        case 'tts': number = 17; break;
+        case 'reminder': number = 18; break;
         default:
           break;
       }

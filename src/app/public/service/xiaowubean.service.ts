@@ -25,9 +25,7 @@ export class XiaowubeanService extends AppServiceBase {
       + '?a=1' + (data.title ? '&title=' + data.title : '')
       + (data.beginTime ? '&beginTime=' + data.beginTime : '')
       + (data.endTime ? '&endTime=' + data.endTime : '');
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -35,9 +33,7 @@ export class XiaowubeanService extends AppServiceBase {
   /** 获取单个 */
   getXiaowubean(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}/${id}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -47,16 +43,11 @@ export class XiaowubeanService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
-      // tslint:disable-next-line:max-line-length
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftPercent=${data.giftPercent}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     } else if (flag === 'FIXED_QUOTA_GIFT') {
-      // tslint:disable-next-line:max-line-length
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -66,16 +57,11 @@ export class XiaowubeanService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}/${data.id}`;
     let body = '';
     if (flag === 'PERCENT_GIFT') {
-      // tslint:disable-next-line:max-line-length
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftPercent=${data.giftPercent}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     } else if (flag === 'FIXED_QUOTA_GIFT') {
-      // tslint:disable-next-line:max-line-length
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

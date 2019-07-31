@@ -2,7 +2,6 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
   selector: '[input-noSpace]'
 })
 export class InputNoSpaceDirective {

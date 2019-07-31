@@ -24,7 +24,6 @@ export class PageNotFoundComponent implements OnInit {
     }, 5000);
   }
 
-  // tslint:disable-next-line:use-life-cycle-interface
   ngOnDestroy() {
     if (this.timer) {
       clearInterval(this.timer);

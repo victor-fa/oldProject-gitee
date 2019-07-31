@@ -20,7 +20,6 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  // tslint:disable-next-line:max-line-length
   getBookingList(pageSize, flag, id, queryType, state?, orderType?, createTimeBegin?, createTimeEnd?, orderId?, phone?): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
@@ -40,7 +39,6 @@ export class BookingService extends AppServiceBase {
   getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone): string {
     const url = '?pageSize=' + pageSize
       + (state ? '&state=' + state : '')
-      // tslint:disable-next-line:max-line-length
       + (orderType ? (orderType.length > 3 ? '&subType=' + orderType : '&orderType=' + orderType) : (queryType && queryType !== '' ? '&queryType=' + queryType : ''))
       + (createTimeBegin ? '&createTimeBegin=' + createTimeBegin : '')
       + (createTimeEnd ? '&createTimeEnd=' + createTimeEnd : '')
@@ -59,9 +57,7 @@ export class BookingService extends AppServiceBase {
   /** 获取退票详情 */
   getRefundDetail(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/flight/refund?orderId=${data.orderId}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -69,9 +65,7 @@ export class BookingService extends AppServiceBase {
   /** 退票 */
   deleteRefundDetail(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/flight/refund`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient.post<IResponse<any>>(url, data, this.options);
   }
 
@@ -79,10 +73,7 @@ export class BookingService extends AppServiceBase {
   updateBookingInfo(updateType, orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.orderDetail}`;
     const body = `updateType=${updateType}&orderId=${orderId}`;
-    this.setOption = {
-      // tslint:disable-next-line:max-line-length
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }

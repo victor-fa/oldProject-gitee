@@ -26,7 +26,8 @@ export class NewsComponent implements OnInit {
   newsNERSearchForm: FormGroup;
   sortSpeechDate = { 'type': '' };
   dataSortSpeech = [{word: '', type: '', index: 0}];
-  dataManualAuditModel = [{word: '', type: '', index: 0}];
+  dataManualAuditModel = [{word: '', type: ''}];
+  dataManualAuditModelFinal = [{word: '', type: ''}];
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
@@ -44,6 +45,7 @@ export class NewsComponent implements OnInit {
     dataSortPage: 1,
     dataManualAuditPage: 1,
     dataNewsThesaurusPage: 1,
+    dataNewsThesaurusTotal: 1,
   };
   manualAuditSearchData = {word: '', type: ''};
 
@@ -117,14 +119,18 @@ export class NewsComponent implements OnInit {
         type: this.newsThesaurusSearchForm.controls['type'].value,
         submitTimeCeil: this.endTaggingNewsDate,
         submitTimeFloor: this.beginTaggingNewsDate,
+        number: 1,
       };
       this.pageNum.dataNewsThesaurusPage = this.pageNum.dataNewsThesaurusPage === 0 ? 1 : this.pageNum.dataNewsThesaurusPage;
       this.newsService.getNewsThesaurusList(newsThesaurusInput).subscribe(res => {
+        console.log(JSON.parse(res.payload));
         if (res.retcode === 0 && res.status === 200) {
+          this.pageNum.dataNewsThesaurusTotal = JSON.parse(res.payload).totalPages;
+          console.log(this.pageNum);
           this.isSpinning = false;
           this.dataNewsThesaurus = JSON.parse(res.payload).content;
           this.paramNewsThesaurus = {
-            person: JSON.parse(res.payload).personElememts,
+            person: JSON.parse(res.payload).personElements,
             address: JSON.parse(res.payload).addressElements,
             event: JSON.parse(res.payload).eventElements,
             invalid: JSON.parse(res.payload).invalidElements
@@ -157,7 +163,7 @@ export class NewsComponent implements OnInit {
       this.newsService.getTaggingNewsById(taggingNewsInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          // tslint:disable-next-line:max-line-length
+
           this.dataSortSpeech = JSON.parse(res.payload).words.sort(this.sortWords);
           console.log(this.dataSortSpeech);
           this.dataSortSpeech.forEach((item, index) => {
@@ -197,16 +203,13 @@ export class NewsComponent implements OnInit {
             } else if (word !== '' && type === '') { // 只有word
               dataManualAuditModel.forEach((item, index) => { if (item.word === word) { tempData.push(item); } });
             } else if (word !== '' && type !== '') { // 有type有word
-              // tslint:disable-next-line:max-line-length
               dataManualAuditModel.forEach((item, index) => { if (item.word === word && item.type === type) { tempData.push(item); } });
             }
             this.dataManualAuditModel = tempData;
           } else {
             this.dataManualAuditModel = dataManualAuditModel;
           }
-          this.dataManualAuditModel.forEach((item, index) => {
-            item.index = index;
-          });
+          this.dataManualAuditModelFinal = dataManualAuditModel;
           console.log(this.dataManualAuditModel);
           // const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           // this.commonService.updateOperationlog(operationInput).subscribe();
@@ -214,7 +217,6 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      // tslint:disable-next-line:no-unused-expression
       flag === 'manualAuditModel' ? '' : this.isManualAuditVisible = true;
     } else if (flag === 'updateLoading') {
       this.modalService.confirm({
@@ -333,11 +335,14 @@ export class NewsComponent implements OnInit {
         }
       });
     } else if (flag === 'manualAudit') {
-      const arr = [];
-      this.dataManualAuditModel.forEach(item => {
-        arr.push({word: item.word, type: item.type });
-      });
-      const confirmInput = {id: this.tempId, words: arr };
+      for (let i = 0; i < this.dataManualAuditModelFinal.length; i++) {
+        for (let j = 0; j < this.dataManualAuditModel.length; j++) {
+          if (this.dataManualAuditModelFinal[i].word === this.dataManualAuditModel[j].word) {
+            this.dataManualAuditModelFinal[i].type = this.dataManualAuditModel[j].type;
+          }
+        }
+      }
+      const confirmInput = {id: this.tempId, words: this.dataManualAuditModelFinal };
       console.log(confirmInput);
       this.newsService.confirmSpeech(confirmInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -480,7 +485,6 @@ export class NewsComponent implements OnInit {
     this.currentPanel = flag;
     const operationInput = {
       op_category: '内容管理',
-      // tslint:disable-next-line:max-line-length
       op_page: flag === 'taggingNews' ? '新闻词库' : flag === 'manualAudit' ? '人工审核' : flag === 'newsThesaurus' ? '新闻词库' : flag === 'newsNER' ? '新闻NER' : '',
       op_name: '访问'
     };

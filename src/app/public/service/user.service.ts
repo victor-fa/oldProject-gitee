@@ -48,9 +48,7 @@ export class UserService extends AppServiceBase {
    */
   getFeedBackInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -63,9 +61,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -77,9 +73,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -90,9 +84,7 @@ export class UserService extends AppServiceBase {
   updateUserInfo(infoId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.users}`;
     const body = `infoId=${infoId}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -100,9 +92,7 @@ export class UserService extends AppServiceBase {
   /** 解冻用户 */
   unlockUser(infoId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.users}/${infoId}/unlock`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }
@@ -110,9 +100,7 @@ export class UserService extends AppServiceBase {
   /** 发送伪验证码 */
   sendMsg(phone): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.sms}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'Authorization': phone })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'Authorization': phone }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -171,7 +159,7 @@ export class UserService extends AppServiceBase {
             localStorage.setItem('FullMenuResource', JSON.stringify(menuArr));
             that.commonService.fullMenuResource = JSON.stringify(menuArr);
             localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr)); // 正式
-            // tslint:disable-next-line:max-line-length
+
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
             console.log(menuArr);
             setTimeout(() => {
@@ -179,10 +167,10 @@ export class UserService extends AppServiceBase {
               if (menuArr.indexOf('APP管理') <= -1) { // 不存在
                 target = 'customer';
                 if (menuArr.indexOf('客服中心') <= -1) { // 不存在
-                  target = 'consumer';
-                  if (menuArr.indexOf('客户管理') <= -1) { // 不存在
-                    target = 'user';
-                    if (menuArr.indexOf('用户管理') <= -1) { // 不存在
+                  target = 'user';
+                  if (menuArr.indexOf('用户管理') <= -1) { // 不存在
+                    target = 'consumer';
+                    if (menuArr.indexOf('客户管理') <= -1) { // 不存在
                       target = 'operate';
                       if (menuArr.indexOf('运维后台') <= -1) { // 不存在
                         target = 'content';
@@ -191,9 +179,12 @@ export class UserService extends AppServiceBase {
                           if (menuArr.indexOf('活动管理') <= -1) { // 不存在
                             target = 'dataCenter';
                             if (menuArr.indexOf('数据中心') <= -1) { // 不存在
-                              target = 'sessionAnalysis';
-                              if (menuArr.indexOf('对话分析') <= -1) { // 不存在
-                                target = 'account';
+                              target = 'news';
+                              if (menuArr.indexOf('新闻词库') <= -1) { // 不存在
+                                target = 'sessionAnalysis';
+                                if (menuArr.indexOf('对话分析') <= -1) { // 不存在
+                                  target = 'account';
+                                }
                               }
                             }
                           }
@@ -211,7 +202,6 @@ export class UserService extends AppServiceBase {
         resultFull.setRequestHeader('App-Channel-Id', localStorage.getItem('currentAppHeader'));
         resultFull.setRequestHeader('Authorization', localStorage.getItem('token'));
         resultFull.send();
-
       } else {
         that.modalService.error({ nzTitle: '提示', nzContent: '登录信息有误！' });
       }
@@ -224,12 +214,7 @@ export class UserService extends AppServiceBase {
   changePass(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/auth/info/pwd/modify`;
     const body = `oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`;
-    this.setOption = {
-      headers: new HttpHeaders({
-        'App-Channel-Id': localStorage.getItem('currentAppHeader'),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader'), 'Content-Type': 'application/x-www-form-urlencoded' }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -247,7 +232,6 @@ export class UserService extends AppServiceBase {
   getBatchExcel(data) {
     const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8' });
     this.setOption = { headers: head, responseType: 'blob' };
-    // tslint:disable-next-line:max-line-length
     let url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v2/estimate/session?estimate=${data.estimate}`;
     if (data.selected === 1) { url += data.number ? '&number=' + data.number : ''; }
     if (data.selected === 2) {
@@ -268,9 +252,7 @@ export class UserService extends AppServiceBase {
    */
   getInvoiceDetail(orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -281,9 +263,7 @@ export class UserService extends AppServiceBase {
   getUserCommonInfo(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/general-info?userId=${data.userId}`;
     url += data.queryType ? '&queryType=' + data.queryType : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -292,9 +272,7 @@ export class UserService extends AppServiceBase {
   getLatestLogin(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}/user/login-history?pageSize=9999`;
     url += data.userId ? '&userId=' + data.userId : '';
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
