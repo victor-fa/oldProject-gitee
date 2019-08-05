@@ -28,6 +28,8 @@ var routes = require('./routes/index'),
 
 const fileUpload = require('express-fileupload');
 
+var config = require('config');
+
 // Init App
 var app = express();
 
@@ -121,6 +123,7 @@ app.use(function (req, res, next) {
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');	// for passport for
 	res.locals.user = req.user || null;
+	res.locals.chatapi = config.deploy_domain_name;
 	if (res.locals.user) {
 		res.locals.show_manage_panel = UserGroupPolicy.accessToManagePanel(res.locals.user.group)
 		res.locals.show_image_panel = UserGroupPolicy.accessToImagePanel(res.locals.user.group)

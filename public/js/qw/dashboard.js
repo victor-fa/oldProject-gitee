@@ -1,4 +1,5 @@
 $().ready(function () {
+    var chat_api_domain = $('#chatpi').html();
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
     var username = $('#username').html();
@@ -110,7 +111,7 @@ $().ready(function () {
         console.log(verify);
 
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/statics',
+            url: chat_api_domain + '/api/statics',
             data: {
                 "appkey": appkey,
                 "timestamp": timestamp,

@@ -14,6 +14,7 @@ var yml_upload_dir = './public/cases/upload/';
 var yml_new_dir = './public/cases/new/';
 var myDate = new Date();
 const fs = require('fs');
+var config = require('config');
 
 var rp = require('request-promise');
 // Manage
@@ -383,7 +384,7 @@ router.post('/manage/api/app-add', function (req, res) {
 
 function addAppToDB(attr,callbackfunciton){
     //http.get("http://localhost" + '/api/admin/add-app?'+ attr, function(res) {
-	https.get("https://robot-service.centaurstech.com" + '/api/admin/add-app?'+ attr, function(res) {
+	https.get(config.deploy_domain_name + '/api/admin/add-app?'+ attr, function(res) {
 		callbackfunciton('success');
         
     }).on('error', function(e) {
@@ -395,7 +396,7 @@ function addAppToDB(attr,callbackfunciton){
 
 function delAppBySrt(attr){
 	//http.get("http://localhost" + '/api/admin/del-app?'+ attr
-	https.get("https://robot-service.centaurstech.com" + '/api/admin/del-app?'+ attr
+	https.get(config.deploy_domain_name + '/api/admin/del-app?'+ attr
 	).on('error', function(e) {
 
         return e.message
@@ -404,7 +405,7 @@ function delAppBySrt(attr){
 
 function updateApp(attr,callbackfunciton){
 	//http.get("http://localhost" + '/api/admin/alt-app?'+ attr
-	https.get("https://robot-service.centaurstech.com" + '/api/admin/alt-app?'+ attr
+	https.get(config.deploy_domain_name + '/api/admin/alt-app?'+ attr
 	).on('error', function(e) {
 
         return (e.message + " error");
@@ -413,7 +414,7 @@ function updateApp(attr,callbackfunciton){
 
 function getAppBySecret(attr,callbackfunciton){
 	//http.get("http://localhost" + '/api/admin/get-app?'+ attr, function(res) {
-	https.get("https://robot-service.centaurstech.com" + '/api/admin/get-app?'+ attr, function(res) {
+	https.get(config.deploy_domain_name + '/api/admin/get-app?'+ attr, function(res) {
 		var datas = [];
         var size = 0;
 		console.log('get2');
@@ -435,7 +436,7 @@ function getAppBySecret(attr,callbackfunciton){
 
 function getAppsKeysAndScrets(urlpath,callbackfunciton){
 	//http.get("http://localhost" + urlpath, function(res) {
-    https.get("https://robot-service.centaurstech.com" + urlpath, function(res) {
+    https.get(config.deploy_domain_name + urlpath, function(res) {
         var datas = [];
         var size = 0;
         res.on('data', function (data) {
