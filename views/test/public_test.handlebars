@@ -42,22 +42,8 @@
 
     var nickname = '{{name}}'
 
-    var memory_url = '';
-    if (appkey == 'cenri-ios-demo') {
-        memory_url = 'http://aliyun-sz2.chewrobot.com:8080';
-    }
-    if (appkey == 'zhihuishenghuo-pre') {
-        memory_url = 'http://aliyun-sh11.chewrobot.com:6006';
-    }
-    if (appkey == 'zhihuishenghuo-pro') {
-        memory_url = 'http://aliyun-sh1.chewrobot.com:6006';
-    }
-    if (memory_url == '') {
-        $('#memoryBtn')[0].style.visibility='hidden';
-    }
-
     function randomUid() {
-        uid = 'Console.Test.' + Math.random()
+        uid = 'Public.Test.' + Math.random()
         setCookie('uid', uid, 100)
     }
 
@@ -69,11 +55,6 @@
     var uid = getCookie('uid')
     if (uid == '') {
         randomUid();
-    }
-
-    function checkMemory() {
-        var win = window.open(memory_url + '/api/central/memory?uid=' + uid, '_blank');
-        win.focus();
     }
 </script>
 
