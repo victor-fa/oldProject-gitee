@@ -144,6 +144,6 @@ app.use('/download', getCount);
 // Set Port
 app.set('port', port);
 
-app.listen(app.get('port'), function () {
+app.listen(app.get('port'), '127.0.0.1', function () {
 	console.log('Server started on port ' + port);
 });
