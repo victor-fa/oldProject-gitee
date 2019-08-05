@@ -1,6 +1,27 @@
 var express = require('express');
 var router = express.Router();
 var UserService = require('../services/user')
+var config = require('config');
+
+router.get('/endpoint.js', (req, res)=>{
+	res.send(`var bot_endpoint = '${config.deploy_domain_name}/api/chat';`);
+});
+
+router.get('/test', (req, res)=>{
+	if (typeof req.query.appkey == 'undefined' || typeof req.query.appkey == 'undefined' || typeof req.query.appsecret == 'undefined') {
+		res.send("missing appkey or appsecret or name!");
+		return;
+	}
+	res.render('test/public_test', {
+		css: [
+			'/css/qw/demo_style.css'
+		],
+		appkey: req.query.appkey,
+		appsecret: req.query.appsecret,
+		name: req.query.name,
+	})
+});
+
 
 // Get Dashboard
 router.get('/', UserService.ensureAuthenticated, function (req, res, next) {

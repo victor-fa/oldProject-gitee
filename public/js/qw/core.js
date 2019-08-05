@@ -1,4 +1,4 @@
-var bot_endpoint = 'https://robot-service.centaurstech.com/api/chat'
+var bot_endpoint = 'https://robot-service.centaurstech.com/api/chat';
 
 function on_send_question(ask) {
     console.log('user ask: ' + ask)
