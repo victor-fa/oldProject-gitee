@@ -1,4 +1,5 @@
 $().ready(function(){
+    var chat_api_domain = $('#chatapi').html();
     //var deploy_domain_name="robot-service.centaurstech.com";
     //var deploy_domain_name="localhost:10010";
     init();
@@ -22,8 +23,7 @@ $().ready(function(){
     //刷新验证码
     function updateVcode(){
         $.ajax({
-            url:"https://robot-service.centaurstech.com/users/vcode",
-            //url:"http://localhost:10010/users/vcode",
+            url: chat_api_domain + "/users/vcode",
             success:function(data){
                 if(data&&data.img){
                     $("#vcode_container").html(data.img);

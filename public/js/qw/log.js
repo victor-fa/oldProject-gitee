@@ -1,5 +1,5 @@
 $().ready(function() {
-    var chat_api_domain = $('#chatpi').html();
+    var chat_api_domain = $('#chatapi').html();
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
     var uid = $('#uid').html();
