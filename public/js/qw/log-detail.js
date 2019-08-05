@@ -1,5 +1,5 @@
 $().ready(function () {
-
+    var chat_api_domain = $('#chatapi').html();
     var appkey = $('#appkey').html();
     var appsecret = $('#appsecret').html();
     var timestamp = Math.floor(Date.now() / 1000);
@@ -80,7 +80,7 @@ $().ready(function () {
 
         $("#log-result-header").html('正在载入日志 <img src="../img/loading.gif" alt="loading" width="24" display="inline"/>');
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/log/session',
+            url: chat_api_domain + '/api/log/session',
             headers: {
                 "appkey": appkey,
                 "timestamp": timestamp,

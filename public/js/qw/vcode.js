@@ -1,7 +1,5 @@
 $().ready(function(){
     var chat_api_domain = $('#chatapi').html();
-    //var deploy_domain_name="robot-service.centaurstech.com";
-    //var deploy_domain_name="localhost:10010";
     init();
     
     //页面初始化

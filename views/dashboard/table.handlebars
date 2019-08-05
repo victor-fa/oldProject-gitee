@@ -51,6 +51,7 @@
 
 
 <script>
+    var chat_api_domain = $('#chatapi').html();
     Date.prototype.addDays = function(days){
         var dat = new Date(this.valueOf());
         dat.setDate(dat.getDate() + days);
@@ -83,7 +84,7 @@
         console.log("the post object is ")
         console.log(post_obj)
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/chat/statistic/dau',
+            url: chat_api_domain + '/api/chat/statistic/dau',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -170,7 +171,7 @@
         console.log("the post object is ")
         console.log(post_obj)
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/chat/statistic/mau',
+            url: chat_api_domain + '/api/chat/statistic/mau',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -236,7 +237,7 @@
             appkey: appkey,
         }
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/chat/onlineCelerity/send_ratio',
+            url: chat_api_domain + '/api/chat/onlineCelerity/send_ratio',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
@@ -249,7 +250,7 @@
         })
 
         $.ajax({
-            url: 'https://robot-service.centaurstech.com/api/chat/onlineCelerity/click_ratio',
+            url: chat_api_domain + '/api/chat/onlineCelerity/click_ratio',
             type: 'POST',
             crossDomain: true,
             data: post_obj,
