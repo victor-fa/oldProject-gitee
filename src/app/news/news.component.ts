@@ -128,7 +128,8 @@ export class NewsComponent implements OnInit {
           this.pageNum.dataNewsThesaurusTotal = JSON.parse(res.payload).totalPages;
           console.log(this.pageNum);
           this.isSpinning = false;
-          this.dataNewsThesaurus = JSON.parse(res.payload).content;
+          // this.dataNewsThesaurus = JSON.parse(res.payload).content;
+          this.dataNewsThesaurus = JSON.parse(res.payload).content.sort(this.sortWords);
           this.paramNewsThesaurus = {
             person: JSON.parse(res.payload).personElements,
             address: JSON.parse(res.payload).addressElements,
@@ -363,7 +364,7 @@ export class NewsComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
+          // setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }

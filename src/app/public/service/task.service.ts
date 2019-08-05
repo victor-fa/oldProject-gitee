@@ -32,8 +32,13 @@ export class TaskService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getTaskCenterLog(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}`;
+  getTaskCenterLog(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/task/logs?size=9999`;
+    url += data.userId && data.userId !== '' ? '&userId=' + data.userId : '';
+    url += data.userPhone && data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
+    url += data.taskName && data.taskName !== '' ? '&taskName=' + data.taskName : '';
+    url += data.finishTimeCeil && data.finishTimeCeil !== '' ? '&finishTimeCeil=' + data.finishTimeCeil : '';
+    url += data.finishTimeFloor && data.finishTimeFloor !== '' ? '&finishTimeFloor=' + data.finishTimeFloor : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -58,22 +63,17 @@ export class TaskService extends AppServiceBase {
   /** 添加单个 */
   addTaskCenter(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}`;
-    const body = `type=${data.type}&action=${data.action}&totalTimes=${data.totalTimes}&name=${data.name}&description=${data.description}`
-      + `&group=${data.group}&sequence=${data.sequence}&pic=${data.pic}&jump=${JSON.stringify(data.jump)}`
-      + `&taskAward=${JSON.stringify(data.taskAward)}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改单个 */
-  updateTaskCenter(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${data.id}`;
-    const body = `title=${data.title}&jump=${data.jump}&site=${data.site}&duration=${data.duration}&url=${data.url}`
-      + `&skip=${data.skip}&image=${data.image}&expireTime=${data.expireTime}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  updateTaskCenter(id, data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${id}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
-      .put<IResponse<any>>(url, body, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改启用状态 */

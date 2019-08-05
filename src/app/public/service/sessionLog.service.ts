@@ -34,7 +34,7 @@ export class SessionLogService extends AppServiceBase {
     url += data.repetitionNum && data.repetitionNum !== '' ? '&repetitionNum=' + data.conpareSecond + data.repetitionNum : '';
     url += data.cost && data.cost !== '' ? '&cost=' + data.conpareThird + data.cost : '';
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
-    url += data.lastId && data.lastId !== '' && data.pageFlag === 'last' ? '&lastId=' + data.lastId : '';
+    url += data.lastId && data.lastId !== '' && data.lastId !== 0 && data.pageFlag === 'last' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' && data.firstId !== 0 && data.pageFlag === 'first' ? '&firstId=' + data.firstId : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient

@@ -52,7 +52,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">反馈时间：</div>
-                <div nz-col nzSpan="6">{{tempFeedBack.date ? tempFeedBack.date : 'null'}}</div>
+                <div nz-col nzSpan="6">{{tempFeedBack.date ? (tempFeedBack.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00') : 'null'}}</div>
                 <div nz-col nzSpan="4" class="right_alignment">微信：</div>
                 <div nz-col nzSpan="6">{{tempFeedBack.wxNumber ? tempFeedBack.wxNumber : 'null'}}</div>
               </div>
@@ -354,7 +354,7 @@
                 用户账号：
               </div>
               <div nz-col nzSpan="2">
-                <input nz-input maxlength="32" formControlName="phone" placeholder="输入订单编号" nzSize="default">
+                <input nz-input maxlength="32" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">

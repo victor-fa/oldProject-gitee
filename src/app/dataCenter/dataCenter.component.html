@@ -916,6 +916,41 @@
           </nz-table>
         </nz-tab>
 
+        <nz-tab [nzTitle]="newsTemplate" (nzClick)="changePanel('news')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
+        <!-- <nz-tab [nzTitle]="newzTemplate" (nzClick)="changePanel('news')"> -->
+          <ng-template #newsTemplate><i class="anticon anticon-api"></i>新闻BOT <a href="/dataCenter?currentTab=19" target="_blank">-></a></ng-template>
+          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px" nzLeft="0px">序号</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[0].checked">日期</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[1].checked">唤醒新闻人次</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[2].checked">唤醒新闻行为数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[3].checked">新闻搜关键词</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[4].checked">新闻否定关键词</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[5].checked">新闻搜话题</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[6].checked">新闻否定话题</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[7].checked">新闻限定时间</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.news[8].checked">新闻搜热门</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[0].checked">{{data.date}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[1].checked">{{data.awakNewsUsers}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[2].checked">{{data.awakNewsCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[3].checked">{{data.newsKeywordSearchCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[4].checked">{{data.newsKeywordNotCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[5].checked">{{data.newsTypeSearchCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[6].checked">{{data.newsTypeNotCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[7].checked">{{data.newsLimitTimeCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.news[8].checked">{{data.newsHotSearchCount}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
         <!-- 弹框 —— 信息 —— 数据说明 -->
         <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')" nzMaskClosable="false">
           <div nz-row class="search_panel" style="text-align: center;">

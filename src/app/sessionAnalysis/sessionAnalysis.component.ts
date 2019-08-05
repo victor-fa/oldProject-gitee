@@ -48,6 +48,7 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionLogId = ''; // 用于标记后查询当前页
   currentSessionLogFlag = ''; // 用于标记后查询当前页
   dateRange = [];
+  staticParams: any;  // 保留上一次查询数据，区分是否
   constructor(
     public commonService: CommonService,
     private sessionLogService: SessionLogService,
@@ -95,11 +96,17 @@ export class SessionAnalysisComponent implements OnInit {
    */
   private loadData(flag): void {
     this.isSpinning = true;
-    if (flag === 'sessionLog') {
+    if (flag === 'sessionLog' || flag === 'sessionLogSearch') {
       let id = 0;
       let pageFlag = '';
-      if (this.doLastSessionLog) { id = this.lastSessionLogId; pageFlag = 'last'; }  // 下一页
-      if (this.doFirstSessionLog) { id = this.firstSessionLogId; pageFlag = 'first'; }  // 上一页
+      if (flag === 'sessionLog') {
+        if (this.doLastSessionLog) { id = this.lastSessionLogId; pageFlag = 'last'; }  // 下一页
+        if (this.doFirstSessionLog) { id = this.firstSessionLogId; pageFlag = 'first'; }  // 上一页
+      } else if (flag === 'sessionLogSearch') {
+        this.changeSessionLogPage = 1;
+        if (this.doLastSessionLog) { id = 0; pageFlag = 'last'; }  // 下一页
+        if (this.doFirstSessionLog) { id = 0; pageFlag = 'first'; }  // 上一页
+      }
       this.currentSessionLogId = id + ''; // 获取当前的id
       this.currentSessionLogFlag = pageFlag;  // 获取当前的翻页状态
       const logInput = {
@@ -123,7 +130,7 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareThird': this.conpareThird,
         'pageFlag': pageFlag
       };
-      console.log(logInput);
+      this.staticParams = logInput; // 用于与切换上一页下一页时候进行比较
       this.sessionLogService.getSessionLogList(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -134,21 +141,20 @@ export class SessionAnalysisComponent implements OnInit {
             this.sessionLogData[0].color = true;
             if (this.sessionLogData[i].sessionId === this.sessionLogData[i + 1].sessionId) {
               this.sessionLogData[i + 1].color = this.sessionLogData[i].color;
-            } else {
-              this.sessionLogData[i + 1].color = !this.sessionLogData[i].color;
-            }
+            } else { this.sessionLogData[i + 1].color = !this.sessionLogData[i].color; }
           }
-          this.sessionLogData.forEach((item, index) => {
-            item.sessionDuration = this.formatDuring(item.sessionDuration);
-          });
+          this.sessionLogData.forEach((item, index) => { item.sessionDuration = this.formatDuring(item.sessionDuration); });
           console.log(this.sessionLogData);
-          this.firstSessionLogId = JSON.parse(res.payload)[0].id;  // 最前面的Id
-          this.lastSessionLogId = JSON.parse(res.payload)[JSON.parse(res.payload).length - 1].id;  // 最后面的Id
+          if (this.sessionLogData.length > 0) {
+            this.firstSessionLogId = JSON.parse(res.payload)[0].id;  // 最前面的Id
+            this.lastSessionLogId = JSON.parse(res.payload)[JSON.parse(res.payload).length - 1].id;  // 最后面的Id
+          } else {
+            this.firstSessionLogId = 0;
+            this.lastSessionLogId = 0;
+          }
           const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.doLastSessionLog = false;
       this.doFirstSessionLog = false;
@@ -175,22 +181,17 @@ export class SessionAnalysisComponent implements OnInit {
         'pageFlag': this.currentSessionLogFlag
       };
       console.log(logInput);
-      console.log('321213');
       this.sessionLogService.getSessionLogList(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.totalSessionLog = res.count;
           this.allSessionLogSize = Math.round(res.count / this.sessionLogPageSize);
           this.sessionLogData = JSON.parse(res.payload);
-          this.sessionLogData.forEach(item => {
-            item.sessionDuration = this.formatDuring(item.sessionDuration);
-          });
+          this.sessionLogData.forEach(item => { item.sessionDuration = this.formatDuring(item.sessionDuration); });
           console.log(this.sessionLogData);
           const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          // this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.doLastSessionLog = false;
       this.doFirstSessionLog = false;
@@ -302,21 +303,33 @@ export class SessionAnalysisComponent implements OnInit {
     }
   }
 
-  /**
-   * 上一页
-   */
+  /** 上一页 */
   lastPage(flag): void {
-    this.changeSessionLogPage -= 1;
-    this.doFirstSessionLog = true;
+    delete this.staticParams.lastId;
+    delete this.staticParams.firstId;
+    delete this.staticParams.pageFlag;
+    if (this.isObjectValueEqual(this.staticParams, this.getFreshParam())) { // 若条件没有改变，则可上一页
+      this.changeSessionLogPage -= 1;
+      this.doFirstSessionLog = true;
+    } else {  // 若条件有改变，则默认查询回到第一页
+      this.changeSessionLogPage = 1;
+      this.doFirstSessionLog = false;
+    }
     this.loadData(flag);
   }
 
-  /**
-   * 下一页
-   */
+  /** 下一页 */
   nextPage(flag): void {
-    this.changeSessionLogPage += 1;
-    this.doLastSessionLog = true;
+    delete this.staticParams.lastId;
+    delete this.staticParams.firstId;
+    delete this.staticParams.pageFlag;
+    if (this.isObjectValueEqual(this.staticParams, this.getFreshParam())) { // 若条件没有改变，则可下一页
+      this.changeSessionLogPage += 1;
+      this.doLastSessionLog = true;
+    } else {  // 若条件有改变，则默认查询回到第一页
+      this.changeSessionLogPage = 1;
+      this.doLastSessionLog = false;
+    }
     this.loadData(flag);
   }
 
@@ -336,32 +349,22 @@ export class SessionAnalysisComponent implements OnInit {
           this.loadData('currentSessionLog');
           const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '标记/不标记' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
 
+  // 全选
   updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allSessionBusinessChecked) {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => {
-        return {
-          ...item,
-          checked: true
-        };
-      });
+      this.checkOptionsOne = this.checkOptionsOne.map(item => { return { ...item, checked: true }; });
     } else {
-      this.checkOptionsOne = this.checkOptionsOne.map(item => {
-        return {
-          ...item,
-          checked: false
-        };
-      });
+      this.checkOptionsOne = this.checkOptionsOne.map(item => { return { ...item, checked: false }; });
     }
   }
 
+  // 选择多选中其中某个
   updateSingleChecked(): void {
     if (this.checkOptionsOne.every(item => item.checked === false)) {
       this.allSessionBusinessChecked = false;
@@ -369,8 +372,35 @@ export class SessionAnalysisComponent implements OnInit {
     } else if (this.checkOptionsOne.every(item => item.checked === true)) {
       this.allSessionBusinessChecked = true;
       this.indeterminate = false;
-    } else {
-      this.indeterminate = true;
+    } else { this.indeterminate = true; }
+  }
+
+  // 判断两个json对象是否相等
+  isObjectValueEqual(obj1, obj2) {
+    const o1 = obj1 instanceof Object;
+    const o2 = obj2 instanceof Object;
+    if (!o1 || !o2) { return obj1 === obj2; }
+    if (Object.keys(obj1).length !== Object.keys(obj2).length) { return false; }
+    for (var o in obj1) {
+      const t1 = obj1[o] instanceof Object;
+      const t2 = obj2[o] instanceof Object;
+      if (t1 && t2) {
+        if (obj1[o].toString() !== obj2[o].toString()) { return false; }
+      } else if (obj1[o] !== obj2[o]) { return false; }
     }
+    return true;
+  }
+
+  // 用于获取最新数据【少了lastId、firstId、pageFlag】
+  getFreshParam() {
+    const staticParams = {
+      'start': this.beginDate, 'end': this.endDate, 'bots': this.chooseSessionBusiness(), 'uid': this.searchSessionLogForm.controls['uid'].value,
+      'ask': this.searchSessionLogForm.controls['ask'].value, 'answer': this.searchSessionLogForm.controls['answer'].value,
+      'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false, 'abnormalType': this.abnormalType,
+      'intentionNum': this.searchSessionLogForm.controls['intentionNum'].value, 'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
+      'cost': this.searchSessionLogForm.controls['cost'].value, 'level': this.sessionLogLevel, 'pageSize': this.sessionLogPageSize,
+      'conpareFirst': this.conpareFirst, 'conpareSecond': this.conpareSecond, 'conpareThird': this.conpareThird,
+    };
+    return staticParams
   }
 }

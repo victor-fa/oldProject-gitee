@@ -181,8 +181,7 @@
         </nz-tab>
 
 
-        <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
-            <!-- 订单状态监控 -->
+        <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '订单状态监控')">
           <ng-template #orderStateTemplate><i class="anticon anticon-eye-o"></i>订单状态监控</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="22">
@@ -214,10 +213,20 @@
                 <div nz-col nzSpan="3">
                   <nz-select [(ngModel)]="taxiOrderState" formControlName="state">
                     <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                    <nz-option required [nzLabel]="'待出行'" [nzValue]="'DAICHUXING'"></nz-option>
-                    <nz-option required [nzLabel]="'司机到达'" [nzValue]="'SIJIDAODA'"></nz-option>
-                    <nz-option required [nzLabel]="'出票中'" [nzValue]="'CHUPIAOZHONG'"></nz-option>
-                    <nz-option required [nzLabel]="'占座中'" [nzValue]="'ZHANZUOZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'EXPRESS_ORDER'" required [nzLabel]="'等待接单'" [nzValue]="'DENGDAIJIEDAN'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'EXPRESS_ORDER'" required [nzLabel]="'已接单'" [nzValue]="'YIJIEDAN'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'EXPRESS_ORDER'" required [nzLabel]="'已到达寄件地址'" [nzValue]="'YIDAODAJIJIANDIZHI'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'EXPRESS_ORDER'" required [nzLabel]="'配送中'" [nzValue]="'PEISONGZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'PHONE_CHARGE_ORDER'" required [nzLabel]="'充值中'" [nzValue]="'CHONGZHIZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TRAIN_ORDER' || taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'占座中'" [nzValue]="'ZHANZUOZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TRAIN_ORDER' || taxiOrderType === 'FLIGHT_ORDER' || taxiOrderType === 'HOTEL_ORDER' || taxiOrderType === 'MOVIE_ORDER'" required [nzLabel]="'出票中'" [nzValue]="'CHUPIAOZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'HOTEL_ORDER'" required [nzLabel]="'取消中'" [nzValue]="'QUXIAOZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TRAIN_ORDER' || taxiOrderType === 'FLIGHT_ORDER'" required [nzLabel]="'退票中'" [nzValue]="'TUIPIAOZHONG'"></nz-option>
+                    <nz-option required [nzLabel]="'退款中'" [nzValue]="'TUIKUANZHONG'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'司机到达'" [nzValue]="'SIJIDAODA'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'待接驾'" [nzValue]="'DAIJIEJIA'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'司机已到达'" [nzValue]="'SIJIYIDAODA'"></nz-option>
+                    <nz-option *ngIf="taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'进行中'" [nzValue]="'JINXINGZHONG'"></nz-option>
                   </nz-select>
                 </div>
                 <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -253,7 +262,10 @@
                 <td>{{data.userPhone}}</td>
                 <td>{{data.userNickName}}</td>
                 <td>{{data.orderType === 'FLIGHT_ORDER' ? '机票' : data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : ''}}</td>
-                <td>{{data.state === 'DAICHUXING' ? '待出行' : data.state === 'SIJIDAODA' ? '司机到达' : data.state === 'CHUPIAOZHONG' ? '出票中' : data.state === 'ZHANZUOZHONG' ? '占座中' : '' }}</td>
+                <td>{{data.state === 'DENGDAIJIEDAN' ? '等待接单' : data.state === 'YIJIEDAN' ? '已接单' : data.state === 'YIDAODAJIJIANDIZHI' ? '已到达寄件地址' :
+                  data.state === 'PEISONGZHONG' ? '配送中' : data.state === 'CHONGZHIZHONG' ? '充值中' : data.state === 'ZHANZUOZHONG' ? '占座中' : data.state === 'CHUPIAOZHONG' ? '出票中' :
+                  data.state === 'QUXIAOZHONG' ? '取消中' : data.state === 'TUIPIAOZHONG' ? '退票中' : data.state === 'TUIKUANZHONG' ? '退款中' : data.state === 'SIJIDAODA' ? '司机到达' :
+                  data.state === 'DAIJIEJIA' ? '待接驾' : data.state === 'SIJIYIDAODA' ? '司机已到达' : data.state === 'JINXINGZHONG' ? '进行中' : data.state === 'DAICHUXING' ? '待出行' : '' }}</td>
                 <td>{{data.alertTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="goTaxtOrder(data)"><i class="anticon anticon-form"></i>查看</button>
@@ -268,8 +280,7 @@
 
 
 
-        <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
-            <!-- 订单状态设置 -->
+        <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '订单状态设置')">
           <ng-template #orderStateSettingTemplate><i class="anticon anticon-setting"></i>订单状态设置</ng-template>
           <nz-table #orderStateSettingTable [nzData]="dataOrderStateSetting" *ngIf="!isSpinning">
             <thead>

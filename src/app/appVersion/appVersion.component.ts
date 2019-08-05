@@ -14,7 +14,6 @@ import { ProtocolService } from '../public/service/protocol.service';
 import { ShareService } from '../public/service/share.service';
 import { FlowpointService } from '../public/service/flowpoint.service';
 import { QqCustomerService } from '../public/service/qqCustomer.service';
-import { TaskService } from '../public/service/task.service';
 
 registerLocaleData(zh);
 
@@ -32,8 +31,6 @@ export class AppVersionComponent implements OnInit {
   isModifyGuideVisible = false;
   isModifyHelpVisible = false;
   isModifyFlowPointVisible = false;
-  isAddTackCenterVisible = false;
-  isModifyTackCenterVisible = false;
   addContentForm: FormGroup;
   addGuideForm: FormGroup;
   addHelpForm: FormGroup;
@@ -44,8 +41,6 @@ export class AppVersionComponent implements OnInit {
   addFlowPointForm: FormGroup;
   modifyFlowPointForm: FormGroup;
   qqCustomerForm: FormGroup;
-  searchTaskCenterForm: FormGroup;
-  searchTaskLogsForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': '' };
@@ -61,10 +56,6 @@ export class AppVersionComponent implements OnInit {
   dataHelp = []; // 帮助管理
   dataProtocol = []; // 协议管理
   dataFlowPoint = []; // 流程点引导
-  dataTaskCenter = [{'taskAward': {'stepRule': {}, 'stepRuleFinal': {}}}];  // 任务中心
-  dataTaskLogs = [{}];  // 任务日志
-  beginTaskCenterDate = '';
-  endTaskCenterDate = '';
   shareImageUrl01 = '';
   shareImageUrl02 = '';
   shareImageUrl03 = '';
@@ -88,11 +79,6 @@ export class AppVersionComponent implements OnInit {
   limitModelChange = 1;
   isSpinning = false;
   flowPointBotName = '';
-  addTaskCenter = {
-    taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false, checkRuleType: 'Fixedmount', checkBeanRes: 'Fixed',
-    checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '', group: '', sequence: '', pic: '',
-    jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' }
-  };
 
   constructor(
     private fb: FormBuilder,
@@ -106,7 +92,6 @@ export class AppVersionComponent implements OnInit {
     private qqCustomerService: QqCustomerService,
     private helpService: HelpService,
     private guideService: GuideService,
-    private taskService: TaskService,
     private datePipe: DatePipe,
     private shareService: ShareService,
     private msg: NzMessageService,
@@ -122,8 +107,7 @@ export class AppVersionComponent implements OnInit {
     const tabFlag = [{label: '版本更新', value: 'content'}, {label: '分享文案', value: 'share'},
         {label: '引导语模板', value: 'guide'}, {label: '帮助管理', value: 'help'},
         {label: '协议管理', value: 'protocol'}, {label: '流程点引导', value: 'flowPoint'},
-        {label: '客服QQ', value: 'qqCustomer'}, {label: '任务中心', value: 'taskCenter'},
-        {label: '任务日志', value: 'taskLogs'}];
+        {label: '客服QQ', value: 'qqCustomer'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -265,44 +249,6 @@ export class AppVersionComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'taskCenter') {
-      const taskCenterInput = {
-        name: this.searchTaskCenterForm.controls['name'].value,
-        type: this.searchTaskCenterForm.controls['type'].value,
-        createTimeCeil: this.endTaskCenterDate,
-        createTimeFloor: this.beginTaskCenterDate,
-      };
-      this.taskService.getTaskCenterList(taskCenterInput).subscribe(res => {
-        if (res.retcode === 0 && res.status === 200) {
-          this.isSpinning = false;
-          this.dataTaskCenter = JSON.parse(res.payload).content;
-          this.dataTaskCenter.forEach(item => {
-            if (item.taskAward) {
-              if (item.taskAward.stepRule) {
-                for (const key in item.taskAward.stepRule) {
-                  console.log(item.taskAward.stepRule[key]);
-                  item.taskAward.stepRuleFinal = item.taskAward.stepRule[key];
-                }
-              }
-            }
-          });
-          console.log(this.dataTaskCenter);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
-      const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '访问' };
-      this.commonService.updateOperationlog(operationInput).subscribe();
-      this.isSpinning = false;
-    } else if (flag === 'taskLogs') {
-      this.taskService.getTaskCenterLog().subscribe(res => {
-        if (res.retcode === 0 && res.status === 200) {
-          this.isSpinning = false;
-          this.dataTaskLogs = JSON.parse(res.payload).reverse();
-          console.log(this.dataTaskLogs);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
-      const operationInput = { op_category: 'APP管理', op_page: '任务日志', op_name: '访问' };
-      this.commonService.updateOperationlog(operationInput).subscribe();
-      this.isSpinning = false;
     }
   }
 
@@ -319,8 +265,6 @@ export class AppVersionComponent implements OnInit {
     this.addFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
     this.modifyFlowPointForm = this.fb.group({ botName: [''], process: [''], mtime: [''], status: [''], botMsg: [''], guides: [''], });
     this.qqCustomerForm = this.fb.group({ contact_qq: [''] });
-    this.searchTaskCenterForm = this.fb.group({ name: [''], type: [''], date: [''] });
-    this.searchTaskLogsForm = this.fb.group({ aaa: [''] });
   }
 
   // 弹框
@@ -328,13 +272,11 @@ export class AppVersionComponent implements OnInit {
     if (flag === 'content') {
       this.isAddContentVisible = true;
       this.contentDate = {  // 清空
-
         'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': ''
       };
     } else if (flag === 'guide') {
       this.isAddGuideVisible = true;
       this.guideDate = { // 清空
-
         'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': ''
       };
       this.guideItem.messageArr.splice(0, this.guideItem.messageArr.length);
@@ -346,12 +288,7 @@ export class AppVersionComponent implements OnInit {
       this.helpType = 'TRAVEL';
     } else if (flag === 'flowPoint') {
       this.isAddFlowPointVisible = true;
-
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
-    } else if (flag === 'taskCenter') {
-      this.isAddTackCenterVisible = true;
-    } else if (flag === 'taskLogs') {
-      this.isModifyTackCenterVisible = true;
     }
     this.fileList.splice(0, this.fileList.length);
     this.emptyAdd = ['', '', '', '', '', '', ''];
@@ -386,15 +323,6 @@ export class AppVersionComponent implements OnInit {
         'guideArr': [] };
     } else if (flag === 'qqCustomer') {
       this.isSaveQQCustomerButton = false;
-    } else if (flag === 'taskCenter') {
-      this.addTaskCenter = {
-        taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false, checkRuleType: 'Fixedmount',
-        checkBeanRes: 'Fixed', checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '',
-        group: '', sequence: '', pic: '', jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' }
-      };
-      this.isAddTackCenterVisible = false;
-    } else if (flag === 'taskLogs') {
-      this.isModifyTackCenterVisible = false;
     }
   }
 
@@ -516,49 +444,6 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'qqCustomer') {
       if (this.qqCustomerForm.controls['contact_qq'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: 'QQ号未填写' }); result = false;
-      }
-    } else if (flag === 'taskCenter') {
-      if (this.addTaskCenter.taskType === 'DAILY' || this.addTaskCenter.taskType === 'NOVICE') {  // 每日、新手
-        if (this.addTaskCenter.checkLimitNumber === true) { // 勾选次数限制
-          if (this.addTaskCenter.totalTimes === '') { this.modalService.error({ nzTitle: '提示', nzContent: '次数限制未填写' }); result = false; }
-        }
-        if (this.addTaskCenter.taskBehavior === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务行为未选择' }); result = false;
-        } else if (this.addTaskCenter.name === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务名称未填写' }); result = false;
-        } else if (this.addTaskCenter.description === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务描述未填写' }); result = false;
-        } else if (this.addTaskCenter.group === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务排序前置数字未填写' }); result = false;
-        } else if (this.addTaskCenter.sequence === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务排序后置数字未填写' }); result = false;
-        } else if (this.imageUrl === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '任务icon未上传' }); result = false;
-        }
-        if (this.addTaskCenter.jumpType === 'DIALOG') {
-          if (this.addTaskCenter.jump.msg === '') { this.modalService.error({ nzTitle: '提示', nzContent: '提示弹框的内容未填写' }); result = false; }
-        }
-        if (this.addTaskCenter.jumpType === 'WEB') {
-          if (this.addTaskCenter.jump.url === '') { this.modalService.error({ nzTitle: '提示', nzContent: '跳转到网页的网页未填写' }); result = false; }
-        }
-        if (this.addTaskCenter.checkBean === true) {
-          if (this.addTaskCenter.checkBeanRes === 'Fixed') {
-
-            if (this.addTaskCenter.rule.beanValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的固定金额未填写' }); result = false; }
-          }
-          if (this.addTaskCenter.checkBeanRes === 'Percentage') {
-
-            if (this.addTaskCenter.rule.beanPreValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的百分比未填写' }); result = false; }
-          }
-        }
-        if (this.addTaskCenter.checkExperience === true) {
-
-          if (this.addTaskCenter.rule.expValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '经验的固定经验未填写' }); result = false; }
-        }
-        if (this.addTaskCenter.checkSkill === true) {
-
-          if (this.addTaskCenter.rule.perkValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '技能点的固定技能点未填写' }); result = false; }
-        }
       }
     }
     if (this.fileList.length !== 1 && flag !== 'guide' && flag !== 'share' && flag !== 'content'
@@ -812,86 +697,13 @@ export class AppVersionComponent implements OnInit {
           this.loadData('qqCustomer');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'taskCenter') {
-      console.log(this.addTaskCenter);
-      if (!this.verificationAdd('taskCenter')) { return; }
-      let taskInput = {};
-      if (this.addTaskCenter.taskType === 'DAILY' || this.addTaskCenter.taskType === 'NOVICE') {  // 每日、新手
-        taskInput = {
-          type: this.addTaskCenter.taskType,
-          action: this.addTaskCenter.taskBehavior,
-          totalTimes: this.addTaskCenter.checkLimitNumber === true ? this.addTaskCenter.totalTimes === '' ? 0 : Number(this.addTaskCenter.totalTimes) : '',
-          name: this.addTaskCenter.name,
-          description: this.addTaskCenter.description,
-          group: this.addTaskCenter.group === '' ? 0 : Number(this.addTaskCenter.group),
-          sequence: this.addTaskCenter.sequence === '' ? 0 : Number(this.addTaskCenter.sequence),
-          pic: this.imageUrl,
-          jump: {
-            type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
-            page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
-            url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
-          },
-          taskAward: {
-            strategy: 'DEFAULT',
-            rule: {
-              beanAwardType: this.addTaskCenter.checkBean === true ? (this.addTaskCenter.checkBeanRes === 'Fixed' ? 'FIXED' : 'SCALE') : 'NONE',
-              beanValue: this.addTaskCenter.checkBeanRes === 'Fixed' ? (this.addTaskCenter.rule.beanValue === '' ? 0 : Number(this.addTaskCenter.rule.beanValue)) : this.addTaskCenter.checkBeanRes === 'Percentage' ? (this.addTaskCenter.rule.beanPreValue === '' ? 0 : Number(this.addTaskCenter.rule.beanPreValue))  : '',
-              expAwardType: this.addTaskCenter.checkExperience === true ? 'FIXED' : 'NONE',
-              expValue: this.addTaskCenter.rule.expValue === '' ? 0 : Number(this.addTaskCenter.rule.expValue),
-              perkAwardType: this.addTaskCenter.checkSkill === true ? 'FIXED' : 'NONE',
-              perkValue: this.addTaskCenter.rule.perkValue === '' ? 0 : Number(this.addTaskCenter.rule.perkValue)
-            }
-          },
-        };
-      } else if (this.addTaskCenter.taskType === 'ACTIVITY') {  // 活动
-        taskInput = {
-          type: this.addTaskCenter.taskType,
-          action: this.addTaskCenter.taskBehavior,
-          totalTimes: this.addTaskCenter.checkLimitNumber === true ? this.addTaskCenter.totalTimes === '' ? 0 : Number(this.addTaskCenter.totalTimes) : '',
-          name: this.addTaskCenter.name,
-          description: this.addTaskCenter.description,
-          group: this.addTaskCenter.group === '' ? 0 : Number(this.addTaskCenter.group),
-          sequence: this.addTaskCenter.sequence === '' ? 0 : Number(this.addTaskCenter.sequence),
-          pic: this.imageUrl,
-          jump: {
-            type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
-            page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
-            url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
-          },
-          taskAward: {
-            strategy: 'DEFAULT',
-            rule: {
-              beanAwardType: this.addTaskCenter.checkBean === true ? (this.addTaskCenter.checkBeanRes === 'Fixed' ? 'FIXED' : 'SCALE') : 'NONE',
-              beanValue: this.addTaskCenter.checkBeanRes === 'Fixed' ? (this.addTaskCenter.rule.beanValue === '' ? 0 : Number(this.addTaskCenter.rule.beanValue)) : this.addTaskCenter.checkBeanRes === 'Percentage' ? (this.addTaskCenter.rule.beanPreValue === '' ? 0 : Number(this.addTaskCenter.rule.beanPreValue))  : '',
-              expAwardType: this.addTaskCenter.checkExperience === true ? 'FIXED' : 'NONE',
-              expValue: this.addTaskCenter.rule.expValue === '' ? 0 : Number(this.addTaskCenter.rule.expValue),
-              perkAwardType: this.addTaskCenter.checkSkill === true ? 'FIXED' : 'NONE',
-              perkValue: this.addTaskCenter.rule.perkValue === '' ? 0 : Number(this.addTaskCenter.rule.perkValue)
-            }
-          },
-        };
-      }
-      console.log(taskInput);
-      const finalInput = this.commonService.deleteEmptyProperty(taskInput);
-      console.log(finalInput);
-      this.taskService.addTaskCenter(finalInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '保存' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('taskCenter'); // 保存成功后，变为编辑按钮
-          this.loadData('taskCenter');
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
     }
   }
 
   // 修改 - 弹框
   showModifyModal(data, flag) {
     if (flag === 'guide') {
-        // 清空
+      // 清空
       this.guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
       this.guideItem.messageArr.splice(0, this.guideItem.messageArr.length);
       this.guideItem.buttonArr.splice(0, this.guideItem.buttonArr.length);
@@ -936,7 +748,6 @@ export class AppVersionComponent implements OnInit {
       this.helpType = data.type;
       const file: any = { name: data.image };
       this.fileList.push(file);
-
       this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
     } else if (flag === 'modifyFlowPoint') {
       this.isModifyFlowPointVisible = true;
@@ -985,9 +796,7 @@ export class AppVersionComponent implements OnInit {
   }
 
   // 删除 - 复用弹窗
-  showDeleteModal(id, flag) {
-    this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(id, flag) });
-  }
+  showDeleteModal(id, flag) { this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(id, flag) }); }
 
   doDelete(id, flag) {
     if (flag === 'guide') {
@@ -1026,15 +835,6 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'flow_guides') {
       this.flowPointDate.guides.splice(id, 1);
       this.flowPointDate.guideArr.splice(id, 1);
-    } else if (flag === 'taskCenter') {
-      this.taskService.deleteTaskCenter(id).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '删除' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.loadData('taskCenter');
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
     }
   }
 
@@ -1072,16 +872,6 @@ export class AppVersionComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('flowPoint');
       });
-    } else if (flag === 'taskCenter') {
-      const switchInput = { 'id': data.id, 'enabled': data.enabled };
-      this.taskService.updateSwitch(switchInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '启用/不启用' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-        this.loadData('help');
-      });
     }
   }
 
@@ -1092,17 +882,6 @@ export class AppVersionComponent implements OnInit {
       const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
       const isMoreThanTen = file.size < 512000 ? true : false;
       if (this.currentPanel === 'share' || this.currentPanel === 'guide') { this.fileList.splice(0, this.fileList.length); }
-      if (!isPng) {
-        this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
-      } else if (!isMoreThanTen) {
-        this.msg.error('您只能上传不超过500K文件');
-      } else { this.fileList.push(file); this.handleUpload(); }
-      return false;
-    } else if (this.currentPanel === 'taskCenter') {
-      const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
-      const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
-      const isMoreThanTen = file.size < 512000 ? true : false;
-      this.fileList.splice(0, this.fileList.length);
       if (!isPng) {
         this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
       } else if (!isMoreThanTen) {
@@ -1120,7 +899,6 @@ export class AppVersionComponent implements OnInit {
       case 'share': url = `/copywriter/upload/`; flag = 'file'; break;
       case 'guide': url = `/guide/resources/images/`; flag = 'file'; break;
       case 'help': url = `/v1/cms/skills/images/`; flag = 'image'; break;
-      case 'taskCenter': url = `/tasks/photos`; flag = 'file'; break;
       default: break;
     }
     // 文件数量不可超过1个，超过一个则提示
@@ -1163,11 +941,9 @@ export class AppVersionComponent implements OnInit {
             this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/guide/resources/images/${this.imageUrl}`;
           } else if (this.currentPanel === 'help') {  // 技能帮助
             this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}${this.imageUrl}`;
-          } else if (this.currentPanel === 'taskCenter') {  // 任务中心
-            this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}/${this.imageUrl}`;
           }
           this.notification.success( '提示', '上传成功' );
-          const operationInput = { op_category: 'APP管理', op_page: this.currentPanel === 'share' ? '分享文案' : this.currentPanel === 'guide' ? '引导语模板' : this.currentPanel === 'help' ? '帮助管理' : this.currentPanel === 'taskCenter' ? '任务中心' : '' , op_name: '上传图片' };
+          const operationInput = { op_category: 'APP管理', op_page: this.currentPanel === 'share' ? '分享文案' : this.currentPanel === 'guide' ? '引导语模板' : this.currentPanel === 'help' ? '帮助管理' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
         formData.delete(flag);
@@ -1204,11 +980,7 @@ export class AppVersionComponent implements OnInit {
 
   // 日期插件
   onChange(result, flag): void {
-    if (flag === 'taskCenter') {
-      if (result === []) { this.beginTaskCenterDate = ''; this.endTaskCenterDate = ''; return; }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') { this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
-    }
+
   }
 
   // 切换面板
@@ -1217,7 +989,7 @@ export class AppVersionComponent implements OnInit {
     if (flag !== 'share') { this.isSaveShareButton = false; }
     if (flag !== 'qqCustomer') { this.isSaveQQCustomerButton = false; }
     this.currentPanel = flag;
-    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : flag === 'taskCenter' ? '任务中心' : '', op_name: '访问' };
+    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

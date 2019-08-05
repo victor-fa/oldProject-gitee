@@ -11,6 +11,7 @@ import { CommonService } from '../public/service/common.service';
 import { CouponService } from '../public/service/coupon.service';
 import { LocalizationService } from '../public/service/localization.service';
 import { XiaowubeanService } from '../public/service/xiaowubean.service';
+import { TaskService } from '../public/service/task.service';
 
 registerLocaleData(zh);
 
@@ -27,6 +28,8 @@ export class ActivityComponent implements OnInit {
   isAddCouponVisible = false;
   isModifyCouponVisible = false;
   isPreviewCouponVisible = false;
+  isAddTaskCenterVisible = false;
+  isModifyTaskCenterVisible = false;
   loading = false;
   searchActivityForm: FormGroup;
   searchCouponInActivityForm: FormGroup;
@@ -34,6 +37,8 @@ export class ActivityComponent implements OnInit {
   searchCouponForm: FormGroup;
   addCouponForm: FormGroup;
   modifyCouponForm: FormGroup;
+  searchTaskCenterForm: FormGroup;
+  searchTaskLogsForm: FormGroup;
   dataActivity = []; // 活动
   dataSearchCoupon = [];
   beginBaseInfoDate = ''; // 基本信息日期选择
@@ -63,6 +68,14 @@ export class ActivityComponent implements OnInit {
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   couponBeginDate = '';
   couponEndDate = '';
+  dataTaskCenter = [{'taskAward': {'stepRule': {}, 'stepRuleFinal': {}}}];  // 任务中心
+  dataTaskLogs = [];  // 任务日志
+  beginTaskCenterDate = '';
+  endTaskCenterDate = '';
+  beginTaskCenterActDate = '';
+  endTaskCenterActDate = '';
+  beginTaskLogDate = '';
+  endTaskLogDate = '';
   couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
   dataCoupon = []; // 内容
   couponAllChecked = false;
@@ -109,6 +122,14 @@ export class ActivityComponent implements OnInit {
   beginBeanDate = null;
   endBeanDate = null;
   radioBeanValue = 'PERCENT_GIFT';  // 单选
+  templateId = '';
+  addTaskCenter = {
+    taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false, checkBeanRes: 'Fixed',
+    checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '', group: '', sequence: '', pic: '',
+    jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+    stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
+    date: []
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -123,6 +144,7 @@ export class ActivityComponent implements OnInit {
     private msg: NzMessageService,
     private datePipe: DatePipe,
     private http: HttpClient,
+    private taskService: TaskService,
   ) {
     this.commonService.nav[6].active = true;
     this._initForm();
@@ -130,7 +152,8 @@ export class ActivityComponent implements OnInit {
 
   ngOnInit() {
     const tabFlag = [{label: '优惠券配置', value: 'coupon'}, {label: '优惠券活动', value: 'activity'},
-        {label: '批量发放', value: 'batchsendList'}, {label: '充值送豆', value: 'bean'}];
+        {label: '批量发放', value: 'batchsendList'}, {label: '充值送豆', value: 'bean'},
+        {label: '任务中心', value: 'taskCenter'}, {label: '任务日志', value: 'taskLogs'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -301,6 +324,51 @@ export class ActivityComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'taskCenter') {
+      const taskCenterInput = {
+        name: this.searchTaskCenterForm.controls['name'].value,
+        type: this.searchTaskCenterForm.controls['type'].value,
+        createTimeFloor: this.beginTaskCenterDate,
+        createTimeCeil: this.endTaskCenterDate,
+      };
+      this.taskService.getTaskCenterList(taskCenterInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataTaskCenter = JSON.parse(res.payload).content;
+          console.log(JSON.parse(res.payload).content);
+          this.dataTaskCenter.forEach(item => {
+            if (item.taskAward) {
+              if (item.taskAward.stepRule) {
+                for (const key in item.taskAward.stepRule) {
+                  item.taskAward.stepRuleFinal = item.taskAward.stepRule[key];
+                }
+              }
+            }
+          });
+          console.log(this.dataTaskCenter);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+      const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '访问' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
+      this.isSpinning = false;
+    } else if (flag === 'taskLogs') {
+      const logInput = {
+        finishTimeFloor: this.beginTaskLogDate,
+        finishTimeCeil: this.endTaskLogDate,
+        userId: this.searchTaskLogsForm.controls['userId'].value,
+        userPhone: this.searchTaskLogsForm.controls['userPhone'].value,
+        taskName: this.searchTaskLogsForm.controls['taskName'].value,
+      };
+      this.taskService.getTaskCenterLog(logInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataTaskLogs = JSON.parse(res.payload).content;
+          console.log(this.dataTaskLogs);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+      const operationInput = { op_category: 'APP管理', op_page: '任务日志', op_name: '访问' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
+      this.isSpinning = false;
     }
   }
 
@@ -332,6 +400,8 @@ export class ActivityComponent implements OnInit {
       giftAmount: [''], });
     this.modifyCouponForm = this.fb.group({ couponName: [''], date: [''], discountType: [''], timeLimitValidDay: [''], thresholdPrice: [''],
       discountPrice: [''], timeLimitType: [''], });
+    this.searchTaskCenterForm = this.fb.group({ name: [''], type: [''], date: [''] });
+    this.searchTaskLogsForm = this.fb.group({ date: [''], userId: [''], userPhone: [''], taskName: [''] });
   }
 
   // 弹框
@@ -477,6 +547,72 @@ export class ActivityComponent implements OnInit {
       this.beanItem = data;
       this.beanItem.giftPercent = data.giftPercent ? data.giftPercent : 0;
       this.radioBeanValue = data.type;
+    } else if (flag === 'addTaskCenter') {
+      this.isAddTaskCenterVisible = true;
+    } else if (flag === 'modifyTaskCenter') {
+      this.templateId = data;
+      this.taskService.getTaskCenter(data).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          const task = JSON.parse(res.payload);
+          console.log(task);
+          const stepRule = [];
+          if (task.taskAward.stepRule) {
+            for (const key in task.taskAward.stepRule) {
+              stepRule.push({
+                rechargeAmount: key,
+                checkBean: task.taskAward.stepRule[key].beanAwardType === 'FIXED' || task.taskAward.stepRule[key].beanAwardType === 'Percentage' ? true : task.taskAward.stepRule[key].beanAwardType === 'NONE' ? false : false,
+                checkBeanRes: task.taskAward.stepRule[key].beanAwardType === 'FIXED' ? 'Fixed' : task.taskAward.stepRule[key].beanAwardType === 'SCALE' ? 'Percentage' : '',
+                beanValue: task.taskAward.stepRule[key].beanAwardType === 'FIXED' ? task.taskAward.stepRule[key].beanValue : '',
+                beanPreValue: task.taskAward.stepRule[key].beanAwardType === 'SCALE' ? task.taskAward.stepRule[key].beanValue : '',
+                checkExperience: task.taskAward.stepRule[key].expAwardType === 'FIXED' ? true : task.taskAward.stepRule[key].expAwardType === 'NONE' ? false : false,
+                expValue: task.taskAward.stepRule[key].expAwardType === 'FIXED' ? task.taskAward.stepRule[key].expValue : '',
+                checkSkill: task.taskAward.stepRule[key].perkAwardType === 'FIXED' ? true : task.taskAward.stepRule[key].perkAwardType === 'NONE' ? false : false,
+                perkValue: task.taskAward.stepRule[key].perkAwardType === 'FIXED' ? task.taskAward.stepRule[key].perkValue : ''
+              });
+            };
+          }
+          this.addTaskCenter = {
+            taskType: task.type,
+            taskBehavior: task.action,
+            checkLimitNumber: task.totalTimes > 0 ? true : false,
+            jumpType: task.jump.type,
+            checkBean: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'FIXED' || task.taskAward.rule.beanAwardType === 'Percentage' ? true : task.taskAward.rule.beanAwardType === 'NONE' ? false : false : false,
+            checkExperience: task.taskAward.rule ? task.taskAward.rule.expAwardType === 'FIXED' ? true : task.taskAward.rule.expAwardType === 'NONE' ? false : false : false,
+            checkSkill: task.taskAward.rule ? task.taskAward.rule.perkAwardType === 'FIXED' ? true : task.taskAward.rule.perkAwardType === 'NONE' ? false : false : false,
+            checkBeanRes: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'FIXED' ? 'Fixed' : task.taskAward.rule.beanAwardType === 'SCALE' ? 'Percentage' : '' : '',
+            checkExperienceRes: task.taskAward.rule ? task.taskAward.rule.expAwardType === 'FIXED' ? 'Fixed' : '' : '',
+            checkSkillRes: task.taskAward.rule ? task.taskAward.rule.perkAwardType === 'FIXED' ? 'Fixed' : '' : '',
+            activityRule: task.taskAward.strategy,
+            checkActivityBean: false, // 活动的
+            totalTimes: task.totalTimes,
+            name: task.name,
+            description: task.description,
+            group: task.group,
+            sequence: task.sequence,
+            pic: task.pic,
+            jump: {
+              msg: task.jump.msg ? task.jump.msg : '',
+              page: task.jump.page ? task.jump.page : 0,
+              url: task.jump.url ? task.jump.url : ''
+            },
+            rule: {
+              beanValue: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'FIXED' ? task.taskAward.rule.beanValue : '' : '',
+              beanPreValue: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'SCALE' ? task.taskAward.rule.beanValue : '' : '',
+              expValue: task.taskAward.rule ? task.taskAward.rule.expAwardType === 'FIXED' ? task.taskAward.rule.expValue : '' : '',
+              perkValue: task.taskAward.rule ? task.taskAward.rule.perkAwardType === 'FIXED' ? task.taskAward.rule.perkValue : '' : ''
+            },
+            stepRule: stepRule,
+            date: [task.effectiveTimeFloor, task.effectiveTimeCeil],
+          };
+          console.log(this.addTaskCenter);
+          const file: any = {};
+          this.fileList.push(file);
+          this.imageUrl = task.pic;
+          this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/tasks/photos/${task.pic}`;
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+      this.isModifyTaskCenterVisible = true;
     }
   }
 
@@ -529,6 +665,19 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'searchBean') {
       this.loadData('bean');
       this.isSearchBeanVisible = false;
+    } else if (flag === 'taskCenter') {
+      this.addTaskCenter = {
+        taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false,
+        checkBeanRes: 'Fixed', checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '',
+        group: '', sequence: '', pic: '', jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+        stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
+        date: []
+      };
+      this.fileList.splice(0, this.fileList.length);
+      this.imageUrl = '';
+      this.showImageUrl = '';
+      this.isAddTaskCenterVisible = false;
+      this.isModifyTaskCenterVisible = false;
     }
   }
 
@@ -644,6 +793,74 @@ export class ActivityComponent implements OnInit {
       if (content !== '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '您输入的有效时间跟其他活动时间重叠，请重新选择时间<br>' + content });
         result = false;
+      }
+    } else if (flag === 'taskCenter') {
+      if (this.addTaskCenter.taskType === 'DAILY' || this.addTaskCenter.taskType === 'NOVICE') {  // 每日、新手
+        if (this.addTaskCenter.checkLimitNumber === true) { // 勾选次数限制
+          if (this.addTaskCenter.totalTimes === '') { this.modalService.error({ nzTitle: '提示', nzContent: '次数限制未填写' }); result = false; }
+        }
+        if (this.addTaskCenter.taskBehavior === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务行为未选择' }); result = false;
+        } else if (this.addTaskCenter.name === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务名称未填写' }); result = false;
+        } else if (this.addTaskCenter.description === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务描述未填写' }); result = false;
+        } else if (this.addTaskCenter.group === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务排序前置数字未填写' }); result = false;
+        } else if (this.addTaskCenter.sequence === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务排序后置数字未填写' }); result = false;
+        } else if (this.imageUrl === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '任务icon未上传' }); result = false;
+        }
+        if (this.addTaskCenter.jumpType === 'DIALOG') {
+          if (this.addTaskCenter.jump.msg === '') { this.modalService.error({ nzTitle: '提示', nzContent: '提示弹框的内容未填写' }); result = false; }
+        }
+        if (this.addTaskCenter.jumpType === 'WEB') {
+          if (this.addTaskCenter.jump.url === '') { this.modalService.error({ nzTitle: '提示', nzContent: '跳转到网页的网页未填写' }); result = false; }
+        }
+        if (this.addTaskCenter.checkBean === true) {
+          if (this.addTaskCenter.checkBeanRes === 'Fixed') {
+            if (this.addTaskCenter.rule.beanValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的固定金额未填写' }); result = false; }
+          }
+          if (this.addTaskCenter.checkBeanRes === 'Percentage') {
+            if (this.addTaskCenter.rule.beanPreValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的百分比未填写' }); result = false; }
+          }
+        }
+        if (this.addTaskCenter.checkExperience === true) {
+          if (this.addTaskCenter.rule.expValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '经验的固定经验未填写' }); result = false; }
+        }
+        if (this.addTaskCenter.checkSkill === true) {
+          if (this.addTaskCenter.rule.perkValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '技能点的固定技能点未填写' }); result = false; }
+        }
+      } else if (this.addTaskCenter.taskType === 'ACTIVITY') {
+        if (this.addTaskCenter.name === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '活动名称未填写' }); result = false;
+        } else if (this.beginTaskCenterActDate === '' || this.endTaskCenterActDate === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '活动时间未选择' }); result = false;
+        } else if (this.addTaskCenter.description === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '活动描述未填写' }); result = false;
+        } else if (this.imageUrl === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '活动icon未上传' }); result = false;
+        }
+        this.addTaskCenter.stepRule.forEach(item => { // 循环判断是否有每填的内容
+          if (item.rechargeAmount === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '充值金额未填写' }); result = false;
+          }
+          if (item.checkBean === true) {  // 检查小悟豆点击
+            if (item.checkBeanRes === 'Fixed') {
+              if (item.beanValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的固定金额未填写' }); result = false; }
+            }
+            if (item.checkBeanRes === 'Percentage') {
+              if (item.beanPreValue === '') { this.modalService.error({ nzTitle: '提示', nzContent: '小悟豆的百分比未填写' }); result = false; }
+            }
+          }
+          if (item.checkExperience === true) {  // 检查经验点击
+            if (item.expValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '经验的固定经验未填写' }); result = false; }
+          }
+          if (item.checkSkill === true) {  // 检查技能点点击
+            if (item.perkValue === '') {this.modalService.error({nzTitle: '提示', nzContent: '技能点的固定技能点未填写' }); result = false; }
+          }
+        });
       }
     }
     return result;
@@ -939,6 +1156,93 @@ export class ActivityComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'taskCenter') {
+      console.log(this.addTaskCenter);
+      if (!this.verificationAdd('taskCenter')) { return; }
+      let taskInput = {};
+      if (this.addTaskCenter.taskType === 'DAILY' || this.addTaskCenter.taskType === 'NOVICE') {  // 每日、新手
+        taskInput = {
+          type: this.addTaskCenter.taskType,
+          action: this.addTaskCenter.taskBehavior,
+          totalTimes: this.addTaskCenter.checkLimitNumber === true ? this.addTaskCenter.totalTimes === '' ? 0 : Number(this.addTaskCenter.totalTimes) : '',
+          name: this.addTaskCenter.name,
+          description: this.addTaskCenter.description,
+          group: this.addTaskCenter.group === '' ? 0 : Number(this.addTaskCenter.group),
+          sequence: this.addTaskCenter.sequence === '' ? 0 : Number(this.addTaskCenter.sequence),
+          pic: this.imageUrl,
+          jump: {
+            type: this.addTaskCenter.jumpType,
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
+            page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
+            url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
+          },
+          taskAward: {
+            strategy: 'DEFAULT',
+            rule: {
+              beanAwardType: this.addTaskCenter.checkBean === true ? (this.addTaskCenter.checkBeanRes === 'Fixed' ? 'FIXED' : 'SCALE') : 'NONE',
+              beanValue: this.addTaskCenter.checkBeanRes === 'Fixed' ? (this.addTaskCenter.rule.beanValue === '' ? 0 : Number(this.addTaskCenter.rule.beanValue)) : this.addTaskCenter.checkBeanRes === 'Percentage' ? (this.addTaskCenter.rule.beanPreValue === '' ? 0 : Number(this.addTaskCenter.rule.beanPreValue))  : '',
+              expAwardType: this.addTaskCenter.checkExperience === true ? 'FIXED' : 'NONE',
+              expValue: this.addTaskCenter.rule.expValue === '' ? 0 : Number(this.addTaskCenter.rule.expValue),
+              perkAwardType: this.addTaskCenter.checkSkill === true ? 'FIXED' : 'NONE',
+              perkValue: this.addTaskCenter.rule.perkValue === '' ? 0 : Number(this.addTaskCenter.rule.perkValue)
+            }
+          },
+        };
+      } else if (this.addTaskCenter.taskType === 'ACTIVITY') {  // 活动
+        const stepRule = {};
+        this.addTaskCenter.stepRule.forEach(item => {
+          stepRule[item.rechargeAmount] = {
+            beanAwardType: item.checkBean === true ? (item.checkBeanRes === 'Fixed' ? 'FIXED' : 'SCALE') : 'NONE',
+            beanValue: item.checkBeanRes === 'Fixed' ? (item.beanValue === '' ? 0 : Number(item.beanValue)) : item.checkBeanRes === 'Percentage' ? (item.beanPreValue === '' ? 0 : Number(item.beanPreValue))  : '',
+            expAwardType: item.checkExperience === true ? 'FIXED' : 'NONE',
+            expValue: item.expValue === '' ? 0 : Number(item.expValue),
+            perkAwardType: item.checkSkill === true ? 'FIXED' : 'NONE',
+            perkValue: item.perkValue === '' ? 0 : Number(item.perkValue)
+          };
+        });
+        taskInput = {
+          type: this.addTaskCenter.taskType,
+          name: this.addTaskCenter.name,
+          effectiveTimeCeil: this.endTaskCenterActDate,
+          effectiveTimeFloor: this.beginTaskCenterActDate,
+          description: this.addTaskCenter.description,
+          pic: this.imageUrl,
+          jump: {
+            type: this.addTaskCenter.jumpType,
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
+            page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
+            url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
+          },
+          taskAward: {
+            strategy: 'RECHARGE',
+            stepRule: stepRule
+          },
+        };
+      }
+      console.log(taskInput);
+      const finalInput = this.commonService.deleteEmptyProperty(taskInput); // 删除null以及''的对象
+      console.log(finalInput);
+      if (this.isAddTaskCenterVisible) {  // 新增弹窗
+        this.taskService.addTaskCenter(finalInput).subscribe(res => {
+          if (res.retcode === 0) {
+            this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '保存' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.hideModal('taskCenter'); // 保存成功后，变为编辑按钮
+            this.loadData('taskCenter');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        });
+      } else if (this.isModifyTaskCenterVisible) {  // 修改弹窗
+        this.taskService.updateTaskCenter(this.templateId, finalInput).subscribe(res => {
+          if (res.retcode === 0) {
+            this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '保存' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.hideModal('taskCenter'); // 保存成功后，变为编辑按钮
+            this.loadData('taskCenter');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        });
+      }
     }
   }
 
@@ -1040,6 +1344,9 @@ export class ActivityComponent implements OnInit {
     }
   }
 
+  // 删除 - 复用弹窗
+  showDeleteModal(id, flag) { this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(id, flag) }); }
+
   doDelete(data, flag) {
     if (flag === 'activity') {
       this.activityService.deleteActivity(data.id).subscribe(res => {
@@ -1063,85 +1370,106 @@ export class ActivityComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
         }
       });
+    } else if (flag === 'taskCenter') {
+      this.taskService.deleteTaskCenter(data).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('taskCenter');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
   // 上传image
   beforeUpload = (file: UploadFile): boolean => {
-    const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
-    const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
-    const isMoreThanTen = file.size < 512000 ? true : false;  // 512000
-    if (!isPng) {
-      this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
-    } else if (!isMoreThanTen) {
-      this.msg.error('您只能上传不超过500K文件');
-    } else {
-      if (this.isModifyModelShow) { // 修改
-        this.fileList.push(file);
-        this.handleUpload(this.baseInfoId);
-      } else {  // 新增
-        if (this.verificationAdd('baseInfo')) { // 验证
-          const activityInput = {
-            'actName': this.addActivityForm.controls['actName'].value,
-            'actStartDate': this.beginBaseInfoDate,
-            'actEndDate': this.endBaseInfoDate,
-            'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value
-          };
-          this.activityService.addActivity(activityInput).subscribe(res => {
-            if (res.retcode === 0) {
-              if (res.payload === '') {
+    if (this.currentPanel !== 'taskCenter') {
+      const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+      const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
+      const isMoreThanTen = file.size < 512000 ? true : false;  // 512000
+      if (!isPng) {
+        this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
+      } else if (!isMoreThanTen) {
+        this.msg.error('您只能上传不超过500K文件');
+      } else {
+        if (this.isModifyModelShow) { // 修改
+          this.fileList.push(file);
+          this.handleUpload(this.baseInfoId);
+        } else {  // 新增
+          if (this.verificationAdd('baseInfo')) { // 验证
+            const activityInput = {
+              'actName': this.addActivityForm.controls['actName'].value,
+              'actStartDate': this.beginBaseInfoDate,
+              'actEndDate': this.endBaseInfoDate,
+              'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value
+            };
+            this.activityService.addActivity(activityInput).subscribe(res => {
+              if (res.retcode === 0) {
+                if (res.payload === '') {
+                  this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+                  return;
+                }
+                this.baseInfoId = JSON.parse(res.payload).id;
+                this.fileList.push(file);
+                this.handleUpload(this.baseInfoId);
+                // this.notification.blank( '提示', '添加成功', { nzStyle: { color : 'green' } });
+                this.loadData('activity');
+              } else {
                 this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-                return;
               }
-              this.baseInfoId = JSON.parse(res.payload).id;
-              this.fileList.push(file);
-              this.handleUpload(this.baseInfoId);
-              // this.notification.blank( '提示', '添加成功', { nzStyle: { color : 'green' } });
-              this.loadData('activity');
-            } else {
-              this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-            }
-          });
+            });
+          }
         }
       }
-    }
-    return false;
+     } else if (this.currentPanel === 'taskCenter') {
+        const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+        const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
+        const isMoreThanTen = file.size < 512000 ? true : false;
+        this.fileList.splice(0, this.fileList.length);
+        if (!isPng) {
+          this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
+        } else if (!isMoreThanTen) {
+          this.msg.error('您只能上传不超过500K文件');
+        } else { this.fileList.push(file); this.handleUpload(''); }
+        return false;
+      }
+      return false;
   }
 
   // 点击上传
   handleUpload(baseInfoId): void {
-    const url = `${this.commonService.baseUrl}/actrule/img`;
-    const imageUrl = `${this.commonService.baseUrl}`;
-    const flag = 'imageFile';
-    // 文件数量不可超过1个，超过一个则提示
-    if (this.fileList.length > 1) {
-      this.notification.error(
-        '提示', '您上传的文件超过一个！'
-      );
-      return;
+    let url = '';
+    let flag = '';
+    switch (this.currentPanel) {
+      case 'activity': url = `/actrule/img/`; flag = 'imageFile'; break;
+      case 'taskCenter': url = `/tasks/photos`; flag = 'file'; break;
+      default: break;
     }
+    // 文件数量不可超过1个，超过一个则提示
+    if (this.fileList.length > 1) { this.notification.error( '提示', '您上传的文件超过一个！' ); return; }
     const formData = new FormData();
     this.fileList.forEach((file: any) => {
       formData.append(flag, file);
-      formData.append('actRuleId', baseInfoId);
+      if (this.currentPanel === 'activity') { formData.append('actRuleId', baseInfoId); }
     });
-    const req = new HttpRequest('POST', url, formData, {
-      reportProgress: true,
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
+    const baseUrl = this.commonService.baseUrl;
+    const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, {
+      reportProgress: true, headers: new HttpHeaders({ 'Authorization': localStorage.getItem('token') })
     });
-    this.http
-      .request(req)
-      .pipe(filter(e => e instanceof HttpResponse))
+    this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
-          this.imageUrl = JSON.parse(event.body.payload).relativeUri;
-          this.showImageUrl = imageUrl.substring(0, imageUrl.indexOf('/api')) + this.imageUrl;
+          if (this.currentPanel === 'activity') {
+            this.imageUrl = JSON.parse(event.body.payload).relativeUri;
+            this.showImageUrl = baseUrl.substring(0, baseUrl.indexOf('/api')) + this.imageUrl;
+          } else if (this.currentPanel === 'taskCenter') {
+            this.showImageUrl = `${baseUrl.substring(0, baseUrl.indexOf('/admin'))}/v1${url}/${this.imageUrl}`;
+          }
           this.notification.success( '提示', '上传成功' );
-          const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '上传活动图片' };
+          const operationInput = { op_category: '活动管理', op_page: this.currentPanel === 'activity' ? '活动管理' : this.currentPanel === 'taskCenter' ? '任务中心' : '', op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
         formData.delete(flag);
       },
       err => { formData.delete(flag); }
@@ -1191,86 +1519,40 @@ export class ActivityComponent implements OnInit {
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'baseInfo') {  // 基本信息的活动时间
-      if (result === []) {
-        this.beginBaseInfoDate = '';
-        this.endBaseInfoDate = '';
-        return;
-      }
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginBaseInfoDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        this.endBaseInfoDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
-      }
+      if (result === []) { this.beginBaseInfoDate = ''; this.endBaseInfoDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginBaseInfoDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endBaseInfoDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     } else if (flag === 'rule') { // 下方的重置时间约束时间
-      if (result === []) {
-        this.beginRuleDate = '';
-        this.endRuleDate = '';
-        return;
-      }
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginRuleDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + '@' + this.datePipe.transform(result[0], 'HH:mm:ss');
-        this.endRuleDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + '@' + this.datePipe.transform(result[0], 'HH:mm:ss');
-      }
-
+      if (result === []) { this.beginRuleDate = ''; this.endRuleDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginRuleDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + '@' + this.datePipe.transform(result[0], 'HH:mm:ss'); this.endRuleDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + '@' + this.datePipe.transform(result[0], 'HH:mm:ss'); }
     } else if (flag === 'couponInActivity') { // 红包 活动奖励查询 时间
-      if (result === []) {
-        this.beginCouponDate = '';
-        this.endCouponDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginCouponDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        this.endCouponDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
-      }
+      if (result === []) { this.beginCouponDate = ''; this.endCouponDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginCouponDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endCouponDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     } else if (flag === 'coupon') { // 红包
-      if (result === []) {
-        this.couponBeginDate = '';
-        this.couponEndDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.couponBeginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z';
-        this.couponEndDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z';
-      }
-      // 手动点击清空
-      if (this.couponBeginDate === null || this.couponEndDate === null) {
-        this.couponBeginDate = this.commonService.getDay(-7);
-        this.couponEndDate = this.commonService.getDay(-1);
-      }
+      if (result === []) { this.couponBeginDate = ''; this.couponEndDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.couponBeginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z'; this.couponEndDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z'; }
+      if (this.couponBeginDate === null || this.couponEndDate === null) { this.couponBeginDate = this.commonService.getDay(-7); this.couponEndDate = this.commonService.getDay(-1); }
     } else if (flag === 'baseInfo') {  // 基本信息的活动时间
-      if (result === []) {
-        this.beginBatchsendDate = '';
-        this.endBatchsendDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z';
-        this.endBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z';
-      }
+      if (result === []) { this.beginBatchsendDate = ''; this.endBatchsendDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z'; this.endBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z'; }
     } else if (flag === 'couponInBatchsend') { // 红包 活动奖励查询 时间
-      if (result === []) {
-        this.beginCouponInBatchsendDate = '';
-        this.endCouponInBatchsendDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginCouponInBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        this.endCouponInBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
-      }
+      if (result === []) { this.beginCouponInBatchsendDate = ''; this.endCouponInBatchsendDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginCouponInBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endCouponInBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     } else if (flag === 'searchBean') {
-      if (result === []) {
-        this.beginBeanDate = '';
-        this.endBeanDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
-      }
+      if (result === []) { this.beginBeanDate = ''; this.endBeanDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+    }if (flag === 'taskCenter') {
+      if (result === []) { this.beginTaskCenterDate = ''; this.endTaskCenterDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
+    } else if (flag === 'taskCenterAct') {
+      if (result === []) { this.beginTaskCenterActDate = ''; this.endTaskCenterActDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginTaskCenterActDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaskCenterActDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+    } else if (flag === 'taskLogs') {
+      if (result === []) { this.beginTaskLogDate = ''; this.endTaskLogDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginTaskLogDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaskLogDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
+    } else if (flag === 'addStepRule') {
+      this.addTaskCenter.stepRule.push({ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' });
+    } else if (flag === 'deleteStepRule') {
+      this.addTaskCenter.stepRule.splice(result, 1);
     }
   }
 
@@ -1341,6 +1623,21 @@ export class ActivityComponent implements OnInit {
     return arr;
   }
 
+  // 点击switch
+  clickSwitch(data, flag) {
+    if (flag === 'taskCenter') {
+      const switchInput = { 'id': data.id, 'enabled': data.enabled };
+      this.taskService.updateSwitch(switchInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        this.loadData('taskCenter');
+      });
+    }
+  }
+
   // 获取片类限制
   getCheckedCategory() {
     let flag = '';
@@ -1365,7 +1662,7 @@ export class ActivityComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : '', op_name: '访问' };
+    const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : flag === 'taskCenter' ? '任务中心' : flag === 'taskCenter' ? '任务日志' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
