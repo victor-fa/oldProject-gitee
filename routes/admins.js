@@ -16,6 +16,7 @@ var myDate = new Date();
 const fs = require('fs');
 var config = require('config');
 
+var request = require('request')
 var rp = require('request-promise');
 // Manage
 router.get('/manage', function (req, res) {
@@ -383,32 +384,31 @@ router.post('/manage/api/app-add', function (req, res) {
 });
 
 function addAppToDB(attr,callbackfunciton){
-    //http.get("http://localhost" + '/api/admin/add-app?'+ attr, function(res) {
-	https.get(config.deploy_domain_name + '/api/admin/add-app?'+ attr, function(res) {
+	request.get(config.deploy_domain_name + '/api/admin/add-app?'+ attr)
+	.on('response', function(res) {
 		callbackfunciton('success');
-        
-    }).on('error', function(e) {
-
+    })
+	.on('error', function(e) {
         callbackfunciton(e.message + " error");
     });
 
 }
 
 function delAppBySrt(attr){
-	//http.get("http://localhost" + '/api/admin/del-app?'+ attr
-	https.get(config.deploy_domain_name + '/api/admin/del-app?'+ attr
-	).on('error', function(e) {
-
-        return e.message
+	request.get(config.deploy_domain_name + '/api/admin/del-app?'+ attr)
+	.on('error', function(e) {
+        callbackfunciton(e.message + " error");
     });
 }
 
 function updateApp(attr,callbackfunciton){
 	//http.get("http://localhost" + '/api/admin/alt-app?'+ attr
-	https.get(config.deploy_domain_name + '/api/admin/alt-app?'+ attr
-	).on('error', function(e) {
-
-        return (e.message + " error");
+	request.get(config.deploy_domain_name + '/api/admin/alt-app?'+ attr)
+	.on('response', function(res) {
+		callbackfunciton('success');
+    })
+	.on('error', function(e) {
+        callbackfunciton(e.message + " error");
     });
 }
 
@@ -435,8 +435,11 @@ function getAppBySecret(attr,callbackfunciton){
 }
 
 function getAppsKeysAndScrets(urlpath,callbackfunciton){
-	//http.get("http://localhost" + urlpath, function(res) {
-    https.get(config.deploy_domain_name + urlpath, function(res) {
+	var req = http;
+	if (config.deploy_domain_name.indexOf('https') != -1) {
+		req = https;
+	}
+	req.get(config.deploy_domain_name + urlpath, function(res) {
         var datas = [];
         var size = 0;
         res.on('data', function (data) {
