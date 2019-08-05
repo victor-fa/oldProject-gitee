@@ -9,6 +9,6 @@
 		"password": "TTC12345ttc",
 		"domain": "smtp.exmail.qq.com"
 	},
-	"deploy_domain_name":"robot-service.centaurstech.com",
+	"deploy_domain_name":"https://robot-service.centaurstech.com",
 	"debug": true
 }

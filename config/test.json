@@ -9,6 +9,6 @@
 		"password": "TTC12345ttc",
 		"domain": "smtp.exmail.qq.com"
 	},
-	"deploy_domain_name":"robot-service-test.chewrobot.com",
+	"deploy_domain_name":"http://robot-service-test.chewrobot.com",
 	"debug": true
 }
