@@ -1,0 +1,14 @@
+{
+	"email": {
+		"username": "monitor@qiwu.ai",
+		"password": "P6RKGyhpSTbpMb2xKhLbE44zQujKZERv",
+		"domain": "smtp.exmail.qq.com"
+	},
+	"activation_email": {
+		"username": "tongchengtang@qiwu.ai",
+		"password": "TTC12345ttc",
+		"domain": "smtp.exmail.qq.com"
+	},
+	"deploy_domain_name":"robot-service-test.chewrobot.com",
+	"debug": true
+}
