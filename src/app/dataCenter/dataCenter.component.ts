@@ -16,14 +16,9 @@ registerLocaleData(zh);
 })
 export class DataCenterComponent implements OnInit {
 
-  displayData = [];
-  allChecked = false;
-  indeterminate = false;
-  isExplainVisiable = false;
-  isSessionLineVisiable = false;  // 显隐行列
+  visiable = {explain: false, sessionLine: false };
   searchDataCenterForm: FormGroup;
   pageSize = 100;
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = '';
   endDate = '';
   isSpinning = false;
@@ -235,14 +230,14 @@ export class DataCenterComponent implements OnInit {
   // 展开数据说明
   shouSomething(flag) {
     if (flag === 'explain') {
-      this.isExplainVisiable = true;
+      this.visiable.explain = true;
     }
   }
 
   // 关闭数据说明
   hideSomething(flag) {
     if (flag === 'explain') {
-      this.isExplainVisiable = false;
+      this.visiable.explain = false;
     }
   }
 

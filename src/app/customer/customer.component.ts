@@ -16,6 +16,7 @@ registerLocaleData(zh);
 })
 export class CustomerComponent implements OnInit {
 
+  visiable = {feedBack: false, opposition: false, agree: false, batchDownload: false };
   pageSize = 10;
   feedbackInfo = [];
   oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
@@ -23,10 +24,6 @@ export class CustomerComponent implements OnInit {
   invoiceTimeInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   invoiceLogInfo = [];
   businessInfo = [];
-  isFeedBackVisible = false;
-  isOppositionVisible = false;
-  isAgreeVisible = false;
-  isBatchDownloadVisible = false;
   currentOppositionAgreeId = '';  // 弹框后的id
   searchInvoiceTimeForm: FormGroup;
   searchInvoiceLogForm: FormGroup;
@@ -53,7 +50,6 @@ export class CustomerComponent implements OnInit {
   endOppositionDate = '';
   beginAgreeDate = '';
   endAgreeDate = '';
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   isSpinning = false;
   currentBatchSelected = '1';
   currentTabset = 0;
@@ -259,16 +255,16 @@ export class CustomerComponent implements OnInit {
 
   showModal(data, flag) {
     if (flag === 'opposition') {
-      this.isOppositionVisible = true;
+      this.visiable.opposition = true;
       this.tempOpposition = data;
       this.currentOppositionAgreeId = data.id;
     } else if (flag === 'batchDownload') {
-      this.isBatchDownloadVisible = true;
+      this.visiable.batchDownload = true;
     } else if (flag === 'feedBack') {
-      this.isFeedBackVisible = true;
+      this.visiable.feedBack = true;
       this.tempFeedBack = data;
     } else if (flag === 'agree') {
-      this.isAgreeVisible = true;
+      this.visiable.agree = true;
       this.tempAgree = data;
       this.currentOppositionAgreeId = data.id;
     }
@@ -276,13 +272,13 @@ export class CustomerComponent implements OnInit {
 
   hideModal(flag) {
     if (flag === 'opposition') {
-      this.isOppositionVisible = false;
+      this.visiable.opposition = false;
     } else if (flag === 'batchDownload') {
-      this.isBatchDownloadVisible = false;
+      this.visiable.batchDownload = false;
     } else if (flag === 'feedBack') {
-      this.isFeedBackVisible = false;
+      this.visiable.feedBack = false;
     } else if (flag === 'agree') {
-      this.isAgreeVisible = false;
+      this.visiable.agree = false;
     }
   }
 

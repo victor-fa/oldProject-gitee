@@ -18,8 +18,7 @@ registerLocaleData(zh);
 })
 export class OperateComponent implements OnInit {
 
-  isTaxiDetailVisible = false;
-  orderStateSettingVisible = false;
+  visiable = {taxiDetail: false, orderStateSetting: false };
   searchTaxiForm: FormGroup;
   searchOrderStateForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
@@ -35,7 +34,6 @@ export class OperateComponent implements OnInit {
   endTaxiDate = '';
   beginOrderStateDate = '';
   endOrderStateDate = '';
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   currentPanel = 'taxi';  // 当前面板 默认
   currentChannelName = '你好小悟';
   currentIOSVoiceId = ''; // 拿到id
@@ -159,7 +157,7 @@ export class OperateComponent implements OnInit {
   // 弹框
   showModal(flag, data) {
     if (flag === 'taxi') {
-      this.isTaxiDetailVisible = true;
+      this.visiable.taxiDetail = true;
       this.currentTaxi = data;
       this.loadData('taxi');
       let mainMap, mainRoute;
@@ -181,7 +179,7 @@ export class OperateComponent implements OnInit {
       });
       setTimeout(() => {this.refreshMap(); }, 500);
     } else if (flag === 'orderStateSetting') {
-      this.orderStateSettingVisible = true;
+      this.visiable.orderStateSetting = true;
       this.currentOrderStateSetting = data;
       this.currentOrderStateSetting.time1 = '0';
       this.currentOrderStateSetting.time2 = '0';
@@ -200,14 +198,14 @@ export class OperateComponent implements OnInit {
 
   hideModal(flag) {
     if (flag === 'taxi') {
-      this.isTaxiDetailVisible = false;
+      this.visiable.taxiDetail = false;
       this.loadData('taxi');
     } else if (flag === 'voicceIOS') {
       this.isSaveIOSVoiceButton = false;
     } else if (flag === 'voicceANDROID') {
       this.isSaveANDROIDVoiceButton = false;
     } else if (flag === 'orderStateSetting') {
-      this.orderStateSettingVisible = false;
+      this.visiable.orderStateSetting = false;
     }
   }
 

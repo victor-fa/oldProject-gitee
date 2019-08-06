@@ -23,7 +23,7 @@
                 上传时间：
               </div>
               <div nz-col nzSpan="7">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taggingNews')" nzShowTime></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taggingNews')" nzShowTime></nz-range-picker>
               </div>
 
             </form>
@@ -69,7 +69,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isSortSpeechVisible" nzWidth="750" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.sortSpeech" nzWidth="750" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 标注本页：
@@ -146,7 +146,7 @@
                 提交时间：
               </div>
               <div nz-col nzSpan="7">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'manualAudit')" nzShowTime></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'manualAudit')" nzShowTime></nz-range-picker>
               </div>
 
             </form>
@@ -199,7 +199,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isManualAuditVisible" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.manualAudit" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 词条名称：
@@ -259,7 +259,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="isUploadAuditVisible" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.uploadAudit" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down spacing right_alignment">
                 词性类型：
@@ -368,7 +368,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddNewsThesaurusVisible" nzWidth="650" nzTitle="上传审核文件" [nzFooter]="addNewsThesaurusFooter" (nzOnCancel)="hideModal('addNewsThesaurus')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addNewsThesaurus" nzWidth="650" nzTitle="新增词条" [nzFooter]="addNewsThesaurusFooter" (nzOnCancel)="hideModal('addNewsThesaurus')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down spacing right_alignment">
                 词性类型：
@@ -414,7 +414,7 @@
                 上传时间：
               </div>
               <div nz-col nzSpan="7">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'newsNER')" nzShowTime></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'newsNER')" nzShowTime></nz-range-picker>
               </div>
 
             </form>

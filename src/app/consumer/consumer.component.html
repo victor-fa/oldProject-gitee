@@ -66,7 +66,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddConsumerVisible" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addConsumer" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
             <form [formGroup]="addConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
@@ -134,7 +134,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="isModifyConsumerVisible" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyConsumer" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
             <form [formGroup]="modifyConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">

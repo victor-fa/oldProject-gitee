@@ -48,7 +48,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="isAddContentVisible" nzWidth="750" nzTitle="新增APP版本" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('content')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addContent" nzWidth="750" nzTitle="新增APP版本" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('content')" nzMaskClosable="false">
             <form [formGroup]="addContentForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3"></div>
@@ -294,7 +294,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddGuideVisible || isModifyGuideVisible" nzWidth="950" nzTitle="{{isModifyGuideVisible ? '修改模板' : '新增模板'}}" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideModal('guide')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addGuide || visiable.modifyGuide" nzWidth="950" nzTitle="{{isModifyGuideVisible ? '修改模板' : '新增模板'}}" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideModal('guide')" nzMaskClosable="false">
             <form [formGroup]="addGuideForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">
@@ -520,7 +520,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddHelpVisible" nzWidth="1150" nzTitle="新增技能" [nzFooter]="addHelpModalFooter" (nzOnCancel)="hideModal('addHelp')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addHelp" nzWidth="1150" nzTitle="新增技能" [nzFooter]="addHelpModalFooter" (nzOnCancel)="hideModal('addHelp')" nzMaskClosable="false">
             <form [formGroup]="addHelpForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">
@@ -598,7 +598,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="isModifyHelpVisible" nzWidth="1150" nzTitle="修改技能" [nzFooter]="modifyHelpModalFooter" (nzOnCancel)="hideModal('modifyHelp')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyHelp" nzWidth="1150" nzTitle="修改技能" [nzFooter]="modifyHelpModalFooter" (nzOnCancel)="hideModal('modifyHelp')" nzMaskClosable="false">
             <form [formGroup]="modifyHelpForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">
@@ -802,7 +802,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增流程点引导 -->
-          <nz-modal [(nzVisible)]="isAddFlowPointVisible" nzWidth="750" nzTitle="新增流程点引导" [nzFooter]="addFlowPointModalFooter" (nzOnCancel)="hideModal('addFlowPoint')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addFlowPoint" nzWidth="750" nzTitle="新增流程点引导" [nzFooter]="addFlowPointModalFooter" (nzOnCancel)="hideModal('addFlowPoint')" nzMaskClosable="false">
             <form [formGroup]="addFlowPointForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
@@ -884,7 +884,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改流程点引导 -->
-          <nz-modal [(nzVisible)]="isModifyFlowPointVisible" nzWidth="750" nzTitle="修改流程点引导" [nzFooter]="modifyFlowPointModalFooter" (nzOnCancel)="hideModal('modifyFlowPoint')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyFlowPoint" nzWidth="750" nzTitle="修改流程点引导" [nzFooter]="modifyFlowPointModalFooter" (nzOnCancel)="hideModal('modifyFlowPoint')" nzMaskClosable="false">
             <form [formGroup]="modifyFlowPointForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>

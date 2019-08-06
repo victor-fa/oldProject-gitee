@@ -16,8 +16,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  isAddConsumerVisible = false;
-  isModifyConsumerVisible = false;
+  visiable = {addConsumer: false, modifyConsumer: false };
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
@@ -72,7 +71,7 @@ export class ConsumerComponent implements OnInit {
   // 弹窗
   showModal(flag, data) {
     if (flag === 'addConsumer') {
-      this.isAddConsumerVisible = true;
+      this.visiable.addConsumer = true;
       this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };  // 清空
     } else if (flag === 'modifyConsumer') {
       this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
@@ -84,16 +83,16 @@ export class ConsumerComponent implements OnInit {
         'paymentKey': data.paymentKey,
         'smsSign': data.smsSignType
       };
-      this.isModifyConsumerVisible = true;
+      this.visiable.modifyConsumer = true;
     }
   }
 
   // 隐藏
   hideModal(flag) {
     if (flag === 'addConsumer') {
-      this.isAddConsumerVisible = false;
+      this.visiable.addConsumer = false;
     } else if (flag === 'modifyConsumer') {
-      this.isModifyConsumerVisible = false;
+      this.visiable.modifyConsumer = false;
     }
   }
 

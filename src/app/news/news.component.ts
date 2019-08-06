@@ -17,10 +17,7 @@ registerLocaleData(zh);
 })
 export class NewsComponent implements OnInit {
 
-  isSortSpeechVisible = false;
-  isManualAuditVisible = false;
-  isUploadAuditVisible = false;
-  isAddNewsThesaurusVisible = false;
+  visiable = {sortSpeech: false, manualAudit: false, uploadAudit: false, addNewsThesaurus: false };
   taggingNewsSearchForm: FormGroup;
   manualAuditSearchForm: FormGroup;
   newsThesaurusSearchForm: FormGroup;
@@ -181,7 +178,7 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      this.isSortSpeechVisible = true;
+      this.visiable.sortSpeech = true;
     } else if (flag === 'submitTagAudit') {
       this.modalService.confirm({
         nzTitle: '提交审核', nzContent: '确认提交审核吗？', nzCancelText: '取消',
@@ -189,7 +186,7 @@ export class NewsComponent implements OnInit {
       });
     } else if (flag === 'uploadAudit') {  // 上传审核
       this.fileList.splice(0, this.fileList.length);
-      this.isUploadAuditVisible = true;
+      this.visiable.uploadAudit = true;
     } else if (flag === 'manualAudit' || flag === 'manualAuditModel') {
       this.tempId = flag === 'manualAuditModel' ? this.tempId : data.id;
       this.dataManualAuditModel.splice(0, this.dataManualAuditModel.length);
@@ -223,7 +220,7 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      flag === 'manualAuditModel' ? '' : this.isManualAuditVisible = true;
+      flag === 'manualAuditModel' ? '' : this.visiable.manualAudit = true;
     } else if (flag === 'updateLoading') {
       this.modalService.confirm({
         nzTitle: '确认更新', nzContent: '确认更新到词库吗？', nzCancelText: '取消',
@@ -240,7 +237,7 @@ export class NewsComponent implements OnInit {
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
     } else if (flag === 'addNewsThesaurus') {
-      this.isAddNewsThesaurusVisible = true;
+      this.visiable.addNewsThesaurus = true;
     }
   }
 
@@ -316,14 +313,14 @@ export class NewsComponent implements OnInit {
   // 隐藏
   hideModal(flag) {
     if (flag === 'sortSpeech') {
-      this.isSortSpeechVisible = false;
+      this.visiable.sortSpeech = false;
     } else if (flag === 'manualAudit') {
-      this.isManualAuditVisible = false;
+      this.visiable.manualAudit = false;
       this.manualAuditSearchData = {word: '', type: ''};  // 重置
     } else if (flag === 'uploadMarked') {
-      this.isUploadAuditVisible = false;
+      this.visiable.uploadAudit = false;
     } else if (flag === 'addNewsThesaurus') {
-      this.isAddNewsThesaurusVisible = false;
+      this.visiable.addNewsThesaurus = false;
     }
   }
 

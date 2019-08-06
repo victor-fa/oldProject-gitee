@@ -38,12 +38,12 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">注册时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down right_alignment">登录时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
               </div>
             </div>
           </form>
@@ -101,7 +101,7 @@
           </div>
 
           <!-- 弹框 —— 信息 —— 用户详情 -->
-          <nz-modal [(nzVisible)]="isUserInfoDetailVisible" nzWidth="950" nzTitle="用户详情" [nzFooter]="userInfoDetailVisibleModalFooter" (nzOnCancel)="hideModal('UserInfo')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.userInfoDetail" nzWidth="950" nzTitle="用户详情" [nzFooter]="userInfoDetailVisibleModalFooter" (nzOnCancel)="hideModal('UserInfo')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="8">{{userInfoDetail.account}}</div>
@@ -177,7 +177,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 信息 —— 常用信息 -->
-          <nz-modal [(nzVisible)]="isUserInfoCommonVisible" nzWidth="950" nzTitle="常用信息" [nzFooter]="userInfoCommonVisibleModalFooter" (nzOnCancel)="hideModal('UserCommon')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.userInfoCommon" nzWidth="950" nzTitle="常用信息" [nzFooter]="userInfoCommonVisibleModalFooter" (nzOnCancel)="hideModal('UserCommon')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <nz-radio-group [(ngModel)]="currentUserCommonTab" (ngModelChange)="onChange($event, 'currentUserCommonTab')">
                 <label nz-radio nzValue="TRAVELER">出行人</label>
@@ -286,7 +286,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 信息 —— 登录详情 -->
-          <nz-modal [(nzVisible)]="isLatestLoginVisible" nzWidth="750" nzTitle="登录详情" [nzFooter]="userLatestLoginAtModalFooter" (nzOnCancel)="hideModal('latestLoginAt')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.latestLogin" nzWidth="750" nzTitle="登录详情" [nzFooter]="userLatestLoginAtModalFooter" (nzOnCancel)="hideModal('latestLoginAt')" nzMaskClosable="false">
             <nz-table #rowLatestLoginTable [nzData]="latestLoginData" [nzSimple]="true" *ngIf="!isSpinning">
               <thead>
                 <tr>
@@ -372,7 +372,7 @@
                 订单生成日期：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
             </div>
 
@@ -470,7 +470,7 @@
                 订单生成日期：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
             </div>
 
@@ -570,7 +570,7 @@
         </nz-tab>
 
         <!-- 弹框 —— 信息 —— 发票详情 -->
-        <nz-modal [(nzVisible)]="isInvoiceVisible" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')" nzMaskClosable="false">
+        <nz-modal [(nzVisible)]="visiable.invoice" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')" nzMaskClosable="false">
           <div *ngIf="invoiceDetail.invoiceMsg">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">发票状态：</div>
@@ -628,7 +628,7 @@
         </nz-modal>
 
         <!-- 弹框 —— 信息 —— 订单详情 -->
-        <nz-modal [(nzVisible)]="isBookingDetailVisible" nzWidth="750" nzTitle="订单详情" [nzFooter]="bookingDetailModalFooter" (nzOnCancel)="hideModal('BookingDetail')" nzMaskClosable="false">
+        <nz-modal [(nzVisible)]="visiable.bookingDetail" nzWidth="750" nzTitle="订单详情" [nzFooter]="bookingDetailModalFooter" (nzOnCancel)="hideModal('BookingDetail')" nzMaskClosable="false">
           <div nz-row class="search_panel" *ngIf="orderId && orderId !== ''"> <div nz-col nzSpan="5" class="right_alignment">订单id：</div> <div nz-col nzSpan="7">{{orderId}}</div> </div>
 
           <!-- 机票信息 -->
@@ -813,7 +813,7 @@
         </nz-modal>
 
         <!-- 弹框 —— 信息 —— 退票申请 -->
-        <nz-modal [(nzVisible)]="isRefundVisible" nzWidth="950" nzTitle="退票申请" [nzFooter]="refundModalFooter" (nzOnCancel)="hideModal('Refund')" nzMaskClosable="false">
+        <nz-modal [(nzVisible)]="visiable.refund" nzWidth="950" nzTitle="退票申请" [nzFooter]="refundModalFooter" (nzOnCancel)="hideModal('Refund')" nzMaskClosable="false">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="24">选择退票机票</div>
           </div>
@@ -846,7 +846,7 @@
           <div nz-row class="search_panel">
             <div nz-col nzSpan="3" class="span_down right_alignment">操作时间：</div>
             <div nz-col nzSpan="7">
-              <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'adjust')"></nz-range-picker>
+              <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'adjust')"></nz-range-picker>
             </div>
             <div nz-col nzSpan="3" class="span_down right_alignment">货币类型：</div>
             <div nz-col nzSpan="4">
@@ -899,7 +899,7 @@
           </nz-table>
 
           <!-- 弹框 —— 新增 —— 新增发放 -->
-          <nz-modal [(nzVisible)]="isAdjustAddVisible" nzWidth="950" nzTitle="新增发放" [nzFooter]="adjustAddModalFooter" (nzOnCancel)="hideModal('adjustAdd')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.adjustAdd" nzWidth="950" nzTitle="新增发放" [nzFooter]="adjustAddModalFooter" (nzOnCancel)="hideModal('adjustAdd')" nzMaskClosable="false">
             <form [formGroup]="addAdjustForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
@@ -1000,7 +1000,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 发送 —— 执行发送 -->
-          <nz-modal [(nzVisible)]="isAdjustSendVisible" nzWidth="750" nzTitle="执行发送" [nzFooter]="adjustSendModalFooter" (nzOnCancel)="hideModal('adjustSend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.adjustSend" nzWidth="750" nzTitle="执行发送" [nzFooter]="adjustSendModalFooter" (nzOnCancel)="hideModal('adjustSend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="7" class="spthumbnailan_down">发送对象（总计x个）</div>
               <div nz-col nzSpan="1"></div>
@@ -1053,7 +1053,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看详情 -->
-          <nz-modal [(nzVisible)]="isAdjustDetailVisible" nzWidth="950" nzTitle="查看详情" [nzFooter]="adjustDetailModalFooter" (nzOnCancel)="hideModal('adjustDetail')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.adjustDetail" nzWidth="950" nzTitle="查看详情" [nzFooter]="adjustDetailModalFooter" (nzOnCancel)="hideModal('adjustDetail')" nzMaskClosable="false">
             <div *ngIf="adjustDetail">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2"></div>
@@ -1128,7 +1128,7 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2" class="span_down right_alignment">充值时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'recharge')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'recharge')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="6"></div>
               <div nz-col nzSpan="3">
@@ -1198,7 +1198,7 @@
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">开票时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'invoice')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'invoice')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('invoice', '')"><i class="anticon anticon-search"></i>查询</button>
@@ -1238,7 +1238,7 @@
           </nz-table>
 
           <!-- 弹框 —— 信息 —— 开票详情 -->
-          <nz-modal [(nzVisible)]="isInvoiceDetailVisible" nzWidth="950" nzTitle="开票详情" [nzFooter]="invoiceDetail1ModalFooter" (nzOnCancel)="hideModal('invoiceInfoDetail')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.invoiceDetail" nzWidth="950" nzTitle="开票详情" [nzFooter]="invoiceDetail1ModalFooter" (nzOnCancel)="hideModal('invoiceInfoDetail')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div> <div nz-col nzSpan="8">{{invoiceItem.account}}</div>
               <div nz-col nzSpan="4" class="right_alignment">用户昵称：</div> <div nz-col nzSpan="8">{{invoiceItem.nickname}}</div>

@@ -22,21 +22,9 @@ registerLocaleData(zh);
 })
 export class ActivityComponent implements OnInit {
 
-  isAddActivityVisible = false;
-  isCouponVisible = false;
-  isPreviewVisible = false;
-  isAddCouponVisible = false;
-  isModifyCouponVisible = false;
-  isPreviewCouponVisible = false;
-  isAddTaskCenterVisible = false;
-  isModifyTaskCenterVisible = false;
-  isAddBatchsendVisible = false;
-  isDetailBatchsendVisible = false;
-  isCouponInBatchsendVisible = false;
-  isBatchsendVisible = false;
-  isAddBeanVisible = false;
-  isModifyBeanVisible = false;
-  isSearchBeanVisible = false;
+  visiable = {addActivity: false, coupon: false, preview: false, addCoupon: false, modifyCoupon: false,
+    previewCoupon: false, addTaskCenter: false, modifyTaskCenter: false, addBatchsend: false, detailBatchsend: false,
+    couponInBatchsend: false, batchsend: false, addBean: false, modifyBean: false, searchBean: false, resetTaskCenter: false };
   loading = false;
   searchActivityForm: FormGroup;
   searchCouponInActivityForm: FormGroup;
@@ -54,7 +42,6 @@ export class ActivityComponent implements OnInit {
   endRuleDate = '';
   beginCouponDate = ''; // 红包日期选择
   endCouponDate = '';
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   fileList: UploadFile[] = [];
   imageUrl = '';
   showImageUrl = '';
@@ -132,6 +119,7 @@ export class ActivityComponent implements OnInit {
     stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
     date: []
   };
+  resetTaskCenterCheckOptions = [];
 
   constructor(
     private fb: FormBuilder,
@@ -150,6 +138,28 @@ export class ActivityComponent implements OnInit {
   ) {
     this.commonService.nav[6].active = true;
     this._initForm();
+    this.resetTaskCenterCheckOptions = [
+      { label: '新手教学', value: 'aaaaa', checked: false },
+      { label: '听音频', value: 'bbbbb', checked: false },
+      { label: '充话费', value: 'ccccc', checked: false },
+      { label: '使用导航', value: 'ddddd', checked: false },
+      { label: '打电话', value: 'eeeee', checked: false },
+      { label: '听新闻', value: 'fffff', checked: false },
+      { label: '购买机票', value: 'ggggg', checked: false },
+      { label: '购买火车票', value: 'hhhhh', checked: false },
+      { label: '订酒店', value: 'iiiii', checked: false },
+      { label: '首次打车', value: 'jjjjj', checked: false },
+      { label: '闪送订单', value: 'kkkkk', checked: false },
+      { label: '星座订单', value: 'lllll', checked: false },
+      { label: '电影票名单', value: 'mmmmm', checked: false },
+      { label: '设置支付密码', value: 'nnnnn', checked: false },
+      { label: '开通免密支付', value: 'nnnnn', checked: false },
+      { label: '出行人', value: 'nnnnn', checked: false },
+      { label: '常用联系人', value: 'nnnnn', checked: false },
+      { label: '常用地址', value: 'nnnnn', checked: false },
+      { label: '配送地址', value: 'nnnnn', checked: false },
+      { label: '发票抬头', value: 'nnnnn', checked: false }
+    ];
   }
 
   ngOnInit() {
@@ -408,14 +418,14 @@ export class ActivityComponent implements OnInit {
   // 弹框
   showModal(flag, data) {
     if (flag === 'addActivity') { // 新增活动
-      this.isAddActivityVisible = true;
+      this.visiable.addActivity = true;
       this.isModifyModelShow = false;
       this.beginRuleDate = ''; // 模板1日期选择
       this.endRuleDate = '';
       this.modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '' };
     } else if (flag === 'modifyActivity') { // 修改活动
       this.baseInfoId = data.id;
-      this.isAddActivityVisible = true;
+      this.visiable.addActivity  = true;
       this.isModifyModelShow = true;
       this.modifyctivityItem = {
         actName: data.actName,
@@ -456,23 +466,23 @@ export class ActivityComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '基本信息未填写' });
         return;
       }
-      this.isCouponVisible = true;
+      this.visiable.coupon = true;
       this.couponGiftNo = '';
       this.loadData('couponInActivity');
     } else if (flag === 'modifyCouponInActivity') { // 修改红包 | 活动奖励
       this.couponGiftNo = data.actGiftNo;
-      this.isCouponVisible = true;
+      this.visiable.coupon = true;
       this.loadData('couponInActivity');
     } else if (flag === 'preview') { // 活动页预览
-      this.isPreviewVisible = true;
+      this.visiable.preview = true;
     } else if (flag === 'coupon') { // 优惠券的展开弹框
-      this.isAddCouponVisible = true;
+      this.visiable.addCoupon = true;
       this.couponRadioValue = 'fix_start_end';  // 重置时间限制（单选）
 
       this.couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
     } else if (flag === 'modifyCoupon') { // 修改优惠券弹框
       const id = data.couponId;
-      this.isModifyCouponVisible = true;
+      this.visiable.modifyCoupon = true;
       this.cmsId = id;  // 用于修改
       this.couponService.getCoupon(id).subscribe(res => {
         // 处理异常处理
@@ -485,7 +495,7 @@ export class ActivityComponent implements OnInit {
       });
     } else if (flag === 'previewCoupon') {  // 查看优惠券
       const id = data.couponId;
-      this.isPreviewCouponVisible = true;
+      this.visiable.previewCoupon = true;
       this.couponService.getCoupon(id).subscribe(res => {
         // 处理异常处理
         this.couponDate = JSON.parse(res.payload);
@@ -499,7 +509,7 @@ export class ActivityComponent implements OnInit {
         'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
       };
       this.loadData('couponInBatchsend');
-      this.isAddBatchsendVisible = true;
+      this.visiable.addBatchsend = true;
     } else if (flag === 'detail') {
       this.batchsendData = data;
       if (this.batchsendData.actCouponRulePoL) {
@@ -509,9 +519,9 @@ export class ActivityComponent implements OnInit {
         });
         this.batchsendData.tempCouponName = tempArr;
       }
-      this.isDetailBatchsendVisible = true;
+      this.visiable.detailBatchsend = true;
     } else if (flag === 'addCouponInBatchsend') { // 新增红包 | 活动奖励
-      this.isCouponInBatchsendVisible = true;
+      this.visiable.couponInBatchsend = true;
       this.couponListArrInBatchsend = [];
       this.loadData('couponInBatchsend');
     } else if (flag === 'batchsend') { // 批量发送
@@ -525,7 +535,7 @@ export class ActivityComponent implements OnInit {
         });
         this.finalBatchsendData.tempCouponName = tempArr;
       }
-      this.isBatchsendVisible = true;
+      this.visiable.batchsend = true;
     } else if (flag === 'addBean') {
       this.beanItem = { // 重置数据
         'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '',
@@ -534,7 +544,7 @@ export class ActivityComponent implements OnInit {
       this.beginBeanDate = null;  // 重置日期
       this.endBeanDate = null;
       this.radioBeanValue = 'PERCENT_GIFT'; // 重置单选
-      this.isAddBeanVisible = true;
+      this.visiable.addBean = true;
     } else if (flag === 'modifyBean') {
       this.beanItem = data;
       this.beanItem.giftPercent = data.giftPercent ? (data.giftPercent * 100) : 0;
@@ -542,14 +552,14 @@ export class ActivityComponent implements OnInit {
       this.endBeanDate = data.endTime;
       this.radioBeanValue = data.type; // 重置单选
       this.beanItem.id = data.id;
-      this.isModifyBeanVisible = true;
+      this.visiable.modifyBean = true;
     } else if (flag === 'searchBean') {
-      this.isSearchBeanVisible = true;
+      this.visiable.searchBean = true;
       this.beanItem = data;
       this.beanItem.giftPercent = data.giftPercent ? data.giftPercent : 0;
       this.radioBeanValue = data.type;
     } else if (flag === 'addTaskCenter') {
-      this.isAddTaskCenterVisible = true;
+      this.visiable.addTaskCenter = true;
     } else if (flag === 'modifyTaskCenter') {
       this.templateId = data;
       this.taskService.getTaskCenter(data).subscribe(res => {
@@ -614,17 +624,19 @@ export class ActivityComponent implements OnInit {
           this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/tasks/photos/${task.pic}`;
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-      this.isModifyTaskCenterVisible = true;
+      this.visiable.modifyTaskCenter = true;
     } else  if (flag === 'goTaskCenter') {  // 查看充值
       this.taskCenterName = data.taskName;
       setTimeout(() => { this.loadData('taskCenter'); }, 1000);
       this.tabsetJson.currentNum = 4;
+    } else if (flag === 'resetTaskCenter') {  // 重置任务
+      this.visiable.resetTaskCenter = true;
     }
   }
 
   hideModal(flag) {
     if (flag === 'activity') {
-      this.isAddActivityVisible = false;
+      this.visiable.addActivity = false;
       this.fileList.length = 0;
       this.imageUrl = '';
       this.showImageUrl = '';
@@ -635,42 +647,42 @@ export class ActivityComponent implements OnInit {
       this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
       this.couponListArr = [];  // 重置最下面的活动奖励配置
     } else if (flag === 'couponInActivity') {
-      this.isCouponVisible = false;
+      this.visiable.coupon = false;
       this.beginCouponDate = null;
       this.endCouponDate = null;
     } else if (flag === 'preview') { // 活动页预览
-      this.isPreviewVisible = false;
+      this.visiable.preview = false;
     } else if (flag === 'coupon') { // 隐藏优惠券
-      this.isAddCouponVisible = false;
+      this.visiable.addCoupon = false;
     } else if (flag === 'modifyCoupon') { // 隐藏优惠券
-      this.isModifyCouponVisible = false;
+      this.visiable.modifyCoupon = false;
     } else if (flag === 'previewCoupon') {
-      this.isPreviewCouponVisible = false;
+      this.visiable.previewCoupon = false;
     } else if (flag === 'batchsendList') {
-      this.isAddBatchsendVisible = false;
+      this.visiable.addBatchsend = false;
       this.beginCouponInBatchsendDate = null;
       this.endCouponInBatchsendDate = null;
     } else if (flag === 'detailBatchsend') {  // 查看
-      this.isDetailBatchsendVisible = false;
+      this.visiable.detailBatchsend = false;
     } else if (flag === 'couponInBatchsend') { // 新增红包
-      this.isCouponInBatchsendVisible = false;
+      this.visiable.couponInBatchsend = false;
       this.beginCouponInBatchsendDate = null;
       this.endCouponInBatchsendDate = null;
     } else if (flag === 'batchsend') {
-      this.isBatchsendVisible = false;
+      this.visiable.batchsend = false;
     } else if (flag === 'addBean') {
       this.beginBeanDate = null;  // 重置日期
       this.endBeanDate = null;
       this.loadData('bean');
-      this.isAddBeanVisible = false;
+      this.visiable.addBean = false;
     } else if (flag === 'modifyBean') {
       this.beginBeanDate = null;  // 重置日期
       this.endBeanDate = null;
       this.loadData('bean');
-      this.isModifyBeanVisible = false;
+      this.visiable.modifyBean = false;
     } else if (flag === 'searchBean') {
       this.loadData('bean');
-      this.isSearchBeanVisible = false;
+      this.visiable.searchBean = false;
     } else if (flag === 'taskCenter') {
       this.addTaskCenter = {
         taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false,
@@ -682,8 +694,10 @@ export class ActivityComponent implements OnInit {
       this.fileList.splice(0, this.fileList.length);
       this.imageUrl = '';
       this.showImageUrl = '';
-      this.isAddTaskCenterVisible = false;
-      this.isModifyTaskCenterVisible = false;
+      this.visiable.addTaskCenter = false;
+      this.visiable.modifyTaskCenter = false;
+    } else if (flag === 'resetTaskCenter') {
+      this.visiable.resetTaskCenter = false;
     }
   }
 
@@ -922,7 +936,7 @@ export class ActivityComponent implements OnInit {
           const result = JSON.parse(res.payload).fillStatus;
           if (result === 'finished') {
             this.notification.blank( '提示', '保存成功，全部信息填写完整', { nzStyle: { color : 'green' } });
-            this.isAddActivityVisible = false;  // 全部填写完毕则关闭弹窗
+            this.hideModal('activity');
           } else if (result === 'unfinished') {
             this.notification.blank( '提示', '保存成功，但有信息未填完整', { nzStyle: { color : 'green' } });
           }
@@ -957,7 +971,7 @@ export class ActivityComponent implements OnInit {
       if (this.couponGiftNo === '') { // 根据弹框前传过来的值判断是新增还是修改
         this.activityService.addCoupon(couponAddInput).subscribe(res => {
           if (res.retcode === 0) {
-            this.isCouponVisible = false;
+            this.visiable.coupon = false;
             this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
             const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '新增' };
             this.commonService.updateOperationlog(operationInput).subscribe();
@@ -969,7 +983,7 @@ export class ActivityComponent implements OnInit {
       } else { // 修改
         this.activityService.updateCoupon(couponUpdateInput).subscribe(res => {
           if (res.retcode === 0) {
-            this.isCouponVisible = false;
+            this.visiable.coupon = false;
             this.notification.blank( '提示', '配置红包组成功', { nzStyle: { color : 'green' } });
             const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改' };
             this.commonService.updateOperationlog(operationInput).subscribe();
@@ -1048,7 +1062,7 @@ export class ActivityComponent implements OnInit {
         return;
       }
       this.couponListArrInBatchsend = couponArr;
-      this.isCouponInBatchsendVisible = false;
+      this.visiable.couponInBatchsend = false;
       this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
       const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '新增红包组' };
       this.commonService.updateOperationlog(operationInput).subscribe();
@@ -1111,7 +1125,7 @@ export class ActivityComponent implements OnInit {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '活动管理', op_page: '充值送豆', op_name: '新增充值送豆' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.isAddBeanVisible = false;
+          this.visiable.addBean = false;
           this.beginBeanDate = null;
           this.endBeanDate = null;
           this.loadData('bean');
@@ -1150,7 +1164,7 @@ export class ActivityComponent implements OnInit {
           this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '修改充值送豆' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.isModifyBeanVisible = false;
+          this.visiable.modifyBean = false;
           this.beginBeanDate = null;
           this.endBeanDate = null;
           this.loadData('bean');
@@ -1224,7 +1238,7 @@ export class ActivityComponent implements OnInit {
       console.log(taskInput);
       const finalInput = this.commonService.deleteEmptyProperty(taskInput); // 删除null以及''的对象
       console.log(finalInput);
-      if (this.isAddTaskCenterVisible) {  // 新增弹窗
+      if (this.visiable.addTaskCenter) {  // 新增弹窗
         this.taskService.addTaskCenter(finalInput).subscribe(res => {
           if (res.retcode === 0) {
             this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
@@ -1234,7 +1248,7 @@ export class ActivityComponent implements OnInit {
             this.loadData('taskCenter');
           } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
-      } else if (this.isModifyTaskCenterVisible) {  // 修改弹窗
+      } else if (this.visiable.modifyTaskCenter) {  // 修改弹窗
         this.taskService.updateTaskCenter(this.templateId, finalInput).subscribe(res => {
           if (res.retcode === 0) {
             this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });

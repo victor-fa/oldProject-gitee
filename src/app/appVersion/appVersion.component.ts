@@ -24,13 +24,8 @@ registerLocaleData(zh);
 })
 export class AppVersionComponent implements OnInit {
 
-  isAddContentVisible = false;
-  isAddGuideVisible = false;
-  isAddHelpVisible = false;
-  isAddFlowPointVisible = false;
-  isModifyGuideVisible = false;
-  isModifyHelpVisible = false;
-  isModifyFlowPointVisible = false;
+  visiable = {addContent: false, addGuide: false, addHelp: false, addFlowPoint: false, modifyGuide: false,
+    modifyHelp: false, modifyFlowPoint: false };
   addContentForm: FormGroup;
   addGuideForm: FormGroup;
   addHelpForm: FormGroup;
@@ -49,7 +44,6 @@ export class AppVersionComponent implements OnInit {
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
   flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
   helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   dataContent = []; // 内容
   dataSystemSymbo = []; // 操作系统
   dataGuide = []; // 引导语
@@ -270,12 +264,12 @@ export class AppVersionComponent implements OnInit {
   // 弹框
   showAddModal(flag) {
     if (flag === 'content') {
-      this.isAddContentVisible = true;
+      this.visiable.addContent = true;
       this.contentDate = {  // 清空
         'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': ''
       };
     } else if (flag === 'guide') {
-      this.isAddGuideVisible = true;
+      this.visiable.addGuide = true;
       this.guideDate = { // 清空
         'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': ''
       };
@@ -283,11 +277,11 @@ export class AppVersionComponent implements OnInit {
       this.guideItem.buttonArr.splice(0, this.guideItem.buttonArr.length);
       this.guideItem.imageArr.splice(0, this.guideItem.imageArr.length);
     } else if (flag === 'help') {
-      this.isAddHelpVisible = true;
+      this.visiable.addHelp = true;
       this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
       this.helpType = 'TRAVEL';
     } else if (flag === 'flowPoint') {
-      this.isAddFlowPointVisible = true;
+      this.visiable.addFlowPoint = true;
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [], 'guideArr': [] };
     }
     this.fileList.splice(0, this.fileList.length);
@@ -297,28 +291,28 @@ export class AppVersionComponent implements OnInit {
 
   hideModal(flag) {
     if (flag === 'content') {
-      this.isAddContentVisible = false;
+      this.visiable.addContent = false;
     } else if (flag === 'guide') {
-      this.isAddGuideVisible = false;
-      this.isModifyGuideVisible = false;
+      this.visiable.addGuide = false;
+      this.visiable.modifyGuide = false;
     } else if (flag === 'addHelp') {
-      this.isAddHelpVisible = false;
+      this.visiable.addHelp = false;
       this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
       this.helpType = 'TRAVEL';
     } else if (flag === 'share') {
       this.isSaveShareButton = false;
     } else if (flag === 'modifyHelp') {
-      this.isModifyHelpVisible = false;
+      this.visiable.modifyHelp = false;
       this.helpDate = { 'describe': '', 'details': '', 'guides': '', 'image': '', 'name': '', 'order': '', 'type': '', 'guideArr': '' };
       this.helpType = 'TRAVEL';
     } else if (flag === 'protocol') {
       this.isSaveProtocolButton = false;
     } else if (flag === 'addFlowPoint') {
-      this.isAddFlowPointVisible = false;
+      this.visiable.addFlowPoint = false;
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [],
         'guideArr': [] };
     } else if (flag === 'modifyFlowPoint') {
-      this.isModifyFlowPointVisible = false;
+      this.visiable.modifyFlowPoint = false;
       this.flowPointDate = { 'id': '', 'botName': '', 'process': '', 'mtime': '', 'status': '', 'botMsg': '', 'guides': [],
         'guideArr': [] };
     } else if (flag === 'qqCustomer') {
@@ -524,7 +518,7 @@ export class AppVersionComponent implements OnInit {
       allArr = tempallArr.sort(this.sortBySort);  // 根据sort排序
       allArr.forEach(item => { if (item.webUrl && item.webUrl !== '') { item.webUrl = item.webUrl.replace(/&/g, '%26'); } });
 
-      if (this.isModifyGuideVisible !== true) { // 只有新增需要绑定模板到APP上
+      if (this.visiable.modifyGuide !== true) { // 只有新增需要绑定模板到APP上
         // 拿到模板Id
         this.guideService.addGuide(guideInput).subscribe(res => {
           if (res.retcode === 0) {
@@ -711,7 +705,7 @@ export class AppVersionComponent implements OnInit {
       this.fileList.splice(0, this.fileList.length);
       this.showImageUrl = '';
       this.templateId = data.id; // 用于修改
-      this.isModifyGuideVisible = true;
+      this.visiable.modifyGuide = true;
       this.guideDate.name = data.name;
       this.guideDate.type = data.type;
       let imageUrl = '';  // 获取到图片
@@ -739,7 +733,7 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'help') {
       const id = data.id;
       this.fileList.splice(0, this.fileList.length);
-      this.isModifyHelpVisible = true;
+      this.visiable.modifyHelp = true;
       this.templateId = id;  // 用于修改
       this.cnaNotUseModelChange();
       this.helpDate = data;
@@ -750,7 +744,7 @@ export class AppVersionComponent implements OnInit {
       this.fileList.push(file);
       this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/skills/images/${this.imageUrl}`;
     } else if (flag === 'modifyFlowPoint') {
-      this.isModifyFlowPointVisible = true;
+      this.visiable.modifyFlowPoint = true;
       this.flowPointDate = data;
       const tempArr = [];
       const guideArr = [];

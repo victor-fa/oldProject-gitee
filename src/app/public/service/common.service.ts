@@ -37,6 +37,7 @@ export class CommonService extends AppServiceBase {
   fullMenuResource = localStorage.getItem('FullMenuResource') !== '' ? JSON.parse(localStorage.getItem('FullMenuResource')) : '';
   fullChildrenResource = localStorage.getItem('FullChildrenResource') !== '' ? JSON.parse(localStorage.getItem('FullChildrenResource')) : '';
   config = { toolbar: [ ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'script': 'sub'}, { 'script': 'super' }], [{ 'indent': '-1'}, { 'indent': '+1' }], [{ 'direction': 'rtl' }], [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], [{ 'header': [1, 2, 3, 4, 5, 6, false] }], [{ 'color': [] }, { 'background': [] }], [{ 'font': [] }], [{ 'align': [] }], ['clean'], ['link', 'video'] ]};
+  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
 
   constructor(
     private _router: Router,

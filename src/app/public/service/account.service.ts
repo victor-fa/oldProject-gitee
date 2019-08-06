@@ -46,9 +46,7 @@ export class AccountService extends AppServiceBase {
   /** 删除角色 */
   deleteRole(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.roles}?id=${data.id}`;
-    this.setOption = {
-      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') })
-    };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

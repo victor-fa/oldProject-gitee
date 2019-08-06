@@ -15,14 +15,12 @@ registerLocaleData(zh);
 })
 export class SessionAnalysisComponent implements OnInit {
 
+  visiable = {sessionLogSearch: true, explain: false };
   allSessionBusinessChecked = false;
   indeterminate = true;
   checkOptionsOne = [];
-  isSessionLogSearchVisiable = true; // 用于切换对话日志搜索
-  isExplainVisiable = false;
   searchSessionLogForm: FormGroup;
   pageSize = 100;
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
   endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
   isSpinning = false;
@@ -267,9 +265,9 @@ export class SessionAnalysisComponent implements OnInit {
   // 展开数据说明
   shouSomething(flag) {
     if (flag === 'sessionLog') {
-      this.isSessionLogSearchVisiable = this.isSessionLogSearchVisiable === true ? false : true;
+      this.visiable.sessionLogSearch = this.visiable.sessionLogSearch === true ? false : true;
     } else if (flag === 'explain') {
-      this.isExplainVisiable = this.isExplainVisiable === true ? false : true;
+      this.visiable.explain = this.visiable.explain === true ? false : true;
     }
   }
 

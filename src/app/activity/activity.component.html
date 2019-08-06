@@ -12,7 +12,7 @@
                 创建日期范围：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -99,7 +99,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增优惠券 -->
-          <nz-modal [(nzVisible)]="isAddCouponVisible" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" (nzOnCancel)="hideModal('coupon')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addCoupon" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" (nzOnCancel)="hideModal('coupon')" nzMaskClosable="false">
             <form [formGroup]="addCouponForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -165,7 +165,7 @@
               <div nz-row class="search_panel" *ngIf="couponRadioValue === 'fix_start_end'">
                 <div nz-col nzSpan="2"></div>
                 <div nz-col nzSpan="9">
-                  <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="couponRadioValue === 'fix_duration'">
@@ -247,7 +247,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 编辑优惠券 -->
-          <nz-modal [(nzVisible)]="isModifyCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" (nzOnCancel)="hideModal('modifyCoupon')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyCoupon" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" (nzOnCancel)="hideModal('modifyCoupon')" nzMaskClosable="false">
             <form [formGroup]="modifyCouponForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -315,7 +315,7 @@
               <div nz-row class="search_panel" *ngIf="couponRadioValue === 'fix_start_end'">
                 <div nz-col nzSpan="2"></div>
                 <div nz-col nzSpan="9">
-                  <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row class="search_panel" *ngIf="couponRadioValue === 'fix_duration'">
@@ -398,7 +398,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看优惠券 -->
-          <nz-modal [(nzVisible)]="isPreviewCouponVisible" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="previewCouponModalFooter" (nzOnCancel)="hideModal('previewCoupon')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.previewCoupon" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="previewCouponModalFooter" (nzOnCancel)="hideModal('previewCoupon')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
             </div>
@@ -599,7 +599,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增活动 -->
-          <nz-modal [(nzVisible)]="isAddActivityVisible" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addActivity" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
             <form [formGroup]="addActivityForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -621,7 +621,7 @@
                     <font color="red">*</font>活动时间：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
                   <div *ngIf="isModifyModelShow">{{modifyctivityItem.actStartDate}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actEndDate}}</div>
                 </div>
               </div>
@@ -686,7 +686,7 @@
                     登录时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -733,7 +733,7 @@
                     登录时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -781,7 +781,7 @@
                     充值时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -852,7 +852,7 @@
                     充值时间约束：
                   </div>
                   <div nz-col nzSpan="7" class="span_down">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -994,14 +994,14 @@
           </nz-modal>
 
           <!-- 弹框 —— 查询 —— 红包编组选择区(读取红包列表） -->
-          <nz-modal [(nzVisible)]="isCouponVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInActivity')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.coupon" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInActivity')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <form [formGroup]="searchCouponInActivityForm">
                 <div nz-col nzSpan="2" class="span_down right_alignment">
                   创建日期范围：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'couponInActivity')"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInActivity')"></nz-range-picker>
                 </div>
 
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -1083,7 +1083,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 活动页预览 -->
-          <nz-modal [(nzVisible)]="isPreviewVisible" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" (nzOnCancel)="hideModal('preview')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.preview" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" (nzOnCancel)="hideModal('preview')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="text-align: center;">
                 {{modifyctivityItem.actName}}
@@ -1117,7 +1117,7 @@
               查询范围：
             </div>
             <div nz-col nzSpan="7" class="span_down">
-              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
+              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
             </div>
             <div nz-col nzSpan="9"></div>
             <div nz-col nzSpan="2">
@@ -1161,7 +1161,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="isAddBatchsendVisible" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" (nzOnCancel)="hideModal('batchsendList')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addBatchsend" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" (nzOnCancel)="hideModal('batchsendList')" nzMaskClosable="false">
             <form [formGroup]="addBatchsendForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
@@ -1241,14 +1241,14 @@
           </nz-modal>
 
           <!-- 弹框 —— 查询 —— 红包编组选择区(读取红包列表） -->
-          <nz-modal [(nzVisible)]="isCouponInBatchsendVisible" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInBatchsend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.couponInBatchsend" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInBatchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <form [formGroup]="searchCouponInBatchsendForm">
                 <div nz-col nzSpan="2" class="span_down right_alignment">
                   创建日期范围：
                 </div>
                 <div nz-col nzSpan="7" class="span_down">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsend')"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsend')"></nz-range-picker>
                 </div>
 
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -1331,7 +1331,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看发放情况 -->
-          <nz-modal [(nzVisible)]="isDetailBatchsendVisible" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" (nzOnCancel)="hideModal('detailBatchsend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.detailBatchsend" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" (nzOnCancel)="hideModal('detailBatchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="5" class="span_down">发放日期：<br>{{batchsendData.sendTime ? (batchsendData.sendTime | date:'yyyy-MM-dd') : 'null'}}</div>
@@ -1379,7 +1379,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 发送 —— 执行发送 -->
-          <nz-modal [(nzVisible)]="isBatchsendVisible" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModalFooter" (nzOnCancel)="hideModal('batchsend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.batchsend" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModalFooter" (nzOnCancel)="hideModal('batchsend')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="6">发送对象(总计x个)</div>
@@ -1443,7 +1443,7 @@
                 有效时间：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="3"></div>
@@ -1493,7 +1493,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增活动 -->
-          <nz-modal [(nzVisible)]="isAddBeanVisible" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" (nzOnCancel)="hideModal('addBean')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addBean" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" (nzOnCancel)="hideModal('addBean')" nzMaskClosable="false">
             <form [formGroup]="addBeanForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -1527,7 +1527,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
-                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">
@@ -1576,7 +1576,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改活动 -->
-          <nz-modal [(nzVisible)]="isModifyBeanVisible" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" (nzOnCancel)="hideModal('modifyBean')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyBean" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" (nzOnCancel)="hideModal('modifyBean')" nzMaskClosable="false">
             <form [formGroup]="modifyBeanForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
@@ -1610,7 +1610,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
-                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">
@@ -1663,7 +1663,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 查看 —— 查看活动 -->
-          <nz-modal [(nzVisible)]="isSearchBeanVisible" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" (nzOnCancel)="hideModal('searchBean')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.searchBean" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" (nzOnCancel)="hideModal('searchBean')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div>
             </div>
@@ -1748,11 +1748,11 @@
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 任务名称：
               </div>
-              <div nz-col nzSpan="3">
+              <div nz-col nzSpan="2">
                 <input nz-input formControlName="name" placeholder="输入任务名称" nzSize="default" [(ngModel)]="taskCenterName">
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">任务类型：</div>
-              <div nz-col nzSpan="3">
+              <div nz-col nzSpan="2">
                 <nz-select formControlName="type">
                   <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
                   <nz-option required [nzLabel]="'新手'" nzValue="NOVICE"></nz-option>
@@ -1761,11 +1761,14 @@
                 </nz-select>
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">创建时间：</div>
-              <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenter')"></nz-range-picker>
+              <div nz-col nzSpan="6">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskCenter')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('taskCenter')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="showModal('resetTaskCenter', '')"><i class="anticon anticon-reload"></i>重置任务</button>
               </div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="showModal('addTaskCenter', '')"><i class="anticon anticon-file-add"></i>新增任务</button>
@@ -1836,7 +1839,56 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="isAddTaskCenterVisible || isModifyTaskCenterVisible" nzWidth="1050" nzTitle="新增任务" [nzFooter]="addTaskCenterFooter" (nzOnCancel)="hideModal('taskCenter')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.resetTaskCenter" nzWidth="950" nzTitle="重置任务" [nzFooter]="resetTaskCenterFooter" (nzOnCancel)="hideModal('resetTaskCenter')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[0].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[0].label}}</label></div>
+              <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[1].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[1].label}}</label></div>
+              <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[2].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[2].label}}</label></div>
+              <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[3].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[3].label}}</label></div>
+              <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[4].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[4].label}}</label></div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <div nz-col nzSpan="2"></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[5].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[5].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[6].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[6].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[7].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[7].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[8].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[8].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[9].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[9].label}}</label></div>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <div nz-col nzSpan="2"></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[10].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[10].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[11].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[11].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[12].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[12].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[13].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[13].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[14].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[14].label}}</label></div>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <div nz-col nzSpan="2"></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[15].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[15].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[16].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[16].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[17].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[17].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[18].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[18].label}}</label></div>
+                <div nz-col nzSpan="4"><label nz-checkbox [(nzChecked)]="resetTaskCenterCheckOptions[19].checked" style="line-height: 31px;">{{resetTaskCenterCheckOptions[19].label}}</label></div>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="22"> 提示：新手任务重置成功后，已完成该新手任务的用户，可以再做一次该新手任务 </div>
+            </div>
+            <ng-template #resetTaskCenterFooter>
+                <button nz-button nzType="primary" (click)="doSave('resetTaskCenter', '')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('resetTaskCenter')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addTaskCenter || visiable.modifyTaskCenter" nzWidth="1050" nzTitle="新增任务" [nzFooter]="addTaskCenterFooter" (nzOnCancel)="hideModal('taskCenter')" nzMaskClosable="false">
             <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务规则</b></div></div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">任务类型：</div>
@@ -2008,7 +2060,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down right_alignment">活动时间：</div>
                 <div nz-col nzSpan="6" class="span_down">
-                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzShowTime [nzShowToday]="true" [(ngModel)]="addTaskCenter.date" [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenterAct')"></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzShowTime [nzShowToday]="true" [(ngModel)]="addTaskCenter.date" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskCenterAct')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -2135,7 +2187,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">完成时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">用户ID：</div>
               <div nz-col nzSpan="2">

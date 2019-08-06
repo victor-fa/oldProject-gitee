@@ -38,7 +38,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增角色 -->
-          <nz-modal [(nzVisible)]="isAddRoleVisible" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addRole" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')" nzMaskClosable="false">
             <form [formGroup]="roleAddForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
@@ -175,7 +175,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改角色 -->
-          <nz-modal [(nzVisible)]="isModifyRoleVisible" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyRole" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')" nzMaskClosable="false">
             <form [formGroup]="roleModifyForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="span_down spacing">
@@ -380,7 +380,7 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增员工 -->
-          <nz-modal [(nzVisible)]="isAddCustomerVisible" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter" (nzOnCancel)="hideModal('addCustomer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addCustomer" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter" (nzOnCancel)="hideModal('addCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerAddForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
@@ -426,7 +426,7 @@
           </nz-modal>
 
           <!-- 弹框 —— 修改 —— 修改用户信息 -->
-          <nz-modal [(nzVisible)]="isModifyCustomerVisible" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.modifyCustomer" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerModifyForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
@@ -495,7 +495,7 @@
                 查询日期范围：
               </div>
               <div nz-col nzSpan="7" class="span_down spacing right_alignment">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'operationlog')"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'operationlog')"></nz-range-picker>
               </div>
 
               <div nz-col nzSpan="2" class="span_down right_alignment">

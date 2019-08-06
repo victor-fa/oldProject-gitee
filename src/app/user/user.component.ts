@@ -18,6 +18,8 @@ registerLocaleData(zh);
 })
 export class UserComponent implements OnInit {
 
+  visiable = {userInfoDetail: true, userInfoCommon: false, invoiceDetail: false, bookingDetail: false, externalDetail: false,
+    invoice: false, refund: false, adjustDetail: false, adjustAdd: false, adjustSend: false, latestLogin: false };
   userData = [];
   adjustData = [];
   operatersData = [];
@@ -36,17 +38,6 @@ export class UserComponent implements OnInit {
   dataRefund = [];
   allChecked = false;
   indeterminate = false;
-  isUserInfoDetailVisible = false;
-  isUserInfoCommonVisible = false;
-  isInvoiceDetailVisible = false;
-  isBookingDetailVisible = false;
-  isExternalDetailVisible = false;
-  isInvoiceVisible = false;
-  isRefundVisible = false;
-  isAdjustDetailVisible = false;
-  isAdjustAddVisible = false;
-  isAdjustSendVisible = false;
-  isLatestLoginVisible = false;
   orderId = '';
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
@@ -75,7 +66,6 @@ export class UserComponent implements OnInit {
   refundSelectArr = [];
   refundSelectName = [];
   invoiceDetail = { invoiceMsg: '' };
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   beginBookingDate = '';
   endBookingDate = '';
   beginAdjustDate = '';
@@ -536,7 +526,7 @@ export class UserComponent implements OnInit {
 
   showModal(flag, data) {
     if (flag === 'InvoiceDetail') {
-      this.isInvoiceVisible = true;
+      this.visiable.invoice = true;
       this.userService.getInvoiceDetail(data.orderId).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload) {
@@ -547,7 +537,7 @@ export class UserComponent implements OnInit {
         }
       });
     } if (flag === 'Refund') {
-      this.isRefundVisible = true;
+      this.visiable.refund = true;
       this.refundInfo.userId = data.userId;
       this.refundInfo.orderId = data.orderId;
       const refundInput = { orderId: data.orderId, ticketNo: data.actualId };
@@ -702,13 +692,13 @@ export class UserComponent implements OnInit {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
-      this.isBookingDetailVisible = true;
+      this.visiable.bookingDetail = true;
     } if (flag === 'UserInfo') {
       this.userInfoDetail = data;
       console.log(this.userInfoDetail);
-      this.isUserInfoDetailVisible = true;
+      this.visiable.userInfoDetail = true;
     } if (flag === 'adjustDetail') {
-      this.isAdjustDetailVisible = true;
+      this.visiable.adjustDetail = true;
       this.adjustDetail = data;
       const success = [];
       const fail = [];
@@ -728,7 +718,7 @@ export class UserComponent implements OnInit {
 
       this.adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
       this.adjustTypeAdd = 'BEAN';
-      this.isAdjustAddVisible = true;
+      this.visiable.adjustAdd = true;
     } if (flag === 'adjustSend') {
       if (!this.verification('adjustSend')) {
         return;
@@ -740,16 +730,16 @@ export class UserComponent implements OnInit {
         config: (this.adjustTypeAdd === 'BEAN' ? '小悟豆' : this.adjustTypeAdd === 'COIN' ? '小悟币' : null) + '*' + this.addAdjustForm.controls['adjustAmount'].value,
         noticeContent: this.replaceHtmlStr(this.addAdjustForm.controls['noticeContent'].value).replace(/&/g, '%26'),
       };
-      this.isAdjustSendVisible = true;
+      this.visiable.adjustSend = true;
     } if (flag === 'userCommon') {  // 常用信息
       this.commonUserId = data.userId;
       this.currentUserCommonTab = 'TRAVELER';
       this.loadData('userInfoCommon');
-      this.isUserInfoCommonVisible = true;
+      this.visiable.userInfoCommon = true;
     } if (flag === 'invoiceInfoDetail') {
       this.invoiceItem = data;
       console.log(this.invoiceItem);
-      this.isInvoiceDetailVisible = true;
+      this.visiable.invoiceDetail = true;
     } if (flag === 'goRecharge') {  // 查看充值
       this.rechargePhone = data.account;
       setTimeout(() => { this.loadData('recharge'); }, 1000);
@@ -765,7 +755,7 @@ export class UserComponent implements OnInit {
     } if (flag === 'latestLoginAt') {  // 查看登录信息
       this.latestLoginInfo = data.userId;
       setTimeout(() => { this.loadData('latestLoginAt'); }, 1000);
-      this.isLatestLoginVisible = true;
+      this.visiable.latestLogin = true;
     } if (flag === 'goBookingFromTaxi') {
       this.bookingOrderId = data;
       setTimeout(() => { this.doSearch('booking'); }, 1000);
@@ -899,7 +889,7 @@ export class UserComponent implements OnInit {
         this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
       }
     });
-    this.isExternalDetailVisible = true;
+    this.visiable.externalDetail = true;
   }
 
   getAllowed(allowed): string { return allowed = true ? '可以取消' : '不可取消' ; }
@@ -909,25 +899,25 @@ export class UserComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'InvoiceDetail') {
       this.invoiceDetail = { invoiceMsg: '' };
-      this.isInvoiceVisible = false;
+      this.visiable.invoice = false;
     } else if (flag === 'BookingDetail') {
-      this.isBookingDetailVisible = false;
+      this.visiable.bookingDetail = false;
     } else if (flag === 'Refund') {
-      this.isRefundVisible = false;
+      this.visiable.refund = false;
     } else if (flag === 'adjustDetail') {
-      this.isAdjustDetailVisible = false;
+      this.visiable.adjustDetail = false;
     } else if (flag === 'adjustAdd') {
-      this.isAdjustAddVisible = false;
+      this.visiable.adjustAdd = false;
     } else if (flag === 'adjustSend') {
-      this.isAdjustSendVisible = false;
+      this.visiable.adjustSend = false;
     } else if (flag === 'UserInfo') {
-      this.isUserInfoDetailVisible = false;
+      this.visiable.userInfoDetail = false;
     } else if (flag === 'UserCommon') {
-      this.isUserInfoCommonVisible = false;
+      this.visiable.userInfoCommon = false;
     } else if (flag === 'invoiceInfoDetail') {
-      this.isInvoiceDetailVisible = false;
+      this.visiable.invoiceDetail = false;
     } else if (flag === 'latestLoginAt') {
-      this.isLatestLoginVisible = false;
+      this.visiable.latestLogin = false;
     }
   }
 

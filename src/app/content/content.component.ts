@@ -26,16 +26,8 @@ registerLocaleData(zh);
  */
 export class ContentComponent implements OnInit {
 
-  isAddContentVisible = false;
-  isModifyContentVisible = false;
-  isAddScreenVisible = false;
-  isModifyScreenVisible = false;
-  isAddOpenVisible = false;
-  isModifyOpenVisible = false;
-  isAddBannerVisible = false;
-  isModifyBannerVisible = false;
-  isAddPersonalVisible = false;
-  isModifyPersonalVisible = false;
+  visiable = {addContent: false, modifyContent: false, addScreen: false, modifyScreen: false, addOpen: false,
+    modifyOpen: false, addBanner: false, modifyBanner: false, addPersonal: false, modifyPersonal: false };
   avatarUrl: string;
   addContentForm: FormGroup;
   addScreenForm: FormGroup;
@@ -193,19 +185,19 @@ export class ContentComponent implements OnInit {
   // 弹窗
   showAddModal(flag) {
     if (flag === 'content') {
-      this.isAddContentVisible = true;
+      this.visiable.addContent = true;
       this.contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };  // 清空
     } else if (flag === 'screen') {
-      this.isAddScreenVisible = true;
+      this.visiable.addScreen = true;
       this.screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };  // 清空
     } else if (flag === 'open') {
-      this.isAddOpenVisible = true;
+      this.visiable.addOpen = true;
       this.openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };  // 清空
     } else if (flag === 'banner') {
-      this.isAddBannerVisible = true;
+      this.visiable.addBanner = true;
       this.bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
     } else if (flag === 'personal') {
-      this.isAddPersonalVisible = true;
+      this.visiable.addPersonal = true;
       this.personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
     }
     this.fileList.splice(0, this.fileList.length);
@@ -216,15 +208,15 @@ export class ContentComponent implements OnInit {
 
   hideAddModal(flag) {
     if (flag === 'content') {
-      this.isAddContentVisible = false;
+      this.visiable.addContent = false;
     } else if (flag === 'screen') {
-      this.isAddScreenVisible = false;
+      this.visiable.addScreen = false;
     } else if (flag === 'open') {
-      this.isAddOpenVisible = false;
+      this.visiable.addOpen = false;
     } else if (flag === 'banner') {
-      this.isAddBannerVisible = false;
+      this.visiable.addBanner = false;
     } else if (flag === 'personal') {
-      this.isAddPersonalVisible = false;
+      this.visiable.addPersonal = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -533,7 +525,7 @@ export class ContentComponent implements OnInit {
   showModifyModal(data, flag) {
     if (flag === 'content') {
       const id = data.id;
-      this.isModifyContentVisible = true;
+      this.visiable.modifyContent = true;
       this.cmsId = id;  // 用于修改
       this.contentService.getContent(id).subscribe(res => {
         // 处理异常处理
@@ -550,7 +542,7 @@ export class ContentComponent implements OnInit {
       });
     } else if (flag === 'screen') {
       const id = data.id;
-      this.isModifyScreenVisible = true;
+      this.visiable.modifyScreen = true;
       this.cmsId = id;  // 用于修改
       this.screenService.getScreen(id).subscribe(res => {
         // 处理异常处理
@@ -567,7 +559,7 @@ export class ContentComponent implements OnInit {
       });
     } else if (flag === 'open') {
       const id = data.id;
-      this.isModifyOpenVisible = true;
+      this.visiable.modifyOpen = true;
       this.cmsId = id;  // 用于修改
       this.displayModeForOpen = data.displayMode;
       this.openService.getOpen(id).subscribe(res => {
@@ -585,7 +577,7 @@ export class ContentComponent implements OnInit {
       });
     } else if (flag === 'banner') {
       const id = data.id;
-      this.isModifyBannerVisible = true;
+      this.visiable.modifyBanner = true;
       this.cmsId = id;  // 用于修改
       this.bannerService.getBanner(id).subscribe(res => {
         // 处理异常处理
@@ -602,7 +594,7 @@ export class ContentComponent implements OnInit {
       });
     } else if (flag === 'personal') {
       const id = data.id;
-      this.isModifyPersonalVisible = true;
+      this.visiable.modifyPersonal = true;
       this.cmsId = id;  // 用于修改
       // 处理异常处理
       this.personalDate = data;
@@ -618,15 +610,15 @@ export class ContentComponent implements OnInit {
 
   hideModifyModal(flag) {
     if (flag === 'content') {
-      this.isModifyContentVisible = false;
+      this.visiable.modifyContent = false;
     } else if (flag === 'screen') {
-      this.isModifyScreenVisible = false;
+      this.visiable.modifyScreen = false;
     } else if (flag === 'open') {
-      this.isModifyOpenVisible = false;
+      this.visiable.modifyOpen = false;
     } else if (flag === 'banner') {
-      this.isModifyBannerVisible = false;
+      this.visiable.modifyBanner = false;
     } else if (flag === 'personal') {
-      this.isModifyPersonalVisible = false;
+      this.visiable.modifyPersonal = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';

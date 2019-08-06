@@ -2,7 +2,6 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { AccountService } from '../public/service/account.service';
 import { CommonService } from '../public/service/common.service';
@@ -21,25 +20,13 @@ export class AccountComponent implements OnInit {
   dataOperationlog = [{roleId: '', roleName: ''}];  // 操作日志
   dataResource = [];  // 操作日志资源
   dataResourceChildren = [];  // 资源的子集
-  displayData = [];
   allChecked = false;
-  indeterminate = false;
   modifyItem = {};
-  total = 0;
-  allSize = 0;
-  changePage = 1;
-  pageSize = 10;
   currentPanel = 'role';
   beginDate = '';
   endDate = '';
-  dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
   unCheckVisit = false; // 不看访问
-  allRoleChecked = false;
-  indeterminateRole = false;
-  isAddCustomerVisible = false;
-  frameworkOption: any;
-  isAddRoleVisible = false; // 新增角色
-  isModifyRoleVisible = false;  // 修改角色
+  visiable = {addCustomer: false, addRole: false, modifyRole: false, modifyCustomer: false };
   isModifyCustomerVisible = false; // 修改用户信息
   roleAddForm: FormGroup;
   roleModifyForm: FormGroup;
@@ -52,7 +39,6 @@ export class AccountComponent implements OnInit {
   customerId = '';  // 用于修改员工
   roleId = '';  // 用于修改角色
   resIdsArr = []; // 组装一级
-  rootRes = []; // 组装二级
   checkOptionsChannel = [
     { label: '你好小悟', value: 'XIAOWU', checked: false },
     { label: '听听同学', value: 'LENZE', checked: false },
@@ -90,7 +76,6 @@ export class AccountComponent implements OnInit {
     private datePipe: DatePipe,
     private modalService: NzModalService,
     private notification: NzNotificationService,
-    private _router: Router,
     private accountService: AccountService,
   ) {
     this.commonService.nav[7].active = true;
@@ -117,9 +102,7 @@ export class AccountComponent implements OnInit {
         if (res.retcode === 0 && res.status !== 500) {
           this.isSpinning = false;
           this.dataRole = JSON.parse(res.payload).reverse();
-          if (this.dataRole.length === 0) {
-            this.dataRole = [{id: '', name: '' }];
-          }
+          if (this.dataRole.length === 0) { this.dataRole = [{id: '', name: '' }]; }
         } else {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
@@ -138,9 +121,7 @@ export class AccountComponent implements OnInit {
           this.dataCustomer.forEach(item => {
             let roleName = '';
             this.dataRole.forEach(cell => {
-              if (item.roleId === cell.id) {
-                roleName = cell.name;
-              }
+              if (item.roleId === cell.id) { roleName = cell.name; }
             });
             item.roleName = roleName;
           });
@@ -158,9 +139,7 @@ export class AccountComponent implements OnInit {
           this.dataResource.forEach((item, i) => {
             if (item.children) {
               if (item.children.length > 0) {
-                item.children.forEach(element => {
-                  this.dataResourceChildren.push(element);
-                });
+                item.children.forEach(element => { this.dataResourceChildren.push(element); });
               }
             }
             if (i === 0) {
@@ -248,14 +227,14 @@ export class AccountComponent implements OnInit {
   showModal(flag, data): void {
     if (flag === 'addRole') {
       this.allCheckFalse(); // 清除所有所选状态
-      this.isAddRoleVisible = true;
+      this.visiable.addRole = true;
       this.rolesItem.name = '';
       this.rolesItem.desc = '';
       this.resIdsArr.splice(0, this.resIdsArr.length );
     } else if (flag === 'modifyRole') {
       this.allCheckFalse(); // 清除所有所选状态
       this.roleId = data.id;
-      this.isModifyRoleVisible = true;
+      this.visiable.modifyRole = true;
       this.rolesItem.name = data.name;
       this.rolesItem.desc = data.desc;
       if (data.platforms) {
@@ -276,11 +255,11 @@ export class AccountComponent implements OnInit {
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doDelete(data, flag); }
       });
     } else if (flag === 'addCustomer') {
-      this.isAddCustomerVisible = true;
+      this.visiable.addCustomer = true;
       this.customerItem = { realname: '', password: '', roleId: '', username: '' };
     } else if (flag === 'modifyCustomer') {
       this.customerId = data.id;
-      this.isModifyCustomerVisible = true;
+      this.visiable.modifyCustomer = true;
       this.customerItem.username = data.username;
       this.customerItem.password = data.password;
       this.customerItem.realname = data.realname;
@@ -295,13 +274,13 @@ export class AccountComponent implements OnInit {
 
   hideModal(flag): void {
     if (flag === 'addRole') {
-      this.isAddRoleVisible = false;
+      this.visiable.addRole = false;
     } else if (flag === 'modifyRole') {
-      this.isModifyRoleVisible = false;
+      this.visiable.modifyRole = false;
     } else if (flag === 'addCustomer') {
-      this.isAddCustomerVisible = false;
+      this.visiable.addCustomer = false;
     } else if (flag === 'modifyCustomer') {
-      this.isModifyCustomerVisible = false;
+      this.visiable.modifyCustomer = false;
     }
   }
 

@@ -12,7 +12,7 @@
                 日期范围：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" [nzRanges]="dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
@@ -20,13 +20,13 @@
               <div nz-col nzSpan="9"></div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="shouSomething('sessionLog')">
-                  <i class="anticon anticon-plus-circle-o" *ngIf="!isSessionLogSearchVisiable"></i>
-                  <i class="anticon anticon-minus-circle-o" *ngIf="isSessionLogSearchVisiable"></i>
-                  {{isSessionLogSearchVisiable ? '收起' : '展开'}}筛选区
+                  <i class="anticon anticon-plus-circle-o" *ngIf="!visiable.sessionLogSearch"></i>
+                  <i class="anticon anticon-minus-circle-o" *ngIf="visiable.sessionLogSearch"></i>
+                  {{visiable.sessionLogSearch ? '收起' : '展开'}}筛选区
                 </button>
               </div>
             </div>
-            <div style="background-color: #F7F7F7;padding: 10px 0px 0px 10px;margin-bottom: 10px;" *ngIf="isSessionLogSearchVisiable">
+            <div style="background-color: #F7F7F7;padding: 10px 0px 0px 10px;margin-bottom: 10px;" *ngIf="visiable.sessionLogSearch">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <div nz-row>
@@ -193,7 +193,7 @@
         </nz-tab>
 
         <!-- 弹框 —— 信息 —— 数据说明 -->
-        <nz-modal [(nzVisible)]="isExplainVisiable" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="shouSomething('explain')" nzMaskClosable="false">
+        <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="shouSomething('explain')" nzMaskClosable="false">
             <div nz-row class="search_panel" style="text-align: center;">
               <div nz-col nzSpan="2">
                 <span style="line-height: 30px;">&nbsp;</span><br>
