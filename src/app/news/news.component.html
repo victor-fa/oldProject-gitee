@@ -188,6 +188,9 @@
                   <button nz-button nzType="primary" (click)="showModal(data.status === 'CONFIRMED' ? 'updateLoading'  : '', data)" [disabled]="data.status === 'SUBMITTED' || data.status === 'UPDATED'" style="margin-right: 10px;">
                     <i class="anticon anticon-form"></i>{{data.status === 'SUBMITTED' || data.status === 'CONFIRMED' ? '待更新' : data.status === 'UPDATED' ? '已更新' : ''}}
                   </button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteManualAudit', data)" style="margin-right: 10px;">
+                    <i class="anticon anticon-delete"></i>删除
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -312,12 +315,16 @@
               </div>
 
             </form>
-            <div nz-col nzSpan="12"></div>
+            <div nz-col nzSpan="9"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('newsThesaurus')"><i class="anticon anticon-search"></i>查询</button>
             </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addNewsThesaurus', '')"><i class="anticon anticon-file-add"></i>新增词库</button>
+            </div>
           </div>
-          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [nzFooter]="newsThesaurusFooter" [nzPageIndex]="pageNum.dataNewsThesaurusPage">
+          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true"
+              [nzFooter]="newsThesaurusFooter" [(nzPageIndex)]="pageNum.dataNewsThesaurusPage" nzShowRowSelection nzShowSizeChanger>
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -343,16 +350,51 @@
           </nz-table>
           <ng-template #newsThesaurusFooter>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="3">人名：{{paramNewsThesaurus.person}}</div>
-              <div nz-col nzSpan="3">地名：{{paramNewsThesaurus.address}}</div>
-              <div nz-col nzSpan="3">事件：{{paramNewsThesaurus.event}}</div>
-              <div nz-col nzSpan="3">无效：{{paramNewsThesaurus.invalid}}</div>
+              <div nz-col nzSpan="3" class="span_down">人名：{{paramNewsThesaurus.person}}</div>
+              <div nz-col nzSpan="3" class="span_down">地名：{{paramNewsThesaurus.address}}</div>
+              <div nz-col nzSpan="3" class="span_down">事件：{{paramNewsThesaurus.event}}</div>
+              <div nz-col nzSpan="3" class="span_down">无效：{{paramNewsThesaurus.invalid}}</div>
+              <div nz-col nzSpan="9"></div>
+              <div nz-col nzSpan="1" style="font-weight: bold" class="span_down">{{pageNum.dataNewsThesaurusNumber+1}} / {{pageNum.dataNewsThesaurusTotal}}</div>
+              <div nz-col nzSpan="1">
+                <button nz-button nzType="primary" (click)="onChange('', 'newsThesaurusLast')" [disabled]="pageNum.dataNewsThesaurusNumber === 0"><</button>
+              </div>
+              <div nz-col nzSpan="1">
+                <button nz-button nzType="primary" (click)="onChange('', 'newsThesaurusNext')" [disabled]="!(pageNum.dataNewsThesaurusNumber+1 < pageNum.dataNewsThesaurusTotal)">></button>
+              </div>
             </div>
           </ng-template>
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
+          <nz-modal [(nzVisible)]="isAddNewsThesaurusVisible" nzWidth="650" nzTitle="上传审核文件" [nzFooter]="addNewsThesaurusFooter" (nzOnCancel)="hideModal('addNewsThesaurus')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down spacing right_alignment">
+                词性类型：
+              </div>
+              <div nz-col nzSpan="20">
+                <nz-radio-group [(ngModel)]="addNewsThesaurusData.type">
+                  <label nz-radio nzValue="PERSON">人名</label>
+                  <label nz-radio nzValue="ADDRESS">地名</label>
+                  <label nz-radio nzValue="EVENT">事件</label>
+                  <label nz-radio nzValue="INVALID">无效</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <textarea rows="5" nz-input [(ngModel)]="addNewsThesaurusData.content" nzSize="default"></textarea>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24"> * 添加词条后，将会直接影响新闻BOT，请确认词条属性后，谨慎操作！ </div>
+            </div>
+            <ng-template #addNewsThesaurusFooter>
+                <button nz-button nzType="primary" (click)="doSave('addNewsThesaurus', '')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('addNewsThesaurus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
         </nz-tab>
 
 

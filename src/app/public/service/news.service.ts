@@ -86,7 +86,7 @@ export class NewsService extends AppServiceBase {
 
   /** 获取所有列表 */
   getNewsThesaurusList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?size=99999`;
+    let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?size=2000&page=${data.number}`;
     url += data.type && data.type !== '' ? '&type=' + data.type : '';
     url += data.name && data.name !== null ? '&name=' + data.name : '';
     // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';

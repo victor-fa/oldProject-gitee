@@ -17,15 +17,12 @@ registerLocaleData(zh);
 export class CustomerComponent implements OnInit {
 
   pageSize = 10;
-  feedBackPageSize = 1000;
   feedbackInfo = [];
   oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   agreeInfo = [];
   invoiceTimeInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   invoiceLogInfo = [];
   businessInfo = [];
-  oppositionPageSize = 1000;
-  agreePageSize = 1000;
   isFeedBackVisible = false;
   isOppositionVisible = false;
   isAgreeVisible = false;

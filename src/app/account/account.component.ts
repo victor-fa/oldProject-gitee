@@ -577,10 +577,14 @@ export class AccountComponent implements OnInit {
         this.endDate = '';
         return;
       }
-      // 正确选择数据
       if (result[0] !== '' || result[1] !== '') {
-        this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T' + this.datePipe.transform(result[0], 'HH:mm:ss.SSS') + 'Z';
-        this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T' + this.datePipe.transform(result[1], 'HH:mm:ss.SSS') + 'Z';
+        if (this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss') === this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss')) {
+          this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00');
+          this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
+          this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
       if (this.beginDate.indexOf('null') > -1) {  // 处理有null的情况
         this.beginDate = '';

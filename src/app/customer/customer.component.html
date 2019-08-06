@@ -5,7 +5,7 @@
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabset">
         <nz-tab [nzTitle]="feedbackTemplate" (nzClick)="changePanel('feedback')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #feedbackTemplate><i class="anticon anticon-swap"></i>用户反馈</ng-template>
-          <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" [(nzPageSize)]="feedBackPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="100px">序号</th>

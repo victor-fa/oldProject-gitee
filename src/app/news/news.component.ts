@@ -20,6 +20,7 @@ export class NewsComponent implements OnInit {
   isSortSpeechVisible = false;
   isManualAuditVisible = false;
   isUploadAuditVisible = false;
+  isAddNewsThesaurusVisible = false;
   taggingNewsSearchForm: FormGroup;
   manualAuditSearchForm: FormGroup;
   newsThesaurusSearchForm: FormGroup;
@@ -33,6 +34,7 @@ export class NewsComponent implements OnInit {
   dataNewsThesaurus = [];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
+  addNewsThesaurusData = {type: 'PERSON', content: ''};
   isSpinning = false;
   beginSortSpeechDate = '';
   endSortSpeechDate = '';
@@ -44,8 +46,9 @@ export class NewsComponent implements OnInit {
   pageNum = {
     dataSortPage: 1,
     dataManualAuditPage: 1,
-    dataNewsThesaurusPage: 1,
-    dataNewsThesaurusTotal: 1,
+    dataNewsThesaurusPage: 1, // 当前前端页码
+    dataNewsThesaurusTotal: 1,  // 总页数
+    dataNewsThesaurusNumber: 0, // 后台页数
   };
   manualAuditSearchData = {word: '', type: ''};
 
@@ -113,20 +116,23 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'newsThesaurus') {
+    } else if (flag === 'newsThesaurus' || flag === 'newsThesaurusPage') {
+      if (flag === 'newsThesaurus') {
+        this.pageNum.dataNewsThesaurusPage = 1;
+        this.pageNum.dataNewsThesaurusNumber = 0;
+      }
       const newsThesaurusInput = {
         name: this.newsThesaurusSearchForm.controls['name'].value,
         type: this.newsThesaurusSearchForm.controls['type'].value,
         submitTimeCeil: this.endTaggingNewsDate,
         submitTimeFloor: this.beginTaggingNewsDate,
-        number: 1,
+        number: (flag === 'newsThesaurusPage' ? this.pageNum.dataNewsThesaurusNumber : 0),
       };
       this.pageNum.dataNewsThesaurusPage = this.pageNum.dataNewsThesaurusPage === 0 ? 1 : this.pageNum.dataNewsThesaurusPage;
       this.newsService.getNewsThesaurusList(newsThesaurusInput).subscribe(res => {
         console.log(JSON.parse(res.payload));
         if (res.retcode === 0 && res.status === 200) {
           this.pageNum.dataNewsThesaurusTotal = JSON.parse(res.payload).totalPages;
-          console.log(this.pageNum);
           this.isSpinning = false;
           // this.dataNewsThesaurus = JSON.parse(res.payload).content;
           this.dataNewsThesaurus = JSON.parse(res.payload).content.sort(this.sortWords);
@@ -136,7 +142,6 @@ export class NewsComponent implements OnInit {
             event: JSON.parse(res.payload).eventElements,
             invalid: JSON.parse(res.payload).invalidElements
           };
-          console.log(this.paramNewsThesaurus);
           console.log(this.dataNewsThesaurus);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -229,6 +234,13 @@ export class NewsComponent implements OnInit {
         nzTitle: '确认删除', nzContent: '确认删除该词条吗？', nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
+    } else if (flag === 'deleteManualAudit') {
+      this.modalService.confirm({
+        nzTitle: '确认删除', nzContent: '确认删除该审核来源吗？', nzCancelText: '取消',
+        nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
+      });
+    } else if (flag === 'addNewsThesaurus') {
+      this.isAddNewsThesaurusVisible = true;
     }
   }
 
@@ -282,6 +294,22 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'deleteManualAudit') {
+      // const deleteInput = {newsWord: {type: 'INVALID', word: data.word}, };
+      // this.newsService.updateNewWords(deleteInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     if (res.payload !== '') {
+      //       this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+      //       const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
+      //       this.commonService.updateOperationlog(operationInput).subscribe();
+      //       setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
+      //     } else {
+      //       this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      //     }
+      //   } else {
+      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      //   }
+      // });
     }
   }
 
@@ -294,6 +322,8 @@ export class NewsComponent implements OnInit {
       this.manualAuditSearchData = {word: '', type: ''};  // 重置
     } else if (flag === 'uploadMarked') {
       this.isUploadAuditVisible = false;
+    } else if (flag === 'addNewsThesaurus') {
+      this.isAddNewsThesaurusVisible = false;
     }
   }
 
@@ -369,6 +399,19 @@ export class NewsComponent implements OnInit {
           this.modalService.error({ nzTitle: '提示', nzContent: res.message });
         }
       });
+    } else if (flag === 'addNewsThesaurus') {
+      // const deleteInput = {newsWord: {type: data.type, word: data.word} };
+      console.log(this.addNewsThesaurusData.content.split('\n'));
+      // this.newsService.updateNewWords(deleteInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //     // setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
+      //   } else {
+      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      //   }
+      // });
     }
   }
 
@@ -448,35 +491,35 @@ export class NewsComponent implements OnInit {
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'taggingNews') {
-      if (result === []) {
-        this.beginSortSpeechDate = '';
-        this.endSortSpeechDate = '';
-        return;
-      }
-      // 正确选择数据
+      if (result === []) { this.beginSortSpeechDate = ''; this.endSortSpeechDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') {
-        this.beginSortSpeechDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endSortSpeechDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginSortSpeechDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endSortSpeechDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginSortSpeechDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endSortSpeechDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
     } else if (flag === 'sortPage') {
       const begin = this.pageNum.dataSortPage * 10 - 10;
       const end = this.pageNum.dataSortPage * 10 - 1;
-      this.dataSortSpeech.forEach((item, index) => {
-        if (index >= begin && index <= end) {
-          item.type = result;
-        }
-      });
+      this.dataSortSpeech.forEach((item, index) => { if (index >= begin && index <= end) { item.type = result; } });
     } else if (flag === 'manualAudit') {
-      if (result === []) {
-        this.beginTaggingNewsDate = '';
-        this.endTaggingNewsDate = '';
-        return;
-      }
-      // 正确选择数据
+      if (result === []) { this.beginTaggingNewsDate = ''; this.endTaggingNewsDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') {
-        this.beginTaggingNewsDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endTaggingNewsDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginTaggingNewsDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endTaggingNewsDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginTaggingNewsDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaggingNewsDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
+    } else if (flag === 'newsThesaurusLast') {
+      this.pageNum.dataNewsThesaurusNumber -= 1;  // 后台当前页-1
+      this.pageNum.dataNewsThesaurusPage = 0;
+      this.loadData('newsThesaurusPage');
+    } else if (flag === 'newsThesaurusNext') {
+      this.pageNum.dataNewsThesaurusNumber += 1;  // 后台当前页+1
+      this.pageNum.dataNewsThesaurusPage = 0;
+      this.loadData('newsThesaurusPage');
     }
   }
 

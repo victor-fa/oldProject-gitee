@@ -281,27 +281,11 @@ export class OperateComponent implements OnInit {
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'taxi') {
-      if (result === []) {
-        this.beginTaxiDate = '';
-        this.endTaxiDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginTaxiDate = this.datePipe.transform(result[0], 'yyyyMMdd');
-        this.endTaxiDate = this.datePipe.transform(result[1], 'yyyyMMdd');
-      }
+      if (result === []) { this.beginTaxiDate = ''; this.endTaxiDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginTaxiDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaxiDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
     } else if (flag === 'orderState') {
-      if (result === []) {
-        this.beginOrderStateDate = '';
-        this.endOrderStateDate = '';
-        return;
-      }
-      // 正确选择数据
-      if (result[0] !== '' || result[1] !== '') {
-        this.beginOrderStateDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
-        this.endOrderStateDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
-      }
+      if (result === []) { this.beginOrderStateDate = ''; this.endOrderStateDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') { this.beginOrderStateDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endOrderStateDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     }
   }
 

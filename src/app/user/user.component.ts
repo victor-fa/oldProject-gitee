@@ -1022,59 +1022,53 @@ export class UserComponent implements OnInit {
   // 日期插件
   onChange(result, flag): void {
     if (flag === 'booking') {
-      if (result !== '') {
-        this.beginBookingDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endBookingDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginBookingDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endBookingDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginBookingDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBookingDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
-      if (this.beginBookingDate === null) {
-        this.beginBookingDate = null;
-        this.endBookingDate = null;
-      }
+      if (this.beginBookingDate === null) { this.beginBookingDate = null; this.endBookingDate = null; }
     } else if (flag === 'adjust') {
       if (result[0] !== '' || result[1] !== '') {
         this.beginAdjustDate = this.datePipe.transform(result[0], 'yyyy-MM-dd');
         this.endAdjustDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
       }
-      if (this.beginAdjustDate === null || this.endAdjustDate === null) {
-        this.beginAdjustDate = null;
-        this.endAdjustDate = null;
-      }
+      if (this.beginAdjustDate === null || this.endAdjustDate === null) { this.beginAdjustDate = null; this.endAdjustDate = null; }
     } else if (flag === 'recharge') {
       if (result[0] !== '' || result[1] !== '') {
-        this.beginRechargeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endRechargeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginRechargeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endRechargeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginRechargeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endRechargeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
-      if (this.beginRechargeDate === null || this.endRechargeDate === null) {
-        this.beginRechargeDate = null;
-        this.endRechargeDate = null;
-      }
+      if (this.beginRechargeDate === null || this.endRechargeDate === null) { this.beginRechargeDate = null; this.endRechargeDate = null; }
     } else if (flag === 'invoice') {
       if (result[0] !== '' || result[1] !== '') {
         this.beginInvoiceDate = this.datePipe.transform(result[0], 'yyyy-MM-dd ') + '00:00:00';
         this.endInvoiceDate = this.datePipe.transform(result[1], 'yyyy-MM-dd ') + '23:59:59';
       }
-      if (this.beginInvoiceDate === null || this.endInvoiceDate === null) {
-        this.beginInvoiceDate = null;
-        this.endInvoiceDate = null;
-      }
+      if (this.beginInvoiceDate === null || this.endInvoiceDate === null) { this.beginInvoiceDate = null; this.endInvoiceDate = null; }
     } else if (flag === 'userRegister') {
       if (result[0] !== '' || result[1] !== '') {
-        this.begUserRegisterDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endUserRegisterDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.begUserRegisterDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endUserRegisterDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.begUserRegisterDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endUserRegisterDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
-      if (this.begUserRegisterDate === null || this.endUserRegisterDate === null) {
-        this.begUserRegisterDate = null;
-        this.endUserRegisterDate = null;
-      }
+      if (this.begUserRegisterDate === null || this.endUserRegisterDate === null) { this.begUserRegisterDate = null; this.endUserRegisterDate = null; }
     } else if (flag === 'userLogin') {
       if (result[0] !== '' || result[1] !== '') {
-        this.begUserLoginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endUserLoginDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.begUserLoginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endUserLoginDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.begUserLoginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endUserLoginDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
-      if (this.begUserLoginDate === null || this.endUserLoginDate === null) {
-        this.begUserLoginDate = null;
-        this.endUserLoginDate = null;
-      }
+      if (this.begUserLoginDate === null || this.endUserLoginDate === null) { this.begUserLoginDate = null; this.endUserLoginDate = null; }
     } else if (flag === 'currentUserCommonTab') {
       this.userInfoCommonData.splice(0, this.userInfoCommonData.length);
       this.loadData('userInfoCommon');

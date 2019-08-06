@@ -2,7 +2,7 @@
 <div class="content" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
   <nz-card style="width: 100%;">
     <nz-card-tab>
-      <nz-tabset nzSize="large">
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
 
         <nz-tab [nzTitle]="couponTemplate" (nzClick)="changePanel('coupon')" *ngIf="commonService.haveMenuPermission('children', '优惠券配置')">
           <ng-template #couponTemplate><i class="anticon anticon-gift"></i>优惠券配置</ng-template>
@@ -1749,7 +1749,7 @@
                 任务名称：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="name" placeholder="输入任务名称" nzSize="default">
+                <input nz-input formControlName="name" placeholder="输入任务名称" nzSize="default" [(ngModel)]="taskCenterName">
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">任务类型：</div>
               <div nz-col nzSpan="3">
@@ -1814,7 +1814,7 @@
                     : data.action === 'FINISH_MOVIE_TICKET_ORDER' ? '完成电影票订单' : data.action === 'FINISH_TAXIS_ORDER' ? '完成打车订单' : data.action === 'CALL' ? '打电话'
                     : data.action === 'LIKE_OR_TREAD' ? '点赞/踩' : data.action === 'SHARE' ? '分享' : ''}}</td>
                 <td nzTitle="{{data.description}}" nzPlacement="bottom" nz-tooltip><a>{{data.description ? data.description.substring(0, 8) + (data.description.length > 8 ? '…' : '') : ''}}</a></td>
-                <td>{{data.sequence}}</td>
+                <td>{{data.group}}-{{data.sequence}}</td>
                 <td>
                   <nz-form-item>
                     <nz-form-control>
@@ -1945,7 +1945,7 @@
                   </nz-radio-group>
                 </div>
                 <div nz-col nzSpan="6" class="span_down">
-                  <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 40px;">
+                  <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 40px;" [disabled]="!(addTaskCenter.jumpType === 'APP')">
                     <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="0"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="1"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的订单--------------------'" [nzValue]="2"></nz-option>
@@ -1954,9 +1954,17 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的账户--------------------'" [nzValue]="5"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议-------'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助---------------------------'" [nzValue]="7"></nz-option>
-                  </nz-select><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;">
+                    <nz-option required [nzLabel]="'对话流-----------------------------------'" [nzValue]="8"></nz-option>
+                  </nz-select>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'WEB')"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
+                </div>
+                <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
+                <div nz-col nzSpan="2" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                  <br>发送话术
+                </div>
+                <div nz-col nzSpan="6" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                  <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>
               <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务奖励</b></div></div>
@@ -1979,10 +1987,10 @@
                   </nz-radio-group>
                 </div>
                 <div nz-col nzSpan="6" class="span_down">
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanValue" style="margin-bottom: 10px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanPreValue" style="margin-bottom: 10px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.expValue" style="margin-bottom: 10px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.perkValue" style="margin-bottom: 10px;">
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Fixed')"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanPreValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Percentage')"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.expValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkExperience === false"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.perkValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkSkill === false">
                 </div>
                 <div nz-col nzSpan="1" class="span_down right_alignment" style="padding-top: 10px;">
                   <br>%
@@ -2000,7 +2008,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down right_alignment">活动时间：</div>
                 <div nz-col nzSpan="6" class="span_down">
-                  <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="addTaskCenter.date" [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenterAct')"></nz-range-picker>
+                  <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzShowTime [nzShowToday]="true" [(ngModel)]="addTaskCenter.date" [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskCenterAct')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -2038,7 +2046,7 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="6" class="span_down">
-                  <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 35px;">
+                  <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 35px;" [disabled]="!(addTaskCenter.jumpType === 'APP')">
                     <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="0"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="1"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 我的订单--------------------'" [nzValue]="2"></nz-option>
@@ -2047,9 +2055,17 @@
                     <nz-option required [nzLabel]="'个人中心 > 我的账户--------------------'" [nzValue]="5"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 联系我们 > 我的建议-------'" [nzValue]="6"></nz-option>
                     <nz-option required [nzLabel]="'对话流 > 帮助---------------------------'" [nzValue]="7"></nz-option>
+                    <nz-option required [nzLabel]="'对话流-----------------------------------'" [nzValue]="8"></nz-option>
                   </nz-select><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;">
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'WEB')"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
+                </div>
+                <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
+                <div nz-col nzSpan="2" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                  <br>发送话术
+                </div>
+                <div nz-col nzSpan="6" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                  <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>
               <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>活动规则</b></div></div>
@@ -2077,8 +2093,8 @@
                   </nz-radio-group>
                 </div>
                 <div nz-col nzSpan="2" class="span_down">
-                  <input nz-input nzSize="default" [(ngModel)]="data.beanValue" style="margin-bottom: 15px;"><br>
-                  <input nz-input nzSize="default" [(ngModel)]="data.beanPreValue">
+                  <input nz-input nzSize="default" [(ngModel)]="data.beanValue" style="margin-bottom: 15px;" [disabled]="!(data.checkBean === true && data.checkBeanRes === 'Fixed')"><br>
+                  <input nz-input nzSize="default" [(ngModel)]="data.beanPreValue" [disabled]="!(data.checkBean === true && data.checkBeanRes === 'Percentage')">
                 </div>
                 <div nz-col nzSpan="1" class="span_down" style="padding-top: 15px;">
                   <br>&nbsp;%
@@ -2087,13 +2103,13 @@
                   <label nz-checkbox [(nzChecked)]="data.checkExperience">经验</label>
                 </div>
                 <div nz-col nzSpan="2" class="span_down">
-                  <input nz-input nzSize="default" [(ngModel)]="data.expValue">
+                  <input nz-input nzSize="default" [(ngModel)]="data.expValue" [disabled]="data.checkExperience === false">
                 </div>
                 <div nz-col nzSpan="3" class="span_down right_alignment">
                   <label nz-checkbox [(nzChecked)]="data.checkSkill">技能点</label>
                 </div>
                 <div nz-col nzSpan="2" class="span_down">
-                  <input nz-input nzSize="default" [(ngModel)]="data.perkValue">
+                  <input nz-input nzSize="default" [(ngModel)]="data.perkValue" [disabled]="data.checkSkill === false">
                 </div>
                 <div nz-col nzSpan="1">
                 </div>
@@ -2119,7 +2135,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">完成时间：</div>
               <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
+                <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2" class="span_down right_alignment">用户ID：</div>
               <div nz-col nzSpan="2">
@@ -2159,10 +2175,10 @@
                 <td>{{data.userId}}</td>
                 <td>{{data.userPhone}}</td>
                 <td>{{data.userName}}</td>
-                <td>{{data.taskName}}</td>
-                <td>{{data.bean}}</td>
-                <td>{{data.exp}}</td>
-                <td>{{data.Skill}}</td>
+                <td><a (click)="showModal('goTaskCenter', data)">{{data.taskName}}</a></td>
+                <td>{{data.bean ? '小悟豆*' + data.bean : '/'}}</td>
+                <td>{{data.exp ? '经验值*' + data.exp : '/'}}</td>
+                <td>{{data.Skill ? '技能点*' + data.Skill : '/'}}</td>
               </tr>
             </tbody>
           </nz-table>

@@ -30,6 +30,13 @@ export class ActivityComponent implements OnInit {
   isPreviewCouponVisible = false;
   isAddTaskCenterVisible = false;
   isModifyTaskCenterVisible = false;
+  isAddBatchsendVisible = false;
+  isDetailBatchsendVisible = false;
+  isCouponInBatchsendVisible = false;
+  isBatchsendVisible = false;
+  isAddBeanVisible = false;
+  isModifyBeanVisible = false;
+  isSearchBeanVisible = false;
   loading = false;
   searchActivityForm: FormGroup;
   searchCouponInActivityForm: FormGroup;
@@ -93,10 +100,6 @@ export class ActivityComponent implements OnInit {
     { name : '打车', value : 'taxi', checked : true, disabled: false }
   ];
   currentPanel = 'coupon';
-  isAddBatchsendVisible = false;
-  isDetailBatchsendVisible = false;
-  isCouponInBatchsendVisible = false;
-  isBatchsendVisible = false;
   addBatchsendForm: FormGroup;
   searchCouponInBatchsendForm: FormGroup;
   beginBatchsendDate = '';
@@ -112,9 +115,6 @@ export class ActivityComponent implements OnInit {
   beanData = [];
   beanPageSize = 100;
   isSpinning = false;
-  isAddBeanVisible = false;
-  isModifyBeanVisible = false;
-  isSearchBeanVisible = false;
   beanItem = { 'activeStatus': '', 'beginTime': '', 'depositAmount': '', 'describe': '', 'endTime': '', 'giftPercent': 1, 'id': '', 'presentType': '', 'title': '', 'type': '', giftAmount: '' };
   addBeanForm: FormGroup;
   searchBeanForm: FormGroup;
@@ -123,10 +123,12 @@ export class ActivityComponent implements OnInit {
   endBeanDate = null;
   radioBeanValue = 'PERCENT_GIFT';  // 单选
   templateId = '';
+  tabsetJson = { currentNum: 0, param: '' };
+  taskCenterName = '';
   addTaskCenter = {
     taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false, checkBeanRes: 'Fixed',
     checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '', group: '', sequence: '', pic: '',
-    jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+    jump: {msg: '', page: 0, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
     stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
     date: []
   };
@@ -326,7 +328,7 @@ export class ActivityComponent implements OnInit {
       });
     } else if (flag === 'taskCenter') {
       const taskCenterInput = {
-        name: this.searchTaskCenterForm.controls['name'].value,
+        name: this.taskCenterName,
         type: this.searchTaskCenterForm.controls['type'].value,
         createTimeFloor: this.beginTaskCenterDate,
         createTimeCeil: this.endTaskCenterDate,
@@ -335,7 +337,6 @@ export class ActivityComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataTaskCenter = JSON.parse(res.payload).content;
-          console.log(JSON.parse(res.payload).content);
           this.dataTaskCenter.forEach(item => {
             if (item.taskAward) {
               if (item.taskAward.stepRule) {
@@ -594,7 +595,8 @@ export class ActivityComponent implements OnInit {
             jump: {
               msg: task.jump.msg ? task.jump.msg : '',
               page: task.jump.page ? task.jump.page : 0,
-              url: task.jump.url ? task.jump.url : ''
+              url: task.jump.url ? task.jump.url : '',
+              appMsg: task.jump.msg && task.jump.page === 8 && task.jump.type === 'APP' ? task.jump.msg : ''
             },
             rule: {
               beanValue: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'FIXED' ? task.taskAward.rule.beanValue : '' : '',
@@ -613,6 +615,10 @@ export class ActivityComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.isModifyTaskCenterVisible = true;
+    } else  if (flag === 'goTaskCenter') {  // 查看充值
+      this.taskCenterName = data.taskName;
+      setTimeout(() => { this.loadData('taskCenter'); }, 1000);
+      this.tabsetJson.currentNum = 4;
     }
   }
 
@@ -669,7 +675,7 @@ export class ActivityComponent implements OnInit {
       this.addTaskCenter = {
         taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false,
         checkBeanRes: 'Fixed', checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '',
-        group: '', sequence: '', pic: '', jump: {msg: '', page: 0, url: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+        group: '', sequence: '', pic: '', jump: {msg: '', page: 0, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
         stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
         date: []
       };
@@ -974,9 +980,7 @@ export class ActivityComponent implements OnInit {
         });
       }
     } else if (flag === 'coupon') {
-      if (!this.verificationAdd('coupon')) {
-        return;
-      }
+      if (!this.verificationAdd('coupon')) { return; }
       let couponInput = {};
       if (this.couponRadioValue === 'fix_start_end') {
         couponInput = {
@@ -1015,9 +1019,7 @@ export class ActivityComponent implements OnInit {
       });
     } else if (flag === 'batchsendList') {
       let count = 0;
-      if (!this.verificationAdd('batchsend')) {
-        return;
-      }
+      if (!this.verificationAdd('batchsend')) { return; }
       this.addBatchsendForm.controls['pendingRevL'].value.split('\n').forEach(item => {
         if (!this.isPoneAvailable(item)) { count++; }
       });
@@ -1172,7 +1174,7 @@ export class ActivityComponent implements OnInit {
           pic: this.imageUrl,
           jump: {
             type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 8) ? this.addTaskCenter.jump.appMsg : '')),
             page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
             url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
           },
@@ -1209,7 +1211,7 @@ export class ActivityComponent implements OnInit {
           pic: this.imageUrl,
           jump: {
             type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ''),
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 8) ? this.addTaskCenter.jump.appMsg : '')),
             page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
             url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
           },
@@ -1464,6 +1466,7 @@ export class ActivityComponent implements OnInit {
             this.imageUrl = JSON.parse(event.body.payload).relativeUri;
             this.showImageUrl = baseUrl.substring(0, baseUrl.indexOf('/api')) + this.imageUrl;
           } else if (this.currentPanel === 'taskCenter') {
+            this.imageUrl = event.body.payload;
             this.showImageUrl = `${baseUrl.substring(0, baseUrl.indexOf('/admin'))}/v1${url}/${this.imageUrl}`;
           }
           this.notification.success( '提示', '上传成功' );
@@ -1539,16 +1542,40 @@ export class ActivityComponent implements OnInit {
       if (result[0] !== '' || result[1] !== '') { this.beginCouponInBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endCouponInBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     } else if (flag === 'searchBean') {
       if (result === []) { this.beginBeanDate = ''; this.endBeanDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     }if (flag === 'taskCenter') {
       if (result === []) { this.beginTaskCenterDate = ''; this.endTaskCenterDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginTaskCenterDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaskCenterDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'taskCenterAct') {
       if (result === []) { this.beginTaskCenterActDate = ''; this.endTaskCenterActDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginTaskCenterActDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaskCenterActDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginTaskCenterActDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endTaskCenterActDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginTaskCenterActDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaskCenterActDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'taskLogs') {
       if (result === []) { this.beginTaskLogDate = ''; this.endTaskLogDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginTaskLogDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.endTaskLogDate = this.datePipe.transform(result[1], 'yyyyMMdd'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginTaskLogDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endTaskLogDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginTaskLogDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endTaskLogDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'addStepRule') {
       this.addTaskCenter.stepRule.push({ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' });
     } else if (flag === 'deleteStepRule') {
