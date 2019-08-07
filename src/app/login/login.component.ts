@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd';
 import { LoginItemInput } from '../public/model/user.model';
-import { CommonService } from '../public/service/common.service';
 import { UserService } from '../public/service/user.service';
 
 @Component({
@@ -17,7 +16,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private commonService: CommonService,
     private modalService: NzModalService,
   ) {
     this._initForm();
@@ -34,10 +32,7 @@ export class LoginComponent implements OnInit {
     // 验证不通过，则不请求API
     if (this.getFormControl('userName').value === ''
     || this.getFormControl('password').value === '') {
-      this.modalService.error({
-        nzTitle: '提示',
-        nzContent: '请填写完整登录信息'
-      });
+      this.modalService.error({ nzTitle: '提示', nzContent: '请填写完整登录信息' });
       return; }
     this.login.userName = this.loginForm.controls['userName'].value;
     this.login.password = this.loginForm.controls['password'].value;

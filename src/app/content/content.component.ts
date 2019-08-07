@@ -108,9 +108,7 @@ export class ContentComponent implements OnInit {
           this.dataContent = JSON.parse(res.payload).reverse();
           const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'screen') {
       this.screenService.getScreenList().subscribe(res => {
@@ -119,9 +117,7 @@ export class ContentComponent implements OnInit {
           this.dataScreen = JSON.parse(res.payload).reverse();
           const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'open') {
       this.openService.getOpenList().subscribe(res => {
@@ -131,9 +127,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(this.dataOpen);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'banner') {
       this.bannerService.getBannerList().subscribe(res => {
@@ -142,9 +136,7 @@ export class ContentComponent implements OnInit {
           this.dataBanner = JSON.parse(res.payload).reverse();
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'personal') {
       this.personalService.getPersonalList().subscribe(res => {
@@ -154,9 +146,7 @@ export class ContentComponent implements OnInit {
           console.log(this.dataPersonal);
           const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -323,9 +313,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('content');
           this.loadData('content');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'screen') {
       if (!this.verificationAdd('screen')) {
@@ -349,9 +337,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('screen');
           this.loadData('screen');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'open') {
       if (!this.verificationAdd('open')) {
@@ -377,9 +363,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('open');
           this.loadData('open');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'banner') {
       if (!this.verificationAdd('banner')) {
@@ -402,9 +386,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('banner');
           this.loadData('banner');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'personal') {
       if (!this.verificationAdd('personal')) {
@@ -426,9 +408,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideAddModal('personal');
           this.loadData('personal');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -649,9 +629,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('content');
           this.loadData('content');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'screen') {
       if (!this.verificationModify('screen')) {
@@ -676,9 +654,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('screen');
           this.loadData('screen');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'open') {
       if (!this.verificationModify('open')) {
@@ -705,9 +681,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('open');
           this.loadData('open');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'banner') {
       if (!this.verificationModify('banner')) {
@@ -731,9 +705,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('banner');
           this.loadData('banner');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'personal') {
       if (!this.verificationModify('personal')) {
@@ -757,9 +729,7 @@ export class ContentComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModifyModal('personal');
           this.loadData('personal');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -777,9 +747,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('content');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'screen') {
       this.screenService.deleteScreen(id).subscribe(res => {
@@ -788,9 +756,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('screen');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'open') {
       this.openService.deleteOpen(id).subscribe(res => {
@@ -799,9 +765,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('open');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'banner') {
       this.bannerService.deleteBanner(id).subscribe(res => {
@@ -810,9 +774,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('banner');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'personal') {
       this.personalService.deletePersonal(id).subscribe(res => {
@@ -821,9 +783,7 @@ export class ContentComponent implements OnInit {
           const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('personal');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -837,9 +797,7 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('screen');
       });
     } else if (flag === 'open') {
@@ -848,9 +806,7 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('open');
       });
     } else if (flag === 'banner') {
@@ -859,9 +815,7 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('banner');
       });
     } else if (flag === 'personal') {
@@ -880,9 +834,7 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('personal');
       });
     }
@@ -999,9 +951,7 @@ export class ContentComponent implements OnInit {
           this.notification.success( '提示', '上传成功' );
           const operationInput = { op_category: '内容管理', op_page: this.currentPanel === 'content' ? '内容发布' : this.currentPanel === 'screen' ? '开屏启动' : this.currentPanel === 'open' ? '首页弹窗' : this.currentPanel === 'banner' ? '轮播图' : this.currentPanel === 'personal' ? '个人中心' : '' , op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
         formData.delete(flag);
       }, err => { formData.delete(flag); }
     );

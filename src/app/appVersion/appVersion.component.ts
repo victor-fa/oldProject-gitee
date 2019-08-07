@@ -561,9 +561,7 @@ export class AppVersionComponent implements OnInit {
     } else if (flag === 'guide_button') {
       const butItem = { 'type': 'BUTTON', 'text': '', 'sort': '' }; this.guideItem.buttonArr.push(butItem);
     } else if (flag === 'guide_image') {
-      if (this.guideItem.imageArr.length === 1) { // 最多添加一个上传图片
-        this.modalService.error({ nzTitle: '提示', nzContent: '暂时只支持上传一张' }); return;
-      }
+      if (this.guideItem.imageArr.length === 1) { this.modalService.error({ nzTitle: '提示', nzContent: '暂时只支持上传一张' }); return; } // 最多添加一个上传图片
       const imgItem = { 'type': 'IMAGE', 'imageKey': '', 'jumpType': '', 'appDestinationType': '', 'webUrl': '', 'sort': '' };
       this.guideItem.imageArr.push(imgItem);
     } else if (flag === 'addHelp') {

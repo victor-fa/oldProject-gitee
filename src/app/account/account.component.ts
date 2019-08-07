@@ -103,9 +103,7 @@ export class AccountComponent implements OnInit {
           this.isSpinning = false;
           this.dataRole = JSON.parse(res.payload).reverse();
           if (this.dataRole.length === 0) { this.dataRole = [{id: '', name: '' }]; }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'customer') {
       const customerItem = {
@@ -126,9 +124,7 @@ export class AccountComponent implements OnInit {
             item.roleName = roleName;
           });
           console.log(this.dataCustomer);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'resource') {
       this.accountService.getFullResource().subscribe(res => {
@@ -179,9 +175,7 @@ export class AccountComponent implements OnInit {
           });
           console.log(this.allMenu);
           console.log(this.checkOptions1);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'operationlog') {
       const operationlogItem = {
@@ -206,9 +200,7 @@ export class AccountComponent implements OnInit {
             dataOperationlog = JSON.parse(res.payload);
           }
           this.dataOperationlog = dataOperationlog;
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -388,9 +380,7 @@ export class AccountComponent implements OnInit {
           const operationInput = { op_category: '权限后台', op_page: '权限配置', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('role');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.hideModal('addRole');
     } else if (flag === 'modifyRole') {
@@ -413,9 +403,7 @@ export class AccountComponent implements OnInit {
           const operationInput = { op_category: '权限后台', op_page: '权限配置', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('role');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.hideModal('modifyRole');
     } else if (flag === 'addCustomer') {  // 添加员工
@@ -432,9 +420,7 @@ export class AccountComponent implements OnInit {
           const operationInput = { op_category: '权限后台', op_page: '员工配置', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('customer');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.hideModal('addCustomer');
     } else if (flag === 'modifyCustomer') { // 修改员工
@@ -452,9 +438,7 @@ export class AccountComponent implements OnInit {
           const operationInput = { op_category: '权限后台', op_page: '员工配置', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('customer');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.hideModal('modifyCustomer');
     }
@@ -518,9 +502,7 @@ export class AccountComponent implements OnInit {
           } else {
             this.notification.error( '提示', '该角色下有员工账号，无法删除', { nzStyle: { color : 'red' } });
           }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'deleteCustomer') {
       this.accountService.deleteCustomer(data).subscribe(res => {  // 删除用户
@@ -533,9 +515,7 @@ export class AccountComponent implements OnInit {
             this.commonService.updateOperationlog(operationInput).subscribe();
           }
           this.loadData('customer');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }

@@ -470,9 +470,7 @@ export class UserComponent implements OnInit {
           this.loadData('adjust');
           this.hideModal('adjustAdd');
           this.hideModal('adjustSend');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'sendMsg') {
       this.adjustService.sendMsg(this.operateObject.operater).subscribe(res => {
@@ -481,9 +479,7 @@ export class UserComponent implements OnInit {
           this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '发送短信' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }

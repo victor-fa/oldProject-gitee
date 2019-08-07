@@ -85,9 +85,7 @@ export class OperateComponent implements OnInit {
           this.dataTaxi = JSON.parse(res.payload).reverse();
           const operationInput = { op_category: '运维后台', op_page: '打车监控' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'voice') {
       this.voiceService.getVoiceList().subscribe(res => {
@@ -105,9 +103,7 @@ export class OperateComponent implements OnInit {
               this.voiceANDROIDRadioValue = item.supplier;
             }
           });
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'orderState') {
       const orderStateInput = {
@@ -124,9 +120,7 @@ export class OperateComponent implements OnInit {
           console.log(this.dataOrderState);
           const operationInput = { op_category: '运维后台', op_page: '订单状态监控' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'orderStateSetting') {
       this.appversionService.getOrderStateSettingList().subscribe(res => {
@@ -142,9 +136,7 @@ export class OperateComponent implements OnInit {
           console.log(this.dataOrderStateSetting);
           const operationInput = { op_category: '运维后台', op_page: '订单状态设置' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -227,9 +219,7 @@ export class OperateComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.isSaveIOSVoiceButton = false; // 保存成功后，变为编辑按钮
           this.loadData('voice');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'saveVoicceANDROID') {
       const voiceInput = {
@@ -243,9 +233,7 @@ export class OperateComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.isSaveANDROIDVoiceButton = false; // 保存成功后，变为编辑按钮
           this.loadData('voice');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyOrderStateSetting') {
       const time1 = this.currentOrderStateSetting.time1;
@@ -264,9 +252,7 @@ export class OperateComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('orderStateSetting');
           this.loadData('orderStateSetting');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }

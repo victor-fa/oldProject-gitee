@@ -17,7 +17,8 @@ registerLocaleData(zh);
 })
 export class NewsComponent implements OnInit {
 
-  visiable = {sortSpeech: false, manualAudit: false, uploadAudit: false, addNewsThesaurus: false };
+  visiable = {sortSpeech: false, manualAudit: false, uploadAudit: false, addNewsThesaurus: false,
+    newsNERTest: false, newsNERResult: false, };
   taggingNewsSearchForm: FormGroup;
   manualAuditSearchForm: FormGroup;
   newsThesaurusSearchForm: FormGroup;
@@ -29,6 +30,8 @@ export class NewsComponent implements OnInit {
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
+  dataNewsNER = [{}];
+  dataNewsNERResult = [{}];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
   addNewsThesaurusData = {type: 'PERSON', content: ''};
@@ -90,9 +93,7 @@ export class NewsComponent implements OnInit {
           console.log(this.dataTaggingNews);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'manualAudit') {
       const manualAuditInput = {
@@ -109,9 +110,7 @@ export class NewsComponent implements OnInit {
           console.log(this.dataManualAudit);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'newsThesaurus' || flag === 'newsThesaurusPage') {
       if (flag === 'newsThesaurus') {
@@ -142,10 +141,10 @@ export class NewsComponent implements OnInit {
           console.log(this.dataNewsThesaurus);
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'newsNER') {
+      this.isSpinning = false;
     }
   }
 
@@ -174,9 +173,7 @@ export class NewsComponent implements OnInit {
           });
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.visiable.sortSpeech = true;
     } else if (flag === 'submitTagAudit') {
@@ -216,9 +213,7 @@ export class NewsComponent implements OnInit {
           console.log(this.dataManualAuditModel);
           // const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
           // this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       flag === 'manualAuditModel' ? '' : this.visiable.manualAudit = true;
     } else if (flag === 'updateLoading') {
@@ -238,6 +233,10 @@ export class NewsComponent implements OnInit {
       });
     } else if (flag === 'addNewsThesaurus') {
       this.visiable.addNewsThesaurus = true;
+    } else if (flag === 'newsNERTest') {
+      this.visiable.newsNERTest = true;
+    } else if (flag === 'newsNERResult') {
+      this.visiable.newsNERResult = true;
     }
   }
 
@@ -252,12 +251,8 @@ export class NewsComponent implements OnInit {
             const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '提交审核' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             setTimeout(() => {this.loadData('taggingNews'); }, 500);
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'updateLoading') {
       const submitInput = {id: data.id, };
@@ -268,12 +263,8 @@ export class NewsComponent implements OnInit {
             const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             setTimeout(() => {this.loadData('manualAudit'); }, 500);
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'deleteNewsThesaurus') {
       const deleteInput = {newsWord: {type: 'INVALID', word: data.word}, };
@@ -284,12 +275,8 @@ export class NewsComponent implements OnInit {
             const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'deleteManualAudit') {
       // const deleteInput = {newsWord: {type: 'INVALID', word: data.word}, };
@@ -300,12 +287,8 @@ export class NewsComponent implements OnInit {
       //       const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
       //       this.commonService.updateOperationlog(operationInput).subscribe();
       //       setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-      //     } else {
-      //       this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      //     }
-      //   } else {
-      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      //   }
+      //     } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       // });
     }
   }
@@ -321,6 +304,10 @@ export class NewsComponent implements OnInit {
       this.visiable.uploadAudit = false;
     } else if (flag === 'addNewsThesaurus') {
       this.visiable.addNewsThesaurus = false;
+    } else if (flag === 'newsNERTest') {
+      this.visiable.newsNERTest = false;
+    } else if (flag === 'newsNERResult') {
+      this.visiable.newsNERResult = false;
     }
   }
 
@@ -358,9 +345,7 @@ export class NewsComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('sortSpeech');
           setTimeout(() => {this.loadData('taggingNews'); }, 500);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'manualAudit') {
       for (let i = 0; i < this.dataManualAuditModelFinal.length; i++) {
@@ -379,9 +364,7 @@ export class NewsComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('manualAudit');
           this.loadData('manualAudit');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyNewsThesaurus') {
       const deleteInput = {newsWord: {type: data.type, word: data.word} };
@@ -392,9 +375,7 @@ export class NewsComponent implements OnInit {
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           // setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'addNewsThesaurus') {
       // const deleteInput = {newsWord: {type: data.type, word: data.word} };
@@ -405,9 +386,7 @@ export class NewsComponent implements OnInit {
       //     const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
       //     this.commonService.updateOperationlog(operationInput).subscribe();
       //     // setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-      //   } else {
-      //     this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      //   }
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       // });
     }
   }
@@ -455,30 +434,13 @@ export class NewsComponent implements OnInit {
             this.notification.success( '提示', '上传成功' );
             const operationInput = { op_category: '新闻词库', op_page: '人工审核', op_name: '上传审核文件' };
             this.commonService.updateOperationlog(operationInput).subscribe();
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, });
-          }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message }); }
           formData.delete(flag);
         },
         err => { formData.delete(flag); }
       );
     }
   }
-
-  // currentPageDataChange(
-  //   $event: Array<{
-  //     name: string;
-  //     age: number;
-  //     address: string;
-  //     checked: boolean;
-  //     expand: boolean;
-  //     description: string;
-  //   }>
-  // ): void {
-  //   console.log($event);
-  //   // this.displayData = $event;
-  //   // this.refreshStatus();
-  // }
 
   // 针对中文进行排序
   sortWords(a, b) {

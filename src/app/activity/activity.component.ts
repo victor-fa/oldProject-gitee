@@ -203,9 +203,7 @@ export class ActivityComponent implements OnInit {
             }
             data.allQuantity = count;
           });
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'couponInActivity') {
       if (this.beginCouponDate === null) {
@@ -229,9 +227,7 @@ export class ActivityComponent implements OnInit {
           this.dataSearchCoupon = JSON.parse(res.payload);
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'newCoupon') {
       this.activityService.getNewCouponList(this.baseInfoId).subscribe(res => {
@@ -248,9 +244,7 @@ export class ActivityComponent implements OnInit {
             const tempObject = { value: item.actGiftNo, label: item.actGiftNo };
             this.actGiftNoArr.push(tempObject);
           });
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'coupon') {
       this.couponService.getCouponList(this.searchCouponItem).subscribe(res => {
@@ -260,9 +254,7 @@ export class ActivityComponent implements OnInit {
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(this.dataCoupon);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'batchsendList') {
       const batchsend = {
@@ -280,9 +272,7 @@ export class ActivityComponent implements OnInit {
               item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
             });
           }
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'couponInBatchsend') {
       if (this.beginCouponInBatchsendDate === null) {
@@ -302,9 +292,7 @@ export class ActivityComponent implements OnInit {
           this.dataSearchCouponInBatchsend = JSON.parse(res.payload);
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'bean') {
       const beanInput = {
@@ -332,9 +320,7 @@ export class ActivityComponent implements OnInit {
             item.activeStatus = result;
           });
           this.isSpinning = false;  // loading
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'taskCenter') {
       const taskCenterInput = {
@@ -976,9 +962,7 @@ export class ActivityComponent implements OnInit {
             const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '新增' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             this.loadData('newCoupon');
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
       } else { // 修改
         this.activityService.updateCoupon(couponUpdateInput).subscribe(res => {
@@ -988,9 +972,7 @@ export class ActivityComponent implements OnInit {
             const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             this.loadData('newCoupon');
-          } else {
-            this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-          }
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
       }
     } else if (flag === 'coupon') {
@@ -1027,9 +1009,7 @@ export class ActivityComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('coupon');
           this.loadData('coupon');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'batchsendList') {
       let count = 0;
@@ -1088,13 +1068,9 @@ export class ActivityComponent implements OnInit {
               this.hideModal('batchsendList');
               this.hideModal('batchsend');
               this.loadData('batchsendList');
-            } else {
-              this.modalService.error({ nzTitle: '提示', nzContent: finalres.message });
-            }
+            } else { this.modalService.error({ nzTitle: '提示', nzContent: finalres.message }); }
           });
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'addBean') { // 保存操作
       if (!this.verificationAdd('addBean')) { return; }
@@ -1129,9 +1105,7 @@ export class ActivityComponent implements OnInit {
           this.beginBeanDate = null;
           this.endBeanDate = null;
           this.loadData('bean');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyBean') { // 保存操作
       if (!this.verificationAdd('modifyBean')) { return; }
@@ -1168,9 +1142,7 @@ export class ActivityComponent implements OnInit {
           this.beginBeanDate = null;
           this.endBeanDate = null;
           this.loadData('bean');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'taskCenter') {
       console.log(this.addTaskCenter);
@@ -1302,9 +1274,7 @@ export class ActivityComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('modifyCoupon');
           this.loadData('coupon');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -1371,9 +1341,7 @@ export class ActivityComponent implements OnInit {
           const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '删除活动' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('activity');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'couponList') {
       this.activityService.deleteCouponArr(this.baseInfoId, data).subscribe(resItem => {
@@ -1382,9 +1350,7 @@ export class ActivityComponent implements OnInit {
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '删除优惠券' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('newCoupon');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: resItem.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: resItem.message }); }
       });
     } else if (flag === 'taskCenter') {
       this.taskService.deleteTaskCenter(data).subscribe(res => {
@@ -1431,9 +1397,7 @@ export class ActivityComponent implements OnInit {
                 this.handleUpload(this.baseInfoId);
                 // this.notification.blank( '提示', '添加成功', { nzStyle: { color : 'green' } });
                 this.loadData('activity');
-              } else {
-                this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-              }
+              } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
             });
           }
         }

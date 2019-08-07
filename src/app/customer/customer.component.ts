@@ -452,9 +452,7 @@ export class CustomerComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '客服中心', op_page: '开票时间管理', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('invoiceTime');
       });
     }

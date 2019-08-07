@@ -39,28 +39,10 @@ export class ChangePassComponent implements OnInit {
     // 验证不通过，则不请求API
     if (this.getFormControl('oldPassword').value === ''
     || this.getFormControl('newPassword').value === ''
-    || this.getFormControl('confirmPassword').value === '') {
-      this.modalService.error({
-        nzTitle: '提示',
-        nzContent: '请填写完整登录信息'
-      });
-      return;
-    }
-    if (this.getFormControl('newPassword').value.length < 6) {
-      this.modalService.error({nzTitle: '提示', nzContent: '新密码不能少于6个字符！'});
-      return;
-    }
-    if (this.getFormControl('confirmPassword').value.length < 6) {
-      this.modalService.error({nzTitle: '提示', nzContent: '确认密码不能少于6个字符！'});
-      return;
-    }
-    if (this.getFormControl('oldPassword').value === this.getFormControl('newPassword').value) {
-      this.modalService.error({
-        nzTitle: '提示',
-        nzContent: '新密码旧密码不能重复！'
-      });
-      return;
-    }
+    || this.getFormControl('confirmPassword').value === '') { this.modalService.error({ nzTitle: '提示', nzContent: '请填写完整登录信息' }); return; }
+    if (this.getFormControl('newPassword').value.length < 6) { this.modalService.error({nzTitle: '提示', nzContent: '新密码不能少于6个字符！'}); return; }
+    if (this.getFormControl('confirmPassword').value.length < 6) { this.modalService.error({nzTitle: '提示', nzContent: '确认密码不能少于6个字符！'}); return; }
+    if (this.getFormControl('oldPassword').value === this.getFormControl('newPassword').value) { this.modalService.error({ nzTitle: '提示', nzContent: '新密码旧密码不能重复！' }); return; }
     this.passData.oldPassword = this.changePassForm.controls['oldPassword'].value;
     this.passData.newPassword = this.changePassForm.controls['newPassword'].value;
     this.userService.changePass(this.passData).subscribe(res => {
@@ -69,9 +51,7 @@ export class ChangePassComponent implements OnInit {
         this.commonService.updateOperationlog(operationInput).subscribe();
         this.modalService.success({ nzTitle: '提示', nzContent: '修改密码成功！' });
         this.router.navigateByUrl('login');
-      } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      }
+      } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
     });
   }
 

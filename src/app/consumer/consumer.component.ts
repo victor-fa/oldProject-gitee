@@ -55,9 +55,7 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataConsumer);
           const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -140,9 +138,7 @@ export class ConsumerComponent implements OnInit {
           setTimeout(() => {
             this.addPaymengSms(consumerInput);
           }, 3000);
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyConsumer') {
       const consumerInput = {
@@ -163,9 +159,7 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addPayment(paymentInput).subscribe(res => {
         if (res.retcode === 0) {
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
     if (data.smsSign !== '' && data.smsSign !== undefined) {
@@ -175,9 +169,7 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addSms(smsInput).subscribe(res => {
         if (res.retcode === 0) {
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
     if (data.keys !== '' && data.keys !== undefined) {
@@ -187,9 +179,7 @@ export class ConsumerComponent implements OnInit {
       };
       this.consumerService.addKey(keysInput).subscribe(res => {
         if (res.retcode === 0) {
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
     this.loadData('consumer');

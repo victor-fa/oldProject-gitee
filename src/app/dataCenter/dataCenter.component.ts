@@ -2,8 +2,8 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { NzModalService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { DataCenterService } from '../public/service/dataCenter.service';
 
@@ -37,10 +37,7 @@ export class DataCenterComponent implements OnInit {
     private modalService: NzModalService,
     private fb: FormBuilder,
     private datePipe: DatePipe,
-    private router: Router,
     private routerParams: ActivatedRoute,
-    private notification: NzNotificationService,
-    private _router: Router,
   ) {
     this.commonService.nav[0].active = true;
     this._initForm();
@@ -79,46 +76,26 @@ export class DataCenterComponent implements OnInit {
       this.currentTabNum = params['currentTab'] - 1;
     });
     switch (Number(this.currentTabNum) + 1) {
-      case 1:
-        this.currentPanel = 'dataApp'; break;
-      case 2:
-        this.currentPanel = 'keepApp'; break;
-      case 3:
-        this.currentPanel = 'overview'; break;
-      case 4:
-        this.currentPanel = 'product'; break;
-      case 5:
-        this.currentPanel = 'error'; break;
-      case 6:
-        this.currentPanel = 'ticket'; break;
-      case 7:
-        this.currentPanel = 'train'; break;
-      case 8:
-        this.currentPanel = 'hotel'; break;
-      case 9:
-        this.currentPanel = 'weather'; break;
-      case 10:
-        this.currentPanel = 'navigate'; break;
-      case 11:
-        this.currentPanel = 'taxi'; break;
-      case 12:
-        this.currentPanel = 'music'; break;
-      case 13:
-        this.currentPanel = 'horoscope'; break;
-      case 14:
-        this.currentPanel = 'recharge'; break;
-      case 15:
-        this.currentPanel = 'errand'; break;
-      case 16:
-        this.currentPanel = 'movie'; break;
-      case 17:
-        this.currentPanel = 'tts'; break;
-      case 18:
-        this.currentPanel = 'reminder'; break;
-      case 19:
-        this.currentPanel = 'news'; break;
-      default:
-        break;
+      case 1: this.currentPanel = 'dataApp'; break;
+      case 2: this.currentPanel = 'keepApp'; break;
+      case 3: this.currentPanel = 'overview'; break;
+      case 4: this.currentPanel = 'product'; break;
+      case 5: this.currentPanel = 'error'; break;
+      case 6: this.currentPanel = 'ticket'; break;
+      case 7: this.currentPanel = 'train'; break;
+      case 8: this.currentPanel = 'hotel'; break;
+      case 9: this.currentPanel = 'weather'; break;
+      case 10: this.currentPanel = 'navigate'; break;
+      case 11: this.currentPanel = 'taxi'; break;
+      case 12: this.currentPanel = 'music'; break;
+      case 13: this.currentPanel = 'horoscope'; break;
+      case 14: this.currentPanel = 'recharge'; break;
+      case 15: this.currentPanel = 'errand'; break;
+      case 16: this.currentPanel = 'movie'; break;
+      case 17: this.currentPanel = 'tts'; break;
+      case 18: this.currentPanel = 'reminder'; break;
+      case 19: this.currentPanel = 'news'; break;
+      default: break;
     }
     this.doSearch('dataCenter');
   }
@@ -127,46 +104,26 @@ export class DataCenterComponent implements OnInit {
   loadUnitData(platform, origin): void {
     let flag = 'user-behavior';
     switch (this.currentPanel) {
-      case 'dataApp':
-        flag = 'user-behavior'; break;
-      case 'keepApp':
-        flag = 'retentions'; break;
-      case 'overview':
-        flag = 'bot-awaken'; break;
-      case 'product':
-        flag = 'user-behavior'; break;
-      case 'error':
-        flag = 'bot-exception'; break;
-      case 'ticket':
-        flag = 'flight-bot'; break;
-      case 'train':
-        flag = 'train-bot'; break;
-      case 'hotel':
-        flag = 'hotel-bot'; break;
-      case 'weather':
-        flag = 'weather-bot'; break;
-      case 'navigate':
-        flag = 'navigation-bot'; break;
-      case 'taxi':
-        flag = 'taxi-bot'; break;
-      case 'music':
-        flag = 'music-bot'; break;
-      case 'horoscope':
-        flag = 'horoscope-bot'; break;
-      case 'recharge':
-        flag = 'recharge-bot'; break;
-      case 'errand':
-        flag = 'errand-bot'; break;
-      case 'movie':
-        flag = 'movie-bot'; break;
-      case 'tts':
-        flag = 'tts-switch'; break;
-      case 'reminder':
-        flag = 'matter-bot'; break;
-      case 'news':
-        flag = 'news-bot'; break;
-      default:
-        break;
+      case 'dataApp': flag = 'user-behavior'; break;
+      case 'keepApp': flag = 'retentions'; break;
+      case 'overview': flag = 'bot-awaken'; break;
+      case 'product': flag = 'user-behavior'; break;
+      case 'error': flag = 'bot-exception'; break;
+      case 'ticket': flag = 'flight-bot'; break;
+      case 'train': flag = 'train-bot'; break;
+      case 'hotel': flag = 'hotel-bot'; break;
+      case 'weather': flag = 'weather-bot'; break;
+      case 'navigate': flag = 'navigation-bot'; break;
+      case 'taxi': flag = 'taxi-bot'; break;
+      case 'music': flag = 'music-bot'; break;
+      case 'horoscope': flag = 'horoscope-bot'; break;
+      case 'recharge': flag = 'recharge-bot'; break;
+      case 'errand': flag = 'errand-bot'; break;
+      case 'movie': flag = 'movie-bot'; break;
+      case 'tts': flag = 'tts-switch'; break;
+      case 'reminder': flag = 'matter-bot'; break;
+      case 'news': flag = 'news-bot'; break;
+      default: break;
     }
     this.isSpinning = true; // loading
     // checkAllChannel
@@ -186,9 +143,7 @@ export class DataCenterComponent implements OnInit {
         this.isSpinning = false;  // loading
         const operationInput = { op_category: '数据中心', op_page: this.currentTitle, op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
-      } else {
-        this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-      }
+      } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
     });
   }
 
