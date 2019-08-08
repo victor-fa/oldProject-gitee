@@ -18,7 +18,7 @@ registerLocaleData(zh);
 })
 export class UserComponent implements OnInit {
 
-  visiable = {userInfoDetail: true, userInfoCommon: false, invoiceDetail: false, bookingDetail: false, externalDetail: false,
+  visiable = {userInfoDetail: false, userInfoCommon: false, invoiceDetail: false, bookingDetail: false, externalDetail: false,
     invoice: false, refund: false, adjustDetail: false, adjustAdd: false, adjustSend: false, latestLogin: false };
   userData = [];
   adjustData = [];

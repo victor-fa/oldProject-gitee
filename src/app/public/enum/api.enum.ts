@@ -128,4 +128,6 @@ export enum newsApiUrls {
   newsList = '/news/word-sets',
   /** 新闻词库 */
   newsWordList = '/news/words',
+  /** 新闻NER */
+  nerList = '/v2/ner/feeder',
 }

@@ -59,7 +59,7 @@ export class NewsService extends AppServiceBase {
   getManualAuditList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${newsApiUrls.newsList}?size=99999`;
     url += data.submitter && data.submitter !== null ? '&submitter=' + data.submitter : '';
-    url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED,UPDATED';
+    url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED';
     url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
     url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
@@ -102,6 +102,34 @@ export class NewsService extends AppServiceBase {
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
     return this.httpClient
       .put<IResponse<any>>(url, data.newsWord, this.options);
+  }
+
+  /** 获取所有列表 */
+  getNerList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerList}`;
+    // url += data.submitter && data.submitter !== null ? '&submitter=' + data.submitter : '';
+    // url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED,UPDATED';
+    // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
+    // url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 测试NER */
+  testNewsNER(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerList}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 新增词条 */
+  addWord(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}/batch`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
   }
 
 }

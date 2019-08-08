@@ -69,7 +69,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="visiable.sortSpeech" nzWidth="750" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.sortSpeech" nzWidth="850" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 标注本页：
@@ -85,7 +85,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage">
+                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage" (nzPageIndexChange)="onChange($event, 'sortSpeechPage')">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -384,14 +384,14 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <textarea rows="5" nz-input [(ngModel)]="addNewsThesaurusData.content" nzSize="default"></textarea>
+                <textarea rows="5" nz-input [(ngModel)]="addNewsThesaurusData.content" placeholder="不同词条，使用换行进行区分" nzSize="default"></textarea>
               </div>
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24"> * 添加词条后，将会直接影响新闻BOT，请确认词条属性后，谨慎操作！ </div>
             </div>
             <ng-template #addNewsThesaurusFooter>
-                <button nz-button nzType="primary" (click)="doSave('addNewsThesaurus', '')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="primary" (click)="doSave('addNewsThesaurus', '')"><i class="anticon anticon-save"></i>确定</button>
               <button nz-button nzType="default" (click)="hideModal('addNewsThesaurus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -456,7 +456,7 @@
               <div nz-col nzSpan="24">填写NER测试链接</div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="24"><input nz-input placeholder="请输入NER测试链接" nzSize="default"></div>
+              <div nz-col nzSpan="24"><input nz-input [(ngModel)]="newsNERDara.nerUrl" placeholder="请输入NER测试链接" nzSize="default"></div>
             </div>
             <ng-template #newsNERTestFooter>
                 <button nz-button nzType="primary" (click)="doSave('newsNERTest', '')"><i class="anticon anticon-save"></i>确定</button>
