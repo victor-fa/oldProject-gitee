@@ -18,7 +18,7 @@ registerLocaleData(zh);
 export class NewsComponent implements OnInit {
 
   visiable = {sortSpeech: false, manualAudit: false, uploadAudit: false, addNewsThesaurus: false,
-    newsNERTest: false, newsNERResult: false, };
+    newsNERTest: false, newsNERResult: false, addNewsThesaurusResult: false, };
   taggingNewsSearchForm: FormGroup;
   manualAuditSearchForm: FormGroup;
   newsThesaurusSearchForm: FormGroup;
@@ -34,12 +34,14 @@ export class NewsComponent implements OnInit {
   dataNewsNERResult = [{}];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
-  addNewsThesaurusData = {type: 'PERSON', content: ''};
+  addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: []};
   isSpinning = false;
   beginSortSpeechDate = '';
   endSortSpeechDate = '';
   beginTaggingNewsDate = '';
   endTaggingNewsDate = '';
+  beginNewNERDate = '';
+  endNewNERDate = '';
   tempId = '';
   currentPanel = 'taggingNews';
   fileList: UploadFile[] = [];
@@ -51,6 +53,7 @@ export class NewsComponent implements OnInit {
     dataNewsThesaurusNumber: 0, // 后台页数
   };
   manualAuditSearchData = {word: '', type: ''};
+  newsNERDara = {id: '', nerUrl: ''};
 
   constructor(
     private fb: FormBuilder,
@@ -144,7 +147,22 @@ export class NewsComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'newsNER') {
-      this.isSpinning = false;
+      const manualAuditInput = {
+        submitter: this.manualAuditSearchForm.controls['submitter'].value,
+        status: this.manualAuditSearchForm.controls['status'].value,
+        submitTimeCeil: this.endTaggingNewsDate,
+        submitTimeFloor: this.beginTaggingNewsDate,
+      };
+      this.pageNum.dataManualAuditPage = this.pageNum.dataManualAuditPage === 0 ? 1 : this.pageNum.dataManualAuditPage;
+      this.newsService.getNerList(manualAuditInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataManualAudit = JSON.parse(res.payload).content;
+          console.log(this.dataManualAudit);
+          const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -234,9 +252,12 @@ export class NewsComponent implements OnInit {
     } else if (flag === 'addNewsThesaurus') {
       this.visiable.addNewsThesaurus = true;
     } else if (flag === 'newsNERTest') {
+      this.newsNERDara.id = data.id;
       this.visiable.newsNERTest = true;
     } else if (flag === 'newsNERResult') {
       this.visiable.newsNERResult = true;
+    } else if (flag === 'addNewsThesaurusResult') {
+      this.visiable.addNewsThesaurusResult = true;
     }
   }
 
@@ -279,17 +300,17 @@ export class NewsComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'deleteManualAudit') {
-      // const deleteInput = {newsWord: {type: 'INVALID', word: data.word}, };
-      // this.newsService.updateNewWords(deleteInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     if (res.payload !== '') {
-      //       this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-      //       const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
-      //       this.commonService.updateOperationlog(operationInput).subscribe();
-      //       setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-      //     } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      const deleteInput = {id: data.id };
+      this.newsService.deleteManualAudit(deleteInput).subscribe(res => {
+        if (res.retcode === 0) {
+          if (res.payload !== '') {
+            this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: '新闻词库', op_page: '人工审核', op_name: '删除词库' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.loadData('manualAudit');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -308,6 +329,9 @@ export class NewsComponent implements OnInit {
       this.visiable.newsNERTest = false;
     } else if (flag === 'newsNERResult') {
       this.visiable.newsNERResult = false;
+    } else if (flag === 'addNewsThesaurusResult') {
+      this.visiable.addNewsThesaurusResult = false;
+      this.loadData('newsThesaurus');
     }
   }
 
@@ -378,16 +402,30 @@ export class NewsComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'addNewsThesaurus') {
-      // const deleteInput = {newsWord: {type: data.type, word: data.word} };
-      console.log(this.addNewsThesaurusData.content.split('\n'));
-      // this.newsService.updateNewWords(deleteInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-      //     const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //     // setTimeout(() => {this.loadData('newsThesaurus'); }, 500);
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      const arr = this.addNewsThesaurusData.content.split('\n');
+      if (arr.length === 1 && arr[0] === '') { this.modalService.error({ nzTitle: '提示', nzContent: '词条不能为空' }); return; }
+      const addInput = {type: this.addNewsThesaurusData.type, words: arr };
+      this.newsService.addWord(addInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '新闻词库', op_page: '新闻词库', op_name: '新增词条' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          const result = JSON.parse(res.payload);
+          this.addNewsThesaurusData.success = result.successList.join('\n');
+          this.addNewsThesaurusData.fail = result.failList.join('\n');
+          this.hideModal('addNewsThesaurus');
+          this.showModal('addNewsThesaurusResult', '');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'newsNERTest') {
+      const testInput = {id: this.newsNERDara.id, nerUrl: this.newsNERDara.nerUrl };
+      this.newsService.testNewsNER(testInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '测试成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '新闻词库', op_page: '新闻NER', op_name: '测试NER' };
+          this.loadData('newsNER');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -412,7 +450,7 @@ export class NewsComponent implements OnInit {
   }
 
   // 点击上传
-  handleUpload(): void {
+  handleUpload() {
     const url = `${this.commonService.baseUrl}/news/word-sets/marked/${this.uploadMarkedData.type}`;
     const flag = 'file';
     for (let i = 0; i < this.fileList.length; i++) {
@@ -479,6 +517,17 @@ export class NewsComponent implements OnInit {
       this.pageNum.dataNewsThesaurusNumber += 1;  // 后台当前页+1
       this.pageNum.dataNewsThesaurusPage = 0;
       this.loadData('newsThesaurusPage');
+    } else if (flag === 'sortSpeechPage') {
+      this.sortSpeechDate.type = '';
+    } else if (flag === 'newsNER') {
+      if (result === []) { this.beginNewNERDate = ''; this.endNewNERDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginNewNERDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endNewNERDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginNewNERDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endNewNERDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     }
   }
 

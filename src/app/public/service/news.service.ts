@@ -132,4 +132,12 @@ export class NewsService extends AppServiceBase {
       .post<IResponse<any>>(url, data, this.options);
   }
 
+  /** 删除词集 */
+  deleteManualAudit(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/news/word-sets/${data.id}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
 }

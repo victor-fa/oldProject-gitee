@@ -287,6 +287,7 @@
               <button nz-button nzType="default" (click)="hideModal('uploadMarked')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
+
         </nz-tab>
 
         <nz-tab [nzTitle]="newsThesaurusTemplate" (nzClick)="changePanel('newsThesaurus')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
@@ -395,6 +396,31 @@
               <button nz-button nzType="default" (click)="hideModal('addNewsThesaurus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addNewsThesaurusResult" nzWidth="650" nzTitle="新增词条结果" [nzFooter]="addNewsThesaurusResultFooter" (nzOnCancel)="hideModal('addNewsThesaurusResult')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="10">
+                成功添加词条{{addNewsThesaurusData.success.length}}
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="10">
+                重复词条{{addNewsThesaurusData.success.length}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="10" class="span_down spacing right_alignment">
+                <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.success" nzSize="default" [disabled]="true"></textarea>
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="10" class="span_down spacing right_alignment">
+                <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.fail" nzSize="default" [disabled]="true"></textarea>
+              </div>
+            </div>
+            <ng-template #addNewsThesaurusResultFooter>
+              <button nz-button nzType="default" (click)="hideModal('addNewsThesaurusResult')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
 
