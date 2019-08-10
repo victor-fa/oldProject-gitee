@@ -16,13 +16,18 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, };
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
+  serialSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
+  addSerialData = {};
   dataConsumer = []; // 客户
+  dataSerial = [];
   isSpinning = false;
+  serialData = {};
+  editSerialData = '';
 
   constructor(
     private fb: FormBuilder,
@@ -57,6 +62,14 @@ export class ConsumerComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'modifySerial') {
+      this.consumerService.getSerialList(this.serialData).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataSerial = JSON.parse(res.payload).data;
+          console.log(this.dataSerial);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -64,6 +77,7 @@ export class ConsumerComponent implements OnInit {
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
     this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''] });
+    this.serialSearchForm = this.fb.group({ sn: [''] });
   }
 
   // 弹窗
@@ -82,6 +96,12 @@ export class ConsumerComponent implements OnInit {
         'smsSign': data.smsSignType
       };
       this.visiable.modifyConsumer = true;
+    } else if (flag === 'modifySerial') {
+      this.serialData = data;
+      this.loadData('modifySerial');
+      this.visiable.modifySerial = true;
+    } else if (flag === 'addSerial') {
+      this.visiable.addSerial = true;
     }
   }
 
@@ -91,6 +111,10 @@ export class ConsumerComponent implements OnInit {
       this.visiable.addConsumer = false;
     } else if (flag === 'modifyConsumer') {
       this.visiable.modifyConsumer = false;
+    } else if (flag === 'modifySerial') {
+      this.visiable.modifySerial = false;
+    } else if (flag === 'addSerial') {
+      this.visiable.addSerial = false;
     }
   }
 
@@ -125,6 +149,7 @@ export class ConsumerComponent implements OnInit {
         'robot': this.addConsumerForm.controls['robot'].value,
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
+        // 临时
         'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
       };
 
@@ -145,6 +170,7 @@ export class ConsumerComponent implements OnInit {
         'appChannel': this.consumerDate.appChannel,
         'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
         'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
+        // 临时
         'keys': this.modifyConsumerForm.controls['keys'].value !== undefined ? this.modifyConsumerForm.controls['keys'].value.split('\n') : '',
       };
       this.addPaymengSms(consumerInput);
@@ -172,6 +198,7 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
+    // 临时
     if (data.keys !== '' && data.keys !== undefined) {
       const keysInput = {
         id: data.appChannel,

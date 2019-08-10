@@ -133,8 +133,8 @@ export class NewsComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.pageNum.dataNewsThesaurusTotal = JSON.parse(res.payload).totalPages;
           this.isSpinning = false;
-          // this.dataNewsThesaurus = JSON.parse(res.payload).content;
-          this.dataNewsThesaurus = JSON.parse(res.payload).content.sort(this.sortWords);
+          this.dataNewsThesaurus = JSON.parse(res.payload).content;
+          // this.dataNewsThesaurus = JSON.parse(res.payload).content.sort(this.sortWords);
           this.paramNewsThesaurus = {
             person: JSON.parse(res.payload).personElements,
             address: JSON.parse(res.payload).addressElements,

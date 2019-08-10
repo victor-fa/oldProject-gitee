@@ -56,7 +56,7 @@ export class SessionLogService extends AppServiceBase {
     url += data.start && data.start !== null ? '&start=' + data.start : '';
     url += data.end && data.end !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
-    url += data.uid && data.uid !== '' ? '&uid=' + data.uid : '';
+    url += data.uid && data.uid !== '' ? '&uid=' + encodeURI(data.uid).replace(/\+/g, '%2B') : '';
     url += data.ask && data.ask !== '' ? '&ask=' + data.ask : '';
     url += data.answer && data.answer !== '' ? '&answer=' + data.answer : '';
     url += data.flag !== '' ? '&flag=' + data.flag : '';

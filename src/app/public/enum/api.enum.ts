@@ -60,6 +60,10 @@ export enum appVersionApiUrls {
   qqCustomerList = '/contact_qq',
   /** 任务模块 */
   taskList = '/tasks',
+  /** 任务模块 */
+  captcha = '/tasks/captcha',
+  /** 任务重置 */
+  reset = '/tasks/reset',
 }
 
 /** 客服中心 */
@@ -120,6 +124,8 @@ export enum accountApiUrls {
   acc = '/acc',
   /** 操作日志 */
   audit = '/audit/list',
+  /** 导航页配置 */
+  navConfig = '/shortcut/categories',
 }
 
 /** 新闻词库 */

@@ -85,4 +85,20 @@ export class TaskService extends AppServiceBase {
       .put<IResponse<any>>(url, body, this.options);
   }
 
+  /** 获取短信 */
+  sendMsg(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.captcha}?operator=${data}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .post<IResponse<any>>(url, this.options);
+  }
+
+  /** 重置任务 */
+  resetTaskCenter(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${appVersionApiUrls.reset}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
 }

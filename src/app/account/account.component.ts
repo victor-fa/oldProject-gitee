@@ -2,9 +2,11 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService, UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { AccountService } from '../public/service/account.service';
 import { CommonService } from '../public/service/common.service';
+import { HttpRequest, HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 registerLocaleData(zh);
 
 @Component({
@@ -22,11 +24,13 @@ export class AccountComponent implements OnInit {
   dataResourceChildren = [];  // 资源的子集
   allChecked = false;
   modifyItem = {};
+  dataNavConfig = [{}]; // 导航页配置
   currentPanel = 'role';
   beginDate = '';
   endDate = '';
   unCheckVisit = false; // 不看访问
-  visiable = {addCustomer: false, addRole: false, modifyRole: false, modifyCustomer: false };
+  visiable = {addCustomer: false, addRole: false, modifyRole: false, modifyCustomer: false,
+    addNavConfig: false, modifyNavConfig: false };
   isModifyCustomerVisible = false; // 修改用户信息
   roleAddForm: FormGroup;
   roleModifyForm: FormGroup;
@@ -44,6 +48,8 @@ export class AccountComponent implements OnInit {
     { label: '听听同学', value: 'LENZE', checked: false },
     { label: '沃特沃德6', value: 'WATER_WORLD_6', checked: false }
   ];
+  navConfigItem = { id: '', name: '', order: 1, iconFileId: '', fileList: [], elements: [{name: '', description: '', iconFileId: '', fileList: [], type: 'LINK', data: '', sort: '' }]};
+  currentFile = '';
   /* 规则配置 */
   allChecked1 = false; // 个人中心
   checkOptions1 = [];
@@ -77,6 +83,8 @@ export class AccountComponent implements OnInit {
     private modalService: NzModalService,
     private notification: NzNotificationService,
     private accountService: AccountService,
+    private msg: NzMessageService,
+    private http: HttpClient,
   ) {
     this.commonService.nav[7].active = true;
     this._initForm();
@@ -202,6 +210,15 @@ export class AccountComponent implements OnInit {
           this.dataOperationlog = dataOperationlog;
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'navConfig') {
+      this.accountService.getNavConfigList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataNavConfig = JSON.parse(res.payload);
+          console.log(this.dataNavConfig);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+      this.isSpinning = false;
     }
   }
 
@@ -261,6 +278,15 @@ export class AccountComponent implements OnInit {
         nzTitle: '员工配置删除', nzContent: '确认要删除该员工配置吗？', nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doDelete(data, flag); }
       });
+    } else if (flag === 'addNavConfig') {
+      this.visiable.addNavConfig = true;
+    } else if (flag === 'modifyNavConfig') {
+      this.visiable.modifyNavConfig = true;
+    } else if (flag === 'deleteNavConfig') {
+      this.modalService.confirm({
+        nzTitle: '导航页配置删除', nzContent: '确认要删除该导航页配置吗？', nzCancelText: '取消',
+        nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doDelete(data, flag); }
+      });
     }
   }
 
@@ -273,6 +299,10 @@ export class AccountComponent implements OnInit {
       this.visiable.addCustomer = false;
     } else if (flag === 'modifyCustomer') {
       this.visiable.modifyCustomer = false;
+    } else if (flag === 'addNavConfig') {
+      this.visiable.addNavConfig = false;
+    } else if (flag === 'modifyNavConfig') {
+      this.visiable.modifyNavConfig = false;
     }
   }
 
@@ -441,6 +471,25 @@ export class AccountComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
       this.hideModal('modifyCustomer');
+    } else if (flag === 'addNavConfig') {
+      const arr = [];
+      const addItem = {
+        name: this.customerId,
+        order: this.customerModifyForm.controls['realname'].value,
+        iconFileId: this.customerModifyForm.controls['password'].value,
+        elements: arr,
+      };
+      console.log(addItem);
+      // if (!this.verification('addNavConfig', addItem)) { return; } // 去重
+      // this.accountService.addNavConfigList(addItem).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '新增' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //     this.loadData('navConfig');
+      //     this.hideModal('addNavConfig');
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      // });
     }
   }
 
@@ -517,6 +566,15 @@ export class AccountComponent implements OnInit {
           this.loadData('customer');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'deleteNavConfig') {
+      this.accountService.deleteNavConfig(data).subscribe(res => {  // 删除用户
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('navConfig');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -524,7 +582,7 @@ export class AccountComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : '', op_name: '访问' };
+    const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : flag === 'navConfig' ? '导航页配置' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
@@ -549,6 +607,10 @@ export class AccountComponent implements OnInit {
         this.beginDate = '';
         this.endDate = '';
       }
+    } else if (flag === 'addNavConfigItem') {
+      this.navConfigItem.elements.push({name: '', description: '', iconFileId: '', fileList: [], type: 'LINK', data: '', sort: '' });
+    } else if (flag === 'removeNavConfigItem') {
+      this.navConfigItem.elements.splice(result, 1);
     }
   }
 
@@ -595,6 +657,92 @@ export class AccountComponent implements OnInit {
       this.checkOptions9.forEach(item => { if (item.value === element) { item.checked = true; } });
       this.checkOptions10.forEach(item => { if (item.value === element) { item.checked = true; } });
     });
+  }
+
+  // 点击switch
+  clickSwitch(data, flag) {
+    if (flag === 'navConfig') {
+      const switchInput = { 'id': data.id };
+      this.accountService.updateNavConfigSwitch(switchInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        this.loadData('navConfig');
+      });
+    }
+  }
+
+  // 用于区分是哪种上传
+  beforeUploadBut(flag) {
+    this.currentFile = flag;
+  }
+
+  // 上传image
+  beforeUpload = (file: UploadFile): boolean => {
+    console.log(file);
+    if (this.currentPanel !== 'taskCenter') {
+      const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+      const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
+      const isMoreThanTen = file.size < 512000 ? true : false;
+      if (!isPng) {
+        this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
+      } else if (!isMoreThanTen) {
+        this.msg.error('您只能上传不超过500K文件');
+      } else {
+        // this.fileList.push(file);
+        if (this.currentFile === 'list') {
+
+        }
+        this.handleUpload();
+      }
+     } else if (this.currentPanel === 'taskCenter') {
+        const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+        const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
+        const isMoreThanTen = file.size < 512000 ? true : false;
+        this.navConfigItem.fileList.splice(0, this.navConfigItem.fileList.length);
+        if (!isPng) {
+          this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
+        } else if (!isMoreThanTen) {
+          this.msg.error('您只能上传不超过500K文件');
+        } else { this.navConfigItem.fileList.push(file); this.handleUpload(); }
+        return false;
+      }
+      return false;
+  }
+
+  // 点击上传
+  handleUpload(): void {
+    let url = '';
+    let flag = '';
+    switch (this.currentPanel) {
+      case 'navConfig': url = `/shortcut/resources/icons`; flag = 'file'; break;
+      default: break;
+    }
+    // 文件数量不可超过1个，超过一个则提示
+    if (this.navConfigItem.fileList.length > 1) { this.notification.error( '提示', '您上传的文件超过一个！' ); return; }
+    const formData = new FormData();
+    this.navConfigItem.fileList.forEach((file: any) => {formData.append(flag, file); console.log(file);});
+    // const baseUrl = this.commonService.baseUrl;
+    const baseUrl = 'http://account-center-test.chewrobot.com/api/test';
+    const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, {
+      reportProgress: true, headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})
+    });
+    this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+      .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+        if (event.body.retcode === 0) {
+          console.log(event);
+          this.navConfigItem.iconFileId = event.body.payload;
+          // this.showImageUrl = baseUrl.substring(0, baseUrl.indexOf('/api')) + this.imageUrl;
+          this.notification.success( '提示', '上传成功' );
+          const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '上传图片' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
+        formData.delete(flag);
+      },
+      err => { formData.delete(flag); }
+    );
   }
 
 }

@@ -40,6 +40,7 @@
                 <th nzWidth="20px">Payment Key</th>
                 <th nzWidth="20px">短信签名</th>
                 <th nzWidth="20px">创建时间</th>
+                <th nzWidth="20px">序列号</th>
                 <th nzWidth="20px">操作</th>
               </tr>
             </thead>
@@ -57,7 +58,10 @@
                 <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifySerial', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                </td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)"><i class="anticon anticon-form"></i>编辑</button>
                 </td>
               </tr>
             </tbody>
@@ -119,6 +123,7 @@
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
               </div>
+              <!-- 临时 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   序列号：
@@ -184,6 +189,7 @@
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
               </div>
+              <!-- 临时 -->
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   序列号：
@@ -196,6 +202,78 @@
             <ng-template #modifyConsumerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('modifyConsumer')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifySerial" nzWidth="950" nzTitle="修改序列号" [nzFooter]="modifySerialModalFooter" (nzOnCancel)="hideModal('modifySerial')" nzMaskClosable="false">
+            <form [formGroup]="serialSearchForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  序列号：
+                </div>
+                <div nz-col nzSpan="4" class="span_down">
+                  <input nz-input formControlName="sn" placeholder="请输入序列号" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2" class="span_down">
+                  <button nz-button nzType="primary" (click)="loadData('modifySerial')"><i class="anticon anticon-search"></i>查询</button>
+                </div>
+                <div nz-col nzSpan="13"></div>
+                <div nz-col nzSpan="2" class="span_down">
+                  <button nz-button nzType="primary" (click)="showModal('addSerial')"><i class="anticon anticon-file-add"></i>添加</button>
+                </div>
+              </div>
+            </form>
+            <nz-table #consumerTable [nzData]="dataSerial" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th nzWidth="20px">序号</th>
+                  <th nzWidth="20px">序列号</th>
+                  <th nzWidth="20px">添加时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of consumerTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.sn}}</td>
+                  <td>{{data.appChannelName}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #modifySerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifySerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editSerial" nzTitle="修改序列号" [nzFooter]="editSerialModalFooter" (nzOnCancel)="hideModal('editSerial')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                <input nz-input [(ngModel)]="editSerialData" nzSize="default" placeholder="请输入序列号">
+              </div>
+            </div>
+            <ng-template #editSerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('editSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addSerial" nzWidth="950" nzTitle="添加序列号" [nzFooter]="addSerialModalFooter" (nzOnCancel)="hideModal('addSerial')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                可以输入或上传文件添加序列号，添加前请务必检查序列号是否正确
+              </div>
+            </div><div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                <textarea rows="25" nz-input [(ngModel)]="consumerDate.keys" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="2" class="span_down">
+
+              </div>
+            </div>
+            <ng-template #addSerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>

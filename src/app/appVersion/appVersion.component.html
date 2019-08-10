@@ -701,6 +701,7 @@
                 <label nz-radio nzValue="17">电影票服务协议</label>
                 <label nz-radio nzValue="18">关于你好小悟</label>
                 <label nz-radio nzValue="19"><a>用户服务协议</a></label>
+                <label nz-radio nzValue="20">任务说明</label>
               </nz-radio-group>
             </div>
           </div>
@@ -747,6 +748,7 @@
                 <label nz-radio nzValue="MUSIC">音乐</label>
                 <label nz-radio nzValue="CALL">打电话</label>
                 <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label>
+                <label nz-radio nzValue="RECHARGE">充值</label>
                 <label nz-radio nzValue="NEWS">新闻</label>
                 <label nz-radio nzValue="HOROSCOPE">星座</label>
                 <label nz-radio nzValue="CHAT">闲聊</label>
@@ -776,7 +778,10 @@
             <tbody>
               <tr *ngFor="let data of flowPointTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'RECHARGE' ? '充话费' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName === 'CHAT' ? '闲聊' : data.botName === 'OTHER' ? '其他' : data.botName}}</td>
+                <td>{{data.botName === 'FLIGHT' ? '机票' : data.botName === 'TRAIN' ? '火车票' : data.botName === 'HOTEL' ? '酒店' : data.botName === 'NAVIGATION' ? '导航' : data.botName === 'TAXI' ? '打车' : data.botName === 'MOVIE' ? '电影票' : data.botName === 'ERRAND' ? '闪送' : data.botName === 'WEATHER' ? '天气' : data.botName === 'MUSIC' ? '音乐' : data.botName === 'CALL' ? '打电话' : data.botName === 'MOBILE_RECHARGE' ? '充话费' : data.botName === 'RECHARGE' ? '充值' : data.botName === 'NEWS' ? '新闻' : data.botName === 'HOROSCOPE' ? '星座' : data.botName === 'CHAT' ? '闲聊' : data.botName === 'OTHER' ? '其他' : data.botName}}</td>
+
+                <!-- <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label>
+                <label nz-radio nzValue="RECHARGE">充值</label> -->
                 <td>{{data.process}}</td>
                 <td nzTitle="{{data.botMsg ? data.botMsg : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.botMsg ? data.botMsg.substring(0, 8) + '…' : ''}}</a></td>
                 <td nzTitle="{{data.guideArr ? data.guideArr : ''}}" nzPlacement="bottom" nz-tooltip><a>{{data.guideArr ? data.guideArr[0] : ''}}</a></td>
@@ -818,7 +823,8 @@
                     <label nz-radio nzValue="WEATHER">天气</label>
                     <label nz-radio nzValue="MUSIC">音乐</label>
                     <label nz-radio nzValue="CALL">打电话</label>
-                    <label nz-radio nzValue="RECHARGE">充话费</label>
+                    <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label>
+                    <label nz-radio nzValue="RECHARGE">充值</label>
                     <label nz-radio nzValue="NEWS">新闻</label>
                     <label nz-radio nzValue="HOROSCOPE">星座</label>
                     <label nz-radio nzValue="CHAT">闲聊</label>
@@ -900,7 +906,8 @@
                     <label nz-radio nzValue="WEATHER">天气</label>
                     <label nz-radio nzValue="MUSIC">音乐</label>
                     <label nz-radio nzValue="CALL">打电话</label>
-                    <label nz-radio nzValue="RECHARGE">充话费</label>
+                    <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label>
+                    <label nz-radio nzValue="RECHARGE">充值</label>
                     <label nz-radio nzValue="NEWS">新闻</label>
                     <label nz-radio nzValue="HOROSCOPE">星座</label>
                     <label nz-radio nzValue="CHAT">闲聊</label>

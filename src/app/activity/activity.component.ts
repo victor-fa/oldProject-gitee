@@ -24,7 +24,8 @@ export class ActivityComponent implements OnInit {
 
   visiable = {addActivity: false, coupon: false, preview: false, addCoupon: false, modifyCoupon: false,
     previewCoupon: false, addTaskCenter: false, modifyTaskCenter: false, addBatchsend: false, detailBatchsend: false,
-    couponInBatchsend: false, batchsend: false, addBean: false, modifyBean: false, searchBean: false, resetTaskCenter: false };
+    couponInBatchsend: false, batchsend: false, addBean: false, modifyBean: false, searchBean: false, resetTaskCenter: false,
+    ensureResetTaskCenter: false, };
   loading = false;
   searchActivityForm: FormGroup;
   searchCouponInActivityForm: FormGroup;
@@ -62,7 +63,7 @@ export class ActivityComponent implements OnInit {
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
   couponBeginDate = '';
   couponEndDate = '';
-  dataTaskCenter = [{'taskAward': {'stepRule': {}, 'stepRuleFinal': {}}}];  // 任务中心
+  dataTaskCenter = [{'taskAward': {'stepRule': {}, 'stepRuleFinal': {}}, checked: false, id: '' }];  // 任务中心
   dataTaskLogs = [];  // 任务日志
   beginTaskCenterDate = '';
   endTaskCenterDate = '';
@@ -115,11 +116,13 @@ export class ActivityComponent implements OnInit {
   addTaskCenter = {
     taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false, checkBeanRes: 'Fixed',
     checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '', group: '', sequence: '', pic: '',
-    jump: {msg: '', page: 0, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+    jump: {msg: '', page: 1, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
     stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
     date: []
   };
-  resetTaskCenterCheckOptions = [];
+  semdMesCodeText = 60;
+  operateObject = { code: '', operater: '18682233554' }; // 操作人
+  // resetTaskCenterCheckOptions = [];
 
   constructor(
     private fb: FormBuilder,
@@ -138,28 +141,28 @@ export class ActivityComponent implements OnInit {
   ) {
     this.commonService.nav[6].active = true;
     this._initForm();
-    this.resetTaskCenterCheckOptions = [
-      { label: '新手教学', value: 'aaaaa', checked: false },
-      { label: '听音频', value: 'bbbbb', checked: false },
-      { label: '充话费', value: 'ccccc', checked: false },
-      { label: '使用导航', value: 'ddddd', checked: false },
-      { label: '打电话', value: 'eeeee', checked: false },
-      { label: '听新闻', value: 'fffff', checked: false },
-      { label: '购买机票', value: 'ggggg', checked: false },
-      { label: '购买火车票', value: 'hhhhh', checked: false },
-      { label: '订酒店', value: 'iiiii', checked: false },
-      { label: '首次打车', value: 'jjjjj', checked: false },
-      { label: '闪送订单', value: 'kkkkk', checked: false },
-      { label: '星座订单', value: 'lllll', checked: false },
-      { label: '电影票名单', value: 'mmmmm', checked: false },
-      { label: '设置支付密码', value: 'nnnnn', checked: false },
-      { label: '开通免密支付', value: 'nnnnn', checked: false },
-      { label: '出行人', value: 'nnnnn', checked: false },
-      { label: '常用联系人', value: 'nnnnn', checked: false },
-      { label: '常用地址', value: 'nnnnn', checked: false },
-      { label: '配送地址', value: 'nnnnn', checked: false },
-      { label: '发票抬头', value: 'nnnnn', checked: false }
-    ];
+    // this.resetTaskCenterCheckOptions = [
+    //   { label: '新手教学', value: 'aaaaa', checked: false },
+    //   { label: '听音频', value: 'bbbbb', checked: false },
+    //   { label: '充话费', value: 'ccccc', checked: false },
+    //   { label: '使用导航', value: 'ddddd', checked: false },
+    //   { label: '打电话', value: 'eeeee', checked: false },
+    //   { label: '听新闻', value: 'fffff', checked: false },
+    //   { label: '购买机票', value: 'ggggg', checked: false },
+    //   { label: '购买火车票', value: 'hhhhh', checked: false },
+    //   { label: '订酒店', value: 'iiiii', checked: false },
+    //   { label: '首次打车', value: 'jjjjj', checked: false },
+    //   { label: '闪送订单', value: 'kkkkk', checked: false },
+    //   { label: '星座订单', value: 'lllll', checked: false },
+    //   { label: '电影票名单', value: 'mmmmm', checked: false },
+    //   { label: '设置支付密码', value: 'nnnnn', checked: false },
+    //   { label: '开通免密支付', value: 'nnnnn', checked: false },
+    //   { label: '出行人', value: 'nnnnn', checked: false },
+    //   { label: '常用联系人', value: 'nnnnn', checked: false },
+    //   { label: '常用地址', value: 'nnnnn', checked: false },
+    //   { label: '配送地址', value: 'nnnnn', checked: false },
+    //   { label: '发票抬头', value: 'nnnnn', checked: false }
+    // ];
   }
 
   ngOnInit() {
@@ -345,7 +348,7 @@ export class ActivityComponent implements OnInit {
           console.log(this.dataTaskCenter);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-      const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '访问' };
+      const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '访问' };
       this.commonService.updateOperationlog(operationInput).subscribe();
       this.isSpinning = false;
     } else if (flag === 'taskLogs') {
@@ -363,7 +366,7 @@ export class ActivityComponent implements OnInit {
           console.log(this.dataTaskLogs);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-      const operationInput = { op_category: 'APP管理', op_page: '任务日志', op_name: '访问' };
+      const operationInput = { op_category: '活动管理', op_page: '任务日志', op_name: '访问' };
       this.commonService.updateOperationlog(operationInput).subscribe();
       this.isSpinning = false;
     }
@@ -590,9 +593,9 @@ export class ActivityComponent implements OnInit {
             pic: task.pic,
             jump: {
               msg: task.jump.msg ? task.jump.msg : '',
-              page: task.jump.page ? task.jump.page : 0,
+              page: task.jump.page ? task.jump.page : 1,
               url: task.jump.url ? task.jump.url : '',
-              appMsg: task.jump.msg && task.jump.page === 8 && task.jump.type === 'APP' ? task.jump.msg : ''
+              appMsg: task.jump.msg && task.jump.page === 9 && task.jump.type === 'APP' ? task.jump.msg : ''
             },
             rule: {
               beanValue: task.taskAward.rule ? task.taskAward.rule.beanAwardType === 'FIXED' ? task.taskAward.rule.beanValue : '' : '',
@@ -604,6 +607,8 @@ export class ActivityComponent implements OnInit {
             date: [task.effectiveTimeFloor, task.effectiveTimeCeil],
           };
           console.log(this.addTaskCenter);
+          this.beginTaskCenterActDate = task.effectiveTimeFloor;
+          this.endTaskCenterActDate = task.effectiveTimeCeil;
           const file: any = {};
           this.fileList.push(file);
           this.imageUrl = task.pic;
@@ -617,6 +622,12 @@ export class ActivityComponent implements OnInit {
       this.tabsetJson.currentNum = 4;
     } else if (flag === 'resetTaskCenter') {  // 重置任务
       this.visiable.resetTaskCenter = true;
+    } else if (flag === 'ensureResetTaskCenter') {  // 确定重置
+      let count = 0;
+      this.dataTaskCenter.forEach(item => { if (item.checked === true) { count++; } });
+      if (count === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '您未选择需要重置的任务' }); return; }
+      this.hideModal('resetTaskCenter');
+      this.visiable.ensureResetTaskCenter = true;
     }
   }
 
@@ -673,7 +684,7 @@ export class ActivityComponent implements OnInit {
       this.addTaskCenter = {
         taskType: 'DAILY', taskBehavior: '', checkLimitNumber: false, jumpType: 'NONE', checkBean: false, checkExperience: false, checkSkill: false,
         checkBeanRes: 'Fixed', checkExperienceRes: 'Fixed', checkSkillRes: 'Fixed', activityRule: 'recharge', checkActivityBean: false, totalTimes: '', name: '', description: '',
-        group: '', sequence: '', pic: '', jump: {msg: '', page: 0, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
+        group: '', sequence: '', pic: '', jump: {msg: '', page: 1, url: '', appMsg: ''}, rule: { beanValue: '', beanPreValue: '', expValue: '', perkValue: '' },
         stepRule: [{ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' }],
         date: []
       };
@@ -684,6 +695,8 @@ export class ActivityComponent implements OnInit {
       this.visiable.modifyTaskCenter = false;
     } else if (flag === 'resetTaskCenter') {
       this.visiable.resetTaskCenter = false;
+    } else if (flag === 'ensureResetTaskCenter') {
+      this.visiable.ensureResetTaskCenter = false;
     }
   }
 
@@ -1160,7 +1173,7 @@ export class ActivityComponent implements OnInit {
           pic: this.imageUrl,
           jump: {
             type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 8) ? this.addTaskCenter.jump.appMsg : '')),
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 9) ? this.addTaskCenter.jump.appMsg : '')),
             page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
             url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
           },
@@ -1197,7 +1210,7 @@ export class ActivityComponent implements OnInit {
           pic: this.imageUrl,
           jump: {
             type: this.addTaskCenter.jumpType,
-            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 8) ? this.addTaskCenter.jump.appMsg : '')),
+            msg: (this.addTaskCenter.jumpType === 'DIALOG' ? this.addTaskCenter.jump.msg : ((this.addTaskCenter.jumpType === 'APP' && Number(this.addTaskCenter.jump.page) === 9) ? this.addTaskCenter.jump.appMsg : '')),
             page: (this.addTaskCenter.jumpType === 'APP' ? Number(this.addTaskCenter.jump.page) : ''),
             url: (this.addTaskCenter.jumpType === 'WEB' ? this.addTaskCenter.jump.url : '')
           },
@@ -1214,7 +1227,7 @@ export class ActivityComponent implements OnInit {
         this.taskService.addTaskCenter(finalInput).subscribe(res => {
           if (res.retcode === 0) {
             this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-            const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '保存' };
+            const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '保存' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             this.hideModal('taskCenter'); // 保存成功后，变为编辑按钮
             this.loadData('taskCenter');
@@ -1224,13 +1237,37 @@ export class ActivityComponent implements OnInit {
         this.taskService.updateTaskCenter(this.templateId, finalInput).subscribe(res => {
           if (res.retcode === 0) {
             this.notification.blank( '提示', '保存成功', { nzStyle: { color : 'green' } });
-            const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '保存' };
+            const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '保存' };
             this.commonService.updateOperationlog(operationInput).subscribe();
             this.hideModal('taskCenter'); // 保存成功后，变为编辑按钮
             this.loadData('taskCenter');
           } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
       }
+    } else if (flag === 'sendMsg') {
+      this.taskService.sendMsg(this.operateObject.operater).subscribe(res => {
+        if (res.retcode === 0) {
+          this.countDown();
+          this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '任务中心' , op_name: '发送短信' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'resetTaskCenter') {
+      const arr = [];
+      this.dataTaskCenter.forEach(item => { if (item.checked === true) { arr.push(item.id); } }); // 获取被选中的task
+      const resetInput = { code: this.operateObject.code, phone: this.operateObject.operater, taskIds: arr };
+      this.taskService.resetTaskCenter(resetInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '重置成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '任务中心' , op_name: '重置任务' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('taskCenter');
+          this.hideModal('ensureResetTaskCenter');
+          this.hideModal('resetTaskCenter');
+          this.operateObject = { code: '', operater: '18682233554' };
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -1356,7 +1393,7 @@ export class ActivityComponent implements OnInit {
       this.taskService.deleteTaskCenter(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '删除' };
+          const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('taskCenter');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
@@ -1635,7 +1672,7 @@ export class ActivityComponent implements OnInit {
       this.taskService.updateSwitch(switchInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: 'APP管理', op_page: '任务中心', op_name: '启用/不启用' };
+          const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '启用/不启用' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         this.loadData('taskCenter');
@@ -1682,4 +1719,14 @@ export class ActivityComponent implements OnInit {
   }
 
   parserPoint = (value: string) => value.replace('.', '');
+
+  countDown() {
+    this.semdMesCodeText--;
+    if (this.semdMesCodeText === 0) {
+      this.semdMesCodeText = 60;
+      return;
+    }
+    setTimeout(() => { this.countDown(); }, 1000);
+  }
+
 }

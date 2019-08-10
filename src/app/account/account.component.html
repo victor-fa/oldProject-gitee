@@ -576,6 +576,199 @@
 
         </nz-tab>
 
+        <nz-tab [nzTitle]="navConfigTemplate" (nzClick)="changePanel('navConfig')" *ngIf="commonService.haveMenuPermission('children', '操作日志')">
+          <ng-template #navConfigTemplate><i class="anticon anticon-file-text"></i>导航页配置</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addNavConfig', '')"><i class="anticon anticon-file-add"></i>新增类别</button>
+            </div>
+          </div>
+          <nz-table #rowNavConfigTable [nzData]="dataNavConfig" [nzSimple]="true" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="100px">类别名称</th>
+                <th nzWidth="100px">类别排序</th>
+                <th nzWidth="100px">启用状态</th>
+                <th nzWidth="100px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowNavConfigTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.order}}</td>
+                <td>
+                  <nz-form-item>
+                    <nz-form-control>
+                      <nz-switch [(ngModel)]="data.enable" (click)="clickSwitch(data, 'navConfig')"></nz-switch>
+                    </nz-form-control>
+                  </nz-form-item>
+                </td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyNavConfig', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteNavConfig', data)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addNavConfig" nzWidth="1350" nzTitle="新增类别" [nzFooter]="addNavConfigModalFooter" (nzOnCancel)="hideModal('addNavConfig')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
+              <div nz-col nzSpan="6">
+                <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
+              <div nz-col nzSpan="21" class="span_down">
+                <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="beforeUploadBut('list')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp;建议尺寸：50X50
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length == 1">
+              <div nz-col nzSpan="3"></div>
+              <div nz-col nzSpan="21">
+                <img *ngIf="navConfigItem.iconFileId" [src]="navConfigItem.iconFileId" class="image-panel">
+                &nbsp;&nbsp;建议尺寸：50X50
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
+              <div nz-col nzSpan="3">icon</div>
+              <div nz-col nzSpan="3">名称</div>
+              <div nz-col nzSpan="4">链接</div>
+              <div nz-col nzSpan="4">描述</div>
+              <div nz-col nzSpan="4">排序</div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="onChange($event, 'addNavConfigItem')"><i class="anticon anticon-file-add"></i>添加</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel" *ngFor="let data of navConfigItem.elements; let i=index;">
+              <div nz-col nzSpan="3"></div>
+              <div nz-col nzSpan="3">
+                <nz-upload [(nzFileList)]="data.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="beforeUploadBut(i + '')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  <br>建议尺寸：50X50<br>
+                </nz-upload>
+                <div *ngIf="data.iconFileId">
+                  <img [src]="data.iconFileId" class="image-panel">
+                </div>
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input [(ngModel)]="data.name" placeholder="请输入名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.data" placeholder="请输入要跳转的网址链接" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.description" placeholder="请输入对网址的描述" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.sort" placeholder="请输入排序" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3" *ngIf="i !== 0">
+                <button nz-button nzType="primary" (click)="onChange(i, 'removeNavConfigItem')"><i class="anticon anticon-file-add"></i>删除</button>
+              </div>
+            </div>
+            <ng-template #addNavConfigModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addNavConfig')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addNavConfig')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyNavConfig" nzWidth="1350" nzTitle="修改类别" [nzFooter]="modifyNavConfigModalFooter" (nzOnCancel)="hideModal('modifyNavConfig')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
+                类别名称：
+              </div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
+                类别排序：
+              </div>
+              <div nz-col nzSpan="6">
+                <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
+              </div>
+            </div>
+            <!-- <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
+              <div nz-col nzSpan="21" class="span_down">
+                <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp;建议尺寸：50X50
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-col nzSpan="3"></div>
+              <div nz-col nzSpan="21">
+                <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
+                &nbsp;&nbsp;建议尺寸：50X50
+              </div>
+            </div> -->
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
+              <div nz-col nzSpan="3">icon</div>
+              <div nz-col nzSpan="3">名称</div>
+              <div nz-col nzSpan="4">链接</div>
+              <div nz-col nzSpan="4">描述</div>
+              <div nz-col nzSpan="4">排序</div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('addNavConfig')"><i class="anticon anticon-file-add"></i>添加</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3">图</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入链接" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input placeholder="请输入要跳转的网址链接" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input placeholder="请输入对网址的描述" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input placeholder="请输入排序" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('addNavConfig')"><i class="anticon anticon-file-add"></i>删除</button>
+              </div>
+            </div>
+            <ng-template #modifyNavConfigModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyNavConfig')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyNavConfig')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>
