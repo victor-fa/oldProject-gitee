@@ -24,7 +24,7 @@ export class AccountComponent implements OnInit {
   dataResourceChildren = [];  // 资源的子集
   allChecked = false;
   modifyItem = {};
-  dataNavConfig = [{}]; // 导航页配置
+  dataNavConfig = []; // 导航页配置
   currentPanel = 'role';
   beginDate = '';
   endDate = '';
@@ -281,6 +281,12 @@ export class AccountComponent implements OnInit {
     } else if (flag === 'addNavConfig') {
       this.visiable.addNavConfig = true;
     } else if (flag === 'modifyNavConfig') {
+      const arr = [];
+      const file: any = { name: data.iconFileId };
+      data.elements.forEach((item, index) => {
+        arr.push({ name: item.name, description: item.description, iconFileId: item.iconFileId, fileList: [file], type: 'LINK', data: item.data, sort: index })
+      });
+      this.navConfigItem = { id: data.id, name: data.name, order: data.order, iconFileId: data.iconFileId, fileList: [file], elements: arr };
       this.visiable.modifyNavConfig = true;
     } else if (flag === 'deleteNavConfig') {
       this.modalService.confirm({
@@ -300,93 +306,60 @@ export class AccountComponent implements OnInit {
     } else if (flag === 'modifyCustomer') {
       this.visiable.modifyCustomer = false;
     } else if (flag === 'addNavConfig') {
+      this.navConfigItem = { id: '', name: '', order: 1, iconFileId: '', fileList: [], elements: [{name: '', description: '', iconFileId: '', fileList: [], type: 'LINK', data: '', sort: '' }]};
       this.visiable.addNavConfig = false;
     } else if (flag === 'modifyNavConfig') {
+      this.navConfigItem = { id: '', name: '', order: 1, iconFileId: '', fileList: [], elements: [{name: '', description: '', iconFileId: '', fileList: [], type: 'LINK', data: '', sort: '' }]};
       this.visiable.modifyNavConfig = false;
     }
   }
 
   // 验证
-  verification(falg, data) {
+  verification(flag, data) {
     let result = true;
     const MOBILE_REGEXP = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
-    if (falg === 'addRole') {
-      if (data.name === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false;
-      }
-      if (data.platforms.length === 0) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false;
-      }
-      if (data.resIds.length === 0) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false;
-      }
+    if (flag === 'addRole') {
+      if (data.name === '') { this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false; }
+      if (data.platforms.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false; }
+      if (data.resIds.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false; }
       this.dataRole.forEach(item => { // 去重
-        if (item.name === data.name) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false;
-        }
+        if (item.name === data.name) { this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false; }
       });
-    } else if (falg === 'modifyRole') {
-      if (data.name === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false;
-      }
-      console.log(data);
-      if (data.platforms.length === 0) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false;
-      }
-      if (data.resIds.length === 0) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false;
-      }
+    } else if (flag === 'modifyRole') {
+      if (data.name === '') { this.modalService.error({ nzTitle: '提示', nzContent: '角色名称未填写' }); result = false; }
+      if (data.platforms.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '权限设置未选择' }); result = false; }
+      if (data.resIds.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '一级菜单二级菜单未选择' }); result = false; }
       this.dataRole.forEach(item => { // 去重
         if (this.roleId !== item.id) {
-          if (item.name === data.name) {
-            this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false;
-          }
+          if (item.name === data.name) { this.modalService.error({ nzTitle: '提示', nzContent: '角色名称与现有的角色名称有重复！' }); result = false; }
         }
       });
-    } else if (falg === 'addCustomer') {
-      if (data.username === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false;
-      }
-      if (!MOBILE_REGEXP.test(data.username)) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false;
-      }
-      if (data.realname === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false;
-      }
-      if (data.password === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false;
-      }
-      if (data.roleId === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false;
-      }
+    } else if (flag === 'addCustomer') {
+      if (data.username === '') { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false; }
+      if (!MOBILE_REGEXP.test(data.username)) { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false; }
+      if (data.realname === '') { this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false; }
+      if (data.password === '') { this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false; }
+      if (data.roleId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false; }
       this.dataRole.forEach(item => { // 去重
-        if (item.name === data.username) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false;
-        }
+        if (item.name === data.username) { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false; }
       });
-    } else if (falg === 'modifyCustomer') {
-      if (data.username === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false;
-      }
-      if (!MOBILE_REGEXP.test(data.username)) {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false;
-      }
-      if (data.realname === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false;
-      }
-      if (data.password === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false;
-      }
-      if (data.roleId === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false;
-      }
+    } else if (flag === 'modifyCustomer') {
+      if (data.username === '') { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号未填写' }); result = false; }
+      if (!MOBILE_REGEXP.test(data.username)) { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号格式错误，必须为11位手机号！' }); result = false; }
+      if (data.realname === '') { this.modalService.error({ nzTitle: '提示', nzContent: '员工姓名未填写' }); result = false; }
+      if (data.password === '') { this.modalService.error({ nzTitle: '提示', nzContent: '登录密码未填写' }); result = false; }
+      if (data.roleId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '角色未选择' }); result = false; }
       this.dataRole.forEach(item => { // 去重
         if (this.customerId !== item.id) {
-          if (item.name === data) {
-            this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false;
-          }
+          if (item.name === data) { this.modalService.error({ nzTitle: '提示', nzContent: '员工账号与现有的员工账号有重复！' }); result = false; }
         }
       });
+    } else if (flag === 'navConfig') {
+      if (data.name === '') { this.modalService.error({ nzTitle: '提示', nzContent: '类别名称未填写' }); result = false; }
+      if (data.order === '') { this.modalService.error({ nzTitle: '提示', nzContent: '类别排序未填写' }); result = false; }
+      if (data.iconFileId === '') { this.modalService.error({ nzTitle: '提示', nzContent: 'icon配置图未上传' }); result = false; }
+      if (data.name === '') { this.modalService.error({ nzTitle: '提示', nzContent: '类别名称未填写' }); result = false; }
+      if (data.name === '') { this.modalService.error({ nzTitle: '提示', nzContent: '类别名称未填写' }); result = false; }
     }
     return result;
   }
@@ -473,23 +446,37 @@ export class AccountComponent implements OnInit {
       this.hideModal('modifyCustomer');
     } else if (flag === 'addNavConfig') {
       const arr = [];
-      const addItem = {
-        name: this.customerId,
-        order: this.customerModifyForm.controls['realname'].value,
-        iconFileId: this.customerModifyForm.controls['password'].value,
-        elements: arr,
-      };
+      this.navConfigItem.elements.forEach(item => {
+        arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
+      });
+      const addItem = { name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
       console.log(addItem);
-      // if (!this.verification('addNavConfig', addItem)) { return; } // 去重
-      // this.accountService.addNavConfigList(addItem).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-      //     const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '新增' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //     this.loadData('navConfig');
-      //     this.hideModal('addNavConfig');
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      if (!this.verification('navConfig', addItem)) { return; } // 去重
+      this.accountService.addNavConfigList(addItem).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('navConfig');
+          this.hideModal('addNavConfig');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyNavConfig') {
+      const arr = [];
+      this.navConfigItem.elements.forEach(item => {
+        arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
+      });
+      const modifyItem = { id: this.navConfigItem.id, name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
+      if (!this.verification('navConfig', modifyItem)) { return; } // 去重
+      this.accountService.modifyNavConfigList(modifyItem).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '修改' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('navConfig');
+          this.hideModal('modifyNavConfig');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -603,10 +590,7 @@ export class AccountComponent implements OnInit {
           this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
         }
       }
-      if (this.beginDate.indexOf('null') > -1) {  // 处理有null的情况
-        this.beginDate = '';
-        this.endDate = '';
-      }
+      // if (this.beginDate.indexOf('null') > -1) { this.beginDate = ''; this.endDate = ''; }  // 处理有null的情况
     } else if (flag === 'addNavConfigItem') {
       this.navConfigItem.elements.push({name: '', description: '', iconFileId: '', fileList: [], type: 'LINK', data: '', sort: '' });
     } else if (flag === 'removeNavConfigItem') {
@@ -691,25 +675,18 @@ export class AccountComponent implements OnInit {
       } else if (!isMoreThanTen) {
         this.msg.error('您只能上传不超过500K文件');
       } else {
-        // this.fileList.push(file);
         if (this.currentFile === 'list') {
-
+          this.navConfigItem.fileList.push(file);
+        } else {
+          const num = Number(this.currentFile);
+          this.navConfigItem.elements.forEach((item, index) => {
+            if (index === num) { item.fileList.push(file); }
+          })
         }
         this.handleUpload();
       }
-     } else if (this.currentPanel === 'taskCenter') {
-        const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
-        const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
-        const isMoreThanTen = file.size < 512000 ? true : false;
-        this.navConfigItem.fileList.splice(0, this.navConfigItem.fileList.length);
-        if (!isPng) {
-          this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
-        } else if (!isMoreThanTen) {
-          this.msg.error('您只能上传不超过500K文件');
-        } else { this.navConfigItem.fileList.push(file); this.handleUpload(); }
-        return false;
-      }
-      return false;
+    }
+    return false;
   }
 
   // 点击上传
@@ -723,7 +700,14 @@ export class AccountComponent implements OnInit {
     // 文件数量不可超过1个，超过一个则提示
     if (this.navConfigItem.fileList.length > 1) { this.notification.error( '提示', '您上传的文件超过一个！' ); return; }
     const formData = new FormData();
-    this.navConfigItem.fileList.forEach((file: any) => {formData.append(flag, file); console.log(file);});
+    if (this.currentFile === 'list') {
+      this.navConfigItem.fileList.forEach((file: any) => {formData.append(flag, file);});
+    } else {
+      const num = Number(this.currentFile);
+      this.navConfigItem.elements.forEach((item, index) => {
+        if (index === num) { item.fileList.forEach((file: any) => {formData.append(flag, file);}); }
+      })
+    }
     // const baseUrl = this.commonService.baseUrl;
     const baseUrl = 'http://account-center-test.chewrobot.com/api/test';
     const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, {
@@ -733,8 +717,14 @@ export class AccountComponent implements OnInit {
       .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
         if (event.body.retcode === 0) {
           console.log(event);
-          this.navConfigItem.iconFileId = event.body.payload;
-          // this.showImageUrl = baseUrl.substring(0, baseUrl.indexOf('/api')) + this.imageUrl;
+          if (this.currentFile === 'list') {
+            this.navConfigItem.iconFileId = event.body.payload;
+          } else {
+            const num = Number(this.currentFile);
+            this.navConfigItem.elements.forEach((item, index) => {
+              if (index === num) { item.iconFileId = event.body.payload; }
+            })
+          }
           this.notification.success( '提示', '上传成功' );
           const operationInput = { op_category: '权限后台', op_page: '导航页配置', op_name: '上传图片' };
           this.commonService.updateOperationlog(operationInput).subscribe();

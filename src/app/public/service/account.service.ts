@@ -118,8 +118,7 @@ export class AccountService extends AppServiceBase {
 
   /** 查询-导航页配置查询接口 */
   getNavConfigList(): Observable<IResponse<any>> {
-    // const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}`;
-    const url = `http://account-center-test.chewrobot.com/api/test${accountApiUrls.navConfig}`;
+    const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${accountApiUrls.navConfig}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -127,17 +126,25 @@ export class AccountService extends AppServiceBase {
 
   /** 导航页配置新增接口 */
   addNavConfigList(data): Observable<IResponse<any>> {
-    // const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}`;
-    const url = `http://account-center-test.chewrobot.com/api/test${accountApiUrls.navConfig}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}`;
+    const body = `name=${data.name}&order=${data.order}&iconFileId=${data.iconFileId}&elements=${data.elements}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
-      .put<IResponse<any>>(url, data, this.options);
+      .put<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 导航页配置修改接口 */
+  modifyNavConfigList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}/${data.id}`;
+    const body = `name=${data.name}&order=${data.order}&iconFileId=${data.iconFileId}&elements=${data.elements}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
   }
 
   /** 删除导航页配置 */
   deleteNavConfig(data): Observable<IResponse<any>> {
-    // const url = `${this.commonService.baseUrl}/shortcut/management/templates/${data.id}`;
-    const url = `http://account-center-test.chewrobot.com/api/test/shortcut/management/templates/${data.id}`;
+    const url = `${this.commonService.baseUrl}/shortcut/categories/${data.id}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
@@ -145,8 +152,7 @@ export class AccountService extends AppServiceBase {
 
   /** 修改导航页配置状态 */
   updateNavConfigSwitch(data): Observable<IResponse<any>> {
-    // const url = `${this.commonService.baseUrl}/shortcut/categories/${data.id}/enable`;
-    const url = `http://account-center-test.chewrobot.com/api/test/shortcut/categories/${data.id}/enable`;
+    const url = `${this.commonService.baseUrl}/shortcut/categories/${data.id}/enable`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);

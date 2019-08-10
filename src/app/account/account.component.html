@@ -644,7 +644,7 @@
             <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length == 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
-                <img *ngIf="navConfigItem.iconFileId" [src]="navConfigItem.iconFileId" class="image-panel">
+                <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
                 &nbsp;&nbsp;建议尺寸：50X50
               </div>
             </div>
@@ -669,7 +669,7 @@
                   <br>建议尺寸：50X50<br>
                 </nz-upload>
                 <div *ngIf="data.iconFileId">
-                  <img [src]="data.iconFileId" class="image-panel">
+                  <img [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + data.iconFileId" class="image-panel">
                 </div>
               </div>
               <div nz-col nzSpan="3">
@@ -696,39 +696,35 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyNavConfig" nzWidth="1350" nzTitle="修改类别" [nzFooter]="modifyNavConfigModalFooter" (nzOnCancel)="hideModal('modifyNavConfig')" nzMaskClosable="false">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
-                类别名称：
-              </div>
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
               <div nz-col nzSpan="6" class="span_down">
                 <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
               </div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">
-                类别排序：
-              </div>
+              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
               <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
               </div>
             </div>
-            <!-- <div nz-row class="search_panel">
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
               <div nz-col nzSpan="21" class="span_down">
-                <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
-                  <button nz-button nzType="primary">
+                <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="beforeUploadBut('list')">
                     <i class="anticon anticon-upload"></i><span>上传文件</span>
                   </button>
                   &nbsp;&nbsp;建议尺寸：50X50
                 </nz-upload>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length == 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
-                <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
+                <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
                 &nbsp;&nbsp;建议尺寸：50X50
               </div>
-            </div> -->
+            </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
               <div nz-col nzSpan="3">icon</div>
@@ -737,28 +733,36 @@
               <div nz-col nzSpan="4">描述</div>
               <div nz-col nzSpan="4">排序</div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="doSave('addNavConfig')"><i class="anticon anticon-file-add"></i>添加</button>
+                <button nz-button nzType="primary" (click)="onChange($event, 'addNavConfigItem')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="3">图</div>
+            <div nz-row class="search_panel" *ngFor="let data of navConfigItem.elements; let i=index;">
+              <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="3">
-                <input nz-input placeholder="请输入名称" nzSize="default">
-              </div>
-              <div nz-col nzSpan="3">
-                <input nz-input placeholder="请输入链接" nzSize="default">
-              </div>
-              <div nz-col nzSpan="4">
-                <input nz-input placeholder="请输入要跳转的网址链接" nzSize="default">
-              </div>
-              <div nz-col nzSpan="4">
-                <input nz-input placeholder="请输入对网址的描述" nzSize="default">
-              </div>
-              <div nz-col nzSpan="4">
-                <input nz-input placeholder="请输入排序" nzSize="default">
+                <nz-upload [(nzFileList)]="data.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="beforeUploadBut(i + '')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  <br>建议尺寸：50X50<br>
+                </nz-upload>
+                <div *ngIf="data.iconFileId">
+                  <img [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + data.iconFileId" class="image-panel">
+                </div>
               </div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="doSave('addNavConfig')"><i class="anticon anticon-file-add"></i>删除</button>
+                <input nz-input [(ngModel)]="data.name" placeholder="请输入名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.data" placeholder="请输入要跳转的网址链接" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.description" placeholder="请输入对网址的描述" nzSize="default">
+              </div>
+              <div nz-col nzSpan="4">
+                <input nz-input [(ngModel)]="data.sort" placeholder="请输入排序" nzSize="default">
+              </div>
+              <div nz-col nzSpan="3" *ngIf="i !== 0">
+                <button nz-button nzType="primary" (click)="onChange(i, 'removeNavConfigItem')"><i class="anticon anticon-file-add"></i>删除</button>
               </div>
             </div>
             <ng-template #modifyNavConfigModalFooter>
