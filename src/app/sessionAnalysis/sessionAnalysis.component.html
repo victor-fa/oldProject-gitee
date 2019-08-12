@@ -38,28 +38,30 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="16">
-                  <div nz-col nzSpan="7">
-                    <input nz-input formControlName="ask" type="text" placeholder="关键词搜问句" nzSize="default">
+                <div nz-col nzSpan="10">
+                  <div nz-col nzSpan="9">
+                    <textarea rows="3" nz-input formControlName="ask" placeholder="关键词搜问句" nzSize="default"></textarea>
                   </div>
-                  <div nz-col nzSpan="7">
-                    <input nz-input formControlName="answer" type="text" placeholder="关键词搜回答" nzSize="default">
+                  <div nz-col nzSpan="9">
+                    <textarea rows="3" nz-input formControlName="answer" placeholder="关键词搜回答" nzSize="default"></textarea>
                   </div>
-                  <div nz-col nzSpan="2">
-                    <input nz-input formControlName="uid" type="text" placeholder="输入用户ID" nzSize="default">
+                  <div nz-col nzSpan="6">
+                    <textarea rows="3" nz-input formControlName="uid" placeholder="输入用户ID" nzSize="default"></textarea>
                   </div>
-                  <div nz-col nzSpan="1" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
-                  <div nz-col nzSpan="3" class="span_down">
+                </div>
+                <div nz-col nzSpan="8">
+                  <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
+                  <div nz-col nzSpan="4" class="span_down">
                     <nz-select [(ngModel)]="sessionLogFlag" formControlName="flag">
                       <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
                       <nz-option required [nzLabel]="'已标记'" [nzValue]="1"></nz-option>
                       <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
                     </nz-select>
                   </div>
-                  <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">
+                  <div nz-col nzSpan="4" class="span_down right_alignment" style="letter-spacing: -2px;">
                     异常回答：
                   </div>
-                  <div nz-col nzSpan="2">
+                  <div nz-col nzSpan="4">
                     <nz-select [(ngModel)]="abnormalType" formControlName="abnormalType">
                       <nz-option [nzLabel]="'不筛选'" [nzValue]="''"></nz-option>
                       <nz-option [nzLabel]="'全部异常话术'" [nzValue]="'ALL'"></nz-option>
@@ -68,21 +70,38 @@
                       <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
                     </nz-select>
                   </div>
-                </div>
-                <div nz-col nzSpan="8">
-                  <div nz-col nzSpan="6" class="span_down right_alignment" style="letter-spacing: -2px;">
+                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
                     会话内意图数&nbsp;<a (click)="chooseSessionCompare($event, 'conpareFirst')" style="letter-spacing: 7px;font-weight: bold;">{{conpareFirst === '<' ? '<' : '>'}}</a>
                   </div>
-                  <div nz-col nzSpan="2" style="margin-right: -15px;">
+                  <div nz-col nzSpan="3" style="margin-right: -15px;">
                     <input nz-input formControlName="intentionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -2px;">
+
+                  <div nz-col nzSpan="4" class="span_down right_alignment">
+                    账户类型：
+                  </div>
+                  <div nz-col nzSpan="7">
+                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="listOfTagOptions1" formControlName="intentionNum">
+                      <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
+                    </nz-select>
+                  </div>
+                  <div nz-col nzSpan="4" class="span_down right_alignment">
+                    特殊用户：
+                  </div>
+                  <div nz-col nzSpan="7">
+                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="listOfTagOptions2" formControlName="intentionNum">
+                      <nz-option *ngFor="let option of listOfOption2" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
+                    </nz-select>
+                  </div>
+                </div>
+                <div nz-col nzSpan="6">
+                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
                     重复回答&nbsp;<a (click)="chooseSessionCompare($event, 'conpareSecond')" style="letter-spacing: 7px;font-weight: bold;">{{conpareSecond === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="2" style="margin-right: -15px;">
                     <input nz-input formControlName="repetitionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="5" class="span_down right_alignment" style="letter-spacing: -2px;">
+                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
                     响应时长&nbsp;<a (click)="chooseSessionCompare($event, 'conpareThird')" style="letter-spacing: 7px;font-weight: bold;">{{conpareThird === '<' ? '<' : '>'}}</a>&nbsp;
                   </div>
                   <div nz-col nzSpan="2">

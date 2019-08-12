@@ -1741,7 +1741,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="taskCenterTemplate" (nzClick)="changePanel('taskCenter')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
+        <nz-tab [nzTitle]="taskCenterTemplate" (nzClick)="changePanel('taskCenter')" *ngIf="commonService.haveMenuPermission('children', '任务中心')">
           <ng-template #taskCenterTemplate><i class="anticon anticon-windows-o"></i>任务中心</ng-template>
           <form [formGroup]="searchTaskCenterForm">
             <div nz-row class="search_panel">
@@ -2188,7 +2188,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="taskLogsTemplate" (nzClick)="changePanel('taskLogs')" *ngIf="commonService.haveMenuPermission('children', '客服QQ')">
+        <nz-tab [nzTitle]="taskLogsTemplate" (nzClick)="changePanel('taskLogs')" *ngIf="commonService.haveMenuPermission('children', '任务日志')">
           <ng-template #taskLogsTemplate><i class="anticon anticon-scan"></i>任务日志</ng-template>
           <form [formGroup]="searchTaskLogsForm">
             <div nz-row class="search_panel">

@@ -30,11 +30,11 @@ export class NewsComponent implements OnInit {
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
-  dataNewsNER = [{}];
-  dataNewsNERResult = [{}];
+  dataNewsNER = [];
+  dataNewsNERResult = [];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
-  addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: []};
+  addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: [], successNum: 0, failNum: ''};
   isSpinning = false;
   beginSortSpeechDate = '';
   endSortSpeechDate = '';
@@ -330,6 +330,7 @@ export class NewsComponent implements OnInit {
     } else if (flag === 'newsNERResult') {
       this.visiable.newsNERResult = false;
     } else if (flag === 'addNewsThesaurusResult') {
+      this.addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: [], successNum: 0, failNum: ''};
       this.visiable.addNewsThesaurusResult = false;
       this.loadData('newsThesaurus');
     }
@@ -413,6 +414,9 @@ export class NewsComponent implements OnInit {
           const result = JSON.parse(res.payload);
           this.addNewsThesaurusData.success = result.successList.join('\n');
           this.addNewsThesaurusData.fail = result.failList.join('\n');
+          this.addNewsThesaurusData.successNum = result.successList.length;
+          this.addNewsThesaurusData.failNum = result.failList.length;
+          console.log(this.addNewsThesaurusData);
           this.hideModal('addNewsThesaurus');
           this.showModal('addNewsThesaurusResult', '');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }

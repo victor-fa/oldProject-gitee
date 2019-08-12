@@ -400,11 +400,11 @@
           <nz-modal [(nzVisible)]="visiable.addNewsThesaurusResult" nzWidth="650" nzTitle="新增词条结果" [nzFooter]="addNewsThesaurusResultFooter" (nzOnCancel)="hideModal('addNewsThesaurusResult')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="10">
-                成功添加词条{{addNewsThesaurusData.success.length}}
+                成功添加词条{{addNewsThesaurusData.successNum}}
               </div>
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="10">
-                重复词条{{addNewsThesaurusData.success.length}}
+                重复词条{{addNewsThesaurusData.failNum}}
               </div>
             </div>
             <div nz-row class="search_panel">

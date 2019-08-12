@@ -159,12 +159,17 @@ export class OperateComponent implements OnInit {
           mainPoints = this.dataTaxi[i].path.points;
         }
       }
+      console.log(mainPoints);
+      const centerPoint = mainPoints[0].split(',');
       // 基本地图加载
       mainMap = new AMap.Map('container', {
-        resizeEnable: true
+        resizeEnable: true,
+        center: centerPoint,
+        zoom: 2
       });
       // 绘制初始路径
       const mainPath = this.getPointRoute(mainPoints);
+      console.log(mainPath);
       mainMap.plugin('AMap.DragRoute', function() {
         mainRoute = new AMap.DragRoute(mainMap, mainPath, AMap.DrivingPolicy.LEAST_FEE); // 构造拖拽导航类
         mainRoute.search(); // 查询导航路径并开启拖拽导航
@@ -301,7 +306,14 @@ export class OperateComponent implements OnInit {
       }
     }
     // 基本地图加载
-    map = new AMap.Map('container', { resizeEnable: true });
+    // map = new AMap.Map('container', { resizeEnable: true });
+    const centerPoint = points[0].split(',');
+    // 基本地图加载
+    map = new AMap.Map('container', {
+      resizeEnable: true,
+      center: centerPoint,
+      zoom: 14
+    });
     // 绘制初始路径
     const path = this.getPointRoute(points);
     map.plugin('AMap.DragRoute', function() {

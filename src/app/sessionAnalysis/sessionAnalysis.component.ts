@@ -47,6 +47,11 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionLogFlag = ''; // 用于标记后查询当前页
   dateRange = [];
   staticParams: any;  // 保留上一次查询数据，区分是否
+  listOfOption1 = [];
+  listOfTagOptions1 = [];
+  listOfOption2 = [];
+  listOfTagOptions2 = [];
+
   constructor(
     public commonService: CommonService,
     private sessionLogService: SessionLogService,
@@ -75,6 +80,19 @@ export class SessionAnalysisComponent implements OnInit {
       { label: '充话费', value: 'RECHARGE', checked: false },
       { label: '打电话', value: 'CALL', checked: false },
       { label: '提问', value: 'AIUI_CHAT', checked: false }
+    ];
+    this.listOfOption1 = [
+      { label: '注册账户', value: '注册账户'},
+      { label: '关联映射账户', value: '关联映射账户'},
+      { label: '子账户', value: '子账户'},
+      { label: '未注册账户', value: '未注册账户'},
+      { label: '控制台测试', value: '控制台测试'},
+      { label: '控制台自动测试', value: '控制台自动测试'}
+    ];
+    this.listOfOption2 = [
+      { label: '内部用户', value: '内部用户'},
+      { label: '客户测试号', value: '客户测试号'},
+      { label: 'VIP', value: 'VIP'}
     ];
   }
 
