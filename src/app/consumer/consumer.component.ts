@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { ConsumerService } from '../public/service/consumer.service';
+import * as XLSX from 'xlsx';
 
 registerLocaleData(zh);
 
@@ -21,12 +22,12 @@ export class ConsumerComponent implements OnInit {
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
   isSpinning = false;
-  serialData = {};
+  serialData = {appChannel: ''};
   editSerialData = '';
 
   constructor(
@@ -63,7 +64,12 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifySerial') {
-      this.consumerService.getSerialList(this.serialData).subscribe(res => {
+      const serialInput = {
+        sn: this.serialSearchForm.controls['sn'].value,
+        appChannel: this.serialData.appChannel
+      };
+      console.log(serialInput);
+      this.consumerService.getSerialList(serialInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataSerial = JSON.parse(res.payload).data;
@@ -84,16 +90,17 @@ export class ConsumerComponent implements OnInit {
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };
       this.consumerDate = {
-        'appChannel': data.appChannel,
-        'appChannelName': data.appChannelName,
-        'robot': data.robot,
-        'loginType': data.loginType,
-        'paymentKey': data.paymentKey,
-        'smsSign': data.smsSignType
+        appChannel: data.appChannel,
+        appChannelName: data.appChannelName,
+        robot: data.robot,
+        loginType: data.loginType,
+        paymentKey: data.paymentKey,
+        smsSign: data.smsSignType,
+        keys: ''
       };
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
@@ -114,6 +121,7 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
       this.visiable.addSerial = false;
     }
   }
@@ -132,6 +140,8 @@ export class ConsumerComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: 'BOT名称未填写' });
         result = false;
       }
+    } else if (flag === 'addSerial') {
+      if (this.consumerDate.keys === '' || this.consumerDate.keys.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' }); result = false; }
     }
     return result;
   }
@@ -139,9 +149,7 @@ export class ConsumerComponent implements OnInit {
   // 新增操作
   doSave(flag): void {
     if (flag === 'addConsumer') {
-      if (!this.verificationAdd('consumer')) {
-        return;
-      }
+      if (!this.verificationAdd('consumer')) { return; }
       const consumerInput = {
         'appChannel': this.addConsumerForm.controls['appChannel'].value,
         'appChannelName': this.addConsumerForm.controls['appChannelName'].value,
@@ -150,7 +158,7 @@ export class ConsumerComponent implements OnInit {
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
         // 临时
-        'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
+        // 'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
       };
 
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
@@ -171,9 +179,22 @@ export class ConsumerComponent implements OnInit {
         'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
         'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
         // 临时
-        'keys': this.modifyConsumerForm.controls['keys'].value !== undefined ? this.modifyConsumerForm.controls['keys'].value.split('\n') : '',
+        // 'keys': this.modifyConsumerForm.controls['keys'].value !== undefined ? this.modifyConsumerForm.controls['keys'].value.split('\n') : '',
       };
       this.addPaymengSms(consumerInput);
+    } else if (flag === 'addSerial') {
+      if (!this.verificationAdd('addSerial')) { return; }
+      const keysInput = {
+        id: this.serialData.appChannel,
+        keys: this.consumerDate.keys.split('\n'),
+      };
+      this.consumerService.addKey(keysInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.hideModal('addSerial');
+          this.hideModal('modifySerial');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -199,18 +220,36 @@ export class ConsumerComponent implements OnInit {
       });
     }
     // 临时
-    if (data.keys !== '' && data.keys !== undefined) {
-      const keysInput = {
-        id: data.appChannel,
-        keys: data.keys,
-      };
-      this.consumerService.addKey(keysInput).subscribe(res => {
-        if (res.retcode === 0) {
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
-    }
+    // if (data.keys !== '' && data.keys !== undefined) {
+    //   const keysInput = {
+    //     id: data.appChannel,
+    //     keys: data.keys,
+    //   };
+    //   this.consumerService.addKey(keysInput).subscribe(res => {
+    //     if (res.retcode === 0) {
+    //     } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+    //   });
+    // }
     this.loadData('consumer');
     this.hideModal('modifyConsumer');
+  }
+
+  getExcel(evt) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    let result = [];
+    reader.onload = (e: any) => {
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      result.splice(0, 1).toString();
+      this.consumerDate.keys = this.consumerDate.keys.length > 0 ? (this.consumerDate.keys + '\n' + result.join('\n')) : (this.consumerDate.keys + result.join('\n'));
+      evt.target.value="" // 清空
+    };
+    reader.readAsBinaryString(target.files[0]);
   }
 
 }

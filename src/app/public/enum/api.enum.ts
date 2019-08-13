@@ -136,4 +136,6 @@ export enum newsApiUrls {
   newsWordList = '/news/words',
   /** 新闻NER */
   nerList = '/v2/ner/feeder',
+  /** 新闻NER测试 */
+  nerTest = '/v2/ner/test',
 }

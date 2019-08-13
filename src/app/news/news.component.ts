@@ -30,7 +30,7 @@ export class NewsComponent implements OnInit {
   dataTaggingNews = [];
   dataManualAudit = [];
   dataNewsThesaurus = [];
-  dataNewsNER = [];
+  dataNewsNER = [{createDate: '', createDateFinal: ''}];
   dataNewsNERResult = [];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
@@ -147,19 +147,18 @@ export class NewsComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'newsNER') {
-      const manualAuditInput = {
-        submitter: this.manualAuditSearchForm.controls['submitter'].value,
-        status: this.manualAuditSearchForm.controls['status'].value,
-        submitTimeCeil: this.endTaggingNewsDate,
-        submitTimeFloor: this.beginTaggingNewsDate,
+      const newsNERInput = {
+        name: this.newsNERSearchForm.controls['name'].value,
+        startDate: this.beginNewNERDate,
+        endDate: this.endNewNERDate,
       };
       this.pageNum.dataManualAuditPage = this.pageNum.dataManualAuditPage === 0 ? 1 : this.pageNum.dataManualAuditPage;
-      this.newsService.getNerList(manualAuditInput).subscribe(res => {
+      this.newsService.getNerList(newsNERInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataManualAudit = JSON.parse(res.payload).content;
-          console.log(this.dataManualAudit);
-          const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '访问' };
+          this.dataNewsNER = JSON.parse(res.payload);
+          console.log(this.dataNewsNER);
+          const operationInput = { op_category: '新闻词库', op_page: '新闻NER', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
@@ -170,7 +169,7 @@ export class NewsComponent implements OnInit {
     this.taggingNewsSearchForm = this.fb.group({ status: [''], date: [''], });
     this.manualAuditSearchForm = this.fb.group({ submitter: [''], status: [''], date: [''], });
     this.newsThesaurusSearchForm = this.fb.group({ type: [''], name: [''], date: [''], });
-    this.newsNERSearchForm = this.fb.group({ aaa: [''], date: [''], });
+    this.newsNERSearchForm = this.fb.group({ name: [''], date: [''], });
   }
 
   // 弹窗
@@ -424,9 +423,12 @@ export class NewsComponent implements OnInit {
     } else if (flag === 'newsNERTest') {
       const testInput = {id: this.newsNERDara.id, nerUrl: this.newsNERDara.nerUrl };
       this.newsService.testNewsNER(testInput).subscribe(res => {
+        console.log(res);
         if (res.retcode === 0) {
           this.notification.blank( '提示', '测试成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '新闻词库', op_page: '新闻NER', op_name: '测试NER' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('newsNERTest');
           this.loadData('newsNER');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });

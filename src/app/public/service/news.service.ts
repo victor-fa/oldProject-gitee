@@ -106,11 +106,10 @@ export class NewsService extends AppServiceBase {
 
   /** 获取所有列表 */
   getNerList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerList}`;
-    // url += data.submitter && data.submitter !== null ? '&submitter=' + data.submitter : '';
-    // url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED,UPDATED';
-    // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
-    // url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
+    let url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerList}?pageSize=999`;
+    url += data.name && data.name !== null ? '&name=' + data.name : '';
+    url += data.startDate && data.startDate !== '' ? '&startDate=' + data.startDate : '';
+    url += data.endDate && data.endDate !== '' ? '&endDate=' + data.endDate : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -118,10 +117,11 @@ export class NewsService extends AppServiceBase {
 
   /** 测试NER */
   testNewsNER(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    const url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerTest}`;
+    let body = `id=${data.id}&nerUrl=${data.nerUrl}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
     return this.httpClient
-      .post<IResponse<any>>(url, data, this.options);
+      .post<IResponse<any>>(url, body, this.options);
   }
 
   /** 新增词条 */

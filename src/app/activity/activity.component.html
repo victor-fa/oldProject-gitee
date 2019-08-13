@@ -648,8 +648,7 @@
                 </div>
                 <div nz-col nzSpan="7"></div>
                 <div nz-col nzSpan="3">
-                  <button *ngIf="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')" disabled><i class="anticon anticon-eye-o"></i>活动页预览</button>
-                  <button *ngIf="baseInfoId !== ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye-o"></i>活动页预览</button>
+                  <button [disabled]="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye-o"></i>活动页预览</button>
                 </div>
               </div>
 
@@ -2019,10 +2018,10 @@
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
                 </div>
                 <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
-                <div nz-col nzSpan="2" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                <div nz-col nzSpan="2" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br>发送话术
                 </div>
-                <div nz-col nzSpan="6" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                <div nz-col nzSpan="6" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>
@@ -2120,10 +2119,10 @@
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
                 </div>
                 <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
-                <div nz-col nzSpan="2" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                <div nz-col nzSpan="2" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br>发送话术
                 </div>
-                <div nz-col nzSpan="6" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 8">
+                <div nz-col nzSpan="6" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>

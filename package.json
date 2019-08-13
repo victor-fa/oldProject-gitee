@@ -23,7 +23,6 @@
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
     "echarts": "^4.2.0-rc.1",
-    "exceljs": "^1.14.0",
     "fingerprintjs2": "^1.8.0",
     "js-base64": "^2.4.9",
     "ng-zorro-antd": "^1.6.0",
@@ -33,6 +32,7 @@
     "rxjs": "^6.2.1",
     "rxjs-compat": "^6.2.1",
     "ts-md5": "^1.2.4",
+    "xlsx": "^0.15.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

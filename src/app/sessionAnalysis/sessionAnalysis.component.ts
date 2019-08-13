@@ -15,12 +15,11 @@ registerLocaleData(zh);
 })
 export class SessionAnalysisComponent implements OnInit {
 
-  visiable = {sessionLogSearch: true, explain: false };
+  visiable = {sessionLogSearch: true, explain: false, orign: false };
   allSessionBusinessChecked = false;
   indeterminate = true;
   checkOptionsOne = [];
   searchSessionLogForm: FormGroup;
-  pageSize = 100;
   beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
   endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
   isSpinning = false;
@@ -47,6 +46,7 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionLogFlag = ''; // 用于标记后查询当前页
   dateRange = [];
   staticParams: any;  // 保留上一次查询数据，区分是否
+  checkOrign = {};
   listOfOption1 = [];
   listOfTagOptions1 = [];
   listOfOption2 = [];
@@ -94,6 +94,17 @@ export class SessionAnalysisComponent implements OnInit {
       { label: '客户测试号', value: '客户测试号'},
       { label: 'VIP', value: 'VIP'}
     ];
+    this.checkOrign = {
+      allApp: false,
+      allSdk: false,
+      allApi: false,
+      allTest: false,
+      phone: {xiaowu: false,tingting: false,wotewode: false,},
+      car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
+      watch: {weiteSdk: false,weiteTest: false,},
+      robot: {xiaohaSdk: false,xiaohaTest: false,},
+      other: {k11Api: false,k11Test: false,}
+    };
   }
 
   ngOnInit() {
@@ -281,11 +292,13 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   // 展开数据说明
-  shouSomething(flag) {
+  showSomething(flag) {
     if (flag === 'sessionLog') {
       this.visiable.sessionLogSearch = this.visiable.sessionLogSearch === true ? false : true;
     } else if (flag === 'explain') {
       this.visiable.explain = this.visiable.explain === true ? false : true;
+    } else if (flag === 'orign') {
+      this.visiable.orign = this.visiable.orign === true ? false : true;
     }
   }
 

@@ -124,14 +124,14 @@
                 </div>
               </div>
               <!-- 临时 -->
-              <div nz-row class="search_panel">
+              <!-- <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   序列号：
                 </div>
                 <div nz-col nzSpan="12">
                   <textarea rows="5" nz-input formControlName="keys" [(ngModel)]="consumerDate.keys" placeholder="请输入序列号，以换行符区分不同的序列号" nzSize="default"></textarea>
                 </div>
-              </div>
+              </div> -->
             </form>
             <ng-template #addConsumerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>保存</button>
@@ -190,14 +190,14 @@
                 </div>
               </div>
               <!-- 临时 -->
-              <div nz-row class="search_panel">
+              <!-- <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   序列号：
                 </div>
                 <div nz-col nzSpan="12">
                   <textarea rows="5" nz-input formControlName="keys" [(ngModel)]="consumerDate.keys" placeholder="请输入序列号，以换行符区分不同的序列号" nzSize="default"></textarea>
                 </div>
-              </div>
+              </div> -->
             </form>
             <ng-template #modifyConsumerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
@@ -267,12 +267,15 @@
               <div nz-col nzSpan="24" class="span_down">
                 <textarea rows="25" nz-input [(ngModel)]="consumerDate.keys" nzSize="default"></textarea>
               </div>
-              <div nz-col nzSpan="2" class="span_down">
-
+              <div nz-col nzSpan="3" class="span_down">
+                <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                  <input type="file" (change)="getExcel($event)" multiple="false" />
+                </a>
               </div>
+              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
             </div>
             <ng-template #addSerialModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="primary" (click)="doSave('addSerial')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('addSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>

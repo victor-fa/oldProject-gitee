@@ -284,7 +284,7 @@ export class AccountComponent implements OnInit {
       const arr = [];
       const file: any = { name: data.iconFileId };
       data.elements.forEach((item, index) => {
-        arr.push({ name: item.name, description: item.description, iconFileId: item.iconFileId, fileList: [file], type: 'LINK', data: item.data, sort: index })
+        arr.push({ name: item.name, description: item.description, iconFileId: item.iconFileId, fileList: [file], type: 'LINK', data: item.data, sort: index+1 })
       });
       this.navConfigItem = { id: data.id, name: data.name, order: data.order, iconFileId: data.iconFileId, fileList: [file], elements: arr };
       this.visiable.modifyNavConfig = true;
@@ -446,6 +446,7 @@ export class AccountComponent implements OnInit {
       this.hideModal('modifyCustomer');
     } else if (flag === 'addNavConfig') {
       const arr = [];
+      this.navConfigItem.elements = this.navConfigItem.elements.sort(this.sortBySort); // 处理排序
       this.navConfigItem.elements.forEach(item => {
         arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
       });
@@ -463,10 +464,12 @@ export class AccountComponent implements OnInit {
       });
     } else if (flag === 'modifyNavConfig') {
       const arr = [];
+      this.navConfigItem.elements = this.navConfigItem.elements.sort(this.sortBySort); // 处理排序
       this.navConfigItem.elements.forEach(item => {
         arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
       });
       const modifyItem = { id: this.navConfigItem.id, name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
+      console.log(modifyItem);
       if (!this.verification('navConfig', modifyItem)) { return; } // 去重
       this.accountService.modifyNavConfigList(modifyItem).subscribe(res => {
         if (res.retcode === 0) {
@@ -735,4 +738,6 @@ export class AccountComponent implements OnInit {
     );
   }
 
+  // 根据sort排序
+  sortBySort(a, b) { return a.sort - b.sort; }
 }

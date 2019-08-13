@@ -437,11 +437,9 @@
                 <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
               </nz-select>
             </div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== 1 && totalBooking !== 0"><button nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage === 1 || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === 1 || totalBooking === 0" nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
             <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== allBookingSize && totalBooking !== 0"><button nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage === allBookingSize || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === allBookingSize || totalBooking === 0" nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
           </div>
 
         </nz-tab>
@@ -560,11 +558,9 @@
                 <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
               </nz-select>
             </div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== 1 && totalBooking !== 0"><button nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage === 1 || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === 1 || totalBooking === 0" nz-button nzType="primary" (click)="lastPage('booking')"><i class="anticon anticon-left"></i></button></div>
             <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage !== allBookingSize && totalBooking !== 0"><button nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeBookingPage === allBookingSize || totalBooking === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === allBookingSize || totalBooking === 0" nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
           </div>
 
         </nz-tab>

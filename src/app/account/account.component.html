@@ -367,10 +367,8 @@
                 <td>{{data.username}}</td>
                 <td>{{data.roleName}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === false" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" *ngIf="data.baseAcc === true" style="margin-right: 10px;" disabled><i class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === false"><i class="anticon anticon-delete"></i>删除</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" *ngIf="data.baseAcc === true" disabled><i class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCustomer', data)" [disabled]="data.baseAcc === true" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCustomer', data)" [disabled]="data.baseAcc === true"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>

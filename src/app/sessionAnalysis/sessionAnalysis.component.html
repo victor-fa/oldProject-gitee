@@ -15,11 +15,14 @@
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
               </div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
+                <button nz-button nzType="primary" (click)="showSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
               </div>
-              <div nz-col nzSpan="9"></div>
+              <div nz-col nzSpan="6"></div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="shouSomething('sessionLog')">
+                <button nz-button nzType="primary" (click)="showSomething('orign')">来源筛选</button>
+              </div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="showSomething('sessionLog')">
                   <i class="anticon anticon-plus-circle-o" *ngIf="!visiable.sessionLogSearch"></i>
                   <i class="anticon anticon-minus-circle-o" *ngIf="visiable.sessionLogSearch"></i>
                   {{visiable.sessionLogSearch ? '收起' : '展开'}}筛选区
@@ -129,7 +132,7 @@
               </div>
             </div>
           </form>
-          <nz-table #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3200px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [nzPageSize]="100" [nzShowPagination]="false" [nzScroll]="{x:'3200px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="30px">序号</th>
@@ -167,8 +170,7 @@
                   <a>{{data.businessAnswer ? data.businessAnswer.length > 60 ? data.businessAnswer.substring(0, 60) + '…' : data.businessAnswer : 'null'}}</a>
                 </td>
                 <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[6].checked">
-                  <button *ngIf="!data.flag" nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>标记</button>
-                  <button *ngIf="data.flag" nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>已标记</button>
+                  <button nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>{{data.flag ? '已标记' : '标记'}}</button>
                 </td>
                 <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[7].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.sessionId ? data.sessionId.length > 6 ? data.sessionId.substring(0, 6) + '…' : data.sessionId : 'null'}}</a>
@@ -203,34 +205,82 @@
                 <nz-option required [nzLabel]="'50'" [nzValue]="50"></nz-option>
               </nz-select>
             </div>
-            <div nz-col nzSpan="1" *ngIf="changeSessionLogPage !== 1 && totalSessionLog !== 0"><button nz-button nzType="primary" (click)="lastPage('sessionLog')"><i class="anticon anticon-left"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeSessionLogPage === 1 || totalSessionLog === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-left"></i></button></div>
+            <div nz-col nzSpan="1" ><button [disabled]="changeSessionLogPage === 1 || totalSessionLog === 0" nz-button nzType="primary" (click)="lastPage('sessionLog')"><i class="anticon anticon-left"></i></button></div>
             <div nz-col nzSpan="6">当前为 {{changeSessionLogPage}} / {{allSessionLogSize}} 页 &nbsp;&nbsp; 共 {{totalSessionLog}} 条</div>
-            <div nz-col nzSpan="1" *ngIf="changeSessionLogPage !== allSessionLogSize && totalSessionLog !== 0"><button nz-button nzType="primary" (click)="nextPage('sessionLog')"><i class="anticon anticon-right"></i></button></div>
-            <div nz-col nzSpan="1" *ngIf="changeSessionLogPage === allSessionLogSize || totalSessionLog === 0"><button disabled nz-button nzType="primary"><i class="anticon anticon-right"></i></button></div>
+            <div nz-col nzSpan="1"><button [disabled]="changeSessionLogPage === allSessionLogSize || totalSessionLog === 0" nz-button nzType="primary" (click)="nextPage('sessionLog')"><i class="anticon anticon-right"></i></button></div>
           </div>
         </nz-tab>
 
-        <!-- 弹框 —— 信息 —— 数据说明 -->
-        <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="shouSomething('explain')" nzMaskClosable="false">
-            <div nz-row class="search_panel" style="text-align: center;">
-              <div nz-col nzSpan="2">
-                <span style="line-height: 30px;">&nbsp;</span><br>
-                <ng-container *ngIf="currentPanel === 'sessionLog'">
-                  <ng-container *ngFor="let item of checkDataOptions.sessionAnalysis; let i=index;">
-                    <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
-                  </ng-container>
+        <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="showSomething('explain')" nzMaskClosable="false">
+          <div nz-row class="search_panel" style="text-align: center;">
+            <div nz-col nzSpan="2">
+              <span style="line-height: 30px;">&nbsp;</span><br>
+              <ng-container *ngIf="currentPanel === 'sessionLog'">
+                <ng-container *ngFor="let item of checkDataOptions.sessionAnalysis; let i=index;">
+                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
                 </ng-container>
-              </div>
-              <div nz-col nzSpan="22">
-                <img *ngIf="currentPanel === 'sessionLog'" [src]="'assets/images/sessionAnalysis.png'">
-              </div>
+              </ng-container>
             </div>
-            <!-- 弹框和底部定制 -->
-            <ng-template #ecplainModalFooter>
-              <button nz-button nzType="default" (click)="shouSomething('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
-            </ng-template>
-          </nz-modal>
+            <div nz-col nzSpan="22">
+              <img *ngIf="currentPanel === 'sessionLog'" [src]="'assets/images/sessionAnalysis.png'">
+            </div>
+          </div>
+          <ng-template #ecplainModalFooter>
+            <button nz-button nzType="default" (click)="showSomething('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+          </ng-template>
+        </nz-modal>
+
+        <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="eorignModalFooter" (nzOnCancel)="showSomething('orign')" nzMaskClosable="false">
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2">来源：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApi">全选（API）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
+          </div>
+          <br>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">手机：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.xiaowu || checkOrign.allApp">你好小悟</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.tingting || checkOrign.allApp">听听同学</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.wotewode || checkOrign.allApp">沃特沃德6</label></div>
+          </div>
+          <br>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">车机：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.botai || checkOrign.allApi">博泰车机api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingApi || checkOrign.allApi">同行者车机api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingSdk || checkOrign.allSdk || checkOrign.allTest">同行者车机sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingTest || checkOrign.allApi || checkOrign.allTest">同行者test</label></div>
+          </div>
+          <br>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">手表：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteSdk || checkOrign.allSdk">维特智能sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteTest || checkOrign.allSdk || checkOrign.allTest">维特智能test</label></div>
+          </div>
+          <br>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">机器人：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaSdk || checkOrign.allSdk">小哈机器人sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaTest || checkOrign.allSdk || checkOrign.allTest">小哈机器人test</label></div>
+          </div>
+          <br>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2"></div>
+            <div nz-col nzSpan="2">其他：</div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.other.k11Api || checkOrign.allApi || checkOrign.allTest">k11公共屏幕api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.other.k11Test || checkOrign.allSdk || checkOrign.allTest">k11 test</label></div>
+          </div>
+          <ng-template #eorignModalFooter>
+            <button nz-button nzType="default" (click)="showModal('orign')"><i class="anticon anticon-save"></i>保存</button>
+            <button nz-button nzType="default" (click)="showSomething('orign')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+          </ng-template>
+        </nz-modal>
 
       </nz-tabset>
       <div class="spin" *ngIf="isSpinning">
