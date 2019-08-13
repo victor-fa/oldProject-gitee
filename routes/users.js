@@ -194,7 +194,7 @@ router.get('/activate_by_email',function(req,res,next){
 				res.send("参数错误，激活失败！");
 			}else{
 				console.log("用户:"+username+"激活成功！");
-				res.send("激活成功！");
+				res.send("邮箱验证成功，请联系对接人员开通权限！");
 			}
 		})
 	}else{
