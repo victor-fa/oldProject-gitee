@@ -5,10 +5,7 @@ const fs = require('fs');
 var album_dir = './resources/albums/';
 var uuid = require('uuid')
 const path = require("path")
-
-
-
-
+var config = require('config');
 
 router.get('/album', function (req, res, next) {
     res.render('image/album')
@@ -38,7 +35,7 @@ function save_image(path, name, album, up_wechat, callback) {
     var request = require("request");
     
     var options = { method: 'POST',
-      url: 'https://robot-service.centaurstech.com/api/chat/image',
+      url: config.deploy_domain_name + '/api/chat/image',
     //   url: 'http://localhost:8001/api/chat/image',
       headers: 
        { 'content-type': 'application/json' },
@@ -64,7 +61,7 @@ function delete_image(absolute_path,file_name,album_name,up_wechat,callback){
     var request = require("request");
     console.log("going to send the request to the server to delete the image with the name of "+absolute_path)
     var options = { method: 'DELETE',
-      url: 'https://robot-service.centaurstech.com/api/chat/image',  // here change to delete 
+      url: config.deploy_domain_name + '/api/chat/image',  // here change to delete 
     //   url: 'http://localhost:8001/api/chat/image',              // here is for localhost testing 
       headers: 
        { 'content-type': 'application/json' },
