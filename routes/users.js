@@ -342,12 +342,12 @@ passport.use(new LocalStrategy(
 				}
                 if (isMatch) {
 					if(!UserService.isUserCheckByEmail(user.group)){
-						return done(null, false, { message: '请进入您输入的邮箱进行帐号激活' })
+						return done(null, false, { message: '请进入您输入的邮箱进行验证' })
 					} else{
 						if (UserService.isUserActivated(user.activation)) {
 							return done(null, user);
 						} else{
-							return done(null, false, { message: '用户未激活，请联系对接人员' })
+							return done(null, false, { message: '邮箱已验证，但用户未激活，请联系对接人员' })
 						}
 					}
 				} else {
