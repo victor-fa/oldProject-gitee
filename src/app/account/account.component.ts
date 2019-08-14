@@ -448,7 +448,7 @@ export class AccountComponent implements OnInit {
       const arr = [];
       this.navConfigItem.elements = this.navConfigItem.elements.sort(this.sortBySort); // 处理排序
       this.navConfigItem.elements.forEach(item => {
-        arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
+        arr.push({ data: item.data.replace(/&/g, '%26'), description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
       });
       const addItem = { name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
       console.log(addItem);
@@ -466,7 +466,7 @@ export class AccountComponent implements OnInit {
       const arr = [];
       this.navConfigItem.elements = this.navConfigItem.elements.sort(this.sortBySort); // 处理排序
       this.navConfigItem.elements.forEach(item => {
-        arr.push({ data: item.data, description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
+        arr.push({ data: item.data.replace(/&/g, '%26')  , description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
       });
       const modifyItem = { id: this.navConfigItem.id, name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
       console.log(modifyItem);
@@ -740,4 +740,5 @@ export class AccountComponent implements OnInit {
 
   // 根据sort排序
   sortBySort(a, b) { return a.sort - b.sort; }
+
 }

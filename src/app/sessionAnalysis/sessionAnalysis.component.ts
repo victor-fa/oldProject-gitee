@@ -15,7 +15,7 @@ registerLocaleData(zh);
 })
 export class SessionAnalysisComponent implements OnInit {
 
-  visiable = {sessionLogSearch: true, explain: false, orign: false };
+  visiable = {sessionLogSearch: true, explain: false, orign: false, changeFlag: false };
   allSessionBusinessChecked = false;
   indeterminate = true;
   checkOptionsOne = [];
@@ -46,7 +46,18 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionLogFlag = ''; // 用于标记后查询当前页
   dateRange = [];
   staticParams: any;  // 保留上一次查询数据，区分是否
-  checkOrign = {};
+  checkFlag = {checked: false, id: ''};
+  checkOrign = {
+    allApp: false,
+    allSdk: false,
+    allApi: false,
+    allTest: false,
+    phone: {xiaowu: false,tingting: false,wotewode: false,},
+    car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
+    watch: {weiteSdk: false,weiteTest: false,},
+    robot: {xiaohaSdk: false,xiaohaTest: false,},
+    other: {k11Api: false,k11Test: false,}
+  };
   listOfOption1 = [];
   listOfTagOptions1 = [];
   listOfOption2 = [];
@@ -94,17 +105,17 @@ export class SessionAnalysisComponent implements OnInit {
       { label: '客户测试号', value: '客户测试号'},
       { label: 'VIP', value: 'VIP'}
     ];
-    this.checkOrign = {
-      allApp: false,
-      allSdk: false,
-      allApi: false,
-      allTest: false,
-      phone: {xiaowu: false,tingting: false,wotewode: false,},
-      car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
-      watch: {weiteSdk: false,weiteTest: false,},
-      robot: {xiaohaSdk: false,xiaohaTest: false,},
-      other: {k11Api: false,k11Test: false,}
-    };
+    // this.checkOrign = {
+    //   allApp: false,
+    //   allSdk: false,
+    //   allApi: false,
+    //   allTest: false,
+    //   phone: {xiaowu: false,tingting: false,wotewode: false,},
+    //   car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
+    //   watch: {weiteSdk: false,weiteTest: false,},
+    //   robot: {xiaohaSdk: false,xiaohaTest: false,},
+    //   other: {k11Api: false,k11Test: false,}
+    // };
   }
 
   ngOnInit() {
@@ -292,13 +303,17 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   // 展开数据说明
-  showSomething(flag) {
+  showSomething(flag, data) {
     if (flag === 'sessionLog') {
       this.visiable.sessionLogSearch = this.visiable.sessionLogSearch === true ? false : true;
     } else if (flag === 'explain') {
       this.visiable.explain = this.visiable.explain === true ? false : true;
     } else if (flag === 'orign') {
       this.visiable.orign = this.visiable.orign === true ? false : true;
+    } else if (flag === 'changeFlag') {
+      this.checkFlag.id = data.id;
+      this.checkFlag.checked = data.flag;
+      this.visiable.changeFlag = this.visiable.changeFlag === true ? false : true;
     }
   }
 
@@ -369,9 +384,9 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   // 标记/不标记
-  changeFlag(val, flag) {
+  changeFlag(flag) {
     if (flag === 'sessionLog') {
-      const logInput = { id: val.id, flag: val.flag === true ? false : true };
+      const logInput = { id: this.checkFlag.id, flag: this.checkFlag.checked };
       this.sessionLogService.updateSessionLog(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.loadData('currentSessionLog');

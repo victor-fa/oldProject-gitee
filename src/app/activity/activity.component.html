@@ -1810,7 +1810,7 @@
                 <td>{{data.action === 'FINISH_TEACH' ? '完成新手教学' : data.action === 'SET_PAYMENT_PWD' ? '修改支付密码' : data.action === 'OPEN_SECRET_FREE_PAYMENT' ? '开启免密支付'
                     : data.action === 'FILL_INFO_LINK_MAN' ? '填写常用联系人' : data.action === 'FILL_INFO_USER_CONTACT' ? '填写出行人' : data.action === 'FILL_INFO_CONTACT_ADDRESS' ? '填写常用地址'
                     : data.action === 'FILL_INFO_SHIPPING_ADDRESS' ? '填写配送地址' : data.action === 'FILL_INFO_INVOICE' ? '填写发票抬头' : data.action === 'SEARCH_WEATHER' ? '查询天气'
-                    : data.action === 'SEARCH_FORTUNE' ? '查询星座运势' : data.action === 'RECHARGE' ? '充话费' : data.action === 'LISTEN_AUDIO' ? '听音频' : data.action === 'LISTEN_NEWS' ? '听新闻'
+                    : data.action === 'SEARCH_FORTUNE' ? '查询星座运势' : data.action === 'MOBILE_RECHARGE' ? '充话费' : data.action === 'LISTEN_AUDIO' ? '听音频' : data.action === 'LISTEN_NEWS' ? '听新闻'
                     : data.action === 'NAVIGATION' ? '导航' : data.action === 'FINISH_PLANE_TICKET_ORDER' ? '完成机票订单' : data.action === 'FINISH_TRAIN_TICKET_ORDER' ? '完成火车票订单'
                     : data.action === 'FINISH_HOTEL_ORDER' ? '完成酒店订单' : data.action === 'FINISH_ERRAND_ORDER' ? '完成闪送订单' : data.action === 'FINISH_FORTUNE_ORDER' ? '完成星座运势订单'
                     : data.action === 'FINISH_MOVIE_TICKET_ORDER' ? '完成电影票订单' : data.action === 'FINISH_TAXIS_ORDER' ? '完成打车订单' : data.action === 'CALL' ? '打电话'
@@ -1911,7 +1911,7 @@
                 <div nz-col nzSpan="3" class="span_down right_alignment">任务行为：</div>
                 <div nz-col nzSpan="21" class="span_down">
                   <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
-                    <label nz-radio nzValue="FINISH_TAXIS_ORDER">打车订单</label><label nz-radio nzValue="RECHARGE">充话费订单</label>
+                    <label nz-radio nzValue="FINISH_TAXIS_ORDER">打车订单</label><label nz-radio nzValue="MOBILE_RECHARGE">充话费订单</label>
                     <label nz-radio nzValue="SEARCH_WEATHER">查询天气</label><label nz-radio nzValue="LISTEN_AUDIO">听音频</label>
                     <label nz-radio nzValue="SHARE">分享一次给朋友</label>
                     <!-- <label nz-radio nzValue="FINISH_PLANE_TICKET_ORDER">机票订单</label><label nz-radio nzValue="FINISH_TRAIN_TICKET_ORDER">火车订单</label>
@@ -1927,7 +1927,7 @@
                 <div nz-col nzSpan="21" class="span_down">
                   <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
                     <label nz-radio nzValue="FINISH_TEACH">新手教学任务</label><label nz-radio nzValue="LISTEN_AUDIO">听音频</label>
-                    <label nz-radio nzValue="RECHARGE">充话费</label><label nz-radio nzValue="CALL">打电话</label>
+                    <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label><label nz-radio nzValue="CALL">打电话</label>
                     <!-- <label nz-radio nzValue="NAVIGATION">使用导航</label><label nz-radio nzValue="LISTEN_NEWS">听新闻</label>
                     <label nz-radio nzValue="FINISH_PLANE_TICKET_ORDER">购买机票</label><label nz-radio nzValue="FINISH_TRAIN_TICKET_ORDER">购买火车票</label>
                     <label nz-radio nzValue="FINISH_HOTEL_ORDER">订酒店</label><label nz-radio nzValue="FINISH_TAXIS_ORDER">首次打车</label>

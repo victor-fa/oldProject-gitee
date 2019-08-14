@@ -16,7 +16,7 @@ registerLocaleData(zh);
 })
 export class DataCenterComponent implements OnInit {
 
-  visiable = {explain: false, sessionLine: false };
+  visiable = {explain: false, sessionLine: false, orign: false };
   searchDataCenterForm: FormGroup;
   pageSize = 100;
   beginDate = '';
@@ -29,8 +29,18 @@ export class DataCenterComponent implements OnInit {
   checkDataOptions = {};
   currentTabNum = 0;
   currentSessionBusiness = 1; // 对话日志下的类型
-  currentChannel = '';
   checkAllChannel = false;
+  checkOrign = {
+    allApp: false,
+    allSdk: false,
+    allApi: false,
+    allTest: false,
+    phone: {xiaowu: false,tingting: false,wotewode: false,},
+    car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
+    watch: {weiteSdk: false,weiteTest: false,},
+    robot: {xiaohaSdk: false,xiaohaTest: false,},
+    other: {k11Api: false,k11Test: false,}
+  };
   constructor(
     public commonService: CommonService,
     private dataCenterService: DataCenterService,
@@ -43,7 +53,6 @@ export class DataCenterComponent implements OnInit {
     this._initForm();
     this.beginDate = this.commonService.getDay(-7);
     this.endDate = this.commonService.getDay(-1);
-    this.currentChannel = localStorage.getItem('currentAppHeader');
     this.checkDataOptions = {
       'dataApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
       'keepApp': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true } ],
@@ -211,6 +220,13 @@ export class DataCenterComponent implements OnInit {
   chooseSessionBusiness(val, flag) {
     console.log(val);
     this.currentSessionBusiness = flag;
+  }
+
+  // 展开数据说明
+  showSomething(flag) {
+    if (flag === 'orign') {
+      this.visiable.orign = this.visiable.orign === true ? false : true;
+    }
   }
 
 }
