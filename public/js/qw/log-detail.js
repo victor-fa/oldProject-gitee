@@ -67,6 +67,7 @@ $().ready(function () {
             resObj.timestamp = parseDateTime(list[i].timestamp);
             resObj.action = isAsk ? "用户提问" : "齐悟回答";
             resObj.msg = list[i].msg;
+            resObj.append = list[i].append;
             var resHtml = (isAsk ? tempHtmlAsk : tempHtmlAnswer).temp(resObj);
             $("#log-result-context").append(resHtml);
         }
