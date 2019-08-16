@@ -8,6 +8,8 @@ import { CommonService } from '../public/service/common.service';
 import { LocalizationService } from '../public/service/localization.service';
 import { VoiceService } from '../public/service/voice.service';
 import { Router } from '@angular/router';
+import { WhiteListService } from '../public/service/whiteList.service';
+import * as XLSX from 'xlsx';
 
 registerLocaleData(zh);
 
@@ -18,7 +20,7 @@ registerLocaleData(zh);
 })
 export class OperateComponent implements OnInit {
 
-  visiable = {taxiDetail: false, orderStateSetting: false };
+  visiable = {taxiDetail: false, orderStateSetting: false, whiteList: false, codeView: false };
   searchTaxiForm: FormGroup;
   searchOrderStateForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
@@ -27,9 +29,13 @@ export class OperateComponent implements OnInit {
   dataVoice = [];  // 语音配置
   dataOrderState = [];  // 打车路径
   dataOrderStateSetting = []; // 订单状态设置
+  dataWhiteList = []; // 白名单
   currentTaxi = { 'orderId': '', 'originName': '', 'createDate': '', 'destinationName': '', 'nowPrice': '', 'userNickName': '', 'userPhone': '', 'driverPhone': '', 'availableAmount': '', 'availableBeans': '', 'estimate_price': '', 'source': '', 'monitorType': 0 };
   currentOrderStateSetting = { 'id': '', 'orderType': '', 'state': '', 'lowTime': '', 'highTime': '', 'time1': '0', 'time2': '0' };
   taxiItem = { 'orderId': '', 'startTime': '', 'endTime': '' };
+  whiteListDate = {keys: ''};
+  operateObject = { code: '', operator: '18682233554' };
+  semdMesCodeText = 60;
   beginTaxiDate = '';
   endTaxiDate = '';
   beginOrderStateDate = '';
@@ -53,6 +59,7 @@ export class OperateComponent implements OnInit {
     private modalService: NzModalService,
     public localizationService: LocalizationService,
     private appversionService: AppversionService,
+    private whiteListService: WhiteListService,
     private notification: NzNotificationService,
     private datePipe: DatePipe,
     private router: Router,
@@ -138,6 +145,16 @@ export class OperateComponent implements OnInit {
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'whiteList') {
+      this.whiteListService.getWhiteList().subscribe(res => {
+        if (res.retcode === 0) {
+          this.isSpinning = false;
+          this.dataWhiteList = JSON.parse(res.payload).content;
+          console.log(this.dataWhiteList);
+          const operationInput = { op_category: '运维后台', op_page: '白名单管理' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -160,13 +177,14 @@ export class OperateComponent implements OnInit {
         }
       }
       console.log(mainPoints);
-      const centerPoint = mainPoints[0].split(',');
-      // 基本地图加载
-      mainMap = new AMap.Map('container', {
-        resizeEnable: true,
-        center: centerPoint,
-        zoom: 2
-      });
+      mainMap = new AMap.Map('container', { resizeEnable: true });
+      // const centerPoint = mainPoints[0].split(',');
+      // // 基本地图加载
+      // mainMap = new AMap.Map('container', {
+      //   resizeEnable: true,
+      //   // center: centerPoint,
+      //   // zoom: 2
+      // });
       // 绘制初始路径
       const mainPath = this.getPointRoute(mainPoints);
       console.log(mainPath);
@@ -180,16 +198,40 @@ export class OperateComponent implements OnInit {
       this.currentOrderStateSetting = data;
       this.currentOrderStateSetting.time1 = '0';
       this.currentOrderStateSetting.time2 = '0';
+    } else if (flag === 'deleteWhiteList') {
+      this.modalService.confirm({
+        nzTitle: '确认删除', nzContent: '确认删除吗？', nzCancelText: '取消',
+        nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
+      });
+    } else if (flag === 'codeView') {
+      if (!this.verification('codeView')) { return; }
+      this.visiable.codeView = true;
+    } else if (flag === 'addWhiteList') {
+      this.visiable.whiteList = true;
     }
     this.emptyAdd = ['', '', '', '', '', '', ''];
+  }
+
+  // doSomething
+  doSomething(data, flag) {
+    if (flag === 'deleteWhiteList') {
+      this.whiteListService.deleteWhiteList(data.id).subscribe(res => {
+        if (res.retcode === 0) {
+          if (res.payload !== '') {
+            this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+            const operationInput = { op_category: '运维后台', op_page: '白名单管理', op_name: '删除' };
+            this.commonService.updateOperationlog(operationInput).subscribe();
+            this.loadData('whiteList');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    }
   }
 
   // 处理后台传过来的经纬度数据
   getPointRoute(points) {
     const path = [];
-    for (let i = 0; i < points.length; i++) {
-      path.push(points[i].split(',').reverse());
-    }
+    for (let i = 0; i < points.length; i++) { path.push(points[i].split(',').reverse()); }
     return path;
   }
 
@@ -203,6 +245,10 @@ export class OperateComponent implements OnInit {
       this.isSaveANDROIDVoiceButton = false;
     } else if (flag === 'orderStateSetting') {
       this.visiable.orderStateSetting = false;
+    } else if (flag === 'codeView') {
+      this.visiable.codeView = false;
+    } else if (flag === 'addWhiteList') {
+      this.visiable.whiteList = false;
     }
   }
 
@@ -259,12 +305,65 @@ export class OperateComponent implements OnInit {
           this.loadData('orderStateSetting');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addWhiteList') {
+      if (!this.verification('addWhiteList')) { return; }
+      let arr = [];
+      this.whiteListDate.keys.split('\n').forEach(item => {
+        if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
+      });
+      arr = this.unique(arr); // 去重
+      const keysInput = {
+        code: this.operateObject.code,
+        memPhones: arr,
+        phone: this.operateObject.operator,
+      };
+      this.whiteListService.addWhiteList(keysInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.hideModal('codeView');
+          this.hideModal('addWhiteList');
+          this.loadData('whiteList');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'sendMsg') {
+      this.whiteListService.sendMsg(this.operateObject.operator).subscribe(res => {
+        if (res.retcode === 0) {
+          this.countDown();
+          this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '用户管理', op_page: '数据调整' , op_name: '发送短信' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
+  }
+
+  // 倒计时
+  countDown() {
+    this.semdMesCodeText--;
+    if (this.semdMesCodeText === 0) { this.semdMesCodeText = 60; return; }
+    setTimeout(() => { this.countDown(); }, 1000);
+  }
+
+  // 封装验证新增
+  verification(flag): boolean {
+    let result = true;
+    if (flag === 'addWhiteList' || flag === 'codeView') {
+      if (this.whiteListDate.keys === '' || this.whiteListDate.keys.length === 0 || this.whiteListDate.keys.replace(/ /g,'') === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '白名单不得为空' });
+        result = false;
+      }
+    }
+    return result;
   }
 
   // 跳转到实体订单
   goTaxtOrder(data) {
     this.router.navigateByUrl('/user?taxiOrderId=' + data.orderId);
+  }
+
+  // 跳转到用户信息
+  goUserInfo(data) {
+    this.router.navigateByUrl('/user?phone=' + data.phone);
   }
 
   // 日期插件
@@ -306,14 +405,14 @@ export class OperateComponent implements OnInit {
       }
     }
     // 基本地图加载
-    // map = new AMap.Map('container', { resizeEnable: true });
-    const centerPoint = points[0].split(',');
-    // 基本地图加载
-    map = new AMap.Map('container', {
-      resizeEnable: true,
-      center: centerPoint,
-      zoom: 14
-    });
+    map = new AMap.Map('container', { resizeEnable: true });
+    // const centerPoint = points[0].split(',');
+    // // 基本地图加载
+    // map = new AMap.Map('container', {
+    //   resizeEnable: true,
+    //   center: centerPoint,
+    //   zoom: 14
+    // });
     // 绘制初始路径
     const path = this.getPointRoute(points);
     map.plugin('AMap.DragRoute', function() {
@@ -334,6 +433,37 @@ export class OperateComponent implements OnInit {
     // const time = hoursRound + '小时' + minutesRound + '分' + seconds;
     const time = (daysRound === 0 ? '' : daysRound + '天') + (hoursRound === 0 ? '' : hoursRound + '小时') + (minutesRound === 0 ? '' : minutesRound + '分钟');
     return time;
+  }
+
+  // 获取Excel
+  getExcel(evt) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    let result = [];
+    reader.onload = (e: any) => {
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      let arr = [];
+      result.forEach(item => {
+        if (item.toString() !== '') { arr.push(item); }
+      });
+      arr = this.unique(arr);
+      arr.splice(0, 1).toString();
+      this.whiteListDate.keys = this.whiteListDate.keys.length > 0 ? (this.whiteListDate.keys + '\n' + arr.join('\n')) : (this.whiteListDate.keys + arr.join('\n'));
+      evt.target.value="" // 清空
+    };
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  // 去重
+  unique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) { if (!hash[elem]) { result.push(elem); hash[elem] = true; } }
+    return result;
   }
 
 }

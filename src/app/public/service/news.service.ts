@@ -89,6 +89,7 @@ export class NewsService extends AppServiceBase {
     let url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}?size=2000&page=${data.number}`;
     url += data.type && data.type !== '' ? '&type=' + data.type : '';
     url += data.name && data.name !== null ? '&name=' + data.name : '';
+    url += data.fullMatch && data.fullMatch === true ? '&fullMatch=true' : '';
     // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
     // url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };

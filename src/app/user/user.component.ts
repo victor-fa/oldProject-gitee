@@ -98,6 +98,7 @@ export class UserComponent implements OnInit {
   bookingPhone = ''; // 用户管理跳实体服务订单传值
   bookingOrderId = ''; // 跳实体服务订单传值
   latestLoginInfo = ''; // 用户管理跳登录详情
+  userOrderPhone = ''; // 运维后台跳用户信息
   userLocked = '';  // 用户状态下拉
   bookingType = '';
   bookingTypeKeys = ['', '5', '6', '7', '8'];
@@ -154,6 +155,9 @@ export class UserComponent implements OnInit {
       if (params['taxiOrderId'] && params['taxiOrderId'] !== undefined) {
         this.showModal('goBookingFromTaxi', params['taxiOrderId']);
       }
+      if (params['phone'] && params['phone'] !== undefined) {
+        this.showModal('goUserFromOperate', params['phone']);
+      }
     });
   }
 
@@ -166,7 +170,7 @@ export class UserComponent implements OnInit {
       const userInput = { locked: this.userLocked, loginBegin: this.begUserLoginDate,
         loginEnd: this.endUserLoginDate, registerBegin: this.begUserRegisterDate,
         registerEnd: this.endUserRegisterDate,
-        phone: this.searchUserForm.controls['phone'].value,
+        phone: this.userOrderPhone,
         userId: this.searchUserForm.controls['userId'].value
       };
       this.userService.getUserInfoList(userInput).subscribe(res => {
@@ -756,6 +760,10 @@ export class UserComponent implements OnInit {
       this.bookingOrderId = data;
       setTimeout(() => { this.doSearch('booking'); }, 1000);
       this.tabsetJson.currentNum = 1; // 实体服务订单
+    } if (flag === 'goUserFromOperate') {
+      this.userOrderPhone = data;
+      setTimeout(() => { this.loadData('user'); }, 1000);
+      this.tabsetJson.currentNum = 0; // 用户管理
     }
   }
 

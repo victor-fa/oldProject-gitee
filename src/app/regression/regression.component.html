@@ -1,0 +1,142 @@
+<app-left-nav></app-left-nav>
+<div class="regression" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+
+        <nz-tab [nzTitle]="regressionTemplate" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
+          <ng-template #regressionTemplate><i class="anticon anticon-team"></i>数据</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="8">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down right_alignment">Set Name*：</div>
+                <div nz-col nzSpan="18">
+                  <input nz-input nzSize="default" maxlength="20" placeholder="请输入用例名">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6" class="span_down right_alignment">File*：</div>
+                <div nz-col nzSpan="18">
+                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                    <button nz-button (click)="choosePng('0')" nzType="primary" [disabled]="!isSaveShareButton">
+                      <i class="anticon anticon-upload"></i><span>上传图片</span>
+                    </button>
+                  </nz-upload>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="shareImageUrl01 !== ''">
+                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="16">
+                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="6"></div>
+                <div nz-col nzSpan="18">
+                  <button nz-button nzType="primary" (click)="showModal('deleteRregression', data)"><i class="anticon anticon-upload"></i>提交</button>
+                </div>
+              </div>
+            </div>
+            <div nz-col nzSpan="1">
+              </div>
+            <div nz-col nzSpan="15">
+              <nz-table #regressionTable [nzData]="dataRregression">
+                <thead>
+                  <tr>
+                    <th nzWidth="20px">集合ID（sents）</th>
+                    <th nzWidth="20px">集合名（set name）</th>
+                    <th nzWidth="20px">创建时间</th>
+                    <th nzWidth="20px">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of regressionTable.data; let i=index;">
+                    <td>{{data.appChannel}}</td>
+                    <td>{{data.appChannelName}}</td>
+                    <td>{{data.appKey}}</td>
+                    <td>
+                      <button nz-button nzType="primary" (click)="showModal('deleteRregression', data)"><i class="anticon anticon-form"></i>编辑</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+          <!-- <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div> -->
+
+          <nz-modal [(nzVisible)]="visiable.addRregression" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addRregressionModalFooter" (nzOnCancel)="hideModal('addRregression')" nzMaskClosable="false">
+            <ng-template #addRregressionModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addRregression')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addRregression')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyRregression" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyRregressionModalFooter" (nzOnCancel)="hideModal('modifyRregression')" nzMaskClosable="false">
+            <ng-template #modifyRregressionModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyRregression')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyRregression')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifySerial" nzWidth="950" nzTitle="修改序列号" [nzFooter]="modifySerialModalFooter" (nzOnCancel)="hideModal('modifySerial')" nzMaskClosable="false">
+            <nz-table #regressionTable [nzData]="dataSerial" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th nzWidth="20px">序号</th>
+                  <th nzWidth="20px">序列号</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of regressionTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.sn}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #modifySerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyRregression')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifySerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editSerial" nzTitle="修改序列号" [nzFooter]="editSerialModalFooter" (nzOnCancel)="hideModal('editSerial')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                <input nz-input [(ngModel)]="editSerialData" nzSize="default" placeholder="请输入序列号">
+              </div>
+            </div>
+            <ng-template #editSerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addRregression')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('editSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addSerial" nzWidth="950" nzTitle="添加序列号" [nzFooter]="addSerialModalFooter" (nzOnCancel)="hideModal('addSerial')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                可以输入或上传文件添加序列号，添加前请务必检查序列号是否正确
+              </div>
+            </div><div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                <textarea rows="25" nz-input [(ngModel)]="regressionDate.keys" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="3" class="span_down">
+                <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                  <input type="file" (change)="getExcel($event)" multiple="false" />
+                </a>
+              </div>
+              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+            </div>
+            <ng-template #addSerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addSerial')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+        </nz-tab>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>

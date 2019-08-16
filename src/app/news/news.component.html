@@ -294,7 +294,6 @@
           <ng-template #newsThesaurusTemplate><i class="anticon anticon-inbox"></i>新闻词库</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="newsThesaurusSearchForm">
-
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 新闻词库：
               </div>
@@ -307,16 +306,16 @@
                   <nz-option required [nzLabel]="'无效'" [nzValue]="'INVALID'"></nz-option>
                 </nz-select>
               </div>
-
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 词条名称：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="name" placeholder="输入词条名称" nzSize="default">
               </div>
-
             </form>
-            <div nz-col nzSpan="9"></div>
+            <div nz-col nzSpan="9" class="span_down" style="padding-left: 10px">
+              <label nz-checkbox [(nzChecked)]="checkAccurate" formControlName="checkAccurate">精确查询</label>
+            </div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('newsThesaurus')"><i class="anticon anticon-search"></i>查询</button>
             </div>

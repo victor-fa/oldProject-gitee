@@ -64,8 +64,8 @@ export class ConsumerService extends AppServiceBase {
 
   /** 获取所有列表 */
   getSerialList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${consumerApiUrls.consumerKey}`;
-    url += data.sn ? '?sn=' + data.sn : '';
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.consumerKey}?pageSize=9999`;
+    url += data.sn ? '&sn=' + data.sn : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

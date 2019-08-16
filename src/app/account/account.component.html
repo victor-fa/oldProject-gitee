@@ -639,11 +639,10 @@
                 </nz-upload>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length == 1">
+            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length === 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
                 <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
-                &nbsp;&nbsp;建议尺寸：50X50
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -666,7 +665,7 @@
                   </button>
                   <br>建议尺寸：50X50<br>
                 </nz-upload>
-                <div *ngIf="data.iconFileId">
+                <div *ngIf="data.fileList.length === 1">
                   <img [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + data.iconFileId" class="image-panel">
                 </div>
               </div>
@@ -720,7 +719,6 @@
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
                 <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
-                &nbsp;&nbsp;建议尺寸：50X50
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -743,7 +741,7 @@
                   </button>
                   <br>建议尺寸：50X50<br>
                 </nz-upload>
-                <div *ngIf="data.iconFileId">
+                <div *ngIf="data.fileList.length === 1">
                   <img [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + data.iconFileId" class="image-panel">
                 </div>
               </div>

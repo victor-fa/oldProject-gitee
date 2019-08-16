@@ -141,7 +141,10 @@ export class ConsumerComponent implements OnInit {
         result = false;
       }
     } else if (flag === 'addSerial') {
-      if (this.consumerDate.keys === '' || this.consumerDate.keys.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' }); result = false; }
+      if (this.consumerDate.keys === '' || this.consumerDate.keys.length === 0 || this.consumerDate.keys.replace(/ /g,'') === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' });
+        result = false;
+      }
     }
     return result;
   }
@@ -184,18 +187,28 @@ export class ConsumerComponent implements OnInit {
       this.addPaymengSms(consumerInput);
     } else if (flag === 'addSerial') {
       if (!this.verificationAdd('addSerial')) { return; }
-      const keysInput = {
-        id: this.serialData.appChannel,
-        keys: this.consumerDate.keys.split('\n'),
-      };
+      let arr = [];
+      this.consumerDate.keys.split('\n').forEach(item => {
+        if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
+      });
+      arr = this.unique(arr); // 去重
+      const keysInput = { id: this.serialData.appChannel, keys: arr, };
       this.consumerService.addKey(keysInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideModal('addSerial');
-          this.hideModal('modifySerial');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
+  }
+
+  // 去重
+  unique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) { result.push(elem); hash[elem] = true; }
+    }
+    return result;
   }
 
   addPaymengSms(data) {
@@ -245,8 +258,13 @@ export class ConsumerComponent implements OnInit {
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
-      result.splice(0, 1).toString();
-      this.consumerDate.keys = this.consumerDate.keys.length > 0 ? (this.consumerDate.keys + '\n' + result.join('\n')) : (this.consumerDate.keys + result.join('\n'));
+      let arr = [];
+      result.forEach(item => {
+        if (item.toString() !== '') { arr.push(item); }
+      });
+      arr = this.unique(arr);
+      arr.splice(0, 1).toString();
+      this.consumerDate.keys = this.consumerDate.keys.length > 0 ? (this.consumerDate.keys + '\n' + arr.join('\n')) : (this.consumerDate.keys + arr.join('\n'));
       evt.target.value="" // 清空
     };
     reader.readAsBinaryString(target.files[0]);

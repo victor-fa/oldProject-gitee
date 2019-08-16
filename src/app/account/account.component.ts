@@ -282,11 +282,23 @@ export class AccountComponent implements OnInit {
       this.visiable.addNavConfig = true;
     } else if (flag === 'modifyNavConfig') {
       const arr = [];
+      console.log(data);
       const file: any = { name: data.iconFileId };
       data.elements.forEach((item, index) => {
-        arr.push({ name: item.name, description: item.description, iconFileId: item.iconFileId, fileList: [file], type: 'LINK', data: item.data, sort: index+1 })
+        arr.push({
+          name: item.name,
+          description: item.description,
+          iconFileId: item.iconFileId,
+          fileList: (item.iconFileId && item.iconFileId !== '' ? [file] : []),
+          type: 'LINK',
+          data: item.data,
+          sort: index+1 }
+        )
       });
-      this.navConfigItem = { id: data.id, name: data.name, order: data.order, iconFileId: data.iconFileId, fileList: [file], elements: arr };
+      console.log(data);
+      this.navConfigItem = { id: data.id, name: data.name, order: data.order, iconFileId: data.iconFileId,
+        fileList: (data.iconFileId && data.iconFileId !== '' ? [file] : []),
+        elements: arr };
       this.visiable.modifyNavConfig = true;
     } else if (flag === 'deleteNavConfig') {
       this.modalService.confirm({
@@ -450,7 +462,10 @@ export class AccountComponent implements OnInit {
       this.navConfigItem.elements.forEach(item => {
         arr.push({ data: item.data.replace(/&/g, '%26'), description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
       });
-      const addItem = { name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
+      const addItem = { name: this.navConfigItem.name, order: this.navConfigItem.order,
+        iconFileId: this.navConfigItem.fileList.length === 1 ? this.navConfigItem.iconFileId : '',
+        elements: JSON.stringify(arr)
+      };
       console.log(addItem);
       if (!this.verification('navConfig', addItem)) { return; } // 去重
       this.accountService.addNavConfigList(addItem).subscribe(res => {
@@ -466,9 +481,18 @@ export class AccountComponent implements OnInit {
       const arr = [];
       this.navConfigItem.elements = this.navConfigItem.elements.sort(this.sortBySort); // 处理排序
       this.navConfigItem.elements.forEach(item => {
-        arr.push({ data: item.data.replace(/&/g, '%26')  , description: item.description, iconFileId: item.iconFileId, name: item.name, type: "LINK" });
+        arr.push({
+          data: item.data.replace(/&/g, '%26'),
+          description: item.description,
+          iconFileId: item.fileList.length === 1 ? item.iconFileId : '',
+          name: item.name,
+          type: "LINK"
+        });
       });
-      const modifyItem = { id: this.navConfigItem.id, name: this.navConfigItem.name, order: this.navConfigItem.order, iconFileId: this.navConfigItem.iconFileId, elements: JSON.stringify(arr), };
+      const modifyItem = { id: this.navConfigItem.id, name: this.navConfigItem.name, order: this.navConfigItem.order,
+        iconFileId: this.navConfigItem.fileList.length === 1 ? this.navConfigItem.iconFileId : '',
+        elements: JSON.stringify(arr)
+      };
       console.log(modifyItem);
       if (!this.verification('navConfig', modifyItem)) { return; } // 去重
       this.accountService.modifyNavConfigList(modifyItem).subscribe(res => {

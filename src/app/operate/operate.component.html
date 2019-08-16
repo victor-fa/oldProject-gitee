@@ -368,6 +368,101 @@
 
         </nz-tab>
 
+
+        <nz-tab [nzTitle]="whiteListTemplate" (nzClick)="changePanel('whiteList')" *ngIf="commonService.haveMenuPermission('children', '订单状态设置')">
+          <ng-template #whiteListTemplate><i class="anticon anticon-file-text"></i>白名单管理</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3" class="span_down">
+              <button nz-button nzType="primary" (click)="showModal('addWhiteList', '')"><i class="anticon anticon-file-add"></i>新增白名单</button>
+            </div>
+          </div>
+          <nz-table #whiteListTable [nzData]="dataWhiteList" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">白名单账号</th>
+                <th nzWidth="20px">白名单昵称</th>
+                <th nzWidth="20px">操作人</th>
+                <th nzWidth="20px">创建时间</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of whiteListTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.phone}}</td>
+                <td>{{data.nickName}}</td>
+                <td>{{data.operator}}</td>
+                <td>{{data.createTime}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="goUserInfo(data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteWhiteList', data)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.whiteList" nzWidth="750" nzTitle="新增白名单" [nzFooter]="whiteListModalFooter" (nzOnCancel)="hideModal('addWhiteList')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">可输入添加或以文件批量导入</div>
+              <div nz-col nzSpan="24">
+                <textarea rows="6" [(ngModel)]="whiteListDate.keys" nz-input></textarea>
+              </div>
+              <div nz-col nzSpan="4" class="span_down">
+                <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                  <input type="file" (change)="getExcel($event)" multiple="false" />
+                </a>
+              </div>
+              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+            </div>
+            <ng-template #whiteListModalFooter>
+              <button nz-button nzType="primary" (click)="showModal('codeView')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('addWhiteList')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.codeView" nzWidth="750" nzTitle="新增白名单" [nzFooter]="codeViewModalFooter" (nzOnCancel)="hideModal('codeView')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="spthumbnailan_down">将添加以下账号为白名单</div>
+              <div nz-col nzSpan="24">
+                <textarea rows="6" [(ngModel)]="whiteListDate.keys" nz-input></textarea>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4">
+                <nz-select [(ngModel)]="operateObject.operator">
+                  <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
+                  <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
+                  <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
+                  <nz-option required [nzLabel]="'18682251210'" [nzValue]="'18682251210'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="semdMesCodeText !== 60">{{semdMesCodeText === 60 ? '验证' : semdMesCodeText + 's'}}</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="right_alignment span_down">
+                验证码：
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">
+                <input nz-input nzSize="default" [(ngModel)]="operateObject.code">
+              </div>
+            </div>
+            <ng-template #codeViewModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addWhiteList')" [disabled]="operateObject.code.length !== 4">确定</button>
+              <button nz-button nzType="default" (click)="hideModal('codeView')">取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>

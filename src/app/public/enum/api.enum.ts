@@ -90,6 +90,10 @@ export enum operatenApiUrls {
   orderStateSettingList = '/order/monitor',
   /** 语音配置 */
   voiceList = '/cms/asr-configs',
+  /** 白名单管理 */
+  whiteListList = '/white-list/members',
+  /** 获取短信 */
+  sendMsg = '/white-list/captcha'
 }
 
 /** 活动管理 */
@@ -138,4 +142,16 @@ export enum newsApiUrls {
   nerList = '/v2/ner/feeder',
   /** 新闻NER测试 */
   nerTest = '/v2/ner/test',
+}
+
+/** 回归工具 */
+export enum regressionApiUrls {
+  /** 数据 */
+  dataList = '/regression/word-sets',
+  /** 模板创建 */
+  createTemplateList = '/regression/word-sets',
+  /** 任务创建 */
+  taskList = '/regression/word-sets',
+  /** 模板库 */
+  templateList = '/regression/word-sets',
 }

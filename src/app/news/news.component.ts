@@ -36,6 +36,7 @@ export class NewsComponent implements OnInit {
   uploadMarkedData = {type: 'PERSON'};
   addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: [], successNum: 0, failNum: ''};
   isSpinning = false;
+  checkAccurate = false;
   beginSortSpeechDate = '';
   endSortSpeechDate = '';
   beginTaggingNewsDate = '';
@@ -126,6 +127,7 @@ export class NewsComponent implements OnInit {
         submitTimeCeil: this.endTaggingNewsDate,
         submitTimeFloor: this.beginTaggingNewsDate,
         number: (flag === 'newsThesaurusPage' ? this.pageNum.dataNewsThesaurusNumber : 0),
+        fullMatch: this.checkAccurate
       };
       this.pageNum.dataNewsThesaurusPage = this.pageNum.dataNewsThesaurusPage === 0 ? 1 : this.pageNum.dataNewsThesaurusPage;
       this.newsService.getNewsThesaurusList(newsThesaurusInput).subscribe(res => {
@@ -168,7 +170,7 @@ export class NewsComponent implements OnInit {
   private _initForm(): void {
     this.taggingNewsSearchForm = this.fb.group({ status: [''], date: [''], });
     this.manualAuditSearchForm = this.fb.group({ submitter: [''], status: [''], date: [''], });
-    this.newsThesaurusSearchForm = this.fb.group({ type: [''], name: [''], date: [''], });
+    this.newsThesaurusSearchForm = this.fb.group({ type: [''], name: [''], date: [''], checkAccurate: [''], });
     this.newsNERSearchForm = this.fb.group({ name: [''], date: [''], });
   }
 
