@@ -1,10 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
-import { regressionApiUrls } from '../enum/api.enum';
-import { IResponse } from '../model/response.model';
-import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,51 +11,85 @@ export class RegressionService extends AppServiceBase {
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
-    private commonService: CommonService,
   ) {
     super(injector);
   }
 
   /** 获取所有列表 */
-  getdataList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${regressionApiUrls.dataList}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  getInformaList(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/getTestCases?user_id=${data.user_id}`;
     return this.httpClient
-      .get<IResponse<any>>(url, this.options);
-  }
-
-  /** 获取单个内容 */
-  getRegression(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${regressionApiUrls.dataList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
-    return this.httpClient
-      .get<IResponse<any>>(url, this.options);
+      .get<any>(url, this.options);
   }
 
   /** 删除单个内容 */
-  deleteRegression(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${regressionApiUrls.dataList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  deleteInforma(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/delTestCase?case_id=${data.id}`;
     return this.httpClient
-      .delete<IResponse<any>>(url, this.options);
+      .get<any>(url, this.options);
   }
 
-  /** 添加单个内容 */
-  addRegression(data): Observable<IResponse<any>> {
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
-    const body = `title=${data.title}&url=${data.url}&regression=${data.regression}&abstractRegression=${data.abstractRegression}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
-    const url = `${this.commonService.baseUrl}${regressionApiUrls.dataList}`;
+
+
+  /** 获取所有列表 */
+  getCreTemplateList(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/getTestTasks?user_id=${data.user_id}`;
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .get<any>(url, this.options);
   }
 
-  /** 修改单个内容 */
-  updateRegression(data): Observable<IResponse<any>> {
-    const body = `title=${data.title}&url=${data.url}&regression=${data.regression}&abstractRegression=${data.abstractRegression}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
-    const url = `${this.commonService.baseUrl}${regressionApiUrls.dataList}/${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  /** 删除单个内容 */
+  deleteCreTemplate(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/delTestTask?task_id=${data.id}`;
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .get<any>(url, this.options);
   }
 
+
+
+  /** 获取所有列表 */
+  getCreTaskList(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/getTestTasks?user_id=${data.user_id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
+
+  /** 删除单个内容 */
+  deleteCreTask(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/delTestTask?task_id=${data.id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
+
+
+
+  /** 获取所有列表 */
+  getTemplateList(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/getTestTemps?user_id=${data.user_id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
+
+  /** 删除单个内容 */
+  deleteTemplate(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/delTestTemp?temp_id=${data.id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
+
+
+
+  /** 获取所有列表 */
+  getTestSubtasks(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/getTestSubtasks?task_id=${data.task_id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
+
+  /** 删除单个内容 */
+  delTestSubtask(data): Observable<any> {
+    const url = `http://192.168.1.26:8000/auto/delTestSubtask?stask_id=${data.id}`;
+    return this.httpClient
+      .get<any>(url, this.options);
+  }
 }

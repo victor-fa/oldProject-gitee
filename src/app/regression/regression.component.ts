@@ -2,10 +2,11 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService, NzNotificationService, UploadFile } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
-import * as XLSX from 'xlsx';
 import { RegressionService } from '../public/service/regression.service';
+import { HttpResponse, HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 
 registerLocaleData(zh);
 
@@ -17,18 +18,30 @@ registerLocaleData(zh);
 
 export class RegressionComponent implements OnInit {
 
-  visiable = {addRegression: false, modifyRegression: false, modifySerial: false, addSerial: false, };
+  visiable = { creTemplateModal: false, creTaskModal: false };
   regressionSearchForm: FormGroup;
   addRegressionForm: FormGroup;
   modifyRegressionForm: FormGroup;
   serialSearchForm: FormGroup;
   regressionDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
   addSerialData = {};
-  dataRegression = []; // 客户
+  dataRegression = [];
+  dataCreTemplate = [];
+  creTemplateData = {case_name: ''};
+  dataCreTask = [];
+  creTaskData = {task_name: '', appkey: '', case_id: '', bot_name: ''};
   dataSerial = [];
+  serialData = {task_name: '', appkey: '', case_id: '', task_type: '', bot_name: '', temp_id: ''};
+  creTemplateModalData = { pk: '' };
+  dataTemplate = [];
+  templateData = {temp_name: ''};
+  creTaskModalData = { pk: '' };
   isSpinning = false;
-  serialData = {appChannel: ''};
   editSerialData = '';
+  dataTestSubtasks = [];
+  currentPanel = 'informa';
+  currentUser = '';
+  fileList: UploadFile[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -36,46 +49,69 @@ export class RegressionComponent implements OnInit {
     private modalService: NzModalService,
     private regressionService: RegressionService,
     private notification: NzNotificationService,
+    private msg: NzMessageService,
+    private http: HttpClient,
   ) {
-    this.commonService.nav[9].active = true;
+    this.commonService.nav[11].active = true;
     this._initForm();
+    const currentUser = localStorage.getItem('currentUser');
+    this.currentUser = currentUser === 'admin' ? '1001' : currentUser;
   }
 
   ngOnInit() {
-    const tabFlag = [{label: '客户管理', value: 'regression'}];
+    const tabFlag = [{label: '客户管理', value: 'informa'}, {label: '模板创建', value: 'creTemplate'}, {label: '任务创建', value: 'creTask'}, {label: '模板库', value: 'template'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
     }
-    console.log(tabFlag[targetFlag].value);
     this.loadData(tabFlag[targetFlag].value);
   }
 
   loadData(flag) {
     this.isSpinning = true;
-    if (flag === 'regression') {
-      // this.regressionService.getRegressionList().subscribe(res => {
-      //   if (res.retcode === 0 && res.status === 200) {
-      //     this.isSpinning = false;
-      //     this.dataRegression = JSON.parse(res.payload);
-      //     console.log(this.dataRegression);
-      //     const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '访问' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
-    } else if (flag === 'modifySerial') {
-      const serialInput = {
-        sn: this.serialSearchForm.controls['sn'].value,
-        appChannel: this.serialData.appChannel
+    const input = { user_id: this.currentUser };
+    if (flag === 'informa') {
+      this.regressionService.getInformaList(input).subscribe(res => {
+        if (res.status !== 'fail') {
+          this.isSpinning = false;
+          this.dataRegression = res;
+          console.log(this.dataRegression);
+        } else { this.msg.error(res.msg); }
+      });
+    } else if (flag === 'creTemplate') {
+      this.regressionService.getCreTemplateList(input).subscribe(res => {
+        if (res.status !== 'fail') {
+          this.isSpinning = false;
+          this.dataCreTemplate = res.filter(item => item.fields.task_type && item.fields.task_type === 2)
+          console.log(this.dataCreTemplate);
+        } else { this.msg.error(res.msg); }
+      });
+    } else if (flag === 'creTask') {
+      this.regressionService.getCreTaskList(input).subscribe(res => {
+        if (res.status !== 'fail') {
+          this.isSpinning = false;
+          this.dataCreTask = res.filter(item => item.fields.task_type && item.fields.task_type !== 2)
+          console.log(this.dataCreTask);
+        } else { this.msg.error(res.msg); }
+      });
+    } else if (flag === 'template') {
+      this.regressionService.getTemplateList(input).subscribe(res => {
+        if (res.status !== 'fail') {
+          this.isSpinning = false;
+          this.dataTemplate = res;
+        } else { this.dataTemplate = []; this.msg.error(res.msg); }
+      });
+    } else if (flag === 'getTestSubtasksForCreTemplate' || flag === 'getTestSubtasksForCreTask') {
+      const taskInput = {
+        task_id: (flag === 'getTestSubtasksForCreTemplate' ? this.creTemplateModalData.pk : this.creTaskModalData.pk)
       };
-      console.log(serialInput);
-      // this.regressionService.getSerialList(serialInput).subscribe(res => {
-      //   if (res.retcode === 0 && res.status === 200) {
-      //     this.isSpinning = false;
-      //     this.dataSerial = JSON.parse(res.payload).data;
-      //     console.log(this.dataSerial);
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      this.regressionService.getTestSubtasks(taskInput).subscribe(res => {
+        if (res.status !== 'fail') {
+          this.isSpinning = false;
+          this.dataTestSubtasks = res;
+          console.log(this.dataTestSubtasks);
+        } else { this.dataTestSubtasks = []; this.msg.error(res.msg); }
+      });
     }
   }
 
@@ -88,186 +124,240 @@ export class RegressionComponent implements OnInit {
 
   // 弹窗
   showModal(flag, data) {
-    if (flag === 'addRegression') {
-      this.visiable.addRegression = true;
-      this.regressionDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };  // 清空
-    } else if (flag === 'modifyRegression') {
-      this.regressionDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };
-      this.regressionDate = {
-        appChannel: data.appChannel,
-        appChannelName: data.appChannelName,
-        robot: data.robot,
-        loginType: data.loginType,
-        paymentKey: data.paymentKey,
-        smsSign: data.smsSignType,
-        keys: ''
-      };
-      this.visiable.modifyRegression = true;
-    } else if (flag === 'modifySerial') {
-      this.serialData = data;
-      this.loadData('modifySerial');
-      this.visiable.modifySerial = true;
-    } else if (flag === 'addSerial') {
-      this.visiable.addSerial = true;
+    if (flag === 'deleteInforma' || flag === 'deleteCreTemplate' || flag === 'deleteCreTask' || flag === 'deleteTemplate' || flag === 'delTestSubtask') {
+      this.modalService.confirm({
+        nzTitle: '确认删除', nzContent: '确认删除吗？', nzCancelText: '取消',
+        nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
+      });
+    } else if (flag === 'creTemplateModal') {
+      this.creTemplateModalData = data;
+      console.log(this.creTemplateModalData);
+      this.loadData('getTestSubtasksForCreTemplate');
+      this.visiable.creTemplateModal = true;
+    } else if (flag === 'creTaskModal') {
+      this.creTaskModalData = data;
+      console.log(this.creTaskModalData);
+      this.loadData('getTestSubtasksForCreTask');
+      this.visiable.creTaskModal = true;
     }
   }
 
   // 隐藏
   hideModal(flag) {
-    if (flag === 'addRegression') {
-      this.visiable.addRegression = false;
-    } else if (flag === 'modifyRegression') {
-      this.visiable.modifyRegression = false;
-    } else if (flag === 'modifySerial') {
-      this.visiable.modifySerial = false;
-    } else if (flag === 'addSerial') {
+    if (flag === 'creTemplateModal') {
       this.regressionDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
-      this.visiable.addSerial = false;
+      this.visiable.creTemplateModal = false;
+    } else if (flag === 'creTaskModal') {
+      this.visiable.creTaskModal = false;
     }
   }
 
-  // 封装验证新增
-  verificationAdd(flag): boolean {
-    let result = true;
-    if (flag === 'regression') {
-      if (this.addRegressionForm.controls['appChannel'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '客户ID未填写' });
-        result = false;
-      } else if (this.addRegressionForm.controls['appChannelName'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '客户名称未填写' });
-        result = false;
-      } else if (this.addRegressionForm.controls['robot'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'BOT名称未填写' });
-        result = false;
-      }
-    } else if (flag === 'addSerial') {
-      if (this.regressionDate.keys === '' || this.regressionDate.keys.length === 0 || this.regressionDate.keys.replace(/ /g,'') === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' });
-        result = false;
-      }
+  // doSomething
+  doSomething(data, flag) {
+    if (flag === 'deleteInforma') {
+      const input = { id: data.pk }
+      this.regressionService.deleteInforma(input).subscribe(res => {
+        if (res.state === 'success') {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('informa');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.msg }); }
+      });
+    } else if (flag === 'deleteCreTemplate') {
+      const input = { id: data.pk }
+      this.regressionService.deleteCreTemplate(input).subscribe(res => {
+        if (res.state === 'success') {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('creTemplate');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.msg }); }
+      });
+    } else if (flag === 'deleteCreTask') {
+      const input = { id: data.pk }
+      this.regressionService.deleteCreTask(input).subscribe(res => {
+        if (res.state === 'success') {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('creTask');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.msg }); }
+      });
+    } else if (flag === 'deleteTemplate') {
+      const input = { id: data.pk }
+      this.regressionService.deleteTemplate(input).subscribe(res => {
+        if (res.state === 'success') {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('template');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.msg }); }
+      });
+    } else if (flag === 'delTestSubtask') {
+      const input = { id: data.pk }
+      this.regressionService.delTestSubtask(input).subscribe(res => {
+        if (res.state === 'success') {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('getTestSubtasksForCreTemplate');
+          this.loadData('getTestSubtasksForCreTask');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.msg }); }
+      });
     }
-    return result;
   }
+
+  // // 封装验证新增
+  // verificationAdd(flag): boolean {
+  //   let result = true;
+  //   if (flag === 'regression') {
+  //     if (this.addRegressionForm.controls['appChannel'].value === '') {
+  //       this.modalService.error({ nzTitle: '提示', nzContent: '客户ID未填写' });
+  //       result = false;
+  //     } else if (this.addRegressionForm.controls['appChannelName'].value === '') {
+  //       this.modalService.error({ nzTitle: '提示', nzContent: '客户名称未填写' });
+  //       result = false;
+  //     } else if (this.addRegressionForm.controls['robot'].value === '') {
+  //       this.modalService.error({ nzTitle: '提示', nzContent: 'BOT名称未填写' });
+  //       result = false;
+  //     }
+  //   } else if (flag === 'addSerial') {
+  //     if (this.regressionDate.keys === '' || this.regressionDate.keys.length === 0 || this.regressionDate.keys.replace(/ /g,'') === '') {
+  //       this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' });
+  //       result = false;
+  //     }
+  //   }
+  //   return result;
+  // }
 
   // 新增操作
   doSave(flag): void {
-    if (flag === 'addRegression') {
-      if (!this.verificationAdd('regression')) { return; }
-      const regressionInput = {
-        'appChannel': this.addRegressionForm.controls['appChannel'].value,
-        'appChannelName': this.addRegressionForm.controls['appChannelName'].value,
-        'loginType': this.regressionDate.loginType,
-        'robot': this.addRegressionForm.controls['robot'].value,
-        'paymentKey': this.addRegressionForm.controls['paymentKey'].value,
-        'smsSign': this.addRegressionForm.controls['smsSign'].value,
-        // 临时
-        // 'keys': this.addRegressionForm.controls['keys'].value !== undefined ? this.addRegressionForm.controls['keys'].value.split('\n') : '',
-      };
-
-      this.regressionService.addRegression(regressionInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '新增' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('addRegression');
-          this.loadData('regression');
-          setTimeout(() => {
-            this.addPaymengSms(regressionInput);
-          }, 3000);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+    if (flag === 'addInforma') {
+      // if (!this.verificationAdd('regression')) { return; }
+      const formData = new FormData();
+      this.fileList.forEach((file: any) => { formData.append('case_file', file); });
+      const url = `http://192.168.1.26:8000/auto/addTestCase?case_name=${this.creTemplateData.case_name}&user_id=${this.currentUser}`;
+      const req = new HttpRequest('POST', url, formData, {reportProgress: true, headers: new HttpHeaders({})
       });
-    } else if (flag === 'modifyRegression') {
-      const regressionInput = {
-        'appChannel': this.regressionDate.appChannel,
-        'paymentKey': this.modifyRegressionForm.controls['paymentKey'].value,
-        'smsSign': this.modifyRegressionForm.controls['smsSign'].value,
-        // 临时
-        // 'keys': this.modifyRegressionForm.controls['keys'].value !== undefined ? this.modifyRegressionForm.controls['keys'].value.split('\n') : '',
-      };
-      this.addPaymengSms(regressionInput);
-    } else if (flag === 'addSerial') {
-      if (!this.verificationAdd('addSerial')) { return; }
-      let arr = [];
-      this.regressionDate.keys.split('\n').forEach(item => {
-        if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
-      });
-      arr = this.unique(arr); // 去重
-      const keysInput = { id: this.serialData.appChannel, keys: arr, };
-      // this.regressionService.addKey(keysInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-      //     this.hideModal('addSerial');
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.creTemplateData = {case_name: ''};
+            this.msg.success('创建成功');
+            this.loadData('informa');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+          formData.delete(flag);
+        }, err => { formData.delete(flag); }
+      );
+    } else if (flag === 'addCreTemplate') {
+      // if (!this.verificationAdd('regression')) { return; }
+      const formData = new FormData();
+      const url = 'http://192.168.1.26:8000/auto/addTestTask?task_name='
+        + this.creTaskData.task_name
+        + '&task_type=2'
+        + '&appkey=' + this.creTaskData.appkey
+        + '&bot_name=' + this.creTaskData.bot_name
+        + '&case_id=' + this.creTaskData.case_id
+        + '&temp_id=1'
+        + '&user_id=' + this.currentUser;
+      const req = new HttpRequest('POST', url, '', {reportProgress: true, headers: new HttpHeaders({})});
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.creTaskData = {task_name: '', appkey: '', case_id: '', bot_name: ''};
+            this.msg.success('创建成功');
+            this.loadData('creTemplate');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+        }, err => {}
+      );
+    } else if (flag === 'addCreTask') {
+      // if (!this.verificationAdd('regression')) { return; }
+      const formData = new FormData();
+      this.fileList.forEach((file: any) => { formData.append('temp_file', file); });
+      const url = 'http://192.168.1.26:8000/auto/addTestTask?'
+        + 'task_name=' + this.serialData.task_name
+        + '&task_type=' + this.serialData.task_type
+        + '&appkey=' + this.serialData.appkey
+        + '&bot_name=' + this.serialData.bot_name
+        + '&case_id=' + this.serialData.case_id
+        + '&temp_id=' + this.serialData.temp_id
+        + '&user_id=' + this.currentUser;
+      const req = new HttpRequest('POST', url, formData, {reportProgress: true, headers: new HttpHeaders({})});
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.serialData = {task_name: '', appkey: '', case_id: '', task_type: '', bot_name: '', temp_id: ''};
+            this.msg.success('创建成功');
+            this.loadData('creTask');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+          formData.delete(flag);
+        }, err => { formData.delete(flag); }
+      );
+    } else if (flag === 'addTemplate') {
+      // if (!this.verificationAdd('regression')) { return; }
+      const formData = new FormData();
+      this.fileList.forEach((file: any) => { formData.append('temp_file', file); });
+      const url = 'http://192.168.1.26:8000/auto/addTestTemp?'
+        + 'temp_name=' + this.templateData.temp_name
+        + '&user_id=' + this.currentUser;
+      const req = new HttpRequest('POST', url, formData, {reportProgress: true, headers: new HttpHeaders({})});
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.templateData = {temp_name: ''};
+            this.msg.success('提交成功');
+            this.loadData('template');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+          formData.delete(flag);
+        }, err => { formData.delete(flag); }
+      );
+    } else if (flag === 'addCreTemplateModal') { // 执行任务
+      // if (!this.verificationAdd('regression')) { return; }
+      const url = 'http://192.168.1.26:8000/auto/addTestSubtask?'
+        + 'task_id=' + this.creTemplateModalData.pk;
+      const req = new HttpRequest('POST', url, '', {reportProgress: true, headers: new HttpHeaders({})});
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.msg.success('执行成功');
+            this.loadData('getTestSubtasksForCreTemplate');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+        }, err => { }
+      );
+    } else if (flag === 'addCreTaskModal') { // 执行任务
+      // if (!this.verificationAdd('regression')) { return; }
+      const url = 'http://192.168.1.26:8000/auto/addTestSubtask?'
+        + 'task_id=' + this.creTaskModalData.pk;
+      const req = new HttpRequest('POST', url, '', {reportProgress: true, headers: new HttpHeaders({})});
+      this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
+        .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+          if (event.body.length === 1) {
+            this.msg.success('执行成功');
+            this.loadData('getTestSubtasksForCreTask');
+          } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
+        }, err => { }
+      );
     }
   }
 
-  // 去重
-  unique(arr) {
-    var result = [], hash = {};
-    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
-        if (!hash[elem]) { result.push(elem); hash[elem] = true; }
-    }
-    return result;
+  showExcel(data) {
+    const url = 'http://192.168.1.26:8000/static/' + (data.fields.case_file ? data.fields.case_file : data.fields.temp_file ? data.fields.temp_file : data.fields.stask_result_file ? data.fields.stask_result_file : '');
+    window.open(url);
   }
 
-  addPaymengSms(data) {
-    if (data.paymentKey !== '' && data.paymentKey !== undefined) {
-      const paymentInput = {
-        id: data.appChannel,
-        paymentKey: data.paymentKey,
-      };
-      // this.regressionService.addPayment(paymentInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+  // 上传image
+  beforeUpload = (file: UploadFile): boolean => {
+    const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+    const isPng = suffix === '.xls' || suffix === '.xlsx' ? true : false;
+    const isMoreThanTen = file.size < 512000 ? true : false;
+    this.fileList.splice(0, this.fileList.length);
+    if (!isPng) {
+      this.msg.error('您只能上传.xls、.xlsx文件');
+    } else if (!isMoreThanTen) {
+      this.msg.error('您只能上传不超过500K文件');
+    } else {
+      this.fileList.push(file);
     }
-    if (data.smsSign !== '' && data.smsSign !== undefined) {
-      const smsInput = {
-        id: data.appChannel,
-        smsSign: data.smsSign,
-      };
-      // this.regressionService.addSms(smsInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
-    }
-    // 临时
-    // if (data.keys !== '' && data.keys !== undefined) {
-    //   const keysInput = {
-    //     id: data.appChannel,
-    //     keys: data.keys,
-    //   };
-    //   this.regressionService.addKey(keysInput).subscribe(res => {
-    //     if (res.retcode === 0) {
-    //     } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-    //   });
-    // }
-    this.loadData('regression');
-    this.hideModal('modifyRegression');
+    return false;
   }
 
-  getExcel(evt) {
-    const target: DataTransfer = <DataTransfer>(evt.target);
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-    const reader: FileReader = new FileReader();
-    let result = [];
-    reader.onload = (e: any) => {
-      const bstr: string = e.target.result;
-      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-      const wsname: string = wb.SheetNames[0];
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-      result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
-      let arr = [];
-      result.forEach(item => {
-        if (item.toString() !== '') { arr.push(item); }
-      });
-      arr = this.unique(arr);
-      arr.splice(0, 1).toString();
-      this.regressionDate.keys = this.regressionDate.keys.length > 0 ? (this.regressionDate.keys + '\n' + arr.join('\n')) : (this.regressionDate.keys + arr.join('\n'));
-      evt.target.value="" // 清空
-    };
-    reader.readAsBinaryString(target.files[0]);
+  // 切换面板
+  changePanel(flag): void {
+    if (flag !== this.currentPanel) { this.loadData(flag); }
+    this.currentPanel = flag;
+    // const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : flag === 'navConfig' ? '导航页配置' : '', op_name: '访问' };
+    // this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

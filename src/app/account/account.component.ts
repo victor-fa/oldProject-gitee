@@ -735,8 +735,8 @@ export class AccountComponent implements OnInit {
         if (index === num) { item.fileList.forEach((file: any) => {formData.append(flag, file);}); }
       })
     }
-    // const baseUrl = this.commonService.baseUrl;
-    const baseUrl = 'http://account-center-test.chewrobot.com/api/test';
+    const baseUrl = this.commonService.baseUrl;
+    // const baseUrl = 'http://account-center-test.chewrobot.com/api/test';
     const req = new HttpRequest('POST', `${baseUrl}${url}`, formData, {
       reportProgress: true, headers: new HttpHeaders({'Authorization': localStorage.getItem('token')})
     });
