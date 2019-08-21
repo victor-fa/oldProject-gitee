@@ -31,6 +31,8 @@
             <br>
             <strong>APPSECRET: </strong> <span id="appsecret" class="app-list-item-left">{{user.appsecret}}</span>
         </p>
+        <br>
+        <a href="{{chatapi}}/test?appkey={{user.appkey}}&appsecret={{user.appsecret}}&name={{user.name}}" target="_blank">公共链接</a>
     </div>
     {{else}}
     <div class="alert alert-danger app-list-item-frame">
