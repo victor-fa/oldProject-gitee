@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { LocalizationService } from './public/service/localization.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
    declarations: [
@@ -18,7 +19,8 @@ import { LocalizationService } from './public/service/localization.service';
       BrowserModule,
       CoreModule,
       RouterModule,
-      CommonModule
+      CommonModule,
+      FormsModule
    ],
    providers: [
       LocalizationService
