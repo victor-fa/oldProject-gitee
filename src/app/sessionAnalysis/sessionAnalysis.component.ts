@@ -2,9 +2,12 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { NzMessageService, NzModalService, NzNotificationService } from 'ng-zorro-antd';
+import * as XLSX from 'xlsx';
 import { CommonService } from '../public/service/common.service';
 import { SessionLogService } from '../public/service/sessionLog.service';
-import { NzModalService } from 'ng-zorro-antd';
+import { SpecialUserService } from '../public/service/specialUser.service';
 
 registerLocaleData(zh);
 
@@ -15,10 +18,12 @@ registerLocaleData(zh);
 })
 export class SessionAnalysisComponent implements OnInit {
 
-  visiable = {sessionLogSearch: true, explain: false, orign: false, changeFlag: false };
+  visiable = {sessionLogSearch: true, explain: false, orign: false, changeFlag: false, addUserType: false, modifyUserType: false, addSpecialUser: false };
   allSessionBusinessChecked = false;
   indeterminate = true;
   checkOptionsOne = [];
+  tabsetJson = { currentNum: 0, param: '' };
+  uid = '';
   searchSessionLogForm: FormGroup;
   beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
   endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
@@ -31,6 +36,9 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionBusiness = []; // 对话日志下的类型
   checkDataOptions = {};
   sessionLogData = [{sessionDuration: '', color: false, sessionId: ''}];
+  specialUserData = [];
+  dataSpecialUser = {categoryId: '', content: '', specialUsers: [{uid: '', remark: '', createTime: ''}]};
+  userTypeData = [{name: '', order: '', id: ''}];
   conpareFirst = '<';
   conpareSecond = '<';
   conpareThird = '<';
@@ -46,7 +54,7 @@ export class SessionAnalysisComponent implements OnInit {
   currentSessionLogFlag = ''; // 用于标记后查询当前页
   dateRange = [];
   staticParams: any;  // 保留上一次查询数据，区分是否
-  checkFlag = {checked: false, id: ''};
+  checkFlag = {checked: false, id: '', ask: '',  businessAnswer: '', business: '', remark: ''};
   checkOrign = {
     allApp: false,
     allSdk: false,
@@ -59,21 +67,26 @@ export class SessionAnalysisComponent implements OnInit {
     other: {k11Api: false,k11Test: false,}
   };
   listOfOption1 = [];
-  listOfTagOptions1 = [];
+  accountType = [];
   listOfOption2 = [];
-  listOfTagOptions2 = [];
+  specialUserCategoryId = [];
 
   constructor(
     public commonService: CommonService,
     private sessionLogService: SessionLogService,
+    private specialUserService: SpecialUserService,
     private modalService: NzModalService,
     private fb: FormBuilder,
     private datePipe: DatePipe,
+    private notification: NzNotificationService,
+    private msg: NzMessageService,
+    private routerParams: ActivatedRoute,
+    private router: Router,
   ) {
     this.commonService.nav[8].active = true;
     this._initForm();
     this.checkDataOptions = {
-      'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': false }, { 'checked': false }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      'sessionAnalysis': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
     this.dateRange = [this.beginDate, this.endDate];
     this.checkOptionsOne = [
@@ -93,29 +106,13 @@ export class SessionAnalysisComponent implements OnInit {
       { label: '提问', value: 'AIUI_CHAT', checked: false }
     ];
     this.listOfOption1 = [
-      { label: '注册账户', value: '注册账户'},
-      { label: '关联映射账户', value: '关联映射账户'},
-      { label: '子账户', value: '子账户'},
-      { label: '未注册账户', value: '未注册账户'},
-      { label: '控制台测试', value: '控制台测试'},
-      { label: '控制台自动测试', value: '控制台自动测试'}
+      { label: '首批账户', value: 'ORIGINAL'},
+      { label: '普通账户', value: 'GENERAL'},
+      { label: '客户测试账户', value: 'CUSTOMER_TEST'},
+      { label: '控制台测试', value: 'CONSOLE_TEST'},
+      { label: '控制台自动测试', value: 'CONSOLE_AUTO_TEST'},
+      { label: '其他账户', value: 'OTHER'}
     ];
-    this.listOfOption2 = [
-      { label: '内部用户', value: '内部用户'},
-      { label: '客户测试号', value: '客户测试号'},
-      { label: 'VIP', value: 'VIP'}
-    ];
-    // this.checkOrign = {
-    //   allApp: false,
-    //   allSdk: false,
-    //   allApi: false,
-    //   allTest: false,
-    //   phone: {xiaowu: false,tingting: false,wotewode: false,},
-    //   car: {botai: false,tongxingApi: false,tongxingSdk: false,tongxingTest: false,},
-    //   watch: {weiteSdk: false,weiteTest: false,},
-    //   robot: {xiaohaSdk: false,xiaohaTest: false,},
-    //   other: {k11Api: false,k11Test: false,}
-    // };
   }
 
   ngOnInit() {
@@ -127,6 +124,12 @@ export class SessionAnalysisComponent implements OnInit {
     console.log(tabFlag[targetFlag].value);
     this.loadData(tabFlag[targetFlag].value);
     this.changePanel(tabFlag[targetFlag].value);
+    this.routerParams.queryParams.subscribe((params: ParamMap) => {
+      if (params['uid'] && params['uid'] !== undefined) {
+        this.showSomething('goUid', params['uid']);
+      }
+    });
+    this.loadData('categoriesDropdown'); // 获取下拉数据
   }
 
   /**
@@ -141,6 +144,7 @@ export class SessionAnalysisComponent implements OnInit {
         if (this.doLastSessionLog) { id = this.lastSessionLogId; pageFlag = 'last'; }  // 下一页
         if (this.doFirstSessionLog) { id = this.firstSessionLogId; pageFlag = 'first'; }  // 上一页
       } else if (flag === 'sessionLogSearch') {
+        // this.visiable.explain = false;
         this.changeSessionLogPage = 1;
         if (this.doLastSessionLog) { id = 0; pageFlag = 'last'; }  // 下一页
         if (this.doFirstSessionLog) { id = 0; pageFlag = 'first'; }  // 上一页
@@ -151,7 +155,7 @@ export class SessionAnalysisComponent implements OnInit {
         'start': this.beginDate,
         'end': this.endDate,
         'bots': this.chooseSessionBusiness(),
-        'uid': this.searchSessionLogForm.controls['uid'].value,
+        'uid': this.uid,
         'ask': this.searchSessionLogForm.controls['ask'].value,
         'answer': this.searchSessionLogForm.controls['answer'].value,
         'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false,
@@ -166,8 +170,11 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareFirst': this.conpareFirst,
         'conpareSecond': this.conpareSecond,
         'conpareThird': this.conpareThird,
+        'accountType': this.accountType.toString(),
+        'specialUserCategoryId': this.specialUserCategoryId.toString(),
         'pageFlag': pageFlag
       };
+      console.log(logInput);
       this.staticParams = logInput; // 用于与切换上一页下一页时候进行比较
       this.sessionLogService.getSessionLogList(logInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -201,7 +208,7 @@ export class SessionAnalysisComponent implements OnInit {
         'start': this.beginDate,
         'end': this.endDate,
         'bots': this.chooseSessionBusiness(),
-        'uid': this.searchSessionLogForm.controls['uid'].value,
+        'uid': this.uid,
         'ask': this.searchSessionLogForm.controls['ask'].value,
         'answer': this.searchSessionLogForm.controls['answer'].value,
         'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false,
@@ -216,6 +223,8 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareFirst': this.conpareFirst,
         'conpareSecond': this.conpareSecond,
         'conpareThird': this.conpareThird,
+        'accountType': this.accountType.toString(),
+        'specialUserCategoryId': this.specialUserCategoryId.toString(),
         'pageFlag': this.currentSessionLogFlag
       };
       console.log(logInput);
@@ -233,6 +242,29 @@ export class SessionAnalysisComponent implements OnInit {
       });
       this.doLastSessionLog = false;
       this.doFirstSessionLog = false;
+    } else if (flag === 'specialUser') {
+      this.specialUserService.getSpecialUserList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.specialUserData = JSON.parse(res.payload);
+          console.log(this.specialUserData);
+          const operationInput = { op_category: '对话分析', op_page: '特殊用户' , op_name: '访问' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'categories' || flag === 'categoriesDropdown') {
+      this.specialUserService.getCategoriesList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.userTypeData = JSON.parse(res.payload);
+          if (flag === 'categoriesDropdown') {
+            this.userTypeData.forEach(item => {
+              this.listOfOption2.push({ label: item.name, value: item.id });
+            });
+          }
+          console.log(this.userTypeData);
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -241,8 +273,8 @@ export class SessionAnalysisComponent implements OnInit {
       const logInput = {
         'start': this.beginDate,
         'end': this.endDate,
-        'bots': this.currentSessionBusiness,
-        'uid': this.searchSessionLogForm.controls['uid'].value,
+        'bots': this.chooseSessionBusiness(),
+        'uid': this.uid,
         'ask': this.searchSessionLogForm.controls['ask'].value,
         'answer': this.searchSessionLogForm.controls['answer'].value,
         'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false,
@@ -256,6 +288,8 @@ export class SessionAnalysisComponent implements OnInit {
         'pageSize': 10,
         'conpareFirst': this.conpareFirst,
         'conpareSecond': this.conpareSecond,
+        'accountType': this.accountType.toString(),
+        'specialUserCategoryId': this.specialUserCategoryId.toString(),
         'conpareThird': this.conpareThird
       };
       console.log(logInput);
@@ -299,29 +333,72 @@ export class SessionAnalysisComponent implements OnInit {
 
   private _initForm(): void {
     this.searchSessionLogForm = this.fb.group({ date: [''], bots: [''], uid: [''], ask: [''], answer: [''], flag: [''],
-        abnormalType: [''], intentionNum: [''], repetitionNum: [''], cost: [''], level: [''], checkA: false, checkB: []});
+        abnormalType: [''], intentionNum: [''], repetitionNum: [''], cost: [''], level: [''], checkA: false, checkB: [],
+        accountType: [''], specialUserCategoryId: ['']});
   }
 
   // 展开数据说明
   showSomething(flag, data) {
     if (flag === 'sessionLog') {
-      this.visiable.sessionLogSearch = this.visiable.sessionLogSearch === true ? false : true;
+      this.visiable.sessionLogSearch = !this.visiable.sessionLogSearch;
     } else if (flag === 'explain') {
-      this.visiable.explain = this.visiable.explain === true ? false : true;
+      this.visiable.explain = !this.visiable.explain;
     } else if (flag === 'orign') {
-      this.visiable.orign = this.visiable.orign === true ? false : true;
+      this.visiable.orign = !this.visiable.orign;
     } else if (flag === 'changeFlag') {
       this.checkFlag.id = data.id;
       this.checkFlag.checked = data.flag;
-      this.visiable.changeFlag = this.visiable.changeFlag === true ? false : true;
+      this.checkFlag.ask = data.ask;
+      this.checkFlag.businessAnswer = data.businessAnswer;
+      this.checkFlag.business = data.business;
+      console.log(this.checkFlag);
+      this.visiable.changeFlag = !this.visiable.changeFlag;
+    } else if (flag === 'addUserType') {
+      this.visiable.addUserType ? this.userTypeData = [{name: '', order: '', id: ''}] : this.loadData('categories');
+      this.visiable.addUserType = !this.visiable.addUserType;
+    } else if (flag === 'modifyUserType') {
+      this.visiable.modifyUserType ? this.userTypeData = [{name: '', order: '', id: ''}] : this.loadData('categories');
+      this.visiable.modifyUserType = !this.visiable.modifyUserType;
+    } else if (flag === 'addSpecialUser') {
+      this.visiable.addSpecialUser ? null : this.loadData('categories');
+      this.visiable.addSpecialUser = !this.visiable.addSpecialUser;
+    } else if (flag === 'addUserTypeItem') {
+      this.userTypeData.push({name: '', order: '', id: ''});
+    } else if (flag === 'deleteUserTypeById' || flag === 'deleteSpecialUser') {
+      this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(data, flag) });
+    } else if (flag === 'deleteUserType') {
+      this.userTypeData.splice(data, 1);
+    } else if (flag === 'goUid') {  // 查看对话日志
+      console.log(data);
+      this.uid = data;
+      setTimeout(() => { this.loadData('sessionLogSearch'); }, 1000);
+      this.tabsetJson.currentNum = 0;
+    }
+  }
+
+  // 删除
+  doDelete(id, flag) {
+    if (flag === 'deleteUserTypeById') {
+      this.specialUserService.deleteCategories(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('categories');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteSpecialUser') {
+      this.specialUserService.deleteSpecialUser(id.replace(/\+/g, '%2B')  ).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('specialUser');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) { this.currentPanel = flag; this.loadData('sessionLog'); }
-
-    this.currentTitle = flag === 'sessionLog' ? '对话日志' : '';
+    if (flag !== this.currentPanel) { this.currentPanel = flag; this.loadData(flag); }
+    this.currentTitle = flag === 'sessionLog' ? '对话日志' : flag === 'specialUser' ? '特殊用户' : '';
   }
 
   // 选择对话日志的业务类型
@@ -386,9 +463,9 @@ export class SessionAnalysisComponent implements OnInit {
   // 标记/不标记
   changeFlag(flag) {
     if (flag === 'sessionLog') {
-      const logInput = { id: this.checkFlag.id, flag: this.checkFlag.checked };
-      this.sessionLogService.updateSessionLog(logInput).subscribe(res => {
+      this.sessionLogService.updateSessionLog(this.checkFlag).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
+          this.visiable.changeFlag = false;
           this.loadData('currentSessionLog');
           const operationInput = { op_category: '对话分析', op_page: '对话日志' , op_name: '标记/不标记' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -437,7 +514,7 @@ export class SessionAnalysisComponent implements OnInit {
   // 用于获取最新数据【少了lastId、firstId、pageFlag】
   getFreshParam() {
     const staticParams = {
-      'start': this.beginDate, 'end': this.endDate, 'bots': this.chooseSessionBusiness(), 'uid': this.searchSessionLogForm.controls['uid'].value,
+      'start': this.beginDate, 'end': this.endDate, 'bots': this.chooseSessionBusiness(), 'uid': this.uid,
       'ask': this.searchSessionLogForm.controls['ask'].value, 'answer': this.searchSessionLogForm.controls['answer'].value,
       'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false, 'abnormalType': this.abnormalType,
       'intentionNum': this.searchSessionLogForm.controls['intentionNum'].value, 'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
@@ -446,4 +523,108 @@ export class SessionAnalysisComponent implements OnInit {
     };
     return staticParams
   }
+
+  // 新增操作
+  doSave(flag): void {
+    if (flag === 'addUserType') {
+      // if (!this.verificationAdd('addUserType')) { return; }
+      const arr = [];
+      this.userTypeData.filter(item => item.id === '').forEach(item => {
+        arr.push({name: item.name, order: item.order});
+      });
+      this.specialUserService.addCategories(arr).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.showSomething('addUserType', '');
+          this.loadData('specialUser');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyUserType') {
+      // if (!this.verificationAdd('addUserType')) { return; }
+      this.specialUserService.modifyCategories(this.userTypeData).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.showSomething('modifyUserType', '');
+          this.loadData('specialUser');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'addSpecialUser') {
+      const arr = [];
+      this.dataSpecialUser.content.split('\n').forEach(item => {
+        if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
+      });
+      const finalArr = [];
+      if (this.dataSpecialUser.categoryId === '') { this.msg.error('未选择特殊用户类型'); return; }
+      if (arr.length === 0) { this.msg.error('输入的内容，不得为空'); return; }
+      if (arr.every(item => item.indexOf(',') === -1)) { this.msg.error('输入的内容，有部分行没有逗号'); return; }
+      if (arr.some(item => item.split(',')[0] === '')) { this.msg.error('输入的内容，逗号前不得为空'); return; }
+      arr.forEach(item => {
+        finalArr.push({
+          uid: item.split(',')[0],
+          remark: item.split(',')[1],
+          createTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+        });
+      });
+      const input = {
+        categoryId: this.dataSpecialUser.categoryId,
+        specialUsers: finalArr
+      }
+      console.log(input);
+      this.specialUserService.addSpecialUser(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.showSomething('addSpecialUser', '');
+          this.loadData('specialUser');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'refreshHistory') {
+      this.specialUserService.refreshHistory().subscribe(res => {
+        console.log(res);
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '更新成功', { nzStyle: { color : 'green' } });
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    }
+  }
+
+  getExcel(evt) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    let result = [];
+    reader.onload = (e: any) => {
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      let arr = [];
+      result.forEach(item => {
+        if (item.toString() !== '') { arr.push([item[0], (item[1] === undefined ? '' : item[1])]); }
+      });
+      arr = this.unique(arr);
+      arr.splice(0, 1).toString();
+      console.log(arr);
+      this.dataSpecialUser.content = this.dataSpecialUser.content.length > 0
+        ? (this.dataSpecialUser.content + '\n' + arr.join('\n'))
+        : (this.dataSpecialUser.content + arr.join('\n'));
+      evt.target.value="" // 清空
+    };
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  // 去重
+  unique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) { result.push(elem); hash[elem] = true; }
+    }
+    return result;
+  }
+
+  // 跳转到对话日志
+  goUid(data) {
+    window.location.href = '/sessionAnalysis?uid=' + data.uid.replace(/\+/g, '%2B');
+  }
+
 }

@@ -34,8 +34,10 @@ export class SessionLogService extends AppServiceBase {
     url += data.repetitionNum && data.repetitionNum !== '' ? '&repetitionNum=' + data.conpareSecond + data.repetitionNum : '';
     url += data.cost && data.cost !== '' ? '&cost=' + data.conpareThird + data.cost : '';
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
+    url += data.accountType && data.accountType !== '' ? '&accountTypes=' + data.accountType : '';
+    url += data.specialUserCategoryId && data.specialUserCategoryId !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryId : '';
     url += data.lastId && data.lastId !== '' && data.lastId !== 0 && data.pageFlag === 'last' ? '&lastId=' + data.lastId : '';
-    url += data.firstId && data.firstId !== '' && data.firstId !== 0 && data.pageFlag === 'first' ? '&firstId=' + data.firstId : '';
+    url += data.firstId && data.firstId !== '' && data.firstId !== '0' && data.pageFlag === 'first' ? '&firstId=' + data.firstId : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -44,7 +46,7 @@ export class SessionLogService extends AppServiceBase {
   /** 修改单个 */
   updateSessionLog(data): Observable<IResponse<any>> {
     const url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/${data.id}/flag`;
-    const body = `flag=${data.flag}`;
+    const body = `flag=${data.checked}&remark=${data.remark}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -65,6 +67,8 @@ export class SessionLogService extends AppServiceBase {
     url += data.repetitionNum && data.repetitionNum !== '' ? '&repetitionNum=' + data.conpareSecond + data.repetitionNum : '';
     url += data.cost && data.cost !== '' ? '&cost=' + data.conpareThird + data.cost : '';
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
+    url += data.accountType && data.accountType !== '' ? '&accountTypes=' + data.accountType : '';
+    url += data.specialUserCategoryId && data.specialUserCategoryId !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryId : '';
     url += data.lastId && data.lastId !== '' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' ? '&firstId=' + data.firstId : '';
     const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') });

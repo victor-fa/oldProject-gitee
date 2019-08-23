@@ -3,7 +3,7 @@
 
   <nz-card style="width: 100%;">
     <nz-card-tab>
-      <nz-tabset nzSize="large">
+      <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('sessionLog')" *ngIf="commonService.haveMenuPermission('children', '对话日志')">
           <ng-template #dataAppTemplate><i class="anticon anticon-message"></i>对话日志</ng-template>
           <form [formGroup]="searchSessionLogForm" *ngIf="currentPanel === 'sessionLog'">
@@ -12,10 +12,15 @@
                 日期范围：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true"
+                  [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event)">
+                </nz-range-picker>
               </div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="showSomething('explain', '')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
+                <button nz-button nzType="primary" (click)="loadData('sessionLogSearch')" style="display: none"></button>
+                <button nz-button nzType="primary" (click)="showSomething('explain', '')">
+                  <i class="anticon anticon-info-circle-o"></i>数据说明？
+                </button>
               </div>
               <div nz-col nzSpan="6"></div>
               <div nz-col nzSpan="3">
@@ -49,7 +54,7 @@
                     <textarea rows="3" nz-input formControlName="answer" placeholder="关键词搜回答" nzSize="default"></textarea>
                   </div>
                   <div nz-col nzSpan="6">
-                    <textarea rows="3" nz-input formControlName="uid" placeholder="输入用户ID" nzSize="default"></textarea>
+                    <textarea rows="3" nz-input formControlName="uid" [(ngModel)]="uid" placeholder="输入用户ID" nzSize="default"></textarea>
                   </div>
                 </div>
                 <div nz-col nzSpan="8">
@@ -84,7 +89,7 @@
                     账户类型：
                   </div>
                   <div nz-col nzSpan="7">
-                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="listOfTagOptions1" formControlName="intentionNum">
+                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="accountType" formControlName="accountType">
                       <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
                     </nz-select>
                   </div>
@@ -92,7 +97,7 @@
                     特殊用户：
                   </div>
                   <div nz-col nzSpan="7">
-                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="listOfTagOptions2" formControlName="intentionNum">
+                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="specialUserCategoryId" formControlName="specialUserCategoryId">
                       <nz-option *ngFor="let option of listOfOption2" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
                     </nz-select>
                   </div>
@@ -143,23 +148,23 @@
                 <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[4].checked">BOT</th>
                 <th nzWidth="200px" *ngIf="checkDataOptions.sessionAnalysis[5].checked">回答</th>
                 <th nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[6].checked">操作</th>
-                <th nzWidth="60px">批注</th>
-                <th nzWidth="30px">来源</th>
-                <th nzWidth="30px">账户类型</th>
-                <th nzWidth="30px">特殊用户</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[7].checked">会话ID</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[8].checked">意图ID</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[9].checked">对话ID</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[10].checked">中控回答</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[11].checked">总耗时</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[12].checked">子BOT耗时</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[13].checked">中控耗时</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[14].checked">异常回答</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[15].checked">重复回答</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[16].checked">会话轮数</th>
-                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[17].checked">会话内意图数量</th>
-                <th nzWidth="100px">会话持续时长</th>
-                <th nzWidth="30px">返回卡片信息</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[7].checked">批注</th>
+                <th nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[8].checked">来源</th>
+                <th nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[9].checked">账户类型</th>
+                <th nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[10].checked">特殊用户</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[11].checked">会话ID</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[12].checked">意图ID</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[13].checked">对话ID</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[14].checked">中控回答</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[15].checked">总耗时</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[16].checked">子BOT耗时</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[17].checked">中控耗时</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[18].checked">异常回答</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[19].checked">重复回答</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[20].checked">会话轮数</th>
+                <th nzWidth="60px" *ngIf="checkDataOptions.sessionAnalysis[21].checked">会话内意图数量</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.sessionAnalysis[22].checked">会话持续时长</th>
+                <th nzWidth="30px" *ngIf="checkDataOptions.sessionAnalysis[23].checked">返回卡片信息</th>
               </tr>
             </thead>
             <tbody>
@@ -178,39 +183,39 @@
                   <!-- <button nz-button nzType="primary" (click)="changeFlag(data, 'sessionLog')"><i class="anticon anticon-star"></i>{{data.flag ? '已标记' : '标记'}}</button> -->
                   <button nz-button nzType="primary" (click)="showSomething('changeFlag', data)"><i class="anticon anticon-star"></i>{{data.flag ? '已标记' : '标记'}}</button>
                 </td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">
-                  批注内容~
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[7].checked">
+                  {{data.remark}}
                 </td>
-                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">
-                  来源~
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[8].checked">
+                  {{data.appkey}}
                 </td>
-                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">
-                  账户类型~
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[9].checked">
+                  {{data.accountType}}
                 </td>
-                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">
-                  特殊用户~
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[10].checked">
+                  {{data.specialUserCategoryId}}
                 </td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[7].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[11].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.sessionId ? data.sessionId.length > 6 ? data.sessionId.substring(0, 6) + '…' : data.sessionId : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[8].checked" nzTitle="{{data.intentionId}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[12].checked" nzTitle="{{data.intentionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.intentionId ? data.intentionId.length > 6 ? data.intentionId.substring(0, 6) + '…' : data.intentionId : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[9].checked" nzTitle="{{data.id}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[13].checked" nzTitle="{{data.id}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.id ? data.id.length > 6 ? data.id.substring(0, 6) + '…' : data.id : 'null'}}</a>
                 </td>
-                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[10].checked" nzTitle="{{data.cpsAnswer}}" nzPlacement="bottom" nz-tooltip>
+                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[14].checked" nzTitle="{{data.cpsAnswer}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.cpsAnswer ? data.cpsAnswer.length > 12 ? data.cpsAnswer.substring(0, 12) + '…' : data.cpsAnswer : 'null'}}</a>
                 </td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[11].checked">{{data.businessCost + data.cpsCost}}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[12].checked">{{data.businessCost}}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[13].checked">{{data.cpsCost}}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[14].checked">{{data.abnormalStatement}}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[15].checked">{{data.repeatedCounter}}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[16].checked">{{data.sessionRoundsNum  }}</td>
-                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[17].checked">{{data.sessionIntentionsNum}}</td>
-                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">{{data.sessionDuration}}</td>
-                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }">
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[15].checked">{{data.businessCost + data.cpsCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[16].checked">{{data.businessCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[17].checked">{{data.cpsCost}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[18].checked">{{data.abnormalStatement}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[19].checked">{{data.repeatedCounter}}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[20].checked">{{data.sessionRoundsNum  }}</td>
+                <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[21].checked">{{data.sessionIntentionsNum}}</td>
+                <td nzWidth="100px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[22].checked">{{data.sessionDuration}}</td>
+                <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[23].checked">
                   返回卡片信息~
                 </td>
               </tr>
@@ -230,103 +235,250 @@
             <div nz-col nzSpan="6">当前为 {{changeSessionLogPage}} / {{allSessionLogSize}} 页 &nbsp;&nbsp; 共 {{totalSessionLog}} 条</div>
             <div nz-col nzSpan="1"><button [disabled]="changeSessionLogPage === allSessionLogSize || totalSessionLog === 0" nz-button nzType="primary" (click)="nextPage('sessionLog')"><i class="anticon anticon-right"></i></button></div>
           </div>
+
+
+          <nz-modal [(nzVisible)]="visiable.changeFlag" nzWidth="950" nzTitle="标记批注" [nzFooter]="changeFlagModalFooter" (nzOnCancel)="showSomething('changeFlag', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="3" class="right_alignment">用户问询：</div>
+              <div nz-col nzSpan="14" class="left_alignment">{{checkFlag.ask}}</div>
+              <div nz-col nzSpan="3" class="right_alignment">BOT：</div>
+              <div nz-col nzSpan="4" class="left_alignment">{{checkFlag.business}}</div>
+            </div><br>
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="3" class="right_alignment">回答：</div>
+              <div nz-col nzSpan="19" class="left_alignment">{{checkFlag.businessAnswer}}</div>
+            </div><br>
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="3" class="right_alignment">批注：</div>
+              <div nz-col nzSpan="19" class="left_alignment">
+                <textarea rows="3" nz-input placeholder="请输入批注" nzSize="default" [(ngModel)]="checkFlag.remark"></textarea>
+              </div>
+            </div><br>
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="3" class="right_alignment">标记状态：</div>
+              <div nz-col nzSpan="19" class="left_alignment"><label nz-checkbox [(ngModel)]="checkFlag.checked">已标记</label></div>
+            </div>
+            <ng-template #changeFlagModalFooter>
+              <button nz-button nzType="default" (click)="changeFlag('sessionLog')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="showSomething('changeFlag', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="showSomething('explain', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel" style="text-align: center;">
+              <div nz-col nzSpan="2">
+                <span style="line-height: 30px;">&nbsp;</span><br>
+                <ng-container *ngIf="currentPanel === 'sessionLog'">
+                  <ng-container *ngFor="let item of checkDataOptions.sessionAnalysis; let i=index;">
+                    <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
+                  </ng-container>
+                </ng-container>
+              </div>
+              <div nz-col nzSpan="22">
+                <img *ngIf="currentPanel === 'sessionLog'" [src]="'assets/images/sessionAnalysis.png'">
+              </div>
+            </div>
+            <ng-template #ecplainModalFooter>
+              <button nz-button nzType="default" (click)="showSomething('explain', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="eorignModalFooter" (nzOnCancel)="showSomething('orign', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2">来源：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApi">全选（API）</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
+            </div>
+            <br>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">手机：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.xiaowu || checkOrign.allApp">你好小悟</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.tingting || checkOrign.allApp">听听同学</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.wotewode || checkOrign.allApp">沃特沃德6</label></div>
+            </div>
+            <br>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">车机：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.botai || checkOrign.allApi">博泰车机api</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingApi || checkOrign.allApi">同行者车机api</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingSdk || checkOrign.allSdk || checkOrign.allTest">同行者车机sdk</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingTest || checkOrign.allApi || checkOrign.allTest">同行者test</label></div>
+            </div>
+            <br>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">手表：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteSdk || checkOrign.allSdk">维特智能sdk</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteTest || checkOrign.allSdk || checkOrign.allTest">维特智能test</label></div>
+            </div>
+            <br>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">机器人：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaSdk || checkOrign.allSdk">小哈机器人sdk</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaTest || checkOrign.allSdk || checkOrign.allTest">小哈机器人test</label></div>
+            </div>
+            <br>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">其他：</div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Api || checkOrign.allApi || checkOrign.allTest">k11公共屏幕api</label></div>
+              <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Test || checkOrign.allSdk || checkOrign.allTest">k11 test</label></div>
+            </div>
+            <ng-template #eorignModalFooter>
+              <button nz-button nzType="default" (click)="showModal('orign')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="showSomething('orign', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
-        <nz-modal [(nzVisible)]="visiable.changeFlag" nzWidth="950" nzTitle="标记批注" [nzFooter]="changeFlagModalFooter" (nzOnCancel)="showSomething('changeFlag', '')" nzMaskClosable="false">
-          <div nz-row class="search_panel" style="text-align: center;">
-            <div nz-col nzSpan="3" class="span_down right_alignment">用户问询：</div>
-            <div nz-col nzSpan="14" class="left_alignment">问询内容问询内容问询内容问询内容问询内容问询内容问询内容问询内容问询内容问询内容问询</div>
-            <div nz-col nzSpan="3" class="span_down right_alignment">BOT：</div>
-            <div nz-col nzSpan="4" class="left_alignment">酒店</div>
-          </div><br>
-          <div nz-row class="search_panel" style="text-align: center;">
-            <div nz-col nzSpan="3" class="span_down right_alignment">回答：</div>
-            <div nz-col nzSpan="19" class="left_alignment">回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容回答内容</div>
-          </div><br>
-          <div nz-row class="search_panel" style="text-align: center;">
-            <div nz-col nzSpan="3" class="span_down right_alignment">批注：</div>
-            <div nz-col nzSpan="19" class="left_alignment"><textarea rows="3" nz-input placeholder="请输入批注" nzSize="default"></textarea></div>
-          </div><br>
-          <div nz-row class="search_panel" style="text-align: center;">
-            <div nz-col nzSpan="3" class="span_down right_alignment">标记状态：</div>
-            <div nz-col nzSpan="19" class="left_alignment"><label nz-checkbox [(ngModel)]="checkFlag.checked">已标记</label></div>
-          </div>
-          <ng-template #changeFlagModalFooter>
-            <button nz-button nzType="default" (click)="changeFlag('sessionLog')"><i class="anticon anticon-save"></i>保存</button>
-            <button nz-button nzType="default" (click)="showSomething('changeFlag', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
-          </ng-template>
-        </nz-modal>
 
-        <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1450" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="showSomething('explain', '')" nzMaskClosable="false">
-          <div nz-row class="search_panel" style="text-align: center;">
+
+
+
+
+        <nz-tab [nzTitle]="specialUserTemplate" (nzClick)="changePanel('specialUser')" *ngIf="commonService.haveMenuPermission('children', '对话日志')">
+          <ng-template #specialUserTemplate><i class="anticon anticon-user"></i>特殊用户</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showSomething('addUserType', '')"><i class="anticon anticon-user-add"></i>新增用户类别</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showSomething('modifyUserType', '')"><i class="anticon anticon-edit"></i>修改用户类别</button>
+            </div>
+            <div nz-col nzSpan="13"></div>
             <div nz-col nzSpan="2">
-              <span style="line-height: 30px;">&nbsp;</span><br>
-              <ng-container *ngIf="currentPanel === 'sessionLog'">
-                <ng-container *ngFor="let item of checkDataOptions.sessionAnalysis; let i=index;">
-                  <label nz-checkbox [(nzChecked)]="item.checked" style="line-height: 31px;"></label><br>
-                </ng-container>
-              </ng-container>
+              <button nz-button nzType="primary" (click)="doSave('refreshHistory')"><i class="anticon anticon-reload"></i>更新</button>
             </div>
-            <div nz-col nzSpan="22">
-              <img *ngIf="currentPanel === 'sessionLog'" [src]="'assets/images/sessionAnalysis.png'">
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showSomething('addSpecialUser', '')"><i class="anticon anticon-user-add"></i>新增特殊用户</button>
             </div>
           </div>
-          <ng-template #ecplainModalFooter>
-            <button nz-button nzType="default" (click)="showSomething('explain', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
-          </ng-template>
-        </nz-modal>
 
-        <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="eorignModalFooter" (nzOnCancel)="showSomething('orign', '')" nzMaskClosable="false">
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2">来源：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApi">全选（API）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
-          </div>
-          <br>
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2"></div>
-            <div nz-col nzSpan="2">手机：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.xiaowu || checkOrign.allApp">你好小悟</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.tingting || checkOrign.allApp">听听同学</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.wotewode || checkOrign.allApp">沃特沃德6</label></div>
-          </div>
-          <br>
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2"></div>
-            <div nz-col nzSpan="2">车机：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.botai || checkOrign.allApi">博泰车机api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingApi || checkOrign.allApi">同行者车机api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingSdk || checkOrign.allSdk || checkOrign.allTest">同行者车机sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingTest || checkOrign.allApi || checkOrign.allTest">同行者test</label></div>
-          </div>
-          <br>
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2"></div>
-            <div nz-col nzSpan="2">手表：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteSdk || checkOrign.allSdk">维特智能sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteTest || checkOrign.allSdk || checkOrign.allTest">维特智能test</label></div>
-          </div>
-          <br>
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2"></div>
-            <div nz-col nzSpan="2">机器人：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaSdk || checkOrign.allSdk">小哈机器人sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaTest || checkOrign.allSdk || checkOrign.allTest">小哈机器人test</label></div>
-          </div>
-          <br>
-          <div nz-row class="search_panel">
-            <div nz-col nzSpan="2"></div>
-            <div nz-col nzSpan="2">其他：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Api || checkOrign.allApi || checkOrign.allTest">k11公共屏幕api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Test || checkOrign.allSdk || checkOrign.allTest">k11 test</label></div>
-          </div>
-          <ng-template #eorignModalFooter>
-            <button nz-button nzType="default" (click)="showModal('orign')"><i class="anticon anticon-save"></i>保存</button>
-            <button nz-button nzType="default" (click)="showSomething('orign', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
-          </ng-template>
-        </nz-modal>
+          <nz-table #specialUserSelectionTable [nzData]="specialUserData" [nzSimple]="true" [nzShowPagination]="false" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>用户类别</th>
+                <th>类别序号</th>
+                <th>用户ID</th>
+                <th>用户备注</th>
+                <th>导入时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of specialUserSelectionTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.category.name}}</td>
+                <td>{{data.category.order}}</td>
+                <td>{{data.uid}}</td>
+                <td>{{data.remark}}</td>
+                <td>{{data.operatingTime}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="goUid(data)" style="margin-right: 10px"><i class="anticon anticon-search"></i>查询</button>
+                  <button nz-button nzType="primary" (click)="showSomething('deleteSpecialUser', data.uid)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+
+          <nz-modal [(nzVisible)]="visiable.addUserType" nzWidth="750" nzTitle="新增用户类别" [nzFooter]="addUserTypeModalFooter" (nzOnCancel)="showSomething('addUserType', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4">增改用户类别：</div>
+              <div nz-col nzSpan="8">用户类别</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4">类别序号</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="5">
+                <button nz-button nzType="primary" (click)="showSomething('addUserTypeItem', data)"><i class="anticon anticon-user-add"></i>新增</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel" *ngFor="let data of userTypeData; let i=index;">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="8">
+                <input nz-input type="text" [(ngModel)]="data.name" nzSize="default" *ngIf="data.createTime === undefined">
+                {{data.createTime !== undefined ? data.name : ''}}
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4">
+                <input nz-input type="text" [(ngModel)]="data.order" nzSize="default" *ngIf="data.createTime === undefined">
+                {{data.createTime !== undefined ? data.order : ''}}
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="5" *ngIf="data.createTime === undefined">
+                <button nz-button nzType="primary" (click)="showSomething('deleteUserType', i)"><i class="anticon anticon-delete"></i>删除</button>
+              </div>
+            </div>
+            <ng-template #addUserTypeModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addUserType')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="showSomething('addUserType', '')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyUserType" nzWidth="750" nzTitle="修改用户类别" [nzFooter]="modifyUserTypeModalFooter" (nzOnCancel)="showSomething('modifyUserType', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4">增改用户类别：</div>
+              <div nz-col nzSpan="8">用户类别</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4">类别序号</div>
+              <div nz-col nzSpan="1"></div>
+            </div>
+            <div nz-row class="search_panel" *ngFor="let data of userTypeData; let i=index;">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="8">
+                <input nz-input type="text" [(ngModel)]="data.name" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="4">
+                <input nz-input type="text" [(ngModel)]="data.order" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="5">
+                <button nz-button nzType="primary" (click)="showSomething('deleteUserTypeById', data.id)"><i class="anticon anticon-delete"></i>删除</button>
+              </div>
+            </div>
+            <ng-template #modifyUserTypeModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyUserType')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="showSomething('modifyUserType', '')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addSpecialUser" nzWidth="750" nzTitle="新增特殊用户" [nzFooter]="addSpecialUserModalFooter" (nzOnCancel)="showSomething('addSpecialUser', '')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="6">特殊用户类型</div>
+              <div nz-col nzSpan="18">
+                <nz-select [(ngModel)]="dataSpecialUser.categoryId">
+                  <nz-option *ngFor="let data of userTypeData; let i=index;" [nzLabel]="data.name" [nzValue]="data.id"></nz-option>
+                </nz-select>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">可输入添加或以文件批量导入</div>
+            </div>
+            <div nz-row class="search_panel">
+              <textarea rows="6" nz-input nzSize="default" [(ngModel)]="dataSpecialUser.content"></textarea>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down">
+                <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                  <input type="file" (change)="getExcel($event)" multiple="false" />
+                </a>
+              </div>
+              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+            </div>
+            <ng-template #addSpecialUserModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addSpecialUser')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="showSomething('addSpecialUser', '')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
 
       </nz-tabset>
       <div class="spin" *ngIf="isSpinning">

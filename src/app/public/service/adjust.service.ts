@@ -41,7 +41,7 @@ export class AdjustService extends AppServiceBase {
   /** 添加单个 */
   addAdjust(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}`;
-    const body = `adjustAmount=${data.adjustAmount}&adjustReason=${data.adjustReason}&adjustType=${data.adjustType}&code=${data.code}&noticeAbstract=${data.noticeAbstract}&noticeContent=${data.noticeContent}&noticeTitle=${data.noticeTitle}&operater=${data.operater}&users=${data.users}`;
+    const body = `item=${data.item}&adjustReason=${data.adjustReason}&adjustType=${data.adjustType}&code=${data.code}&noticeAbstract=${data.noticeAbstract}&noticeContent=${data.noticeContent}&noticeTitle=${data.noticeTitle}&operater=${data.operater}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);

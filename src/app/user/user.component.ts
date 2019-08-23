@@ -9,6 +9,7 @@ import { CommonService } from '../public/service/common.service';
 import { InvoiceService } from '../public/service/invoice.service';
 import { UserService } from '../public/service/user.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import * as XLSX from 'xlsx';
 registerLocaleData(zh);
 
 @Component({
@@ -289,6 +290,7 @@ export class UserComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           if (res.payload) {
+            console.log(JSON.parse(res.payload));
             if (this.currentUserCommonTab === 'TRAVELER') {
               this.userInfoCommonData = JSON.parse(res.payload).reverse();
             } else if (this.currentUserCommonTab === 'CONTACTS') {
@@ -425,13 +427,12 @@ export class UserComponent implements OnInit {
     let result = true;
     if (flag === 'adjustSend') {
       const myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
-      const user = this.addAdjustForm.controls['users'].value.replace(/\r/g, ',').replace(/\n/g, ',');
-      user.split(',').forEach(item => {
-        if (!myreg.test(item)) {
-          this.modalService.error({ nzTitle: '提示', nzContent: '发送对象必须为手机号码，格式有误' });
-          result = false;
-        }
-      });
+      let user = this.addAdjustForm.controls['users'].value.split('\n');
+      console.log(user);
+      if (user.some(item => { !myreg.test(item.split(',')[0]); })) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '发送对象必须为手机号码，格式有误' });
+        result = false;
+      }
       if (this.addAdjustForm.controls['noticeTitle'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '附带消息的标题未填写' });
         result = false;
@@ -440,9 +441,6 @@ export class UserComponent implements OnInit {
         result = false;
       } else if (this.addAdjustForm.controls['noticeContent'].value === null) {
         this.modalService.error({ nzTitle: '提示', nzContent: '附带消息的内容未填写' });
-        result = false;
-      } else if (this.addAdjustForm.controls['adjustAmount'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '发送奖励配置参数未填写' });
         result = false;
       } else if (this.addAdjustForm.controls['adjustReason'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '调整原因未填写' });
@@ -454,9 +452,12 @@ export class UserComponent implements OnInit {
 
   doSave(flag) {
     if (flag === 'adjustSend') {
-      const user = this.addAdjustForm.controls['users'].value.replace(/\r/g, ',').replace(/\n/g, ',');
+      let user = this.addAdjustForm.controls['users'].value.split('\n');
+      let finalJson = {};
+      user.forEach(item => {
+        finalJson[item.split(',')[0]] = item.split(',')[1]
+      });
       const adjustInput = {
-        adjustAmount: this.addAdjustForm.controls['adjustAmount'].value,
         adjustReason: this.addAdjustForm.controls['adjustReason'].value,
         adjustType: this.adjustTypeAdd,
         code: this.operateObject.code,
@@ -464,8 +465,9 @@ export class UserComponent implements OnInit {
         noticeContent: this.replaceHtmlStr(this.addAdjustForm.controls['noticeContent'].value).replace(/&/g, '%26'),
         noticeTitle: this.addAdjustForm.controls['noticeTitle'].value,
         operater: this.operateObject.operater,
-        users: user.split(','),
+        item: finalJson,
       };
+      console.log(adjustInput);
       this.adjustService.addAdjust(adjustInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -715,19 +717,16 @@ export class UserComponent implements OnInit {
       this.adjustDetail.successNum = success.length;
       this.adjustDetail.failNum = fail.length;
     } if (flag === 'adjustAdd') {
-
       this.adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
       this.adjustTypeAdd = 'BEAN';
       this.visiable.adjustAdd = true;
     } if (flag === 'adjustSend') {
-      if (!this.verification('adjustSend')) {
-        return;
-      }
+      if (!this.verification('adjustSend')) { return; }
       this.operateObject = { code: '', operater: '' };
       this.loadData('operaters'); // 获取操作者列表数据
       this.adjustSendData = {
         users: this.addAdjustForm.controls['users'].value,
-        config: (this.adjustTypeAdd === 'BEAN' ? '小悟豆' : this.adjustTypeAdd === 'COIN' ? '小悟币' : null) + '*' + this.addAdjustForm.controls['adjustAmount'].value,
+        config: (this.adjustTypeAdd === 'BEAN' ? '小悟豆' : this.adjustTypeAdd === 'COIN' ? '小悟币' : null),
         noticeContent: this.replaceHtmlStr(this.addAdjustForm.controls['noticeContent'].value).replace(/&/g, '%26'),
       };
       this.visiable.adjustSend = true;
@@ -1074,6 +1073,41 @@ export class UserComponent implements OnInit {
     return str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, '\'')
           .replace(/&quot;/g, '"').replace(/&nbsp;/g, '<br>').replace(/&ensp;/g, '   ')
           .replace(/&emsp;/g, '    ').replace(/%/g, '%').replace(/&amp;/g, '&');
+  }
+
+  getExcel(evt) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    let result = [];
+    reader.onload = (e: any) => {
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      result = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      let arr = [];
+      result.forEach(item => {
+        if (item.toString() !== '') { arr.push([item[0], (item[1] === undefined ? '' : item[1])]); }
+      });
+      arr = this.unique(arr);
+      arr.splice(0, 1).toString();
+      console.log(arr);
+      this.adjustDetail.users = this.adjustDetail.users.length > 0
+        ? (this.adjustDetail.users + '\n' + arr.join('\n'))
+        : (this.adjustDetail.users + arr.join('\n'));
+      evt.target.value="" // 清空
+    };
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  // 去重
+  unique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) { result.push(elem); hash[elem] = true; }
+    }
+    return result;
   }
 
 }

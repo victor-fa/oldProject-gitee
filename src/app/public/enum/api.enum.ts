@@ -118,6 +118,10 @@ export enum dataCenterApiUrls {
 export enum sessionAnalysisApiUrls {
   /** 对话日志 */
   sessionLogList = '/logs',
+  /** 特殊用户 */
+  categoriesList = '/categories',
+  /** 特殊用户 */
+  specialUserList = '/special-users',
 }
 
 /** 权限后台 */

@@ -899,89 +899,79 @@
             <form [formGroup]="addAdjustForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
-                <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">
-                  请填写发送的用户id（手机号码），如果需要发送多个，请换行输入<br>单次发送人数上限：10000（如果需要调整，请通知产品）
+                  请填写发送的用户id（手机号码），如果需要发送多个，请换行输入<br>
+                  单次发送人数上限：10000（如果需要调整，请通知产品）<br>
+                  正数为增加，负数为减少；若减少的金额大于用户余额，则调整失败
+                </div>
+              </div>
+
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="21">
+                  <nz-radio-group [(ngModel)]="adjustTypeAdd" formControlName="adjustType">
+                    <div nz-row class="search_panel">
+                      <div nz-col nzSpan="4"><label nz-radio nzValue="BEAN">小悟豆</label></div>
+                      <div nz-col nzSpan="10"></div>
+                      <div nz-col nzSpan="4"><label nz-radio nzValue="COIN">小悟币</label></div>
+                    </div>
+                  </nz-radio-group>
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3">
-                </div>
+                <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="12">
-                  <textarea rows="5" nz-input formControlName="users" [(ngModel)]="adjustDetail.users" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
+                  <textarea rows="5" nz-input formControlName="users" [(ngModel)]="adjustDetail.users"
+                    placeholder="请输入手机号以及对应的奖励，通过逗号','隔开【发放对象手机号码】以及【发放奖励数量】" nzSize="default"></textarea>
                 </div>
               </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3"></div>
+                <div nz-col nzSpan="4" class="span_down">
+                  <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                    <input type="file" (change)="getExcel($event)" multiple="false" />
+                  </a>
+                </div>
+                <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+              </div>
+
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">附带消息</div>
-                <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="20" class="span_down" style="color: #a9a9a9">
                   一般适用于奖励/补偿用户，附带的信息
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3" class="span_down right_alignment">
-                  标题：
-                </div>
+                <div nz-col nzSpan="3" class="span_down right_alignment">标题：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input nzSize="default" formControlName="noticeTitle" [(ngModel)]="adjustDetail.noticeTitle" placeholder="请输入标题">
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3" class="span_down right_alignment">
-                  类型：
-                </div>
-                <div nz-col nzSpan="9" class="span_down">
-                  系统消息
-                </div>
+                <div nz-col nzSpan="3" class="span_down right_alignment">类型：</div>
+                <div nz-col nzSpan="9" class="span_down">系统消息</div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3" class="span_down right_alignment">
-                  摘要：
-                </div>
+                <div nz-col nzSpan="3" class="span_down right_alignment">摘要：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input nzSize="default" formControlName="noticeAbstract" [(ngModel)]="adjustDetail.noticeAbstract" placeholder="请输入摘要">
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3" class="span_down right_alignment">
-                  内容：
-                </div>
+                <div nz-col nzSpan="3" class="span_down right_alignment">内容：</div>
                 <div nz-col nzSpan="20">
                   <quill-editor formControlName="noticeContent" [(ngModel)]="adjustDetail.noticeContent" [modules]="config" [style]="{height: '300px'}"></quill-editor>
                 </div>
               </div>
 
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="4" class="span_down" style="font-size: 20px;font-weight: bold;">发送奖励配置</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="19" class="span_down" style="color: #a9a9a9">
-                  正数为增加，负数为减少；若减少的金额大于用户余额，则调整失败
-                </div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="24">
-                  <nz-radio-group [(ngModel)]="adjustTypeAdd" formControlName="adjustType">
-                    <div nz-row class="search_panel">
-                      <div nz-col nzSpan="4"><label nz-radio nzValue="BEAN">小悟豆</label></div>
-                      <div nz-col nzSpan="6"><input nz-input formControlName="adjustAmount" [ngModel]="''" nzSize="default"></div>
-                      <div nz-col nzSpan="2"></div>
-                      <div nz-col nzSpan="4"><label nz-radio nzValue="COIN">小悟币</label></div>
-                      <div nz-col nzSpan="6"><input nz-input formControlName="adjustAmount" [ngModel]="''" nzSize="default"></div>
-                    </div>
-                  </nz-radio-group>
-                </div>
-              </div>
-
-              <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">调整原因</div>
-                <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="20" class="span_down" style="color: #a9a9a9">
                   调整原因，是为了后面追溯的时候，能够追溯到为什么有这个操作，也方便归因
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="3">
-                </div>
+                <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="12">
                   <textarea rows="5" nz-input formControlName="adjustReason" [(ngModel)]="adjustDetail.adjustReason" placeholder="请输入调整原因" nzSize="default"></textarea>
                 </div>
