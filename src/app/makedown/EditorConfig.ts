@@ -3,9 +3,9 @@ export class EditorConfig {
   public height = '800';
   public path = 'assets/editor.md/lib/';
   public codeFold: true;
-  public theme = "dark";
-  public previewTheme = "dark";
-  public editorTheme = "pastel-on-dark";
+  public theme = "default";
+  public previewTheme = "default";
+  public editorTheme = "rubyblue";
   public searchReplace = true;
   public toolbar = true;
   public emoji = true;

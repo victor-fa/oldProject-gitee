@@ -21,22 +21,16 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传测试文档</span>
                     </button>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="shareImageUrl01 !== ''">
-                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
-                <div nz-col nzSpan="16">
-                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
-                </div>
-              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <button nz-button nzType="primary" (click)="doSave('addInforma')"><i class="anticon anticon-upload"></i>提交</button>
+                  <button nz-button nzType="primary" (click)="doSave('addInforma')"><i class="anticon anticon-save"></i>提交</button>
                 </div>
               </div>
             </div>
@@ -102,13 +96,14 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="creTaskData.case_id" >
+                    <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
                     <nz-option *ngFor="let data of dataRegression; let i=index;" required [nzLabel]="data.fields.case_name" [nzValue]="data.pk"></nz-option>
                   </nz-select>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <button nz-button nzType="primary" (click)="doSave('addCreTemplate')"><i class="anticon anticon-upload"></i>创建</button>
+                  <button nz-button nzType="primary" (click)="doSave('addCreTemplate')"><i class="anticon anticon-save"></i>创建</button>
                 </div>
               </div>
             </div>
@@ -248,6 +243,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.task_type">
+                    <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
                     <nz-option required [nzLabel]="'回归测试任务'" [nzValue]="'3'"></nz-option>
                     <nz-option required [nzLabel]="'自动测试任务'" [nzValue]="'1'"></nz-option>
                   </nz-select>
@@ -259,6 +255,7 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.case_id" >
+                    <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
                     <nz-option *ngFor="let data of dataRegression; let i=index;" required [nzLabel]="data.fields.case_name" [nzValue]="data.pk"></nz-option>
                   </nz-select>
                 </div>
@@ -269,27 +266,23 @@
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.temp_id" >
+                    <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
                     <nz-option *ngFor="let data of dataTemplate; let i=index;" required [nzLabel]="data.fields.temp_name" [nzValue]="data.pk"></nz-option>
                   </nz-select>
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传模板</span>
                     </button>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="shareImageUrl01 !== ''">
-                <div nz-col nzSpan="24">
-                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
-                </div>
-              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <button nz-button nzType="primary" (click)="doSave('addCreTask')"><i class="anticon anticon-upload"></i>创建</button>
+                  <button nz-button nzType="primary" (click)="doSave('addCreTask')"><i class="anticon anticon-save"></i>创建</button>
                 </div>
               </div>
             </div>
@@ -419,22 +412,16 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传模板</span>
                     </button>
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="shareImageUrl01 !== ''">
-                <div nz-col nzSpan="8" class="span_down right_alignment"></div>
-                <div nz-col nzSpan="16">
-                  <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
-                </div>
-              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="24">
-                  <button nz-button nzType="primary" (click)="doSave('addTemplate')"><i class="anticon anticon-upload"></i>提交</button>
+                  <button nz-button nzType="primary" (click)="doSave('addTemplate')"><i class="anticon anticon-save"></i>提交</button>
                 </div>
               </div>
             </div>

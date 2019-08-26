@@ -30,7 +30,7 @@ export class ConsumerService extends AppServiceBase {
   /** 添加单个 */
   addConsumer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}`;
-    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}`;
+    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);

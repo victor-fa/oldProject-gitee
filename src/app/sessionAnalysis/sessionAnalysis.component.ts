@@ -347,7 +347,7 @@ export class SessionAnalysisComponent implements OnInit {
       this.visiable.orign = !this.visiable.orign;
     } else if (flag === 'changeFlag') {
       this.checkFlag.id = data.id;
-      this.checkFlag.checked = data.flag;
+      this.checkFlag.checked = true;
       this.checkFlag.ask = data.ask;
       this.checkFlag.businessAnswer = data.businessAnswer;
       this.checkFlag.business = data.business;

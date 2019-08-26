@@ -224,7 +224,8 @@
             help             : "fa-question-circle",
             info             : "fa-info-circle"
         },
-        toolbarIconTexts     : {},
+        toolbarIconTexts     : {
+        },
 
         lang : {
             name        : "zh-cn",

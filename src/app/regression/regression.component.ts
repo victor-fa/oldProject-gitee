@@ -65,6 +65,7 @@ export class RegressionComponent implements OnInit {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
     }
     this.loadData(tabFlag[targetFlag].value);
+    this.loadData('template');  // 一进来就加载下拉
   }
 
   loadData(flag) {
@@ -99,6 +100,7 @@ export class RegressionComponent implements OnInit {
         if (res.status !== 'fail') {
           this.isSpinning = false;
           this.dataTemplate = res;
+          console.log(this.dataTemplate);
         } else { this.dataTemplate = []; this.msg.error(res.msg); }
       });
     } else if (flag === 'getTestSubtasksForCreTemplate' || flag === 'getTestSubtasksForCreTask') {
@@ -224,7 +226,10 @@ export class RegressionComponent implements OnInit {
   // 新增操作
   doSave(flag): void {
     if (flag === 'addInforma') {
-      // if (!this.verificationAdd('regression')) { return; }
+      if (this.dataRegression.some(item => item.fields.case_name === this.creTemplateData.case_name.replace(/(^\s*)|(\s*$)/g, ""))) {
+        this.msg.error('集合名（set name）与现有的集合名重复');
+        return;
+      }
       const formData = new FormData();
       this.fileList.forEach((file: any) => { formData.append('case_file', file); });
       const url = `http://192.168.1.26:8000/auto/addTestCase?case_name=${this.creTemplateData.case_name}&user_id=${this.currentUser}`;
@@ -235,6 +240,7 @@ export class RegressionComponent implements OnInit {
           if (event.body.length === 1) {
             this.creTemplateData = {case_name: ''};
             this.msg.success('创建成功');
+            this.fileList.splice(0, this.fileList.length);
             this.loadData('informa');
           } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
           formData.delete(flag);
@@ -242,7 +248,6 @@ export class RegressionComponent implements OnInit {
       );
     } else if (flag === 'addCreTemplate') {
       // if (!this.verificationAdd('regression')) { return; }
-      const formData = new FormData();
       const url = 'http://192.168.1.26:8000/auto/addTestTask?task_name='
         + this.creTaskData.task_name
         + '&task_type=2'
@@ -279,13 +284,17 @@ export class RegressionComponent implements OnInit {
           if (event.body.length === 1) {
             this.serialData = {task_name: '', appkey: '', case_id: '', task_type: '', bot_name: '', temp_id: ''};
             this.msg.success('创建成功');
+            this.fileList.splice(0, this.fileList.length);
             this.loadData('creTask');
           } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
           formData.delete(flag);
         }, err => { formData.delete(flag); }
       );
     } else if (flag === 'addTemplate') {
-      // if (!this.verificationAdd('regression')) { return; }
+      if (this.dataTemplate.some(item => item.fields.temp_name === this.templateData.temp_name.replace(/(^\s*)|(\s*$)/g, ""))) {
+        this.msg.error('Template Name*（模板名）与现有的模板名重复');
+        return;
+      }
       const formData = new FormData();
       this.fileList.forEach((file: any) => { formData.append('temp_file', file); });
       const url = 'http://192.168.1.26:8000/auto/addTestTemp?'
@@ -297,6 +306,7 @@ export class RegressionComponent implements OnInit {
           if (event.body.length === 1) {
             this.templateData = {temp_name: ''};
             this.msg.success('提交成功');
+            this.fileList.splice(0, this.fileList.length);
             this.loadData('template');
           } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.msg, }); }
           formData.delete(flag);
@@ -340,12 +350,10 @@ export class RegressionComponent implements OnInit {
   beforeUpload = (file: UploadFile): boolean => {
     const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
     const isPng = suffix === '.xls' || suffix === '.xlsx' ? true : false;
-    const isMoreThanTen = file.size < 512000 ? true : false;
+    // const isMoreThanTen = file.size < 512000 ? true : false;
     this.fileList.splice(0, this.fileList.length);
     if (!isPng) {
       this.msg.error('您只能上传.xls、.xlsx文件');
-    } else if (!isMoreThanTen) {
-      this.msg.error('您只能上传不超过500K文件');
     } else {
       this.fileList.push(file);
     }

@@ -46,76 +46,76 @@
                 </div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="10">
-                  <div nz-col nzSpan="9">
-                    <textarea rows="3" nz-input formControlName="ask" placeholder="关键词搜问句" nzSize="default"></textarea>
+                <div nz-col nzSpan="12">
+                  <div nz-col nzSpan="12">
+                    <input nz-input formControlName="ask" placeholder="关键词搜问句" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="9">
-                    <textarea rows="3" nz-input formControlName="answer" placeholder="关键词搜回答" nzSize="default"></textarea>
-                  </div>
-                  <div nz-col nzSpan="6">
-                    <textarea rows="3" nz-input formControlName="uid" [(ngModel)]="uid" placeholder="输入用户ID" nzSize="default"></textarea>
+                  <div nz-col nzSpan="12">
+                    <input nz-input formControlName="answer" placeholder="关键词搜回答" type="text" nzSize="default">
                   </div>
                 </div>
-                <div nz-col nzSpan="8">
-                  <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
-                  <div nz-col nzSpan="4" class="span_down">
-                    <nz-select [(ngModel)]="sessionLogFlag" formControlName="flag">
-                      <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
-                      <nz-option required [nzLabel]="'已标记'" [nzValue]="1"></nz-option>
-                      <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
-                    </nz-select>
+                <div nz-col nzSpan="12">
+                  <div nz-col nzSpan="5">
+                    <input nz-input formControlName="uid" [(ngModel)]="uid" placeholder="输入用户ID" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="4" class="span_down right_alignment" style="letter-spacing: -2px;">
-                    异常回答：
-                  </div>
-                  <div nz-col nzSpan="4">
-                    <nz-select [(ngModel)]="abnormalType" formControlName="abnormalType">
-                      <nz-option [nzLabel]="'不筛选'" [nzValue]="''"></nz-option>
-                      <nz-option [nzLabel]="'全部异常话术'" [nzValue]="'ALL'"></nz-option>
-                      <nz-option [nzLabel]="'后端问题话术'" [nzValue]="'BACK_END'"></nz-option>
-                      <nz-option [nzLabel]="'业务bot挽回话术'" [nzValue]="'BUSINESS_BOT_DETAINMENT'"></nz-option>
-                      <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
-                    </nz-select>
-                  </div>
-                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="4" class="span_down right_alignment" style="letter-spacing: 0px;">
                     会话内意图数&nbsp;<a (click)="chooseSessionCompare($event, 'conpareFirst')" style="letter-spacing: 7px;font-weight: bold;">{{conpareFirst === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="3" style="margin-right: -15px;">
                     <input nz-input formControlName="intentionNum" type="text" nzSize="default">
                   </div>
-
-                  <div nz-col nzSpan="4" class="span_down right_alignment">
-                    账户类型：
-                  </div>
-                  <div nz-col nzSpan="7">
-                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="accountType" formControlName="accountType">
-                      <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
-                    </nz-select>
-                  </div>
-                  <div nz-col nzSpan="4" class="span_down right_alignment">
-                    特殊用户：
-                  </div>
-                  <div nz-col nzSpan="7">
-                    <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="specialUserCategoryId" formControlName="specialUserCategoryId">
-                      <nz-option *ngFor="let option of listOfOption2" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
-                    </nz-select>
-                  </div>
-                </div>
-                <div nz-col nzSpan="6">
-                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="3" class="span_down right_alignment" style="letter-spacing: 0px;">
                     重复回答&nbsp;<a (click)="chooseSessionCompare($event, 'conpareSecond')" style="letter-spacing: 7px;font-weight: bold;">{{conpareSecond === '<' ? '<' : '>'}}</a>
                   </div>
-                  <div nz-col nzSpan="2" style="margin-right: -15px;">
+                  <div nz-col nzSpan="3" style="margin-right: -15px;">
                     <input nz-input formControlName="repetitionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="7" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="3" class="span_down right_alignment" style="letter-spacing: 0px;">
                     响应时长&nbsp;<a (click)="chooseSessionCompare($event, 'conpareThird')" style="letter-spacing: 7px;font-weight: bold;">{{conpareThird === '<' ? '<' : '>'}}</a>&nbsp;
                   </div>
                   <div nz-col nzSpan="2">
                     <input nz-input formControlName="cost" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="2" class="span_down">&nbsp;ms</div>
+                  <div nz-col nzSpan="1" class="span_down">&nbsp;ms</div>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="1" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
+                <div nz-col nzSpan="3" class="span_down">
+                  <nz-select [(ngModel)]="sessionLogFlag" formControlName="flag">
+                    <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
+                    <nz-option required [nzLabel]="'已标记'" [nzValue]="1"></nz-option>
+                    <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">
+                  异常回答：
+                </div>
+                <div nz-col nzSpan="3">
+                  <nz-select [(ngModel)]="abnormalType" formControlName="abnormalType">
+                    <nz-option [nzLabel]="'不筛选'" [nzValue]="''"></nz-option>
+                    <nz-option [nzLabel]="'全部异常话术'" [nzValue]="'ALL'"></nz-option>
+                    <nz-option [nzLabel]="'后端问题话术'" [nzValue]="'BACK_END'"></nz-option>
+                    <nz-option [nzLabel]="'业务bot挽回话术'" [nzValue]="'BUSINESS_BOT_DETAINMENT'"></nz-option>
+                    <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  账户类型：
+                </div>
+                <div nz-col nzSpan="3">
+                  <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="accountType" formControlName="accountType">
+                    <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
+                  </nz-select>
+                </div>
+                <div nz-col nzSpan="2" class="span_down right_alignment">
+                  特殊用户：
+                </div>
+                <div nz-col nzSpan="3">
+                  <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="specialUserCategoryId" formControlName="specialUserCategoryId">
+                    <nz-option *ngFor="let option of listOfOption2" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
+                    <nz-option [nzLabel]="'非特殊用户'" [nzValue]="'NON-SPECIAL-USERS'"> </nz-option>
+                  </nz-select>
                 </div>
               </div>
             </div>
@@ -184,16 +184,16 @@
                   <button nz-button nzType="primary" (click)="showSomething('changeFlag', data)"><i class="anticon anticon-star"></i>{{data.flag ? '已标记' : '标记'}}</button>
                 </td>
                 <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[7].checked">
-                  {{data.remark}}
+                  {{data.remark ? data.remark : '--'}}
                 </td>
                 <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[8].checked">
                   {{data.appkey}}
                 </td>
                 <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[9].checked">
-                  {{data.accountType}}
+                  {{data.accountType === 'ORIGINAL' ? '首批账户' : data.accountType === 'GENERAL' ? '普通账户' : data.accountType === 'CUSTOMER_TEST' ? '客户测试账户' : data.accountType === 'CONSOLE_TEST' ? '控制台测试' : data.accountType === 'CONSOLE_AUTO_TEST' ? '控制台自动测试' : data.accountType === 'OTHER' ? '其他账户' : '其他账户'}}
                 </td>
                 <td nzWidth="30px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[10].checked">
-                  {{data.specialUserCategoryId}}
+                  {{data.specialUserCategoryId ? data.specialUserCategoryId : '非特殊用户'}}
                 </td>
                 <td nzWidth="60px" [ngStyle]="{'background-color': data.flag ? '#FFCCCC' : (data.color ? '#E0F5EB' : '#F2F2F2') }" *ngIf="checkDataOptions.sessionAnalysis[11].checked" nzTitle="{{data.sessionId}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.sessionId ? data.sessionId.length > 6 ? data.sessionId.substring(0, 6) + '…' : data.sessionId : 'null'}}</a>
@@ -237,7 +237,7 @@
           </div>
 
 
-          <nz-modal [(nzVisible)]="visiable.changeFlag" nzWidth="950" nzTitle="标记批注" [nzFooter]="changeFlagModalFooter" (nzOnCancel)="showSomething('changeFlag', '')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.changeFlag" nzWidth="1250" nzTitle="标记批注" [nzFooter]="changeFlagModalFooter" (nzOnCancel)="showSomething('changeFlag', '')" nzMaskClosable="false">
             <div nz-row class="search_panel" style="text-align: center;">
               <div nz-col nzSpan="3" class="right_alignment">用户问询：</div>
               <div nz-col nzSpan="14" class="left_alignment">{{checkFlag.ask}}</div>
@@ -250,13 +250,14 @@
             </div><br>
             <div nz-row class="search_panel" style="text-align: center;">
               <div nz-col nzSpan="3" class="right_alignment">批注：</div>
-              <div nz-col nzSpan="19" class="left_alignment">
-                <textarea rows="3" nz-input placeholder="请输入批注" nzSize="default" [(ngModel)]="checkFlag.remark"></textarea>
+              <div nz-col nzSpan="21" class="left_alignment">
+                <!-- height: 70px -->
+                <input nz-input [(ngModel)]="checkFlag.remark" placeholder="请输入批注" type="text" nzSize="default" (keyup.enter)="changeFlag('sessionLog')">
               </div>
             </div><br>
             <div nz-row class="search_panel" style="text-align: center;">
               <div nz-col nzSpan="3" class="right_alignment">标记状态：</div>
-              <div nz-col nzSpan="19" class="left_alignment"><label nz-checkbox [(ngModel)]="checkFlag.checked">已标记</label></div>
+              <div nz-col nzSpan="19" class="left_alignment"><label nz-checkbox [(ngModel)]="checkFlag.checked" (keyup.enter)="changeFlag('sessionLog')">已标记</label></div>
             </div>
             <ng-template #changeFlagModalFooter>
               <button nz-button nzType="default" (click)="changeFlag('sessionLog')"><i class="anticon anticon-save"></i>保存</button>
@@ -342,7 +343,7 @@
 
 
 
-        <nz-tab [nzTitle]="specialUserTemplate" (nzClick)="changePanel('specialUser')" *ngIf="commonService.haveMenuPermission('children', '对话日志')">
+        <nz-tab [nzTitle]="specialUserTemplate" (nzClick)="changePanel('specialUser')" *ngIf="commonService.haveMenuPermission('children', '特殊用户')">
           <ng-template #specialUserTemplate><i class="anticon anticon-user"></i>特殊用户</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="3">

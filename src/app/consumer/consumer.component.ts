@@ -22,7 +22,7 @@ export class ConsumerComponent implements OnInit {
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
@@ -81,7 +81,7 @@ export class ConsumerComponent implements OnInit {
 
   private _initForm(): void {
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''] });
+    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
   }
@@ -90,9 +90,9 @@ export class ConsumerComponent implements OnInit {
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
       this.consumerDate = {
         appChannel: data.appChannel,
         appChannelName: data.appChannelName,
@@ -100,7 +100,8 @@ export class ConsumerComponent implements OnInit {
         loginType: data.loginType,
         paymentKey: data.paymentKey,
         smsSign: data.smsSignType,
-        keys: ''
+        keys: '',
+        phone: ''
       };
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
@@ -121,7 +122,7 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', keys: '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
       this.visiable.addSerial = false;
     }
   }
@@ -138,6 +139,9 @@ export class ConsumerComponent implements OnInit {
         result = false;
       } else if (this.addConsumerForm.controls['robot'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: 'BOT名称未填写' });
+        result = false;
+      } else if (this.addConsumerForm.controls['phone'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '手机号码未填写' });
         result = false;
       }
     } else if (flag === 'addSerial') {
@@ -160,10 +164,10 @@ export class ConsumerComponent implements OnInit {
         'robot': this.addConsumerForm.controls['robot'].value,
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
+        'phone': this.addConsumerForm.controls['phone'].value,
         // 临时
         // 'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
       };
-
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });

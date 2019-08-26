@@ -1,5 +1,6 @@
-import { Component, ViewChild, Input, AfterViewInit, ElementRef, NgZone, Output, EventEmitter, OnDestroy, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, Input, NgZone, OnDestroy, Output, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ClipboardService } from 'ngx-clipboard';
 import { EditorConfig } from './EditorConfig';
 
 declare var editormd: any;
@@ -13,7 +14,6 @@ const UEDITOR_VALUE_ACCESSOR = {
 @Component({
   selector: 'qy-editor-md',
   templateUrl: './makedown.component.html',
-  // templateUrl: `<div id="md" #host></div>`,
   styleUrls: ['./makedown.component.scss'],
   providers: [UEDITOR_VALUE_ACCESSOR]
 })
@@ -25,13 +25,15 @@ export class MakedownComponent implements AfterViewInit, OnDestroy, ControlValue
   @Output() onFocus = new EventEmitter();
   @Output() getHtmlValue = new EventEmitter();
   @ViewChild('host') host;
+  @ViewChild('copyButton') copyButton: ElementRef;
   private mdeditor: any;
   private value: string;
   onChange: Function = () => { };
   onTouched: Function = () => { };
+  finalContent = ``;
   constructor(
-    private el: ElementRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private _clipboardService: ClipboardService
   ) {}
 
   ngAfterViewInit(): void {
@@ -67,6 +69,7 @@ export class MakedownComponent implements AfterViewInit, OnDestroy, ControlValue
   }
 
   init() {
+    console.log(this.copyButton);
     if (typeof editormd === 'undefined') {
       console.error('UEditor is missing');
       return;
@@ -106,12 +109,16 @@ export class MakedownComponent implements AfterViewInit, OnDestroy, ControlValue
     }
   }
 
-  // getMarkContent(): string {
-  //   return this.mdeditor.getMarkdown();
-  // }
+  // 获取md内容
+  copyText(){
+    this._clipboardService.copyFromContent(this.getMarkContent());
+  }
+
+  getMarkContent(): string {
+    return this.mdeditor.getMarkdown();
+  }
 
   getHtmlContent(): string {
-    console.log('this.mdeditor.getHTML() 1', this.mdeditor.getHTML());
     return this.mdeditor.getHTML();
   }
 }
