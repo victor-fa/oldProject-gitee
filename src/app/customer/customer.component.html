@@ -5,16 +5,60 @@
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabset">
         <nz-tab [nzTitle]="feedbackTemplate" (nzClick)="changePanel('feedback')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #feedbackTemplate><i class="anticon anticon-swap"></i>用户反馈</ng-template>
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchFeedBackForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                用户账号：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                问题类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                处理状态：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                回复状态：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+              </div>
+              <div nz-col nzSpan="5">&nbsp;</div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                反馈时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchOpposition')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="8"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('feedback')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+          </div>
+
           <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="100px">序号</th>
                 <th nzWidth="100px">用户账号</th>
                 <th nzWidth="100px">用户昵称</th>
+                <th nzWidth="100px">问题类型</th>
+                <th nzWidth="100px">具体问题</th>
                 <th nzWidth="100px">问题描述</th>
                 <th nzWidth="100px">微信</th>
                 <th nzWidth="100px">邮箱</th>
                 <th nzWidth="100px">QQ</th>
+                <th nzWidth="100px">处理状态</th>
+                <th nzWidth="100px">回复状态</th>
                 <th nzWidth="100px">反馈时间</th>
                 <th nzWidth="100px">操作</th>
               </tr>
@@ -24,12 +68,16 @@
                 <td nzWidth="100px">{{i + 1}}</td>
                 <td nzWidth="100px">{{data.phone}}</td>
                 <td nzWidth="100px">{{data.nickName}}</td>
+                <td nzWidth="100px">{{data.typeName}}</td>
+                <td nzWidth="100px">{{data.concreteProblems}}</td>
                 <td nzTitle="{{data.words}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.words ? data.words.length > 12 ? data.words.substring(0, 12) + '…' : data.words : 'null'}}</a>
                 </td>
                 <td nzWidth="100px">{{data.wxNumber}}</td>
                 <td nzWidth="100px">{{data.email}}</td>
                 <td nzWidth="100px">{{data.qq}}</td>
+                <td nzWidth="100px">{{data.status === 'SUBMITTED' ? '已提交' : data.readStatus === 'DOING' ? '处理中' : data.readStatus === 'DONE' ? '已完成' : ''}}</td>
+                <td nzWidth="100px">{{data.readStatus === true ? '已读' : '未读'}}</td>
                 <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
                 <td nzWidth="100px">
                   <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看详情</button>
@@ -41,7 +89,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹框 —— 信息 —— 反馈详情 -->
           <nz-modal [(nzVisible)]="visiable.feedBack" nzWidth="750" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideModal('feedBack')" nzMaskClosable="false">
             <form>
               <div nz-row class="search_panel">
@@ -78,11 +125,87 @@
                 </div>
               </ng-container>
             </form>
-            <!-- 弹框和底部定制 -->
             <ng-template #feedBackModalFooter>
               <button nz-button nzType="default" (click)="hideModal('feedBack')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="problemTemplate" (nzClick)="changePanel('problem')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
+          <ng-template #problemTemplate><i class="anticon anticon-question-circle-o"></i>反馈问题管理</ng-template>
+          <nz-table #rowProblemTable [nzData]="problemInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>问题类型</th>
+                <th>问题类型排序</th>
+                <th>具体问题</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowProblemTable.data; let i=index;">
+                <td>{{i + 1}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.sort}}</td>
+                <td nzTitle="{{data.concreteProblems !== undefined && data.concreteProblems.length > 0 ? data.concreteProblems : ''}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.concreteProblems !== undefined && data.concreteProblems.length > 0 ? data.concreteProblems.toString().substring(0, 7) + (data.concreteProblems.toString().length > 7 ? '……' : '') : ''}}</a>
+                </td>
+                <td>{{data.createDate | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td><!-- date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00' -->
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal(data, 'editProblem')" style="margin-right: 10px;"><i class="anticon anticon-edit"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal(data, 'deleteProblem')"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addProblem" nzWidth="750" nzTitle="新增问题" [nzFooter]="addProblemModalFooter" (nzOnCancel)="hideModal('addProblem')" nzMaskClosable="false">
+            <form [formGroup]="addProblemForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">问题类型：</div>
+                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题类型" formControlName="name" nzSize="default"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">问题排序：</div>
+                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题排序" formControlName="sort" nzSize="default"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">具体问题：</div>
+                <div nz-col nzSpan="19"><textarea rows="4" nz-input placeholder="输入具体问题" formControlName="concreteProblems" nzSize="default"></textarea></div>
+              </div>
+            </form>
+            <ng-template #addProblemModalFooter>
+                <button nz-button nzType="default" (click)="doSave('addProblem')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addProblem')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editProblem" nzWidth="750" nzTitle="修改问题" [nzFooter]="editProblemModalFooter" (nzOnCancel)="hideModal('editProblem')" nzMaskClosable="false">
+            <form [formGroup]="editProblemForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">问题类型：</div>
+                <div nz-col nzSpan="19"><input nz-input [(ngModel)]="dataProblem.name" formControlName="name" placeholder="输入问题类型" nzSize="default"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">问题排序：</div>
+                <div nz-col nzSpan="19"><input nz-input [(ngModel)]="dataProblem.sort" formControlName="sort" placeholder="输入问题排序" nzSize="default"></div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="5" class="right_alignment">具体问题：</div>
+                <div nz-col nzSpan="19"><textarea rows="4" nz-input [(ngModel)]="dataProblem.concreteProblems" formControlName="concreteProblems" placeholder="输入具体问题" nzSize="default"></textarea></div>
+              </div>
+            </form>
+            <ng-template #editProblemModalFooter>
+                <button nz-button nzType="default" (click)="doSave('editProblem')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editProblem')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
         <nz-tab [nzTitle]="oppositionTemplate" (nzClick)="changePanel('opposition')" *ngIf="commonService.haveMenuPermission('children', '点踩日志')">
@@ -148,7 +271,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹框 —— 信息 —— 点踩对话日志详情 -->
           <nz-modal [(nzVisible)]="visiable.opposition" nzWidth="1400" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideModal('opposition')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
@@ -184,14 +306,12 @@
                 </div>
               </ng-container>
             </ng-container>
-            <!-- 弹框和底部定制 -->
             <ng-template #oppositionModalFooter>
               <button nz-button nzType="default" (click)="hideModal('opposition')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
         </nz-tab>
 
-        <!-- 弹框 —— 导出 —— 批量导出 -->
         <nz-modal [(nzVisible)]="visiable.batchDownload" nzWidth="750" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')" nzMaskClosable="false">
           <form [formGroup]="batchDownloadForm">
             <div nz-row class="search_panel">
@@ -235,7 +355,6 @@
               </div>
             </div>
           </form>
-          <!-- 弹框和底部定制 -->
           <ng-template #batchDownloadModalFooter>
             <button nz-button nzType="primary" (click)="getExcel('allOpposition')"><i class="anticon anticon-download"></i>导出{{currentPanel === "opposition" ? '点踩' : '点赞'}}对话日志</button>
           </ng-template>
@@ -303,7 +422,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹框 —— 信息 —— 点赞对话日志详情 -->
           <nz-modal [(nzVisible)]="visiable.agree" nzWidth="1400" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideModal('agree')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
@@ -339,7 +457,6 @@
                 </div>
               </ng-container>
             </ng-container>
-            <!-- 弹框和底部定制 -->
             <ng-template #agreeModalFooter>
               <button nz-button nzType="default" (click)="hideModal('agree')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>

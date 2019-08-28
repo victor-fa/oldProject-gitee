@@ -53,6 +53,38 @@ export class UserService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  // 查询列表
+  getProblemInfo(): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback/type`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  // 新增
+  addProblem(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback/type`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  // 修改
+  editProblem(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback/type?id=${data.id}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  // 删除
+  deleteProblem(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback/type?id=${data}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
   /**
    * 查看点踩
    */

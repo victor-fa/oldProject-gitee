@@ -67,6 +67,7 @@ export class LeftNavComponent implements OnInit {
         case 'movie': number = 16; break;
         case 'tts': number = 17; break;
         case 'reminder': number = 18; break;
+        case 'news': number = 19; break;
         default:
           break;
       }

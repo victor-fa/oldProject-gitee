@@ -1,0 +1,287 @@
+<app-left-nav></app-left-nav>
+<div class="platform" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+
+        <nz-tab [nzTitle]="taggingPlatformTemplate" (nzClick)="changePanel('taggingPlatform')" *ngIf="commonService.haveMenuPermission('children', '人工标注')">
+          <ng-template #taggingPlatformTemplate><i class="anticon anticon-code-o"></i>技术文档</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addLevelOneMenu', '')"><i class="anticon anticon-file-add"></i>新增一级菜单</button>
+            </div>
+          </div>
+          <nz-table #taggingPlatformTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">菜单名</th>
+                <th nzWidth="20px">排序</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <tr *ngFor="let data of taggingPlatformTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.totalCount}}</td>
+                <td>{{data.markedCount}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('editContent', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>temp</button>
+                  <button nz-button nzType="primary" (click)="showModal('addLevelTwoMenu', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>添加二级菜单</button>
+                  <button nz-button nzType="primary" (click)="showModal('editLevelOneMenu', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('submitTagAudit', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>删除</button>
+                </td>
+              </tr> -->
+              <ng-container *ngFor="let data of taggingPlatformTable.data">
+                <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
+                  <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+                    <td
+                      [nzIndentSize]="item.level * 20"
+                      [nzShowExpand]="!!item.children"
+                      [(nzExpand)]="item.expand"
+                      (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"
+                    >
+                      {{ item.name }}
+                    </td>
+                    <td>{{ item.age }}</td>
+                    <td>{{ item.address }}</td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addLevelOneMenu" nzWidth="650" nzTitle="新增一级菜单" [nzFooter]="addLevelOneMenuFooter" (nzOnCancel)="hideModal('addLevelOneMenu')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                一级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                <input nz-input placeholder="输入一级菜单" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                二级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                <input nz-input placeholder="输入二级菜单" nzSize="default">
+              </div>
+            </div>
+            <ng-template #addLevelOneMenuFooter>
+              <button nz-button nzType="primary" (click)="doSave('addLevelOneMenu', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addLevelOneMenu')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editLevelOneMenu" nzWidth="650" nzTitle="修改一级菜单" [nzFooter]="editLevelOneMenuFooter" (nzOnCancel)="hideModal('editLevelOneMenu')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                一级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                <input nz-input placeholder="输入一级菜单" nzSize="default">
+              </div>
+            </div>
+            <ng-template #editLevelOneMenuFooter>
+              <button nz-button nzType="primary" (click)="doSave('editLevelOneMenu', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editLevelOneMenu')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addLevelTwoMenu" nzWidth="650" nzTitle="新增二级级菜单" [nzFooter]="addLevelTwoMenuFooter" (nzOnCancel)="hideModal('addLevelTwoMenu')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                一级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                {{'xxx'}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                二级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                <input nz-input placeholder="输入二级菜单" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                二级排序：
+              </div>
+              <div nz-col nzSpan="3" class="span_down">
+                {{'1 ——'}}
+              </div>
+              <div nz-col nzSpan="2" class="span_down">
+                <input nz-input nzSize="default">
+              </div>
+            </div>
+            <ng-template #addLevelTwoMenuFooter>
+              <button nz-button nzType="primary" (click)="doSave('addLevelTwoMenu', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addLevelTwoMenu')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editLevelTwoMenu" nzWidth="650" nzTitle="修改二级级菜单" [nzFooter]="editLevelTwoMenuFooter" (nzOnCancel)="hideModal('editLevelTwoMenu')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                一级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                {{'xxx'}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                二级菜单：
+              </div>
+              <div nz-col nzSpan="21" class="span_down">
+                {{'xxx'}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                二级排序：
+              </div>
+              <div nz-col nzSpan="3" class="span_down">
+                {{'1 ——'}}
+              </div>
+              <div nz-col nzSpan="2" class="span_down">
+                <input nz-input nzSize="default">
+              </div>
+            </div>
+            <ng-template #editLevelTwoMenuFooter>
+              <button nz-button nzType="primary" (click)="doSave('editLevelTwoMenu', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editLevelTwoMenu')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editContent" nzWidth="950" nzTitle="编辑内容" [nzFooter]="editContentFooter" (nzOnCancel)="hideModal('editContent')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="21">
+                <button nz-button nzType="primary" (click)="goEditor()"><i class="anticon anticon-save"></i>启用Editor编辑器</button>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <textarea rows="22" nz-input placeholder="请输入内容" nzSize="default"></textarea>
+              </div>
+            </div>
+            <ng-template #editContentFooter>
+              <button nz-button nzType="primary" (click)="doSave('editContent', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editContent')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+        </nz-tab>
+
+
+        <nz-tab [nzTitle]="manualAuditTemplate" (nzClick)="changePanel('manualAudit')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+          <ng-template #manualAuditTemplate><i class="anticon anticon-user"></i>客户账号</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="21"></div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addAccount', '')"><i class="anticon anticon-file-add"></i>新建账号</button>
+            </div>
+          </div>
+          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+            <thead>
+              <tr>
+                <th nzWidth="20px">序号</th>
+                <th nzWidth="20px">账号名</th>
+                <th nzWidth="20px">客户名</th>
+                <th nzWidth="20px">操作人</th>
+                <th nzWidth="20px">创建时间</th>
+                <th nzWidth="20px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of manualAuditTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.submitter}}</td>
+                <td>{{data.submitter}}</td>
+                <td>{{data.submitter}}</td>
+                <td>{{data.submitter}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('editAccount', data)" style="margin-right: 10px"><i class="anticon anticon-edit"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteManualAudit', data)" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addAccount" nzWidth="950" nzTitle="新建账号" [nzFooter]="addAccountFooter" (nzOnCancel)="hideModal('addAccount')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                客户账号：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入客户账号" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                客户名称：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入客户名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                登录密码：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入登录密码" nzSize="default">
+              </div>
+            </div>
+            <ng-template #addAccountFooter>
+              <button nz-button nzType="primary" (click)="doSave('addAccount', '')"><i class="anticon anticon-save"></i>审核通过</button>
+              <button nz-button nzType="default" (click)="hideModal('addAccount')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editAccount" nzWidth="950" nzTitle="编辑账号" [nzFooter]="editAccountFooter" (nzOnCancel)="hideModal('editAccount')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                客户账号：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入客户账号" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                客户名称：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入客户名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="3" class="span_down right_alignment">
+                登录密码：
+              </div>
+              <div nz-col nzSpan="8" class="span_down">
+                <input nz-input placeholder="输入登录密码" nzSize="default">
+              </div>
+            </div>
+            <ng-template #editAccountFooter>
+              <button nz-button nzType="primary" (click)="doSave('editAccount', '')"><i class="anticon anticon-save"></i>审核通过</button>
+              <button nz-button nzType="default" (click)="hideModal('editAccount')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>

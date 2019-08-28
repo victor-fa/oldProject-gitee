@@ -21,17 +21,28 @@
 .left_nav {
   width: 240px;
   height: 100%;
+  overflow: hidden;
 
-  .list {
-    position: relative;
+  .left_nav_child {
+    width: 253px;
     height: 100%;
-    padding-top: calc(60%);
-  }
+    line-height: 30px;
+    overflow-y: scroll;
 
-  .active_panel {
-    background-color: #e6f7ff;
-    color: #1890ff;
-    border-right: 3px solid #1890ff;
+    .list {
+      position: relative;
+      height: 110%;
+      padding-top: calc(60%);
+    }
+
+    .active_panel {
+      background-color: #e6f7ff;
+      color: #1890ff;
+      border-right: 3px solid #1890ff;
+    }
+  }
+  .left_nav_child::-webkit-scrollbar {
+    border: 1px;
   }
 }
 

@@ -24,8 +24,7 @@ export class EditorConfig {
     constructor() {
     }
 
-    public onload() {
-    }
-    public onchange() {
-    }
+    public onload() {}
+
+    public onchange() {}
 }

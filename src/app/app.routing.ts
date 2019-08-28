@@ -18,7 +18,8 @@ const routes: Routes = [
   { path: 'news', loadChildren: './news/news.module#NewsModule'},
   { path: 'sessionAnalysis', loadChildren: './sessionAnalysis/sessionAnalysis.module#SessionAnalysisModule'},
   { path: 'regression', loadChildren: './regression/regression.module#RegressionModule'},
-  { path: 'makedown', loadChildren: './makedown/makedown.module#MakedownModule'},
+  { path: 'platform', loadChildren: './platform/platform.module#PlatformModule'},
+  { path: 'markdown', loadChildren: './markdown/markdown.module#MarkdownModule'},
   { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 

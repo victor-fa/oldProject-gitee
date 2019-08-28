@@ -7,17 +7,17 @@ declare var editormd: any;
 
 const UEDITOR_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => MakedownComponent),
+  useExisting: forwardRef(() => MarkdownComponent),
   multi: true
 };
 
 @Component({
   selector: 'qy-editor-md',
-  templateUrl: './makedown.component.html',
-  styleUrls: ['./makedown.component.scss'],
+  templateUrl: './markdown.component.html',
+  styleUrls: ['./markdown.component.scss'],
   providers: [UEDITOR_VALUE_ACCESSOR]
 })
-export class MakedownComponent implements AfterViewInit, OnDestroy, ControlValueAccessor {
+export class MarkdownComponent implements AfterViewInit, OnDestroy, ControlValueAccessor {
 
   @Input() editormdConfig: EditorConfig; // 配置选项
   @Output() onReady = new EventEmitter();

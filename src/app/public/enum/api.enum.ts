@@ -159,3 +159,11 @@ export enum regressionApiUrls {
   /** 模板库 */
   templateList = '/regression/word-sets',
 }
+
+/** 开放平台 */
+export enum platformApiUrls {
+  /** 技术文档 */
+  platformList = '/regression/word-sets',
+}
+
+

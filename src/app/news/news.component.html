@@ -5,7 +5,7 @@
       <nz-tabset nzSize="large">
 
         <nz-tab [nzTitle]="taggingNewsTemplate" (nzClick)="changePanel('taggingNews')" *ngIf="commonService.haveMenuPermission('children', '人工标注')">
-          <ng-template #taggingNewsTemplate><i class="anticon anticon-tag-o"></i>人工标注</ng-template>
+          <ng-template #taggingNewsTemplate><i class="anticon anticon-flag"></i>人工标注</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="taggingNewsSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -119,7 +119,7 @@
 
 
         <nz-tab [nzTitle]="manualAuditTemplate" (nzClick)="changePanel('manualAudit')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
-          <ng-template #manualAuditTemplate><i class="anticon anticon-exception"></i>人工审核</ng-template>
+          <ng-template #manualAuditTemplate><i class="anticon anticon-schedule"></i>人工审核</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="manualAuditSearchForm">
 
@@ -291,7 +291,7 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="newsThesaurusTemplate" (nzClick)="changePanel('newsThesaurus')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
-          <ng-template #newsThesaurusTemplate><i class="anticon anticon-inbox"></i>新闻词库</ng-template>
+          <ng-template #newsThesaurusTemplate><i class="anticon anticon-global"></i>新闻词库</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="newsThesaurusSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -424,7 +424,7 @@
 
 
         <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
-          <ng-template #newsNERTemplate><i class="anticon anticon-code-o"></i>新闻NER</ng-template>
+          <ng-template #newsNERTemplate><i class="anticon anticon-bulb"></i>新闻NER</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="newsNERSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">

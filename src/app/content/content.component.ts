@@ -293,9 +293,7 @@ export class ContentComponent implements OnInit {
   // 新增操作
   doSave(flag): void {
     if (flag === 'content') {
-      if (!this.verificationAdd('content')) {
-        return;
-      }
+      if (!this.verificationAdd('content')) { return; }
       const contentInput = {
         'title': this.addContentForm.controls['title'].value,
         'url': this.dotranUrl(this.addContentForm.controls['url'].value),
@@ -316,9 +314,7 @@ export class ContentComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'screen') {
-      if (!this.verificationAdd('screen')) {
-        return;
-      }
+      if (!this.verificationAdd('screen')) { return; }
       const screenInput = {
         'enabled': false, // 默认不可启用
         'title': this.addScreenForm.controls['title'].value,
@@ -340,9 +336,7 @@ export class ContentComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'open') {
-      if (!this.verificationAdd('open')) {
-        return;
-      }
+      if (!this.verificationAdd('open')) { return; }
       const maxDisplay = this.addOpenForm.controls['maxDisplay'].value;
       const openInput = {
         'enabled': false, // 默认不可启用
@@ -366,9 +360,7 @@ export class ContentComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'banner') {
-      if (!this.verificationAdd('banner')) {
-        return;
-      }
+      if (!this.verificationAdd('banner')) { return; }
       const bannerInput = {
         'enabled': false, // 默认不可启用
         'title': this.addBannerForm.controls['title'].value,
@@ -389,9 +381,7 @@ export class ContentComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'personal') {
-      if (!this.verificationAdd('personal')) {
-        return;
-      }
+      if (!this.verificationAdd('personal')) { return; }
       const personalInput = {
         'enabled': false, // 默认不可启用
         'title': this.addPersonalForm.controls['title'].value,
