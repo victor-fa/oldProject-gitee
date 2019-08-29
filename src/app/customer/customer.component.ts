@@ -18,7 +18,7 @@ export class CustomerComponent implements OnInit {
 
   visiable = {feedBack: false, opposition: false, agree: false, batchDownload: false, addProblem: false, editProblem: false, editStatus: false, replyUser: false, };
   pageSize = 10;
-  feedbackInfo = [{}];
+  feedbackInfo = [{'dialogues': [{msg: ''}], 'message': []}];
   problemInfo = [];
   dataProblem = {id: ''};
   oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
@@ -37,7 +37,7 @@ export class CustomerComponent implements OnInit {
   addProblemForm: FormGroup;
   editProblemForm: FormGroup;
   batchDownloadDate = { 'botName': '', 'number': '', 'estimate': '', 'date': '', 'userPhone': '' };
-  tempFeedBack = { 'words': '', 'photo': '', 'number': '' };
+  tempFeedBack = { 'id': '', 'words': '', 'photo': '', 'number': '', 'status': 'SUBMITTED', 'dialogues': '', 'message': [], 'messageTemp': '' };
   tempOpposition = { session: '' };
   tempAgree = { session: '' };
   currentPanel = 'feedback';
@@ -119,6 +119,15 @@ export class CustomerComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.feedbackInfo = JSON.parse(res.payload);
+          this.feedbackInfo.forEach(item => {
+            if (item.dialogues) {
+              const arr = [];
+              item.dialogues.forEach(cell => {
+                if (cell.msg) { arr.push(cell.msg); }
+              })
+              item.message = arr;
+            }
+          });
           console.log(this.feedbackInfo);
           const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -320,6 +329,29 @@ export class CustomerComponent implements OnInit {
           this.loadData('problem');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'editStatus') {
+      const statusInput = {
+        'id': this.tempFeedBack.id,
+        'status': this.tempFeedBack.status,
+      };
+      this.userService.editStatus(statusInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.hideModal('editStatus');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'editReply') {
+      const replyInput = {
+        'msg': this.tempFeedBack.messageTemp,
+        'feedbackId': this.tempFeedBack.id,
+      };
+      this.userService.editReply(replyInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '回复成功', { nzStyle: { color : 'green' } });
+          this.loadData('feedback');
+          this.hideModal('replyUser');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -332,6 +364,7 @@ export class CustomerComponent implements OnInit {
       this.visiable.batchDownload = true;
     } else if (flag === 'feedBack') {
       this.tempFeedBack = data;
+      console.log(this.tempFeedBack);
       this.visiable.feedBack = true;
     } else if (flag === 'agree') {
       this.visiable.agree = true;
@@ -341,7 +374,6 @@ export class CustomerComponent implements OnInit {
       this.visiable.addProblem = true;
     } else if (flag === 'editProblem') {
       this.dataProblem = data;
-      console.log(this.dataProblem);
       this.visiable.editProblem = true;
     } else if (flag === 'deleteProblem') {
       this.modalService.confirm({ nzTitle: '提示', nzContent: '删除该问题类型，其下所有问题都会被删除，确认删除吗？', nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag) });

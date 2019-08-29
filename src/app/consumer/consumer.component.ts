@@ -131,17 +131,21 @@ export class ConsumerComponent implements OnInit {
   verificationAdd(flag): boolean {
     let result = true;
     if (flag === 'consumer') {
+      const robot = this.addConsumerForm.controls['robot'].value;
       if (this.addConsumerForm.controls['appChannel'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '客户ID未填写' });
         result = false;
       } else if (this.addConsumerForm.controls['appChannelName'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '客户名称未填写' });
         result = false;
-      } else if (this.addConsumerForm.controls['robot'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: 'BOT名称未填写' });
+      } else if (robot === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: 'BOT配置文件ID未填写' });
         result = false;
       } else if (this.addConsumerForm.controls['phone'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '手机号码未填写' });
+        result = false;
+      } else if (!(/^\w{3,20}$/.test(robot))) {
+        this.modalService.error({ nzTitle: '提示', nzContent: 'BBOT配置文件ID只允许出现下划线，a-zA-Z0-9' });
         result = false;
       }
     } else if (flag === 'addSerial') {
@@ -168,18 +172,18 @@ export class ConsumerComponent implements OnInit {
         // 临时
         // 'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
       };
-      this.consumerService.addConsumer(consumerInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '新增' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('addConsumer');
-          this.loadData('consumer');
-          setTimeout(() => {
-            this.addPaymengSms(consumerInput);
-          }, 3000);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
+      // this.consumerService.addConsumer(consumerInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '新增' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //     this.hideModal('addConsumer');
+      //     this.loadData('consumer');
+      //     setTimeout(() => {
+      //       this.addPaymengSms(consumerInput);
+      //     }, 3000);
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      // });
     } else if (flag === 'modifyConsumer') {
       const consumerInput = {
         'appChannel': this.consumerDate.appChannel,

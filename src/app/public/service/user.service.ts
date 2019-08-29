@@ -91,6 +91,23 @@ export class UserService extends AppServiceBase {
       .delete<IResponse<any>>(url, this.options);
   }
 
+  // 修改
+  editStatus(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback`;
+    const body = `id=${data.id}&status=${data.status}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  // 修改
+  editReply(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}/feedback/reply`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
   /**
    * 查看点踩
    */
