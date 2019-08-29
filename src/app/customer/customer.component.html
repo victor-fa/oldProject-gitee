@@ -5,45 +5,71 @@
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabset">
         <nz-tab [nzTitle]="feedbackTemplate" (nzClick)="changePanel('feedback')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #feedbackTemplate><i class="anticon anticon-swap"></i>用户反馈</ng-template>
-          <div nz-row class="search_panel">
-            <form [formGroup]="searchFeedBackForm">
+          <form [formGroup]="searchFeedBackForm">
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+                <input nz-input maxlength="32" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 问题类型：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+                <nz-select [ngModel]="''" formControlName="type">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'闲聊'" [nzValue]="'FREE_CHAT'"></nz-option>
+                  <nz-option required [nzLabel]="'机票'" [nzValue]="'FLIGHT'"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" [nzValue]="'TRAIN'"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'HOTEL'"></nz-option>
+                  <nz-option required [nzLabel]="'天气'" [nzValue]="'WEATHER'"></nz-option>
+                  <nz-option required [nzLabel]="'闪送'" [nzValue]="'ERRAND'"></nz-option>
+                  <nz-option required [nzLabel]="'电影'" [nzValue]="'MOVIE'"></nz-option>
+                  <nz-option required [nzLabel]="'星座'" [nzValue]="'MOVIE'"></nz-option>
+                  <nz-option required [nzLabel]="'音乐'" [nzValue]="'MUSIC'"></nz-option>
+                  <nz-option required [nzLabel]="'新闻'" [nzValue]="'NEWS'"></nz-option>
+                  <nz-option required [nzLabel]="'导航打车'" [nzValue]="'NAVICAR'"></nz-option>
+                  <nz-option required [nzLabel]="'充话费'" [nzValue]="'RECHARGE'"></nz-option>
+                  <nz-option required [nzLabel]="'打电话'" [nzValue]="'CALL'"></nz-option>
+                  <nz-option required [nzLabel]="'提问'" [nzValue]="'AIUI_CHAT'"></nz-option>
+                </nz-select>
               </div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 处理状态：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+                <nz-select [ngModel]="''" formControlName="status">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'未完成'" [nzValue]="'SUBMITTED'"></nz-option>
+                  <nz-option required [nzLabel]="'处理中'" [nzValue]="'DOING'"></nz-option>
+                  <nz-option required [nzLabel]="'已完成'" [nzValue]="'DONE'"></nz-option>
+                </nz-select>
               </div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 回复状态：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input maxlength="32" formControlName="xxx" placeholder="输入用户账号" nzSize="default">
+                <nz-select [ngModel]="''" formControlName="readStatus">
+                  <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'待回复'" [nzValue]="'false'"></nz-option>
+                  <nz-option required [nzLabel]="'已回复'" [nzValue]="'true'"></nz-option>
+                </nz-select>
               </div>
-              <div nz-col nzSpan="5">&nbsp;</div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 反馈时间：
               </div>
               <div nz-col nzSpan="7" class="span_down">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchOpposition')"></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'feedback')"></nz-range-picker>
               </div>
-            </form>
-            <div nz-col nzSpan="8"></div>
-            <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="loadData('feedback')"><i class="anticon anticon-search"></i>查询</button>
+              <div nz-col nzSpan="13"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="loadData('feedback')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
             </div>
-          </div>
+          </form>
 
           <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
@@ -80,7 +106,7 @@
                 <td nzWidth="100px">{{data.readStatus === true ? '已读' : '未读'}}</td>
                 <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
                 <td nzWidth="100px">
-                  <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看详情</button>
+                  <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-message"></i>回复</button>
                 </td>
               </tr>
             </tbody>
@@ -110,19 +136,63 @@
                 <div nz-col nzSpan="6">{{tempFeedBack.email ? tempFeedBack.email : 'null'}}</div>
               </div>
               <div nz-row class="search_panel">
+                <div nz-col nzSpan="4" class="right_alignment">处理状态：</div>
+                <div nz-col nzSpan="3" *ngIf="!visiable.editStatus">{{tempFeedBack.status}}</div>
+                <div nz-col nzSpan="2" *ngIf="!visiable.editStatus">
+                  <button nz-button nzType="primary" (click)="showModal('', 'editStatus')"><i class="anticon anticon-edit"></i>修改</button>
+                </div>
+                <div nz-col nzSpan="9" *ngIf="visiable.editStatus">
+                  <nz-radio-group>
+                    <!-- [(ngModel)]="consumerDate.loginType" -->
+                    <label nz-radio nzValue="'SUBMITTED'">未完成</label>
+                    <label nz-radio nzValue="'DOING'">处理中</label>
+                    <label nz-radio nzValue="'DONE'">已完成</label>
+                  </nz-radio-group>
+                </div>
+                <div nz-col nzSpan="3" *ngIf="visiable.editStatus">
+                  <button nz-button nzType="primary" (click)="showModal('', 'editStatus')"><i class="anticon anticon-save"></i>保存</button>
+                </div>
+                <div nz-col nzSpan="3" *ngIf="visiable.editStatus">
+                  <button nz-button nzType="default" (click)="hideModal('editStatus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
                 <div nz-col nzSpan="20">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
               </div>
+              <div nz-row class="search_panel" *ngIf="!visiable.replyUser">
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="4">
+                  <button nz-button nzType="primary" (click)="showModal('', 'replyUser')"><i class="anticon anticon-message"></i>回复用户</button>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="visiable.replyUser">
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="23">
+                  <textarea rows="4" nz-input placeholder="输入回复内容" nzSize="default"></textarea>
+                </div>
+              </div>
+              <div nz-row class="search_panel" *ngIf="visiable.replyUser">
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="doSave('', 'replyUser')"><i class="anticon anticon-save"></i>提交</button>
+                </div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="default" (click)="hideModal('replyUser')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+                </div>
+              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="4" class="right_alignment">上传图片：</div>
-                <div nz-col nzSpan="20">{{!tempFeedBack.photo ? 'null' : ''}}</div>
+                <div nz-col nzSpan="20">{{!tempFeedBack.photo && tempFeedBack.photo.length > 0 ? 'null' : tempFeedBack.photo.toString().indexOf('http') > -1 ? '' : 'null'}}</div>
               </div>
-              <ng-container *ngIf="tempFeedBack.photo">
-                <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
-                  <div nz-col nzSpan="6"></div>
-                  <div nz-col nzSpan="14"><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/feedback/img/' + item" style="width: 350px;"></div>
-                  <div nz-col nzSpan="4"></div>
-                </div>
+              <ng-container *ngIf="tempFeedBack.photo && tempFeedBack.photo.length > 0">
+                <ng-container *ngIf="tempFeedBack.photo.toString().indexOf('http') > -1">
+                  <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
+                    <div nz-col nzSpan="6"></div>
+                    <div nz-col nzSpan="14"><img [src]="item" style="width: 350px;"></div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
+                </ng-container>
               </ng-container>
             </form>
             <ng-template #feedBackModalFooter>
@@ -133,6 +203,15 @@
 
         <nz-tab [nzTitle]="problemTemplate" (nzClick)="changePanel('problem')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #problemTemplate><i class="anticon anticon-question-circle-o"></i>反馈问题管理</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="19"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('problem')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal(data, 'addProblem')"><i class="anticon anticon-search"></i>新增问题</button>
+            </div>
+          </div>
           <nz-table #rowProblemTable [nzData]="problemInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>

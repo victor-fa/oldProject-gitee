@@ -21,7 +21,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 获取所有列表 */
   getSessionLogList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}?pageSize=${data.pageSize}`;
+    let url = `${this.commonService.baseUrl}${sessionAnalysisApiUrls.sessionLogList}?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
     url += data.end && data.end !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
@@ -34,8 +34,9 @@ export class SessionLogService extends AppServiceBase {
     url += data.repetitionNum && data.repetitionNum !== '' ? '&repetitionNum=' + data.conpareSecond + data.repetitionNum : '';
     url += data.cost && data.cost !== '' ? '&cost=' + data.conpareThird + data.cost : '';
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
+    url += data.appKeys && data.appKeys !== '' ? '&appKeys=' + data.appKeys : '';
     url += data.accountType && data.accountType !== '' ? '&accountTypes=' + data.accountType : '';
-    url += data.specialUserCategoryId && data.specialUserCategoryId !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryId : '';
+    url += data.specialUserCategoryIds && data.specialUserCategoryIds !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryIds : '';
     url += data.lastId && data.lastId !== '' && data.lastId !== 0 && data.pageFlag === 'last' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' && data.firstId !== '0' && data.pageFlag === 'first' ? '&firstId=' + data.firstId : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
@@ -45,7 +46,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 修改单个 */
   updateSessionLog(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/${data.id}/flag`;
+    const url = `${this.commonService.baseUrl}${sessionAnalysisApiUrls.sessionLogList}/${data.id}/flag`;
     const body = `flag=${data.checked}&remark=${data.remark}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
@@ -54,7 +55,7 @@ export class SessionLogService extends AppServiceBase {
 
   /** 导出Excel */
   getExcel(data) {
-    let url = `${this.commonService.logsRouteUrl}${sessionAnalysisApiUrls.sessionLogList}/file?pageSize=${data.pageSize}`;
+    let url = `${this.commonService.baseUrl}${sessionAnalysisApiUrls.sessionLogList}/file?pageSize=${data.pageSize}`;
     url += data.start && data.start !== null ? '&start=' + data.start : '';
     url += data.end && data.end !== null ? '&end=' + data.end : '';
     url += data.bots && data.bots.length > 0 ? '&bots=' + data.bots : [];
@@ -67,8 +68,9 @@ export class SessionLogService extends AppServiceBase {
     url += data.repetitionNum && data.repetitionNum !== '' ? '&repetitionNum=' + data.conpareSecond + data.repetitionNum : '';
     url += data.cost && data.cost !== '' ? '&cost=' + data.conpareThird + data.cost : '';
     url += data.level && data.level !== 'all' ? '&level=' + data.level : '';
+    url += data.appKeys && data.appKeys !== '' ? '&appKeys=' + data.appKeys : '';
     url += data.accountType && data.accountType !== '' ? '&accountTypes=' + data.accountType : '';
-    url += data.specialUserCategoryId && data.specialUserCategoryId !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryId : '';
+    url += data.specialUserCategoryIds && data.specialUserCategoryIds !== '' ? '&specialUserCategoryIds=' + data.specialUserCategoryIds : '';
     url += data.lastId && data.lastId !== '' ? '&lastId=' + data.lastId : '';
     url += data.firstId && data.firstId !== '' ? '&firstId=' + data.firstId : '';
     const head = new Headers({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') });

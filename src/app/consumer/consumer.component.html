@@ -74,15 +74,15 @@
             <form [formGroup]="addConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  客户ID：
+                  客户ID <font color="red">*</font>：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="appChannel" [(ngModel)]="consumerDate.appChannel" placeholder="请输入客户ID" nzSize="default">
+                  <input nz-input formControlName="appChannel" maxlength="32" [(ngModel)]="consumerDate.appChannel" placeholder="请输入客户ID（即appkey，长度不能超过32位）" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  客户名称：
+                  客户名称 <font color="red">*</font>：
                 </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="appChannelName" [(ngModel)]="consumerDate.appChannelName" placeholder="请输入客户名称" nzSize="default">
@@ -90,23 +90,23 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  BOT名称：
+                  BOT配置文件ID <font color="red">*</font>：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="robot" [(ngModel)]="consumerDate.robot" placeholder="请输入BOT名称" nzSize="default">
+                  <input nz-input formControlName="robot" [(ngModel)]="consumerDate.robot" placeholder="请输入BOT配置文件id（不要填.yml文件后缀名）" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  手机号码：
+                  客户联系人手机号 <font color="red">*</font>：
                 </div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="phone" [(ngModel)]="consumerDate.phone" placeholder="请输入手机号码" nzSize="default">
+                  <input nz-input formControlName="phone" [(ngModel)]="consumerDate.phone" placeholder="请输入手机号码（子账号默认手机号）" nzSize="default">
                 </div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
-                  登录类型：
+                  登录类型 <font color="red">*</font>：
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="aaa" [(ngModel)]="consumerDate.loginType">

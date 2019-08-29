@@ -69,7 +69,7 @@ export class SessionAnalysisComponent implements OnInit {
   listOfOption1 = [];
   accountType = [];
   listOfOption2 = [];
-  specialUserCategoryId = [];
+  specialUserCategoryIds = [];
 
   constructor(
     public commonService: CommonService,
@@ -129,7 +129,6 @@ export class SessionAnalysisComponent implements OnInit {
         this.showSomething('goUid', params['uid']);
       }
     });
-    this.loadData('categoriesDropdown'); // 获取下拉数据
   }
 
   /**
@@ -164,6 +163,7 @@ export class SessionAnalysisComponent implements OnInit {
         'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
         'cost': this.searchSessionLogForm.controls['cost'].value,
         'level': this.sessionLogLevel,
+        'appKeys': this.getAppKeys().join(','),
         'lastId': id,
         'firstId': id,
         'pageSize': this.sessionLogPageSize,
@@ -171,7 +171,7 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareSecond': this.conpareSecond,
         'conpareThird': this.conpareThird,
         'accountType': this.accountType.toString(),
-        'specialUserCategoryId': this.specialUserCategoryId.toString(),
+        'specialUserCategoryIds': this.specialUserCategoryIds.toString(),
         'pageFlag': pageFlag
       };
       console.log(logInput);
@@ -217,6 +217,7 @@ export class SessionAnalysisComponent implements OnInit {
         'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
         'cost': this.searchSessionLogForm.controls['cost'].value,
         'level': this.sessionLogLevel,
+        'appKeys': this.getAppKeys().join(','),
         'lastId': this.currentSessionLogId,
         'firstId': this.currentSessionLogId,
         'pageSize': this.sessionLogPageSize,
@@ -224,7 +225,7 @@ export class SessionAnalysisComponent implements OnInit {
         'conpareSecond': this.conpareSecond,
         'conpareThird': this.conpareThird,
         'accountType': this.accountType.toString(),
-        'specialUserCategoryId': this.specialUserCategoryId.toString(),
+        'specialUserCategoryIds': this.specialUserCategoryIds.toString(),
         'pageFlag': this.currentSessionLogFlag
       };
       console.log(logInput);
@@ -283,13 +284,14 @@ export class SessionAnalysisComponent implements OnInit {
         'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
         'cost': this.searchSessionLogForm.controls['cost'].value,
         'level': this.sessionLogLevel,
+        'appKeys': this.getAppKeys().join(','),
         'lastId': '',
         'firstId': '',
         'pageSize': 10,
         'conpareFirst': this.conpareFirst,
         'conpareSecond': this.conpareSecond,
         'accountType': this.accountType.toString(),
-        'specialUserCategoryId': this.specialUserCategoryId.toString(),
+        'specialUserCategoryIds': this.specialUserCategoryIds.toString(),
         'conpareThird': this.conpareThird
       };
       console.log(logInput);
@@ -314,27 +316,54 @@ export class SessionAnalysisComponent implements OnInit {
   }
 
   // 日期插件
-  onChange(result: Date): void {
-    // 正确选择数据
-    if (result[0] !== '' || result[1] !== '') {
-      if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
-        this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00');
-        this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
-      } else {
-        this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
-        this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+  onChange(flag, result): void {
+    if (flag === 'date') {
+      // 正确选择数据
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00');
+          this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss');
+          this.endDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
       }
-    }
-    if (this.beginDate === null || this.endDate === null) {
-      this.beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
-      this.endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
+      if (this.beginDate === null || this.endDate === null) {
+        this.beginDate = this.commonService.getDayWithAcross(0) + ' 00:00:00';
+        this.endDate = this.commonService.getDayWithAcross(0) + ' 23:59:59';
+      }
+    } else if (flag === 'allApp' || flag === 'allSdk' || flag === 'allApi' || flag === 'allTest') {
+      if (flag === 'allApp') {
+        this.checkOrign.phone.xiaowu = result;
+        this.checkOrign.phone.tingting = result;
+        this.checkOrign.phone.wotewode = result;
+      } else if (flag === 'allSdk') {
+        this.checkOrign.car.tongxingSdk = result;
+        this.checkOrign.watch.weiteSdk = result;
+        this.checkOrign.watch.weiteTest = result;
+        this.checkOrign.robot.xiaohaSdk = result;
+        this.checkOrign.robot.xiaohaTest = result;
+        this.checkOrign.other.k11Test = result;
+      } else if (flag === 'allApi') {
+        this.checkOrign.car.botai = result;
+        this.checkOrign.car.tongxingApi = result;
+        this.checkOrign.car.tongxingTest = result;
+        this.checkOrign.other.k11Api  = result;
+      } else if (flag === 'allTest') {
+        this.checkOrign.car.tongxingSdk = result;
+        this.checkOrign.car.tongxingTest = result;
+        this.checkOrign.watch.weiteTest = result;
+        this.checkOrign.robot.xiaohaTest  = result;
+        this.checkOrign.other.k11Api  = result;
+        this.checkOrign.other.k11Test  = result;
+      }
     }
   }
 
   private _initForm(): void {
     this.searchSessionLogForm = this.fb.group({ date: [''], bots: [''], uid: [''], ask: [''], answer: [''], flag: [''],
         abnormalType: [''], intentionNum: [''], repetitionNum: [''], cost: [''], level: [''], checkA: false, checkB: [],
-        accountType: [''], specialUserCategoryId: ['']});
+        accountType: [''], specialUserCategoryIds: ['']});
   }
 
   // 展开数据说明
@@ -398,6 +427,7 @@ export class SessionAnalysisComponent implements OnInit {
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.currentPanel = flag; this.loadData(flag); }
+    if (flag === 'sessionLog') { this.loadData('categoriesDropdown'); } // 获取下拉数据;
     this.currentTitle = flag === 'sessionLog' ? '对话日志' : flag === 'specialUser' ? '特殊用户' : '';
   }
 
@@ -443,6 +473,9 @@ export class SessionAnalysisComponent implements OnInit {
     delete this.staticParams.lastId;
     delete this.staticParams.firstId;
     delete this.staticParams.pageFlag;
+    console.log(this.staticParams);
+    console.log(this.getFreshParam());
+    console.log(this.isObjectValueEqual(this.staticParams, this.getFreshParam()));
     if (this.isObjectValueEqual(this.staticParams, this.getFreshParam())) { // 若条件没有改变，则可下一页
       this.changeSessionLogPage += 1;
       this.doLastSessionLog = true;
@@ -518,8 +551,10 @@ export class SessionAnalysisComponent implements OnInit {
       'ask': this.searchSessionLogForm.controls['ask'].value, 'answer': this.searchSessionLogForm.controls['answer'].value,
       'flag': this.sessionLogFlag === 0 ? '' : this.sessionLogFlag === 1 ? true : false, 'abnormalType': this.abnormalType,
       'intentionNum': this.searchSessionLogForm.controls['intentionNum'].value, 'repetitionNum': this.searchSessionLogForm.controls['repetitionNum'].value,
-      'cost': this.searchSessionLogForm.controls['cost'].value, 'level': this.sessionLogLevel, 'pageSize': this.sessionLogPageSize,
+      'cost': this.searchSessionLogForm.controls['cost'].value, 'level': this.sessionLogLevel,
+      'appKeys': this.getAppKeys().join(','), 'pageSize': this.sessionLogPageSize,
       'conpareFirst': this.conpareFirst, 'conpareSecond': this.conpareSecond, 'conpareThird': this.conpareThird,
+      'accountType': this.accountType.toString(), 'specialUserCategoryIds': this.specialUserCategoryIds.toString(),
     };
     return staticParams
   }
@@ -625,6 +660,25 @@ export class SessionAnalysisComponent implements OnInit {
   // 跳转到对话日志
   goUid(data) {
     window.location.href = '/sessionAnalysis?uid=' + data.uid.replace(/\+/g, '%2B');
+  }
+
+  // 获取所有来源
+  getAppKeys() {
+    const arr = [];
+    this.checkOrign.phone.xiaowu ? arr.push('XIAOWU') : null;
+    this.checkOrign.phone.tingting ? arr.push('LENZE') : null;
+    this.checkOrign.phone.wotewode ? arr.push('WATER_WORLD_6') : null;
+    this.checkOrign.car.botai ? arr.push('pateo-carconsole-api-pro') : null;
+    this.checkOrign.car.tongxingApi ? arr.push('txzing-carconsole-api-pro') : null;
+    this.checkOrign.car.tongxingSdk ? arr.push('txzing-sdk-test') : null;
+    this.checkOrign.car.tongxingTest ? arr.push('txzing-carconsole-api-test') : null;
+    this.checkOrign.watch.weiteSdk ? arr.push('weitezhineng') : null;
+    this.checkOrign.watch.weiteTest ? arr.push('weitezhineng-test') : null;
+    this.checkOrign.robot.xiaohaSdk ? arr.push('honeybot') : null;
+    this.checkOrign.robot.xiaohaTest ? arr.push('honey-test') : null;
+    this.checkOrign.other.k11Api ? arr.push('K11-publicscreen-api-pro') : null;
+    this.checkOrign.other.k11Test ? arr.push('K11-test') : null;
+    return arr;
   }
 
 }

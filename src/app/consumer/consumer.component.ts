@@ -22,7 +22,7 @@ export class ConsumerComponent implements OnInit {
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
@@ -90,9 +90,9 @@ export class ConsumerComponent implements OnInit {
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
       this.consumerDate = {
         appChannel: data.appChannel,
         appChannelName: data.appChannelName,
@@ -122,7 +122,7 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': 0, 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
       this.visiable.addSerial = false;
     }
   }

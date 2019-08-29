@@ -46,8 +46,14 @@ export class UserService extends AppServiceBase {
   /**
    * 查看用户反馈
    */
-  getFeedBackInfo(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}/feedback/`;
+  getFeedBackInfo(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/feedback?pageSize=999`;
+    url += data.phone && data.phone !== '' ? '&phone=' + data.phone : '';
+    url += data.type && data.type !== '' ? '&type=' + data.type : '';
+    url += data.status && data.status !== '' ? '&status=' + data.status : '';
+    url += data.readStatus && data.readStatus !== '' ? '&readStatus=' + data.readStatus : '';
+    url += data.startDate && data.startDate !== '' ? '&startDate=' + data.startDate : '';
+    url += data.endDate && data.endDate !== '' ? '&endDate=' + data.endDate : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

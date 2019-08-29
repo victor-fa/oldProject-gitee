@@ -16,9 +16,9 @@ registerLocaleData(zh);
 })
 export class CustomerComponent implements OnInit {
 
-  visiable = {feedBack: false, opposition: false, agree: false, batchDownload: false, addProblem: false, editProblem: false, };
+  visiable = {feedBack: false, opposition: false, agree: false, batchDownload: false, addProblem: false, editProblem: false, editStatus: false, replyUser: false, };
   pageSize = 10;
-  feedbackInfo = [];
+  feedbackInfo = [{}];
   problemInfo = [];
   dataProblem = {id: ''};
   oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
@@ -55,6 +55,8 @@ export class CustomerComponent implements OnInit {
   endOppositionDate = '';
   beginAgreeDate = '';
   endAgreeDate = '';
+  beginFeedbackDate = '';
+  endFeedbackDate = '';
   isSpinning = false;
   currentBatchSelected = '1';
   currentTabset = 0;
@@ -105,10 +107,18 @@ export class CustomerComponent implements OnInit {
   private loadData(flag): void {
     this.isSpinning = true;
     if (flag === 'feedback') {
-      this.userService.getFeedBackInfo().subscribe(res => {
+      const feedbackInput = {
+        phone: this.searchFeedBackForm.controls['phone'].value,
+        type: this.searchFeedBackForm.controls['type'].value,
+        status: this.searchFeedBackForm.controls['status'].value,
+        readStatus: this.searchFeedBackForm.controls['readStatus'].value,
+        startDate: this.beginFeedbackDate,
+        endDate: this.endFeedbackDate
+      };
+      this.userService.getFeedBackInfo(feedbackInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.feedbackInfo = JSON.parse(res.payload).reverse();
+          this.feedbackInfo = JSON.parse(res.payload);
           console.log(this.feedbackInfo);
           const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -262,7 +272,7 @@ export class CustomerComponent implements OnInit {
   }
 
   private _initForm(): void {
-    this.searchFeedBackForm = this.fb.group({ xxx: [''], orderType: [''], orderId: [''], date: [''], });
+    this.searchFeedBackForm = this.fb.group({ readStatus: [''], phone: [''], type: [''], status: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchBusinessForm = this.fb.group({ phone: [''], name: [''], content: [''], date: [''], });
@@ -321,8 +331,8 @@ export class CustomerComponent implements OnInit {
     } else if (flag === 'batchDownload') {
       this.visiable.batchDownload = true;
     } else if (flag === 'feedBack') {
-      this.visiable.feedBack = true;
       this.tempFeedBack = data;
+      this.visiable.feedBack = true;
     } else if (flag === 'agree') {
       this.visiable.agree = true;
       this.tempAgree = data;
@@ -335,6 +345,10 @@ export class CustomerComponent implements OnInit {
       this.visiable.editProblem = true;
     } else if (flag === 'deleteProblem') {
       this.modalService.confirm({ nzTitle: '提示', nzContent: '删除该问题类型，其下所有问题都会被删除，确认删除吗？', nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag) });
+    } else if (flag === 'editStatus') {
+      this.visiable.editStatus = true;
+    } else if (flag === 'replyUser') {
+      this.visiable.replyUser = true;
     }
   }
 
@@ -351,6 +365,10 @@ export class CustomerComponent implements OnInit {
       this.visiable.addProblem = false;
     } else if (flag === 'editProblem') {
       this.visiable.editProblem = false;
+    } else if (flag === 'editStatus') {
+      this.visiable.editStatus = false;
+    } else if (flag === 'replyUser') {
+      this.visiable.replyUser = false;
     }
   }
 
@@ -526,6 +544,16 @@ export class CustomerComponent implements OnInit {
       if (result[0] !== '' || result[1] !== '') {
         this.beginAgreeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
         this.endAgreeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
+      }
+    } else if (flag === 'feedback') {
+      if (result === []) {
+        this.beginFeedbackDate = '';
+        this.endFeedbackDate = '';
+        return;
+      }
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginFeedbackDate = this.datePipe.transform(result[0], 'yyyy-MM-dd 00:00:00');
+        this.endFeedbackDate = this.datePipe.transform(result[1], 'yyyy-MM-dd 23:59:59');
       }
     }
   }

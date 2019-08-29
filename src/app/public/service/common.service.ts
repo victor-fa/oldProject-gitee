@@ -25,11 +25,6 @@ export class CommonService extends AppServiceBase {
   dataCenterUrl = this.currentServer + ':46004/api';  // 数据中心【衡锐】
   taxiRouteUrl = this.currentServer + ':41005/api';  // 打车路径【宇辉】
   nerRouteUrl = 'http://aliyun-sz3.chewrobot.com:41011';  // 新闻NER【宇辉】
-
-  // logsRouteUrl = this.currentServer + ':6667/api/admin';  // 对话日志【衡锐】
-  logsRouteUrl = this.currentServer + ':46008/api';  // 对话日志测试【衡锐】
-  // logsRouteUrl = 'http://aliyun-sz2.chewrobot.com:46008/api';  // 对话日志测试【衡锐】
-  // logsRouteUrl = 'http://aliyun-sh1.chewrobot.com:46008/api';  // 对话日志正式【衡锐】
   // 因为数据中心区别ac，是另一个项目，没有SLL证书，所以数据中心在正式环境下，只能访问http而不能跟其他接口一致采用https
 
   list: string[] = [];

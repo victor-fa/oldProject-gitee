@@ -117,11 +117,11 @@ export enum dataCenterApiUrls {
 /** 对话分析 */
 export enum sessionAnalysisApiUrls {
   /** 对话日志 */
-  sessionLogList = '/logs',
+  sessionLogList = '/chat-logs',
   /** 特殊用户 */
-  categoriesList = '/categories',
+  categoriesList = '/chat-logs/categories',
   /** 特殊用户 */
-  specialUserList = '/special-users',
+  specialUserList = '/chat-logs/special-users',
 }
 
 /** 权限后台 */
