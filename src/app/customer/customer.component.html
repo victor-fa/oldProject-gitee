@@ -19,20 +19,7 @@
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="type">
                   <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'闲聊'" [nzValue]="'FREE_CHAT'"></nz-option>
-                  <nz-option required [nzLabel]="'机票'" [nzValue]="'FLIGHT'"></nz-option>
-                  <nz-option required [nzLabel]="'火车'" [nzValue]="'TRAIN'"></nz-option>
-                  <nz-option required [nzLabel]="'酒店'" [nzValue]="'HOTEL'"></nz-option>
-                  <nz-option required [nzLabel]="'天气'" [nzValue]="'WEATHER'"></nz-option>
-                  <nz-option required [nzLabel]="'闪送'" [nzValue]="'ERRAND'"></nz-option>
-                  <nz-option required [nzLabel]="'电影'" [nzValue]="'MOVIE'"></nz-option>
-                  <nz-option required [nzLabel]="'星座'" [nzValue]="'MOVIE'"></nz-option>
-                  <nz-option required [nzLabel]="'音乐'" [nzValue]="'MUSIC'"></nz-option>
-                  <nz-option required [nzLabel]="'新闻'" [nzValue]="'NEWS'"></nz-option>
-                  <nz-option required [nzLabel]="'导航打车'" [nzValue]="'NAVICAR'"></nz-option>
-                  <nz-option required [nzLabel]="'充话费'" [nzValue]="'RECHARGE'"></nz-option>
-                  <nz-option required [nzLabel]="'打电话'" [nzValue]="'CALL'"></nz-option>
-                  <nz-option required [nzLabel]="'提问'" [nzValue]="'AIUI_CHAT'"></nz-option>
+                  <nz-option required *ngFor="let data of problemInfo; let i=index;" [nzLabel]="data.name" [nzValue]="data.name"></nz-option>
                 </nz-select>
               </div>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -50,7 +37,7 @@
                 回复状态：
               </div>
               <div nz-col nzSpan="3">
-                <nz-select [ngModel]="''" formControlName="readStatus">
+                <nz-select [ngModel]="''" formControlName="replyStatus">
                   <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
                   <nz-option required [nzLabel]="'待回复'" [nzValue]="'false'"></nz-option>
                   <nz-option required [nzLabel]="'已回复'" [nzValue]="'true'"></nz-option>
@@ -103,10 +90,10 @@
                 <td nzWidth="100px">{{data.wxNumber}}</td>
                 <td nzWidth="100px">{{data.email}}</td>
                 <td nzWidth="100px">{{data.qq}}</td>
-                <td nzWidth="100px">{{data.status === 'SUBMITTED' ? '已提交' : data.status === 'DOING' ? '处理中' : data.status === 'DONE' ? '已完成' : ''}}</td>
+                <td nzWidth="100px">{{data.status === 'SUBMITTED' ? '未处理' : data.status === 'DOING' ? '处理中' : data.status === 'DONE' ? '已完成' : '未处理'}}</td>
                 <td nzWidth="100px">{{data.replyStatus === true ? '已回复' : '未回复'}}</td>
                 <td nzWidth="100px">{{data.readStatus === true ? '已读' : '未读'}}</td>
-                <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
+                <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss'}}</td><!-- :'GMT+16:00' -->
                 <td nzWidth="100px">
                   <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-message"></i>回复</button>
                 </td>
@@ -138,13 +125,13 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">处理状态：</div>
-              <div nz-col nzSpan="3" *ngIf="!visiable.editStatus">{{tempFeedBack.status === 'SUBMITTED' ? '已提交' : tempFeedBack.status === 'DOING' ? '处理中' : tempFeedBack.status === 'DONE' ? '已完成' : ''}}</div>
+              <div nz-col nzSpan="3" *ngIf="!visiable.editStatus">{{tempFeedBack.status === 'SUBMITTED' ? '未处理' : tempFeedBack.status === 'DOING' ? '处理中' : tempFeedBack.status === 'DONE' ? '已完成' : ''}}</div>
               <div nz-col nzSpan="2" *ngIf="!visiable.editStatus">
                 <button nz-button nzType="primary" (click)="showModal('', 'editStatus')"><i class="anticon anticon-edit"></i>修改</button>
               </div>
               <div nz-col nzSpan="9" *ngIf="visiable.editStatus">
                 <nz-radio-group [(ngModel)]="tempFeedBack.status">
-                  <label nz-radio nzValue="SUBMITTED">未完成</label>
+                  <label nz-radio nzValue="SUBMITTED">未处理</label>
                   <label nz-radio nzValue="DOING">处理中</label>
                   <label nz-radio nzValue="DONE">已完成</label>
                 </nz-radio-group>
@@ -158,18 +145,25 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
-              <div nz-col nzSpan="20">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
+              <div nz-col nzSpan="17">{{tempFeedBack.date | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4"></div>
+              <div nz-col nzSpan="17">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
             </div>
 
-            <ng-container *ngIf="tempFeedBack.message">
-              <ng-container *ngIf="tempFeedBack.message.length > 0">
-                <div nz-row class="search_panel">
-                  <div nz-col nzSpan="4" class="right_alignment">小悟客服：</div>
-                </div>
-                <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.message; let i=index;">
-                  <div nz-col nzSpan="4"></div>
-                  <div nz-col nzSpan="20">{{item}}</div>
-                </div>
+            <ng-container *ngIf="tempFeedBack.dialogues">
+              <ng-container *ngIf="tempFeedBack.dialogues.length > 0">
+                <ng-container *ngFor="let item of tempFeedBack.dialogues; let i=index;">
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="4" class="right_alignment">{{item.userName === 'ADMIN' ? '小悟客服：' : '问题描述：'}}</div>
+                    <div nz-col nzSpan="17">{{item.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                  </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="4"></div>
+                    <div nz-col nzSpan="17">{{item.msg}}</div>
+                  </div>
+                </ng-container>
               </ng-container>
             </ng-container>
             <div nz-row class="search_panel" *ngIf="!visiable.replyUser">
@@ -216,11 +210,8 @@
         <nz-tab [nzTitle]="problemTemplate" (nzClick)="changePanel('problem')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #problemTemplate><i class="anticon anticon-question-circle-o"></i>反馈问题管理</ng-template>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="19"></div>
+            <div nz-col nzSpan="22"></div>
             <div nz-col nzSpan="2">
-              <button nz-button nzType="primary" (click)="loadData('problem')"><i class="anticon anticon-search"></i>查询</button>
-            </div>
-            <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal(data, 'addProblem')"><i class="anticon anticon-search"></i>新增问题</button>
             </div>
           </div>
@@ -243,7 +234,7 @@
                 <td nzTitle="{{data.concreteProblems !== undefined && data.concreteProblems.length > 0 ? data.concreteProblems : ''}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.concreteProblems !== undefined && data.concreteProblems.length > 0 ? data.concreteProblems.toString().substring(0, 7) + (data.concreteProblems.toString().length > 7 ? '……' : '') : ''}}</a>
                 </td>
-                <td>{{data.createDate | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td><!-- date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00' -->
+                <td>{{data.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'editProblem')" style="margin-right: 10px;"><i class="anticon anticon-edit"></i>修改</button>
                   <button nz-button nzType="primary" (click)="showModal(data, 'deleteProblem')"><i class="anticon anticon-delete"></i>删除</button>
@@ -259,15 +250,15 @@
             <form [formGroup]="addProblemForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="5" class="right_alignment">问题类型：</div>
-                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题类型" formControlName="name" nzSize="default"></div>
+                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题类型" [(ngModel)]="dataProblem.name" formControlName="name" nzSize="default"></div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="5" class="right_alignment">问题排序：</div>
-                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题排序" formControlName="sort" nzSize="default"></div>
+                <div nz-col nzSpan="19"><input nz-input placeholder="输入问题排序" [(ngModel)]="dataProblem.sort" formControlName="sort" nzSize="default"></div>
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="5" class="right_alignment">具体问题：</div>
-                <div nz-col nzSpan="19"><textarea rows="4" nz-input placeholder="输入具体问题" formControlName="concreteProblems" nzSize="default"></textarea></div>
+                <div nz-col nzSpan="19"><textarea rows="4" nz-input placeholder="输入具体问题" [(ngModel)]="dataProblem.concreteProblems" formControlName="concreteProblems" nzSize="default"></textarea></div>
               </div>
             </form>
             <ng-template #addProblemModalFooter>

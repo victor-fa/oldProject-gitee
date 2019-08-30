@@ -20,7 +20,7 @@ export class CustomerComponent implements OnInit {
   pageSize = 10;
   feedbackInfo = [{'dialogues': [{msg: ''}], 'message': []}];
   problemInfo = [];
-  dataProblem = {id: ''};
+  dataProblem = {id: '', concreteProblems: '', name: '', sort: ''};
   oppositionInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
   agreeInfo = [];
   invoiceTimeInfo = [{'ask': [], 'answer': [], 'session': [{'cpsAnswer': '', 'businessAnswer': '', 'ask': ''}]}];
@@ -88,6 +88,7 @@ export class CustomerComponent implements OnInit {
     }
     console.log(tabFlag[targetFlag].value);
     this.loadData(tabFlag[targetFlag].value);  // 反馈信息
+    this.loadData('problem');
     this.changePanel(tabFlag[targetFlag].value);
     if (localStorage.getItem('batchDownload') !== undefined) {
       if (localStorage.getItem('batchDownload') === 'opposition') {
@@ -111,7 +112,7 @@ export class CustomerComponent implements OnInit {
         phone: this.searchFeedBackForm.controls['phone'].value,
         type: this.searchFeedBackForm.controls['type'].value,
         status: this.searchFeedBackForm.controls['status'].value,
-        readStatus: this.searchFeedBackForm.controls['readStatus'].value,
+        replyStatus: this.searchFeedBackForm.controls['replyStatus'].value,
         startDate: this.beginFeedbackDate,
         endDate: this.endFeedbackDate
       };
@@ -131,9 +132,15 @@ export class CustomerComponent implements OnInit {
           console.log(this.feedbackInfo);
           const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'feedbackItem') {
+      const feedbackInput = { id: this.tempFeedBack.id };
+      this.userService.getFeedBackItem(feedbackInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.tempFeedBack = JSON.parse(res.payload)[0];
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'problem') {
       this.userService.getProblemInfo().subscribe(res => {
@@ -143,9 +150,7 @@ export class CustomerComponent implements OnInit {
           console.log(this.problemInfo);
           const operationInput = { op_category: '客服中心', op_page: '用户反馈' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'opposition') {
       const oppositionInput = {
@@ -180,9 +185,7 @@ export class CustomerComponent implements OnInit {
           console.log(this.oppositionInfo);
           const operationInput = { op_category: '客服中心', op_page: '点踩日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'agree') {
       const agreeInput = {
@@ -216,9 +219,7 @@ export class CustomerComponent implements OnInit {
           console.log(this.agreeInfo);
           const operationInput = { op_category: '客服中心', op_page: '点赞日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'invoiceTime') {
       const invoiceTimeInput = {
@@ -235,9 +236,7 @@ export class CustomerComponent implements OnInit {
           const operationInput = { op_category: '客服中心', op_page: '开票时间管理' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(this.invoiceTimeInfo);
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'invoiceLog') {
       const invoiceTimeInput = {
@@ -254,9 +253,7 @@ export class CustomerComponent implements OnInit {
           const operationInput = { op_category: '客服中心', op_page: '开票管理日志' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(this.invoiceLogInfo);
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'business') {
       const businessInput = {
@@ -273,15 +270,13 @@ export class CustomerComponent implements OnInit {
           const operationInput = { op_category: '客服中心', op_page: '商务合作' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(this.businessInfo);
-        } else {
-          this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.confirm({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
 
   private _initForm(): void {
-    this.searchFeedBackForm = this.fb.group({ readStatus: [''], phone: [''], type: [''], status: [''], orderType: [''], orderId: [''], date: [''], });
+    this.searchFeedBackForm = this.fb.group({ replyStatus: [''], phone: [''], type: [''], status: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceTimeForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchInvoiceLogForm = this.fb.group({ phone: [''], orderType: [''], orderId: [''], date: [''], });
     this.searchBusinessForm = this.fb.group({ phone: [''], name: [''], content: [''], date: [''], });
@@ -294,12 +289,18 @@ export class CustomerComponent implements OnInit {
 
   doSave(flag) {
     if (flag === 'addProblem') {
-      // if (!this.verification('content')) { return; }
-      // this.addProblemForm.controls['concreteProblems'].value
+      const name = this.addProblemForm.controls['name'].value;
+      const sort = this.addProblemForm.controls['sort'].value;
+      if (this.problemInfo.some(item => name === item.name)) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '问题类型不可重复' }); return;
+      }
+      if (this.problemInfo.some(item => Number(sort) ===  Number(item.sort))) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '问题排序不可重复' }); return;
+      }
       const problemInput = {
-        'name': this.addProblemForm.controls['name'].value,
-        'sort': this.addProblemForm.controls['sort'].value,
-        'concreteProblems': ['123']
+        'name': name,
+        'sort': sort,
+        'concreteProblems': this.addProblemForm.controls['concreteProblems'].value.split('\n')
       };
       this.userService.addProblem(problemInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -311,13 +312,13 @@ export class CustomerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'editProblem') {
-      // if (!this.verification('content')) { return; }
-      // this.editProblemForm.controls['concreteProblems'].value
+      const name = this.editProblemForm.controls['name'].value;
+      const sort = this.editProblemForm.controls['sort'].value;
       const problemInput = {
         'id': this.dataProblem.id,
-        'name': this.editProblemForm.controls['name'].value,
-        'sort': this.editProblemForm.controls['sort'].value,
-        'concreteProblems': ['123']
+        'name': name,
+        'sort': sort,
+        'concreteProblems': this.editProblemForm.controls['concreteProblems'].value.split('\n')
       };
       this.userService.addProblem(problemInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -325,7 +326,7 @@ export class CustomerComponent implements OnInit {
           const operationInput = { op_category: '客服中心', op_page: '反馈问题管理', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('editProblem');
-          this.dataProblem = {id: ''};
+          this.dataProblem = {id: '', concreteProblems: '', name: '', sort: ''};
           this.loadData('problem');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
@@ -348,7 +349,7 @@ export class CustomerComponent implements OnInit {
       this.userService.editReply(replyInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '回复成功', { nzStyle: { color : 'green' } });
-          this.loadData('feedback');
+          this.loadData('feedbackItem');
           this.hideModal('replyUser');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
@@ -365,6 +366,7 @@ export class CustomerComponent implements OnInit {
     } else if (flag === 'feedBack') {
       this.tempFeedBack = data;
       console.log(this.tempFeedBack);
+      this.tempFeedBack.status = data.status ? data.status : 'SUBMITTED';
       this.visiable.feedBack = true;
     } else if (flag === 'agree') {
       this.visiable.agree = true;
@@ -374,6 +376,8 @@ export class CustomerComponent implements OnInit {
       this.visiable.addProblem = true;
     } else if (flag === 'editProblem') {
       this.dataProblem = data;
+      console.log(data);
+      this.dataProblem.concreteProblems = data.concreteProblems.indexOf('\n') > -1 ? data.concreteProblems : data.concreteProblems.join('\n');
       this.visiable.editProblem = true;
     } else if (flag === 'deleteProblem') {
       this.modalService.confirm({ nzTitle: '提示', nzContent: '删除该问题类型，其下所有问题都会被删除，确认删除吗？', nzOkText: '确定', nzOnOk: () => this.doDelete(data.id, flag) });
@@ -394,6 +398,7 @@ export class CustomerComponent implements OnInit {
     } else if (flag === 'agree') {
       this.visiable.agree = false;
     } else if (flag === 'addProblem') {
+      this.dataProblem = {id: '', concreteProblems: '', name: '', sort: ''};
       this.visiable.addProblem = false;
     } else if (flag === 'editProblem') {
       this.visiable.editProblem = false;

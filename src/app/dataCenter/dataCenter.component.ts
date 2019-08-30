@@ -110,7 +110,7 @@ export class DataCenterComponent implements OnInit {
   }
 
   // 获取单元数据
-  loadUnitData(platform, origin): void {
+  loadUnitData(platform): void {
     let flag = 'user-behavior';
     switch (this.currentPanel) {
       case 'dataApp': flag = 'user-behavior'; break;
@@ -135,12 +135,11 @@ export class DataCenterComponent implements OnInit {
       default: break;
     }
     this.isSpinning = true; // loading
-    // checkAllChannel
     const input = {
       begin: this.beginDate,
       end: this.endDate,
       platform: platform,
-      origin: origin,
+      origin: this.getAppKeys().join(','),
       flag: flag,
       checkAllChannel: this.checkAllChannel,
     };
@@ -162,28 +161,53 @@ export class DataCenterComponent implements OnInit {
       const params = this.searchDataCenterForm.controls['status'].value === '' ? 'all' : this.searchDataCenterForm.controls['status'].value;
       this.dataCenterStatus = params;
       if (params === 'all') {
-        this.loadUnitData('', '');
+        this.loadUnitData('');
         localStorage.setItem('isDataCenterSearch', 'true');
       } else {
-        const origin = params.substring(0, params.indexOf('-'));
-        // const platform = params.substring(params.indexOf('-') + 1, params.length);
         const platform = params.indexOf('IOS') > -1 ? 'IOS' : params.indexOf('Android') > -1 ? 'Android' : '';
-        this.loadUnitData(platform, origin);
+        this.loadUnitData(platform);
       }
     }
   }
 
   // 日期插件
-  onChange(result: Date): void {
-    // 正确选择数据
-    if (result[0] !== '' || result[1] !== '') {
-      this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
-      this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
-    }
-    // 手动点击清空
-    if (this.beginDate === null || this.endDate === null) {
-      this.beginDate = this.commonService.getDay(-7);
-      this.endDate = this.commonService.getDay(-1);
+  onChange(flag, result): void {
+    if (flag === 'date') {
+      // 正确选择数据
+      if (result[0] !== '' || result[1] !== '') {
+        this.beginDate = this.datePipe.transform(result[0], 'yyyyMMdd');
+        this.endDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+      }
+      // 手动点击清空
+      if (this.beginDate === null || this.endDate === null) {
+        this.beginDate = this.commonService.getDay(-7);
+        this.endDate = this.commonService.getDay(-1);
+      }
+    } else if (flag === 'allApp' || flag === 'allSdk' || flag === 'allApi' || flag === 'allTest') {
+      if (flag === 'allApp') {
+        this.checkOrign.phone.xiaowu = result;
+        this.checkOrign.phone.tingting = result;
+        this.checkOrign.phone.wotewode = result;
+      } else if (flag === 'allSdk') {
+        this.checkOrign.car.tongxingSdk = result;
+        this.checkOrign.watch.weiteSdk = result;
+        this.checkOrign.watch.weiteTest = result;
+        this.checkOrign.robot.xiaohaSdk = result;
+        this.checkOrign.robot.xiaohaTest = result;
+        this.checkOrign.other.k11Test = result;
+      } else if (flag === 'allApi') {
+        this.checkOrign.car.botai = result;
+        this.checkOrign.car.tongxingApi = result;
+        this.checkOrign.car.tongxingTest = result;
+        this.checkOrign.other.k11Api  = result;
+      } else if (flag === 'allTest') {
+        this.checkOrign.car.tongxingSdk = result;
+        this.checkOrign.car.tongxingTest = result;
+        this.checkOrign.watch.weiteTest = result;
+        this.checkOrign.robot.xiaohaTest  = result;
+        this.checkOrign.other.k11Api  = result;
+        this.checkOrign.other.k11Test  = result;
+      }
     }
   }
 
@@ -227,6 +251,25 @@ export class DataCenterComponent implements OnInit {
     if (flag === 'orign') {
       this.visiable.orign = this.visiable.orign === true ? false : true;
     }
+  }
+
+  // 获取所有来源
+  getAppKeys() {
+    const arr = [];
+    this.checkOrign.phone.xiaowu ? arr.push('XIAOWU') : null;
+    this.checkOrign.phone.tingting ? arr.push('LENZE') : null;
+    this.checkOrign.phone.wotewode ? arr.push('WATER_WORLD_6') : null;
+    this.checkOrign.car.botai ? arr.push('pateo-carconsole-api-pro') : null;
+    this.checkOrign.car.tongxingApi ? arr.push('txzing-carconsole-api-pro') : null;
+    this.checkOrign.car.tongxingSdk ? arr.push('txzing-sdk-test') : null;
+    this.checkOrign.car.tongxingTest ? arr.push('txzing-carconsole-api-test') : null;
+    this.checkOrign.watch.weiteSdk ? arr.push('weitezhineng') : null;
+    this.checkOrign.watch.weiteTest ? arr.push('weitezhineng-test') : null;
+    this.checkOrign.robot.xiaohaSdk ? arr.push('honeybot') : null;
+    this.checkOrign.robot.xiaohaTest ? arr.push('honey-test') : null;
+    this.checkOrign.other.k11Api ? arr.push('K11-publicscreen-api-pro') : null;
+    this.checkOrign.other.k11Test ? arr.push('K11-test') : null;
+    return arr;
   }
 
 }

@@ -3,13 +3,13 @@
   <form [formGroup]="searchDataCenterForm">
     <div nz-row class="search_panel">
       <div nz-col nzSpan="2">
-        <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-info-circle-o"></i>数据说明？</button>
+        <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-question-circle-o"></i>数据说明？</button>
       </div>
       <div nz-col nzSpan="3" class="span_down right_alignment">
         查询日期范围：
       </div>
       <div nz-col nzSpan="7" class="span_down">
-        <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event)"></nz-range-picker>
+        <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange('date', $event)"></nz-range-picker>
       </div>
       <div nz-col nzSpan="1" class="span_down spacing right_alignment">
         渠道：
@@ -1029,55 +1029,54 @@
           </ng-template>
         </nz-modal>
 
-        <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="orignModalFooter" (nzOnCancel)="showSomething('orign')" nzMaskClosable="false">
+        <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="eorignModalFooter" (nzOnCancel)="showSomething('orign')" nzMaskClosable="false">
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2">来源：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allApi">全选（API）</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allApp', $event)" [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allSdk', $event)" [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allApi', $event)" [(ngModel)]="checkOrign.allApi">全选（API）</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allTest', $event)" [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
           </div>
           <br>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">手机：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.xiaowu || checkOrign.allApp">你好小悟</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.tingting || checkOrign.allApp">听听同学</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.phone.wotewode || checkOrign.allApp">沃特沃德6</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.xiaowu">你好小悟</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.tingting">听听同学</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.wotewode">沃特沃德6</label></div>
           </div>
           <br>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">车机：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.botai || checkOrign.allApi">博泰车机api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingApi || checkOrign.allApi">同行者车机api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingSdk || checkOrign.allSdk || checkOrign.allTest">同行者车机sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.car.tongxingTest || checkOrign.allApi || checkOrign.allTest">同行者test</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.botai">博泰车机api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingApi">同行者车机api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingSdk">同行者车机sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingTest">同行者test</label></div>
           </div>
           <br>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">手表：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteSdk || checkOrign.allSdk">维特智能sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.watch.weiteTest || checkOrign.allSdk || checkOrign.allTest">维特智能test</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteSdk">维特智能sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteTest">维特智能test</label></div>
           </div>
           <br>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">机器人：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaSdk || checkOrign.allSdk">小哈机器人sdk</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.robot.xiaohaTest || checkOrign.allSdk || checkOrign.allTest">小哈机器人test</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaSdk">小哈机器人sdk</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaTest">小哈机器人test</label></div>
           </div>
           <br>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">其他：</div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Api || checkOrign.allApi || checkOrign.allTest">k11公共屏幕api</label></div>
-            <div nz-col nzSpan="5"><label nz-checkbox [ngModel]="checkOrign.other.k11Test || checkOrign.allSdk || checkOrign.allTest">k11 test</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.other.k11Api">k11公共屏幕api</label></div>
+            <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.other.k11Test">k11 test</label></div>
           </div>
-          <ng-template #orignModalFooter>
-            <button nz-button nzType="default" (click)="showModal('orign')"><i class="anticon anticon-save"></i>保存</button>
-            <button nz-button nzType="default" (click)="showSomething('orign', '')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+          <ng-template #eorignModalFooter>
+            <button nz-button nzType="primary" (click)="showSomething('orign', '')"><i class="anticon anticon-save"></i>保存</button>
           </ng-template>
         </nz-modal>
 

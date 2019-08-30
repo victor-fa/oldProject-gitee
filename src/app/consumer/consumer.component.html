@@ -7,6 +7,9 @@
         <nz-tab [nzTitle]="consumerTemplate" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #consumerTemplate><i class="anticon anticon-team"></i>客户管理</ng-template>
           <div nz-row class="search_panel">
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="showModal('explain', '')"><i class="anticon anticon-question-circle-o"></i>数据说明</button>
+            </div>
             <!-- <form [formGroup]="consumerSearchForm">
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">
                 客户ID：
@@ -15,15 +18,15 @@
                 <input nz-input formControlName="userPhone" placeholder="输入客户ID" nzSize="default">
               </div>
             </form> -->
-            <div nz-col nzSpan="19"></div>
+            <div nz-col nzSpan="18"></div>
             <!-- <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
             </div> -->
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
             </div>
-            <div nz-col nzSpan="3">
-              <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-file-add"></i>新增客户</button>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-user-add"></i>新增客户</button>
             </div>
           </div>
           <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
@@ -78,6 +81,10 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="appChannel" maxlength="32" [(ngModel)]="consumerDate.appChannel" placeholder="请输入客户ID（即appkey，长度不能超过32位）" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="1">
+                  <button nz-button nzType="primary" (click)="showModal('explain', '')"><i class="anticon anticon-question-circle-o"></i></button>
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -287,6 +294,18 @@
               <button nz-button nzType="default" (click)="hideModal('addSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1110" nzTitle="客户管理数据说明" [nzFooter]="explainModalFooter" (nzOnCancel)="hideModal('explain')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <img [src]="'assets/images/consumer_explain.png'">
+              </div>
+            </div>
+            <ng-template #explainModalFooter>
+              <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
         </nz-tab>
 
       </nz-tabset>

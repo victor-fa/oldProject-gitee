@@ -251,6 +251,7 @@
                 <th nzWidth="20px">用户昵称</th>
                 <th nzWidth="20px">订单类型</th>
                 <th nzWidth="20px">订单状态</th>
+                <th nzWidth="20px">报警类型</th>
                 <th nzWidth="20px">报警时间</th>
                 <th nzWidth="20px">操作</th>
               </tr>
@@ -266,6 +267,7 @@
                   data.state === 'PEISONGZHONG' ? '配送中' : data.state === 'CHONGZHIZHONG' ? '充值中' : data.state === 'ZHANZUOZHONG' ? '占座中' : data.state === 'CHUPIAOZHONG' ? '出票中' :
                   data.state === 'QUXIAOZHONG' ? '取消中' : data.state === 'TUIPIAOZHONG' ? '退票中' : data.state === 'TUIKUANZHONG' ? '退款中' : data.state === 'SIJIDAODA' ? '司机到达' :
                   data.state === 'DAIJIEJIA' ? '待接驾' : data.state === 'SIJIYIDAODA' ? '司机已到达' : data.state === 'JINXINGZHONG' ? '进行中' : data.state === 'DAICHUXING' ? '待出行' : '' }}</td>
+                <td>{{data.alertLevel === 'LOW' ? '低阈值报警' : data.alertLevel === 'HIGH' ? '高阈值报警' : '' }}</td>
                 <td>{{data.alertTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="goTaxtOrder(data)"><i class="anticon anticon-eye-o"></i>查看</button>
