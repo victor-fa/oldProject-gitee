@@ -78,6 +78,8 @@ export enum consumerApiUrls {
   consumerList = '/customer/channel',
   /** 客户管理 序列号 */
   consumerKey = '/guest/key',
+  /** 客户管理 对接凭证 */
+  voucher = '/channel/account',
 }
 
 /** 运维后台 */

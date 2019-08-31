@@ -44,6 +44,7 @@
                 <th nzWidth="20px">短信签名</th>
                 <th nzWidth="20px">创建时间</th>
                 <th nzWidth="20px">序列号</th>
+                <th nzWidth="20px">对接凭证</th>
                 <th nzWidth="20px">操作</th>
               </tr>
             </thead>
@@ -64,6 +65,9 @@
                   <button nz-button nzType="primary" (click)="showModal('modifySerial', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
                 <td>
+                  <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                </td>
+                <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)"><i class="anticon anticon-form"></i>编辑</button>
                 </td>
               </tr>
@@ -72,6 +76,30 @@
           <div class="spin" *ngIf="isSpinning">
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
+
+          <nz-modal [(nzVisible)]="visiable.voucher" nzTitle="对接凭证" [nzFooter]="voucherModalFooter" (nzOnCancel)="hideModal('voucher')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" class="span_down">
+                【appChannel/appKey】{{voucherInfo.appChannel}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down">
+                【appSecret】{{voucherInfo.appSecret}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down">
+                【aesKey】{{voucherInfo.aesKey}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down">
+                【aesIv】{{voucherInfo.aesIv}}
+              </div>
+              <div nz-col nzSpan="24" class="span_down">
+                【privateKey】{{voucherInfo.privateKey}}
+              </div>
+            </div>
+            <ng-template #voucherModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('voucher')"><i class="anticon anticon-copy"></i>复制</button>
+              <button nz-button nzType="default" (click)="hideModal('voucher')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.addConsumer" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
             <form [formGroup]="addConsumerForm">

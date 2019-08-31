@@ -20,30 +20,31 @@ export class BookingService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getBookingList(pageSize, flag, id, queryType, state?, orderType?, createTimeBegin?, createTimeEnd?, orderId?, phone?): Observable<IResponse<any>> {
+  getBookingList(pageSize, flag, id, queryType, state?, orderType?, createTimeBegin?, createTimeEnd?, orderId?, phone?, channelType?): Observable<IResponse<any>> {
     let url;
     if (flag === '') {
       url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
-          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone);
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone, channelType);
     } else if (flag === 'last') {
       url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
-          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone) + '&lastId=' + id;
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone, channelType) + '&lastId=' + id;
     } else if (flag === 'first') {
       url = `${this.commonService.baseUrl}${userApiUrls.orderList}`
-          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone) + '&preId=' + id;
+          + this.getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone, channelType) + '&preId=' + id;
     }
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
-  getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone): string {
+  getBookingListUrl(queryType, pageSize, state, orderType, createTimeBegin, createTimeEnd, orderId, phone, channelType): string {
     const url = '?pageSize=' + pageSize
       + (state ? '&state=' + state : '')
       + (orderType ? (orderType.length > 3 ? '&subType=' + orderType : '&orderType=' + orderType) : (queryType && queryType !== '' ? '&queryType=' + queryType : ''))
       + (createTimeBegin ? '&createTimeBegin=' + createTimeBegin : '')
       + (createTimeEnd ? '&createTimeEnd=' + createTimeEnd : '')
       + (orderId ? '&orderId=' + orderId : '')
-      + (phone ? '&phone=' + phone : '');
+      + (phone ? '&phone=' + phone : '')
+      + (channelType ? '&channelType=' + channelType : '');
     return url;
   }
 

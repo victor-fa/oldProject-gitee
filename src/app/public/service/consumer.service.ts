@@ -71,4 +71,12 @@ export class ConsumerService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取所有列表 */
+  getVoucher(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.voucher}?appChannel=${data.appChannel}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
 }

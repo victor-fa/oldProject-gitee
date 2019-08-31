@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { ConsumerService } from '../public/service/consumer.service';
+import { ClipboardService } from 'ngx-clipboard';
 import * as XLSX from 'xlsx';
 
 registerLocaleData(zh);
@@ -17,7 +18,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, voucher: false, };
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
@@ -29,6 +30,7 @@ export class ConsumerComponent implements OnInit {
   isSpinning = false;
   serialData = {appChannel: ''};
   editSerialData = '';
+  voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +38,7 @@ export class ConsumerComponent implements OnInit {
     private modalService: NzModalService,
     private consumerService: ConsumerService,
     private notification: NzNotificationService,
+    private _clipboardService: ClipboardService
   ) {
     this.commonService.nav[9].active = true;
     this._initForm();
@@ -76,6 +79,17 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataSerial);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'voucher') {
+      const voucherInput = {
+        appChannel: this.voucherInfo.appChannel,
+      };
+      this.consumerService.getVoucher(voucherInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.voucherInfo = JSON.parse(res.payload);
+          console.log(this.voucherInfo);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -112,6 +126,10 @@ export class ConsumerComponent implements OnInit {
       this.visiable.addSerial = true;
     } else if (flag === 'explain') {
       this.visiable.explain = true;
+    } else if (flag === 'voucher') {
+      this.voucherInfo.appChannel = data.appChannel;
+      this.loadData('voucher');
+      this.visiable.voucher = true;
     }
   }
 
@@ -128,6 +146,9 @@ export class ConsumerComponent implements OnInit {
       this.visiable.addSerial = false;
     } else if (flag === 'explain') {
       this.visiable.explain = false;
+    } else if (flag === 'voucher') {
+      this.voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
+      this.visiable.voucher = false;
     }
   }
 
@@ -211,6 +232,10 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('addSerial');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'voucher') {
+      const str = `【appChannel/appKey】${this.voucherInfo.appChannel}\n【appSecret】${this.voucherInfo.appSecret}\n【aesKey】${this.voucherInfo.aesKey}\n【aesIv】${this.voucherInfo.aesIv}\n【privateKey】${this.voucherInfo.privateKey}`;
+      this._clipboardService.copyFromContent(str);
+      this.notification.success( '提示', '复制成功', { nzStyle: { color : 'green' } });
     }
   }
 

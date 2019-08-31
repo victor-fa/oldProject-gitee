@@ -168,11 +168,14 @@ export class UserComponent implements OnInit {
   private loadData(flag): void {
     this.isSpinning = true;
     if (flag === 'user') {
-      const userInput = { locked: this.userLocked, loginBegin: this.begUserLoginDate,
-        loginEnd: this.endUserLoginDate, registerBegin: this.begUserRegisterDate,
+      const userInput = {
+        locked: this.userLocked,
+        loginBegin: this.begUserLoginDate,
+        loginEnd: this.endUserLoginDate,
+        registerBegin: this.begUserRegisterDate,
         registerEnd: this.endUserRegisterDate,
         phone: this.userOrderPhone,
-        userId: this.searchUserForm.controls['userId'].value
+        userId: this.searchUserForm.controls['userId'].value,
       };
       this.userService.getUserInfoList(userInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -335,14 +338,14 @@ export class UserComponent implements OnInit {
   }
 
   /* 加载信息 */
-  private loadDataByKey(state, type, createTimeBegin, createTimeEnd, orderId, phone): void {
+  private loadDataByKey(state, type, createTimeBegin, createTimeEnd, orderId, phone, channelType): void {
     setTimeout(() => {
       let id = 0;
       let pageFlag = '';
       if (this.doLastBooking) { id = this.lastBookingId; pageFlag = 'last'; }
       if (this.doFirstBooking) { id = this.firstBookingId; pageFlag = 'first'; }
       const queryType = this.currentPanel === 'bookingHypostatic' ? 'HYPOSTATIC' : this.currentPanel === 'bookingDigital' ? 'DIGITAL' : '';
-      this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType, state, type, createTimeBegin, createTimeEnd, orderId, phone).subscribe(res => {
+      this.bookingService.getBookingList(this.bookingPageSize, pageFlag, id, queryType, state, type, createTimeBegin, createTimeEnd, orderId, phone, channelType).subscribe(res => {
         if (res.retcode === 0) {
           if (res.payload !== '') {
             const operationInput = { op_category: '用户管理', op_page: '服务订单查询' , op_name: '访问' };
@@ -400,22 +403,24 @@ export class UserComponent implements OnInit {
         'type': this.searchBookingForm.controls['type'].value,
         'status': this.searchBookingForm.controls['status'].value,
         'orderId': this.bookingOrderId,
-        'phone': this.searchBookingForm.controls['phone'].value
+        'phone': this.searchBookingForm.controls['phone'].value,
+        'channelType': this.searchBookingForm.controls['channelType'].value,
       };
       if ((searchBookingItem.createTimeBegin === '' || searchBookingItem.createTimeBegin === null)
           && (searchBookingItem.createTimeEnd === '' || searchBookingItem.createTimeEnd === null)
           && searchBookingItem.type === ''
-          && searchBookingItem.status === '' && searchBookingItem.orderId === '' && searchBookingItem.phone === '') {
+          && searchBookingItem.status === '' && searchBookingItem.orderId === ''
+          && searchBookingItem.phone === '' && searchBookingItem.channelType === '') {
         this.currentPanel === 'bookingHypostatic' ? this.loadData('bookingHypostatic') :  this.loadData('bookingDigital');
       } else {
-        this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.createTimeBegin, searchBookingItem.createTimeEnd, searchBookingItem.orderId, searchBookingItem.phone);
+        this.loadDataByKey(searchBookingItem.status, searchBookingItem.type, searchBookingItem.createTimeBegin, searchBookingItem.createTimeEnd, searchBookingItem.orderId, searchBookingItem.phone, searchBookingItem.channelType);
       }
     }
   }
 
   private _initForm(): void {
     this.searchUserForm = this.fb.group({ userId: [''], phone: [''], locked: [''], date: [''], });
-    this.searchBookingForm = this.fb.group({ date: [''], type: [''], status: [''], orderId: [''], phone: [''], });
+    this.searchBookingForm = this.fb.group({ date: [''], type: [''], status: [''], orderId: [''], phone: [''], channelType: [''] });
     this.addAdjustForm = this.fb.group({ adjustAmount: [''], adjustReason: [''], adjustType: [''], code: [''],
       noticeAbstract: [''], noticeContent: [''], noticeTitle: [''], operater: [''], users: [''], });
     this.searchRechargeForm = this.fb.group({ phone: [''], date: [''], });
