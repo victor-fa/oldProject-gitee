@@ -18,7 +18,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, voucher: false, };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, };
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
@@ -130,6 +130,13 @@ export class ConsumerComponent implements OnInit {
       this.voucherInfo.appChannel = data.appChannel;
       this.loadData('voucher');
       this.visiable.voucher = true;
+    } else if (flag === 'deleteConsumer') {
+      const text = data.target.innerText;
+      console.log(text);
+    } else if (flag === 'addCallback') {
+      this.visiable.addCallback = true;
+    } else if (flag === 'modifyCallback') {
+      this.visiable.modifyCallback = true;
     }
   }
 
@@ -149,6 +156,10 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'voucher') {
       this.voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
       this.visiable.voucher = false;
+    } else if (flag === 'addCallback') {
+      this.visiable.addCallback = false;
+    } else if (flag === 'modifyCallback') {
+      this.visiable.modifyCallback = false;
     }
   }
 
@@ -282,6 +293,14 @@ export class ConsumerComponent implements OnInit {
     // }
     this.loadData('consumer');
     this.hideModal('modifyConsumer');
+  }
+
+  // 日期插件
+  onChange(result, flag): void {
+    if (flag === 'callback') {
+      // if (result === []) { this.beginBaseInfoDate = ''; this.endBaseInfoDate = ''; return; }
+      // if (result[0] !== '' || result[1] !== '') { this.beginBaseInfoDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endBaseInfoDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
+    }
   }
 
   getExcel(evt) {

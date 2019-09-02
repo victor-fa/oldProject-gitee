@@ -34,7 +34,7 @@ export class NewsComponent implements OnInit {
   dataNewsNERResult = [];
   paramNewsThesaurus = {person: 0, address: 0, event: 0, invalid: 0};
   uploadMarkedData = {type: 'PERSON'};
-  addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: [], successNum: 0, failNum: ''};
+  addNewsThesaurusData = {type: 'PERSON', content: '', success: '', fail: '', successArr: [], failArr: [], successNum: 0, failNum: ''};
   isSpinning = false;
   checkAccurate = false;
   beginSortSpeechDate = '';
@@ -331,7 +331,7 @@ export class NewsComponent implements OnInit {
     } else if (flag === 'newsNERResult') {
       this.visiable.newsNERResult = false;
     } else if (flag === 'addNewsThesaurusResult') {
-      this.addNewsThesaurusData = {type: 'PERSON', content: '', success: [], fail: [], successNum: 0, failNum: ''};
+      this.addNewsThesaurusData = {type: 'PERSON', content: '', success: '', fail: '', successArr: [], failArr: [], successNum: 0, failNum: ''};
       this.visiable.addNewsThesaurusResult = false;
       this.loadData('newsThesaurus');
     }
@@ -393,9 +393,9 @@ export class NewsComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyNewsThesaurus') {
-      const deleteInput = {newsWord: {type: data.type, word: data.word} };
-      console.log(deleteInput);
-      this.newsService.updateNewWords(deleteInput).subscribe(res => {
+      const modifyInput = {newsWord: {type: data.type, word: data.word} };
+      console.log(modifyInput);
+      this.newsService.updateNewWords(modifyInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '新闻词库', op_page: '人工标注', op_name: '更新审核进度' };
@@ -413,8 +413,14 @@ export class NewsComponent implements OnInit {
           const operationInput = { op_category: '新闻词库', op_page: '新闻词库', op_name: '新增词条' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           const result = JSON.parse(res.payload);
-          this.addNewsThesaurusData.success = result.successList.join('\n');
-          this.addNewsThesaurusData.fail = result.failList.join('\n');
+          const successRes = [];
+          const failRes = [];
+          result.successList.map(item => successRes.push(item.word));
+          result.failList.map(item => failRes.push(item.word));
+          this.addNewsThesaurusData.success = successRes.join('\n');
+          this.addNewsThesaurusData.fail = failRes.join('\n');
+          this.addNewsThesaurusData.successArr = result.successList;
+          this.addNewsThesaurusData.failArr = result.failList;
           this.addNewsThesaurusData.successNum = result.successList.length;
           this.addNewsThesaurusData.failNum = result.failList.length;
           console.log(this.addNewsThesaurusData);

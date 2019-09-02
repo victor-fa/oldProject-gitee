@@ -32,20 +32,20 @@
           <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">客户ID</th>
-                <th nzWidth="20px">客户名称</th>
-                <th nzWidth="20px">APP key</th>
-                <th nzWidth="20px">APP Secret</th>
-                <th nzWidth="20px">Client ID</th>
-                <th nzWidth="20px">登录类型</th>
-                <th nzWidth="20px">BOT名称</th>
-                <th nzWidth="20px">Payment Key</th>
-                <th nzWidth="20px">短信签名</th>
-                <th nzWidth="20px">创建时间</th>
-                <th nzWidth="20px">序列号</th>
-                <th nzWidth="20px">对接凭证</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>客户ID</th>
+                <th>客户名称</th>
+                <th>APP key</th>
+                <th>APP Secret</th>
+                <th>Client ID</th>
+                <th>登录类型</th>
+                <th>BOT名称</th>
+                <th>Payment Key</th>
+                <th>短信签名</th>
+                <th>创建时间</th>
+                <th>序列号</th>
+                <th>对接凭证</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -68,7 +68,8 @@
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-left: 10px"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteConsumer', $event)"><i class="anticon anticon-delete"></i>{{'作废'}}</button>
                 </td>
               </tr>
             </tbody>
@@ -331,6 +332,131 @@
             </div>
             <ng-template #explainModalFooter>
               <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+        <nz-tab [nzTitle]="callbackTemplate" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
+          <ng-template #callbackTemplate><i class="anticon anticon-team"></i>回调地址</ng-template>
+          <div nz-row class="search_panel">
+            <div nz-col nzSpan="2" class="span_down right_alignment">
+              客户ID：
+            </div>
+            <div nz-col nzSpan="3">
+              <input nz-input placeholder="请输入客户ID" nzSize="default">
+            </div>
+            <div nz-col nzSpan="2" class="span_down right_alignment">
+              订单类型：
+            </div>
+            <div nz-col nzSpan="3">
+              <input nz-input placeholder="请输入订单类型" nzSize="default">
+            </div>
+            <div nz-col nzSpan="2" class="span_down right_alignment">
+              创建时间：
+            </div>
+            <div nz-col nzSpan="7">
+              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'callback')"></nz-range-picker>
+            </div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('callback')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addCallback', data)"><i class="anticon anticon-file-add"></i>新增回调地址</button>
+            </div>
+          </div>
+          <nz-table #callbackTable [nzData]="dataCallback" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>客户ID</th>
+                <th>订单类型</th>
+                <th>回调地址</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of callbackTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.appChannel}}</td>
+                <td>{{data.appChannelName}}</td>
+                <td>{{data.appKey}}</td>
+                <td>{{data.appSecret}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCallback', data)" style="margin-left: 10px"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCallback', $event)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addCallback" nzTitle="新增回调地址" [nzFooter]="addCallbackModalFooter" (nzOnCancel)="hideModal('addCallback')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                客户ID：
+              </div>
+              <div nz-col nzSpan="19">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                订单类型：
+              </div>
+              <div nz-col nzSpan="19">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                回调地址：
+              </div>
+              <div nz-col nzSpan="19">
+                <input nz-input placeholder="请输入回调地址" nzSize="default">
+              </div>
+            </div>
+            <ng-template #addCallbackModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addCallback')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addCallback')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyCallback" nzTitle="修改回调地址" [nzFooter]="modifyCallbackModalFooter" (nzOnCancel)="hideModal('modifyCallback')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                客户ID：
+              </div>
+              <div nz-col nzSpan="19">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                订单类型：
+              </div>
+              <div nz-col nzSpan="19">
+                <nz-select [ngModel]="''">
+                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="5" class="span_down right_alignment">
+                回调地址：
+              </div>
+              <div nz-col nzSpan="19">
+                <input nz-input placeholder="请输入回调地址" nzSize="default">
+              </div>
+            </div>
+            <ng-template #modifyCallbackModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyCallback')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyCallback')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

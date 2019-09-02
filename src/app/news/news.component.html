@@ -396,27 +396,40 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.addNewsThesaurusResult" nzWidth="650" nzTitle="新增词条结果" [nzFooter]="addNewsThesaurusResultFooter" (nzOnCancel)="hideModal('addNewsThesaurusResult')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addNewsThesaurusResult" nzWidth="750" nzTitle="新增词条结果" [nzFooter]="addNewsThesaurusResultFooter" (nzOnCancel)="hideModal('addNewsThesaurusResult')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="10">
-                成功添加词条{{addNewsThesaurusData.successNum}}
-              </div>
-              <div nz-col nzSpan="2"></div>
-              <div nz-col nzSpan="10">
-                重复词条{{addNewsThesaurusData.failNum}}
+                成功添加词条&nbsp;&nbsp;{{addNewsThesaurusData.successNum}}
               </div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="10" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="24" class="span_down spacing right_alignment">
                 <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.success" nzSize="default" [disabled]="true"></textarea>
               </div>
-              <div nz-col nzSpan="2"></div>
-              <div nz-col nzSpan="10" class="span_down spacing right_alignment">
-                <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.fail" nzSize="default" [disabled]="true"></textarea>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                重复词条&nbsp;&nbsp;{{addNewsThesaurusData.failNum}}
+              </div>
+            </div>
+            <div nz-row class="search_panel"  *ngFor="let data of addNewsThesaurusData.failArr; let i=index;">
+              <div nz-col nzSpan="4" class="span_down">
+                {{data.word}}
+              </div>
+              <div nz-col nzSpan="16">
+                <nz-radio-group [(ngModel)]="data.type">
+                  <label nz-radio nzValue="PERSON">人名</label>
+                  <label nz-radio nzValue="ADDRESS">地名</label>
+                  <label nz-radio nzValue="EVENT">事件</label>
+                  <label nz-radio nzValue="INVALID">无效</label>
+                </nz-radio-group>
+              </div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="doSave('modifyNewsThesaurus', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>保存</button>
               </div>
             </div>
             <ng-template #addNewsThesaurusResultFooter>
-              <button nz-button nzType="default" (click)="hideModal('addNewsThesaurusResult')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+              <button nz-button nzType="default" (click)="hideModal('addNewsThesaurusResult')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 

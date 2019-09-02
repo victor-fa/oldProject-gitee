@@ -658,7 +658,9 @@
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">旅程时间：</div> <div nz-col nzSpan="7">{{dataDetail.flight_times}}</div> <div nz-col nzSpan="5" class="right_alignment">航班类型：</div> <div nz-col nzSpan="7">{{dataDetail.flight_type}}</div> </div>
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">企业管家编号：</div> <div nz-col nzSpan="7"><a (click)="showExternal(1, orderId)">{{dataDetail.no}}</a></div> <div nz-col nzSpan="5" class="right_alignment">订单价格：</div> <div nz-col nzSpan="7">{{dataDetail.amount}}</div> </div>
             <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">订单类型：</div> <div nz-col nzSpan="7">{{dataDetail.order_type}}</div> <div nz-col nzSpan="5" class="right_alignment">备注：</div> <div nz-col nzSpan="7">{{dataDetail.remark}}</div> </div>
-            <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">当前订单状态：</div> <div nz-col nzSpan="7">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '出票中' : orderStatus === 2 ? '待出行' : orderStatus === 3 ? '已出行' : orderStatus === 4 ? '出票失败' : orderStatus === 5 ? '退款中' : orderStatus === 6 ? '已退款' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易失败' : orderStatus === 12 ? '退票中' : orderStatus === 13 ? '出票失败 退款中' : 'null' }}</div> </div>
+            <div nz-row class="search_panel"> <div nz-col nzSpan="5" class="right_alignment">当前订单状态：</div> <div nz-col nzSpan="7">{{orderStatus === 0 ? '待支付' : orderStatus === 1 ? '出票中' : orderStatus === 2 ? '待出行' : orderStatus === 3 ? '已出行' : orderStatus === 4 ? '出票失败' : orderStatus === 5 ? '退款中' : orderStatus === 6 ? '已退款' : orderStatus === 7 ? '已取消' : orderStatus === 8 ? '交易失败' : orderStatus === 12 ? '退票中' : orderStatus === 13 ? '出票失败 退款中' : 'null' }}</div>
+            <div nz-col nzSpan="5" class="right_alignment">退票原因：</div> <div nz-col nzSpan="7">{{dataDetail.refundDetailReason}}</div>
+            </div>
           </div>
 
           <!-- 酒店信息 -->

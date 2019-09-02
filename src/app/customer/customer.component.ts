@@ -394,6 +394,7 @@ export class CustomerComponent implements OnInit {
     } else if (flag === 'batchDownload') {
       this.visiable.batchDownload = false;
     } else if (flag === 'feedBack') {
+      this.loadData('feedback');
       this.visiable.feedBack = false;
     } else if (flag === 'agree') {
       this.visiable.agree = false;

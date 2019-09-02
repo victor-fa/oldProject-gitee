@@ -28,7 +28,7 @@
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="status">
                   <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'未完成'" [nzValue]="'SUBMITTED'"></nz-option>
+                  <nz-option required [nzLabel]="'未处理'" [nzValue]="'SUBMITTED'"></nz-option>
                   <nz-option required [nzLabel]="'处理中'" [nzValue]="'DOING'"></nz-option>
                   <nz-option required [nzLabel]="'已完成'" [nzValue]="'DONE'"></nz-option>
                 </nz-select>
@@ -39,7 +39,7 @@
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="replyStatus">
                   <nz-option required [nzLabel]="'全部'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'待回复'" [nzValue]="'false'"></nz-option>
+                  <nz-option required [nzLabel]="'未回复'" [nzValue]="'false'"></nz-option>
                   <nz-option required [nzLabel]="'已回复'" [nzValue]="'true'"></nz-option>
                 </nz-select>
               </div>
@@ -190,7 +190,14 @@
 
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">上传图片：</div>
-              <div nz-col nzSpan="20">{{!tempFeedBack.photo && tempFeedBack.photo.length > 0 ? 'null' : tempFeedBack.photo.toString().indexOf('http') > -1 ? '' : 'null'}}</div>
+              <div nz-col nzSpan="20">
+                <ng-container *ngIf="tempFeedBack.photo">
+                  {{tempFeedBack.photo.length > 0 ? 'null' : (tempFeedBack.photo.toString().indexOf('http') > -1 ? '' : 'null')}}
+                </ng-container>
+                <ng-container *ngIf="!tempFeedBack.photo">
+                  null
+                </ng-container>
+              </div>
             </div>
             <ng-container *ngIf="tempFeedBack.photo && tempFeedBack.photo.length > 0">
               <ng-container *ngIf="tempFeedBack.photo.toString().indexOf('http') > -1">
