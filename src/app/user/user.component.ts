@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
   userData = [];
   adjustData = [];
   operatersData = [];
-  adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
+  adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', items: {}, result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '', itemsArr: [] };
   searchUserForm: FormGroup;  // 查询表单
   userInfoId = '';
   userInfoDetail = [];
@@ -229,7 +229,6 @@ export class UserComponent implements OnInit {
           const operationInput = { op_category: '用户管理', op_page: '服务订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.adjustData = JSON.parse(res.payload).reverse();
-          console.log(JSON.parse(res.payload).reverse());
           this.adjustData.forEach(item => {
             item.createTime = item.createTime.replace(/-/g, ':');  // 创建日期格式化
             item.all = Object.keys(item.result).length; // 发放人数
@@ -460,7 +459,7 @@ export class UserComponent implements OnInit {
       let user = this.addAdjustForm.controls['users'].value.split('\n');
       let finalJson = {};
       user.forEach(item => {
-        finalJson[item.split(',')[0]] = item.split(',')[1]
+        finalJson[item.split(',')[0]] = Number(item.split(',')[1])
       });
       const adjustInput = {
         adjustReason: this.addAdjustForm.controls['adjustReason'].value,
@@ -470,7 +469,7 @@ export class UserComponent implements OnInit {
         noticeContent: this.replaceHtmlStr(this.addAdjustForm.controls['noticeContent'].value).replace(/&/g, '%26'),
         noticeTitle: this.addAdjustForm.controls['noticeTitle'].value,
         operater: this.operateObject.operater,
-        item: finalJson,
+        items: finalJson,
       };
       console.log(adjustInput);
       this.adjustService.addAdjust(adjustInput).subscribe(res => {
@@ -709,6 +708,7 @@ export class UserComponent implements OnInit {
       this.adjustDetail = data;
       const success = [];
       const fail = [];
+      const itemsArr = [];
       this.adjustDetail.all = Object.keys(this.adjustDetail.result).length;
       for (const i in this.adjustDetail.result) {
         if (this.adjustDetail.result[i] === true) {
@@ -717,12 +717,18 @@ export class UserComponent implements OnInit {
           fail.push(i);
         }
       }
+      for (const i in this.adjustDetail.items) {
+        itemsArr.push({key: i, value: this.adjustDetail.items[i]});
+      }
+      console.log(itemsArr);
       this.adjustDetail.success = success.join('\n');
       this.adjustDetail.fail = fail.join('\n');
       this.adjustDetail.successNum = success.length;
       this.adjustDetail.failNum = fail.length;
+      this.adjustDetail.itemsArr = itemsArr;
+      console.log(this.adjustDetail);
     } if (flag === 'adjustAdd') {
-      this.adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '' };
+      this.adjustDetail = { successNum: 0, failNum: 0, success: '', fail: '', items: {}, result: {}, all: 0, users: '', noticeTitle: '', noticeAbstract: '', noticeContent: '', adjustReason: '', itemsArr: [] };
       this.adjustTypeAdd = 'BEAN';
       this.visiable.adjustAdd = true;
     } if (flag === 'adjustSend') {

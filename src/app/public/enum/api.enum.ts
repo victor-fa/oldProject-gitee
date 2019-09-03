@@ -165,7 +165,9 @@ export enum regressionApiUrls {
 /** 开放平台 */
 export enum platformApiUrls {
   /** 技术文档 */
-  platformList = '/regression/word-sets',
+  categoryList = '/docs/category',
+  /** 客户账号 */
+  userList = '/docs/user',
 }
 
 

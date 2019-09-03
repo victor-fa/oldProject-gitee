@@ -100,7 +100,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹框 —— 信息 —— 用户详情 -->
           <nz-modal [(nzVisible)]="visiable.userInfoDetail" nzWidth="950" nzTitle="用户详情" [nzFooter]="userInfoDetailVisibleModalFooter" (nzOnCancel)="hideModal('UserInfo')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div>
@@ -170,13 +169,11 @@
                 </tr>
               </tbody>
             </nz-table> -->
-            <!-- 弹框和底部定制 -->
             <ng-template #userInfoDetailVisibleModalFooter>
               <button nz-button nzType="default" (click)="hideModal('UserInfo')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 信息 —— 常用信息 -->
           <nz-modal [(nzVisible)]="visiable.userInfoCommon" nzWidth="950" nzTitle="常用信息" [nzFooter]="userInfoCommonVisibleModalFooter" (nzOnCancel)="hideModal('UserCommon')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <nz-radio-group [(ngModel)]="currentUserCommonTab" (ngModelChange)="onChange($event, 'currentUserCommonTab')">
@@ -279,13 +276,11 @@
                 <div nz-row class="search_panel invoice-line"></div>
               </ng-container>
             </div>
-            <!-- 弹框和底部定制 -->
             <ng-template #userInfoCommonVisibleModalFooter>
               <button nz-button nzType="default" (click)="hideModal('UserCommon')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 信息 —— 登录详情 -->
           <nz-modal [(nzVisible)]="visiable.latestLogin" nzWidth="750" nzTitle="登录详情" [nzFooter]="userLatestLoginAtModalFooter" (nzOnCancel)="hideModal('latestLoginAt')" nzMaskClosable="false">
             <nz-table #rowLatestLoginTable [nzData]="latestLoginData" [nzSimple]="true" *ngIf="!isSpinning">
               <thead>
@@ -309,7 +304,6 @@
                 </tr>
               </tbody>
             </nz-table>
-            <!-- 弹框和底部定制 -->
             <ng-template #userLatestLoginAtModalFooter>
               <button nz-button nzType="default" (click)="hideModal('latestLoginAt')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
@@ -879,7 +873,7 @@
             </div>
           </div>
 
-          <nz-table #rowSelectionUserTable [nzData]="adjustData" [nzSimple]="true">
+          <nz-table #rowAdjustDataTable [nzData]="adjustData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -895,7 +889,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionUserTable.data; let i=index;">
+              <tr *ngFor="let data of rowAdjustDataTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.createDate | date:'yyyy-MM-dd' }}</td>
                 <td>{{data.createTime}}</td>
@@ -1065,26 +1059,26 @@
                 <div nz-col nzSpan="5" class="span_down">发放时间<br>{{adjustDetail.createTime}}</div>
                 <div nz-col nzSpan="5" class="span_down">发放人数<br>{{adjustDetail.all}}</div>
                 <div nz-col nzSpan="5" class="span_down">失败人数<br>{{adjustDetail.failNum}}</div>
-                <!-- adjustDetail.errorRevL.length -->
                 <div nz-col nzSpan="2"></div>
               </div>
               <div nz-row class="search_panel">
-                <div nz-col nzSpan="11" class="spthumbnailan_down">发送成功（总计{{adjustDetail.successNum}}个）</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="11" class="spthumbnailan_down">奖励配置</div>
-                <div nz-col nzSpan="1"></div>
-              </div>
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="adjustDetail.success" [disabled]="true" nzSize="default"></textarea>
+                <div nz-col nzSpan="24">
+                  <nz-table #rowsSuccessDataTable [nzData]="adjustDetail.itemsArr" [nzSimple]="true">
+                    <thead>
+                      <tr>
+                        <th>发送成功(总计x个)</th>
+                        <th>奖励配置</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of rowsSuccessDataTable.data; let i=index;">
+                        <td>{{data.key}}</td>
+                        <td>{{data.value}}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
                 </div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="11">
-                  <textarea rows="5" nz-input [(ngModel)]="(adjustDetail.adjustType === 'BEAN' ? '小悟豆' : adjustDetail.adjustType === 'COIN' ? '小悟币' : null) + '*' + adjustDetail.adjustAmount" [disabled]="true" zSize="default"></textarea>
-                </div>
-                <div nz-col nzSpan="1"></div>
               </div>
-
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="11" class="spthumbnailan_down">失败对象(总计{{adjustDetail.failNum}}个)</div>
                 <div nz-col nzSpan="1"></div>
@@ -1113,7 +1107,6 @@
                 <div nz-col nzSpan="1"></div>
               </div>
             </div>
-            <!-- 弹框和底部定制 -->
             <ng-template #adjustDetailModalFooter>
               <button nz-button nzType="default" (click)="hideModal('adjustDetail')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
@@ -1241,7 +1234,6 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 信息 —— 开票详情 -->
           <nz-modal [(nzVisible)]="visiable.invoiceDetail" nzWidth="950" nzTitle="开票详情" [nzFooter]="invoiceDetail1ModalFooter" (nzOnCancel)="hideModal('invoiceInfoDetail')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div> <div nz-col nzSpan="8">{{invoiceItem.account}}</div>
@@ -1285,7 +1277,6 @@
                 </tr>
               </tbody>
             </nz-table>
-            <!-- 弹框和底部定制 -->
             <ng-template #invoiceDetail1ModalFooter>
               <button nz-button nzType="default" (click)="hideModal('invoiceInfoDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>

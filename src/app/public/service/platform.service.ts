@@ -20,54 +20,70 @@ export class PlatformService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getPlatformList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}`;
+  getcategoryList(): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.categoryList}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
 
-  /** 获取单个 */
-  getPlatform(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  /** 添加单个 */
+  addCategory(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.categoryList}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
-      .get<IResponse<any>>(url, this.options);
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 修改单个 */
+  updateCategory(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.categoryList}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .put<IResponse<any>>(url, data, this.options);
   }
 
   /** 删除单个 */
-  deletePlatform(id): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}/${id}`;
+  deleteCategory(id): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.categoryList}/${id}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
 
-  /** 添加单个 */
-  addPlatform(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}`;
-    const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+
+
+  /** 获取所有列表 */
+  getUserList(): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.userList}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
-      .post<IResponse<any>>(url, body, this.options);
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 添加单个 */
+  addUser(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.userList}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
   }
 
   /** 修改单个 */
-  updatePlatform(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}/${data.id}`;
-    const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+  modifyUser(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.userList}`;
+    const body = `accountName=${data.accountName}&accountStatus=${data.accountStatus}&categorieNums=${data.categorieNums}&createTime=${data.createTime}&customerId=${data.customerId}&customerName=${data.customerName}&operator=${data.operator}&password=${data.password}&userId=${data.userId}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .put<IResponse<any>>(url, data, this.options);
   }
 
-  /** 修改启用状态 */
-  updateSwitch(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${platformApiUrls.platformList}/${data.id}`;
-    const body = `enabled=${data.enabled}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+  /** 删除单个 */
+  deleteUser(id): Observable<IResponse<any>> {
+    const url = `${this.commonService.documentRouteUrl}${platformApiUrls.userList}/${id}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
-      .patch<IResponse<any>>(url, body, this.options);
+      .delete<IResponse<any>>(url, this.options);
   }
 
 }
