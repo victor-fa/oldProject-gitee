@@ -124,8 +124,16 @@ export class PlatformComponent implements OnInit {
       this.loadData('consumer');
       this.visiable.addAccount = true;
     } else if (flag === 'editAccount') {
-      console.log(data);
+      this.loadData('consumer');
       this.dataUser = data;
+      const finalArr = this.dataTaggingPlatform;
+      data.categorieNums.forEach(categorie => {
+        finalArr.forEach(item => {
+          item.children.forEach(cell => { if (categorie === cell.id) { cell.checked = true; } });
+        });
+      });
+      this.dataTaggingPlatform = finalArr;
+      this.dataUser.password = '';  // 清空密码，密码无法反转为正常的
       this.visiable.editAccount = true;
     } else if (flag === 'deleteLevelOneMenu' || flag === 'deleteLevelTwoMenu' || flag === 'deleteUser') {
       this.modalService.confirm({
@@ -151,7 +159,7 @@ export class PlatformComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag == 'deleteUser') {
-      this.platformService.deleteUser(data.id).subscribe(res => {
+      this.platformService.deleteUser(data.userId).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           // const operationInput = { op_category: '开放平台', op_page: '人工标注', op_name: '提交审核' };
@@ -299,7 +307,7 @@ export class PlatformComponent implements OnInit {
         userId: this.dataUser.userId
       };
       console.log(userInput);
-      this.platformService.addUser(userInput).subscribe(res => {
+      this.platformService.modifyUser(userInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           // const operationInput = { op_category: '开放平台', op_page: (flag === 'sortSpeech' ? '人工标注' : '人工审核'), op_name: '词条分类' };

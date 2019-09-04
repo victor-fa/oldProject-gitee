@@ -72,7 +72,6 @@ export class PlatformService extends AppServiceBase {
   /** 修改单个 */
   modifyUser(data): Observable<IResponse<any>> {
     const url = `${this.commonService.documentRouteUrl}${platformApiUrls.userList}`;
-    const body = `accountName=${data.accountName}&accountStatus=${data.accountStatus}&categorieNums=${data.categorieNums}&createTime=${data.createTime}&customerId=${data.customerId}&customerName=${data.customerName}&operator=${data.operator}&password=${data.password}&userId=${data.userId}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);

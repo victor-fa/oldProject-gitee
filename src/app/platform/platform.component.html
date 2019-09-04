@@ -205,10 +205,10 @@
             <tbody>
               <tr *ngFor="let data of userTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.submitter}}</td>
-                <td>{{data.submitter}}</td>
-                <td>{{data.submitter}}</td>
-                <td>{{data.submitter}}</td>
+                <td>{{data.accountName}}</td>
+                <td>{{data.customerName}}</td>
+                <td>{{data.operator}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('editAccount', data)" style="margin-right: 10px"><i class="anticon anticon-edit"></i>编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteUser', data)"><i class="anticon anticon-delete"></i>删除</button>
@@ -223,9 +223,11 @@
           <nz-modal [(nzVisible)]="visiable.addAccount" nzWidth="950" nzTitle="新建账号" [nzFooter]="addAccountFooter" (nzOnCancel)="hideModal('addAccount')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
-              <div nz-col nzSpan="22" class="span_down" style="height: 96px; overflow-y: scroll;">
+              <div nz-col nzSpan="22" class="span_down">
                 <nz-radio-group [(ngModel)]="dataUser.customerId">
-                  <label nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">{{data.appChannel}}</label>
+                  <label nz-col nzSpan="7" nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">
+                    {{data.appChannel}}
+                  </label>
                 </nz-radio-group>
               </div>
             </div>
@@ -250,7 +252,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th>一级菜单</th>
@@ -283,9 +285,11 @@
           <nz-modal [(nzVisible)]="visiable.editAccount" nzWidth="950" nzTitle="编辑账号" [nzFooter]="editAccountFooter" (nzOnCancel)="hideModal('editAccount')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
-              <div nz-col nzSpan="22" class="span_down" style="height: 96px; overflow-y: scroll;">
+              <div nz-col nzSpan="22" class="span_down">
                 <nz-radio-group [(ngModel)]="dataUser.customerId">
-                  <label nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">{{data.appChannel}}</label>
+                  <label nz-col nzSpan="7" nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">
+                    {{data.appChannel}}
+                  </label>
                 </nz-radio-group>
               </div>
             </div>
@@ -312,7 +316,7 @@
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="24">
-                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th>一级菜单</th>
@@ -337,7 +341,7 @@
               </div>
             </div>
             <ng-template #editAccountFooter>
-              <button nz-button nzType="primary" (click)="doSave('editAccount', '')"><i class="anticon anticon-save"></i>审核通过</button>
+              <button nz-button nzType="primary" (click)="doSave('editAccount', '')"><i class="anticon anticon-save"></i>确定</button>
               <button nz-button nzType="default" (click)="hideModal('editAccount')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
