@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, forwardRef, Input, 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { EditorConfig } from './EditorConfig';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { PlatformService } from '../public/service/platform.service';
+import { NzModalService } from 'ng-zorro-antd';
 
 declare var editormd: any;
 
@@ -33,11 +36,28 @@ export class MarkdownComponent implements AfterViewInit, OnDestroy, ControlValue
   finalContent = ``;
   constructor(
     private ngZone: NgZone,
-    private _clipboardService: ClipboardService
+    private _clipboardService: ClipboardService,
+    private routerParams: ActivatedRoute,
+    private platformService: PlatformService,
+    private modalService: NzModalService,
   ) {}
 
   ngAfterViewInit(): void {
     this.init();
+    this.routerParams.queryParams.subscribe((params: ParamMap) => {
+      if (params['id'] && params['id'] !== undefined) {
+        this.loadData(params['id']);
+      }
+    });
+  }
+
+  loadData(data) {
+    this.platformService.getcategoryItem(data).subscribe(res => {
+      if (res.retcode === 0 && res.status === 200) {
+        const result = JSON.parse(res.payload);
+        this.writeValue(result);
+      } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+    });
   }
 
   ngOnDestroy(): void {

@@ -122,6 +122,7 @@ export class PlatformComponent implements OnInit {
       this.visiable.editContent = true;
     } else if (flag === 'addAccount') {
       this.loadData('consumer');
+      this.dataTaggingPlatform.map(item => item.children.map(cell => cell.checked = false));// 清空
       this.visiable.addAccount = true;
     } else if (flag === 'editAccount') {
       this.loadData('consumer');
@@ -136,12 +137,18 @@ export class PlatformComponent implements OnInit {
       this.dataUser.password = '';  // 清空密码，密码无法反转为正常的
       this.visiable.editAccount = true;
     } else if (flag === 'deleteLevelOneMenu' || flag === 'deleteLevelTwoMenu' || flag === 'deleteUser') {
+      let content = '确认删除该信息吗？';
+      if (flag === 'deleteLevelOneMenu') {
+        content = '删除一级菜单，属于该菜单的二级和三级菜单也将被删除，确认删除吗？';
+      } else if (flag === 'deleteLevelTwoMenu') {
+        content = '删除二级菜单，属于该菜单的三级菜单也将被删除，确认删除吗？';
+      }
       this.modalService.confirm({
-        nzTitle: '确认删除', nzContent: '确认删除该信息吗？', nzCancelText: '取消',
+        nzTitle: '确认删除', nzContent: content, nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
     } else if (flag === 'preview') {
-      console.log(data);
+      window.open(`/markdown?id=${data.id}`);
     }
   }
 
@@ -180,6 +187,7 @@ export class PlatformComponent implements OnInit {
       this.visiable.editLevelOneMenu = false;
     } else if (flag === 'addLevelTwoMenu') {
       this.dataCategoryO = {parentId: '', name: '', id: '', };
+      this.dataCategoryS = {parentId: '', name: '', id: '', content: '', parent: {id: ''}};
       this.visiable.addLevelTwoMenu = false;
     } else if (flag === 'editLevelTwoMenu') {
       this.dataCategoryS = {parentId: '', name: '', id: '', content: '', parent: {id: ''}};
@@ -214,6 +222,10 @@ export class PlatformComponent implements OnInit {
   // 新增操作
   doSave(flag, data): void {
     if (flag === 'addLevelOneMenu') {
+      if (this.dataTaggingPlatform.some(item => item.id === this.dataCategoryO.id)) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '排序跟已有数据有重复' });
+        return;
+      }
       const categoryInput = {parentId: 0, name: this.dataCategoryO.name, id: this.dataCategoryO.id, };
       this.platformService.addCategory(categoryInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -234,6 +246,8 @@ export class PlatformComponent implements OnInit {
           this.hideModal('editLevelOneMenu');
           this.loadData('taggingPlatform');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      }, error => {
+        console.log(error);
       });
     } else if (flag === 'addLevelTwoMenu') {
       const categoryInput = {parentId: this.dataCategoryO.id, name: this.dataCategoryS.name, id: this.dataCategoryO.id + '-' + this.dataCategoryS.id, };
@@ -256,6 +270,10 @@ export class PlatformComponent implements OnInit {
           this.hideModal('editLevelTwoMenu');
           this.loadData('taggingPlatform');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      }, error => {
+        if (error.status === 500) {
+          this.modalService.error({ nzTitle: '提示', nzContent: '排序跟已有数据有重复' });
+        }
       });
     } else if (flag === 'editContent') {
       const categoryInput = {parentId: this.dataCategoryS.parent.id, name: this.dataCategoryS.name, id: this.dataCategoryS.id, content: this.dataCategoryS.content };
@@ -293,6 +311,10 @@ export class PlatformComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'editAccount') {
+      if (this.dataUser.password === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码不能为空' });
+        return;
+      }
       const categorieArr = [];
       this.dataTaggingPlatform.forEach(item => {
         item.children.forEach(cell => cell.checked && cell.checked === true ? categorieArr.push(cell.id) : null );

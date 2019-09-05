@@ -166,8 +166,12 @@
 
           <nz-modal [(nzVisible)]="visiable.editContent" nzWidth="950" nzTitle="编辑内容" [nzFooter]="editContentFooter" (nzOnCancel)="hideModal('editContent')" nzMaskClosable="false">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="21">
+              <div nz-col nzSpan="4">
                 <button nz-button nzType="primary" (click)="goEditor()"><i class="anticon anticon-save"></i>启用Editor编辑器</button>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <a href="http://editor.md.ipandao.com/examples/full.html" target="_blank"><button nz-button nzType="primary"><i class="anticon anticon-save"></i>编辑器教程</button></a>
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -286,11 +290,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
               <div nz-col nzSpan="22" class="span_down">
-                <nz-radio-group [(ngModel)]="dataUser.customerId">
-                  <label nz-col nzSpan="7" nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">
-                    {{data.appChannel}}
-                  </label>
-                </nz-radio-group>
+                {{dataUser.customerId}}
               </div>
             </div>
             <div nz-row class="search_panel">
@@ -302,7 +302,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="2" class="span_down right_alignment">客户账号：</div>
               <div nz-col nzSpan="8" class="span_down">
-                <input nz-input [(ngModel)]="dataUser.accountName" placeholder="输入客户账号" nzSize="default">
+                {{dataUser.accountName}}
               </div>
             </div>
             <div nz-row class="search_panel">
