@@ -404,6 +404,7 @@ export class CustomerComponent implements OnInit {
     } else if (flag === 'editProblem') {
       this.visiable.editProblem = false;
     } else if (flag === 'editStatus') {
+      this.loadData('feedbackItem');
       this.visiable.editStatus = false;
     } else if (flag === 'replyUser') {
       this.visiable.replyUser = false;

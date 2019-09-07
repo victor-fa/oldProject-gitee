@@ -319,10 +319,6 @@ export class PlatformComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'editAccount') {
-      if (this.dataUser.password === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '登录密码不能为空' });
-        return;
-      }
       const categorieArr = [];
       this.dataTaggingPlatform.forEach(item => {
         item.children.forEach(cell => cell.checked && cell.checked === true ? categorieArr.push(cell.id) : null );
