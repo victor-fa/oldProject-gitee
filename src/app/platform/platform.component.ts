@@ -139,9 +139,9 @@ export class PlatformComponent implements OnInit {
     } else if (flag === 'deleteLevelOneMenu' || flag === 'deleteLevelTwoMenu' || flag === 'deleteUser') {
       let content = '确认删除该信息吗？';
       if (flag === 'deleteLevelOneMenu') {
-        content = '删除一级菜单，属于该菜单的二级和三级菜单也将被删除，确认删除吗？';
+        content = '删除一级菜单，属于该菜单的二级菜单也将被删除，确认删除吗？';
       } else if (flag === 'deleteLevelTwoMenu') {
-        content = '删除二级菜单，属于该菜单的三级菜单也将被删除，确认删除吗？';
+        content = '确认删除该二级菜单吗？';
       }
       this.modalService.confirm({
         nzTitle: '确认删除', nzContent: content, nzCancelText: '取消',
@@ -250,6 +250,14 @@ export class PlatformComponent implements OnInit {
         console.log(error);
       });
     } else if (flag === 'addLevelTwoMenu') {
+      let tempArr = [];
+      this.dataTaggingPlatform.forEach(item => {
+        if (item.id === this.dataCategoryO.id) { tempArr = item.children; }
+      });
+      if (tempArr.some(item => item.id === (this.dataCategoryO.id + '-' + this.dataCategoryS.id))) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '排序跟已有数据有重复' });
+        return;
+      }
       const categoryInput = {parentId: this.dataCategoryO.id, name: this.dataCategoryS.name, id: this.dataCategoryO.id + '-' + this.dataCategoryS.id, };
       this.platformService.addCategory(categoryInput).subscribe(res => {
         if (res.retcode === 0) {
