@@ -309,14 +309,15 @@ router.post('/manage/api/alterapp', function (req, res) {
 			});
 		} else {
 			var attr='name='+app_info.appname+'&appkey='+app_info.appkey+'&robot='+app_info.robot+'&secret='+app_info.appsecret;
-			msg = updateApp(attr);
-			req.flash('success_msg', '修改app成功');
-			
-			// 修改AppKey自身的同时修改User表对应的所有appkey
-			UserService.updateAppByApp(app_info.oldAppKey, app_info.appkey, function (err, users) {
-				err ? console.log(err) : console.log('update User appkey Success!');
+			msg = updateApp(attr, ()=> {
+				req.flash('success_msg', '修改app成功');
+				
+				// 修改AppKey自身的同时修改User表对应的所有appkey
+				UserService.updateAppByApp(app_info.oldAppKey, app_info.appkey, function (err, users) {
+					err ? console.log(err) : console.log('update User appkey Success!');
+				});
+				res.redirect('/admin/manage/api/appmanage');
 			});
-			res.redirect('/admin/manage/api/appmanage');
 		}
 	});
 });
