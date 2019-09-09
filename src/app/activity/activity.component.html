@@ -2035,6 +2035,7 @@
                 <div nz-col nzSpan="3" class="span_down">
                   <nz-radio-group [(ngModel)]="addTaskCenter.checkBeanRes">
                     <label nz-radio nzValue="Fixed" style="margin-bottom: 15px;">固定金额</label><br>
+                    <div *ngIf="!(addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE')" style="margin-bottom: 10px;"></div>
                     <label *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" nz-radio nzValue="Percentage" style="margin-bottom: 20px;">百分比</label><br>
                   </nz-radio-group>
                   <nz-radio-group [(ngModel)]="addTaskCenter.checkExperienceRes" style="margin-bottom: 15px;">
@@ -2046,6 +2047,7 @@
                 </div>
                 <div nz-col nzSpan="6" class="span_down">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Fixed')"><br>
+                  <div *ngIf="!(addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE')" style="margin-bottom: 10px;"></div>
                   <input nz-input nzSize="default" *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" [(ngModel)]="addTaskCenter.rule.beanPreValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Percentage')"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.expValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkExperience === false"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.perkValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkSkill === false">

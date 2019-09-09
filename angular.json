@@ -24,23 +24,6 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets/images/404.png",
-              "src/assets/images/couponBg.png",
-              "src/assets/images/person_logo.png",
-              "src/assets/images/qiwu_logo.png",
-              "src/assets/images/dataCenter_dataApp.png",
-              "src/assets/images/dataCenter_error.png",
-              "src/assets/images/dataCenter_hotel.png",
-              "src/assets/images/dataCenter_keepapp.png",
-              "src/assets/images/dataCenter_music.png",
-              "src/assets/images/dataCenter_navigate.png",
-              "src/assets/images/dataCenter_overview.png",
-              "src/assets/images/dataCenter_product.png",
-              "src/assets/images/dataCenter_taxi.png",
-              "src/assets/images/dataCenter_ticket.png",
-              "src/assets/images/dataCenter_train.png",
-              "src/assets/images/dataCenter_weather.png",
-              "src/assets/images/sessionAnalysis.png",
               "src/assets"
             ],
             "styles": [
