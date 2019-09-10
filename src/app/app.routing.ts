@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'regression', loadChildren: './regression/regression.module#RegressionModule'},
   { path: 'platform', loadChildren: './platform/platform.module#PlatformModule'},
   { path: 'markdown', loadChildren: './markdown/markdown.module#MarkdownModule'},
+  { path: 'jiaoyou', loadChildren: './jiaoyou/jiaoyou.module#JiaoyouModule'},
   { path: '**', loadChildren: './public/page-not-found/page-not-found.module#PageNotFoundModule' },
 ];
 

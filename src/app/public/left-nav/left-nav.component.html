@@ -118,6 +118,13 @@
           </span>
         </a>
       </li>
+      <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '对话分析')" [ngClass]="{'active_panel': commonService.nav[13].active}">
+        <a class="common-button" routerLink="/jiaoyou" routerLinkActive="active">
+          <span title>
+            <i class="anticon anticon-smile-o"></i><span>交游天下</span>
+          </span>
+        </a>
+      </li>
       <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '权限后台')" [ngClass]="{'active_panel': commonService.nav[7].active}">
         <a class="common-button" routerLink="/account" routerLinkActive="active">
           <span title>

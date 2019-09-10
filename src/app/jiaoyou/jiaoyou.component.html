@@ -1,0 +1,311 @@
+<app-left-nav></app-left-nav>
+<div class="jiaoyou" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
+  <nz-card style="width: 100%;">
+    <nz-card-tab>
+      <nz-tabset nzSize="large">
+
+        <nz-tab [nzTitle]="freeTemplate" (nzClick)="changePanel('free')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+          <ng-template #freeTemplate><i class="anticon anticon-pay-circle-o"></i>免费配置</ng-template>
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchFreeForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                渠道：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="appChannelId" placeholder="请输入渠道名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                创建时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'free')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="5"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('free', '')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addFree', '')"><i class="anticon anticon-file-add"></i>渠道设置</button>
+            </div>
+          </div>
+          <nz-table #freeTable [nzData]="freeData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>渠道类型</th>
+                <th>渠道名称</th>
+                <th>免费设定</th>
+                <th>免费次数</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of freeTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.channelType === 'CUSTOMER' ? '客户ID' : data.channelType === 'APP' ? 'XIAOWU' : ''}}</td>
+                <td>{{data.appChannel}}</td>
+                <td>{{data.freeMode === 'BY_ACCOUNT' ? '按账号计算' : data.freeMode === 'BY_GAME' ? '按游戏计算' : ''}}</td>
+                <td>{{data.freeCount}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('editFree', data)" style="margin-right: 10px"><i class="anticon anticon-edit"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteFree', data)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addFree" nzWidth="650" nzTitle="渠道设置" [nzFooter]="addFreeFooter" (nzOnCancel)="hideModal('addFree')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道类型：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <nz-radio-group [(ngModel)]="dataFree.channelType">
+                  <label nz-col nz-radio [nzValue]="'CUSTOMER'">客户ID</label>
+                  <label nz-col nz-radio [nzValue]="'XIAOWU'">XIAOWU</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <ng-container *ngIf="dataFree.channelType === 'CUSTOMER'">
+                  <label nz-checkbox nz-col nzSpan="11" *ngFor="let data of checkFreeOptions;" [(nzChecked)]="data.checked">{{data.value}}</label>
+                </ng-container>
+                <ng-container *ngIf="dataFree.channelType === 'XIAOWU'">
+                  <label nz-checkbox nz-col nzSpan="11" *ngFor="let data of dataFree.appCheck;" [(nzChecked)]="data.checked">{{data.label}}</label>
+                </ng-container>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式：</div>
+              <div nz-col nzSpan="6" class="span_down">
+                <nz-radio-group [(ngModel)]="dataFree.freeMode">
+                  <label nz-col nz-radio [nzValue]="'BY_ACCOUNT'">按账号计算</label>
+                  <label nz-col nz-radio [nzValue]="'BY_GAME'">按游戏计算</label>
+                </nz-radio-group>
+              </div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="dataFree.freeCount" placeholder="请输入免费次数" nzSize="default"><br>
+                在具体游戏中进行设置
+              </div>
+            </div>
+            <ng-template #addFreeFooter>
+              <button nz-button nzType="primary" (click)="doSave('addFree', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addFree')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editFree" nzWidth="650" nzTitle="修改设置" [nzFooter]="editFreeFooter" (nzOnCancel)="hideModal('editFree')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道类型：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                {{dataFree.channelType === 'CUSTOMER' ? '客户ID' : dataFree.channelType === 'APP' ? 'XIAOWU' : ''}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                {{dataFree.appChannelIds}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式：</div>
+              <div nz-col nzSpan="6" class="span_down">
+                <nz-radio-group [(ngModel)]="dataFree.freeMode">
+                  <label nz-col nz-radio [nzValue]="'BY_ACCOUNT'">按账号计算</label>
+                  <label nz-col nz-radio [nzValue]="'BY_GAME'">按游戏计算</label>
+                </nz-radio-group>
+              </div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="dataFree.freeCount" placeholder="请输入免费次数" nzSize="default"><br>
+                在具体游戏中进行设置
+              </div>
+            </div>
+            <ng-template #editFreeFooter>
+              <button nz-button nzType="primary" (click)="doSave('editFree', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editFree')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+        <nz-tab [nzTitle]="payTemplate" (nzClick)="changePanel('pay')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+          <ng-template #payTemplate><i class="anticon anticon-pay-circle"></i>付费配置</ng-template>
+          <div nz-row class="search_panel">
+            <form [formGroup]="searchPayForm">
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                游戏：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="gameName" placeholder="请输入游戏名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                渠道：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input formControlName="appChannelId" placeholder="请输入渠道名称" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                创建时间：
+              </div>
+              <div nz-col nzSpan="7" class="span_down">
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'pay')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('pay', '')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addPay', '')"><i class="anticon anticon-file-add"></i>渠道设置</button>
+            </div>
+          </div>
+          <nz-table #payTable [nzData]="payData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>游戏名称</th>
+                <th>渠道名称</th>
+                <th>免费方式</th>
+                <th>免费次数</th>
+                <th>单次进入定价</th>
+                <th>周期进入定价</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of payTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.gameName}}</td>
+                <td>{{data.appChannel}}</td>
+                <td>{{data.freeMode === 'BY_ACCOUNT' ? '按账号计算' : data.freeMode === 'BY_GAME' ? '按游戏计算' : ''}}</td>
+                <td>{{data.freeCount}}</td>
+                <td>￥{{data.single}}/次</td>
+                <td nzTitle="{{data.multiple}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : 'null'}}</a>
+                </td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('editPay', data)" style="margin-right: 10px"><i class="anticon anticon-edit"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deletePay', data)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addPay" nzWidth="850" nzTitle="新增付费配置" [nzFooter]="addPayFooter" (nzOnCancel)="hideModal('addPay')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">游戏名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <input nz-input [(ngModel)]="dataPay.gameName" placeholder="请输入游戏名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <nz-radio-group [(ngModel)]="dataPay.appChannelId">
+                  <label nz-col nzSpan="11" nz-radio *ngFor="let data of checkPayOptions;" [nzValue]="data.value" (click)="onChange(data, 'freeMode')">{{data.label}}</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式<font color="red">*</font>：</div>
+              <div nz-col nzSpan="3" class="span_down">
+                {{dataPay.freeMode === 'BY_ACCOUNT' ? '按账号计算' : dataPay.freeMode === 'BY_GAME' ? '按游戏计算' : ''}}
+              </div>
+              <div nz-col nzSpan="6" class="span_down" *ngIf="dataPay.freeMode === 'BY_GAME'">
+                <input nz-input [(ngModel)]="dataPay.freeCount" placeholder="请输入免费次数" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单词进入游戏的价格" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1" class="span_down">
+                &nbsp;/ 次
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <textarea rows="10" [(ngModel)]="dataPay.gamePrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+x（分钟）,y（元）
+周期以分钟为单位
+
+例如：
+120,5
+360,10
+                "></textarea>
+              </div>
+            </div>
+            <ng-template #addPayFooter>
+              <button nz-button nzType="primary" (click)="doSave('addPay', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addPay')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.editPay" nzWidth="850" nzTitle="修改付费配置" [nzFooter]="editPayFooter" (nzOnCancel)="hideModal('editPay')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">游戏名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                {{dataPay.gameName}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                {{dataPay.appChannelId}}
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式<font color="red">*</font>：</div>
+              <div nz-col nzSpan="3" class="span_down">
+                {{dataPay.freeMode === 'BY_ACCOUNT' ? '按账号计算' : dataPay.freeMode === 'BY_GAME' ? '按游戏计算' : ''}}
+              </div>
+              <div nz-col nzSpan="6" class="span_down" *ngIf="dataPay.freeMode === 'BY_GAME'">
+                <input nz-input [(ngModel)]="dataPay.freeCount" placeholder="请输入免费次数" nzSize="default">
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="6" class="span_down">
+                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单词进入游戏的价格" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1" class="span_down">
+                &nbsp;/ 次
+              </div>
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <textarea rows="10" [(ngModel)]="dataPay.gamePrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+x（分钟）,y（元）
+周期以分钟为单位
+
+例如：
+120,5
+360,10
+                "></textarea>
+              </div>
+            </div>
+            <ng-template #editPayFooter>
+              <button nz-button nzType="primary" (click)="doSave('editPay', '')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('editPay')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+      </nz-tabset>
+    </nz-card-tab>
+  </nz-card>
+</div>

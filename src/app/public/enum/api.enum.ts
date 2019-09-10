@@ -170,4 +170,10 @@ export enum platformApiUrls {
   userList = '/docs/user',
 }
 
-
+/** 交游天下 */
+export enum jiaoyouApiUrls {
+  /** 免费配置 */
+  freeList = '/game/channel',
+  /** 付费配置 */
+  payList = '/game',
+}
