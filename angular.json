@@ -33,6 +33,7 @@
             ],
             "scripts": [
               "src/assets/scripts/flexible.js",
+              "src/assets/scripts/echarts-all.js",
               "node_modules/jquery/dist/jquery.min.js",
               "src/assets/editor.md/editormd.min.js",
               "src/assets/editor.md/lib/codemirror/codemirror.min.js",

@@ -39,7 +39,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabNum">
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('dataApp')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
-          <ng-template #dataAppTemplate><i class="anticon anticon-appstore-o"></i>APP总览 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
+          <ng-template #dataAppTemplate><i class="anticon anticon-appstore-o"></i>运营数据 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
           <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
@@ -92,6 +92,53 @@
               </tr>
             </tbody>
           </nz-table>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="overviewTemplate" (nzClick)="changePanel('overview')" *ngIf="commonService.haveMenuPermission('children', 'BOT总览')">
+          <ng-template #overviewTemplate><i class="anticon anticon-area-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
+          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px" nzLeft="0px">序号</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">BOT</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">功能使用率</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">下单转化率</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">支付转化率</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[4].checked">平均日人次</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[5].checked">总人次</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[6].checked">平均日唤醒</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[7].checked">总唤醒数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">订单推荐数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">订单请求数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[10].checked">订单提交数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[11].checked">订单成交数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[12].checked">订单成交金额</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.overview[13].checked">平均每单金额</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">{{data.appAwakenBotUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">{{data.appAwakenBotUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">{{data.appAwakenBotUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">{{data.appAwakenBotUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[4].checked">{{data.averDailyUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[5].checked">{{data.totalUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[6].checked">{{data.averDailyAwaken }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[7].checked">{{data.totalAwaken }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">{{data.orderRecomend }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.orderQuery }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[10].checked">{{data.orderCommit }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[11].checked">{{data.orderCheckout }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[12].checked">{{data.totalTurnover }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[13].checked">{{data.averTurnover }}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div id="echartsAwake" class="chart"></div>
+          <div id="echartsOrder" class="chart"></div>
+          <div id="echartsAmount" class="chart"></div>
         </nz-tab>
 
         <nz-tab [nzTitle]="keepAppTemplate" (nzClick)="changePanel('keepApp')" *ngIf="commonService.haveMenuPermission('children', 'App留存')">
@@ -154,79 +201,6 @@
                 <td nzWidth="100px" *ngIf="data.day21RetentionUsers >= 0 && checkDataOptions.keepApp[17].checked">{{(data.day1RetentionUsers === 0 ? 0 : data.day21RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
                 <td nzWidth="100px" *ngIf="!(data.day30RetentionUsers >= 0) && checkDataOptions.keepApp[18].checked">null</td>
                 <td nzWidth="100px" *ngIf="data.day30RetentionUsers >= 0 && checkDataOptions.keepApp[18].checked">{{(data.day1RetentionUsers === 0 ? 0 : data.day30RetentionUsers / data.day1RetentionUsers) * 100 | number:"0.1-2"}}%</td>
-              </tr>
-            </tbody>
-          </nz-table>
-        </nz-tab>
-
-        <nz-tab [nzTitle]="overviewTemplate" (nzClick)="changePanel('overview')" *ngIf="commonService.haveMenuPermission('children', 'BOT总览')">
-          <ng-template #overviewTemplate><i class="anticon anticon-area-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
-            <thead>
-              <tr>
-                <th nzWidth="50px" nzLeft="0px">序号</th>
-                <th nzWidth="100px" nzLeft="64px">时间</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">APP唤醒人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">小爱人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">AppStore人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">总人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[4].checked">机票人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[5].checked">火车人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[6].checked">天气人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[7].checked">导航人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">酒店人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">打车人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">音乐人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">星座人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">话费人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">闪送人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">电影人次</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[10].checked">总行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[11].checked">机票行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[12].checked">火车行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[13].checked">天气行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[14].checked">导航行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[15].checked">酒店行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">打车行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">音乐行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">星座行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">话费行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">闪送行为数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">电影行为数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
-                <td nzWidth="100px" nzLeft="64px">{{data.date | date:'yy-MM-dd'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">{{data.appAwakenBotUsers }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">{{data.xiaoaiAwakenBotUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">{{data.appStoreAwakenUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">{{data.awakTrainUsers + data.awakFlightUsers + data.awakWeatherUsers + data.awakNavigationUsers + data.awakHotelUsers + data.awakTaxisUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[4].checked">{{data.awakFlightUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[5].checked">{{data.awakTrainUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[6].checked">{{data.awakWeatherUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[7].checked">{{data.awakNavigationUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">{{data.awakHotelUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakTaxisUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakMusicUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakHoroscopeUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakRechargeUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakErrandUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.awakMoviesUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[10].checked">{{data.awakTrainCount + data.awakFlightCount + data.awakWeatherCount + data.awakNavigationCount + data.awakHotelCount + data.awakTaxisCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[11].checked">{{data.awakFlightCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[12].checked">{{data.awakTrainCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[13].checked">{{data.awakWeatherCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[14].checked">{{data.awakNavigationCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[15].checked">{{data.awakHotelCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakTaxisCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakMusicCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakHoroscopeCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakRechargeCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakErrandCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakMoviesCount}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[16].checked">{{data.awakTaxisCount}}</td>
               </tr>
             </tbody>
           </nz-table>

@@ -1,6 +1,6 @@
 import { DatePipe, registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
@@ -48,6 +48,7 @@ export class DataCenterComponent implements OnInit {
     private fb: FormBuilder,
     private datePipe: DatePipe,
     private routerParams: ActivatedRoute,
+    public el: ElementRef,
   ) {
     this.commonService.nav[0].active = true;
     this._initForm();
@@ -114,8 +115,9 @@ export class DataCenterComponent implements OnInit {
     let flag = 'user-behavior';
     switch (this.currentPanel) {
       case 'dataApp': flag = 'user-behavior'; break;
+      // case 'overview': flag = 'bot-awaken'; break; // 变更暂时去除
+      case 'overview': flag = 'bot-data'; break;
       case 'keepApp': flag = 'retentions'; break;
-      case 'overview': flag = 'bot-awaken'; break;
       case 'product': flag = 'user-behavior'; break;
       case 'error': flag = 'bot-exception'; break;
       case 'ticket': flag = 'flight-bot'; break;
@@ -238,6 +240,7 @@ export class DataCenterComponent implements OnInit {
      : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' :
      flag === 'music' ? '音乐BOT' : flag === 'horoscope' ? '星座BOT' : flag === 'recharge' ? '闪送BOT' : flag === 'errand' ? '充话费BOT' :
       flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : flag === 'reminder' ? '事项提醒BOT' : flag === 'news' ? '新闻BOT' : '';
+    if (flag === 'overview') { setTimeout(() => { this.loadEchart(); }, 300); }
   }
 
   // 选择对话日志的业务类型
@@ -270,6 +273,59 @@ export class DataCenterComponent implements OnInit {
     this.checkOrign.other.k11Api ? arr.push('K11-publicscreen-api-pro') : null;
     this.checkOrign.other.k11Test ? arr.push('K11-test') : null;
     return arr;
+  }
+
+  loadEchart(): void {
+    const chartAwakeOption = {
+      title : { text: 'BOT 总唤醒数', subtext: '', x:'left' },
+      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
+      legend: { orient: 'vertical', left: '.', show: false, data: ['打车','电影票','火车','机票','酒店'] },
+      color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+      series : [
+        {
+          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '40%'],
+          data:[ {value:335, name:'打车'}, {value:310, name:'电影票'}, {value:234, name:'火车'}, {value:135, name:'机票'}, {value:1548, name:'酒店'} ],
+          itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
+        }
+      ]
+    };
+    const mychartsAwake = echarts.init(this.el.nativeElement.querySelector('#echartsAwake'));
+    mychartsAwake.setOption(chartAwakeOption);
+
+    const chartOrderOption = {
+      title: { text: '订单漏斗', subtext: '', left: 'left', top: 'bottom' },
+      tooltip: { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
+      toolbox: { orient: 'vertical', top: 'center', feature: { dataView: {readOnly: true}, restore: {}, saveAsImage: {} } },
+      legend: { orient: 'vertical', left: 'left', show: false, data: ['订单推荐数','订单请求数','订单提交数','订单成交数'] },
+      color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+      calculable: true,
+      series: [
+        {
+          name: '漏斗图', type:'funnel', width: '40%', height: '45%', left: '55%', top: '50%',
+          label: { normal: { position: 'left' } },
+          data:[ {value: 60, name: '订单推荐数'}, {value: 30, name: '订单请求数'}, {value: 10, name: '订单提交数'}, {value: 80, name: '订单成交数'} ]
+        }
+      ]
+    };
+    const mychartsOrder = echarts.init(this.el.nativeElement.querySelector('#echartsOrder'));
+    mychartsOrder.setOption(chartOrderOption);
+
+    const chartAmountOption = {
+      title : { text: '订单金额', subtext: '', x:'left' },
+      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
+      legend: { orient: 'vertical', left: '.', show: false, data: ['打车','电影票','火车','机票','酒店'] },
+      color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+      series : [
+        {
+          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '40%'],
+          data:[ {value:335, name:'打车'}, {value:310, name:'电影票'}, {value:234, name:'火车'}, {value:135, name:'机票'}, {value:1548, name:'酒店'} ],
+          itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
+        }
+      ]
+    };
+    const mychartsAmount = echarts.init(this.el.nativeElement.querySelector('#echartsAmount'));
+    mychartsAmount.setOption(chartAmountOption);
+
   }
 
 }

@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
-    "echarts": "^4.2.0-rc.1",
+    "echarts": "^4.2.1",
     "fingerprintjs2": "^1.8.0",
     "jquery": "^3.4.1",
     "js-base64": "^2.4.9",
