@@ -39,64 +39,151 @@
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabNum">
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('dataApp')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
-          <ng-template #dataAppTemplate><i class="anticon anticon-appstore-o"></i>运营数据 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
-            <thead>
-              <tr>
-                <th nzWidth="50px" nzLeft="0px">序号</th>
-                <th nzWidth="100px" nzLeft="68px">时间</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[0].checked">新增安装数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[1].checked">新增启动数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[2].checked">新增注册数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[3].checked">新增启动率</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[4].checked">新增注册率</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[5].checked">日启动总数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[6].checked">平均启动次数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[7].checked">APP日活跃</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[8].checked">老用户活跃</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[9].checked">订单成交总数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[10].checked">订单成交总金额</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[11].checked">机票订单成交数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[12].checked">火车订单成交数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[13].checked">酒店订单成交数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[14].checked">打车订单成交数</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[15].checked">机票订单成交金额</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[16].checked">火车订单成交金额</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[17].checked">酒店订单成交金额</th>
-                <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[18].checked">打车订单成交金额</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
-                <td nzWidth="100px" nzLeft="68px">{{data.date | date:'yy-MM-dd'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[0].checked">{{data.dailyInstallation }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[1].checked">{{data.dailyNewLaunch}}</td>  <!-- 新增启动数 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[2].checked">{{data.dailyRegister}}</td>  <!-- 新增注册数 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[3].checked">{{(data.dailyInstallation === 0 ? 0 : (data.dailyNewLaunch / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>  <!-- 新增启动率 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[4].checked">{{(data.dailyInstallation === 0 ? 0 : (data.dailyRegister / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[5].checked">{{data.dailyLaunch}}</td>  <!-- 日启动总数 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[6].checked">{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[7].checked">{{data.dailyActiveUsers}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[8].checked">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[9].checked">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout + data.taxiOrderCheckout}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[10].checked">{{data.flightTurnover + data.trainTurnover + data.hotelTurnover + data.taxiTurnover}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[11].checked">{{data.flightOrderCheckout ? data.flightOrderCheckout : data.flightOrderCheckout === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[12].checked">{{data.trainOrderCheckout ? data.trainOrderCheckout : data.trainOrderCheckout === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[13].checked">{{data.hotelOrderCheckout ? data.hotelOrderCheckout : data.hotelOrderCheckout === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[14].checked">{{data.taxiOrderCheckout ? data.taxiOrderCheckout : data.taxiOrderCheckout === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[15].checked">{{data.flightTurnover ? data.flightTurnover : data.flightTurnover === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[16].checked">{{data.trainTurnover ? data.trainTurnover : data.trainTurnover === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[17].checked">{{data.hotelTurnover ? data.hotelTurnover : data.hotelTurnover === 0 ? 0 : 'null'}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[18].checked">{{data.taxiTurnover ? data.taxiTurnover : data.taxiTurnover === 0 ? 0 : 'null'}}</td>
-              </tr>
-            </tbody>
-          </nz-table>
+          <ng-template #dataAppTemplate><i class="anticon anticon-database"></i>运营数据 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
+          <div style="background-color: #F2F2F2;">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24" style="margin: 10px 0 0 10px;">核心运营数据</div>
+            </div>
+            <div nz-row class="search_panel boldfont">
+              <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px 10px 10px 30px; padding: 10px;">
+                <div nz-col nzSpan="24">
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="6">
+                      活跃用户<br>
+                      <p style="font-size: 25px;">{{coreOperation.activeUsers}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_activeuser.png'">
+                    </div>
+                    <div nz-col nzSpan="6">
+                      订单成交金额<br>
+                      <p style="font-size: 25px;">{{coreOperation.totalTurnover}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_order.png'">
+                    </div>
+                  </div>
+                </div>
+
+                <div nz-col nzSpan="24">
+                    <div nz-row class="search_panel">
+                      <div nz-col nzSpan="6">
+                        周留存率<br>
+                        <p style="font-size: 25px;">{{coreOperation.weekRetentionUsers !== undefined ? coreOperation.weekRetentionUsers === -1 ? '--' : coreOperation.weekRetentionUsers + '%' : ''}}</p>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <img [src]="'assets/images/icon_weeklyretentionrate.png'">
+                      </div>
+                      <div nz-col nzSpan="6">
+                        月留存率<br>
+                        <p style="font-size: 25px;">{{coreOperation.monthRetentionUsers !== undefined ? coreOperation.monthRetentionUsers === -1 ? '--' : coreOperation.monthRetentionUsers + '%' : ''}}</p>
+                      </div>
+                      <div nz-col nzSpan="6">
+                        <img [src]="'assets/images/icon_monthlyretentionrate.png'">
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px; padding: 10px;">
+                <div nz-col nzSpan="24">
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="6">
+                      总唤醒数<br>
+                      <p style="font-size: 25px;">{{coreOperation.totalAwaken}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_totalwakeup.png'">
+                    </div>
+                    <div nz-col nzSpan="6">
+                      平均日唤醒次数<br>
+                      <p style="font-size: 25px;">{{coreOperation.averDailyAwaken}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_averagedaywakeup.png'">
+                    </div>
+                  </div>
+                </div>
+
+                <div nz-col nzSpan="24">
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="6">
+                      订单请求数<br>
+                      <p style="font-size: 25px;">{{coreOperation.orderQuery}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_orderrequest.png'">
+                    </div>
+                    <div nz-col nzSpan="6">
+                      下单转化率<br>
+                      <p style="font-size: 25px;">{{coreOperation.orderCommit !== undefined ? ((coreOperation.orderCommit/coreOperation.orderQuery) * 100).toFixed(2) + '%' : ''}}</p>
+                    </div>
+                    <div nz-col nzSpan="6">
+                      <img [src]="'assets/images/icon_orderconversionrate.png'">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="border-top: 10px solid #FFF"></div>
+            <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th nzWidth="50px" nzLeft="0px">序号</th>
+                  <th nzWidth="100px" nzLeft="68px">时间</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[0].checked">新增安装数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[1].checked">新增启动数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[2].checked">新增注册数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[3].checked">新增启动率</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[4].checked">新增注册率</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[5].checked">日启动总数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[6].checked">平均启动次数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[7].checked">APP日活跃</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[8].checked">老用户活跃</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[9].checked">订单成交总数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[10].checked">订单成交总金额</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[11].checked">机票订单成交数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[12].checked">火车订单成交数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[13].checked">酒店订单成交数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[14].checked">打车订单成交数</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[15].checked">机票订单成交金额</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[16].checked">火车订单成交金额</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[17].checked">酒店订单成交金额</th>
+                  <th nzWidth="100px" *ngIf="checkDataOptions.dataApp[18].checked">打车订单成交金额</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                  <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                  <td nzWidth="100px" nzLeft="68px">{{data.date | date:'yy-MM-dd'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[0].checked">{{data.dailyInstallation }}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[1].checked">{{data.dailyNewLaunch}}</td>  <!-- 新增启动数 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[2].checked">{{data.dailyRegister}}</td>  <!-- 新增注册数 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[3].checked">{{(data.dailyInstallation === 0 ? 0 : (data.dailyNewLaunch / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>  <!-- 新增启动率 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[4].checked">{{(data.dailyInstallation === 0 ? 0 : (data.dailyRegister / data.dailyInstallation)) * 100 | number:"0.1-2"}}%</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[5].checked">{{data.dailyLaunch}}</td>  <!-- 日启动总数 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[6].checked">{{data.dailyLaunch / 1}}</td>  <!-- 平均启动次数 没有拿到总注册用户数 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[7].checked">{{data.dailyActiveUsers}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[8].checked">{{data.dailyActiveUsers - data.dailyNewLaunch}}</td>  <!-- 老用户活跃 -->
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[9].checked">{{data.flightOrderCheckout + data.trainOrderCheckout + data.hotelOrderCheckout + data.taxiOrderCheckout}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[10].checked">{{data.flightTurnover + data.trainTurnover + data.hotelTurnover + data.taxiTurnover}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[11].checked">{{data.flightOrderCheckout ? data.flightOrderCheckout : data.flightOrderCheckout === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[12].checked">{{data.trainOrderCheckout ? data.trainOrderCheckout : data.trainOrderCheckout === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[13].checked">{{data.hotelOrderCheckout ? data.hotelOrderCheckout : data.hotelOrderCheckout === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[14].checked">{{data.taxiOrderCheckout ? data.taxiOrderCheckout : data.taxiOrderCheckout === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[15].checked">{{data.flightTurnover ? data.flightTurnover : data.flightTurnover === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[16].checked">{{data.trainTurnover ? data.trainTurnover : data.trainTurnover === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[17].checked">{{data.hotelTurnover ? data.hotelTurnover : data.hotelTurnover === 0 ? 0 : 'null'}}</td>
+                  <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[18].checked">{{data.taxiTurnover ? data.taxiTurnover : data.taxiTurnover === 0 ? 0 : 'null'}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
         </nz-tab>
 
         <nz-tab [nzTitle]="overviewTemplate" (nzClick)="changePanel('overview')" *ngIf="commonService.haveMenuPermission('children', 'BOT总览')">
-          <ng-template #overviewTemplate><i class="anticon anticon-area-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
+          <ng-template #overviewTemplate><i class="anticon anticon-pie-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -119,15 +206,15 @@
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">{{data.appAwakenBotUsers }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">{{data.appAwakenBotUsers }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">{{data.appAwakenBotUsers }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">{{data.appAwakenBotUsers }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">{{data.bot }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">{{data.totalUsers === 0 || data.total === 0 ? 0 : ((data.totalUsers/data.total) * 100).toFixed(2) }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[2].checked">{{data.orderCommit === 0 || data.orderQuery === 0 ? 0 : ((data.orderCommit/data.orderQuery) * 100).toFixed(2) }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[3].checked">{{data.orderCheckout === 0 || data.orderCommit ? 0 : ((data.orderCheckout/data.orderCommit) * 100).toFixed(2) }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[4].checked">{{data.averDailyUsers }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[5].checked">{{data.totalUsers }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[6].checked">{{data.averDailyAwaken }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[7].checked">{{data.totalAwaken }}</td>
-                <td nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">{{data.orderRecomend }}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.overview[8].checked">{{data.orderRecommend }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[9].checked">{{data.orderQuery }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[10].checked">{{data.orderCommit }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[11].checked">{{data.orderCheckout }}</td>
@@ -136,14 +223,16 @@
               </tr>
             </tbody>
           </nz-table>
-          <div id="echartsAwake" class="chart"></div>
-          <div id="echartsOrder" class="chart"></div>
-          <div id="echartsAmount" class="chart"></div>
+          <div *ngIf="!isSpinning">
+            <div id="echartsAwake" class="chart"></div>
+            <div id="echartsOrder" class="chart"></div>
+            <div id="echartsAmount" class="chart"></div>
+          </div>
         </nz-tab>
 
         <nz-tab [nzTitle]="keepAppTemplate" (nzClick)="changePanel('keepApp')" *ngIf="commonService.haveMenuPermission('children', 'App留存')">
           <ng-template #keepAppTemplate><i class="anticon anticon-heart-o"></i>App留存 <a href="/dataCenter?currentTab=2" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -208,7 +297,7 @@
 
         <nz-tab [nzTitle]="productTemplate" (nzClick)="changePanel('product')" *ngIf="commonService.haveMenuPermission('children', '产品权限')">
           <ng-template #productTemplate><i class="anticon anticon-trophy"></i>产品权限 <a href="/dataCenter?currentTab=4" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -246,7 +335,7 @@
 
         <nz-tab [nzTitle]="errorTemplate" (nzClick)="changePanel('error')" *ngIf="commonService.haveMenuPermission('children', '异常表述')">
           <ng-template #errorTemplate><i class="anticon anticon-exception"></i>异常表述 <a href="/dataCenter?currentTab=5" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3600px', y:'520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3600px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -305,7 +394,7 @@
 
         <nz-tab [nzTitle]="ticketTemplate" (nzClick)="changePanel('ticket')" *ngIf="commonService.haveMenuPermission('children', '机票BOT')">
           <ng-template #ticketTemplate><i class="anticon anticon-idcard"></i>机票BOT <a href="/dataCenter?currentTab=6" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -361,7 +450,7 @@
 
         <nz-tab [nzTitle]="trainTemplate" (nzClick)="changePanel('train')" *ngIf="commonService.haveMenuPermission('children', '火车BOT')">
           <ng-template #trainTemplate><i class="anticon anticon-credit-card"></i>火车BOT <a href="/dataCenter?currentTab=7" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -417,7 +506,7 @@
 
         <nz-tab [nzTitle]="hotelTemplate" (nzClick)="changePanel('hotel')" *ngIf="commonService.haveMenuPermission('children', '酒店BOT')">
           <ng-template #hotelTemplate><i class="anticon anticon-home"></i>酒店BOT <a href="/dataCenter?currentTab=8" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -473,7 +562,7 @@
 
         <nz-tab [nzTitle]="weatherTemplate" (nzClick)="changePanel('weather')" *ngIf="commonService.haveMenuPermission('children', '天气BOT')">
           <ng-template #weatherTemplate><i class="anticon anticon-cloud-o"></i>天气BOT <a href="/dataCenter?currentTab=9" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -505,7 +594,7 @@
 
         <nz-tab [nzTitle]="navigateTemplate" (nzClick)="changePanel('navigate')" *ngIf="commonService.haveMenuPermission('children', '导航BOT')">
           <ng-template #navigateTemplate><i class="anticon anticon-environment-o"></i>导航BOT <a href="/dataCenter?currentTab=10" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -551,7 +640,7 @@
 
         <nz-tab [nzTitle]="taxiTemplate" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车BOT')">
           <ng-template #taxiTemplate><i class="anticon anticon-car"></i>打车BOT <a href="/dataCenter?currentTab=11" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -619,7 +708,7 @@
 
         <nz-tab [nzTitle]="musicTemplate" (nzClick)="changePanel('music')" *ngIf="commonService.haveMenuPermission('children', '音乐BOT')">
           <ng-template #musicTemplate><i class="anticon anticon-sound"></i>音乐BOT <a href="/dataCenter?currentTab=12" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'1600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'1600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -657,7 +746,7 @@
 
         <nz-tab [nzTitle]="horoscopeTemplate" (nzClick)="changePanel('horoscope')" *ngIf="commonService.haveMenuPermission('children', '星座BOT')">
           <ng-template #horoscopeTemplate><i class="anticon anticon-star-o"></i>星座BOT <a href="/dataCenter?currentTab=13" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -715,7 +804,7 @@
 
         <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充话费BOT')">
           <ng-template #rechargeTemplate><i class="anticon anticon-phone"></i>充话费BOT <a href="/dataCenter?currentTab=14" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -745,7 +834,7 @@
 
         <nz-tab [nzTitle]="errandTemplate" (nzClick)="changePanel('errand')" *ngIf="commonService.haveMenuPermission('children', '闪送BOT')">
           <ng-template #errandTemplate><i class="anticon anticon-rocket"></i>闪送BOT <a href="/dataCenter?currentTab=15" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -783,7 +872,7 @@
 
         <nz-tab [nzTitle]="movieTemplate" (nzClick)="changePanel('movie')" *ngIf="commonService.haveMenuPermission('children', '电影票BOT')">
           <ng-template #movieTemplate><i class="anticon anticon-barcode"></i>电影票BOT <a href="/dataCenter?currentTab=16" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -829,7 +918,7 @@
 
         <nz-tab [nzTitle]="ttsTemplate" (nzClick)="changePanel('tts')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
           <ng-template #ttsTemplate><i class="anticon anticon-api"></i>APP功能BOT <a href="/dataCenter?currentTab=17" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -853,7 +942,7 @@
 
         <nz-tab [nzTitle]="reminderTemplate" (nzClick)="changePanel('reminder')" *ngIf="commonService.haveMenuPermission('children', '事项提醒BOT')">
           <ng-template #reminderTemplate><i class="anticon anticon-mobile"></i>事项提醒BOT <a href="/dataCenter?currentTab=18" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -886,7 +975,7 @@
         <nz-tab [nzTitle]="newsTemplate" (nzClick)="changePanel('news')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
         <!-- <nz-tab [nzTitle]="newzTemplate" (nzClick)="changePanel('news')"> -->
           <ng-template #newsTemplate><i class="anticon anticon-api"></i>新闻BOT <a href="/dataCenter?currentTab=19" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>

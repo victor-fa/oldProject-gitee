@@ -23,13 +23,15 @@ export class DataCenterComponent implements OnInit {
   endDate = '';
   isSpinning = false;
   currentPanel = 'dataApp';
-  commonDataCenter: any = [];
+  commonDataCenter = [{bot: '', totalUsers: 0, orderRecommend: 0, orderQuery: 0, orderCommit: 0, orderCheckout: 0, total: 0, totalAwaken: 0, totalTurnover: 0}];
   dataCenterStatus = 'all';
   currentTitle = 'APP总览';
   checkDataOptions = {};
+  coreOperation = {};
   currentTabNum = 0;
   currentSessionBusiness = 1; // 对话日志下的类型
   checkAllChannel = false;
+  chartData = { name: [], awake: [], order: [], amount: [] };
   checkOrign = {
     allApp: false,
     allSdk: false,
@@ -112,9 +114,10 @@ export class DataCenterComponent implements OnInit {
 
   // 获取单元数据
   loadUnitData(platform): void {
-    let flag = 'user-behavior';
+    let flag = 'operate-data';
     switch (this.currentPanel) {
-      case 'dataApp': flag = 'user-behavior'; break;
+      // case 'dataApp': flag = 'user-behavior'; break; // 变更暂时去除
+      case 'dataApp': flag = 'operate-data'; break;
       // case 'overview': flag = 'bot-awaken'; break; // 变更暂时去除
       case 'overview': flag = 'bot-data'; break;
       case 'keepApp': flag = 'retentions'; break;
@@ -148,8 +151,47 @@ export class DataCenterComponent implements OnInit {
     this.dataCenterService.getUnitList(input).subscribe(res => {
       this.commonDataCenter.splice(0, this.commonDataCenter.length);  // 清空
       if (res.retcode === 0 && res.status !== 500) {
-        this.commonDataCenter = JSON.parse(res.payload).reverse();
-        console.log(this.commonDataCenter);
+        if (flag === 'operate-data') {
+          this.commonDataCenter = JSON.parse(JSON.parse(res.payload).detail);
+          console.log(this.commonDataCenter);
+          this.coreOperation = JSON.parse(res.payload).all;
+          console.log(this.coreOperation);
+        } else {
+          if (flag === 'bot-data') {
+            this.commonDataCenter = JSON.parse(res.payload);
+            let total = 0;
+            let orderRecommend = 0;
+            let orderQuery = 0;
+            let orderCommit = 0;
+            let orderCheckout = 0;
+            this.commonDataCenter.forEach(item => {
+              if (item.bot === '总计') {
+                total = item.totalUsers;
+                orderRecommend = item.orderRecommend;
+                orderQuery = item.orderQuery;
+                orderCommit = item.orderCommit;
+                orderCheckout = item.orderCheckout;
+              }
+            });
+            const recommend = [];
+            recommend.push( {value: orderRecommend, name:'订单推荐数'}, {value: orderQuery, name:'订单请求数'}, {value: orderCommit, name:'订单提交数'}, {value: orderCheckout, name:'订单成交数'} );
+            this.commonDataCenter.map(item => { item.total = total; this.chartData.order = recommend; });
+            this.commonDataCenter.forEach(item => {
+              if (item.bot !== '总计') {
+                this.chartData.name.push(item.bot);
+                this.chartData.awake.push({ value: item.totalAwaken, name: item.bot });
+                this.chartData.amount.push({ value: item.totalTurnover, name: item.bot });
+              }
+            })
+            console.log(this.chartData);
+            setTimeout(() => { this.loadEchart(); }, 300);
+          } else {
+            this.commonDataCenter = JSON.parse(res.payload).reverse();
+          }
+          console.log(this.commonDataCenter);
+
+        }
+
         this.isSpinning = false;  // loading
         const operationInput = { op_category: '数据中心', op_page: this.currentTitle, op_name: '访问' };
         this.commonService.updateOperationlog(operationInput).subscribe();
@@ -160,6 +202,8 @@ export class DataCenterComponent implements OnInit {
   // 查询
   doSearch(flag): void {
     if (flag === 'dataCenter') {
+      this.chartData = { name: [], awake: [], order: [], amount: [] };  // 清空数据
+      this.coreOperation = {};  // 清空数据
       const params = this.searchDataCenterForm.controls['status'].value === '' ? 'all' : this.searchDataCenterForm.controls['status'].value;
       this.dataCenterStatus = params;
       if (params === 'all') {
@@ -240,7 +284,6 @@ export class DataCenterComponent implements OnInit {
      : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' :
      flag === 'music' ? '音乐BOT' : flag === 'horoscope' ? '星座BOT' : flag === 'recharge' ? '闪送BOT' : flag === 'errand' ? '充话费BOT' :
       flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : flag === 'reminder' ? '事项提醒BOT' : flag === 'news' ? '新闻BOT' : '';
-    if (flag === 'overview') { setTimeout(() => { this.loadEchart(); }, 300); }
   }
 
   // 选择对话日志的业务类型
@@ -278,13 +321,13 @@ export class DataCenterComponent implements OnInit {
   loadEchart(): void {
     const chartAwakeOption = {
       title : { text: 'BOT 总唤醒数', subtext: '', x:'left' },
-      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
-      legend: { orient: 'vertical', left: '.', show: false, data: ['打车','电影票','火车','机票','酒店'] },
+      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c}" },
+      legend: { orient: 'vertical', left: '.', show: false, data: this.chartData.name },
       color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
       series : [
         {
-          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '40%'],
-          data:[ {value:335, name:'打车'}, {value:310, name:'电影票'}, {value:234, name:'火车'}, {value:135, name:'机票'}, {value:1548, name:'酒店'} ],
+          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '50%'],
+          data: this.chartData.awake,
           itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
         }
       ]
@@ -294,16 +337,16 @@ export class DataCenterComponent implements OnInit {
 
     const chartOrderOption = {
       title: { text: '订单漏斗', subtext: '', left: 'left', top: 'bottom' },
-      tooltip: { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
+      tooltip: { trigger: 'item', formatter: "{a} <br/>{b} : {c}" },
       toolbox: { orient: 'vertical', top: 'center', feature: { dataView: {readOnly: true}, restore: {}, saveAsImage: {} } },
-      legend: { orient: 'vertical', left: 'left', show: false, data: ['订单推荐数','订单请求数','订单提交数','订单成交数'] },
+      legend: { orient: 'vertical', left: 'left', show: false, data: this.chartData.name },
       color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
       calculable: true,
       series: [
         {
-          name: '漏斗图', type:'funnel', width: '40%', height: '45%', left: '55%', top: '50%',
+          name: '漏斗图', type:'funnel', width: '30%', height: '65%', left: '5%', top: '60%',
           label: { normal: { position: 'left' } },
-          data:[ {value: 60, name: '订单推荐数'}, {value: 30, name: '订单请求数'}, {value: 10, name: '订单提交数'}, {value: 80, name: '订单成交数'} ]
+          data: this.chartData.order
         }
       ]
     };
@@ -312,13 +355,13 @@ export class DataCenterComponent implements OnInit {
 
     const chartAmountOption = {
       title : { text: '订单金额', subtext: '', x:'left' },
-      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c} ({d}%)" },
-      legend: { orient: 'vertical', left: '.', show: false, data: ['打车','电影票','火车','机票','酒店'] },
+      tooltip : { trigger: 'item', formatter: "{a} <br/>{b} : {c}" },
+      legend: { orient: 'vertical', left: '.', show: false, data: this.chartData.name },
       color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
       series : [
         {
-          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '40%'],
-          data:[ {value:335, name:'打车'}, {value:310, name:'电影票'}, {value:234, name:'火车'}, {value:135, name:'机票'}, {value:1548, name:'酒店'} ],
+          name: '访问来源', type: 'pie', radius : '55%', center: ['50%', '50%'],
+          data: this.chartData.amount,
           itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
         }
       ]

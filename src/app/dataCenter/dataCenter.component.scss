@@ -12,6 +12,12 @@
     .span_down {
       line-height: 30px;
     }
+    img {
+      width: 55px;
+    }
+  }
+  .boldfont {
+    font-weight: bold;
   }
 
   .spin {
@@ -31,7 +37,7 @@
 
 .chart {
   width: 33%;
-  height: 350px;
+  height: 450px;
   margin-top: 50px;
   margin-bottom: -50px;
   float: left;
