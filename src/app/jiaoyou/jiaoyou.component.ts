@@ -26,10 +26,7 @@ export class JiaoyouComponent implements OnInit {
 
   visiable = {addFree: false, editFree: false, addPay: false, editPay: false, };
   freeData = [];
-  dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT', appCheck: [
-    { label: 'XIAOWU-App Store', value: 'IOS', checked: false },
-    { label: 'XIAOWU-Android', value: 'ANDROID', checked: false },
-  ]};
+  dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
   payData = [];
   dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', gameName: '', gamePrice: '', tempGamePrice: '' };
   searchFreeForm: FormGroup;
@@ -42,6 +39,8 @@ export class JiaoyouComponent implements OnInit {
   beginPayDate = '';
   endPayDate = '';
   currentPanel = 'free';
+  tabsetJson = { currentNum: 0, param: '' };
+  appChannelId = ''; // 免费配资跳付费配置传值
 
   constructor(
     private fb: FormBuilder,
@@ -88,7 +87,7 @@ export class JiaoyouComponent implements OnInit {
       const payInput = {
         startTime: this.beginPayDate, endTime: this.endPayDate,
         gameName: this.searchPayForm.controls['gameName'].value,
-        appChannelId: this.searchPayForm.controls['appChannelId'].value,
+        appChannelId: this.appChannelId,
       };
       this.jiaoyouService.getPayList(payInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -110,7 +109,8 @@ export class JiaoyouComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'freeChannel') {
-      this.jiaoyouService.getFreeChannelList().subscribe(res => {
+      this.checkFreeOptions = []; // 清空
+      this.jiaoyouService.getFreeChannelList(this.dataFree.channelType).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           JSON.parse(res.payload).forEach(item => {
@@ -163,6 +163,11 @@ export class JiaoyouComponent implements OnInit {
         nzTitle: '确认删除', nzContent: '确认删除该信息吗？', nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
+    } else if (flag === 'goPay') {
+      this.modalService.confirm({
+        nzTitle: '修改付费配置提醒', nzContent: '您修改了XIAOWU-App Store渠道的免费方式，您可能需要修改该渠道下游戏的付费配置，现在去修改吗？', nzCancelText: '取消',
+        nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
+      });
     }
   }
 
@@ -186,24 +191,23 @@ export class JiaoyouComponent implements OnInit {
           this.loadData('pay');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag == 'goPay') {
+      console.log(data);
+      this.appChannelId = data;
+      setTimeout(() => { this.loadData('pay'); }, 1000);
+      this.tabsetJson.currentNum = 1;
     }
   }
 
   // 隐藏
   hideModal(flag) {
     if (flag === 'addFree') {
-      this.dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT', appCheck: [
-        { label: 'XIAOWU-App Store', value: 'IOS', checked: false },
-        { label: 'XIAOWU-Android', value: 'ANDROID', checked: false },
-      ]};
+      this.dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
       this.checkFreeOptions = [];
       this.loadData('free');
       this.visiable.addFree = false;
     } else if (flag === 'editFree') {
-      this.dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT', appCheck: [
-        { label: 'XIAOWU-App Store', value: 'IOS', checked: false },
-        { label: 'XIAOWU-Android', value: 'ANDROID', checked: false },
-      ]};
+      this.dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
       this.loadData('free');
       this.visiable.editFree = false;
     } else if (flag === 'addPay') {
@@ -218,16 +222,31 @@ export class JiaoyouComponent implements OnInit {
     }
   }
 
+  // 封装验证新增
+  verification(flag, data): boolean {
+    let result = true;
+    if (flag === 'addFree') {
+      if (data.appChannelIds.length === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
+      if (data.freeMode === 'BY_ACCOUNT') {
+        if (data.freeCount === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写免费次数' }); result = false; }
+      }
+    }
+    if (flag === 'addPay') {
+      if (data.gameName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写游戏名称' }); result = false; }
+      if (data.appChannelId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
+      if (this.dataPay.single === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
+      if (this.dataPay.gamePrice === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
+    }
+    return result;
+  }
+
   // 新增操作
   doSave(flag, data): void {
     if (flag === 'addFree') {
       let appChannelIds = [];
-      if (this.dataFree.channelType === 'CUSTOMER') {
-        appChannelIds = this.checkFreeOptions.filter(item => item.checked === true).map(cell => cell.value);
-      } else if (this.dataFree.channelType === 'XIAOWU') {
-        appChannelIds = this.dataFree.appCheck.filter(item => item.checked === true).map(cell => cell.value);
-      }
+      appChannelIds = this.checkFreeOptions.filter(item => item.checked === true).map(cell => cell.value);
       const freeInput = { appChannelIds: appChannelIds, channelType: this.dataFree.channelType, freeCount: this.dataFree.freeCount, freeMode: this.dataFree.freeMode };
+      if (!this.verification(flag, freeInput)) { return; }
       console.log(freeInput);
       this.jiaoyouService.addFree(freeInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -246,6 +265,8 @@ export class JiaoyouComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '交游天下', op_page: '免费配置', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
+          const appChannelId = this.dataFree.appChannelIds;
+          this.showModal('goPay', appChannelId);
           this.hideModal('editFree');
           this.loadData('free');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
@@ -260,6 +281,7 @@ export class JiaoyouComponent implements OnInit {
       }
       const payInput = { appChannelId: this.dataPay.appChannelId, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, gameName: this.dataPay.gameName, gamePrice: tempJson };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
+      if (!this.verification(flag, payInput)) { return; }
       console.log(payInput);
       this.jiaoyouService.addPay(payInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -303,10 +325,22 @@ export class JiaoyouComponent implements OnInit {
   onChange(result, flag) {
     if (flag === 'free') {  // 基本信息的活动时间
       if (result === []) { this.beginFreeDate = ''; this.endFreeDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginFreeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endFreeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginFreeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endFreeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginFreeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endFreeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'pay') {  // 基本信息的活动时间
       if (result === []) { this.beginPayDate = ''; this.endPayDate = ''; return; }
-      if (result[0] !== '' || result[1] !== '') { this.beginPayDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endPayDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss'); }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginPayDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endPayDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginPayDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endPayDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'freeMode') {
       this.dataPay.freeMode = result.freeMode;
     }

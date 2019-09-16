@@ -180,6 +180,8 @@ export class DataCenterComponent implements OnInit {
               if (item.bot !== '总计') {
                 this.chartData.name.push(item.bot);
                 this.chartData.awake.push({ value: item.totalAwaken, name: item.bot });
+              }
+              if (item.bot === '火车' || item.bot === '机票' || item.bot === '酒店' || item.bot === '打车' || item.bot === '充话费' || item.bot === '电影票' || item.bot === '闪送') {
                 this.chartData.amount.push({ value: item.totalTurnover, name: item.bot });
               }
             })
@@ -339,12 +341,12 @@ export class DataCenterComponent implements OnInit {
       title: { text: '订单漏斗', subtext: '', left: 'left', top: 'bottom' },
       tooltip: { trigger: 'item', formatter: "{a} <br/>{b} : {c}" },
       toolbox: { orient: 'vertical', top: 'center', feature: { dataView: {readOnly: true}, restore: {}, saveAsImage: {} } },
-      legend: { orient: 'vertical', left: 'left', show: false, data: this.chartData.name },
+      legend: { orient: 'vertical', left: '20', top: '120', show: false, data: ['订单推荐数', '订单请求数', '订单提交数', '订单成交数'] },
       color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
       calculable: true,
       series: [
         {
-          name: '漏斗图', type:'funnel', width: '30%', height: '65%', left: '5%', top: '60%',
+          name: '漏斗图', type:'funnel', width: '25', height: '65%', left: '15%', top: '60%',
           label: { normal: { position: 'left' } },
           data: this.chartData.order
         }
