@@ -232,7 +232,7 @@ export class RegressionComponent implements OnInit {
       }
       const formData = new FormData();
       this.fileList.forEach((file: any) => { formData.append('case_file', file); });
-      const url = `http://192.168.1.26:8000/auto/addTestCase?case_name=${this.creTemplateData.case_name}&user_id=${this.currentUser}`;
+      const url = `http://192.168.1.5:8000/auto/addTestCase?case_name=${this.creTemplateData.case_name}&user_id=${this.currentUser}`;
       const req = new HttpRequest('POST', url, formData, {reportProgress: true, headers: new HttpHeaders({})
       });
       this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
@@ -248,7 +248,7 @@ export class RegressionComponent implements OnInit {
       );
     } else if (flag === 'addCreTemplate') {
       // if (!this.verificationAdd('regression')) { return; }
-      const url = 'http://192.168.1.26:8000/auto/addTestTask?task_name='
+      const url = 'http://192.168.1.5:8000/auto/addTestTask?task_name='
         + this.creTaskData.task_name
         + '&task_type=2'
         + '&appkey=' + this.creTaskData.appkey
@@ -270,7 +270,7 @@ export class RegressionComponent implements OnInit {
       // if (!this.verificationAdd('regression')) { return; }
       const formData = new FormData();
       this.fileList.forEach((file: any) => { formData.append('temp_file', file); });
-      const url = 'http://192.168.1.26:8000/auto/addTestTask?'
+      const url = 'http://192.168.1.5:8000/auto/addTestTask?'
         + 'task_name=' + this.serialData.task_name
         + '&task_type=' + this.serialData.task_type
         + '&appkey=' + this.serialData.appkey
@@ -297,7 +297,7 @@ export class RegressionComponent implements OnInit {
       }
       const formData = new FormData();
       this.fileList.forEach((file: any) => { formData.append('temp_file', file); });
-      const url = 'http://192.168.1.26:8000/auto/addTestTemp?'
+      const url = 'http://192.168.1.5:8000/auto/addTestTemp?'
         + 'temp_name=' + this.templateData.temp_name
         + '&user_id=' + this.currentUser;
       const req = new HttpRequest('POST', url, formData, {reportProgress: true, headers: new HttpHeaders({})});
@@ -314,7 +314,7 @@ export class RegressionComponent implements OnInit {
       );
     } else if (flag === 'addCreTemplateModal') { // 执行任务
       // if (!this.verificationAdd('regression')) { return; }
-      const url = 'http://192.168.1.26:8000/auto/addTestSubtask?'
+      const url = 'http://192.168.1.5:8000/auto/addTestSubtask?'
         + 'task_id=' + this.creTemplateModalData.pk;
       const req = new HttpRequest('POST', url, '', {reportProgress: true, headers: new HttpHeaders({})});
       this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
@@ -327,7 +327,7 @@ export class RegressionComponent implements OnInit {
       );
     } else if (flag === 'addCreTaskModal') { // 执行任务
       // if (!this.verificationAdd('regression')) { return; }
-      const url = 'http://192.168.1.26:8000/auto/addTestSubtask?'
+      const url = 'http://192.168.1.5:8000/auto/addTestSubtask?'
         + 'task_id=' + this.creTaskModalData.pk;
       const req = new HttpRequest('POST', url, '', {reportProgress: true, headers: new HttpHeaders({})});
       this.http.request(req).pipe(filter(e => e instanceof HttpResponse))
@@ -342,7 +342,7 @@ export class RegressionComponent implements OnInit {
   }
 
   showExcel(data) {
-    const url = 'http://192.168.1.26:8000/static/' + (data.fields.case_file ? data.fields.case_file : data.fields.temp_file ? data.fields.temp_file : data.fields.stask_result_file ? data.fields.stask_result_file : '');
+    const url = 'http://192.168.1.5:8000/static/' + (data.fields.case_file ? data.fields.case_file : data.fields.temp_file ? data.fields.temp_file : data.fields.stask_result_file ? data.fields.stask_result_file : '');
     window.open(url);
   }
 
