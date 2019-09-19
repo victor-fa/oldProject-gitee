@@ -57,7 +57,7 @@
                     </div>
                     <div nz-col nzSpan="6">
                       订单成交金额<br>
-                      <p style="font-size: 25px;">{{coreOperation.totalTurnover.toFixed(2)}}</p>
+                      <p style="font-size: 25px;">{{coreOperation.totalTurnover !== undefined ? coreOperation.totalTurnover.toFixed(2) : '--'}}</p>
                     </div>
                     <div nz-col nzSpan="6">
                       <img [src]="'assets/images/icon_order.png'">

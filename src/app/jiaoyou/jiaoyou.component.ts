@@ -165,7 +165,7 @@ export class JiaoyouComponent implements OnInit {
       });
     } else if (flag === 'goPay') {
       this.modalService.confirm({
-        nzTitle: '修改付费配置提醒', nzContent: '您修改了XIAOWU-App Store渠道的免费方式，您可能需要修改该渠道下游戏的付费配置，现在去修改吗？', nzCancelText: '取消',
+        nzTitle: '修改付费配置提醒', nzContent: `您修改了${data}渠道的免费方式，您可能需要修改该渠道下游戏的付费配置，现在去修改吗？`, nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
     }

@@ -23,7 +23,7 @@ export class ConsumerComponent implements OnInit {
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'maxSnActivation': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
@@ -95,8 +95,8 @@ export class ConsumerComponent implements OnInit {
 
   private _initForm(): void {
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''] });
-    this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''] });
+    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''] });
+    this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
   }
 
@@ -104,9 +104,9 @@ export class ConsumerComponent implements OnInit {
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'maxSnActivation': '' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'maxSnActivation': '' };
       this.consumerDate = {
         appChannel: data.appChannel,
         appChannelName: data.appChannelName,
@@ -115,8 +115,11 @@ export class ConsumerComponent implements OnInit {
         paymentKey: data.paymentKey,
         smsSign: data.smsSignType,
         keys: '',
-        phone: ''
+        phone: data.phone,
+        officially: data.officially,
+        maxSnActivation: data.maxSnActivation
       };
+      console.log(this.consumerDate);
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
       this.serialData = data;
@@ -149,7 +152,7 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'maxSnActivation': '' };
       this.visiable.addSerial = false;
     } else if (flag === 'explain') {
       this.visiable.explain = false;
@@ -180,9 +183,14 @@ export class ConsumerComponent implements OnInit {
       } else if (this.addConsumerForm.controls['phone'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '手机号码未填写' });
         result = false;
-      } else if (!(/^\w{3,20}$/.test(robot))) {
+      } else if (!(/^\w{3,32}$/.test(robot))) {
         this.modalService.error({ nzTitle: '提示', nzContent: 'BBOT配置文件ID只允许出现下划线，a-zA-Z0-9' });
         result = false;
+      } else if (this.addConsumerForm.controls['officially'].value === false) {
+        if (this.addConsumerForm.controls['maxSnActivation'].value === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '激活次数未填写' });
+          result = false;
+        }
       }
     } else if (flag === 'addSerial') {
       if (this.consumerDate.keys === '' || this.consumerDate.keys.length === 0 || this.consumerDate.keys.replace(/ /g,'') === '') {
@@ -205,8 +213,8 @@ export class ConsumerComponent implements OnInit {
         'paymentKey': this.addConsumerForm.controls['paymentKey'].value,
         'smsSign': this.addConsumerForm.controls['smsSign'].value,
         'phone': this.addConsumerForm.controls['phone'].value,
-        // 临时
-        // 'keys': this.addConsumerForm.controls['keys'].value !== undefined ? this.addConsumerForm.controls['keys'].value.split('\n') : '',
+        'officially': this.addConsumerForm.controls['officially'].value,
+        'maxSnActivation': this.addConsumerForm.controls['officially'].value === true ? '3' : this.addConsumerForm.controls['maxSnActivation'].value,
       };
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -222,11 +230,13 @@ export class ConsumerComponent implements OnInit {
       });
     } else if (flag === 'modifyConsumer') {
       const consumerInput = {
+        'flag': 'modify',
         'appChannel': this.consumerDate.appChannel,
         'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
         'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
-        // 临时
-        // 'keys': this.modifyConsumerForm.controls['keys'].value !== undefined ? this.modifyConsumerForm.controls['keys'].value.split('\n') : '',
+        'phone': this.consumerDate.phone,
+        'officially': this.consumerDate.officially,
+        'maxSnActivation': this.consumerDate.officially === true ? '3' : this.modifyConsumerForm.controls['maxSnActivation'].value,
       };
       this.addPaymengSms(consumerInput);
     } else if (flag === 'addSerial') {
@@ -261,36 +271,26 @@ export class ConsumerComponent implements OnInit {
 
   addPaymengSms(data) {
     if (data.paymentKey !== '' && data.paymentKey !== undefined) {
-      const paymentInput = {
-        id: data.appChannel,
-        paymentKey: data.paymentKey,
-      };
+      const paymentInput = { id: data.appChannel, paymentKey: data.paymentKey };
       this.consumerService.addPayment(paymentInput).subscribe(res => {
         if (res.retcode === 0) {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
     if (data.smsSign !== '' && data.smsSign !== undefined) {
-      const smsInput = {
-        id: data.appChannel,
-        smsSign: data.smsSign,
-      };
+      const smsInput = { id: data.appChannel, smsSign: data.smsSign };
       this.consumerService.addSms(smsInput).subscribe(res => {
         if (res.retcode === 0) {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
-    // 临时
-    // if (data.keys !== '' && data.keys !== undefined) {
-    //   const keysInput = {
-    //     id: data.appChannel,
-    //     keys: data.keys,
-    //   };
-    //   this.consumerService.addKey(keysInput).subscribe(res => {
-    //     if (res.retcode === 0) {
-    //     } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-    //   });
-    // }
+    if (data.flag === 'modify' && data.officially === false && data.maxSnActivation !== '') { // 修改 且 测试key 且 最大值不为空
+      const activationInput = { id: data.appChannel, maxSnActivation: data.maxSnActivation, phone: data.phone };
+      this.consumerService.modifyActivation(activationInput).subscribe(res => {
+        if (res.retcode === 0) {
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    }
     this.loadData('consumer');
     this.hideModal('modifyConsumer');
   }

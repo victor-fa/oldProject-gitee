@@ -29,23 +29,25 @@
               <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-user-add"></i>新增客户</button>
             </div>
           </div>
-          <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
+          <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}">
             <thead>
               <tr>
                 <th>序号</th>
                 <th>客户ID</th>
                 <th>客户名称</th>
                 <th>APP key</th>
+                <th>key类型</th>
                 <th>APP Secret</th>
                 <th>Client ID</th>
                 <th>登录类型</th>
                 <th>BOT名称</th>
+                <th>激活次数</th>
                 <th>Payment Key</th>
                 <th>短信签名</th>
                 <th>创建时间</th>
                 <th>序列号</th>
                 <th>对接凭证</th>
-                <th>操作</th>
+                <th nzWidth="200px">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -54,10 +56,12 @@
                 <td>{{data.appChannel}}</td>
                 <td>{{data.appChannelName}}</td>
                 <td>{{data.appKey}}</td>
+                <td>{{data.officially === true ? '正式key' : '测试key'}}</td>
                 <td>{{data.appSecret}}</td>
                 <td>{{data.clientId}}</td>
                 <td>{{data.loginType === 0 ? '不需要登录' : '需要登录'}}</td>
                 <td>{{data.robot}}</td>
+                <td>{{data.maxSnActivation}}</td>
                 <td>{{data.paymentKey ? data.paymentKey : 'null'}}</td>
                 <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -67,8 +71,8 @@
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
-                <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-left: 10px"><i class="anticon anticon-form"></i>编辑</button>
+                <td nzWidth="200px">
+                  <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteConsumer', $event)"><i class="anticon anticon-delete"></i>{{'作废'}}</button>
                 </td>
               </tr>
@@ -104,6 +108,17 @@
 
           <nz-modal [(nzVisible)]="visiable.addConsumer" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
             <form [formGroup]="addConsumerForm">
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  key类型 <font color="red">*</font>：
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
+                    <label nz-radio [nzValue]="false">测试key</label>
+                    <label nz-radio [nzValue]="true">正式key</label>
+                  </nz-radio-group>
+                </div>
+              </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   客户ID <font color="red">*</font>：
@@ -153,6 +168,15 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  激活次数 <font color="red">*</font>：
+                </div>
+                <div nz-col nzSpan="12" [ngClass]="{'span_down': consumerDate.officially === true}">
+                  <input nz-input formControlName="maxSnActivation" [(ngModel)]="consumerDate.maxSnActivation" placeholder="请输入激活次数 Key" nzSize="default" *ngIf="consumerDate.officially === false">
+                  {{consumerDate.officially === true ? '3' : ''}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   Payment Key：
                 </div>
                 <div nz-col nzSpan="12">
@@ -187,6 +211,14 @@
             <form [formGroup]="modifyConsumerForm">
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  key类型：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.officially === true ? '正式key' : '测试key'}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   客户ID：
                 </div>
                 <div nz-col nzSpan="12" class="span_down">
@@ -215,6 +247,15 @@
                 </div>
                 <div nz-col nzSpan="12" class="span_down">
                   {{consumerDate.loginType === 1 ? '需要登录' : '不需要登录'}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  激活次数：
+                </div>
+                <div nz-col nzSpan="12" class="span_down" [ngClass]="{'span_down': consumerDate.officially === true}">
+                  <input nz-input formControlName="maxSnActivation" [(ngModel)]="consumerDate.maxSnActivation" placeholder="请输入激活次数 Key" nzSize="default" *ngIf="consumerDate.officially === false">
+                  {{consumerDate.officially === true ? '3' : ''}}
                 </div>
               </div>
               <div nz-row class="search_panel">

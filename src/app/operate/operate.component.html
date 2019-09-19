@@ -199,7 +199,7 @@
                   <nz-select [(ngModel)]="taxiOrderType" formControlName="orderType">
                     <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
                     <nz-option required [nzLabel]="'火车'" [nzValue]="'TRAIN_ORDER'"></nz-option>
-                    <nz-option required [nzLabel]="'机票'" [nzValue]="'FLIGHT_ORDER'"></nz-option>
+                    <nz-option required [nzLabel]="'机票'" [nzValue]="'FLIGHT_RETURN_ORDER'"></nz-option>
                     <nz-option required [nzLabel]="'酒店'" [nzValue]="'HOTEL_ORDER'"></nz-option>
                     <nz-option required [nzLabel]="'打车'" [nzValue]="'TAXI_ORDER'"></nz-option>
                     <nz-option required [nzLabel]="'闪送'" [nzValue]="'EXPRESS_ORDER'"></nz-option>
@@ -262,7 +262,7 @@
                 <td>{{data.orderId}}</td>
                 <td>{{data.userPhone}}</td>
                 <td>{{data.userNickName}}</td>
-                <td>{{data.orderType === 'FLIGHT_ORDER' ? '机票' : data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : ''}}</td>
+                <td>{{data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'MUSIC_ORDER' ? '付费音频' : data.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}</td>
                 <td>{{data.state === 'DENGDAIJIEDAN' ? '等待接单' : data.state === 'YIJIEDAN' ? '已接单' : data.state === 'YIDAODAJIJIANDIZHI' ? '已到达寄件地址' :
                   data.state === 'PEISONGZHONG' ? '配送中' : data.state === 'CHONGZHIZHONG' ? '充值中' : data.state === 'ZHANZUOZHONG' ? '占座中' : data.state === 'CHUPIAOZHONG' ? '出票中' :
                   data.state === 'QUXIAOZHONG' ? '取消中' : data.state === 'TUIPIAOZHONG' ? '退票中' : data.state === 'TUIKUANZHONG' ? '退款中' : data.state === 'SIJIDAODA' ? '司机到达' :
@@ -298,7 +298,7 @@
             <tbody>
               <tr *ngFor="let data of orderStateSettingTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'PAIR_ORDER' ? '恋爱运势' : data.orderType === 'FORTUNE_ORDER' ? '月运势' : ''}}</td>
+                <td>{{data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'PAIR_ORDER' ? '恋爱运势' : data.orderType === 'FORTUNE_ORDER' ? '月运势' : data.orderType === 'MUSIC_ORDER' ? '付费音频' : data.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}</td>
                 <td>{{data.state === 'CHUPIAOZHONG' ? '出票中' : data.state === 'TUIKUANZHONG' ? '退款中' : data.state === 'DAIZHIFU' ? '待支付' : data.state === 'DAICHUXING' ? '待出行' : data.state === 'CHUPIAOSHIBAI' ? '出票失败' : data.state === 'YIQUXIAO' ? '已取消' : data.state === 'YITUIKUAN' ? '已退款' : data.state === 'YICHUXING' ? '已出行' : data.state === 'JIAOYIGUANBI' ? '交易关闭' : data.state === 'GAIQIANZHONG' ? '改签中' : data.state === 'ZHANZUOZHONG' ? '占座中' : data.state === 'QUXIAOZHONG' ? '取消中' : data.state === 'TUIPIAOZHONG' ? '退票中' : data.state === 'CHUPIAOSHIBAITUIKUANZHONG' ? '出票失败退款中' : data.state === 'TUIKUANSHIBAI' ? '退款失败' : data.state === 'SIJIDAODA' ? '司机已到达' : data.state === 'CHAOSHIQUXIAO' ? '超时取消' : ''}}</td>
                 <td>{{data.lowTimeDes}}</td>
                 <td>{{data.highTimeDes}}</td>
@@ -319,7 +319,7 @@
                 BOT名称：
               </div>
               <div nz-col nzSpan="10" class="span_down">
-                {{currentOrderStateSetting.orderType === 'TRAIN_ORDER' ? '火车' : currentOrderStateSetting.orderType === 'FLIGHT_ORDER' || currentOrderStateSetting.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : currentOrderStateSetting.orderType === 'HOTEL_ORDER' ? '酒店' : currentOrderStateSetting.orderType === 'TAXI_ORDER' ? '打车' : currentOrderStateSetting.orderType === 'EXPRESS_ORDER' ? '闪送' : currentOrderStateSetting.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : currentOrderStateSetting.orderType === 'MOVIE_ORDER' ? '电影票' : currentOrderStateSetting.orderType === 'PAIR_ORDER' ? '恋爱运势' : currentOrderStateSetting.orderType === 'FORTUNE_ORDER' ? '月运势' : ''}}
+                {{currentOrderStateSetting.orderType === 'TRAIN_ORDER' ? '火车' : currentOrderStateSetting.orderType === 'FLIGHT_ORDER' || currentOrderStateSetting.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : currentOrderStateSetting.orderType === 'HOTEL_ORDER' ? '酒店' : currentOrderStateSetting.orderType === 'TAXI_ORDER' ? '打车' : currentOrderStateSetting.orderType === 'EXPRESS_ORDER' ? '闪送' : currentOrderStateSetting.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : currentOrderStateSetting.orderType === 'MOVIE_ORDER' ? '电影票' : currentOrderStateSetting.orderType === 'PAIR_ORDER' ? '恋爱运势' : currentOrderStateSetting.orderType === 'FORTUNE_ORDER' ? '月运势' : currentOrderStateSetting.orderType === 'MUSIC_ORDER' ? '付费音频' : currentOrderStateSetting.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}
               </div>
             </div>
             <div nz-row class="search_panel">

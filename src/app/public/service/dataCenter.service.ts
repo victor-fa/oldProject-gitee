@@ -23,7 +23,7 @@ export class DataCenterService extends AppServiceBase {
     const url = `${this.commonService.dataCenterUrl}/v2/counts/` + data.flag
         + ('?begin=' + data.begin + '&end=' + data.end)
         + (data.platform !== '' ? '&platform=' + data.platform : '')
-        + (data.checkAllChannel === true ? '' : (data.origin !== '' ? '&origin=' + data.origin : '&origin=' + localStorage.getItem('currentAppHeader')));
+        + (data.checkAllChannel === true ? '' : (data.origin !== '' ? '&origin=' + data.origin : ''));
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

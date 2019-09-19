@@ -30,7 +30,7 @@ export class ConsumerService extends AppServiceBase {
   /** 添加单个 */
   addConsumer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}`;
-    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}`;
+    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}&officially=${data.officially}&maxSnActivation=${data.maxSnActivation}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
@@ -60,6 +60,15 @@ export class ConsumerService extends AppServiceBase {
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': data.id }) };
     return this.httpClient
       .post<IResponse<any>>(url, data.keys, this.options);
+  }
+
+  /** 修改激活次数 */
+  modifyActivation(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
+    const body = `appChannel=${data.id}&maxSnActivation=${data.maxSnActivation}&phone=${data.phone}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .put<IResponse<any>>(url, body, this.options);
   }
 
   /** 获取所有列表 */
