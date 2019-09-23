@@ -24,13 +24,16 @@ export interface TreeNodeInterface {
 })
 export class JiaoyouComponent implements OnInit {
 
-  visiable = {addFree: false, editFree: false, addPay: false, editPay: false, };
+  visiable = {addFree: false, editFree: false, addPay: false, editPay: false, addSkill: false, };
   freeData = [];
   dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
   payData = [];
-  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', gameName: '', gamePrice: '', tempGamePrice: '' };
+  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
+  skillData = [];
+  dataSkill = {skillTypeIds: ''};
   searchFreeForm: FormGroup;
   searchPayForm: FormGroup;
+  searchSkillForm: FormGroup;
   checkFreeOptions = [];
   checkPayOptions = [];
   isSpinning = false;
@@ -38,6 +41,8 @@ export class JiaoyouComponent implements OnInit {
   endFreeDate = '';
   beginPayDate = '';
   endPayDate = '';
+  beginSkillDate = '';
+  endSkillDate = '';
   currentPanel = 'free';
   tabsetJson = { currentNum: 0, param: '' };
   appChannelId = ''; // 免费配资跳付费配置传值
@@ -86,7 +91,7 @@ export class JiaoyouComponent implements OnInit {
     } else if (flag === 'pay') {
       const payInput = {
         startTime: this.beginPayDate, endTime: this.endPayDate,
-        gameName: this.searchPayForm.controls['gameName'].value,
+        skillName: this.searchPayForm.controls['skillName'].value,
         appChannelId: this.appChannelId,
       };
       this.jiaoyouService.getPayList(payInput).subscribe(res => {
@@ -94,11 +99,11 @@ export class JiaoyouComponent implements OnInit {
           this.isSpinning = false;
           this.payData = JSON.parse(res.payload);
           this.payData.map(item => {
-            item.single = item.gamePrice[0];
+            item.single = item.skillPrice[0];
             let result = [];
-            Object.keys(item.gamePrice).forEach(cell => {
+            Object.keys(item.skillPrice).forEach(cell => {
               if (cell !== '0') {
-                result.push(cell + '/' + item.gamePrice[cell]);
+                result.push(cell + '/' + item.skillPrice[cell]);
               }
             })
             item.multiple = result.join(',');
@@ -125,9 +130,21 @@ export class JiaoyouComponent implements OnInit {
           this.isSpinning = false;
           console.log(JSON.parse(res.payload));
           JSON.parse(res.payload).forEach(item => {
-            this.checkPayOptions.push({ label: item.appChannel, value: item.appChannel, freeMode: item.freeMode });
+            this.checkPayOptions.push({ label: item.appChannelId, value: item.appChannelId, freeMode: item.freeMode });
           });
           console.log(this.checkPayOptions);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'skill') {
+      const skillInput = {
+        startTime: this.beginSkillDate, endTime: this.endSkillDate,
+        skillTypeId: this.searchSkillForm.controls['skillTypeId'].value
+      };
+      this.jiaoyouService.getSkillList(skillInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.skillData = JSON.parse(res.payload);
+          console.log(this.skillData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -140,22 +157,24 @@ export class JiaoyouComponent implements OnInit {
       this.visiable.addFree = true;
     } else if (flag === 'editFree') {
       this.dataFree = data;
-      this.dataFree.appChannelIds = data.appChannel;
+      this.dataFree.appChannelIds = data.appChannelId;
       this.visiable.editFree = true;
     } else if (flag === 'addPay') {
+      this.loadData('skill');
       this.loadData('payChannel');
       this.visiable.addPay = true;
     } else if (flag === 'editPay') {
       this.dataPay = data;
-      this.dataPay.appChannelId = data.appChannel;
-      this.dataPay.tempGamePrice = data.gamePrice;
-      let gamePrice = [];
-      let keys = Object.keys(this.dataPay.gamePrice);
-      this.dataPay.single = this.dataPay.gamePrice[0];
+      this.loadData('skill');
+      this.dataPay.appChannelId = data.appChannelId;
+      this.dataPay.tempSkillPrice = data.skillPrice;
+      let skillPrice = [];
+      let keys = Object.keys(this.dataPay.skillPrice);
+      this.dataPay.single = this.dataPay.skillPrice[0];
       keys.forEach(item => {
-        item !== '0' ? gamePrice.push(item + ','+ this.dataPay.gamePrice[item]) : null;
+        item !== '0' ? skillPrice.push(item + ','+ this.dataPay.skillPrice[item]) : null;
       });
-      this.dataPay.gamePrice = gamePrice.join('\n');
+      this.dataPay.skillPrice = skillPrice.join('\n');
       console.log(this.dataPay);
       this.visiable.editPay = true;
     } else if (flag === 'deleteFree' || flag === 'deletePay') {
@@ -168,6 +187,9 @@ export class JiaoyouComponent implements OnInit {
         nzTitle: '修改付费配置提醒', nzContent: `您修改了${data}渠道的免费方式，您可能需要修改该渠道下游戏的付费配置，现在去修改吗？`, nzCancelText: '取消',
         nzOnCancel: () => 1, nzOkText: '确定', nzOnOk: () => { this.doSomething(data, flag); }
       });
+    } else if (flag === 'addSkill') {
+      this.loadData('skill');
+      this.visiable.addSkill = true;
     }
   }
 
@@ -195,7 +217,7 @@ export class JiaoyouComponent implements OnInit {
       console.log(data);
       this.appChannelId = data;
       setTimeout(() => { this.loadData('pay'); }, 1000);
-      this.tabsetJson.currentNum = 1;
+      this.tabsetJson.currentNum = 2;
     }
   }
 
@@ -211,14 +233,18 @@ export class JiaoyouComponent implements OnInit {
       this.loadData('free');
       this.visiable.editFree = false;
     } else if (flag === 'addPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', gameName: '', gamePrice: '', tempGamePrice: '' };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
       this.checkPayOptions = [];
       this.loadData('pay');
       this.visiable.addPay = false;
     } else if (flag === 'editPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', gameName: '', gamePrice: '', tempGamePrice: '' };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
       this.loadData('pay');
       this.visiable.editPay = false;
+    } else if (flag === 'addSkill') {
+      // this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '' };
+      // this.loadData('skill');
+      this.visiable.addSkill = false;
     }
   }
 
@@ -232,10 +258,10 @@ export class JiaoyouComponent implements OnInit {
       }
     }
     if (flag === 'addPay') {
-      if (data.gameName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写游戏名称' }); result = false; }
+      if (data.skillName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写付费技能名称' }); result = false; }
       if (data.appChannelId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
       if (this.dataPay.single === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
-      if (this.dataPay.gamePrice === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
+      if (this.dataPay.skillPrice === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
     }
     return result;
   }
@@ -273,13 +299,13 @@ export class JiaoyouComponent implements OnInit {
       });
     } else if (flag === 'addPay') {
       let tempArr = [];
-      tempArr = this.dataPay.gamePrice.split('\n');
+      tempArr = this.dataPay.skillPrice.split('\n');
       const tempJson = {};
       tempJson[0 + ''] = Number(this.dataPay.single);
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
-      const payInput = { appChannelId: this.dataPay.appChannelId, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, gameName: this.dataPay.gameName, gamePrice: tempJson };
+      const payInput = { appChannelId: this.dataPay.appChannelId, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillName: this.dataPay.skillName, skillPrice: tempJson, skillTypeId: this.dataPay.skillTypeId };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
       if (!this.verification(flag, payInput)) { return; }
       console.log(payInput);
@@ -294,13 +320,13 @@ export class JiaoyouComponent implements OnInit {
       });
     } else if (flag === 'editPay') {
       let tempArr = [];
-      tempArr = this.dataPay.gamePrice.split('\n');
+      tempArr = this.dataPay.skillPrice.split('\n');
       const tempJson = {};
       tempJson[0 + ''] = Number(this.dataPay.single);
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
-      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, gamePrice: tempJson };
+      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson, skillName: this.dataPay.skillName, skillTypeId: this.dataPay.skillTypeId };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
       payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeMode : null;
       console.log(payInput);
@@ -313,12 +339,26 @@ export class JiaoyouComponent implements OnInit {
           this.loadData('pay');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addSkill') {
+      const skillInput = this.dataSkill.skillTypeIds.split('\n');
+      // if (!this.verification(flag, skillInput)) { return; }
+      console.log(skillInput);
+      this.jiaoyouService.addSkill(skillInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '交游天下', op_page: '付费技能', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('addSkill');
+          this.loadData('skill');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
   private _initForm(): void {
     this.searchFreeForm = this.fb.group({ appChannelId: [''], date: [''], });
-    this.searchPayForm = this.fb.group({ gameName: [''], appChannelId: [''], date: [''], });
+    this.searchPayForm = this.fb.group({ skillName: [''], appChannelId: [''], date: [''], });
+    this.searchSkillForm = this.fb.group({ skillTypeId: [''], date: [''], });
   }
 
   // 日期插件
@@ -341,8 +381,19 @@ export class JiaoyouComponent implements OnInit {
           this.beginPayDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endPayDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
         }
       }
+    } else if (flag === 'skill') {  // 付费技能的活动时间
+      if (result === []) { this.beginSkillDate = ''; this.endSkillDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginSkillDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endSkillDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginSkillDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endSkillDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     } else if (flag === 'freeMode') {
       this.dataPay.freeMode = result.freeMode;
+    } else if (flag === 'skillMode') {
+      this.dataPay.skillTypeId = result.skillTypeId;
     }
   }
 

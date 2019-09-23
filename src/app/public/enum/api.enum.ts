@@ -173,7 +173,9 @@ export enum platformApiUrls {
 /** 交游天下 */
 export enum jiaoyouApiUrls {
   /** 免费配置 */
-  freeList = '/game/channel',
+  freeList = '/skill/channel',
   /** 付费配置 */
-  payList = '/game',
+  payList = '/skill',
+  /** 付费技能 */
+  typeList = '/skill/type',
 }

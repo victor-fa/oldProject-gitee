@@ -58,7 +58,7 @@ export class JiaoyouService extends AppServiceBase {
   /** 获取所有列表 */
   getPayList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${jiaoyouApiUrls.payList}?pageSize=999`;
-    url += data.gameName && data.gameName !== '' ? '&gameName=' + data.gameName : '';
+    url += data.skillName && data.skillName !== '' ? '&skillName=' + data.skillName : '';
     url += data.appChannelId && data.appChannelId !== '' ? '&appChannelId=' + data.appChannelId : '';
     url += data.startTime && data.startTime !== '' ? '&startTime=' + data.startTime : '';
     url += data.endTime && data.endTime !== '' ? '&endTime=' + data.endTime : '';
@@ -109,5 +109,23 @@ export class JiaoyouService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取所有列表 */
+  getSkillList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${jiaoyouApiUrls.typeList}?pageSize=999`;
+    url += data.skillTypeId && data.skillTypeId !== '' ? '&skillTypeId=' + data.skillTypeId : '';
+    url += data.startTime && data.startTime !== '' ? '&startTime=' + data.startTime : '';
+    url += data.endTime && data.endTime !== '' ? '&endTime=' + data.endTime : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 新增 */
+  addSkill(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${jiaoyouApiUrls.typeList}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .put<IResponse<any>>(url, data, this.options);
+  }
 
 }
