@@ -73,7 +73,7 @@
                 </td>
                 <td nzWidth="200px">
                   <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteConsumer', $event)"><i class="anticon anticon-delete"></i>{{'作废'}}</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteConsumer', {event: $event, data: data})"><i class="anticon" [ngClass]="{'anticon-delete': data.available === true, 'anticon-poweroff': data.available === false || data.available === undefined}"></i>{{data.available === true ? '作废' : '激活'}}</button>
                 </td>
               </tr>
             </tbody>
@@ -177,6 +177,22 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  禁用短信通知 ：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  默认需要订单短信服务，勾选后，表示不需要订单短信通知
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8"></div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
+                    <label nz-col nzSpan="7" *ngFor="let data of dataMsgArr" nz-checkbox [(nzChecked)]="data.checked" (click)="onChange(data, 'msgArr')">{{ data.name }}</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   Payment Key：
                 </div>
                 <div nz-col nzSpan="12">
@@ -260,6 +276,22 @@
               </div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="8" class="span_down right_alignment">
+                  禁用短信通知 ：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  默认需要订单短信服务，勾选后，表示不需要订单短信通知
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8"></div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
+                    <label nz-col nzSpan="7" *ngFor="let data of dataMsgArr" nz-checkbox [(nzChecked)]="data.checked" (click)="onChange(data, 'msgArr')">{{ data.name }}</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
                   Payment Key：
                 </div>
                 <div nz-col nzSpan="12">
@@ -314,18 +346,28 @@
                 <tr>
                   <th nzWidth="20px">序号</th>
                   <th nzWidth="20px">序列号</th>
-                  <!-- <th nzWidth="20px">添加时间</th> -->
+                  <th nzWidth="20px">已激活次数</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let data of consumerTable.data; let i=index;">
                   <td>{{i+1}}</td>
                   <td>{{data.sn}}</td>
-                  <!-- <td>{{data.appChannelName}}</td> -->
+                  <td>{{data.count}}</td>
                 </tr>
               </tbody>
             </nz-table>
             <ng-template #modifySerialModalFooter>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="3">客户ID：</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{serialData.appChannel}}</div>
+                <div nz-col nzSpan="2">客户名称：</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{serialData.appChannelName}}</div>
+                <div nz-col nzSpan="3">序列号数量：</div>
+                <div nz-col nzSpan="1" class="left_alignment">{{dataSerial.length}}</div>
+                <div nz-col nzSpan="2">激活次数：</div>
+                <div nz-col nzSpan="2" class="left_alignment">{{serialData.maxSnActivation}}</div>
+              </div>
               <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('modifySerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>

@@ -326,7 +326,7 @@ export class JiaoyouComponent implements OnInit {
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
-      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson, skillName: this.dataPay.skillName, skillTypeId: this.dataPay.skillTypeId };
+      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
       payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeMode : null;
       console.log(payInput);

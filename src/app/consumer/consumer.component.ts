@@ -31,7 +31,8 @@ export class ConsumerComponent implements OnInit {
   serialData = {appChannel: ''};
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
-
+  dataMsgArr = [{name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
+  orderTypeData = [];
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -67,10 +68,7 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifySerial') {
-      const serialInput = {
-        sn: this.serialSearchForm.controls['sn'].value,
-        appChannel: this.serialData.appChannel
-      };
+      const serialInput = { sn: this.serialSearchForm.controls['sn'].value, appChannel: this.serialData.appChannel };
       console.log(serialInput);
       this.consumerService.getSerialList(serialInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -80,14 +78,24 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'voucher') {
-      const voucherInput = {
-        appChannel: this.voucherInfo.appChannel,
-      };
+      const voucherInput = { appChannel: this.voucherInfo.appChannel, };
       this.consumerService.getVoucher(voucherInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.voucherInfo = JSON.parse(res.payload);
           console.log(this.voucherInfo);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'orderType') {
+      const orderTypeInput = { appChannel: this.consumerDate.appChannel, };
+      this.consumerService.getOrderType(orderTypeInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.orderTypeData = JSON.parse(res.payload);
+          this.orderTypeData.forEach(item => {
+            this.dataMsgArr.forEach(cell => { item.orderType === cell.value ? cell.checked = true : null; });
+          })
+          console.log(this.orderTypeData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -120,9 +128,11 @@ export class ConsumerComponent implements OnInit {
         maxSnActivation: data.maxSnActivation
       };
       console.log(this.consumerDate);
+      this.loadData('orderType');
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
       this.serialData = data;
+      console.log(this.serialData);
       this.loadData('modifySerial');
       this.visiable.modifySerial = true;
     } else if (flag === 'addSerial') {
@@ -134,7 +144,15 @@ export class ConsumerComponent implements OnInit {
       this.loadData('voucher');
       this.visiable.voucher = true;
     } else if (flag === 'deleteConsumer') {
-      const text = data.target.innerText;
+      const res = data.data;
+      const text = data.event.target.innerText;
+      const activationInput = { id: res.appChannel, available: (text === '作废' ? false : true), phone: res.phone };
+      this.consumerService.modifyAvailable(activationInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('consumer');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
       console.log(text);
     } else if (flag === 'addCallback') {
       this.visiable.addCallback = true;
@@ -148,6 +166,7 @@ export class ConsumerComponent implements OnInit {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = false;
     } else if (flag === 'modifyConsumer') {
+      this.dataMsgArr.map(item => item.checked = false);
       this.visiable.modifyConsumer = false;
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
@@ -205,6 +224,8 @@ export class ConsumerComponent implements OnInit {
   doSave(flag): void {
     if (flag === 'addConsumer') {
       if (!this.verificationAdd('consumer')) { return; }
+      const orderTypes = [];
+      this.dataMsgArr.map(item => item.checked === true ? orderTypes.push(item.value) : null)
       const consumerInput = {
         'appChannel': this.addConsumerForm.controls['appChannel'].value,
         'appChannelName': this.addConsumerForm.controls['appChannelName'].value,
@@ -215,6 +236,7 @@ export class ConsumerComponent implements OnInit {
         'phone': this.addConsumerForm.controls['phone'].value,
         'officially': this.addConsumerForm.controls['officially'].value,
         'maxSnActivation': this.addConsumerForm.controls['officially'].value === true ? '3' : this.addConsumerForm.controls['maxSnActivation'].value,
+        'orderTypes': orderTypes
       };
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -229,6 +251,8 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifyConsumer') {
+      const orderTypes = [];
+      this.dataMsgArr.map(item => item.checked === true ? orderTypes.push(item.value) : null)
       const consumerInput = {
         'flag': 'modify',
         'appChannel': this.consumerDate.appChannel,
@@ -237,6 +261,7 @@ export class ConsumerComponent implements OnInit {
         'phone': this.consumerDate.phone,
         'officially': this.consumerDate.officially,
         'maxSnActivation': this.consumerDate.officially === true ? '3' : this.modifyConsumerForm.controls['maxSnActivation'].value,
+        'orderTypes': orderTypes
       };
       this.addPaymengSms(consumerInput);
     } else if (flag === 'addSerial') {
@@ -273,24 +298,51 @@ export class ConsumerComponent implements OnInit {
     if (data.paymentKey !== '' && data.paymentKey !== undefined) {
       const paymentInput = { id: data.appChannel, paymentKey: data.paymentKey };
       this.consumerService.addPayment(paymentInput).subscribe(res => {
-        if (res.retcode === 0) {
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       });
     }
     if (data.smsSign !== '' && data.smsSign !== undefined) {
       const smsInput = { id: data.appChannel, smsSign: data.smsSign };
       this.consumerService.addSms(smsInput).subscribe(res => {
-        if (res.retcode === 0) {
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       });
+    }
+    if (data.flag === undefined && data.orderTypes &&data.orderTypes.length > 0) { // 新增 禁用短信通知
+      const orderInput = { id: data.appChannel, orderTypes: data.orderTypes };
+      this.consumerService.addOrderType(orderInput).subscribe(res => {
+        if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+      });
+    }
+    if (data.flag === 'modify' && data.orderTypes && data.orderTypes.length > 0) { // 修改 禁用短信通知
+      let addArr = [];
+      const modifyArr = [];
+      this.dataMsgArr.forEach(item => {
+        this.orderTypeData.forEach(cell => {
+          if (item.value === cell.orderType) { modifyArr.push({ id: cell.id, usable: !item.checked }); }
+        })
+      })
+      addArr = this.array_diff(this.dataMsgArr.filter(item => item.checked === true).map(item => item.value), this.orderTypeData.map(item => item.orderType));
+      console.log(modifyArr);
+      console.log(addArr);
+      if (modifyArr.length > 0) { // 变化的
+        this.consumerService.modifyOrderType(JSON.stringify(modifyArr)).subscribe(res => {
+          if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        });
+      }
+      if (addArr.length > 0) {  // 剩下多出来的新增
+        const orderInput = { id: data.appChannel, orderTypes: addArr };
+        this.consumerService.addOrderType(orderInput).subscribe(res => {
+          if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
+        });
+      }
     }
     if (data.flag === 'modify' && data.officially === false && data.maxSnActivation !== '') { // 修改 且 测试key 且 最大值不为空
       const activationInput = { id: data.appChannel, maxSnActivation: data.maxSnActivation, phone: data.phone };
       this.consumerService.modifyActivation(activationInput).subscribe(res => {
-        if (res.retcode === 0) {
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        if (res.retcode !== 0) this.modalService.error({ nzTitle: '提示', nzContent: res.message });
       });
     }
+    this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
     this.loadData('consumer');
     this.hideModal('modifyConsumer');
   }
@@ -300,6 +352,11 @@ export class ConsumerComponent implements OnInit {
     if (flag === 'callback') {
       // if (result === []) { this.beginBaseInfoDate = ''; this.endBaseInfoDate = ''; return; }
       // if (result[0] !== '' || result[1] !== '') { this.beginBaseInfoDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endBaseInfoDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
+    } else if (flag === 'msgArr') {
+      const checked = result.checked;
+      const value = result.value;
+      console.log(checked);
+      console.log(value);
     }
   }
 
@@ -324,6 +381,14 @@ export class ConsumerComponent implements OnInit {
       evt.target.value="" // 清空
     };
     reader.readAsBinaryString(target.files[0]);
+  }
+
+  // 保留两个数组公用元素
+  array_diff(a, b) {
+    for(var i=0; i<b.length; i++) {
+      for(var j=0; j<a.length; j++) { if(a[j]==b[i]){ a.splice(j,1); j=j-1; } }
+    }
+    return a;
   }
 
 }

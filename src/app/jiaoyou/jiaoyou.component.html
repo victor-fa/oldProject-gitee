@@ -330,15 +330,13 @@ x（分钟）,y（元）
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">付费技能ID<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <nz-radio-group [(ngModel)]="dataPay.skillTypeId">
-                  <label nz-col nzSpan="11" nz-radio *ngFor="let data of skillData;" [nzValue]="data.skillTypeId" (click)="onChange(data, 'skillMode')">{{data.skillTypeId}}</label>
-                </nz-radio-group>
+                {{dataPay.skillTypeId}}
               </div>
             </div>
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">付费技能名称<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <input nz-input [(ngModel)]="dataPay.skillName" placeholder="请输入付费技能名称" nzSize="default">
+                {{dataPay.skillName}}
               </div>
             </div>
             <div nz-row class="search_panel">

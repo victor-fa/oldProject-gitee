@@ -62,10 +62,45 @@ export class ConsumerService extends AppServiceBase {
       .post<IResponse<any>>(url, data.keys, this.options);
   }
 
+  /** 获取所有列表 */
+  getOrderType(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.sms}?appChannel=${data.appChannel}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 添加orderType */
+  addOrderType(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.sms}`;
+    const body = `appChannel=${data.id}&orderTypes=${data.orderTypes}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 修改orderType */
+  modifyOrderType(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.sms}`;
+    const body = `customerChannelSmsList=${data}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .put<IResponse<any>>(url, data, this.options);
+  }
+
   /** 修改激活次数 */
   modifyActivation(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
     const body = `appChannel=${data.id}&maxSnActivation=${data.maxSnActivation}&phone=${data.phone}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .put<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 修改作废标记 */
+  modifyAvailable(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
+    const body = `available=${data.available}&phone=${data.phone}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
