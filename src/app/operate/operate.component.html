@@ -371,7 +371,7 @@
         </nz-tab>
 
 
-        <nz-tab [nzTitle]="whiteListTemplate" (nzClick)="changePanel('whiteList')" *ngIf="commonService.haveMenuPermission('children', '订单状态设置')">
+        <nz-tab [nzTitle]="whiteListTemplate" (nzClick)="changePanel('whiteList')" *ngIf="commonService.haveMenuPermission('children', '生产环境白名单')">
           <ng-template #whiteListTemplate><i class="anticon anticon-file-text"></i>白名单管理</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>

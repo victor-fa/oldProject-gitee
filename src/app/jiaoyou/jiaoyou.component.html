@@ -4,7 +4,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
 
-        <nz-tab [nzTitle]="freeTemplate" (nzClick)="changePanel('free')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+        <nz-tab [nzTitle]="freeTemplate" (nzClick)="changePanel('free')" *ngIf="commonService.haveMenuPermission('children', '免费配置')">
           <ng-template #freeTemplate><i class="anticon anticon-pay-circle-o"></i>免费配置</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchFreeForm">
@@ -199,7 +199,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="payTemplate" (nzClick)="changePanel('pay')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+        <nz-tab [nzTitle]="payTemplate" (nzClick)="changePanel('pay')" *ngIf="commonService.haveMenuPermission('children', '付费配置')">
           <ng-template #payTemplate><i class="anticon anticon-pay-circle"></i>付费配置</ng-template>
           <div nz-row class="search_panel">
             <form [formGroup]="searchPayForm">

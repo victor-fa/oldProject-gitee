@@ -4,7 +4,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large">
 
-        <nz-tab [nzTitle]="taggingPlatformTemplate" (nzClick)="changePanel('taggingPlatform')" *ngIf="commonService.haveMenuPermission('children', '人工标注')">
+        <nz-tab [nzTitle]="taggingPlatformTemplate" (nzClick)="changePanel('taggingPlatform')" *ngIf="commonService.haveMenuPermission('children', '文档中心')">
           <ng-template #taggingPlatformTemplate><i class="anticon anticon-code-o"></i>技术文档</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
@@ -187,7 +187,7 @@
         </nz-tab>
 
 
-        <nz-tab [nzTitle]="userTemplate" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+        <nz-tab [nzTitle]="userTemplate" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '客户账号')">
           <ng-template #userTemplate><i class="anticon anticon-user"></i>客户账号</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="21"></div>
