@@ -14,6 +14,7 @@ import { ProtocolService } from '../public/service/protocol.service';
 import { ShareService } from '../public/service/share.service';
 import { FlowpointService } from '../public/service/flowpoint.service';
 import { QqCustomerService } from '../public/service/qqCustomer.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 registerLocaleData(zh);
 
@@ -38,7 +39,7 @@ export class AppVersionComponent implements OnInit {
   qqCustomerForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
-  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': '' };
+  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': '' };
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   dataQQCustomer = { 'contact_qq': '' };
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
@@ -73,6 +74,7 @@ export class AppVersionComponent implements OnInit {
   limitModelChange = 1;
   isSpinning = false;
   flowPointBotName = '';
+  tempContent;
 
   constructor(
     private fb: FormBuilder,
@@ -90,6 +92,7 @@ export class AppVersionComponent implements OnInit {
     private shareService: ShareService,
     private msg: NzMessageService,
     private http: HttpClient,
+    private sanitize: DomSanitizer,
   ) {
     this.commonService.nav[1].active = true;
     this._initForm();
@@ -266,7 +269,7 @@ export class AppVersionComponent implements OnInit {
     if (flag === 'content') {
       this.visiable.addContent = true;
       this.contentDate = {  // 清空
-        'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '', 'dataContent': ''
+        'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': ''
       };
     } else if (flag === 'guide') {
       this.visiable.addGuide = true;
@@ -445,6 +448,10 @@ export class AppVersionComponent implements OnInit {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' }); result = false;
     }
     return result;
+  }
+
+  xxx() {
+    this.tempContent = this.sanitize.bypassSecurityTrustHtml(this.contentDate.description.replace(/\n/g, '<br/>'));
   }
 
   // 新增操作

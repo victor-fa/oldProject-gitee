@@ -48,96 +48,116 @@
           </div>
 
           <!-- 弹框 —— 新增 —— 新增内容 -->
-          <nz-modal [(nzVisible)]="visiable.addContent" nzWidth="750" nzTitle="新增APP版本" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('content')" nzMaskClosable="false">
-            <form [formGroup]="addContentForm">
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
-                <div nz-col nzSpan="12" class="span_down">
-                  {{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : 'null'}}
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+          <nz-modal [(nzVisible)]="visiable.addContent" nzWidth="1150" nzTitle="新增APP版本" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('content')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="16">
+                <form [formGroup]="addContentForm">
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
+                    <div nz-col nzSpan="12" class="span_down">
+                      {{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : 'null'}}
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*系统类型：</div>
-                <div nz-col nzSpan="12">
-                  <nz-select [ngModel]="contentDate.system_symbol" formControlName="system_symbol">
-                    <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                    <nz-option required [nzLabel]="'安卓'" [nzValue]="'ANDROID'"></nz-option>
-                    <nz-option required [nzLabel]="'IOS'" [nzValue]="'IOS'"></nz-option>
-                  </nz-select>
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*系统类型：</div>
+                    <div nz-col nzSpan="12">
+                      <nz-select [ngModel]="contentDate.system_symbol" formControlName="system_symbol">
+                        <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
+                        <nz-option required [nzLabel]="'安卓'" [nzValue]="'ANDROID'"></nz-option>
+                        <nz-option required [nzLabel]="'IOS'" [nzValue]="'IOS'"></nz-option>
+                      </nz-select>
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*标题：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="title" [(ngModel)]="contentDate.title" placeholder="请输入标题" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*标题：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="title" [(ngModel)]="contentDate.title" placeholder="请输入标题" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*副标题：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="sub_title" [(ngModel)]="contentDate.sub_title" placeholder="请输入副标题" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*副标题：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="sub_title" [(ngModel)]="contentDate.sub_title" placeholder="请输入副标题" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*版本：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="version" [(ngModel)]="contentDate.version" placeholder="请输入版本" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*版本：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="version" [(ngModel)]="contentDate.version" placeholder="请输入版本" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*允许的最低版本：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="version_allowed" [(ngModel)]="contentDate.version_allowed" placeholder="请输入允许的最低版本" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*允许的最低版本：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="version_allowed" [(ngModel)]="contentDate.version_allowed" placeholder="请输入允许的最低版本" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*下载链接：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="file" [(ngModel)]="contentDate.file"
-                    placeholder="请输入下载链接" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*下载链接：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="file" [(ngModel)]="contentDate.file"
+                        placeholder="请输入下载链接" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*文件大小：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input formControlName="size" [(ngModel)]="contentDate.size"
-                    placeholder="请输入文件大小(单位：kb)" nzSize="default">
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*文件大小：</div>
+                    <div nz-col nzSpan="12">
+                      <input nz-input formControlName="size" [(ngModel)]="contentDate.size"
+                        placeholder="请输入文件大小(单位：kb)" nzSize="default">
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-              <div nz-row class="search_panel">
-                <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="5" class="span_down right_alignment">*更新详情：</div>
-                <div nz-col nzSpan="12">
-                  <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情"></textarea>
-                </div>
-                <div nz-col nzSpan="4"></div>
-              </div>
+                  <div nz-row class="search_panel">
+                    <div nz-col nzSpan="3"></div>
+                    <div nz-col nzSpan="5" class="span_down right_alignment">*更新详情：</div>
+                    <div nz-col nzSpan="12">
+                      <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情" (ngModelChange)="xxx()"></textarea>
+                    </div>
+                    <div nz-col nzSpan="4"></div>
+                  </div>
 
-            </form>
+                </form>
+              </div>
+              <div nz-col nzSpan="6" class="content_p">
+                <div nz-row class="search_panel top_p">
+                  <div nz-col nzSpan="24" class="span_down"><b>小悟新版本{{contentDate.version}}</b><br>{{contentDate.title}}</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24" class="span_down title_p">最新版本：V{{contentDate.version}}<br>更新大小：{{(contentDate.size/1024).toFixed(2)}} MB<br>更新内容：</div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24" class="span_down title_p" [innerHTML]="tempContent"></div>
+                </div>
+                <div nz-row class="search_panel">
+                  <div nz-col nzSpan="24" class="span_down">
+                    <button nz-button nzType="primary" class="bottom_but">立即更新</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- 弹框和底部定制 -->
             <ng-template #addContentModalFooter>
               <button nz-button nzType="primary" (click)="doSave('content')"><i class="anticon anticon-save"></i>保存</button>

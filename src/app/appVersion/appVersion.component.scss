@@ -27,6 +27,26 @@
 .image-panel {
   width: 350px;
 }
+.content_p {
+  padding-bottom: 10px;
+  border: 1px solid #D7D7D7;
+  border-radius: 4px;
+  .top_p {
+    background-color: #FFCC00;
+    padding: 15px;
+  }
+  .title_p {
+    line-height: 20px!important;
+    padding-left: 15px;
+  }
+  .bottom_but {
+    background-color: #FFCC00;
+    border-color: #FFCC00;
+    width: 88%;
+    color: #000000;
+    margin: 0 16px;
+  }
+}
 
 .search_panel {
   margin-bottom: 10px;
