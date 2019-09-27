@@ -19,6 +19,7 @@ registerLocaleData(zh);
 export class ConsumerComponent implements OnInit {
 
   visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, };
+  currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
@@ -33,6 +34,8 @@ export class ConsumerComponent implements OnInit {
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
   orderTypeData = [];
+  dataCallback = [];
+  callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -98,6 +101,15 @@ export class ConsumerComponent implements OnInit {
           console.log(this.orderTypeData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'callback') {
+      const orderTypeInput = { appChannel: this.consumerDate.appChannel, };
+      this.consumerService.getCallback(orderTypeInput).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataCallback = JSON.parse(res.payload).content;
+          console.log(this.dataCallback);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -132,7 +144,6 @@ export class ConsumerComponent implements OnInit {
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
       this.serialData = data;
-      console.log(this.serialData);
       this.loadData('modifySerial');
       this.visiable.modifySerial = true;
     } else if (flag === 'addSerial') {
@@ -153,11 +164,14 @@ export class ConsumerComponent implements OnInit {
           this.loadData('consumer');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-      console.log(text);
     } else if (flag === 'addCallback') {
       this.visiable.addCallback = true;
     } else if (flag === 'modifyCallback') {
+      this.callbackData = data;
+      console.log(this.callbackData);
       this.visiable.modifyCallback = true;
+    } else if (flag === 'deleteCallback') {
+      this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(data, flag) });
     }
   }
 
@@ -176,11 +190,13 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'explain') {
       this.visiable.explain = false;
     } else if (flag === 'voucher') {
-      this.voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
+      this.voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '' };
       this.visiable.voucher = false;
     } else if (flag === 'addCallback') {
+      this.callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
       this.visiable.addCallback = false;
     } else if (flag === 'modifyCallback') {
+      this.callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
       this.visiable.modifyCallback = false;
     }
   }
@@ -282,6 +298,37 @@ export class ConsumerComponent implements OnInit {
       const str = `【appChannel/appKey】${this.voucherInfo.appChannel}\n【appSecret】${this.voucherInfo.appSecret}\n【aesKey】${this.voucherInfo.aesKey}\n【aesIv】${this.voucherInfo.aesIv}\n【privateKey】${this.voucherInfo.privateKey}`;
       this._clipboardService.copyFromContent(str);
       this.notification.success( '提示', '复制成功', { nzStyle: { color : 'green' } });
+    } else if (flag === 'addCallback') {
+      this.consumerService.addCallback(this.callbackData).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('callback');
+          this.hideModal('addCallback');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyCallback') {
+      const callbackInput = {id: this.callbackData.id, callbackUrl: this.callbackData.callbackUrl};
+      this.consumerService.modifyCallback(callbackInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('callback');
+          this.hideModal('modifyCallback');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    }
+  }
+
+  // 删除
+  doDelete(id, flag) {
+    if (flag === 'deleteCallback') {
+      this.consumerService.deleteCallback(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '回调地址', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('callback');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -389,6 +436,14 @@ export class ConsumerComponent implements OnInit {
       for(var j=0; j<a.length; j++) { if(a[j]==b[i]){ a.splice(j,1); j=j-1; } }
     }
     return a;
+  }
+
+  // 切换面板
+  changePanel(flag): void {
+    if (flag !== this.currentPanel) {this.loadData(flag); }
+    this.currentPanel = flag;
+    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : '', op_name: '访问' };
+    this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
 }

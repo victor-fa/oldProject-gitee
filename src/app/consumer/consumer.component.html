@@ -4,7 +4,7 @@
     <nz-card-tab>
       <nz-tabset nzSize="large">
 
-        <nz-tab [nzTitle]="consumerTemplate" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
+        <nz-tab [nzTitle]="consumerTemplate" (nzClick)="changePanel('consumer')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #consumerTemplate><i class="anticon anticon-team"></i>客户管理</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2">
@@ -420,7 +420,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="callbackTemplate" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
+        <nz-tab [nzTitle]="callbackTemplate" (nzClick)="changePanel('callback')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #callbackTemplate><i class="anticon anticon-rollback"></i>回调地址</ng-template>
           <div nz-row class="search_panel">
             <div nz-col nzSpan="2" class="span_down right_alignment">
@@ -448,7 +448,7 @@
               <button nz-button nzType="primary" (click)="showModal('addCallback', data)"><i class="anticon anticon-file-add"></i>新增回调地址</button>
             </div>
           </div>
-          <nz-table #callbackTable [nzData]="dataCallback" *ngIf="!isSpinning" [nzScroll]="{x:'1600px'}">
+          <nz-table #callbackTable [nzData]="dataCallback" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -463,12 +463,12 @@
               <tr *ngFor="let data of callbackTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.appChannel}}</td>
-                <td>{{data.appChannelName}}</td>
-                <td>{{data.appKey}}</td>
-                <td>{{data.appSecret}}</td>
+                <td>{{data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'PAIR_ORDER' ? '恋爱运势' : data.orderType === 'FORTUNE_ORDER' ? '月运势' : data.orderType === 'MUSIC_ORDER' ? '付费音频' : data.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}</td>
+                <td>{{data.callbackUrl}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifyCallback', data)" style="margin-left: 10px"><i class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteCallback', $event)"><i class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyCallback', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteCallback', data.id)"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -477,31 +477,48 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="visiable.addCallback" nzTitle="新增回调地址" [nzFooter]="addCallbackModalFooter" (nzOnCancel)="hideModal('addCallback')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addCallback" nzTitle="新增回调地址" nzWidth="850" [nzFooter]="addCallbackModalFooter" (nzOnCancel)="hideModal('addCallback')" nzMaskClosable="false">
             <div nz-row class="search_panel">
               <div nz-col nzSpan="5" class="span_down right_alignment">
                 客户ID：
               </div>
               <div nz-col nzSpan="19">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
-                </nz-select>
+                <ng-container *ngIf="dataConsumer.length === 0">
+                  没有新客户ID需要配置
+                </ng-container>
+                <ng-container *ngIf="dataConsumer.length > 0">
+                  <nz-radio-group [(ngModel)]="callbackData.appChannel">
+                    <ng-container *ngFor="let data of dataConsumer;">
+                      <label nz-col nzSpan="11" nz-radio *ngIf="data.available === true" [nzValue]="data.appChannel">{{data.appChannel}}</label>
+                    </ng-container>
+                  </nz-radio-group>
+                </ng-container>
               </div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="5" class="span_down right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="19">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
-                </nz-select>
+                <nz-radio-group [(ngModel)]="callbackData.orderType">
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'FLIGHT_RETURN_ORDER'">机票</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'TRAIN_ORDER'">火车</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'HOTEL_ORDER'">酒店</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'TAXI_ORDER'">打车</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'EXPRESS_ORDER'">闪送</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'PHONE_CHARGE_ORDER'">充话费</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'MOVIE_ORDER'">电影票</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'MUSIC_ORDER'">付费音频</label>
+                  <label nz-col nzSpan="5" nz-radio [nzValue]="'JIAOYOU_GAME_ORDER'">交游天下游戏</label>
+                </nz-radio-group>
               </div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="5" class="span_down right_alignment">
                 回调地址：
               </div>
               <div nz-col nzSpan="19">
-                <input nz-input placeholder="请输入回调地址" nzSize="default">
+                <input nz-input placeholder="请输入回调地址" [(ngModel)]="callbackData.callbackUrl" nzSize="default">
               </div>
             </div>
             <ng-template #addCallbackModalFooter>
@@ -512,29 +529,27 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyCallback" nzTitle="修改回调地址" [nzFooter]="modifyCallbackModalFooter" (nzOnCancel)="hideModal('modifyCallback')" nzMaskClosable="false">
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="5" class="span_down right_alignment">
+              <div nz-col nzSpan="5" class="right_alignment">
                 客户ID：
               </div>
               <div nz-col nzSpan="19">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
-                </nz-select>
+                {{callbackData.appChannel}}
               </div>
-              <div nz-col nzSpan="5" class="span_down right_alignment">
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="5" class="right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="19">
-                <nz-select [ngModel]="''">
-                  <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                  <nz-option required [nzLabel]="'xxx'" [nzValue]="'xxx'"></nz-option>
-                </nz-select>
+                {{callbackData.orderType === 'TRAIN_ORDER' ? '火车' : callbackData.orderType === 'FLIGHT_ORDER' || callbackData.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : callbackData.orderType === 'HOTEL_ORDER' ? '酒店' : callbackData.orderType === 'TAXI_ORDER' ? '打车' : callbackData.orderType === 'EXPRESS_ORDER' ? '闪送' : callbackData.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : callbackData.orderType === 'MOVIE_ORDER' ? '电影票' : callbackData.orderType === 'PAIR_ORDER' ? '恋爱运势' : callbackData.orderType === 'FORTUNE_ORDER' ? '月运势' : callbackData.orderType === 'MUSIC_ORDER' ? '付费音频' : callbackData.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}
               </div>
-              <div nz-col nzSpan="5" class="span_down right_alignment">
+            </div>
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="5" class="right_alignment">
                 回调地址：
               </div>
               <div nz-col nzSpan="19">
-                <input nz-input placeholder="请输入回调地址" nzSize="default">
+                <input nz-input placeholder="请输入回调地址" [(ngModel)]="callbackData.callbackUrl" nzSize="default">
               </div>
             </div>
             <ng-template #modifyCallbackModalFooter>

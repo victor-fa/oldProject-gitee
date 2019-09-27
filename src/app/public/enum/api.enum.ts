@@ -82,6 +82,8 @@ export enum consumerApiUrls {
   voucher = '/channel/account',
   /** 客户管理 短信通知 */
   sms = '/channel/sms',
+  /** 客户管理 短信通知 */
+  callback = '/callback/url',
 }
 
 /** 运维后台 */

@@ -28,6 +28,11 @@
   color: burlywood;
 }
 
+// 全局的radio单选调整高度
+.ant-radio-wrapper {
+  line-height: 30px;
+}
+
 .ant-table-footer {
   background-color: #fff!important;
   padding: 5px 0px 0px 5px!important;

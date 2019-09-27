@@ -123,4 +123,36 @@ export class ConsumerService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取所有列表 */
+  getCallback(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}/list?size=999`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 添加 */
+  addCallback(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 修改 */
+  modifyCallback(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .put<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 删除 */
+  deleteCallback(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}/${data}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
 }
