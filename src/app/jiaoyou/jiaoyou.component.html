@@ -310,13 +310,20 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <textarea rows="10" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位
 
 例如：
 120,5
 360,10
+
+例如
+7200分钟 == 5天卡
+9000分钟 == 6天6小时卡
+9030分钟 == 6天6小时30分钟卡
+43200分钟 == 月卡
+10080 == 周卡
                 "></textarea>
               </div>
             </div>
@@ -366,13 +373,20 @@ x（分钟）,y（元）
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <textarea rows="10" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位
 
 例如：
 120,5
 360,10
+
+例如
+7200分钟 == 5天卡
+9000分钟 == 6天6小时卡
+9030分钟 == 6天6小时30分钟卡
+43200分钟 == 月卡
+10080 == 周卡
                 "></textarea>
               </div>
             </div>

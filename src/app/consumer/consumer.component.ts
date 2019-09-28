@@ -116,7 +116,7 @@ export class ConsumerComponent implements OnInit {
   private _initForm(): void {
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
     this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''] });
-    this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''] });
+    this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''], officially: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
   }
 

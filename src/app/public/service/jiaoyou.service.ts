@@ -102,8 +102,8 @@ export class JiaoyouService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getPayChannelList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${jiaoyouApiUrls.payList}/channel-pay`;
+  getPayChannelList(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${jiaoyouApiUrls.payList}/channel-pay?skillTypeId=${data}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

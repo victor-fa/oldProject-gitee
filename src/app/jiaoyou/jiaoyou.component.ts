@@ -125,7 +125,8 @@ export class JiaoyouComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'payChannel') {
-      this.jiaoyouService.getPayChannelList().subscribe(res => {
+      this.checkPayOptions.length = 0;
+      this.jiaoyouService.getPayChannelList(this.dataPay.skillTypeId).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           console.log(JSON.parse(res.payload));
@@ -161,7 +162,6 @@ export class JiaoyouComponent implements OnInit {
       this.visiable.editFree = true;
     } else if (flag === 'addPay') {
       this.loadData('skill');
-      this.loadData('payChannel');
       this.visiable.addPay = true;
     } else if (flag === 'editPay') {
       this.dataPay = data;
@@ -394,6 +394,7 @@ export class JiaoyouComponent implements OnInit {
       this.dataPay.freeMode = result.freeMode;
     } else if (flag === 'skillMode') {
       this.dataPay.skillTypeId = result.skillTypeId;
+      this.loadData('payChannel');
     }
   }
 
