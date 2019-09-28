@@ -11,8 +11,7 @@ import { CommonService } from './common.service';
 })
 
 export class PlatformService extends AppServiceBase {
-  baseUrl = this.commonService.documentRouteUrl; // 测试
-  // baseUrl = this.commonService.baseUrl.  substring(0, this.commonService.baseUrl.indexOf('/admin'));  // 部署
+  baseUrl = this.commonService.currentServer.indexOf('account') > -1 ? this.commonService.documentRouteUrl : this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'));
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,

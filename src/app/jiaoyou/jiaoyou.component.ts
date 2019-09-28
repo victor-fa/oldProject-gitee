@@ -144,7 +144,7 @@ export class JiaoyouComponent implements OnInit {
       this.jiaoyouService.getSkillList(skillInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.skillData = JSON.parse(res.payload);
+          this.skillData = JSON.parse(res.payload).reverse();
           console.log(this.skillData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
