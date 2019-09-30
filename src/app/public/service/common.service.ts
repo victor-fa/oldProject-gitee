@@ -1,7 +1,5 @@
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AppServiceBase } from '../base/app-service.base';
 import { IResponse } from '../model/response.model';
@@ -36,7 +34,6 @@ export class CommonService extends AppServiceBase {
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
 
   constructor(
-    private _router: Router,
     private httpClient: HttpClient,
     private injector: Injector,
   ) {

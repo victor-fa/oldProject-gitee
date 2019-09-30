@@ -56,7 +56,7 @@
                     <div nz-col nzSpan="3"></div>
                     <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
                     <div nz-col nzSpan="12" class="span_down">
-                      {{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : 'null'}}
+                      {{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : currentChanelId === 'SGTC' ? '三基交游' : 'null'}}
                     </div>
                     <div nz-col nzSpan="4"></div>
                   </div>
@@ -65,11 +65,10 @@
                     <div nz-col nzSpan="3"></div>
                     <div nz-col nzSpan="5" class="span_down right_alignment">*系统类型：</div>
                     <div nz-col nzSpan="12">
-                      <nz-select [ngModel]="contentDate.system_symbol" formControlName="system_symbol">
-                        <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
-                        <nz-option required [nzLabel]="'安卓'" [nzValue]="'ANDROID'"></nz-option>
-                        <nz-option required [nzLabel]="'IOS'" [nzValue]="'IOS'"></nz-option>
-                      </nz-select>
+                      <nz-radio-group [(ngModel)]="contentDate.system_symbol" formControlName="system_symbol">
+                        <label nz-radio nzValue="ANDROID">安卓</label>
+                        <label nz-radio nzValue="IOS">IOS</label>
+                      </nz-radio-group>
                     </div>
                     <div nz-col nzSpan="4"></div>
                   </div>
@@ -134,7 +133,7 @@
                     <div nz-col nzSpan="3"></div>
                     <div nz-col nzSpan="5" class="span_down right_alignment">*更新详情：</div>
                     <div nz-col nzSpan="12">
-                      <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情" (ngModelChange)="xxx()"></textarea>
+                      <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情" (ngModelChange)="onChange('description')"></textarea>
                     </div>
                     <div nz-col nzSpan="4"></div>
                   </div>
@@ -143,7 +142,7 @@
               </div>
               <div nz-col nzSpan="6" class="content_p">
                 <div nz-row class="search_panel top_p">
-                  <div nz-col nzSpan="24" class="span_down"><b>小悟新版本{{contentDate.version}}</b><br>{{contentDate.title}}</div>
+                  <div nz-col nzSpan="24" class="span_down"><b>{{currentChanelId === 'XIAOWU' ? '小悟' : currentChanelId === 'LENZE' ? '伦茨' : currentChanelId === 'WATER_WORLD_6' ? '沃特沃德6' : currentChanelId === 'SGTC' ? '三基交游' : 'null'}}新版本{{contentDate.version}}</b><br>{{contentDate.title}}</div>
                 </div>
                 <div nz-row class="search_panel">
                   <div nz-col nzSpan="24" class="span_down title_p">最新版本：V{{contentDate.version}}<br>更新大小：{{(contentDate.size/1024).toFixed(2)}} MB<br>更新内容：</div>

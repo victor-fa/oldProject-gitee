@@ -24,6 +24,7 @@ export class LeftNavComponent implements OnInit {
       } else if (item === 'LENZE') {
         this.appHeaderAllow.push({ id: item, name: '听听同学' });
         this.appHeaderAllow.push({ id: 'WATER_WORLD_6', name: '沃特沃德6' });
+        this.appHeaderAllow.push({ id: 'SGTC', name: '三基交游' });
       }
       //  else if (item === 'WATER_WORLD_6') {
       //   this.appHeaderAllow.push({ id: item, name: '沃特沃德6' });

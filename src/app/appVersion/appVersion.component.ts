@@ -39,7 +39,7 @@ export class AppVersionComponent implements OnInit {
   qqCustomerForm: FormGroup;
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
-  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': '' };
+  contentDate = { 'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': 'ANDROID', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': '' };
   dataShare = { 'wechatTitle': '', 'wechatContent': '', 'wechatHost': '', 'wechatUrl': '', 'linkTitle': '', 'linkUrl': '', 'linkHost': '', 'h5Title': '', 'h5Content': ''};  // 分享
   dataQQCustomer = { 'contact_qq': '' };
   guideDate = { 'name': '', 'type': 'BEGINNNER_GUIDE', 'guideElements': [], 'id': '', 'jumpType': 'DISABLE', 'appDestinationType': 'PERSONAL_CENTER', 'webUrl': '' };
@@ -269,7 +269,7 @@ export class AppVersionComponent implements OnInit {
     if (flag === 'content') {
       this.visiable.addContent = true;
       this.contentDate = {  // 清空
-        'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': '', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': ''
+        'version': '', 'title': '', 'description': '', 'size': '', 'file': '', 'system_symbol': 'ANDROID', 'version_allowed': '', 'sub_title': '已完成', 'dataContent': ''
       };
     } else if (flag === 'guide') {
       this.visiable.addGuide = true;
@@ -448,10 +448,6 @@ export class AppVersionComponent implements OnInit {
       this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' }); result = false;
     }
     return result;
-  }
-
-  xxx() {
-    this.tempContent = this.sanitize.bypassSecurityTrustHtml(this.contentDate.description.replace(/\n/g, '<br/>'));
   }
 
   // 新增操作
@@ -978,8 +974,10 @@ export class AppVersionComponent implements OnInit {
   }
 
   // 日期插件
-  onChange(result, flag): void {
-
+  onChange(flag): void {
+    if (flag === 'description') {
+      this.tempContent = this.sanitize.bypassSecurityTrustHtml(this.contentDate.description.replace(/\n/g, '<br/>'));
+    }
   }
 
   // 切换面板

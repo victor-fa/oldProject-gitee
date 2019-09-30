@@ -36,6 +36,9 @@ export class ConsumerComponent implements OnInit {
   orderTypeData = [];
   dataCallback = [];
   callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
+  pageNum = {
+    dataConsumerPage: 1,
+  };
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -274,7 +277,7 @@ export class ConsumerComponent implements OnInit {
         'appChannel': this.consumerDate.appChannel,
         'paymentKey': this.modifyConsumerForm.controls['paymentKey'].value,
         'smsSign': this.modifyConsumerForm.controls['smsSign'].value,
-        'phone': this.consumerDate.phone,
+        'phone': (this.consumerDate.phone === undefined ? '15111407234' : this.consumerDate.phone),
         'officially': this.consumerDate.officially,
         'maxSnActivation': this.consumerDate.officially === true ? '3' : this.modifyConsumerForm.controls['maxSnActivation'].value,
         'orderTypes': orderTypes
@@ -292,6 +295,7 @@ export class ConsumerComponent implements OnInit {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.hideModal('addSerial');
+          this.loadData('modifySerial');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'voucher') {

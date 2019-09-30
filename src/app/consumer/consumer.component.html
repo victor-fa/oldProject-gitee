@@ -26,7 +26,7 @@
               <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-user-add"></i>新增客户</button>
             </div>
           </div>
-          <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}">
+          <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}" [(nzPageIndex)]="pageNum.dataConsumerPage">
             <thead>
               <tr>
                 <th>序号</th>
@@ -79,17 +79,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1110" nzTitle="客户管理数据说明" [nzFooter]="explainModalFooter" (nzOnCancel)="hideModal('explain')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
-              <div nz-col nzSpan="24">
-                <img [src]="'assets/images/consumer_explain.png'">
-              </div>
-            </div>
-            <ng-template #explainModalFooter>
-              <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
-            </ng-template>
-          </nz-modal>
-
           <nz-modal [(nzVisible)]="visiable.modifyConsumer" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
             <form [formGroup]="modifyConsumerForm">
               <div nz-row class="search_panel">
@@ -122,6 +111,14 @@
                 </div>
                 <div nz-col nzSpan="12" class="span_down">
                   {{consumerDate.robot}}
+                </div>
+              </div>
+              <div nz-row class="search_panel">
+                <div nz-col nzSpan="8" class="span_down right_alignment">
+                  客户联系人手机号：
+                </div>
+                <div nz-col nzSpan="12" class="span_down">
+                  {{consumerDate.phone}}
                 </div>
               </div>
               <div nz-row class="search_panel">
@@ -334,8 +331,6 @@
                 <div nz-col nzSpan="2">激活次数：</div>
                 <div nz-col nzSpan="2" class="left_alignment">{{serialData.maxSnActivation}}</div>
               </div>
-              <button nz-button nzType="primary" (click)="doSave('modifyConsumer')"><i class="anticon anticon-save"></i>保存</button>
-              <button nz-button nzType="default" (click)="hideModal('modifySerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -394,6 +389,17 @@
             <ng-template #voucherModalFooter>
               <button nz-button nzType="primary" (click)="doSave('voucher')"><i class="anticon anticon-copy"></i>复制</button>
               <button nz-button nzType="default" (click)="hideModal('voucher')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1110" nzTitle="客户管理数据说明" [nzFooter]="explainModalFooter" (nzOnCancel)="hideModal('explain')" nzMaskClosable="false">
+            <div nz-row class="search_panel">
+              <div nz-col nzSpan="24">
+                <img [src]="'assets/images/consumer_explain.png'">
+              </div>
+            </div>
+            <ng-template #explainModalFooter>
+              <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
