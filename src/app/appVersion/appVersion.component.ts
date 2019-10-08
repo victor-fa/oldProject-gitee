@@ -99,7 +99,6 @@ export class AppVersionComponent implements OnInit {
     this._initForm();
     this.currentChanelId = localStorage.getItem('currentAppHeader');
     this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
-    console.log(this.AppHeaderAllow);
     this.config = this.commonService.config;
   }
 

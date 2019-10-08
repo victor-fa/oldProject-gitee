@@ -250,9 +250,9 @@
                 <td>{{data.appChannelId}}</td>
                 <td>{{data.freeMode === 'BY_ACCOUNT' ? '按账号计算' : data.freeMode === 'BY_SKILL' ? '按游戏计算' : ''}}</td>
                 <td>{{data.freeCount}}</td>
-                <td>￥{{data.single}}/次</td>
-                <td nzTitle="{{data.multiple}}" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : 'null'}}</a>
+                <td>￥{{data.single ? data.single : 0}}/次</td>
+                <td nzTitle="{{data.multiple ? data.multiple : '0'}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : '0'}}</a>
                 </td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
@@ -299,9 +299,18 @@
               </div>
             </div>
             <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">是否需要付费<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <nz-radio-group [(ngModel)]="dataPay.needPay">
+                  <label nz-col nzSpan="11" nz-radio [nzValue]="true">需要付费</label>
+                  <label nz-col nzSpan="11" nz-radio [nzValue]="false">不需要付费</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="6" class="span_down">
-                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default">
+                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default" [disabled]="!dataPay.needPay">
               </div>
               <div nz-col nzSpan="1" class="span_down">
                 &nbsp;/ 次
@@ -310,7 +319,7 @@
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input [disabled]="!dataPay.needPay" placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位
 
@@ -362,9 +371,18 @@ x（分钟）,y（元）
               </div>
             </div>
             <div nz-row class="search_panel">
+              <div nz-col nzSpan="4" class="span_down right_alignment">是否需要付费<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20" class="span_down">
+                <nz-radio-group [(ngModel)]="dataPay.needPay">
+                  <label nz-col nzSpan="11" nz-radio [nzValue]="true">需要付费</label>
+                  <label nz-col nzSpan="11" nz-radio [nzValue]="false">不需要付费</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="6" class="span_down">
-                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default">
+                <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default" [disabled]="!dataPay.needPay">
               </div>
               <div nz-col nzSpan="1" class="span_down">
                 &nbsp;/ 次
@@ -373,7 +391,7 @@ x（分钟）,y（元）
             <div nz-row class="search_panel">
               <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
               <div nz-col nzSpan="20" class="span_down">
-                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input placeholder="请输入周期及该周期的价格，输入格式:
+                <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input [disabled]="!dataPay.needPay" placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位
 

@@ -28,7 +28,7 @@ export class JiaoyouComponent implements OnInit {
   freeData = [];
   dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
   payData = [];
-  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
+  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
   skillData = [];
   dataSkill = {skillTypeIds: ''};
   searchFreeForm: FormGroup;
@@ -99,14 +99,17 @@ export class JiaoyouComponent implements OnInit {
           this.isSpinning = false;
           this.payData = JSON.parse(res.payload);
           this.payData.map(item => {
-            item.single = item.skillPrice[0];
-            let result = [];
-            Object.keys(item.skillPrice).forEach(cell => {
-              if (cell !== '0') {
-                result.push(cell + '/' + item.skillPrice[cell]);
-              }
-            })
-            item.multiple = result.join(',');
+            if (item.skillPrice === undefined) {  // 存在skillPrice字段不存在情况
+              item.single = '';
+              item.multiple = '';
+            } else {
+              item.single = item.skillPrice[0];
+              let result = [];
+              Object.keys(item.skillPrice).forEach(cell => {
+                if (cell !== '0') { result.push(cell + '/' + item.skillPrice[cell]); }
+              })
+              item.multiple = result.join(',');
+            }
           });
           console.log(this.payData);
           const operationInput = { op_category: '交游天下', op_page: '付费配置', op_name: '访问' };
@@ -169,12 +172,17 @@ export class JiaoyouComponent implements OnInit {
       this.dataPay.appChannelId = data.appChannelId;
       this.dataPay.tempSkillPrice = data.skillPrice;
       let skillPrice = [];
-      let keys = Object.keys(this.dataPay.skillPrice);
-      this.dataPay.single = this.dataPay.skillPrice[0];
-      keys.forEach(item => {
-        item !== '0' ? skillPrice.push(item + ','+ this.dataPay.skillPrice[item]) : null;
-      });
-      this.dataPay.skillPrice = skillPrice.join('\n');
+      if (this.dataPay.skillPrice) {
+        let keys = Object.keys(this.dataPay.skillPrice);
+        this.dataPay.single = this.dataPay.skillPrice[0];
+        keys.forEach(item => {
+          item !== '0' ? skillPrice.push(item + ','+ this.dataPay.skillPrice[item]) : null;
+        });
+        this.dataPay.skillPrice = skillPrice.join('\n');
+        this.dataPay.needPay = true;
+      } else {
+        this.dataPay.needPay = false;
+      }
       console.log(this.dataPay);
       this.visiable.editPay = true;
     } else if (flag === 'deleteFree' || flag === 'deletePay') {
@@ -233,12 +241,12 @@ export class JiaoyouComponent implements OnInit {
       this.loadData('free');
       this.visiable.editFree = false;
     } else if (flag === 'addPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
       this.checkPayOptions = [];
       this.loadData('pay');
       this.visiable.addPay = false;
     } else if (flag === 'editPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '' };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
       this.loadData('pay');
       this.visiable.editPay = false;
     } else if (flag === 'addSkill') {
@@ -260,8 +268,8 @@ export class JiaoyouComponent implements OnInit {
     if (flag === 'addPay') {
       if (data.skillName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写付费技能名称' }); result = false; }
       if (data.appChannelId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
-      if (this.dataPay.single === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
-      if (this.dataPay.skillPrice === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
+      if (this.dataPay.single === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
+      if (this.dataPay.skillPrice === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
     }
     return result;
   }
@@ -307,6 +315,7 @@ export class JiaoyouComponent implements OnInit {
       }
       const payInput = { appChannelId: this.dataPay.appChannelId, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillName: this.dataPay.skillName, skillPrice: tempJson, skillTypeId: this.dataPay.skillTypeId };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
+      this.dataPay.needPay === false ? delete payInput.skillPrice : null;
       if (!this.verification(flag, payInput)) { return; }
       console.log(payInput);
       this.jiaoyouService.addPay(payInput).subscribe(res => {
@@ -329,6 +338,7 @@ export class JiaoyouComponent implements OnInit {
       const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
       payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeMode : null;
+      this.dataPay.needPay === false ? delete payInput.skillPrice : null;
       console.log(payInput);
       this.jiaoyouService.modifyPay(payInput).subscribe(res => {
         if (res.retcode === 0) {
