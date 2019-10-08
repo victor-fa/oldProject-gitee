@@ -175,11 +175,7 @@ export class UserService extends AppServiceBase {
    * @param input
    */
   login(input: LoginItemInput) {
-    localStorage.setItem('token', '');
-    localStorage.setItem('FullMenuResource', '');
-    localStorage.setItem('FullChildrenResource', '');
-    localStorage.setItem('AppHeaderAllow', '');
-    localStorage.setItem('currentUser', '');
+    localStorage.clear();
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
@@ -187,7 +183,6 @@ export class UserService extends AppServiceBase {
     localStorage.setItem('currentUser', input.userName);
     const that = this;
     let count = 0;  // 因为该方法会被掉4次，所以出此下策只提示一次
-
     result.onreadystatechange = function() {
       if (result.readyState !== 4 || result.status !== 200) {
         count += 1;
@@ -206,7 +201,21 @@ export class UserService extends AppServiceBase {
             if (JSON.parse(resultFull.responseText).payload === '') {
               return;
             }
-            localStorage.setItem('AppHeaderAllow', JSON.stringify(JSON.parse(JSON.parse(resultFull.responseText).payload).grantedPlatform));
+
+            // 获取当前登录用户的渠道信息
+            const resultChannel = new XMLHttpRequest();
+            resultChannel.onreadystatechange = function() {
+              if (resultChannel.responseText !== '') {
+                if (JSON.parse(resultChannel.responseText).payload === '') {
+                  return;
+                }
+                localStorage.setItem('AppHeaderAllow', JSON.stringify(JSON.parse(JSON.parse(resultChannel.responseText).payload)));
+              }
+            };
+            resultChannel.open('GET', `${that.commonService.baseUrl}/app/version/channel`, true);
+            resultChannel.setRequestHeader('Authorization', localStorage.getItem('token'));
+            resultChannel.send();
+
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
               console.log(item);
               if (item.isVisible === true) {

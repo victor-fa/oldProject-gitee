@@ -18,18 +18,15 @@ export class LeftNavComponent implements OnInit {
     private _router: Router,
   ) {
     const tempKey = localStorage.getItem('currentAppHeader'); // 针对当前APP标识做的处理，因为每次切换都会加载组件，所以存放到localstorage（不能放ngInInit）
-    JSON.parse(localStorage.getItem('AppHeaderAllow')).forEach(item => {
-      if (item === 'XIAOWU') {
-        this.appHeaderAllow.push({ id: item, name: '你好小悟' });
-      } else if (item === 'LENZE') {
-        this.appHeaderAllow.push({ id: item, name: '听听同学' });
-        this.appHeaderAllow.push({ id: 'WATER_WORLD_6', name: '沃特沃德6' });
-        this.appHeaderAllow.push({ id: 'SGTC', name: '三基交游' });
-      }
-      //  else if (item === 'WATER_WORLD_6') {
-      //   this.appHeaderAllow.push({ id: item, name: '沃特沃德6' });
-      // }
-    });
+    if (localStorage.getItem('AppHeaderAllow') === '' || localStorage.getItem('AppHeaderAllow') === null) {
+      alert('请重新登录');
+      window.location.href = '/login';
+      return;
+    }
+    const resultJson = JSON.parse(localStorage.getItem('AppHeaderAllow'));
+		for(var item in resultJson) {
+      this.appHeaderAllow.push({ id: item, name: resultJson[item] });
+    }
     if (tempKey === '' || tempKey === null) { localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id); }
     this.currentAppHeader = localStorage.getItem('currentAppHeader'); // 用于清空缓存或者第一次打开后台系统时，拿到的初始值
   }
@@ -85,12 +82,7 @@ export class LeftNavComponent implements OnInit {
 
   // 注销退出
   cancellation(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('token');
-    localStorage.removeItem('FullMenuResource');
-    localStorage.removeItem('FullChildrenResource');
-    localStorage.removeItem('AppHeaderAllow');
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
     window.location.href = '/login';
   }
 

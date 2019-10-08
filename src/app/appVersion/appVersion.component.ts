@@ -70,6 +70,7 @@ export class AppVersionComponent implements OnInit {
   private timerList;
   private timerDetail;
   currentChanelId = '';
+  AppHeaderAllow = {};
   helpType = 'TRAVEL';
   limitModelChange = 1;
   isSpinning = false;
@@ -97,6 +98,8 @@ export class AppVersionComponent implements OnInit {
     this.commonService.nav[1].active = true;
     this._initForm();
     this.currentChanelId = localStorage.getItem('currentAppHeader');
+    this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
+    console.log(this.AppHeaderAllow);
     this.config = this.commonService.config;
   }
 

@@ -162,7 +162,7 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'deleteConsumer') {
       const res = data.data;
       const text = data.event.target.innerText;
-      const activationInput = { id: res.appChannel, available: (text === '作废' ? false : true), phone: res.phone };
+      const activationInput = { id: res.appChannel, available: (text === '作废' ? false : true), phone: res.phone && res.phone !== '' ? res.phone : '15111407234' };
       this.consumerService.modifyAvailable(activationInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
