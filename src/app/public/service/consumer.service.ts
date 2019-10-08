@@ -20,8 +20,9 @@ export class ConsumerService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getConsumerList(): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/list?pageSize=999`;
+  getConsumerList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/list?pageSize=999`;
+    url += data.available && data.available !== '' ? '&available=' + data.available : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
@@ -64,7 +65,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 获取所有列表 */
   getOrderType(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${consumerApiUrls.sms}?appChannel=${data.appChannel}`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.sms}?appChannel=${data.appChannel}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

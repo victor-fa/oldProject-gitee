@@ -18,7 +18,17 @@
                 <input nz-input formControlName="userPhone" placeholder="输入客户ID" nzSize="default">
               </div>
             </form> -->
-            <div nz-col nzSpan="18"></div>
+            <div nz-col nzSpan="3" class="span_down spacing right_alignment">
+              是否作废：
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-select [(ngModel)]="consumerDate.available">
+                <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                <nz-option [nzLabel]="'未作废'" [nzValue]="'true'"></nz-option>
+                <nz-option [nzLabel]="'已作废'" [nzValue]="'false'"></nz-option>
+              </nz-select>
+            </div>
+            <div nz-col nzSpan="11"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
             </div>
@@ -150,7 +160,7 @@
                 <div nz-col nzSpan="8"></div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
-                    <label nz-col nzSpan="7" *ngFor="let data of dataMsgArr" nz-checkbox [(nzChecked)]="data.checked" (click)="onChange(data, 'msgArr')">{{ data.name }}</label>
+                    <label nz-col nzSpan="7" *ngFor="let data of dataMsgArr; let i=index;" nz-checkbox [(nzChecked)]="data.checked" (click)="onChange(data, 'msgArr')">{{ data.name }}</label>
                   </nz-radio-group>
                 </div>
               </div>

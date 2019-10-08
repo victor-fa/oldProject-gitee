@@ -33,6 +33,21 @@
   line-height: 30px;
 }
 
+// 全局的nz-radio-group下的label的margin-left清空
+.ant-checkbox-wrapper+.ant-checkbox-wrapper {
+  margin-left: 0;
+}
+
+// 左右多选输入框靠左排榜
+.ant-checkbox-group {
+  float: left;
+}
+
+// 左右多选输入框靠左排榜
+.ant-checkbox-wrapper {
+  float: left;
+}
+
 .ant-table-footer {
   background-color: #fff!important;
   padding: 5px 0px 0px 5px!important;

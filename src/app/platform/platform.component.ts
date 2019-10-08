@@ -94,7 +94,7 @@ export class PlatformComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'consumer') {
-      this.consumerService.getConsumerList().subscribe(res => {
+      this.consumerService.getConsumerList({}).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataConsumer = JSON.parse(res.payload);
