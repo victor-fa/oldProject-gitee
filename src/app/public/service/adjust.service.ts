@@ -25,7 +25,7 @@ export class AdjustService extends AppServiceBase {
     if (data.begin !== '' && data.begin !== null) {
       url = url + '&begin=' + data.begin + '&end=' + data.end;
     }
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -33,7 +33,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取单个 */
   getAdjust(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -41,7 +41,7 @@ export class AdjustService extends AppServiceBase {
   /** 添加单个 */
   addAdjust(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -49,7 +49,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取操作者列表 */
   getOperaters(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/operaters`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -57,7 +57,7 @@ export class AdjustService extends AppServiceBase {
   /** 获取操作者列表 */
   sendMsg(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${userApiUrls.adjustList}/captcha?operater=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

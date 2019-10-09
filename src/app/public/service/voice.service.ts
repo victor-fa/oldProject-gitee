@@ -22,7 +22,7 @@ export class VoiceService extends AppServiceBase {
   /** 获取所有列表 */
   getVoiceList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.voiceList}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -31,7 +31,7 @@ export class VoiceService extends AppServiceBase {
   updateVoice(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.voiceList}/${data.id}`;
     const body = `supplier=${data.supplier}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

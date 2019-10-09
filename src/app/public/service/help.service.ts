@@ -22,7 +22,7 @@ export class HelpService extends AppServiceBase {
   /** 获取所有列表 */
   getHelpList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +30,7 @@ export class HelpService extends AppServiceBase {
   /** 获取单个 */
   getHelp(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,7 +38,7 @@ export class HelpService extends AppServiceBase {
   /** 删除单个 */
   deleteHelp(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -46,7 +46,7 @@ export class HelpService extends AppServiceBase {
   /** 添加单个 */
   addHelp(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -54,7 +54,7 @@ export class HelpService extends AppServiceBase {
   /** 修改单个 */
   updateHelp(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.helpList}/${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .patch<IResponse<any>>(url, data, this.options);
   }

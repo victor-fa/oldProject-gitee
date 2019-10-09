@@ -26,7 +26,7 @@ export class TaskService extends AppServiceBase {
     url += data.type && data.type !== '' ? '&type=' + data.type : '';
     url += data.createTimeCeil && data.createTimeCeil !== '' ? '&createTimeCeil=' + data.createTimeCeil : '';
     url += data.createTimeFloor && data.createTimeFloor !== '' ? '&createTimeFloor=' + data.createTimeFloor : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -39,7 +39,7 @@ export class TaskService extends AppServiceBase {
     url += data.taskName && data.taskName !== '' ? '&taskName=' + data.taskName : '';
     url += data.finishTimeCeil && data.finishTimeCeil !== '' ? '&finishTimeCeil=' + data.finishTimeCeil : '';
     url += data.finishTimeFloor && data.finishTimeFloor !== '' ? '&finishTimeFloor=' + data.finishTimeFloor : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -47,7 +47,7 @@ export class TaskService extends AppServiceBase {
   /** 获取单个 */
   getTaskCenter(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -55,7 +55,7 @@ export class TaskService extends AppServiceBase {
   /** 删除单个 */
   deleteTaskCenter(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -63,7 +63,7 @@ export class TaskService extends AppServiceBase {
   /** 添加单个 */
   addTaskCenter(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -71,7 +71,7 @@ export class TaskService extends AppServiceBase {
   /** 修改单个 */
   updateTaskCenter(id, data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -80,7 +80,7 @@ export class TaskService extends AppServiceBase {
   updateSwitch(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.taskList}/${data.id}/enabled`;
     const body = `enabled=${data.enabled}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
   }
@@ -88,7 +88,7 @@ export class TaskService extends AppServiceBase {
   /** 获取短信 */
   sendMsg(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.captcha}?operator=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }
@@ -96,7 +96,7 @@ export class TaskService extends AppServiceBase {
   /** 重置任务 */
   resetTaskCenter(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.reset}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }

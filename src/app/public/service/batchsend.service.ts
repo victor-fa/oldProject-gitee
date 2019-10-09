@@ -24,7 +24,7 @@ export class BatchsendService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/list?page=0&pageSize=100`
       + (data.sendStartTime ? ('&sendStartTime=' + data.sendStartTime) : '')
       + (data.sendEndTime ? ('&sendEndTime=' + data.sendEndTime) : '');
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -32,7 +32,7 @@ export class BatchsendService extends AppServiceBase {
   /** 获取单个 */
   getBatchsend(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/info?pushRuleId=${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -40,7 +40,7 @@ export class BatchsendService extends AppServiceBase {
   /** 添加单个 */
   addBatchsend(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -48,7 +48,7 @@ export class BatchsendService extends AppServiceBase {
   /** 添加单个 */
   batchsend(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .patch<IResponse<any>>(url, data, this.options);
   }

@@ -54,7 +54,7 @@ export class UserService extends AppServiceBase {
     url += data.replyStatus && data.replyStatus !== '' ? '&replyStatus=' + data.replyStatus : '';
     url += data.startDate && data.startDate !== '' ? '&startDate=' + data.startDate : '';
     url += data.endDate && data.endDate !== '' ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -64,7 +64,7 @@ export class UserService extends AppServiceBase {
    */
   getFeedBackItem(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}/feedback?&id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -72,7 +72,7 @@ export class UserService extends AppServiceBase {
   // 查询列表
   getProblemInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -80,7 +80,7 @@ export class UserService extends AppServiceBase {
   // 新增
   addProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -88,7 +88,7 @@ export class UserService extends AppServiceBase {
   // 修改
   editProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type?id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -96,7 +96,7 @@ export class UserService extends AppServiceBase {
   // 删除
   deleteProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type?id=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -105,7 +105,7 @@ export class UserService extends AppServiceBase {
   editStatus(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback`;
     const body = `id=${data.id}&status=${data.status}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -113,7 +113,7 @@ export class UserService extends AppServiceBase {
   // 修改
   editReply(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/reply`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -126,7 +126,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -138,7 +138,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -176,6 +176,7 @@ export class UserService extends AppServiceBase {
    */
   login(input: LoginItemInput) {
     localStorage.clear();
+    /* 登录 */
     const result = new XMLHttpRequest();
     const formData = new FormData();
     formData.set('username', input.userName);
@@ -192,41 +193,34 @@ export class UserService extends AppServiceBase {
       if (result.responseText !== '') {
         localStorage.setItem('token', JSON.parse(result.responseText).authorization);
         that.notification.blank('提示', '登录成功！', { nzStyle: { color : 'green' }});
-        // 获取当前登录用户的资源树
+        /* 获取当前登录用户的资源树 */
         const resultFull = new XMLHttpRequest();
         resultFull.onreadystatechange = function() {
           const menuArr = [];
           const childrenArr = [];
           if (resultFull.responseText !== '') {
-            if (JSON.parse(resultFull.responseText).payload === '') {
-              return;
-            }
+            if (JSON.parse(resultFull.responseText).payload === '') { return; }
 
-            // 获取当前登录用户的渠道信息
+            /* 获取当前登录用户的渠道信息 */
             const resultChannel = new XMLHttpRequest();
             resultChannel.onreadystatechange = function() {
               if (resultChannel.responseText !== '') {
-                if (JSON.parse(resultChannel.responseText).payload === '') {
-                  return;
-                }
+                if (JSON.parse(resultChannel.responseText).payload === '') { return; }
                 localStorage.setItem('AppHeaderAllow', JSON.stringify(JSON.parse(JSON.parse(resultChannel.responseText).payload)));
               }
             };
             resultChannel.open('GET', `${that.commonService.baseUrl}/app/version/channel`, true);
             resultChannel.setRequestHeader('Authorization', localStorage.getItem('token'));
             resultChannel.send();
+            /* 获取当前登录用户的渠道信息 */
 
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
               console.log(item);
-              if (item.isVisible === true) {
-                menuArr.push(item.name);
-              }
+              if (item.isVisible === true) { menuArr.push(item.name); }
               if (item.children) {
                 item.children.forEach(cell => {
                   console.log(cell.isVisible);
-                  if (cell.isVisible === true) {
-                    childrenArr.push(cell.name);
-                  }
+                  if (cell.isVisible === true) { childrenArr.push(cell.name); }
                 });
               }
             });
@@ -276,19 +270,21 @@ export class UserService extends AppServiceBase {
         resultFull.setRequestHeader('App-Channel-Id', localStorage.getItem('currentAppHeader'));
         resultFull.setRequestHeader('Authorization', localStorage.getItem('token'));
         resultFull.send();
+        /* 获取当前登录用户的资源树 */
       } else {
         that.modalService.error({ nzTitle: '提示', nzContent: '登录信息有误！' });
       }
     };
     result.open('POST', `${this.commonService.baseUrl}/process_login`, true);
     result.send(formData);
+    /* 登录 */
   }
 
   /** 修改密码 */
   changePass(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/auth/info/pwd/modify`;
     const body = `oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader'), 'Content-Type': 'application/x-www-form-urlencoded' }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId, 'Content-Type': 'application/x-www-form-urlencoded' }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -326,7 +322,7 @@ export class UserService extends AppServiceBase {
    */
   getInvoiceDetail(orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -337,7 +333,7 @@ export class UserService extends AppServiceBase {
   getUserCommonInfo(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/general-info?userId=${data.userId}`;
     url += data.queryType ? '&queryType=' + data.queryType : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -346,7 +342,7 @@ export class UserService extends AppServiceBase {
   getLatestLogin(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}/user/login-history?pageSize=9999`;
     url += data.userId ? '&userId=' + data.userId : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

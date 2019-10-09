@@ -28,7 +28,7 @@ export class CouponService extends AppServiceBase {
     + (searchItem.couponCategory ? '&couponCategory=' + searchItem.couponCategory : '')
     + (searchItem.ctimeStart ? '&ctimeStart=' + searchItem.ctimeStart : '')
     + (searchItem.ctimeEnd ? '&ctimeEnd=' + searchItem.ctimeEnd : '');
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -36,7 +36,7 @@ export class CouponService extends AppServiceBase {
   /** 获取单个 */
   getCoupon(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/info?couponId=${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -44,7 +44,7 @@ export class CouponService extends AppServiceBase {
   /** 删除单个 */
   deleteCoupon(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -52,7 +52,7 @@ export class CouponService extends AppServiceBase {
   /** 添加单个 */
   addCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -60,7 +60,7 @@ export class CouponService extends AppServiceBase {
   /** 修改单个 */
   updateCoupon(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -69,7 +69,7 @@ export class CouponService extends AppServiceBase {
   updateSwitch(id, enabled): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.couponList}/${id}`;
     const body = `enabled=${enabled}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

@@ -71,7 +71,7 @@ export class CustomerComponent implements OnInit {
     private datePipe: DatePipe,
   ) {
     this.commonService.nav[2].active = true;
-    this.currentAppHeader = localStorage.getItem('currentAppHeader');
+    this.currentAppHeader = this.commonService.currentChanelId;
     this._initForm();
   }
 

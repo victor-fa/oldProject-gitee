@@ -14,8 +14,8 @@ export class CommonService extends AppServiceBase {
   currentServer = 'http://account-center-test.chewrobot.com'; // 切换服务器地址为测试
   // currentServer = 'http://xiaowu.centaurstech.com'; // 切换服务器地址为正式
 
-  baseUrl = this.currentServer + '/api/admin';  // chrome浏览器不安全下使用
-  // baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问】
+  // baseUrl = this.currentServer + '/api/admin';  // chrome浏览器不安全下使用
+  baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问】
   // baseUrl = 'http://192.168.1.250:3000/api/admin';  // nginx正式前端地址【局域网访问】
   // baseUrl = 'http://192.168.4.100:5000/api/admin';  // nginx正式前端地址【博士研发部专用访问】
   dataCenterUrl = this.currentServer + ':46004/api';  // 数据中心【衡锐】
@@ -32,12 +32,15 @@ export class CommonService extends AppServiceBase {
   fullChildrenResource = localStorage.getItem('FullChildrenResource') !== '' ? JSON.parse(localStorage.getItem('FullChildrenResource')) : '';
   config = { toolbar: [ ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'script': 'sub'}, { 'script': 'super' }], [{ 'indent': '-1'}, { 'indent': '+1' }], [{ 'direction': 'rtl' }], [{ 'size': ['0.26rem', '0.31rem', '0.37rem', '0.41rem', '0.47rem', '0.52rem'] }], [{ 'header': [1, 2, 3, 4, 5, 6, false] }], [{ 'color': [] }, { 'background': [] }], [{ 'font': [] }], [{ 'align': [] }], ['clean'], ['link', 'video'] ]};
   dateSearch = { 'Today': [new Date(), new Date()], 'This Month': [new Date(), new Date()] };
+  currentChanelId = '';
+  AppHeaderAllow = {};
 
   constructor(
     private httpClient: HttpClient,
     private injector: Injector,
   ) {
     super(injector);
+    this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
   }
 
   append(str: any) { this.list.push(str); }
@@ -83,7 +86,7 @@ export class CommonService extends AppServiceBase {
   /** 记录-管理员操作日志记录接口 */
   updateOperationlog(data): Observable<IResponse<any>> {
     const url = `${this.baseUrl}/audit?op_category=${data.op_category}&op_page=${data.op_page}&op_name=${data.op_name}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }

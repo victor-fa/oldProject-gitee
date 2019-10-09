@@ -27,7 +27,10 @@ export class LeftNavComponent implements OnInit {
 		for(var item in resultJson) {
       this.appHeaderAllow.push({ id: item, name: resultJson[item] });
     }
-    if (tempKey === '' || tempKey === null) { localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id); }
+    if (tempKey === '' || tempKey === null) {
+      localStorage.setItem('currentAppHeader', this.appHeaderAllow[0].id);
+      this.commonService.currentChanelId = this.appHeaderAllow[0].id;
+    }
     this.currentAppHeader = localStorage.getItem('currentAppHeader'); // 用于清空缓存或者第一次打开后台系统时，拿到的初始值
   }
 

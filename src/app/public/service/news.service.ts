@@ -25,7 +25,7 @@ export class NewsService extends AppServiceBase {
     url += data.status && data.status !== null ? '&status=' + data.status : '&status=NEW,MARKED';
     url += data.uploadTimeCeil && data.uploadTimeCeil !== '' ? '&uploadTimeCeil=' + data.uploadTimeCeil : '';
     url += data.uploadTimeFloor && data.uploadTimeFloor !== '' ? '&uploadTimeFloor=' + data.uploadTimeFloor : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -33,7 +33,7 @@ export class NewsService extends AppServiceBase {
   /** 获取所有列表 */
   getTaggingNewsById(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -42,7 +42,7 @@ export class NewsService extends AppServiceBase {
   submitSpeech(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/submit`;
     const body = `id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -50,7 +50,7 @@ export class NewsService extends AppServiceBase {
   /** 提交词集 */
   submitWords(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/words`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .put<IResponse<any>>(url, data.words, this.options);
   }
@@ -62,7 +62,7 @@ export class NewsService extends AppServiceBase {
     url += data.status && data.status !== null ? '&status=' + data.status : '&status=SUBMITTED,CONFIRMED';
     url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
     url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -71,7 +71,7 @@ export class NewsService extends AppServiceBase {
   updateLoading(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/merge`;
     const body = `id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -79,7 +79,7 @@ export class NewsService extends AppServiceBase {
   /** 审核通过 */
   confirmSpeech(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsList}/${data.id}/confirm`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, data.words, this.options);
   }
@@ -92,7 +92,7 @@ export class NewsService extends AppServiceBase {
     url += data.fullMatch && data.fullMatch === true ? '&fullMatch=true' : '';
     // url += data.submitTimeCeil && data.submitTimeCeil !== '' ? '&submitTimeCeil=' + data.submitTimeCeil : '';
     // url += data.submitTimeFloor && data.submitTimeFloor !== '' ? '&submitTimeFloor=' + data.submitTimeFloor : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -100,7 +100,7 @@ export class NewsService extends AppServiceBase {
   /** 获取所有列表 */
   updateNewWords(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .put<IResponse<any>>(url, data.newsWord, this.options);
   }
@@ -111,7 +111,7 @@ export class NewsService extends AppServiceBase {
     url += data.name && data.name !== null ? '&name=' + data.name : '';
     url += data.startDate && data.startDate !== '' ? '&startDate=' + data.startDate : '';
     url += data.endDate && data.endDate !== '' ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -120,7 +120,7 @@ export class NewsService extends AppServiceBase {
   testNewsNER(data): Observable<IResponse<any>> {
     const url = `${this.commonService.nerRouteUrl}${newsApiUrls.nerTest}`;
     let body = `id=${data.id}&nerUrl=${data.nerUrl}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }), };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -128,7 +128,7 @@ export class NewsService extends AppServiceBase {
   /** 新增词条 */
   addWord(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${newsApiUrls.newsWordList}/batch`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -136,7 +136,7 @@ export class NewsService extends AppServiceBase {
   /** 删除词集 */
   deleteManualAudit(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/news/word-sets/${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

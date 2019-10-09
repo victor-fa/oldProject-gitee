@@ -22,7 +22,7 @@ export class WhiteListService extends AppServiceBase {
   /** 获取所有列表 */
   getWhiteList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.whiteListList}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +30,7 @@ export class WhiteListService extends AppServiceBase {
   /** 删除单个 */
   deleteWhiteList(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.whiteListList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -38,7 +38,7 @@ export class WhiteListService extends AppServiceBase {
   /** 添加单个 */
   addWhiteList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.whiteListList}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -46,7 +46,7 @@ export class WhiteListService extends AppServiceBase {
   /** 获取操作者列表 */
   sendMsg(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${operatenApiUrls.sendMsg}?operator=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }

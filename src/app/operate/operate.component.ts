@@ -41,7 +41,6 @@ export class OperateComponent implements OnInit {
   beginOrderStateDate = '';
   endOrderStateDate = '';
   currentPanel = 'taxi';  // 当前面板 默认
-  currentChannelName = '你好小悟';
   currentIOSVoiceId = ''; // 拿到id
   currentANDROIDVoiceId = ''; // 拿到id
   isSaveIOSVoiceButton = false;
@@ -389,7 +388,6 @@ export class OperateComponent implements OnInit {
       this.isSaveIOSVoiceButton = false;
       this.isSaveANDROIDVoiceButton = false;
     }
-    this.currentChannelName = localStorage.getItem('currentAppHeader') === 'XIAOWU' ? '你好小悟' : localStorage.getItem('currentAppHeader') === 'LENZE' ? '听听同学' : '沃特沃德6';
     this.currentPanel = flag;
     const operationInput = { op_category: '运维后台', op_page: flag === 'taxi' ? '打车监控' : flag === 'voice' ? '语音配置' : flag === 'orderState' ? '订单状态监控' : flag === 'orderStateSetting' ? '订单状态设置' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();

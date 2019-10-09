@@ -22,7 +22,7 @@ export class AccountService extends AppServiceBase {
   /** 获取全部角色 */
   getRolesList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.roles}/list?size=999`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +30,7 @@ export class AccountService extends AppServiceBase {
   /** 新增角色 */
   addRoles(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.roles}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -38,7 +38,7 @@ export class AccountService extends AppServiceBase {
   /** 修改角色 */
   modifyRole(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.roles}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -46,7 +46,7 @@ export class AccountService extends AppServiceBase {
   /** 删除角色 */
   deleteRole(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.roles}?id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -64,7 +64,7 @@ export class AccountService extends AppServiceBase {
     const url = `${this.commonService.baseUrl}${accountApiUrls.acc}/list?size=999` + (realname ? '&realname=' + realname : '')
         + (roleId ? (realname ? '&roleId=' : '&roleId=') + roleId : '')
         + (username ? (realname || roleId ? '&username=' : '&username=') + username : '');
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -72,7 +72,7 @@ export class AccountService extends AppServiceBase {
   /** 新增员工 */
   addCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.acc}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -80,7 +80,7 @@ export class AccountService extends AppServiceBase {
   /** 修改员工 */
   modifyCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.acc}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -88,7 +88,7 @@ export class AccountService extends AppServiceBase {
   /** 删除员工 */
   deleteCustomer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.acc}?id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -96,7 +96,7 @@ export class AccountService extends AppServiceBase {
   /** 获取所有资源树 */
   getFullResource(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/common/fullres`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -111,7 +111,7 @@ export class AccountService extends AppServiceBase {
         + (data.realname ? '&realname=' + data.realname : '')
         + (data.role_id ? '&role_id=' + data.role_id : '')
         + (data.username ? '&username=' + data.username : '');
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -119,7 +119,7 @@ export class AccountService extends AppServiceBase {
   /** 查询-导航页配置查询接口 */
   getNavConfigList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${accountApiUrls.navConfig}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -128,7 +128,7 @@ export class AccountService extends AppServiceBase {
   addNavConfigList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}`;
     const body = `name=${data.name}&order=${data.order}&iconFileId=${data.iconFileId}&elements=${data.elements}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
   }
@@ -137,7 +137,7 @@ export class AccountService extends AppServiceBase {
   modifyNavConfigList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${accountApiUrls.navConfig}/${data.id}`;
     const body = `name=${data.name}&order=${data.order}&iconFileId=${data.iconFileId}&elements=${data.elements}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -145,7 +145,7 @@ export class AccountService extends AppServiceBase {
   /** 删除导航页配置 */
   deleteNavConfig(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/shortcut/categories/${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -153,7 +153,7 @@ export class AccountService extends AppServiceBase {
   /** 修改导航页配置状态 */
   updateNavConfigSwitch(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/shortcut/categories/${data.id}/enable`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, this.options);
   }

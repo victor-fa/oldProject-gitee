@@ -22,7 +22,7 @@ export class ProtocolService extends AppServiceBase {
   /** 获取所有列表 */
   getProtocolList(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.protocolList}?title=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -31,7 +31,7 @@ export class ProtocolService extends AppServiceBase {
   addProtocol(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${appVersionApiUrls.protocolList}`;
     const body = `title=${data.title}&content=${data.content}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }

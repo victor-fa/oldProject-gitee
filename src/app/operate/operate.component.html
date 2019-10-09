@@ -137,7 +137,7 @@
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{currentChannelName}}</div>
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9" class="span_down">
               <nz-radio-group [(ngModel)]="voiceIOSRadioValue">
@@ -160,7 +160,7 @@
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
           </div>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{currentChannelName}}</div>
+            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9" class="span_down">
               <nz-radio-group [(ngModel)]="voiceANDROIDRadioValue">

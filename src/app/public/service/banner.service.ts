@@ -22,7 +22,7 @@ export class BannerService extends AppServiceBase {
   /** 获取所有列表 */
   getBannerList(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -30,7 +30,7 @@ export class BannerService extends AppServiceBase {
   /** 获取单个 */
   getBanner(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -38,7 +38,7 @@ export class BannerService extends AppServiceBase {
   /** 删除单个 */
   deleteBanner(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -47,7 +47,7 @@ export class BannerService extends AppServiceBase {
   addBanner(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}`;
     const body = `title=${data.title}&site=${data.site}&enabled=${data.enabled}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -56,7 +56,7 @@ export class BannerService extends AppServiceBase {
   updateBanner(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}/${data.id}`;
     const body = `title=${data.title}&site=${data.site}&jump=${data.jump}&image=${data.image}&order=${data.order}&url=${data.url}&expireTime=${data.expireTime}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }
@@ -65,7 +65,7 @@ export class BannerService extends AppServiceBase {
   updateSwitch(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${cmsApiUrls.bannerList}/${data.id}`;
     const body = `enabled=${data.enabled}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

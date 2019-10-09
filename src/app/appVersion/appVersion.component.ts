@@ -69,8 +69,6 @@ export class AppVersionComponent implements OnInit {
   currentProtocol = '1';
   private timerList;
   private timerDetail;
-  currentChanelId = '';
-  AppHeaderAllow = {};
   helpType = 'TRAVEL';
   limitModelChange = 1;
   isSpinning = false;
@@ -97,8 +95,6 @@ export class AppVersionComponent implements OnInit {
   ) {
     this.commonService.nav[1].active = true;
     this._initForm();
-    this.currentChanelId = localStorage.getItem('currentAppHeader');
-    this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
     this.config = this.commonService.config;
   }
 
@@ -125,7 +121,7 @@ export class AppVersionComponent implements OnInit {
     this.isSpinning = true; // loading
     if (flag === 'content') {
       const arr = [];
-      this.appversionService.getAppversionList(this.currentChanelId).subscribe(res => {
+      this.appversionService.getAppversionList(this.commonService.currentChanelId).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           if (JSON.parse(res.payload).android !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).android)); }
@@ -176,7 +172,7 @@ export class AppVersionComponent implements OnInit {
             const appList = JSON.parse(res.payload);
             let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
             appList.forEach(item => {
-              if (item.registryName === localStorage.getItem('currentAppHeader')) {
+              if (item.registryName === this.commonService.currentChanelId) {
                 this.currentAppId = item.id;
                 if (JSON.stringify(item.templates) !== '{}') { templates = JSON.parse(item.templates); }
               }
@@ -465,7 +461,7 @@ export class AppVersionComponent implements OnInit {
         'system_symbol': this.addContentForm.controls['system_symbol'].value,
         'version_allowed': this.addContentForm.controls['version_allowed'].value,
         'sub_title': this.addContentForm.controls['sub_title'].value,
-        'channel': this.currentChanelId
+        'channel': this.commonService.currentChanelId
       };
       this.appversionService.addAppversion(contentInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -630,7 +626,7 @@ export class AppVersionComponent implements OnInit {
       });
     } else if (flag === 'previewProtocol') {
 
-      window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
+      window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${this.commonService.currentChanelId}`);
     } else if (flag === 'addFlowPoint') {
       if (!this.verificationAdd('addFlowPoint')) { return; }
       const guideArr = this.flowPointDate.guides;

@@ -23,7 +23,7 @@ export class ConsumerService extends AppServiceBase {
   getConsumerList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/list?pageSize=999`;
     url += data.available && data.available !== '' ? '&available=' + data.available : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -32,7 +32,7 @@ export class ConsumerService extends AppServiceBase {
   addConsumer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}`;
     const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}&officially=${data.officially}&maxSnActivation=${data.maxSnActivation}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
   }
@@ -41,7 +41,7 @@ export class ConsumerService extends AppServiceBase {
   addPayment(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/payment`;
     const body = `appChannel=${data.id}&paymentKey=${data.paymentKey}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -50,7 +50,7 @@ export class ConsumerService extends AppServiceBase {
   addSms(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/sms`;
     const body = `appChannel=${data.id}&smsSignType=${data.smsSign}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -75,7 +75,7 @@ export class ConsumerService extends AppServiceBase {
   addOrderType(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.sms}`;
     const body = `appChannel=${data.id}&orderTypes=${data.orderTypes}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -84,7 +84,7 @@ export class ConsumerService extends AppServiceBase {
   modifyOrderType(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.sms}`;
     const body = `customerChannelSmsList=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -93,7 +93,7 @@ export class ConsumerService extends AppServiceBase {
   modifyActivation(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
     const body = `appChannel=${data.id}&maxSnActivation=${data.maxSnActivation}&phone=${data.phone}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
   }
@@ -102,7 +102,7 @@ export class ConsumerService extends AppServiceBase {
   modifyAvailable(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
     const body = `available=${data.available}&phone=${data.phone}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
   }
@@ -135,7 +135,7 @@ export class ConsumerService extends AppServiceBase {
   /** 添加 */
   addCallback(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -143,7 +143,7 @@ export class ConsumerService extends AppServiceBase {
   /** 修改 */
   modifyCallback(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .put<IResponse<any>>(url, data, this.options);
   }
@@ -151,7 +151,7 @@ export class ConsumerService extends AppServiceBase {
   /** 删除 */
   deleteCallback(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}/${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
