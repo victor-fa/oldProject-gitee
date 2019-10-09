@@ -40,7 +40,10 @@ export class CommonService extends AppServiceBase {
     private injector: Injector,
   ) {
     super(injector);
-    this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
+    setTimeout(() => {
+      this.AppHeaderAllow = JSON.parse(localStorage.getItem('AppHeaderAllow'));
+      this.currentChanelId = localStorage.getItem('currentAppHeader');
+    }, 0);
   }
 
   append(str: any) { this.list.push(str); }

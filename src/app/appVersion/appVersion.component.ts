@@ -625,7 +625,6 @@ export class AppVersionComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'previewProtocol') {
-
       window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${this.commonService.currentChanelId}`);
     } else if (flag === 'addFlowPoint') {
       if (!this.verificationAdd('addFlowPoint')) { return; }

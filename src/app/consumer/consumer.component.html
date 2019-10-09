@@ -418,23 +418,21 @@
         <nz-tab [nzTitle]="callbackTemplate" (nzClick)="changePanel('callback')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #callbackTemplate><i class="anticon anticon-rollback"></i>回调地址</ng-template>
           <div nz-row class="search_panel">
-            <div nz-col nzSpan="2" class="span_down right_alignment">
-              客户ID：
-            </div>
-            <div nz-col nzSpan="3">
-              <input nz-input placeholder="请输入客户ID" nzSize="default">
-            </div>
-            <div nz-col nzSpan="2" class="span_down right_alignment">
-              订单类型：
-            </div>
-            <div nz-col nzSpan="3">
-              <input nz-input placeholder="请输入订单类型" nzSize="default">
-            </div>
-            <div nz-col nzSpan="2" class="span_down right_alignment">
-              创建时间：
-            </div>
-            <div nz-col nzSpan="7">
-              <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'callback')"></nz-range-picker>
+            <form [formGroup]="callbackSearchForm">
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                客户ID：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户ID" formControlName="aaa" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="span_down right_alignment">
+                订单类型：
+              </div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入订单类型" formControlName="bbb" nzSize="default">
+              </div>
+            </form>
+            <div nz-col nzSpan="9">
             </div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('callback')"><i class="anticon anticon-search"></i>查询</button>

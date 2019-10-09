@@ -233,7 +233,7 @@
                     <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
                     <div>满{{couponDate.thresholdPrice}}元可用</div>
                     <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
-                    <div>有效期至：{{couponEndDate}}</div>
+                    <div>有效期至：{{couponEndDate | date:'yyyy-MM-dd hh:mm:ss'}}</div>
                   </div>
                 </div>
               </div>
@@ -2028,7 +2028,7 @@
               <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务奖励</b></div></div>
               <div nz-row class="search_panel">
                 <div nz-col nzSpan="3" class="span_down">
-                  <label nz-checkbox [(nzChecked)]="addTaskCenter.checkBean" style="margin-bottom: 20px;">小悟豆</label><br><br>
+                  <label nz-checkbox [(nzChecked)]="addTaskCenter.checkBean" style="margin-bottom: 50px;">小悟豆</label><br><br>
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkExperience" style="margin-bottom: 20px;">经验</label><br>
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkSkill">技能点</label>
                 </div>
@@ -2036,7 +2036,7 @@
                   <nz-radio-group [(ngModel)]="addTaskCenter.checkBeanRes">
                     <label nz-radio nzValue="Fixed" style="margin-bottom: 15px;">固定金额</label><br>
                     <div *ngIf="!(addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE')" style="margin-bottom: 10px;"></div>
-                    <label *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" nz-radio nzValue="Percentage" style="margin-bottom: 20px;">百分比</label><br>
+                    <label *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" nz-radio nzValue="Percentage" style="margin-bottom: 10px;">百分比</label><br>
                   </nz-radio-group>
                   <nz-radio-group [(ngModel)]="addTaskCenter.checkExperienceRes" style="margin-bottom: 15px;">
                     <label nz-radio nzValue="Fixed">固定经验</label><br>

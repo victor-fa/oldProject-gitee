@@ -74,6 +74,7 @@ export class LeftNavComponent implements OnInit {
       }
       window.location.href = '/dataCenter?currentTab=' + number;
     } else {
+      this.commonService.currentChanelId = localStorage.getItem('currentAppHeader');
       this._router.navigate(['/appVersion']);
     }
   }

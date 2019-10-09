@@ -24,6 +24,7 @@ export class ConsumerComponent implements OnInit {
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
+  callbackSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
@@ -106,7 +107,7 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'callback') {
-      const orderTypeInput = { appChannel: this.consumerDate.appChannel, };
+      const orderTypeInput = { appChannel: this.consumerDate.appChannel, aaa: this.callbackSearchForm.controls['aaa'].value, bbb: this.callbackSearchForm.controls['bbb'].value };
       this.consumerService.getCallback(orderTypeInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -122,6 +123,7 @@ export class ConsumerComponent implements OnInit {
     this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''], officially: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
+    this.callbackSearchForm = this.fb.group({ aaa: [''], bbb: [''] });
   }
 
   // 弹窗

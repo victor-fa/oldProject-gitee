@@ -215,11 +215,11 @@ export class UserService extends AppServiceBase {
             /* 获取当前登录用户的渠道信息 */
 
             JSON.parse(JSON.parse(resultFull.responseText).payload).grantedRes.forEach(item => {
-              console.log(item);
+              // console.log(item);
               if (item.isVisible === true) { menuArr.push(item.name); }
               if (item.children) {
                 item.children.forEach(cell => {
-                  console.log(cell.isVisible);
+                  // console.log(cell.isVisible);
                   if (cell.isVisible === true) { childrenArr.push(cell.name); }
                 });
               }
@@ -229,7 +229,7 @@ export class UserService extends AppServiceBase {
             localStorage.setItem('FullChildrenResource', JSON.stringify(childrenArr)); // 正式
 
             that.commonService.fullChildrenResource = JSON.stringify(childrenArr);
-            console.log(menuArr);
+            // console.log(menuArr);
             setTimeout(() => {
               let target = 'appVersion';
               if (menuArr.indexOf('APP管理') <= -1) { // 不存在
