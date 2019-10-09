@@ -107,7 +107,7 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'callback') {
-      const orderTypeInput = { appChannel: this.consumerDate.appChannel, aaa: this.callbackSearchForm.controls['aaa'].value, bbb: this.callbackSearchForm.controls['bbb'].value };
+      const orderTypeInput = { appChannel: this.consumerDate.appChannel, appChannelP: this.callbackSearchForm.controls['appChannel'].value, orderType: this.callbackSearchForm.controls['orderType'].value };
       this.consumerService.getCallback(orderTypeInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -123,7 +123,7 @@ export class ConsumerComponent implements OnInit {
     this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''], officially: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
-    this.callbackSearchForm = this.fb.group({ aaa: [''], bbb: [''] });
+    this.callbackSearchForm = this.fb.group({ appChannel: [''], orderType: [''] });
   }
 
   // 弹窗

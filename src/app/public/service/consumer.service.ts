@@ -127,8 +127,8 @@ export class ConsumerService extends AppServiceBase {
   /** 获取所有列表 */
   getCallback(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}/list?size=999`;
-    url += data.aaa ? '&aaa=' + data.aaa : '';
-    url += data.bbb ? '&bbb=' + data.bbb : '';
+    url += data.appChannelP ? '&appChannel=' + data.appChannelP : '';
+    url += data.orderType ? '&orderType=' + data.orderType : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
