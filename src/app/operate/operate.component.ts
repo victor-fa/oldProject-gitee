@@ -100,6 +100,7 @@ export class OperateComponent implements OnInit {
           this.dataVoice = JSON.parse(res.payload);
           const operationInput = { op_category: '运维后台', op_page: 'ASR语音配置' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
+          console.log(this.dataVoice);
           this.dataVoice.forEach(item => {
             if (item.system === 'IOS') {
               this.currentIOSVoiceId = item.id;

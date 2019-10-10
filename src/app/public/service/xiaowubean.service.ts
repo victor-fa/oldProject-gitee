@@ -25,7 +25,7 @@ export class XiaowubeanService extends AppServiceBase {
       + '?a=1' + (data.title ? '&title=' + data.title : '')
       + (data.beginTime ? '&beginTime=' + data.beginTime : '')
       + (data.endTime ? '&endTime=' + data.endTime : '');
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -33,7 +33,7 @@ export class XiaowubeanService extends AppServiceBase {
   /** 获取单个 */
   getXiaowubean(id): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.xiaowubeanList}/${id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -47,7 +47,7 @@ export class XiaowubeanService extends AppServiceBase {
     } else if (flag === 'FIXED_QUOTA_GIFT') {
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -61,7 +61,7 @@ export class XiaowubeanService extends AppServiceBase {
     } else if (flag === 'FIXED_QUOTA_GIFT') {
       body = `title=${data.title}&describe=${data.describe}&type=${data.type}&depositAmount=${data.depositAmount}&giftAmount=${data.giftAmount}&beginTime=${data.beginTime}&endTime=${data.endTime}`;
     }
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .patch<IResponse<any>>(url, body, this.options);
   }

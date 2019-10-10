@@ -121,7 +121,7 @@ export class AppVersionComponent implements OnInit {
     this.isSpinning = true; // loading
     if (flag === 'content') {
       const arr = [];
-      this.appversionService.getAppversionList(this.commonService.currentChanelId).subscribe(res => {
+      this.appversionService.getAppversionList().subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           if (JSON.parse(res.payload).android !== 'null') { arr.push(JSON.parse(JSON.parse(res.payload).android)); }
@@ -172,7 +172,7 @@ export class AppVersionComponent implements OnInit {
             const appList = JSON.parse(res.payload);
             let templates = {}; // 用于获取APP里面的模板信息，针对激活与否
             appList.forEach(item => {
-              if (item.registryName === this.commonService.currentChanelId) {
+              if (item.registryName === localStorage.getItem('currentAppHeader')) {
                 this.currentAppId = item.id;
                 if (JSON.stringify(item.templates) !== '{}') { templates = JSON.parse(item.templates); }
               }
@@ -461,7 +461,7 @@ export class AppVersionComponent implements OnInit {
         'system_symbol': this.addContentForm.controls['system_symbol'].value,
         'version_allowed': this.addContentForm.controls['version_allowed'].value,
         'sub_title': this.addContentForm.controls['sub_title'].value,
-        'channel': this.commonService.currentChanelId
+        'channel': localStorage.getItem('currentAppHeader')
       };
       this.appversionService.addAppversion(contentInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -625,7 +625,7 @@ export class AppVersionComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'previewProtocol') {
-      window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${this.commonService.currentChanelId}`);
+      window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/protocolManage.html?title=${this.currentProtocol}&channelId=${localStorage.getItem('currentAppHeader')}`);
     } else if (flag === 'addFlowPoint') {
       if (!this.verificationAdd('addFlowPoint')) { return; }
       const guideArr = this.flowPointDate.guides;

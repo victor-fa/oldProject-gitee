@@ -864,7 +864,7 @@ export class ContentComponent implements OnInit {
 
   // 获取地址
   doGetContentUrl(data) {
-    window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/content-detail.html?id=${data.id}&channelId=${this.commonService.currentChanelId}`);
+    window.open(`${this.commonService.dataCenterUrl.substring(0, this.commonService.dataCenterUrl.indexOf(':46004/api'))}/static/content-detail.html?id=${data.id}&channelId=${localStorage.getItem('currentAppHeader')}`);
   }
 
   // 用于区分分享文案下的三个上传图片的方法
@@ -923,7 +923,7 @@ export class ContentComponent implements OnInit {
     const req = new HttpRequest('POST', `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}${url}`, formData, {
       reportProgress: true,
       headers: new HttpHeaders({
-        'App-Channel-Id': this.commonService.currentChanelId,
+        'App-Channel-Id': localStorage.getItem('currentAppHeader'),
         'Authorization': localStorage.getItem('token')
       })
     });

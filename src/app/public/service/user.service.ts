@@ -54,7 +54,7 @@ export class UserService extends AppServiceBase {
     url += data.replyStatus && data.replyStatus !== '' ? '&replyStatus=' + data.replyStatus : '';
     url += data.startDate && data.startDate !== '' ? '&startDate=' + data.startDate : '';
     url += data.endDate && data.endDate !== '' ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -64,7 +64,7 @@ export class UserService extends AppServiceBase {
    */
   getFeedBackItem(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}/feedback?&id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -72,7 +72,7 @@ export class UserService extends AppServiceBase {
   // 查询列表
   getProblemInfo(): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
@@ -80,7 +80,7 @@ export class UserService extends AppServiceBase {
   // 新增
   addProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -88,7 +88,7 @@ export class UserService extends AppServiceBase {
   // 修改
   editProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type?id=${data.id}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -96,7 +96,7 @@ export class UserService extends AppServiceBase {
   // 删除
   deleteProblem(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/type?id=${data}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }
@@ -105,7 +105,7 @@ export class UserService extends AppServiceBase {
   editStatus(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback`;
     const body = `id=${data.id}&status=${data.status}`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -113,7 +113,7 @@ export class UserService extends AppServiceBase {
   // 修改
   editReply(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/feedback/reply`;
-    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .post<IResponse<any>>(url, data, this.options);
   }
@@ -126,7 +126,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -138,7 +138,7 @@ export class UserService extends AppServiceBase {
     url += data.userPhone !== '' ? '&userPhone=' + data.userPhone : '';
     url += data.startDate !== '' && data.startDate !== null ? '&startDate=' + data.startDate : '';
     url += data.endDate !== '' && data.endDate !== null ? '&endDate=' + data.endDate : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient.get<IResponse<any>>(url, this.options);
   }
 
@@ -284,7 +284,7 @@ export class UserService extends AppServiceBase {
   changePass(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/auth/info/pwd/modify`;
     const body = `oldPassword=${data.oldPassword}&newPassword=${data.newPassword}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId, 'Content-Type': 'application/x-www-form-urlencoded' }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader'), 'Content-Type': 'application/x-www-form-urlencoded' }) };
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
   }
@@ -322,7 +322,7 @@ export class UserService extends AppServiceBase {
    */
   getInvoiceDetail(orderId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}/order/invoice/detail?orderId=${orderId}`;
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -333,7 +333,7 @@ export class UserService extends AppServiceBase {
   getUserCommonInfo(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/general-info?userId=${data.userId}`;
     url += data.queryType ? '&queryType=' + data.queryType : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url);
   }
@@ -342,7 +342,7 @@ export class UserService extends AppServiceBase {
   getLatestLogin(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}/user/login-history?pageSize=9999`;
     url += data.userId ? '&userId=' + data.userId : '';
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }

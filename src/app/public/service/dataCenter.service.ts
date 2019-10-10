@@ -24,7 +24,7 @@ export class DataCenterService extends AppServiceBase {
         + ('?begin=' + data.begin + '&end=' + data.end)
         + (data.platform !== '' ? '&platform=' + data.platform : '')
         + (data.checkAllChannel === true ? '' : (data.origin !== '' ? '&origin=' + data.origin : ''));
-    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': this.commonService.currentChanelId }) };
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
   }
