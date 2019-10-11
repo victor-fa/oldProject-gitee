@@ -37,9 +37,18 @@ export class ConsumerComponent implements OnInit {
   orderTypeData = [];
   dataCallback = [];
   callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
-  pageNum = {
-    dataConsumerPage: 1,
-  };
+  pageNum = { dataConsumerPage: 1 };
+  orderTypeItem = [
+    {key: 'FLIGHT_RETURN_ORDER', value: '机票', visiable: true},
+    {key: 'TRAIN_ORDER', value: '火车', visiable: true},
+    {key: 'HOTEL_ORDER', value: '酒店', visiable: true},
+    {key: 'TAXI_ORDER', value: '打车', visiable: true},
+    {key: 'EXPRESS_ORDER', value: '闪送', visiable: true},
+    {key: 'PHONE_CHARGE_ORDER', value: '充话费', visiable: true},
+    {key: 'MOVIE_ORDER', value: '电影票', visiable: true},
+    {key: 'MUSIC_ORDER', value: '付费音频', visiable: true},
+    {key: 'JIAOYOU_GAME_ORDER', value: '交游天下游戏', visiable: true}
+  ];
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -173,6 +182,7 @@ export class ConsumerComponent implements OnInit {
       });
     } else if (flag === 'addCallback') {
       this.visiable.addCallback = true;
+      console.log(this.dataConsumer);
     } else if (flag === 'modifyCallback') {
       this.callbackData = data;
       console.log(this.callbackData);
@@ -404,14 +414,14 @@ export class ConsumerComponent implements OnInit {
 
   // 日期插件
   onChange(result, flag): void {
-    if (flag === 'callback') {
-      // if (result === []) { this.beginBaseInfoDate = ''; this.endBaseInfoDate = ''; return; }
-      // if (result[0] !== '' || result[1] !== '') { this.beginBaseInfoDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endBaseInfoDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
-    } else if (flag === 'msgArr') {
+    if (flag === 'msgArr') {
       const checked = result.checked;
       const value = result.value;
-      console.log(checked);
-      console.log(value);
+    } else if (flag === 'appChannel') {
+      const ac = result.appChannel;
+      const arr = [];
+      this.dataCallback.forEach(item => { item.appChannel === ac ? arr.push(item.orderTypeName) : null });
+      arr.length === 0 ? this.orderTypeItem.map(item => { item.visiable = true }) : (this.orderTypeItem.map(item => { arr.indexOf(item.value) > -1 ? item.visiable = false : null }) )
     }
   }
 

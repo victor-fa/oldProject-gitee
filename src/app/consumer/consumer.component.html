@@ -429,7 +429,20 @@
                 订单类型：
               </div>
               <div nz-col nzSpan="3">
-                <input nz-input placeholder="请输入订单类型" formControlName="orderType" nzSize="default">
+                <nz-select [ngModel]="''" formControlName="orderType">
+                  <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
+                  <nz-option [nzLabel]="'火车'" [nzValue]="'TRAIN_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'机票'" [nzValue]="'FLIGHT_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'酒店'" [nzValue]="'HOTEL_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'打车'" [nzValue]="'TAXI_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'闪送'" [nzValue]="'EXPRESS_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'充话费'" [nzValue]="'PHONE_CHARGE_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'电影票'" [nzValue]="'MOVIE_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'恋爱运势'" [nzValue]="'PAIR_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'月运势'" [nzValue]="'FORTUNE_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'付费音频'" [nzValue]="'MUSIC_ORDER'"></nz-option>
+                  <nz-option [nzLabel]="'交游天下游戏'" [nzValue]="'JIAOYOU_GAME_ORDER'"></nz-option>
+                </nz-select>
               </div>
             </form>
             <div nz-col nzSpan="9">
@@ -482,27 +495,20 @@
                 <ng-container *ngIf="dataConsumer.length > 0">
                   <nz-radio-group [(ngModel)]="callbackData.appChannel">
                     <ng-container *ngFor="let data of dataConsumer;">
-                      <label nz-col nzSpan="11" nz-radio *ngIf="data.available === true" [nzValue]="data.appChannel">{{data.appChannel}}</label>
+                      <label nz-col nzSpan="11" nz-radio [nzValue]="data.appChannel"
+                        (click)="onChange(data, 'appChannel')">{{data.appChannel}}</label>
                     </ng-container>
                   </nz-radio-group>
                 </ng-container>
               </div>
             </div>
             <div nz-row class="search_panel">
-              <div nz-col nzSpan="5" class="span_down right_alignment">
-                订单类型：
-              </div>
+              <div nz-col nzSpan="5" class="span_down right_alignment">订单类型：</div>
               <div nz-col nzSpan="19">
                 <nz-radio-group [(ngModel)]="callbackData.orderType">
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'FLIGHT_RETURN_ORDER'">机票</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'TRAIN_ORDER'">火车</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'HOTEL_ORDER'">酒店</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'TAXI_ORDER'">打车</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'EXPRESS_ORDER'">闪送</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'PHONE_CHARGE_ORDER'">充话费</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'MOVIE_ORDER'">电影票</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'MUSIC_ORDER'">付费音频</label>
-                  <label nz-col nzSpan="5" nz-radio [nzValue]="'JIAOYOU_GAME_ORDER'">交游天下游戏</label>
+                  <ng-container *ngFor="let data of orderTypeItem; let i=index;">
+                    <label nz-col nzSpan="5" *ngIf="data.visiable === true" nz-radio [nzValue]="data.key">{{data.value}}</label>
+                  </ng-container>
                 </nz-radio-group>
               </div>
             </div>

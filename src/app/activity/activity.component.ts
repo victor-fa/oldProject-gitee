@@ -31,10 +31,9 @@ export class ActivityComponent implements OnInit {
   searchCouponInActivityForm: FormGroup;
   addActivityForm: FormGroup;
   searchCouponForm: FormGroup;
-  addCouponForm: FormGroup;
-  modifyCouponForm: FormGroup;
   searchTaskCenterForm: FormGroup;
   searchTaskLogsForm: FormGroup;
+  searchCouponStatisticsForm: FormGroup;
   dataActivity = []; // 活动
   dataSearchCoupon = [];
   beginBaseInfoDate = ''; // 基本信息日期选择
@@ -57,7 +56,7 @@ export class ActivityComponent implements OnInit {
   actGiftNoArr = [{ value: '', label: '---选择红包组---' }];  // 用于下拉当前有的红包组
   couponGiftNo = '';  // 修改红包组时候，传值到弹框中
   isModifyModelShow = false;  // 针对修改弹框的标识
-  modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '' };
+  modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '', actPageUrl: '' };
   now = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   cmsId = '';
   emptyAdd = ['', '', '', '', '', '', ''];  // 清空新增表单
@@ -71,11 +70,10 @@ export class ActivityComponent implements OnInit {
   endTaskCenterActDate = '';
   beginTaskLogDate = '';
   endTaskLogDate = '';
-  couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
+  couponDate = { 'couponName': '', 'discountType': 'FIX_DISCOUNT', 'discountPrices': [{main: '', content: ''}], 'timeLimitValidDay': '', 'timeLimitType': 'fix_start_end', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
   dataCoupon = []; // 内容
   couponAllChecked = false;
   displayData = [];
-  couponRadioValue = 'fix_start_end';  // 有效时间
   searchCouponItem = { couponName: '', discountType: '', couponCategory: '', ctimeStart: '', ctimeEnd: '' };
   checkCouponOptions = [
     { label: '活动不可用', value: 'promition_unavailable', checked: false },
@@ -122,6 +120,7 @@ export class ActivityComponent implements OnInit {
   };
   semdMesCodeText = 60;
   operateObject = { code: '', operater: '18682233554' }; // 操作人
+  dateRange = [];
   // resetTaskCenterCheckOptions = [];
 
   constructor(
@@ -192,18 +191,15 @@ export class ActivityComponent implements OnInit {
           this.dataActivity.forEach(data => {
             let actGiftNo = '';
             let count = 0;
-            if (data.actTypeBo && data.actTypeBo !== undefined) {
-              actGiftNo = data.actTypeBo.actGiftNo;
-            }
+            if (data.actTypeBo && data.actTypeBo !== undefined) { actGiftNo = data.actTypeBo.actGiftNo; }
             if (data.actGiftRuleConfigL) {
               data.actGiftRuleConfigL.forEach(item => {
                 if (item.actCouponRulePoL && item.actGiftNo === actGiftNo) {
-                  item.actCouponRulePoL.forEach(cell => {
-                    count += cell.quantity;
-                  });
+                  item.actCouponRulePoL.forEach(cell => { count += cell.quantity; });
                 }
               });
             }
+            console.log(this.dataActivity);
             data.allQuantity = count;
           });
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
@@ -237,9 +233,7 @@ export class ActivityComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
           this.isSpinning = false;
           this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
-          if (res.payload === '' || res.payload === 'null') {
-            return;
-          }
+          if (res.payload === '' || res.payload === 'null') { return; }
           this.couponListArr = JSON.parse(res.payload);
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
@@ -260,10 +254,7 @@ export class ActivityComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'batchsendList') {
-      const batchsend = {
-        sendStartTime: this.beginBatchsendDate,
-        sendEndTime: this.endBatchsendDate
-      };
+      const batchsend = { sendStartTime: this.beginBatchsendDate, sendEndTime: this.endBatchsendDate };
       this.batchsendService.getBatchsendList(batchsend).subscribe(res => {
         if (res.retcode === 0 && res.status === 200 && res.payload !== '') {
           this.isSpinning = false;
@@ -388,9 +379,7 @@ export class ActivityComponent implements OnInit {
     this.searchActivityForm = this.fb.group({ actName: [''], actStatus: [''], });
     this.searchCouponInActivityForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
     this.addActivityForm = this.fb.group({ actName: [''], date: [''], actRuleDesc: [''], actType: [''], chargeThreshold: [''],
-      totalQuantity: [''], perUserQuantity: [''], actGiftNo: [''], temp: [''], });
-    this.addCouponForm = this.fb.group({ couponName: [''], date: [''], discountType: [''], thresholdPrice: [''], discountPrice: [''],
-      timeLimitValidDay: [''], timeLimitType: [''], });
+      totalQuantity: [''], perUserQuantity: [''], actGiftNo: [''], temp: [''], actPageUrl: [''] });
     this.addBatchsendForm = this.fb.group({ pendingRevL: [''], displayMessage: [''], });
     this.searchCouponInBatchsendForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
     this.searchBeanForm = this.fb.group({ title: [''], date: [''], });
@@ -398,10 +387,9 @@ export class ActivityComponent implements OnInit {
       giftAmount: ['']});
     this.modifyBeanForm = this.fb.group({ title: [''], describe: [''], date: [''], type: [''], depositAmount: [''], giftPercent: [''],
       giftAmount: [''], });
-    this.modifyCouponForm = this.fb.group({ couponName: [''], date: [''], discountType: [''], timeLimitValidDay: [''], thresholdPrice: [''],
-      discountPrice: [''], timeLimitType: [''], });
     this.searchTaskCenterForm = this.fb.group({ name: [''], type: [''], date: [''] });
     this.searchTaskLogsForm = this.fb.group({ date: [''], userId: [''], userPhone: [''], taskName: [''] });
+    this.searchCouponStatisticsForm = this.fb.group({ aaa: [''], date: [''] });
   }
 
   // 弹框
@@ -411,7 +399,7 @@ export class ActivityComponent implements OnInit {
       this.isModifyModelShow = false;
       this.beginRuleDate = ''; // 模板1日期选择
       this.endRuleDate = '';
-      this.modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '' };
+      this.modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '', actPageUrl: '' };
     } else if (flag === 'modifyActivity') { // 修改活动
       this.baseInfoId = data.id;
       this.visiable.addActivity  = true;
@@ -425,16 +413,15 @@ export class ActivityComponent implements OnInit {
         actTypeEnd: '',
         totalQuantity: '',  // 奖励发放上限
         perUserQuantity: '',  // 每个用户可领
-        chargeThreshold: '' // 充值额度
+        chargeThreshold: '', // 充值额度
+        actPageUrl: ''  // 活动链接
       };
       if (data.actTypeBo) { // 针对活动规则配置
         this.modifyctivityItem.actTypeStart = data.actTypeBo.actTypeStartDate + ' ' + data.actTypeBo.actTypeStartTime;
         this.modifyctivityItem.actTypeEnd = data.actTypeBo.actTypeEndDate + ' ' + data.actTypeBo.actTypeEndTime;
         this.modifyctivityItem.totalQuantity = data.actTypeBo.totalQuantity;
         this.modifyctivityItem.perUserQuantity = data.actTypeBo.perUserQuantity;
-        if (data.actTypeBo.chargeThreshold) {
-          this.modifyctivityItem.chargeThreshold = data.actTypeBo.chargeThreshold;
-        }
+        data.actTypeBo.chargeThreshold ? this.modifyctivityItem.chargeThreshold = data.actTypeBo.chargeThreshold : null;
         this.loadData('newCoupon'); // 加载红包组数据
       }
       if (data.imageResPos) { // 针对文件展示
@@ -466,33 +453,35 @@ export class ActivityComponent implements OnInit {
       this.visiable.preview = true;
     } else if (flag === 'coupon') { // 优惠券的展开弹框
       this.visiable.addCoupon = true;
-      this.couponRadioValue = 'fix_start_end';  // 重置时间限制（单选）
-
-      this.couponDate = { 'couponName': '', 'discountType': '', 'thresholdPrice': '', 'discountPrice': '', 'timeLimitValidDay': '', 'timeLimitType': '', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
+      this.couponDate = { 'couponName': '', 'discountType': 'FIX_DISCOUNT', 'discountPrices': [{main: '', content: ''}], 'timeLimitValidDay': '', 'timeLimitType': 'fix_start_end', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
     } else if (flag === 'modifyCoupon') { // 修改优惠券弹框
-      const id = data.couponId;
       this.visiable.modifyCoupon = true;
-      this.cmsId = id;  // 用于修改
-      this.couponService.getCoupon(id).subscribe(res => {
-        // 处理异常处理
-        this.couponDate = JSON.parse(res.payload);
-        this.couponRadioValue = JSON.parse(res.payload).timeLimitType;
-        this.changeMutualExcludeRules(JSON.parse(res.payload).mutualExcludeRules);
-        this.changeCouponCategory(JSON.parse(res.payload).couponCategory);
-        this.couponBeginDate = JSON.parse(res.payload).timeLimitStart;
-        this.couponEndDate = JSON.parse(res.payload).timeLimitEnd;
-      });
+      this.cmsId = data.couponId;  // 用于修改
+      this.couponDate = data;
+      const prices = [];
+      for (var item in data.discountPrices) {
+        prices.push({main: item, content: data.discountPrices[item]});
+      }
+      this.couponDate.discountPrices = prices;
+      data.mutualExcludeRules ? this.changeMutualExcludeRules(data.mutualExcludeRules) : null;
+      this.changeCouponCategory(data.couponCategory);
+      this.couponBeginDate = data.timeLimitStart ? data.timeLimitStart : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.couponEndDate = data.timeLimitEnd ? data.timeLimitEnd : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.dateRange = [data.timeLimitStart, data.timeLimitEnd];
+      console.log(this.couponDate);
     } else if (flag === 'previewCoupon') {  // 查看优惠券
-      const id = data.couponId;
       this.visiable.previewCoupon = true;
-      this.couponService.getCoupon(id).subscribe(res => {
-        // 处理异常处理
-        this.couponDate = JSON.parse(res.payload);
-        this.changeMutualExcludeRules(JSON.parse(res.payload).mutualExcludeRules);
-        this.changeCouponCategory(JSON.parse(res.payload).couponCategory);
-        this.couponBeginDate = JSON.parse(res.payload).timeLimitStart;
-        this.couponEndDate = JSON.parse(res.payload).timeLimitEnd;
-      });
+      this.couponDate = data;
+      const prices = [];
+      for (var item in data.discountPrices) {
+        prices.push({main: item, content: data.discountPrices[item]});
+      }
+      this.couponDate.discountPrices = prices;
+      data.mutualExcludeRules ? this.changeMutualExcludeRules(data.mutualExcludeRules) : null;
+      this.changeCouponCategory(data.couponCategory);
+      this.couponBeginDate = data.timeLimitStart ? data.timeLimitStart : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.couponEndDate = data.timeLimitEnd ? data.timeLimitEnd : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      console.log(this.couponDate);
     } else if (flag === 'addBatchsend') {
       this.batchsendData = {  // 清空
         'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
@@ -503,9 +492,7 @@ export class ActivityComponent implements OnInit {
       this.batchsendData = data;
       if (this.batchsendData.actCouponRulePoL) {
         const tempArr = [];
-        this.batchsendData.actCouponRulePoL.forEach((item, i) => {
-          tempArr.push(item.couponRulePo.couponName);
-        });
+        this.batchsendData.actCouponRulePoL.forEach((item, i) => { tempArr.push(item.couponRulePo.couponName); });
         this.batchsendData.tempCouponName = tempArr;
       }
       this.visiable.detailBatchsend = true;
@@ -649,11 +636,23 @@ export class ActivityComponent implements OnInit {
       this.endCouponDate = null;
     } else if (flag === 'preview') { // 活动页预览
       this.visiable.preview = false;
-    } else if (flag === 'coupon') { // 隐藏优惠券
+    } else if (flag === 'addCoupon') { // 隐藏优惠券
       this.visiable.addCoupon = false;
     } else if (flag === 'modifyCoupon') { // 隐藏优惠券
+      this.couponDate = { 'couponName': '', 'discountType': 'FIX_DISCOUNT', 'discountPrices': [{main: '', content: ''}], 'timeLimitValidDay': '', 'timeLimitType': 'fix_start_end', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
+      this.checkCouponOptions.map(item => item.checked = false);
+      this.category.map(item => item.checked = true);
+      this.couponBeginDate = '';
+      this.couponEndDate = '';
+      this.loadData('coupon');
       this.visiable.modifyCoupon = false;
     } else if (flag === 'previewCoupon') {
+      this.couponDate = { 'couponName': '', 'discountType': 'FIX_DISCOUNT', 'discountPrices': [{main: '', content: ''}], 'timeLimitValidDay': '', 'timeLimitType': 'fix_start_end', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
+      this.checkCouponOptions.map(item => item.checked = false);
+      this.category.map(item => item.checked = true);
+      this.couponBeginDate = '';
+      this.couponEndDate = '';
+      this.loadData('coupon');
       this.visiable.previewCoupon = false;
     } else if (flag === 'batchsendList') {
       this.visiable.addBatchsend = false;
@@ -754,16 +753,8 @@ export class ActivityComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '活动规则未填写' });
         result = false;
       }
-    } else if (flag === 'coupon') {
-      // if (this.addCouponForm.controls['title'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
-      //   result = false;
-      // }
+    } else if (flag === 'addCoupon') {
     } else if (flag === 'modifyCoupon') {
-      // if (this.addCouponForm.controls['title'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
-      //   result = false;
-      // }
     } else if (flag === 'batchsend') {
       if (this.addBatchsendForm.controls['pendingRevL'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '发送对象未填写' });
@@ -942,9 +933,7 @@ export class ActivityComponent implements OnInit {
           const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '保存' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('activity');
-        } else {
-          this.modalService.error({ nzTitle: '提示', nzContent: res.message });
-        }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'couponInActivity') { // 保存红包组选择区
       const couponArr = [];
@@ -954,7 +943,7 @@ export class ActivityComponent implements OnInit {
         if (data.checked === true) {
           couponArr.push(data);
           checkedCount++;
-          if (data.quantity) { quantityCount++; }
+          data.quantity ? quantityCount++ : null;
         }
       });
       if (checkedCount === 0) { // 优惠券未勾选
@@ -988,39 +977,77 @@ export class ActivityComponent implements OnInit {
           } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
       }
-    } else if (flag === 'coupon') {
-      if (!this.verificationAdd('coupon')) { return; }
+    } else if (flag === 'addCoupon') {
+      if (!this.verificationAdd('addCoupon')) { return; }
       let couponInput = {};
-      if (this.couponRadioValue === 'fix_start_end') {
+      const prices = {};
+      this.couponDate.discountPrices.map(item => { prices[item.main] = item.content; });
+      if (this.couponDate.timeLimitType === 'fix_start_end') {
         couponInput = {
-          'couponName': this.addCouponForm.controls['couponName'].value,
-          'discountType': this.addCouponForm.controls['discountType'].value,
-          'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
-          'discountPrice': this.addCouponForm.controls['discountPrice'].value,
-          'timeLimitType': this.couponRadioValue,
+          'couponName': this.couponDate.couponName,
+          'discountType': this.couponDate.discountType,
+          'discountPrices': prices,
+          'timeLimitType': this.couponDate.timeLimitType,
           'timeLimitStart': this.couponBeginDate.substring(0, 10),
           'timeLimitEnd': this.couponEndDate.substring(0, 10),
           'couponCategory': this.getCheckedCategory(),
-          'mutualExcludeRules': this.getMutualExcludeRules(),
         };
-      } else if (this.couponRadioValue === 'fix_duration') {
+      } else if (this.couponDate.timeLimitType === 'fix_duration') {
         couponInput = {
-          'couponName': this.addCouponForm.controls['couponName'].value,
-          'discountType': this.addCouponForm.controls['discountType'].value,
-          'thresholdPrice': this.addCouponForm.controls['thresholdPrice'].value,
-          'discountPrice': this.addCouponForm.controls['discountPrice'].value,
-          'timeLimitValidDay': this.addCouponForm.controls['timeLimitValidDay'].value,
-          'timeLimitType': this.couponRadioValue,
+          'couponName': this.couponDate.couponName,
+          'discountType': this.couponDate.discountType,
+          'discountPrices': prices,
+          'timeLimitValidDay': this.couponDate.timeLimitValidDay,
+          'timeLimitType': this.couponDate.timeLimitType,
           'couponCategory': this.getCheckedCategory(),
-          'mutualExcludeRules': this.getMutualExcludeRules(),
         };
       }
+      console.log(couponInput);
       this.couponService.addCoupon(couponInput).subscribe(res => {
         if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '新增成功' });
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('coupon');
+          this.hideModal('addCoupon');
+          this.loadData('coupon');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyCoupon') {
+      if (!this.verificationAdd('modifyCoupon')) { return; }
+      let couponInput = {};
+      const prices = {};
+      this.couponDate.discountPrices.map(item => { prices[item.main] = item.content; });
+      if (this.couponDate.timeLimitType === 'fix_start_end') {
+        couponInput = {
+          'couponId': this.cmsId,
+          'couponName': this.couponDate.couponName,
+          'discountType': this.couponDate.discountType,
+          'discountPrices': prices,
+          'timeLimitType': this.couponDate.timeLimitType,
+          'timeLimitStart': this.couponBeginDate.substring(0, 10),
+          'timeLimitEnd': this.couponEndDate.substring(0, 10),
+          'couponCategory': this.getCheckedCategory(),
+          // 'mutualExcludeRules': this.getMutualExcludeRules(),  // 暂时去除互斥限制
+        };
+      } else if (this.couponDate.timeLimitType === 'fix_duration') {
+        couponInput = {
+          'couponId': this.cmsId,
+          'couponName': this.couponDate.couponName,
+          'discountType': this.couponDate.discountType,
+          'discountPrices': prices,
+          'timeLimitValidDay': this.couponDate.timeLimitValidDay,
+          'timeLimitType': this.couponDate.timeLimitType,
+          'couponCategory': this.getCheckedCategory(),
+          // 'mutualExcludeRules': this.getMutualExcludeRules(),  // 暂时去除互斥限制
+        };
+      }
+      console.log(couponInput);
+      this.couponService.updateCoupon(couponInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改优惠券' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('modifyCoupon');
           this.loadData('coupon');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
@@ -1043,7 +1070,7 @@ export class ActivityComponent implements OnInit {
         if (data.checked === true) {
           couponArr.push(data);
           checkedCount++;
-          if (data.quantity) { quantityCount++; }
+          data.quantity ? quantityCount++ : null;
         }
       });
       if (checkedCount === 0) { // 优惠券未勾选
@@ -1070,9 +1097,7 @@ export class ActivityComponent implements OnInit {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           // 调用发送接口
-          const batchsendInput = {
-            'pushRuleId': JSON.parse(res.payload).pushRuleId
-          };
+          const batchsendInput = { 'pushRuleId': JSON.parse(res.payload).pushRuleId };
           this.batchsendService.batchsend(batchsendInput).subscribe(finalres => {
             if (finalres.retcode === 0) {
               this.notification.blank( '提示', '批量发送成功', { nzStyle: { color : 'green' } });
@@ -1271,51 +1296,6 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-  // 修改操作
-  doModify(flag) {
-    if (flag === 'coupon') {
-      if (!this.verificationAdd('modifyCoupon')) {
-        return;
-      }
-      let couponInput = {};
-      if (this.couponRadioValue === 'fix_start_end') {
-        couponInput = {
-          'couponId': this.cmsId,
-          'couponName': this.modifyCouponForm.controls['couponName'].value,
-          'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
-          'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
-          'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
-          'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
-          'timeLimitStart': this.couponBeginDate.substring(0, 10),
-          'timeLimitEnd': this.couponEndDate.substring(0, 10),
-          'couponCategory': this.getCheckedCategory(),
-          'mutualExcludeRules': this.getMutualExcludeRules(),
-        };
-      } else if (this.couponRadioValue === 'fix_duration') {
-        couponInput = {
-          'couponId': this.cmsId,
-          'couponName': this.modifyCouponForm.controls['couponName'].value,
-          'discountType': this.dotranUrl(this.modifyCouponForm.controls['discountType'].value),
-          'thresholdPrice': this.modifyCouponForm.controls['thresholdPrice'].value,
-          'discountPrice': this.modifyCouponForm.controls['discountPrice'].value,
-          'timeLimitValidDay': this.addCouponForm.controls['timeLimitValidDay'].value,
-          'timeLimitType': this.modifyCouponForm.controls['timeLimitType'].value,
-          'couponCategory': this.getCheckedCategory(),
-          'mutualExcludeRules': this.getMutualExcludeRules(),
-        };
-      }
-      this.couponService.updateCoupon(couponInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.modalService.success({ nzTitle: '提示', nzContent: '修改成功' });
-          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '修改优惠券' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('modifyCoupon');
-          this.loadData('coupon');
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
-    }
-  }
-
   // 针对互斥限制
   changeMutualExcludeRules(params) {
     let mutualExcludeRules = [];
@@ -1370,6 +1350,7 @@ export class ActivityComponent implements OnInit {
   // 删除 - 复用弹窗
   showDeleteModal(id, flag) { this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(id, flag) }); }
 
+  // 删除操作
   doDelete(data, flag) {
     if (flag === 'activity') {
       this.activityService.deleteActivity(data.id).subscribe(res => {
@@ -1509,27 +1490,19 @@ export class ActivityComponent implements OnInit {
   onMarginChange(value, site, item) {
     if (site === 'chargeThreshold') { // 充值额度门槛
       this.addMarginArr.forEach(( cell, i ) => {
-        if (i === item) {
-          cell.chargeThreshold = value ;
-        }
+        i === item ? cell.chargeThreshold = value : null;
       });
     } else if (site === 'totalQuantity') {  // 可发放总数
       this.addMarginArr.forEach(( cell, i ) => {
-        if (i === item) {
-          cell.totalQuantity = value ;
-        }
+        i === item ? cell.totalQuantity = value : null;
       });
     } else if (site === 'perUserQuantity') {  // 每个用户可领取数量
       this.addMarginArr.forEach(( cell, i ) => {
-        if (i === item) {
-          cell.perUserQuantity = value ;
-        }
+        i === item ? cell.perUserQuantity = value : null;
       });
     } else if (site === 'actGiftNo') {  // 最终选择的红包组
       this.addMarginArr.forEach(( cell, i ) => {
-        if (i === item) {
-          cell.actGiftNo = value;
-        }
+        i === item ? cell.actGiftNo = value : null;
       });
     }
   }
@@ -1595,6 +1568,10 @@ export class ActivityComponent implements OnInit {
       this.addTaskCenter.stepRule.push({ rechargeAmount: '', checkBean: false, checkBeanRes: 'Fixed', beanValue: '', beanPreValue: '', checkExperience: false, expValue: '', checkSkill: false, perkValue: '' });
     } else if (flag === 'deleteStepRule') {
       this.addTaskCenter.stepRule.splice(result, 1);
+    } else if (flag === 'addDiscountPrices') {
+      this.couponDate.discountPrices.push({main: '', content: ''});
+    } else if (flag === 'removeDiscountPrices') {
+      this.couponDate.discountPrices.splice(result, 1);
     }
   }
 
@@ -1623,16 +1600,12 @@ export class ActivityComponent implements OnInit {
   }
 
   checkAllSearchCoupon(value: boolean): void {
-    this.dataSearchCoupon.forEach(data => {
-      if (!data.disabled) { data.checked = value; }
-    });
+    this.dataSearchCoupon.forEach(data => { !data.disabled ? data.checked = value : null; });
     this.refreshSearchCouponStatus();
   }
 
   checkAll(value: boolean): void {
-    this.displayData.forEach(category => {
-      if (!category.disabled) { category.checked = value; }
-    });
+    this.displayData.forEach(category => { !category.disabled ? category.checked = value : null; });
     this.refreshStatus();
   }
 
@@ -1645,9 +1618,7 @@ export class ActivityComponent implements OnInit {
 
   getCouponNumber(event, data) {
     this.dataSearchCoupon.forEach(item => {
-      if (item.couponId === data.couponId) {
-        item.quantity = parseInt(event);
-      }
+      item.couponId === data.couponId ? item.quantity = parseInt(event) : null;
     });
   }
 
@@ -1690,19 +1661,18 @@ export class ActivityComponent implements OnInit {
         count++;
       }
     }
-    flag = count === 4 ? 'all' : flag;
+    flag = (count === 4 ? 'all' : flag);
     return flag;
   }
 
   // 转换 url 的 & 字符
   dotranUrl(url) {
-    url = url.indexOf('`') !== -1 ? url.replace(/`/g, '&') : url.replace(/&/g, '`');
-    return url;
+    return (url.indexOf('`') !== -1 ? url.replace(/`/g, '&') : url.replace(/&/g, '`'));
   }
 
   // 切换面板
   changePanel(flag): void {
-    if (flag !== this.currentPanel) { this.loadData(flag); }
+    flag !== this.currentPanel ? this.loadData(flag) : null;
     this.currentPanel = flag;
     const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : flag === 'taskCenter' ? '任务中心' : flag === 'taskCenter' ? '任务日志' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
