@@ -251,7 +251,16 @@ export class UserService extends AppServiceBase {
                               if (menuArr.indexOf('新闻词库') <= -1) { // 不存在
                                 target = 'sessionAnalysis';
                                 if (menuArr.indexOf('对话分析') <= -1) { // 不存在
-                                  target = 'account';
+                                  target = 'regression';
+                                  if (menuArr.indexOf('回归工具') <= -1) { // 不存在
+                                    target = 'platform';
+                                    if (menuArr.indexOf('开放平台') <= -1) { // 不存在
+                                      target = 'jiaoyou';
+                                      if (menuArr.indexOf('交游天下') <= -1) { // 不存在
+                                        target = 'account';
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }

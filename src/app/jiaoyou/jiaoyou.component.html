@@ -134,7 +134,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="skillTemplate" (nzClick)="changePanel('skill')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
+        <nz-tab [nzTitle]="skillTemplate" (nzClick)="changePanel('skill')" *ngIf="commonService.haveMenuPermission('children', '付费技能')">
           <ng-template #skillTemplate><i class="anticon anticon-bulb"></i>付费技能</ng-template>
           <div nz-row>
             <form [formGroup]="searchSkillForm">

@@ -529,8 +529,8 @@ export class AccountComponent implements OnInit {
     if (flag === 'flag9') { this.allChecked9 ? this.checkOptions9.forEach(item => item.checked = true) : this.checkOptions9.forEach(item => item.checked = false); }
     if (flag === 'flag10') { this.allChecked10 ? this.checkOptions10.forEach(item => item.checked = true) : this.checkOptions10.forEach(item => item.checked = false); }
     if (flag === 'flag11') { this.allChecked11 ? this.checkOptions11.forEach(item => item.checked = true) : this.checkOptions11.forEach(item => item.checked = false); }
-    if (flag === 'flag12') { this.allChecked11 ? this.checkOptions12.forEach(item => item.checked = true) : this.checkOptions12.forEach(item => item.checked = false); }
-    if (flag === 'flag13') { this.allChecked12 ? this.checkOptions13.forEach(item => item.checked = true) : this.checkOptions13.forEach(item => item.checked = false); }
+    if (flag === 'flag12') { this.allChecked12 ? this.checkOptions12.forEach(item => item.checked = true) : this.checkOptions12.forEach(item => item.checked = false); }
+    if (flag === 'flag13') { this.allChecked13 ? this.checkOptions13.forEach(item => item.checked = true) : this.checkOptions13.forEach(item => item.checked = false); }
   }
 
   // 去除所有的多选
