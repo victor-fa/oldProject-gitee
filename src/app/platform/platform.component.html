@@ -12,7 +12,7 @@
               <button nz-button nzType="primary" (click)="showModal('addLevelOneMenu', '')"><i class="anticon anticon-file-add"></i>新增一级菜单</button>
             </div>
           </div>
-          <nz-table #taggingPlatformTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #taggingPlatformTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -195,7 +195,7 @@
               <button nz-button nzType="primary" (click)="showModal('addAccount', '')"><i class="anticon anticon-file-add"></i>新建账号</button>
             </div>
           </div>
-          <nz-table #userTable [nzData]="userData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #userTable [nzData]="userData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -256,7 +256,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
+                <nz-table nzBordered #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th>一级菜单</th>
@@ -316,7 +316,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
+                <nz-table nzBordered #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th>一级菜单</th>

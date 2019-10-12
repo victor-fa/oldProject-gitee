@@ -58,7 +58,7 @@
             </div>
           </form>
 
-          <nz-table #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="100px">序号</th>
@@ -222,7 +222,7 @@
               <button nz-button nzType="primary" (click)="showModal(data, 'addProblem')"><i class="anticon anticon-search"></i>新增问题</button>
             </div>
           </div>
-          <nz-table #rowProblemTable [nzData]="problemInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowProblemTable [nzData]="problemInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -324,7 +324,7 @@
             </div>
           </div>
 
-          <nz-table #rowOppositionTable [nzData]="oppositionInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowOppositionTable [nzData]="oppositionInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -475,7 +475,7 @@
             </div>
           </div>
 
-          <nz-table #rowAgreeTable [nzData]="agreeInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowAgreeTable [nzData]="agreeInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -593,7 +593,7 @@
               <button nz-button nzType="primary" (click)="loadData('invoiceTime')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #rowInvoiceTimeTable [nzData]="invoiceTimeInfo.olderList" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowInvoiceTimeTable [nzData]="invoiceTimeInfo.olderList" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -673,7 +673,7 @@
               <button nz-button nzType="primary" (click)="loadData('invoiceLog')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #rowInvoiceLogTable [nzData]="invoiceLogInfo.adminBillLogsList" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowInvoiceLogTable [nzData]="invoiceLogInfo.adminBillLogsList" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -743,7 +743,7 @@
               <button nz-button nzType="primary" (click)="loadData('business')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #rowBusinessTable [nzData]="businessInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="15" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowBusinessTable [nzData]="businessInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="15" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>

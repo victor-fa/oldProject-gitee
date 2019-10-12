@@ -12,7 +12,7 @@
               <button nz-button nzType="primary" (click)="showModal('addRole', '')"><i class="anticon anticon-file-add"></i>新增角色</button>
             </div>
           </div>
-          <nz-table #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionRoleTable [nzData]="dataRole" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -381,7 +381,7 @@
             </div>
           </div>
 
-          <nz-table #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionCustomerTable [nzData]="dataCustomer" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -569,7 +569,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionOperationlogTable [nzData]="dataOperationlog" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionOperationlogTable [nzData]="dataOperationlog" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -613,7 +613,7 @@
               <button nz-button nzType="primary" (click)="showModal('addNavConfig', '')"><i class="anticon anticon-file-add"></i>新增类别</button>
             </div>
           </div>
-          <nz-table #rowNavConfigTable [nzData]="dataNavConfig" [nzSimple]="true" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowNavConfigTable [nzData]="dataNavConfig" [nzSimple]="true" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>

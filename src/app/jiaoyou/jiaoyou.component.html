@@ -29,7 +29,7 @@
               <button nz-button nzType="primary" (click)="showModal('addFree', '')"><i class="anticon anticon-file-add"></i>渠道设置</button>
             </div>
           </div>
-          <nz-table #freeTable [nzData]="freeData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #freeTable [nzData]="freeData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -159,7 +159,7 @@
               <button nz-button nzType="primary" (click)="showModal('addSkill', '')"><i class="anticon anticon-file-add"></i>新增付费技能</button>
             </div>
           </div>
-          <nz-table #skillTable [nzData]="skillData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #skillTable [nzData]="skillData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -229,7 +229,7 @@
               <button nz-button nzType="primary" (click)="showModal('addPay', '')"><i class="anticon anticon-file-add"></i>渠道设置</button>
             </div>
           </div>
-          <nz-table #payTable [nzData]="payData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #payTable [nzData]="payData" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th>序号</th>

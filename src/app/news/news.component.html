@@ -32,7 +32,7 @@
               <button nz-button nzType="primary" (click)="loadData('taggingNews')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #taggingNewsTable [nzData]="dataTaggingNews" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #taggingNewsTable [nzData]="dataTaggingNews" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -85,7 +85,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage" (nzPageIndexChange)="onChange($event, 'sortSpeechPage')">
+                <nz-table nzBordered #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage" (nzPageIndexChange)="onChange($event, 'sortSpeechPage')">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -157,7 +157,7 @@
               <button nz-button nzType="primary" (click)="showModal('uploadAudit')"><i class="anticon anticon-search"></i>上传审核</button>
             </div>
           </div>
-          <nz-table #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataManualAuditPage">
+          <nz-table nzBordered #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataManualAuditPage">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -228,7 +228,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #manualAuditModelTable [(nzData)]="dataManualAuditModel" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table nzBordered #manualAuditModelTable [(nzData)]="dataManualAuditModel" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>
@@ -323,7 +323,7 @@
               <button nz-button nzType="primary" (click)="showModal('addNewsThesaurus', '')"><i class="anticon anticon-file-add"></i>新增词库</button>
             </div>
           </div>
-          <nz-table #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true"
+          <nz-table nzBordered #newsThesaurus [nzData]="dataNewsThesaurus" *ngIf="!isSpinning" [nzShowQuickJumper]="true"
               [nzFooter]="newsThesaurusFooter" [(nzPageIndex)]="pageNum.dataNewsThesaurusPage" nzShowRowSelection nzShowSizeChanger>
             <thead>
               <tr>
@@ -458,7 +458,7 @@
               <button nz-button nzType="primary" (click)="loadData('newsNER')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #newsNERTable [nzData]="dataNewsNER" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+          <nz-table nzBordered #newsNERTable [nzData]="dataNewsNER" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -503,7 +503,7 @@
           <nz-modal [(nzVisible)]="visiable.newsNERResult" nzWidth="950" nzTitle="测试结果" [nzFooter]="newsNERResultFooter" (nzOnCancel)="hideModal('newsNERResult')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #newsNERResultTable [nzData]="dataNewsNERResult" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
+                <nz-table nzBordered #newsNERResultTable [nzData]="dataNewsNERResult" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
                       <th nzWidth="20px">序号</th>

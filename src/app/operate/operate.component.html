@@ -30,7 +30,7 @@
               <button nz-button nzType="primary" (click)="loadData('taxi')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #taxiTable [nzData]="dataTaxi" *ngIf="!isSpinning">
+          <nz-table nzBordered #taxiTable [nzData]="dataTaxi" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -242,7 +242,7 @@
               <button nz-button nzType="primary" (click)="loadData('orderState')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #orderStateTable [nzData]="dataOrderState" *ngIf="!isSpinning">
+          <nz-table nzBordered #orderStateTable [nzData]="dataOrderState" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -284,7 +284,7 @@
 
         <nz-tab [nzTitle]="orderStateSettingTemplate" (nzClick)="changePanel('orderStateSetting')" *ngIf="commonService.haveMenuPermission('children', '订单状态设置')">
           <ng-template #orderStateSettingTemplate><i class="anticon anticon-setting"></i>订单状态设置</ng-template>
-          <nz-table #orderStateSettingTable [nzData]="dataOrderStateSetting" *ngIf="!isSpinning">
+          <nz-table nzBordered #orderStateSettingTable [nzData]="dataOrderStateSetting" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -379,7 +379,7 @@
               <button nz-button nzType="primary" (click)="showModal('addWhiteList', '')"><i class="anticon anticon-file-add"></i>新增白名单</button>
             </div>
           </div>
-          <nz-table #whiteListTable [nzData]="dataWhiteList" *ngIf="!isSpinning">
+          <nz-table nzBordered #whiteListTable [nzData]="dataWhiteList" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>

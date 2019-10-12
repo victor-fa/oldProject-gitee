@@ -47,7 +47,7 @@
               <button nz-button nzType="primary" (click)="doSearchCoupon('coupon')"><i class="anticon anticon-search"></i>查询</button>
             </div>
           </div>
-          <nz-table #couponManagerTable [nzData]="dataCoupon" *ngIf="!isSpinning">
+          <nz-table nzBordered #couponManagerTable [nzData]="dataCoupon" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -153,7 +153,7 @@
             <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
-                <nz-table #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
+                <nz-table nzBordered #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th nzShowCheckbox [(nzChecked)]="couponAllChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
@@ -279,7 +279,7 @@
             <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
-                <nz-table #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
+                <nz-table nzBordered #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th nzShowCheckbox [(nzChecked)]="couponAllChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
@@ -388,7 +388,7 @@
             <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
-                <nz-table #rowCategoryPreviewTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
+                <nz-table nzBordered #rowCategoryPreviewTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th nzShowCheckbox [(nzChecked)]="couponAllChecked" [nzDisabled]="true" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
@@ -464,7 +464,7 @@
               <button nz-button nzType="primary" (click)="showModal('addActivity', '')"><i class="anticon anticon-file-add"></i>新增活动</button>
             </div>
           </div>
-          <nz-table #contentTable [nzData]="dataActivity" *ngIf="!isSpinning">
+          <nz-table nzBordered #contentTable [nzData]="dataActivity" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -752,7 +752,7 @@
             <ng-container *ngFor="let item of couponListArr">
               <div nz-row>
                 <div nz-col nzSpan="24">
-                  <nz-table #couponNumberTable [nzData]="item.actCouponRulePoL" *ngIf="!isSpinning">
+                  <nz-table nzBordered #couponNumberTable [nzData]="item.actCouponRulePoL" *ngIf="!isSpinning">
                     <thead>
                       <tr>
                         <th [attr.rowspan]="2">红包组编号</th>
@@ -834,7 +834,7 @@
                 <button nz-button nzType="primary" (click)="loadData('couponInActivity')"><i class="anticon anticon-file-add"></i>查询</button>
               </div>
             </div>
-            <nz-table #couponSelectTable [nzData]="dataSearchCoupon" *ngIf="!isSpinning">
+            <nz-table nzBordered #couponSelectTable [nzData]="dataSearchCoupon" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th nzShowCheckbox [(nzChecked)]="allSearchCouponChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAllSearchCoupon($event)"></th>
@@ -908,7 +908,7 @@
               <button nz-button nzType="primary" (click)="showModal('addBatchsend', '')"><i class="anticon anticon-file-add"></i>新增发放</button>
             </div>
           </div>
-          <nz-table #batchsendTable [nzData]="dataBatchsend" *ngIf="!isSpinning">
+          <nz-table nzBordered #batchsendTable [nzData]="dataBatchsend" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -973,7 +973,7 @@
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
-                  <nz-table #couponChooseTable [nzData]="couponListArrInBatchsend" *ngIf="!isSpinning">
+                  <nz-table nzBordered #couponChooseTable [nzData]="couponListArrInBatchsend" *ngIf="!isSpinning">
                     <thead>
                       <tr>
                         <th>序号</th>
@@ -1053,7 +1053,7 @@
                 <button nz-button nzType="primary" (click)="loadData('couponInBatchsend')"><i class="anticon anticon-file-add"></i>查询</button>
               </div>
             </div>
-            <nz-table #couponSelectTable [nzData]="dataSearchCouponInBatchsend" *ngIf="!isSpinning">
+            <nz-table nzBordered #couponSelectTable [nzData]="dataSearchCouponInBatchsend" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th nzShowCheckbox [(nzChecked)]="allSearchCouponInBatchsendChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAllSearchCoupon($event)"></th>
@@ -1117,7 +1117,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <nz-table #visitBatchsendTable [nzData]="batchsendData.actCouponRulePoL" *ngIf="!isSpinning">
+                <nz-table nzBordered #visitBatchsendTable [nzData]="batchsendData.actCouponRulePoL" *ngIf="!isSpinning">
                   <thead>
                     <tr>
                       <th>序号</th>
@@ -1219,7 +1219,7 @@
               </div>
             </form>
           </div>
-          <nz-table #rowCouponStatisticsTable [nzData]="couponStatisticsData" [nzSimple]="true" [(nzPageSize)]="couponStatisticsPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowCouponStatisticsTable [nzData]="couponStatisticsData" [nzSimple]="true" [(nzPageSize)]="couponStatisticsPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
                 <th nzWidth="50px">序号</th>
@@ -1281,7 +1281,7 @@
               </div>
             </form>
           </div>
-          <nz-table #rowSelectionTable [nzData]="beanData" [nzSimple]="true" [(nzPageSize)]="beanPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionTable [nzData]="beanData" [nzSimple]="true" [(nzPageSize)]="beanPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
                 <th nzWidth="50px">序号</th>
@@ -1513,7 +1513,7 @@
               </div>
             </div>
           </form>
-          <nz-table #taskCenterTable [nzData]="dataTaskCenter" *ngIf="!isSpinning" [nzScroll]="{x:'2800px'}">
+          <nz-table nzBordered #taskCenterTable [nzData]="dataTaskCenter" *ngIf="!isSpinning" [nzScroll]="{x:'2800px'}">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -1946,7 +1946,7 @@
               </div>
             </div>
           </form>
-          <nz-table #taskLogsTable [nzData]="dataTaskLogs" *ngIf="!isSpinning">
+          <nz-table nzBordered #taskLogsTable [nzData]="dataTaskLogs" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>

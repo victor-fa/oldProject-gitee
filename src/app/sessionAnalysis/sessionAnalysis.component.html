@@ -137,7 +137,7 @@
               </div>
             </div>
           </form>
-          <nz-table #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [nzPageSize]="100" [nzShowPagination]="false" [nzScroll]="{x:'3200px'}" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionTable [nzData]="sessionLogData" [nzSimple]="true" [nzPageSize]="100" [nzShowPagination]="false" [nzScroll]="{x:'3200px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="30px">序号</th>
@@ -360,7 +360,7 @@
             </div>
           </div>
 
-          <nz-table #specialUserSelectionTable [nzData]="specialUserData" [nzSimple]="true" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table nzBordered #specialUserSelectionTable [nzData]="specialUserData" [nzSimple]="true" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>

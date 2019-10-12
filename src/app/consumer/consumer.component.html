@@ -36,7 +36,7 @@
               <button nz-button nzType="primary" (click)="showModal('addConsumer', '')"><i class="anticon anticon-user-add"></i>新增客户</button>
             </div>
           </div>
-          <nz-table #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}" [(nzPageIndex)]="pageNum.dataConsumerPage">
+          <nz-table nzBordered #consumerTable [nzData]="dataConsumer" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}" [(nzPageIndex)]="pageNum.dataConsumerPage">
             <thead>
               <tr>
                 <th>序号</th>
@@ -314,7 +314,7 @@
                 </div>
               </div>
             </form>
-            <nz-table #consumerTable [nzData]="dataSerial" *ngIf="!isSpinning">
+            <nz-table nzBordered #consumerTable [nzData]="dataSerial" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th nzWidth="20px">序号</th>
@@ -454,7 +454,7 @@
               <button nz-button nzType="primary" (click)="showModal('addCallback', data)"><i class="anticon anticon-file-add"></i>新增回调地址</button>
             </div>
           </div>
-          <nz-table #callbackTable [nzData]="dataCallback" *ngIf="!isSpinning">
+          <nz-table nzBordered #callbackTable [nzData]="dataCallback" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>

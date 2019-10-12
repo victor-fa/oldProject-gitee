@@ -11,7 +11,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增/修改APP版本</button>
             </div>
           </div>
-          <nz-table #contentTable [nzData]="dataContent" *ngIf="!isSpinning">
+          <nz-table nzBordered #contentTable [nzData]="dataContent" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -280,7 +280,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('guide')"><i class="anticon anticon-file-add"></i>新增模板</button>
             </div>
           </div>
-          <nz-table #guideTable [nzData]="dataGuide" *ngIf="!isSpinning">
+          <nz-table nzBordered #guideTable [nzData]="dataGuide" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -498,7 +498,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('help')"><i class="anticon anticon-file-add"></i>新增技能</button>
             </div>
           </div>
-          <nz-table #helpTable [nzData]="dataHelp" *ngIf="!isSpinning">
+          <nz-table nzBordered #helpTable [nzData]="dataHelp" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>
@@ -782,7 +782,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('flowPoint')"><i class="anticon anticon-file-add"></i>新建流程点</button>
             </div>
           </div>
-          <nz-table #flowPointTable [nzData]="dataFlowPoint" *ngIf="!isSpinning">
+          <nz-table nzBordered #flowPointTable [nzData]="dataFlowPoint" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="20px">序号</th>

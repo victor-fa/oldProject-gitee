@@ -48,7 +48,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [nzScroll]="{x:'1800px'}" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowSelectionUserTable [nzData]="userData" [nzSimple]="true" [nzScroll]="{x:'1800px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th>序号</th>
@@ -145,7 +145,7 @@
               <div nz-col nzSpan="4" class="right_alignment">优惠券：</div>
             </div> -->
 
-            <!-- <nz-table #rowSelectionUserDetailTable [nzData]="[{}]">
+            <!-- <nz-table nzBordered #rowSelectionUserDetailTable [nzData]="[{}]">
               <thead>
                 <tr>
                   <th>序号</th>
@@ -185,7 +185,7 @@
               </nz-radio-group>
             </div>
 
-            <nz-table #rowSelectionUserCommon1Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'TRAVELER'">
+            <nz-table nzBordered #rowSelectionUserCommon1Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'TRAVELER'">
               <thead>
                 <tr> <th>序号</th> <th>姓名</th> <th>性别</th> <th>证件类型</th> <th>证件号</th> <th>出生日期</th> <th>手机号</th> <th>是否默认</th> </tr>
               </thead>
@@ -198,7 +198,7 @@
               </tbody>
             </nz-table>
 
-            <nz-table #rowSelectionUserCommon2Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'CONTACTS'">
+            <nz-table nzBordered #rowSelectionUserCommon2Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'CONTACTS'">
               <thead> <tr> <th>序号</th> <th>姓名</th> <th>手机号</th> <th>是否默认</th> </tr> </thead>
               <tbody>
                 <tr *ngFor="let data of rowSelectionUserCommon2Table.data; let i=index;">
@@ -207,7 +207,7 @@
               </tbody>
             </nz-table>
 
-            <nz-table #rowSelectionUserCommon3Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'DELIVERY_ADDRESS'">
+            <nz-table nzBordered #rowSelectionUserCommon3Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'DELIVERY_ADDRESS'">
               <thead> <tr> <th>序号</th> <th>姓名</th> <th>手机号</th> <th>配送地址</th> <th>是否默认</th> </tr> </thead>
               <tbody>
                 <tr *ngFor="let data of rowSelectionUserCommon3Table.data; let i=index;">
@@ -216,7 +216,7 @@
               </tbody>
             </nz-table>
 
-            <nz-table #rowSelectionUserCommon4Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'TRAVEL_ADDRESS'">
+            <nz-table nzBordered #rowSelectionUserCommon4Table [nzData]="userInfoCommonData" *ngIf="currentUserCommonTab === 'TRAVEL_ADDRESS'">
               <thead> <tr> <th>序号</th> <th>标签</th> <th>地址</th> </tr> </thead>
               <tbody>
                 <tr *ngFor="let data of rowSelectionUserCommon4Table.data; let i=index;"> <td>{{i+1}}</td> <td>{{data.title}}</td> <td>{{data.name}}</td> </tr>
@@ -282,7 +282,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.latestLogin" nzWidth="750" nzTitle="登录详情" [nzFooter]="userLatestLoginAtModalFooter" (nzOnCancel)="hideModal('latestLoginAt')" nzMaskClosable="false">
-            <nz-table #rowLatestLoginTable [nzData]="latestLoginData" [nzSimple]="true" *ngIf="!isSpinning">
+            <nz-table nzBordered #rowLatestLoginTable [nzData]="latestLoginData" [nzSimple]="true" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th>序号</th>
@@ -394,7 +394,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionBookingTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
+          <nz-table nzBordered #rowSelectionBookingTable [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -524,7 +524,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionBooking2Table [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
+          <nz-table nzBordered #rowSelectionBooking2Table [nzData]="dataOrder" [nzSimple]="true" [(nzPageSize)]="bookingPageSize" [nzShowPagination]="false" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -877,7 +877,7 @@
             </div>
           </div>
 
-          <nz-table #rowAdjustDataTable [nzData]="adjustData" [nzSimple]="true">
+          <nz-table nzBordered #rowAdjustDataTable [nzData]="adjustData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1067,7 +1067,7 @@
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
-                  <nz-table #rowsSuccessDataTable [nzData]="adjustDetail.itemsArr" [nzSimple]="true">
+                  <nz-table nzBordered #rowsSuccessDataTable [nzData]="adjustDetail.itemsArr" [nzSimple]="true">
                     <thead>
                       <tr>
                         <th>发送成功(总计x个)</th>
@@ -1138,7 +1138,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionRechargeTable [nzData]="rechargeData" [nzSimple]="true">
+          <nz-table nzBordered #rowSelectionRechargeTable [nzData]="rechargeData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1207,7 +1207,7 @@
             </div>
           </form>
 
-          <nz-table #rowSelectionInvoiceTable [nzData]="invoiceData" [nzSimple]="true">
+          <nz-table nzBordered #rowSelectionInvoiceTable [nzData]="invoiceData" [nzSimple]="true">
             <thead>
               <tr>
                 <th>序号</th>
@@ -1269,7 +1269,7 @@
                 <div nz-col nzSpan="4" class="right_alignment">开户账户：</div> <div nz-col nzSpan="8">{{invoiceItem.invoiceMsg.account}}</div>
               </div>
             </div>
-            <nz-table #rowSelectionInvoiceDetailTable [nzData]="invoiceItem.orderIds">
+            <nz-table nzBordered #rowSelectionInvoiceDetailTable [nzData]="invoiceItem.orderIds">
               <thead>
                 <tr>
                   <th>序号</th> <th>订单号</th> <th>出发地</th> <th>目的地</th> <th>订单金额</th> <th>订单状态</th> <th>出发时间</th>
