@@ -61,40 +61,40 @@
           <nz-table nzBordered #rowFeedBackTable [nzData]="feedbackInfo" [nzSimple]="true" nzShowSizeChanger [nzPageSize]="10" *ngIf="!isSpinning">
             <thead>
               <tr>
-                <th nzWidth="100px">序号</th>
-                <th nzWidth="100px">用户账号</th>
-                <th nzWidth="100px">用户昵称</th>
-                <th nzWidth="100px">问题类型</th>
-                <th nzWidth="100px">具体问题</th>
-                <th nzWidth="100px">问题描述</th>
-                <th nzWidth="100px">微信</th>
-                <th nzWidth="100px">邮箱</th>
-                <th nzWidth="100px">QQ</th>
-                <th nzWidth="100px">处理状态</th>
-                <th nzWidth="100px">回复状态</th>
-                <th nzWidth="100px">用户已读</th>
-                <th nzWidth="100px">反馈时间</th>
-                <th nzWidth="100px">操作</th>
+                <th>序号</th>
+                <th>用户账号</th>
+                <th>用户昵称</th>
+                <th>问题类型</th>
+                <th>具体问题</th>
+                <th>问题描述</th>
+                <th>微信</th>
+                <th>邮箱</th>
+                <th>QQ</th>
+                <th>处理状态</th>
+                <th>回复状态</th>
+                <th>用户已读</th>
+                <th>反馈时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let data of rowFeedBackTable.data; let i=index;">
-                <td nzWidth="100px">{{i + 1}}</td>
-                <td nzWidth="100px">{{data.phone}}</td>
-                <td nzWidth="100px">{{data.nickName}}</td>
-                <td nzWidth="100px">{{data.typeName}}</td>
-                <td nzWidth="100px">{{data.concreteProblems}}</td>
+                <td>{{i + 1}}</td>
+                <td>{{data.phone}}</td>
+                <td>{{data.nickName}}</td>
+                <td>{{data.typeName}}</td>
+                <td>{{data.concreteProblems}}</td>
                 <td nzTitle="{{data.words}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.words ? data.words.length > 12 ? data.words.substring(0, 12) + '…' : data.words : 'null'}}</a>
                 </td>
-                <td nzWidth="100px">{{data.wxNumber}}</td>
-                <td nzWidth="100px">{{data.email}}</td>
-                <td nzWidth="100px">{{data.qq}}</td>
-                <td nzWidth="100px">{{data.status === 'SUBMITTED' ? '未处理' : data.status === 'DOING' ? '处理中' : data.status === 'DONE' ? '已完成' : '未处理'}}</td>
-                <td nzWidth="100px">{{data.replyStatus === true ? '已回复' : '未回复'}}</td>
-                <td nzWidth="100px">{{data.readStatus === true ? '已读' : '未读'}}</td>
-                <td nzWidth="100px">{{data.date | date:'yyyy-MM-dd HH:mm:ss'}}</td><!-- :'GMT+16:00' -->
-                <td nzWidth="100px">
+                <td>{{data.wxNumber}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.qq}}</td>
+                <td>{{data.status === 'SUBMITTED' ? '未处理' : data.status === 'DOING' ? '处理中' : data.status === 'DONE' ? '已完成' : '未处理'}}</td>
+                <td>{{data.replyStatus === true ? '已回复' : '未回复'}}</td>
+                <td>{{data.readStatus === true ? '已读' : '未读'}}</td>
+                <td>{{data.date | date:'yyyy-MM-dd HH:mm:ss'}}</td><!-- :'GMT+16:00' -->
+                <td>
                   <button nz-button nzType="primary" (click)="showModal(data, 'feedBack')" style="margin-right: 10px;"><i class="anticon anticon-message"></i>回复</button>
                 </td>
               </tr>

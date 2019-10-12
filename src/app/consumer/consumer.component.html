@@ -54,7 +54,7 @@
                 <th>创建时间</th>
                 <th>序列号</th>
                 <th>对接凭证</th>
-                <th nzWidth="200px">操作</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -78,10 +78,10 @@
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
-                <td nzWidth="200px">
+                <t>
                   <button nz-button nzType="primary" (click)="showModal('modifyConsumer', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>编辑</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteConsumer', {event: $event, data: data})"><i class="anticon" [ngClass]="{'anticon-delete': data.available === true || data.available === undefined, 'anticon-poweroff': data.available === false}"></i>{{data.available === false ? '激活' : '作废'}}</button>
-                </td>
+                </t>
               </tr>
             </tbody>
           </nz-table>
@@ -317,9 +317,9 @@
             <nz-table nzBordered #consumerTable [nzData]="dataSerial" *ngIf="!isSpinning">
               <thead>
                 <tr>
-                  <th nzWidth="20px">序号</th>
-                  <th nzWidth="20px">序列号</th>
-                  <th nzWidth="20px">已激活次数</th>
+                  <th>序号</th>
+                  <th>序列号</th>
+                  <th>已激活次数</th>
                 </tr>
               </thead>
               <tbody>

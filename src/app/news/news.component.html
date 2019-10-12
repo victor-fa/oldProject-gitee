@@ -35,16 +35,16 @@
           <nz-table nzBordered #taggingNewsTable [nzData]="dataTaggingNews" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">词条数</th>
-                <th nzWidth="20px">已分类词条数</th>
-                <th nzWidth="20px">人名</th>
-                <th nzWidth="20px">地名</th>
-                <th nzWidth="20px">事件</th>
-                <th nzWidth="20px">无效</th>
-                <th nzWidth="20px">标注状态</th>
-                <th nzWidth="20px">上传时间</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>词条数</th>
+                <th>已分类词条数</th>
+                <th>人名</th>
+                <th>地名</th>
+                <th>事件</th>
+                <th>无效</th>
+                <th>标注状态</th>
+                <th>上传时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -59,8 +59,8 @@
                 <td>{{data.status === 'NEW' ? '未完成' : data.status === 'MARKED' ? '已完成' : ''}}</td>
                 <td>{{data.uploadTime}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('sortSpeech', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>词条分类</button>
-                  <button nz-button nzType="primary" (click)="showModal('submitTagAudit', data)" [disabled]="data.status === 'NEW'" style="margin-right: 10px;"><i class="anticon anticon-form"></i>提交审核</button>
+                  <button nz-button nzType="primary" (click)="showModal('sortSpeech', data)"><i class="anticon anticon-form"></i>词条分类</button>
+                  <button nz-button nzType="primary" (click)="showModal('submitTagAudit', data)" [disabled]="data.status === 'NEW'" style="margin-left: 10px;"><i class="anticon anticon-form"></i>提交审核</button>
                 </td>
               </tr>
             </tbody>
@@ -88,9 +88,9 @@
                 <nz-table nzBordered #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage" (nzPageIndexChange)="onChange($event, 'sortSpeechPage')">
                   <thead>
                     <tr>
-                      <th nzWidth="20px">序号</th>
-                      <th nzWidth="20px">词条</th>
-                      <th nzWidth="20px">词性分类</th>
+                      <th>序号</th>
+                      <th>词条</th>
+                      <th>词性分类</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -160,15 +160,15 @@
           <nz-table nzBordered #manualAuditTable [nzData]="dataManualAudit" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataManualAuditPage">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">提交审核来源</th>
-                <th nzWidth="20px">词条数</th>
-                <th nzWidth="20px">人名</th>
-                <th nzWidth="20px">地名</th>
-                <th nzWidth="20px">事件</th>
-                <th nzWidth="20px">无效</th>
-                <th nzWidth="20px">提交时间</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>提交审核来源</th>
+                <th>词条数</th>
+                <th>人名</th>
+                <th>地名</th>
+                <th>事件</th>
+                <th>无效</th>
+                <th>提交时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -188,7 +188,7 @@
                   <button nz-button nzType="primary" (click)="showModal(data.status === 'CONFIRMED' ? 'updateLoading'  : '', data)" [disabled]="data.status === 'SUBMITTED' || data.status === 'UPDATED'" style="margin-right: 10px;">
                     <i class="anticon anticon-form"></i>{{data.status === 'SUBMITTED' || data.status === 'CONFIRMED' ? '待更新' : data.status === 'UPDATED' ? '已更新' : ''}}
                   </button>
-                  <button nz-button nzType="primary" (click)="showModal('deleteManualAudit', data)" style="margin-right: 10px;">
+                  <button nz-button nzType="primary" (click)="showModal('deleteManualAudit', data)">
                     <i class="anticon anticon-delete"></i>删除
                   </button>
                 </td>
@@ -231,9 +231,9 @@
                 <nz-table nzBordered #manualAuditModelTable [(nzData)]="dataManualAuditModel" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
-                      <th nzWidth="20px">序号</th>
-                      <th nzWidth="20px">词条</th>
-                      <th nzWidth="20px">词性分类</th>
+                      <th>序号</th>
+                      <th>词条</th>
+                      <th>词性分类</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -327,9 +327,9 @@
               [nzFooter]="newsThesaurusFooter" [(nzPageIndex)]="pageNum.dataNewsThesaurusPage" nzShowRowSelection nzShowSizeChanger>
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">词条</th>
-                <th nzWidth="20px">修改词性</th>
+                <th>序号</th>
+                <th>词条</th>
+                <th>修改词性</th>
               </tr>
             </thead>
             <tbody>
@@ -436,7 +436,7 @@
         </nz-tab>
 
 
-        <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
+        <!-- <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
           <ng-template #newsNERTemplate><i class="anticon anticon-bulb"></i>新闻NER</ng-template>
           <div nz-row>
             <form [formGroup]="newsNERSearchForm">
@@ -461,11 +461,11 @@
           <nz-table nzBordered #newsNERTable [nzData]="dataNewsNER" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">断句库名称</th>
-                <th nzWidth="20px">段距数量</th>
-                <th nzWidth="20px">上传时间</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>断句库名称</th>
+                <th>段距数量</th>
+                <th>上传时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -474,7 +474,6 @@
                 <td>{{data.name}}</td>
                 <td>{{data.size}}</td>
                 <td>{{data.createDate ? data.createDate[0] + '-' + data.createDate[1] + '-' + data.createDate[2] + ' ' + data.createDate[3] + '-' + data.createDate[4] + '-' + data.createDate[5] : ''}}</td>
-                <!-- <td>{{data.createDate}}</td> -->
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('newsNERTest', data)" style="margin-right: 10px;"><i class="anticon anticon-code-o"></i>测试</button>
                   <button nz-button nzType="primary" (click)="showModal('newsNER', data)" style="margin-right: 10px;"><i class="anticon anticon-filter"></i>提取</button>
@@ -506,13 +505,13 @@
                 <nz-table nzBordered #newsNERResultTable [nzData]="dataNewsNERResult" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
                     <tr>
-                      <th nzWidth="20px">序号</th>
-                      <th nzWidth="20px">测试断句结果</th>
-                      <th nzWidth="20px">测试进度</th>
-                      <th nzWidth="20px">测试结果</th>
-                      <th nzWidth="20px">测试链接</th>
-                      <th nzWidth="20px">操作人</th>
-                      <th nzWidth="20px">测试时间</th>
+                      <th>序号</th>
+                      <th>测试断句结果</th>
+                      <th>测试进度</th>
+                      <th>测试结果</th>
+                      <th>测试链接</th>
+                      <th>操作人</th>
+                      <th>测试时间</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -533,7 +532,7 @@
               <button nz-button nzType="default" (click)="hideModal('newsNERResult')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
-        </nz-tab>
+        </nz-tab> -->
 
       </nz-tabset>
     </nz-card-tab>

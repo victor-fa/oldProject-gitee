@@ -50,13 +50,13 @@
           <nz-table nzBordered #couponManagerTable [nzData]="dataCoupon" *ngIf="!isSpinning">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">优惠券创建时间</th>
-                <th nzWidth="20px">优惠券编号</th>
-                <th nzWidth="20px">优惠券名称</th>
-                <th nzWidth="20px">优惠券类型</th>
-                <th nzWidth="20px">时间限制</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>优惠券创建时间</th>
+                <th>优惠券编号</th>
+                <th>优惠券名称</th>
+                <th>优惠券类型</th>
+                <th>时间限制</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -467,15 +467,15 @@
           <nz-table nzBordered #contentTable [nzData]="dataActivity" *ngIf="!isSpinning">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">活动名称</th>
-                <th nzWidth="20px">活动状态</th>
-                <th nzWidth="20px">活动时间</th>
-                <th nzWidth="20px">关联红包数</th>
-                <th nzWidth="20px">已领取/剩余</th>
-                <th nzWidth="20px">操作人</th>
-                <th nzWidth="20px">创建时间</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>活动名称</th>
+                <th>活动状态</th>
+                <th>活动时间</th>
+                <th>关联红包数</th>
+                <th>已领取/剩余</th>
+                <th>操作人</th>
+                <th>创建时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -838,13 +838,13 @@
               <thead>
                 <tr>
                   <th nzShowCheckbox [(nzChecked)]="allSearchCouponChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAllSearchCoupon($event)"></th>
-                  <th nzWidth="20px">序号</th>
-                  <th nzWidth="20px">优惠券创建时间</th>
-                  <th nzWidth="20px">优惠券编号</th>
-                  <th nzWidth="20px">优惠券名称</th>
-                  <th nzWidth="20px">优惠券类型</th>
-                  <th nzWidth="20px">数量限制</th>
-                  <th nzWidth="20px">时间限制</th>
+                  <th>序号</th>
+                  <th>优惠券创建时间</th>
+                  <th>优惠券编号</th>
+                  <th>优惠券名称</th>
+                  <th>优惠券类型</th>
+                  <th>数量限制</th>
+                  <th>时间限制</th>
                 </tr>
               </thead>
               <tbody>
@@ -911,15 +911,15 @@
           <nz-table nzBordered #batchsendTable [nzData]="dataBatchsend" *ngIf="!isSpinning">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">发放日期</th>
-                <th nzWidth="20px">发放时间</th>
-                <th nzWidth="20px">发放人数</th>
-                <th nzWidth="20px">失败人数</th>
-                <th nzWidth="20px">优惠券数量</th>
-                <th nzWidth="20px">附带消息</th>
-                <th nzWidth="20px">操作人</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>发放日期</th>
+                <th>发放时间</th>
+                <th>发放人数</th>
+                <th>失败人数</th>
+                <th>优惠券数量</th>
+                <th>附带消息</th>
+                <th>操作人</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -1057,13 +1057,13 @@
               <thead>
                 <tr>
                   <th nzShowCheckbox [(nzChecked)]="allSearchCouponInBatchsendChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAllSearchCoupon($event)"></th>
-                  <th nzWidth="20px">序号</th>
-                  <th nzWidth="20px">优惠券创建时间</th>
-                  <th nzWidth="20px">优惠券编号</th>
-                  <th nzWidth="20px">优惠券名称</th>
-                  <th nzWidth="20px">优惠券类型</th>
-                  <th nzWidth="20px">数量限制</th>
-                  <th nzWidth="20px">时间限制</th>
+                  <th>序号</th>
+                  <th>优惠券创建时间</th>
+                  <th>优惠券编号</th>
+                  <th>优惠券名称</th>
+                  <th>优惠券类型</th>
+                  <th>数量限制</th>
+                  <th>时间限制</th>
                 </tr>
               </thead>
               <tbody>
@@ -1222,7 +1222,7 @@
           <nz-table nzBordered #rowCouponStatisticsTable [nzData]="couponStatisticsData" [nzSimple]="true" [(nzPageSize)]="couponStatisticsPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
-                <th nzWidth="50px">序号</th>
+                <th>序号</th>
                 <th>活动名称</th>
                 <!-- <th>活动时间</th> -->
                 <th>优惠券编号</th>
@@ -1238,7 +1238,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowCouponStatisticsTable.data; let i=index;">
-                <td nzWidth="50px">{{i+1}}</td>
+                <td>{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <!-- <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}</td> -->
                 <td>{{data.describe}}</td>
@@ -1284,7 +1284,7 @@
           <nz-table nzBordered #rowSelectionTable [nzData]="beanData" [nzSimple]="true" [(nzPageSize)]="beanPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
-                <th nzWidth="50px">序号</th>
+                <th>序号</th>
                 <th>活动名称</th>
                 <th>送豆规则</th>
                 <th>有效时间</th>
@@ -1295,7 +1295,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
-                <td nzWidth="50px">{{i+1}}</td>
+                <td>{{i+1}}</td>
                 <td>{{data.title}}</td>
                 <td>{{data.describe}}</td>
                 <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{data.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
@@ -1516,19 +1516,19 @@
           <nz-table nzBordered #taskCenterTable [nzData]="dataTaskCenter" *ngIf="!isSpinning" [nzScroll]="{x:'2800px'}">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">任务类型</th>
-                <th nzWidth="20px">任务名称</th>
-                <th nzWidth="20px">次数限制</th>
-                <th nzWidth="20px">任务奖励1</th>
-                <th nzWidth="20px">任务奖励2</th>
-                <th nzWidth="20px">任务奖励3</th>
-                <th nzWidth="20px">任务行为</th>
-                <th nzWidth="20px">任务描述</th>
-                <th nzWidth="20px">任务排序</th>
-                <th nzWidth="20px">开启状态</th>
-                <th nzWidth="20px">创建时间</th>
-                <th nzWidth="20px">操作</th>
+                <th>序号</th>
+                <th>任务类型</th>
+                <th>任务名称</th>
+                <th>次数限制</th>
+                <th>任务奖励1</th>
+                <th>任务奖励2</th>
+                <th>任务奖励3</th>
+                <th>任务行为</th>
+                <th>任务描述</th>
+                <th>任务排序</th>
+                <th>开启状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -1949,15 +1949,15 @@
           <nz-table nzBordered #taskLogsTable [nzData]="dataTaskLogs" *ngIf="!isSpinning">
             <thead>
               <tr>
-                <th nzWidth="20px">序号</th>
-                <th nzWidth="20px">完成时间</th>
-                <th nzWidth="20px">用户ID</th>
-                <th nzWidth="20px">用户账号</th>
-                <th nzWidth="20px">用户昵称</th>
-                <th nzWidth="20px">任务名称</th>
-                <th nzWidth="20px">任务奖励1</th>
-                <th nzWidth="20px">任务奖励2</th>
-                <th nzWidth="20px">任务奖励3</th>
+                <th>序号</th>
+                <th>完成时间</th>
+                <th>用户ID</th>
+                <th>用户账号</th>
+                <th>用户昵称</th>
+                <th>任务名称</th>
+                <th>任务奖励1</th>
+                <th>任务奖励2</th>
+                <th>任务奖励3</th>
               </tr>
             </thead>
             <tbody>
