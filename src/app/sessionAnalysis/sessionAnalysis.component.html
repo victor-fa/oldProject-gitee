@@ -1,7 +1,7 @@
 <app-left-nav></app-left-nav>
 <div class="sessionAnalysis" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
 
-  <nz-card style="width: 100%;">
+  <nz-card>
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabsetJson.currentNum">
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('sessionLog')" *ngIf="commonService.haveMenuPermission('children', '对话日志')">

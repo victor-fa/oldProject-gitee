@@ -43,14 +43,9 @@
   margin-left: 0;
 }
 
-// 左右多选输入框靠左排榜
-.ant-checkbox-group {
-  float: left;
-}
-
-// 左右多选输入框靠左排榜
-.ant-checkbox-wrapper {
-  float: left;
+// 所有card处理成百分百撑开
+.ant-card-bordered {
+  width: 100%;
 }
 
 .ant-table-footer {

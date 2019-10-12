@@ -35,7 +35,7 @@
       </div>
     </div>
   </form>
-  <nz-card style="width: 100%;">
+  <nz-card>
     <nz-card-tab>
       <nz-tabset nzSize="large" [(nzSelectedIndex)]="currentTabNum">
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('dataApp')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
