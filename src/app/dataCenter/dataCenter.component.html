@@ -5,13 +5,13 @@
       <div nz-col nzSpan="2">
         <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-question-circle-o"></i>数据说明？</button>
       </div>
-      <div nz-col nzSpan="3" class="span_down right_alignment">
+      <div nz-col nzSpan="3" class="right_alignment">
         查询日期范围：
       </div>
-      <div nz-col nzSpan="7" class="span_down">
+      <div nz-col nzSpan="7">
         <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange('date', $event)"></nz-range-picker>
       </div>
-      <div nz-col nzSpan="1" class="span_down spacing right_alignment">
+      <div nz-col nzSpan="1" class="spacing right_alignment">
         渠道：
       </div>
       <div nz-col nzSpan="2">
@@ -24,7 +24,7 @@
         </nz-select>
       </div>
       <div nz-col nzSpan="2"></div>
-      <div nz-col nzSpan="3" class="span_down right_alignment">
+      <div nz-col nzSpan="3" class="right_alignment">
         <label nz-checkbox [(nzChecked)]="checkAllChannel">全部渠道</label>
       </div>
       <div nz-col nzSpan="2">

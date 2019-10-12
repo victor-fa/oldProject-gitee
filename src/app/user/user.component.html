@@ -7,13 +7,13 @@
           <ng-template #userTemplate><i class="anticon anticon-user"></i>用户信息</ng-template>
           <form [formGroup]="searchUserForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="userOrderPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">用户状态：</div>
+              <div nz-col nzSpan="2" class="right_alignment">用户状态：</div>
               <div nz-col nzSpan="3">
                 <nz-select [(ngModel)]="userLocked" formControlName="locked">
                   <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
@@ -22,7 +22,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 用户ID：
               </div>
               <div nz-col nzSpan="3">
@@ -36,12 +36,12 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">注册时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">注册时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">登录时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">登录时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
               </div>
@@ -315,21 +315,21 @@
           <ng-template #bookingHypostaticTemplate><i class="anticon anticon-inbox"></i>实体服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="bookingPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 客户ID：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="channelType" placeholder="输入客户ID" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="2">
@@ -343,7 +343,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 订单状态：
               </div>
               <div nz-col nzSpan="3">
@@ -372,7 +372,7 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 订单编号：
               </div>
               <div nz-col nzSpan="3">
@@ -380,10 +380,10 @@
                   style="padding: 4px 11px;height: 32px;color: rgba(0,0,0,.65);border: 1px solid #d9d9d9;border-radius: 4px;transition: all .3s;">
               </div>
               <div nz-col nzSpan="2"></div>
-              <div nz-col nzSpan="3" class="span_down right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 订单生成日期：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="5"></div>
@@ -453,21 +453,21 @@
           <ng-template #bookingDigitalTemplate><i class="anticon anticon-qrcode"></i>数字服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 客户ID：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="channelType" placeholder="输入客户ID" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="7">
@@ -479,13 +479,13 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 订单编号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default" class="ant-input">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 订单状态：
               </div>
               <div nz-col nzSpan="3">
@@ -510,10 +510,10 @@
                   <!-- <nz-option required [nzLabel]="'超时取消'"></nz-option> -->
                 </nz-select>
               </div>
-              <div nz-col nzSpan="3" class="span_down right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 订单生成日期：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="2"></div>
@@ -856,11 +856,11 @@
         <nz-tab [nzTitle]="adjustTemplate" (nzClick)="changePanel('adjust')" *ngIf="commonService.haveMenuPermission('children', '数据调整')">
           <ng-template #adjustTemplate><i class="anticon anticon-calculator"></i>数据调整</ng-template>
           <div nz-row>
-            <div nz-col nzSpan="3" class="span_down right_alignment">操作时间：</div>
+            <div nz-col nzSpan="3" class="right_alignment">操作时间：</div>
             <div nz-col nzSpan="7">
               <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'adjust')"></nz-range-picker>
             </div>
-            <div nz-col nzSpan="3" class="span_down right_alignment">货币类型：</div>
+            <div nz-col nzSpan="3" class="right_alignment">货币类型：</div>
             <div nz-col nzSpan="4">
               <nz-select [(ngModel)]="adjustType">
                 <nz-option required [nzLabel]="'---全部---'" nzValue="ALL"></nz-option>
@@ -914,7 +914,7 @@
           <nz-modal [(nzVisible)]="visiable.adjustAdd" nzWidth="950" nzTitle="新增发放" [nzFooter]="adjustAddModalFooter" (nzOnCancel)="hideModal('adjustAdd')" nzMaskClosable="false">
             <form [formGroup]="addAdjustForm">
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">发送对象</div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">
                   请填写发送的用户id（手机号码），如果需要发送多个，请换行输入<br>
                   单次发送人数上限：10000（如果需要调整，请通知产品）<br>
@@ -943,46 +943,46 @@
               </div>
               <div nz-row>
                 <div nz-col nzSpan="3"></div>
-                <div nz-col nzSpan="4" class="span_down">
+                <div nz-col nzSpan="4">
                   <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
                     <input type="file" (change)="getExcel($event)" multiple="false" />
                   </a>
                 </div>
-                <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+                <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">附带消息</div>
-                <div nz-col nzSpan="20" class="span_down" style="color: #a9a9a9">
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">附带消息</div>
+                <div nz-col nzSpan="20" style="color: #a9a9a9">
                   一般适用于奖励/补偿用户，附带的信息
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">标题：</div>
+                <div nz-col nzSpan="3" class="right_alignment">标题：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input nzSize="default" formControlName="noticeTitle" [(ngModel)]="adjustDetail.noticeTitle" placeholder="请输入标题">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">类型：</div>
-                <div nz-col nzSpan="9" class="span_down">系统消息</div>
+                <div nz-col nzSpan="3" class="right_alignment">类型：</div>
+                <div nz-col nzSpan="9">系统消息</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">摘要：</div>
+                <div nz-col nzSpan="3" class="right_alignment">摘要：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input nzSize="default" formControlName="noticeAbstract" [(ngModel)]="adjustDetail.noticeAbstract" placeholder="请输入摘要">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">内容：</div>
+                <div nz-col nzSpan="3" class="right_alignment">内容：</div>
                 <div nz-col nzSpan="20">
-                  <quill-editor formControlName="noticeContent" [(ngModel)]="adjustDetail.noticeContent" [modules]="config" [style]="{height: '300px'}"></quill-editor>
+                  <quill-editor formControlName="noticeContent" [(ngModel)]="adjustDetail.noticeContent" [modules]="commonService.config" [style]="{height: '300px'}"></quill-editor>
                 </div>
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">调整原因</div>
-                <div nz-col nzSpan="20" class="span_down" style="color: #a9a9a9">
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">调整原因</div>
+                <div nz-col nzSpan="20" style="color: #a9a9a9">
                   调整原因，是为了后面追溯的时候，能够追溯到为什么有这个操作，也方便归因
                 </div>
               </div>
@@ -1039,7 +1039,7 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="right_alignment span_down">
+              <div nz-col nzSpan="4" class="right_alignment">
                 验证码：
               </div>
               <div nz-col nzSpan="2"></div>
@@ -1059,10 +1059,10 @@
             <div *ngIf="adjustDetail">
               <div nz-row>
                 <div nz-col nzSpan="2"></div>
-                <div nz-col nzSpan="5" class="span_down">发放日期<br>{{adjustDetail.createDate ? (adjustDetail.createDate | date:'yyyy-MM-dd') : 'null'}}</div>
-                <div nz-col nzSpan="5" class="span_down">发放时间<br>{{adjustDetail.createTime}}</div>
-                <div nz-col nzSpan="5" class="span_down">发放人数<br>{{adjustDetail.all}}</div>
-                <div nz-col nzSpan="5" class="span_down">失败人数<br>{{adjustDetail.failNum}}</div>
+                <div nz-col nzSpan="5">发放日期<br>{{adjustDetail.createDate ? (adjustDetail.createDate | date:'yyyy-MM-dd') : 'null'}}</div>
+                <div nz-col nzSpan="5">发放时间<br>{{adjustDetail.createTime}}</div>
+                <div nz-col nzSpan="5">发放人数<br>{{adjustDetail.all}}</div>
+                <div nz-col nzSpan="5">失败人数<br>{{adjustDetail.failNum}}</div>
                 <div nz-col nzSpan="2"></div>
               </div>
               <div nz-row>
@@ -1122,12 +1122,12 @@
           <ng-template #rechargeTemplate><i class="anticon anticon-red-envelope"></i>充值记录</ng-template>
           <form [formGroup]="searchRechargeForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="phone" [(ngModel)]="rechargePhone" placeholder="输入用户账号" nzSize="default">
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">充值时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">充值时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'recharge')"></nz-range-picker>
               </div>
@@ -1171,11 +1171,11 @@
           <ng-template #invoiceTemplate><i class="anticon anticon-file"></i>开票记录</ng-template>
           <form [formGroup]="searchInvoiceForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="phone" [(ngModel)]="invoicePhone" placeholder="输入用户账号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">开票类型：</div>
+              <div nz-col nzSpan="2" class="right_alignment">开票类型：</div>
               <div nz-col nzSpan="2">
                 <nz-select [(ngModel)]="invoiceType" formControlName="type">
                   <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
@@ -1187,7 +1187,7 @@
                   <!-- <nz-option required [nzLabel]="'星座'" nzValue="COIN"></nz-option> -->
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">开票状态：</div>
+              <div nz-col nzSpan="2" class="right_alignment">开票状态：</div>
               <div nz-col nzSpan="2">
                 <nz-select [(ngModel)]="invoiceState" formControlName="state">
                   <nz-option required [nzLabel]="'全部状态'" nzValue=""></nz-option>
@@ -1197,7 +1197,7 @@
                   <nz-option required [nzLabel]="'待开票'" nzValue="3"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">开票时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">开票时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'invoice')"></nz-range-picker>
               </div>

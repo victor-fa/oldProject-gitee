@@ -8,16 +8,16 @@
           <ng-template #freeTemplate><i class="anticon anticon-pay-circle-o"></i>免费配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchFreeForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 渠道：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="appChannelId" placeholder="请输入渠道名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 创建时间：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'free')"></nz-range-picker>
               </div>
             </form>
@@ -62,8 +62,8 @@
 
           <nz-modal [(nzVisible)]="visiable.addFree" nzWidth="650" nzTitle="渠道设置" [nzFooter]="addFreeFooter" (nzOnCancel)="hideModal('addFree')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道类型：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道类型：</div>
+              <div nz-col nzSpan="20">
                 <nz-radio-group [(ngModel)]="dataFree.channelType" (click)="loadData('freeChannel')">
                   <label nz-col nz-radio [nzValue]="'CUSTOMER'">客户ID</label>
                   <label nz-col nz-radio [nzValue]="'APP'">APP</label>
@@ -71,8 +71,8 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道名称：</div>
+              <div nz-col nzSpan="20">
                 <ng-container *ngIf="checkFreeOptions.length === 0">
                   没有新渠道需要配置
                 </ng-container>
@@ -82,14 +82,14 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">免费方式：</div>
+              <div nz-col nzSpan="6">
                 <nz-radio-group [(ngModel)]="dataFree.freeMode">
                   <label nz-col nz-radio [nzValue]="'BY_ACCOUNT'">按账号计算</label>
                   <label nz-col nz-radio [nzValue]="'BY_SKILL'">按游戏计算</label>
                 </nz-radio-group>
               </div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="dataFree.freeCount" placeholder="请输入免费次数" nzSize="default"><br>
                 在具体游戏中进行设置
               </div>
@@ -102,26 +102,26 @@
 
           <nz-modal [(nzVisible)]="visiable.editFree" nzWidth="650" nzTitle="修改设置" [nzFooter]="editFreeFooter" (nzOnCancel)="hideModal('editFree')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道类型：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道类型：</div>
+              <div nz-col nzSpan="20">
                 {{dataFree.channelType === 'CUSTOMER' ? '客户ID' : dataFree.channelType === 'APP' ? 'APP' : ''}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道名称：</div>
+              <div nz-col nzSpan="20">
                 {{dataFree.appChannelIds}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">免费方式：</div>
+              <div nz-col nzSpan="6">
                 <nz-radio-group [(ngModel)]="dataFree.freeMode">
                   <label nz-col nz-radio [nzValue]="'BY_ACCOUNT'">按账号计算</label>
                   <label nz-col nz-radio [nzValue]="'BY_SKILL'">按游戏计算</label>
                 </nz-radio-group>
               </div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="dataFree.freeCount" placeholder="请输入免费次数" nzSize="default"><br>
                 在具体游戏中进行设置
               </div>
@@ -138,16 +138,16 @@
           <ng-template #skillTemplate><i class="anticon anticon-bulb"></i>付费技能</ng-template>
           <div nz-row>
             <form [formGroup]="searchSkillForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 付费技能ID：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="skillTypeId" placeholder="请输入付费技能ID" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 创建时间：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'skill')"></nz-range-picker>
               </div>
             </form>
@@ -181,13 +181,13 @@
 
           <nz-modal [(nzVisible)]="visiable.addSkill" nzWidth="650" nzTitle="新增付费技能" [nzFooter]="addSkillFooter" (nzOnCancel)="hideModal('addSkill')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">付费技能ID<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">付费技能ID<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 新增后不能修改，不能删除，请谨慎添加
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <textarea rows="10" [(ngModel)]="dataSkill.skillTypeIds" nz-input placeholder="请输入付费技能ID"></textarea>
               </div>
             </div>
@@ -203,22 +203,22 @@
           <ng-template #payTemplate><i class="anticon anticon-pay-circle"></i>付费配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchPayForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 付费技能名称：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="skillName" placeholder="请输入付费技能名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 渠道：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="appChannelId" [(ngModel)]="appChannelId" placeholder="请输入渠道名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 创建时间：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'pay')"></nz-range-picker>
               </div>
             </form>
@@ -268,39 +268,39 @@
 
           <nz-modal [(nzVisible)]="visiable.addPay" nzWidth="850" nzTitle="新增付费配置" [nzFooter]="addPayFooter" (nzOnCancel)="hideModal('addPay')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">付费技能ID<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">付费技能ID<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <nz-radio-group [(ngModel)]="dataPay.skillTypeId">
                   <label nz-col nzSpan="11" nz-radio *ngFor="let data of skillData;" [nzValue]="data.skillTypeId" (click)="onChange(data, 'skillMode')">{{data.skillTypeId}}</label>
                 </nz-radio-group>
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">付费技能名称<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">付费技能名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataPay.skillName" placeholder="请输入付费技能名称" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <nz-radio-group [(ngModel)]="dataPay.appChannelId">
                   <label nz-col nzSpan="11" nz-radio *ngFor="let data of checkPayOptions;" [nzValue]="data.value" (click)="onChange(data, 'freeMode')">{{data.label}}</label>
                 </nz-radio-group>
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式<font color="red">*</font>：</div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">免费方式<font color="red">*</font>：</div>
+              <div nz-col nzSpan="3">
                 {{dataPay.freeMode === 'BY_ACCOUNT' ? '按账号计算' : dataPay.freeMode === 'BY_SKILL' ? '按游戏计算' : ''}}
               </div>
-              <div nz-col nzSpan="6" class="span_down" *ngIf="dataPay.freeMode === 'BY_SKILL'">
+              <div nz-col nzSpan="6" *ngIf="dataPay.freeMode === 'BY_SKILL'">
                 <input nz-input [(ngModel)]="dataPay.freeCount" placeholder="请输入免费次数" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">是否需要付费<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">是否需要付费<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <nz-radio-group [(ngModel)]="dataPay.needPay">
                   <label nz-col nzSpan="11" nz-radio [nzValue]="true">需要付费</label>
                   <label nz-col nzSpan="11" nz-radio [nzValue]="false">不需要付费</label>
@@ -308,17 +308,17 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">单次进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default" [disabled]="!dataPay.needPay">
               </div>
-              <div nz-col nzSpan="1" class="span_down">
+              <div nz-col nzSpan="1">
                 &nbsp;/ 次
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">周期进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input [disabled]="!dataPay.needPay" placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位
@@ -344,35 +344,35 @@ x（分钟）,y（元）
 
           <nz-modal [(nzVisible)]="visiable.editPay" nzWidth="850" nzTitle="修改付费配置" [nzFooter]="editPayFooter" (nzOnCancel)="hideModal('editPay')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">付费技能ID<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">付费技能ID<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 {{dataPay.skillTypeId}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">付费技能名称<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">付费技能名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 {{dataPay.skillName}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">渠道名称<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">渠道名称<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 {{dataPay.appChannelId}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">免费方式<font color="red">*</font>：</div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">免费方式<font color="red">*</font>：</div>
+              <div nz-col nzSpan="3">
                 {{dataPay.freeMode === 'BY_ACCOUNT' ? '按账号计算' : dataPay.freeMode === 'BY_SKILL' ? '按游戏计算' : ''}}
               </div>
-              <div nz-col nzSpan="6" class="span_down" *ngIf="dataPay.freeMode === 'BY_SKILL'">
+              <div nz-col nzSpan="6" *ngIf="dataPay.freeMode === 'BY_SKILL'">
                 <input nz-input [(ngModel)]="dataPay.freeCount" placeholder="请输入免费次数" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">是否需要付费<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">是否需要付费<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <nz-radio-group [(ngModel)]="dataPay.needPay">
                   <label nz-col nzSpan="11" nz-radio [nzValue]="true">需要付费</label>
                   <label nz-col nzSpan="11" nz-radio [nzValue]="false">不需要付费</label>
@@ -380,17 +380,17 @@ x（分钟）,y（元）
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">单次进入定价<font color="red">*</font>：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">单次进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="dataPay.single" placeholder="请输入单次进入游戏的价格" nzSize="default" [disabled]="!dataPay.needPay">
               </div>
-              <div nz-col nzSpan="1" class="span_down">
+              <div nz-col nzSpan="1">
                 &nbsp;/ 次
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">周期进入定价<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">周期进入定价<font color="red">*</font>：</div>
+              <div nz-col nzSpan="20">
                 <textarea rows="15" [(ngModel)]="dataPay.skillPrice" nz-input [disabled]="!dataPay.needPay" placeholder="请输入周期及该周期的价格，输入格式:
 x（分钟）,y（元）
 周期以分钟为单位

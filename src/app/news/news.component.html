@@ -8,7 +8,7 @@
           <ng-template #taggingNewsTemplate><i class="anticon anticon-flag"></i>人工标注</ng-template>
           <div nz-row>
             <form [formGroup]="taggingNewsSearchForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 标注状态：
               </div>
               <div nz-col nzSpan="4">
@@ -19,7 +19,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 上传时间：
               </div>
               <div nz-col nzSpan="7">
@@ -71,10 +71,10 @@
 
           <nz-modal [(nzVisible)]="visiable.sortSpeech" nzWidth="850" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 标注本页：
               </div>
-              <div nz-col nzSpan="21" class="span_down">
+              <div nz-col nzSpan="21">
                 <nz-radio-group [(ngModel)]="sortSpeechDate.type" (ngModelChange)="onChange($event, 'sortPage')">
                   <label nz-radio nzValue="PERSON">人名</label>
                   <label nz-radio nzValue="ADDRESS">地名</label>
@@ -123,14 +123,14 @@
           <div nz-row>
             <form [formGroup]="manualAuditSearchForm">
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 提交审核来源：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="submitter" placeholder="输入提交审核来源" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 审核状态：
               </div>
               <div nz-col nzSpan="3">
@@ -142,7 +142,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 提交时间：
               </div>
               <div nz-col nzSpan="7">
@@ -201,14 +201,14 @@
 
           <nz-modal [(nzVisible)]="visiable.manualAudit" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 词条名称：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="manualAuditSearchData.word" placeholder="输入词条名称" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 词条类型：
               </div>
               <div nz-col nzSpan="3">
@@ -261,7 +261,7 @@
 
           <nz-modal [(nzVisible)]="visiable.uploadAudit" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="4" class="spacing right_alignment">
                 词性类型：
               </div>
               <div nz-col nzSpan="20">
@@ -294,7 +294,7 @@
           <ng-template #newsThesaurusTemplate><i class="anticon anticon-global"></i>新闻词库</ng-template>
           <div nz-row>
             <form [formGroup]="newsThesaurusSearchForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 新闻词库：
               </div>
               <div nz-col nzSpan="3">
@@ -306,14 +306,14 @@
                   <nz-option required [nzLabel]="'无效'" [nzValue]="'INVALID'"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 词条名称：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="name" placeholder="输入词条名称" nzSize="default">
               </div>
             </form>
-            <div nz-col nzSpan="9" class="span_down" style="padding-left: 10px">
+            <div nz-col nzSpan="9" style="padding-left: 10px">
               <label nz-checkbox [(nzChecked)]="checkAccurate" formControlName="checkAccurate">精确查询</label>
             </div>
             <div nz-col nzSpan="2">
@@ -350,12 +350,12 @@
           </nz-table>
           <ng-template #newsThesaurusFooter>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down">人名：{{paramNewsThesaurus.person}}</div>
-              <div nz-col nzSpan="3" class="span_down">地名：{{paramNewsThesaurus.address}}</div>
-              <div nz-col nzSpan="3" class="span_down">事件：{{paramNewsThesaurus.event}}</div>
-              <div nz-col nzSpan="3" class="span_down">无效：{{paramNewsThesaurus.invalid}}</div>
+              <div nz-col nzSpan="3">人名：{{paramNewsThesaurus.person}}</div>
+              <div nz-col nzSpan="3">地名：{{paramNewsThesaurus.address}}</div>
+              <div nz-col nzSpan="3">事件：{{paramNewsThesaurus.event}}</div>
+              <div nz-col nzSpan="3">无效：{{paramNewsThesaurus.invalid}}</div>
               <div nz-col nzSpan="9"></div>
-              <div nz-col nzSpan="1" style="font-weight: bold" class="span_down">{{pageNum.dataNewsThesaurusNumber+1}} / {{pageNum.dataNewsThesaurusTotal}}</div>
+              <div nz-col nzSpan="1" style="font-weight: bold">{{pageNum.dataNewsThesaurusNumber+1}} / {{pageNum.dataNewsThesaurusTotal}}</div>
               <div nz-col nzSpan="1">
                 <button nz-button nzType="primary" (click)="onChange('', 'newsThesaurusLast')" [disabled]="pageNum.dataNewsThesaurusNumber === 0"><</button>
               </div>
@@ -370,7 +370,7 @@
 
           <nz-modal [(nzVisible)]="visiable.addNewsThesaurus" nzWidth="650" nzTitle="新增词条" [nzFooter]="addNewsThesaurusFooter" (nzOnCancel)="hideModal('addNewsThesaurus')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="4" class="spacing right_alignment">
                 词性类型：
               </div>
               <div nz-col nzSpan="20">
@@ -403,7 +403,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="24" class="spacing right_alignment">
                 <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.success" nzSize="default" [disabled]="true"></textarea>
               </div>
             </div>
@@ -413,7 +413,7 @@
               </div>
             </div>
             <div nz-row  *ngFor="let data of addNewsThesaurusData.failArr; let i=index;">
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 {{data.word}}
               </div>
               <div nz-col nzSpan="16">
@@ -440,13 +440,13 @@
           <ng-template #newsNERTemplate><i class="anticon anticon-bulb"></i>新闻NER</ng-template>
           <div nz-row>
             <form [formGroup]="newsNERSearchForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 断句库名称：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="name" placeholder="输入断句库名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 上传时间：
               </div>
               <div nz-col nzSpan="7">

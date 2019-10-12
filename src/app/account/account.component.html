@@ -41,7 +41,7 @@
           <nz-modal [(nzVisible)]="visiable.addRole" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')" nzMaskClosable="false">
             <form [formGroup]="roleAddForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down spacing">
+                <div nz-col nzSpan="4" class="spacing">
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down spacing">
+                <div nz-col nzSpan="4" class="spacing">
                   角色描述：
                 </div>
                 <div nz-col nzSpan="20">
@@ -58,13 +58,13 @@
               </div>
             </form>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down spacing">
+              <div nz-col nzSpan="4" class="spacing">
                 <font color="red">*</font>权限设置：
               </div>
               <div nz-col nzSpan="10">
                 <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
               </div>
-              <div nz-col nzSpan="10" class="span_down spacing">
+              <div nz-col nzSpan="10" class="spacing">
                 一般情况仅勾选一个，如果勾选多个则可以切换平台
               </div>
             </div>
@@ -194,7 +194,7 @@
           <nz-modal [(nzVisible)]="visiable.modifyRole" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')" nzMaskClosable="false">
             <form [formGroup]="roleModifyForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down spacing">
+                <div nz-col nzSpan="4" class="spacing">
                   <font color="red">*</font>角色名称：
                 </div>
                 <div nz-col nzSpan="10">
@@ -202,7 +202,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down spacing">
+                <div nz-col nzSpan="4" class="spacing">
                   角色描述：
                 </div>
                 <div nz-col nzSpan="20">
@@ -211,13 +211,13 @@
               </div>
             </form>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down spacing">
+              <div nz-col nzSpan="4" class="spacing">
                 <font color="red">*</font>权限设置：
               </div>
               <div nz-col nzSpan="10">
                 <nz-checkbox-group [(ngModel)]="checkOptionsChannel"></nz-checkbox-group>
               </div>
-              <div nz-col nzSpan="10" class="span_down spacing">
+              <div nz-col nzSpan="10" class="spacing">
                 一般情况仅勾选一个，如果勾选多个则可以切换平台
               </div>
             </div>
@@ -341,7 +341,7 @@
           <ng-template #customerTemplate><i class="anticon anticon-solution"></i>员工配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchCustomerForm">
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 员工姓名：
               </div>
               <div nz-col nzSpan="3">
@@ -350,16 +350,16 @@
 
               <div nz-col nzSpan="1"></div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 账号：
               </div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-col nzSpan="3">
                 <input nz-input maxlength="32" formControlName="username" placeholder="输入账号" nzSize="default">
               </div>
 
               <div nz-col nzSpan="1"></div>
 
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="2" class="spacing right_alignment">
                 角色名称：
               </div>
               <div nz-col nzSpan="3">
@@ -412,7 +412,7 @@
           <nz-modal [(nzVisible)]="visiable.addCustomer" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter" (nzOnCancel)="hideModal('addCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerAddForm">
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                   <font color="red">*</font>员工账号：
                 </div>
                 <div nz-col nzSpan="12">
@@ -420,7 +420,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>员工姓名：
                 </div>
                 <div nz-col nzSpan="12">
@@ -428,7 +428,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>登录密码：
                 </div>
                 <div nz-col nzSpan="12">
@@ -436,7 +436,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
@@ -458,15 +458,15 @@
           <nz-modal [(nzVisible)]="visiable.modifyCustomer" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerModifyForm">
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                   <font color="red">*</font>员工账号：
                 </div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="12">
                   {{customerItem.username}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>员工姓名：
                 </div>
                 <div nz-col nzSpan="12">
@@ -474,7 +474,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>登录密码：
                 </div>
                 <div nz-col nzSpan="12">
@@ -482,7 +482,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="6" class="spacing right_alignment">
                     <font color="red">*</font>角色：
                 </div>
                 <div nz-col nzSpan="12">
@@ -506,28 +506,28 @@
           <ng-template #operationlogTemplate><i class="anticon anticon-file-text"></i>操作日志</ng-template>
           <form [formGroup]="searchOperationlogForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input maxlength="32" formControlName="username" placeholder="输入账号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 姓名：
               </div>
-              <div nz-col nzSpan="2" class="span_down">
+              <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="realname" placeholder="输入姓名" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="3" class="span_down right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 查询日期范围：
               </div>
-              <div nz-col nzSpan="7" class="span_down spacing right_alignment">
+              <div nz-col nzSpan="7" class="spacing right_alignment">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'operationlog')"></nz-range-picker>
               </div>
 
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 角色名称：
               </div>
               <div nz-col nzSpan="3">
@@ -539,7 +539,7 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 一级菜单：
               </div>
               <div nz-col nzSpan="4">
@@ -548,7 +548,7 @@
                   <nz-option *ngFor="let item of dataResource; let i=index;" [nzLabel]="item.name" [nzValue]="item.name"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 二级菜单：
               </div>
               <div nz-col nzSpan="5">
@@ -558,7 +558,7 @@
                 </nz-select>
               </div>
 
-              <div nz-col nzSpan="3" class="span_down right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 <label nz-checkbox [(nzChecked)]="unCheckVisit" formControlName="unCheckVisit">不看-访问</label><br>
               </div>
               <div nz-col nzSpan="5"></div>
@@ -648,20 +648,20 @@
 
           <nz-modal [(nzVisible)]="visiable.addNavConfig" nzWidth="1350" nzTitle="新增类别" [nzFooter]="addNavConfigModalFooter" (nzOnCancel)="hideModal('addNavConfig')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="3" class="spacing right_alignment">类别名称：</div>
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
+              <div nz-col nzSpan="3" class="spacing right_alignment">类别排序：</div>
               <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
-              <div nz-col nzSpan="21" class="span_down">
+              <div nz-col nzSpan="3" class="right_alignment">icon配置：</div>
+              <div nz-col nzSpan="21">
                 <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
                   <button nz-button nzType="primary" (click)="beforeUploadBut('list')">
                     <i class="anticon anticon-upload"></i><span>上传文件</span>
@@ -677,7 +677,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
+              <div nz-col nzSpan="3" class="right_alignment">网址配置：</div>
               <div nz-col nzSpan="3">icon</div>
               <div nz-col nzSpan="3">名称</div>
               <div nz-col nzSpan="4">链接</div>
@@ -724,20 +724,20 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyNavConfig" nzWidth="1350" nzTitle="修改类别" [nzFooter]="modifyNavConfigModalFooter" (nzOnCancel)="hideModal('modifyNavConfig')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
-              <div nz-col nzSpan="6" class="span_down">
+              <div nz-col nzSpan="3" class="spacing right_alignment">类别名称：</div>
+              <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
+              <div nz-col nzSpan="3" class="spacing right_alignment">类别排序：</div>
               <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
-              <div nz-col nzSpan="21" class="span_down">
+              <div nz-col nzSpan="3" class="right_alignment">icon配置：</div>
+              <div nz-col nzSpan="21">
                 <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
                   <button nz-button nzType="primary" (click)="beforeUploadBut('list')">
                     <i class="anticon anticon-upload"></i><span>上传文件</span>
@@ -753,7 +753,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
+              <div nz-col nzSpan="3" class="right_alignment">网址配置：</div>
               <div nz-col nzSpan="3">icon</div>
               <div nz-col nzSpan="3">名称</div>
               <div nz-col nzSpan="4">链接</div>

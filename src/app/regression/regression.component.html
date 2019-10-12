@@ -9,7 +9,7 @@
           <div nz-row>
             <div nz-col nzSpan="8">
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Set Name*：</div>
+                <div nz-col nzSpan="24">Set Name*：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -17,7 +17,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">File*：</div>
+                <div nz-col nzSpan="24">File*：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -67,7 +67,7 @@
           <div nz-row>
             <div nz-col nzSpan="8">
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Template Task Name*（模板任务名）：</div>
+                <div nz-col nzSpan="24">Template Task Name*（模板任务名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -75,7 +75,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Channel*（对应控制台上的key或网页url）：</div>
+                <div nz-col nzSpan="24">Channel*（对应控制台上的key或网页url）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -83,7 +83,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Account*（bot名）：</div>
+                <div nz-col nzSpan="24">Account*（bot名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Set Name*（集合名）：</div>
+                <div nz-col nzSpan="24">Set Name*（集合名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -138,7 +138,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.creTemplateModal" nzWidth="1150" nzTitle="{{'导航回归表单解析【' + creTemplateModalData.pk + '】'}}" [nzFooter]="creTemplateModalFooter" (nzOnCancel)="hideModal('creTemplateModal')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
+            <div nz-row><div nz-col nzSpan="3"><b>任务参数</b></div></div>
             <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">task type：</div>
               <div nz-col nzSpan="19">
@@ -174,7 +174,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down right_alignment">
+              <div nz-col nzSpan="24" class="right_alignment">
                 <nz-table nzBordered #addCreTemplateModalTable [nzData]="dataTestSubtasks">
                   <thead>
                     <tr>
@@ -214,7 +214,7 @@
           <div nz-row>
             <div nz-col nzSpan="8">
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Name*（任务名）：</div>
+                <div nz-col nzSpan="24">Name*（任务名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -222,7 +222,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Channel*（对应控制台上的key或网页url）：</div>
+                <div nz-col nzSpan="24">Channel*（对应控制台上的key或网页url）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -230,7 +230,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Account*（bot名）：</div>
+                <div nz-col nzSpan="24">Account*（bot名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -238,7 +238,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Task Type*（任务类型）：</div>
+                <div nz-col nzSpan="24">Task Type*（任务类型）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -250,7 +250,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Set Name*（集合名）：</div>
+                <div nz-col nzSpan="24">Set Name*（集合名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -261,7 +261,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Template Selection（模板选择）：</div>
+                <div nz-col nzSpan="24">Template Selection（模板选择）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -319,7 +319,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.creTaskModal" nzWidth="1150" nzTitle="{{'导航自动化测试【' + creTaskModalData.pk + '】'}}" [nzFooter]="creTemplateModalFooter" (nzOnCancel)="hideModal('creTaskModal')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
+            <div nz-row><div nz-col nzSpan="3"><b>任务参数</b></div></div>
             <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">task type：</div>
               <div nz-col nzSpan="19">
@@ -361,7 +361,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down right_alignment">
+              <div nz-col nzSpan="24" class="right_alignment">
                 <nz-table nzBordered #addCreTaskModalTable [nzData]="dataTestSubtasks">
                   <thead>
                     <tr>
@@ -400,7 +400,7 @@
           <div nz-row>
             <div nz-col nzSpan="8">
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Template Name*（模板名）：</div>
+                <div nz-col nzSpan="24">Template Name*（模板名）：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">
@@ -408,7 +408,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">Template*：</div>
+                <div nz-col nzSpan="24">Template*：</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="24">

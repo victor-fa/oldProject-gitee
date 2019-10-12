@@ -8,10 +8,10 @@
           <ng-template #couponTemplate><i class="anticon anticon-gift"></i>优惠券配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchCouponForm">
-              <div nz-col nzSpan="9" class="span_down">
+              <div nz-col nzSpan="9">
                 <nz-range-picker formControlName="date" [nzPlaceHolder]="['创建开始日期', '创建结束日期']" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券品类：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="couponCategory">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -22,11 +22,11 @@
                   <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券名称：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="couponName" placeholder="输入订单编号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券类型：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="discountType">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -37,7 +37,7 @@
             </form>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="18" class="span_down right_alignment">如果想要废除某个优惠券，请联系产品人员</div>
+            <div nz-col nzSpan="18" class="right_alignment">如果想要废除某个优惠券，请联系产品人员</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="showModal('coupon', '')"><i class="anticon anticon-file-add"></i>新增优惠券</button>
@@ -81,16 +81,16 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addCoupon" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" (nzOnCancel)="hideModal('addCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">红包名称：</div>
               <div nz-col nzSpan="4">
                 <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" placeholder="请输入红包名称" nzSize="default">
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <nz-radio-group [(ngModel)]="couponDate.discountType">
                   <label nz-radio nzValue="FIX_DISCOUNT">满减固定额</label>
                   <label nz-radio nzValue="PERCENTAGE_DISCOUNT" [nzDisabled]="true">满减百分比</label>
@@ -102,37 +102,37 @@
               <div nz-col nzSpan="12">
                 <ng-container *ngFor="let item of couponDate.discountPrices; let i=index;">
                   <div nz-row style="margin-bottom: 5px;text-align: center;">
-                    <div nz-col nzSpan="3" class="span_down">订单满</div>
+                    <div nz-col nzSpan="3">订单满</div>
                     <div nz-col nzSpan="5">
                       <input nz-input [(ngModel)]="item.main" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">减</div>
+                    <div nz-col nzSpan="2">减</div>
                     <div nz-col nzSpan="4">
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">元</div>
+                    <div nz-col nzSpan="2">元</div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
                   </div>
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
+              <div nz-col nzSpan="5">
                 <nz-radio-group [(ngModel)]="couponDate.timeLimitType">
                   <label nz-radio nzValue="fix_start_end">固定时间</label>
                   <label nz-radio nzValue="fix_duration">相对时间</label>
                 </nz-radio-group>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
             <div nz-row *ngIf="couponDate.timeLimitType === 'fix_start_end'">
               <div nz-col nzSpan="2"></div>
@@ -150,9 +150,9 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2">天</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
                 <nz-table nzBordered #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -172,22 +172,22 @@
                 </div>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则互斥限制
                 在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
-              <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
                   <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
@@ -205,16 +205,16 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.modifyCoupon" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" (nzOnCancel)="hideModal('modifyCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">红包名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">红包名称：</div>
               <div nz-col nzSpan="4">
                 <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" placeholder="请输入红包名称" nzSize="default">
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <nz-radio-group [ngModel]="couponDate.discountType">
                   <label nz-radio nzValue="FIX_DISCOUNT">满减固定额</label>
                   <label nz-radio nzValue="PERCENTAGE_DISCOUNT" [nzDisabled]="true">满减百分比</label>
@@ -226,28 +226,28 @@
               <div nz-col nzSpan="12">
                 <ng-container *ngFor="let item of couponDate.discountPrices; let i=index;">
                   <div nz-row style="margin-bottom: 5px;text-align: center;">
-                    <div nz-col nzSpan="3" class="span_down">订单满</div>
+                    <div nz-col nzSpan="3">订单满</div>
                     <div nz-col nzSpan="5">
                       <input nz-input [(ngModel)]="item.main" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">减</div>
+                    <div nz-col nzSpan="2">减</div>
                     <div nz-col nzSpan="4">
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">元</div>
+                    <div nz-col nzSpan="2">元</div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
                   </div>
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
+              <div nz-col nzSpan="5">
                 <nz-radio-group [(ngModel)]="couponDate.timeLimitType">
                   <label nz-radio nzValue="fix_start_end">固定时间</label>
                   <label nz-radio nzValue="fix_duration">相对时间</label>
@@ -256,9 +256,9 @@
                 {{couponDate.timeLimitStart}}&nbsp;至&nbsp;{{couponDate.timeLimitEnd}}
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
             <div nz-row *ngIf="couponDate.timeLimitType === 'fix_start_end'">
               <div nz-col nzSpan="2"></div>
@@ -276,9 +276,9 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2">天</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
                 <nz-table nzBordered #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -299,21 +299,21 @@
               </div>
               <div nz-col nzSpan="1">
               </div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
-              <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
                   <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
@@ -330,13 +330,13 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.previewCoupon" nzWidth="1150" nzTitle="查看优惠券" [nzFooter]="previewCouponModalFooter" (nzOnCancel)="hideModal('previewCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">红包名称：{{couponDate.couponName}}</div>
+              <div nz-col nzSpan="24">红包名称：{{couponDate.couponName}}</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <nz-radio-group [ngModel]="'FIX_DISCOUNT'">
                   <label nz-radio nzValue="FIX_DISCOUNT" [nzDisabled]="true">满减固定额</label>
                   <label nz-radio nzValue="PERCENTAGE_DISCOUNT" [nzDisabled]="true">满减百分比</label>
@@ -348,28 +348,28 @@
               <div nz-col nzSpan="12">
                 <ng-container *ngFor="let item of couponDate.discountPrices; let i=index;">
                   <div nz-row style="margin-bottom: 5px; text-align: center;">
-                    <div nz-col nzSpan="3" class="span_down">订单满</div>
+                    <div nz-col nzSpan="3">订单满</div>
                     <div nz-col nzSpan="5">
                       <input nz-input [(ngModel)]="item.main" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">减</div>
+                    <div nz-col nzSpan="2">减</div>
                     <div nz-col nzSpan="4">
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
-                    <div nz-col nzSpan="2" class="span_down">元</div>
+                    <div nz-col nzSpan="2">元</div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
                     <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
                   </div>
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down" style="text-align: center;">有效时间</div>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
+              <div nz-col nzSpan="5">
                 <nz-radio-group [(ngModel)]="couponDate.timeLimitType">
                   <label nz-radio nzValue="fix_start_end" [nzDisabled]="true">固定时间</label>
                   <label nz-radio nzValue="fix_duration" [nzDisabled]="true">相对时间</label>
@@ -381,13 +381,13 @@
                 </div>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" class="span_down" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
                 <nz-table nzBordered #rowCategoryPreviewTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -407,21 +407,21 @@
                 </div>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
+              <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="span_down">
+              <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked" [nzDisabled]="true">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked" [nzDisabled]="true">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" class="span_down" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">红包预览</div>
-              <div nz-col nzSpan="10" class="span_down" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
                   <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
@@ -441,11 +441,11 @@
           <ng-template #activityTemplate><i class="anticon anticon-shop"></i>优惠券活动</ng-template>
           <div nz-row>
             <form [formGroup]="searchActivityForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
               <div nz-col nzSpan="5">
                 <input nz-input formControlName="actName" placeholder="请输入渠道" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">活动状态：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">活动状态：</div>
               <div nz-col nzSpan="5">
                 <nz-select [ngModel]="''" formControlName="actStatus">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -501,29 +501,29 @@
 
           <nz-modal [(nzVisible)]="visiable.addActivity" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
             <form [formGroup]="addActivityForm">
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
               <div nz-row>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动名称：</div>
+                  <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="12" [(ngModel)]="modifyctivityItem.actName" formControlName="actName" placeholder="请输入活动名称" nzSize="default">
                   </div>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动时间：</div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动时间：</div>
+                <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [(ngModel)]="dateRange" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动规则：</div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动规则：</div>
+                <div nz-col nzSpan="7">
                   <textarea rows="5" formControlName="actRuleDesc" [(ngModel)]="modifyctivityItem.actRuleDesc" maxlength="200" nz-input placeholder="输入活动规则，不超过200个字符"></textarea>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动图片：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动图片：</div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button>
@@ -538,7 +538,7 @@
               </div>
               <div nz-row>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动链接：</div>
+                  <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动链接：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input [(ngModel)]="modifyctivityItem.actPageUrl" formControlName="actPageUrl" placeholder="请输入活动链接" nzSize="default">
                   </div>
@@ -546,14 +546,14 @@
               </div>
               <!-- <font color="#cccccc">建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font> -->
               <div nz-row *ngIf="fileList.length === 1">
-                <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="2" class="right_alignment"></div>
                 <div nz-col nzSpan="22">
                   <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">活动规则配置</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动规则配置</div></div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">
+                <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="activityRadioValue" formControlName="actType">
                     <label nz-radio nzValue="LoginOneOff">单日登录</label>
                     <label nz-radio nzValue="LoginDaily">周期登录</label>
@@ -568,19 +568,19 @@
                   <div nz-col nzSpan="24">模板A&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单日登录，领取红包（组）</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">登录时间约束：</div>
-                  <div nz-col nzSpan="7" class="span_down">
+                  <div nz-col nzSpan="2" class="right_alignment">登录时间约束：</div>
+                  <div nz-col nzSpan="7">
                     <nz-range-picker formControlName="date" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">奖励发放上限：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">每个用户可领：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
@@ -602,19 +602,19 @@
                   <div nz-col nzSpan="24">模板B&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单周期登录，领取红包（组）</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">登录时间约束：</div>
-                  <div nz-col nzSpan="7" class="span_down">
+                  <div nz-col nzSpan="2" class="right_alignment">登录时间约束：</div>
+                  <div nz-col nzSpan="7">
                     <nz-range-picker formControlName="date" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">奖励发放上限：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">每个用户可领：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
@@ -636,31 +636,31 @@
                   <div nz-col nzSpan="24">模板C&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;单笔充值X元，获赠红包（组）</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">充值时间约束：</div>
-                  <div nz-col nzSpan="7" class="span_down">
+                  <div nz-col nzSpan="2" class="right_alignment">充值时间约束：</div>
+                  <div nz-col nzSpan="7">
                     <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">充值额度约束：</div>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
-                  <div nz-col nzSpan="5" class="span_down">
+                  <div nz-col nzSpan="2" class="right_alignment">充值额度约束：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
+                  <div nz-col nzSpan="5">
                     <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.chargeThreshold" formControlName="chargeThreshold" placeholder="请输入充值额度" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="2" class="span_down">&nbsp;&nbsp;&nbsp;RMB</div>
+                  <div nz-col nzSpan="2">&nbsp;&nbsp;&nbsp;RMB</div>
                   <div nz-col nzSpan="6"></div>
                   <div nz-col nzSpan="7" style="color: #A2A2A2;">23点59分59秒，发起了充值请求行为<br>如果用户充值成功，则是在次日0点0分20秒<br>此时要给用户结算奖励</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">奖励发放上限：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">&nbsp;&nbsp;&nbsp;组</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">每个用户可领：</div>
+                  <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
                     <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
@@ -682,8 +682,8 @@
                   <div nz-col nzSpan="24">模板D&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;区间充值，获赠红包（组）</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="2" class="span_down right_alignment">充值时间约束：</div>
-                  <div nz-col nzSpan="7" class="span_down">
+                  <div nz-col nzSpan="2" class="right_alignment">充值时间约束：</div>
+                  <div nz-col nzSpan="7">
                     <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
@@ -698,12 +698,12 @@
                   <ng-container *ngFor="let item of addMarginArr; let i=index;">
                     <div nz-row>
                       <div nz-col nzSpan="2"></div>
-                      <div nz-col nzSpan="2" class="span_down right_alignment">充值额度约束：</div>
-                      <div nz-col nzSpan="2" class="span_down right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
-                      <div nz-col nzSpan="5" class="span_down">
+                      <div nz-col nzSpan="2" class="right_alignment">充值额度约束：</div>
+                      <div nz-col nzSpan="2" class="right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
+                      <div nz-col nzSpan="5">
                         <input nz-input maxlength="9" [ngModel]="addMarginArr[i].chargeThreshold" (ngModelChange)="onMarginChange($event, 'chargeThreshold', i)" placeholder="请输入充值额度约束" nzSize="default">
                       </div>
-                      <div nz-col nzSpan="2" class="span_down">&nbsp;&nbsp;&nbsp;RMB</div>
+                      <div nz-col nzSpan="2">&nbsp;&nbsp;&nbsp;RMB</div>
                       <div nz-col nzSpan="8">&nbsp;</div>
                       <div nz-col nzSpan="3" *ngIf="i === 0">
                         <button nz-button nzType="primary" (click)="clickChangeMargin('activity', 'add', addMarginArr.length)"><i class="anticon anticon-file-add"></i>添加区间</button>
@@ -713,14 +713,14 @@
                       <div nz-col nzSpan="2">
                         区间{{i+1}}
                       </div>
-                      <div nz-col nzSpan="2" class="span_down right_alignment">奖励发放上限：</div>
+                      <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                       <div nz-col nzSpan="7">
                         <input nz-input maxlength="2" [ngModel]="addMarginArr[i].totalQuantity" (ngModelChange)="onMarginChange($event, 'totalQuantity', i)" placeholder="请输入奖励发放上限" nzSize="default">
                       </div>
                     </div>
                     <div nz-row>
                       <div nz-col nzSpan="2"></div>
-                      <div nz-col nzSpan="2" class="span_down right_alignment">每个用户可领：</div>
+                      <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                       <div nz-col nzSpan="7">
                         <input nz-input maxlength="2" [ngModel]="addMarginArr[i].perUserQuantity" (ngModelChange)="onMarginChange($event, 'perUserQuantity', i)" placeholder="请输入每个用户可领数额" nzSize="default">
                       </div>
@@ -743,7 +743,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down" style="font-size: 20px;font-weight: bold;">活动奖励配置</div>
+              <div nz-col nzSpan="4" style="font-size: 20px;font-weight: bold;">活动奖励配置</div>
               <div nz-col nzSpan="17"></div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="showModal('addCoupon', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
@@ -799,11 +799,11 @@
           <nz-modal [(nzVisible)]="visiable.coupon" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInActivity')" nzMaskClosable="false">
             <div nz-row>
               <form [formGroup]="searchCouponInActivityForm">
-                <div nz-col nzSpan="2" class="span_down right_alignment">创建日期范围：</div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="2" class="right_alignment">创建日期范围：</div>
+                <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInActivity')"></nz-range-picker>
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券品类：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="couponCategory">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -814,11 +814,11 @@
                     <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券名称：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号" nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券类型：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="discountType">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -872,17 +872,17 @@
 
           <nz-modal [(nzVisible)]="visiable.preview" nzWidth="360" nzTitle="活动页预览" [nzFooter]="previewFooter" (nzOnCancel)="hideModal('preview')" nzMaskClosable="false">
             <div nz-row style="text-align: center;">
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 {{modifyctivityItem.actName}}
               </div>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
               </div>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 {{modifyctivityItem.actStartDate}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actEndDate}}
               </div>
-              <div nz-col nzSpan="24" class="span_down">功能区</div>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">功能区</div>
+              <div nz-col nzSpan="24">
                 {{modifyctivityItem.actRuleDesc}}
               </div>
             </div>
@@ -895,8 +895,8 @@
         <nz-tab [nzTitle]="batchsendListTemplate" (nzClick)="changePanel('batchsendList')" *ngIf="commonService.haveMenuPermission('children', '批量发放')">
           <ng-template #batchsendListTemplate><i class="anticon anticon-fork"></i>批量发放</ng-template>
           <div nz-row>
-            <div nz-col nzSpan="2" class="span_down right_alignment">查询范围：</div>
-            <div nz-col nzSpan="7" class="span_down">
+            <div nz-col nzSpan="2" class="right_alignment">查询范围：</div>
+            <div nz-col nzSpan="7">
               <nz-range-picker [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'baseInfo')"></nz-range-picker>
             </div>
             <div nz-col nzSpan="9"></div>
@@ -945,7 +945,7 @@
           <nz-modal [(nzVisible)]="visiable.addBatchsend" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" (nzOnCancel)="hideModal('batchsendList')" nzMaskClosable="false">
             <form [formGroup]="addBatchsendForm">
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">发送对象</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">发送对象</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">请填写发送的用户手机号，如果需要发送多个，请换行输入</div>
               </div>
@@ -955,17 +955,37 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">附带消息</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">附带消息</div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">一般适用于奖励/补偿用户</div>
               </div>
+              <!-- <div nz-col nzSpan="12">
+                <textarea rows="5" nz-input formControlName="displayMessage" [(ngModel)]="batchsendData.displayMessage" [disabled]="true" placeholder="这里是要写给用户的话" nzSize="default"></textarea>
+              </div> -->
               <div nz-row>
+                <div nz-col nzSpan="3">标题：</div>
                 <div nz-col nzSpan="12">
-                  <textarea rows="5" nz-input formControlName="displayMessage" [(ngModel)]="batchsendData.displayMessage" [disabled]="true" placeholder="这里是要写给用户的话，字数限制xxx个" nzSize="default"></textarea>
+                  <input nz-input placeholder="请输入标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down" style="font-size: 20px;font-weight: bold;">发送奖励配置</div>
+                <div nz-col nzSpan="3">类型：</div>
+                <div nz-col nzSpan="12">系统消息</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="3">摘要：</div>
+                <div nz-col nzSpan="12">
+                  <input nz-input placeholder="请输入摘要" nzSize="default">
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="3">内容：</div>
+                <div nz-col nzSpan="21">
+                  <quill-editor [(ngModel)]="emptyAdd[4]" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="4" style="font-size: 20px;font-weight: bold;">发送奖励配置</div>
                 <div nz-col nzSpan="17"></div>
                 <div nz-col nzSpan="3">
                   <button nz-button nzType="primary" (click)="showModal('addCouponInBatchsend', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
@@ -1017,11 +1037,11 @@
           <nz-modal [(nzVisible)]="visiable.couponInBatchsend" nzWidth="1450" nzTitle="红包编组选择区(读取红包列表）" [nzFooter]="couponModalFooter" (nzOnCancel)="hideModal('couponInBatchsend')" nzMaskClosable="false">
             <div nz-row>
               <form [formGroup]="searchCouponInBatchsendForm">
-                <div nz-col nzSpan="2" class="span_down right_alignment">创建日期范围：</div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="2" class="right_alignment">创建日期范围：</div>
+                <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsend')"></nz-range-picker>
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券品类：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="couponCategory">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -1032,12 +1052,12 @@
                     <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券名称：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号"
                     nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券类型：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="discountType">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -1201,16 +1221,16 @@
           <ng-template #couponStatisticsTemplate><i class="anticon anticon-line-chart"></i>优惠券统计</ng-template>
           <div nz-row>
             <form [formGroup]="searchCouponStatisticsForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="aaa" placeholder="输入订单编号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">优惠券名称：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="aaa" placeholder="输入优惠券名称" nzSize="default">
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
               </div>
               <div nz-col nzSpan="4"></div>
@@ -1262,13 +1282,13 @@
           <ng-template #beanTemplate><i class="anticon anticon-pay-circle-o"></i>充值送豆</ng-template>
           <div nz-row>
             <form [formGroup]="searchBeanForm">
-              <div nz-col nzSpan="2" class="span_down spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input maxlength="32" formControlName="title" placeholder="输入订单编号" nzSize="default">
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">有效时间：</div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">有效时间：</div>
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
               </div>
               <div nz-col nzSpan="3"></div>
@@ -1314,35 +1334,35 @@
 
           <nz-modal [(nzVisible)]="visiable.addBean" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" (nzOnCancel)="hideModal('addBean')" nzMaskClosable="false">
             <form [formGroup]="addBeanForm">
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动名称：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input maxlength="12" [(ngModel)]="beanItem.title" formControlName="title" placeholder="请输入活动名称" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动文案：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
                 <div nz-col nzSpan="9">
                   <textarea rows="2" formControlName="describe" [(ngModel)]="beanItem.describe" maxlength="50" nz-input placeholder="输入活动文案，不超过100个字符"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
                   <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">
+                <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
                     <label nz-radio nzValue="PERCENT_GIFT">充值送豆百分比</label>
                     <label nz-radio nzValue="FIXED_QUOTA_GIFT" [nzDisabled]="true">充值送豆固定额度</label>
@@ -1350,20 +1370,20 @@
                 </div>
               </div>
               <div nz-row style="text-align: center;">
-                <div nz-col nzSpan="1" class="span_down">满</div>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="1">满</div>
+                <div nz-col nzSpan="3">
                   <nz-input-number formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="1" class="span_down">送</div>
-                <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
+                <div nz-col nzSpan="1">送</div>
+                <div nz-col nzSpan="3" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
                   <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="0" [nzMax]="100" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
+                <div nz-col nzSpan="3" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
                   <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
-                <div nz-col nzSpan="2" class="span_down"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+                <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
+                <div nz-col nzSpan="2"></div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
               </div>
             </form>
             <ng-template #addBeanModalFooter>
@@ -1374,39 +1394,39 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyBean" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" (nzOnCancel)="hideModal('modifyBean')" nzMaskClosable="false">
             <form [formGroup]="modifyBeanForm">
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动名称：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input maxlength="12" [(ngModel)]="beanItem.title" formControlName="title" placeholder="请输入活动名称" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动文案：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
                 <div nz-col nzSpan="9">
                   <textarea rows="2" formControlName="describe" [(ngModel)]="beanItem.describe" maxlength="50" nz-input placeholder="输入活动文案，不超过100个字符"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
+                <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
                   <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="2"></div>
-                <div nz-col nzSpan="22" class="span_down">{{beanItem.beginTime}}&nbsp;&nbsp;~&nbsp;&nbsp;{{beanItem.endTime}}</div>
+                <div nz-col nzSpan="22">{{beanItem.beginTime}}&nbsp;&nbsp;~&nbsp;&nbsp;{{beanItem.endTime}}</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
               <div nz-row>
-                <div nz-col nzSpan="24" class="span_down">
+                <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
                     <label nz-radio nzValue="PERCENT_GIFT">充值送豆百分比</label>
                     <label nz-radio nzValue="FIXED_QUOTA_GIFT" [nzDisabled]="true">充值送豆固定额度</label>
@@ -1414,20 +1434,20 @@
                 </div>
               </div>
               <div nz-row style="text-align: center;">
-                <div nz-col nzSpan="1" class="span_down">满</div>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="1">满</div>
+                <div nz-col nzSpan="3">
                   <nz-input-number formControlName="depositAmount" [(ngModel)]="beanItem.depositAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="1" class="span_down">送</div>
-                <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
+                <div nz-col nzSpan="1">送</div>
+                <div nz-col nzSpan="3" *ngIf="radioBeanValue === 'PERCENT_GIFT'">
                   <nz-input-number formControlName="giftPercent" [(ngModel)]="beanItem.giftPercent" [nzMin]="0" [nzMax]="100" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="3" class="span_down" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
+                <div nz-col nzSpan="3" *ngIf="radioBeanValue === 'FIXED_QUOTA_GIFT'">
                   <nz-input-number formControlName="giftAmount" [(ngModel)]="beanItem.giftAmount" [nzMin]="0" [nzStep]="1" [nzParser]="parserPoint"></nz-input-number>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
-                <div nz-col nzSpan="2" class="span_down"></div>
-                <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+                <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
+                <div nz-col nzSpan="2"></div>
+                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
               </div>
             </form>
             <ng-template #modifyBeanModalFooter>
@@ -1437,29 +1457,29 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.searchBean" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" (nzOnCancel)="hideModal('searchBean')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动名称：</div>
-              <div nz-col nzSpan="9" class="span_down">{{beanItem.title}}</div>
+              <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
+              <div nz-col nzSpan="9">{{beanItem.title}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>活动文案：</div>
-              <div nz-col nzSpan="9" class="span_down">{{beanItem.describe}}</div>
+              <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
+              <div nz-col nzSpan="9">{{beanItem.describe}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment"><font color="red">*</font>有效时间：</div>
-              <div nz-col nzSpan="9" class="span_down">{{beanItem.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{beanItem.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+              <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
+              <div nz-col nzSpan="9">{{beanItem.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{beanItem.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
             <div nz-row>
-              <div nz-col nzSpan="24" class="span_down">
+              <div nz-col nzSpan="24">
                 <nz-radio-group [(ngModel)]="radioBeanValue">
                   <label nz-radio nzValue="PERCENT_GIFT" [nzDisabled]="radioBeanValue === 'FIXED_QUOTA_GIFT'">充值送豆百分比</label>
                   <label nz-radio nzValue="FIXED_QUOTA_GIFT" [nzDisabled]="radioBeanValue === 'PERCENT_GIFT'">充值送豆固定额度</label>
@@ -1467,13 +1487,13 @@
               </div>
             </div>
             <div nz-row style="text-align: center;">
-              <div nz-col nzSpan="1" class="span_down">满</div>
-              <div nz-col nzSpan="3" class="span_down">{{beanItem.depositAmount}}</div>
-              <div nz-col nzSpan="1" class="span_down">送</div>
-              <div nz-col nzSpan="3" class="span_down">{{radioBeanValue === 'PERCENT_GIFT' ? (beanItem.giftPercent * 100) : beanItem.giftAmount}}</div>
-              <div nz-col nzSpan="2" class="span_down">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
-              <div nz-col nzSpan="2" class="span_down"></div>
-              <div nz-col nzSpan="8" class="span_down" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+              <div nz-col nzSpan="1">满</div>
+              <div nz-col nzSpan="3">{{beanItem.depositAmount}}</div>
+              <div nz-col nzSpan="1">送</div>
+              <div nz-col nzSpan="3">{{radioBeanValue === 'PERCENT_GIFT' ? (beanItem.giftPercent * 100) : beanItem.giftAmount}}</div>
+              <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
             </div>
             <ng-template #searchBeanModalFooter>
               <button nz-button nzType="default" (click)="hideModal('searchBean')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
@@ -1485,11 +1505,11 @@
           <ng-template #taskCenterTemplate><i class="anticon anticon-windows-o"></i>任务中心</ng-template>
           <form [formGroup]="searchTaskCenterForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">任务名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">任务名称：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="name" placeholder="输入任务名称" nzSize="default" [(ngModel)]="taskCenterName">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">任务类型：</div>
+              <div nz-col nzSpan="2" class="right_alignment">任务类型：</div>
               <div nz-col nzSpan="2">
                 <nz-select formControlName="type">
                   <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
@@ -1498,7 +1518,7 @@
                   <nz-option required [nzLabel]="'活动'" nzValue="ACTIVITY"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">创建时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">创建时间：</div>
               <div nz-col nzSpan="6">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskCenter')"></nz-range-picker>
               </div>
@@ -1614,7 +1634,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="right_alignment span_down">验证码：</div>
+              <div nz-col nzSpan="4" class="right_alignment ">验证码：</div>
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="2"><input nz-input nzSize="default" [(ngModel)]="operateObject.code"></div>
             </div>
@@ -1628,10 +1648,10 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.addTaskCenter || visiable.modifyTaskCenter" nzWidth="1050" nzTitle="新增任务" [nzFooter]="addTaskCenterFooter" (nzOnCancel)="hideModal('taskCenter')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务规则</b></div></div>
+            <div nz-row><div nz-col nzSpan="3"><b>任务规则</b></div></div>
             <div nz-row>
-              <div nz-col nzSpan="3" class="span_down right_alignment">任务类型：</div>
-              <div nz-col nzSpan="21" class="span_down">
+              <div nz-col nzSpan="3" class="right_alignment">任务类型：</div>
+              <div nz-col nzSpan="21">
                 <nz-radio-group [(ngModel)]="addTaskCenter.taskType">
                   <label nz-radio nzValue="DAILY">每日</label>
                   <label nz-radio nzValue="NOVICE">新手</label>
@@ -1641,8 +1661,8 @@
             </div>
             <div *ngIf="addTaskCenter.taskType === 'DAILY' || addTaskCenter.taskType === 'NOVICE'">
               <div nz-row *ngIf="addTaskCenter.taskType === 'DAILY'">
-                <div nz-col nzSpan="3" class="span_down right_alignment">任务行为：</div>
-                <div nz-col nzSpan="21" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">任务行为：</div>
+                <div nz-col nzSpan="21">
                   <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
                     <label nz-radio nzValue="FINISH_TAXIS_ORDER">打车订单</label><label nz-radio nzValue="MOBILE_RECHARGE">充话费订单</label>
                     <label nz-radio nzValue="SEARCH_WEATHER">查询天气</label><label nz-radio nzValue="LISTEN_AUDIO">听音频</label>
@@ -1656,8 +1676,8 @@
                 </div>
               </div>
               <div nz-row *ngIf="addTaskCenter.taskType === 'NOVICE'">
-                <div nz-col nzSpan="3" class="span_down right_alignment">次数限制：</div>
-                <div nz-col nzSpan="21" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">次数限制：</div>
+                <div nz-col nzSpan="21">
                   <nz-radio-group [(ngModel)]="addTaskCenter.taskBehavior">
                     <label nz-radio nzValue="FINISH_TEACH">新手教学任务</label><label nz-radio nzValue="LISTEN_AUDIO">听音频</label>
                     <label nz-radio nzValue="MOBILE_RECHARGE">充话费</label><label nz-radio nzValue="CALL">打电话</label>
@@ -1673,43 +1693,43 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">次数限制：</div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">次数限制：</div>
+                <div nz-col nzSpan="2">
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkLimitNumber">{{addTaskCenter.taskType === 'DAILY' ? '每日' : addTaskCenter.taskType === 'NOVICE' ? '终身仅' : ''}}</label>
                 </div>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="3">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.totalTimes">
                 </div>
-                <div nz-col nzSpan="1" class="span_down right_alignment">次</div>
+                <div nz-col nzSpan="1" class="right_alignment">次</div>
               </div>
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务信息</b></div></div>
+              <div nz-row><div nz-col nzSpan="3"><b>任务信息</b></div></div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">任务名称：</div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">任务名称：</div>
+                <div nz-col nzSpan="6">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.name">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">任务描述：</div>
-                <div nz-col nzSpan="21" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">任务描述：</div>
+                <div nz-col nzSpan="21">
                   <input nz-input nzSize="default" maxlength="50" [(ngModel)]="addTaskCenter.description">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">任务排序：</div>
-                <div nz-col nzSpan="1" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">任务排序：</div>
+                <div nz-col nzSpan="1">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.group">
                 </div>
-                <div nz-col nzSpan="1" class="span_down" style="text-align: center;">~</div>
-                <div nz-col nzSpan="1" class="span_down">
+                <div nz-col nzSpan="1" style="text-align: center;">~</div>
+                <div nz-col nzSpan="1">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.sequence">
                 </div>
                 <div nz-col nzSpan="1">&nbsp;</div>
-                <div nz-col nzSpan="17" class="span_down">x-y，x为前置数字，y为后置数字。任务在后台的配置顺序，x越小越靠前，如果同时出现多个x，则y越小越靠前</div>
+                <div nz-col nzSpan="17">x-y，x为前置数字，y为后置数字。任务在后台的配置顺序，x越小越靠前，如果同时出现多个x，则y越小越靠前</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">任务icon：</div>
-                <div nz-col nzSpan="21" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">任务icon：</div>
+                <div nz-col nzSpan="21">
                   <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传icon</span>
@@ -1719,15 +1739,15 @@
                 </div>
               </div>
               <div nz-row *ngIf="fileList.length == 1">
-                <div nz-col nzSpan="3" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="3" class="right_alignment"></div>
                 <div nz-col nzSpan="21">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸64*64，限制大小：50k</font>
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务跳转</b></div></div>
+              <div nz-row><div nz-col nzSpan="3"><b>任务跳转</b></div></div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="3">
                   <nz-radio-group [(ngModel)]="addTaskCenter.jumpType">
                     <label nz-radio nzValue="NONE" style="margin-bottom: 20px;">不跳转</label><br>
                     <label nz-radio nzValue="APP" style="margin-bottom: 25px;">跳转到APP</label><br>
@@ -1735,7 +1755,7 @@
                     <label nz-radio nzValue="DIALOG">提示弹窗</label>
                   </nz-radio-group>
                 </div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="6">
                   <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 40px;" [disabled]="!(addTaskCenter.jumpType === 'APP')">
                     <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="1"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="2"></nz-option>
@@ -1750,22 +1770,22 @@
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'WEB')"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
                 </div>
-                <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
-                <div nz-col nzSpan="2" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
+                <div nz-col nzSpan="2"><br>&nbsp;</div>
+                <div nz-col nzSpan="2" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br>发送话术
                 </div>
-                <div nz-col nzSpan="6" class="span_down" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
+                <div nz-col nzSpan="6" style="margin-top: 10px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务奖励</b></div></div>
+              <div nz-row><div nz-col nzSpan="3"><b>任务奖励</b></div></div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="3">
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkBean" style="margin-bottom: 50px;">小悟豆</label><br><br>
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkExperience" style="margin-bottom: 20px;">经验</label><br>
                   <label nz-checkbox [(nzChecked)]="addTaskCenter.checkSkill">技能点</label>
                 </div>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="3">
                   <nz-radio-group [(ngModel)]="addTaskCenter.checkBeanRes">
                     <label nz-radio nzValue="Fixed" style="margin-bottom: 15px;">固定金额</label><br>
                     <div *ngIf="!(addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE')" style="margin-bottom: 10px;"></div>
@@ -1778,41 +1798,41 @@
                     <label nz-radio nzValue="Fixed">固定技能点</label>
                   </nz-radio-group>
                 </div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="6">
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.beanValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Fixed')"><br>
                   <div *ngIf="!(addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE')" style="margin-bottom: 10px;"></div>
                   <input nz-input nzSize="default" *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" [(ngModel)]="addTaskCenter.rule.beanPreValue" style="margin-bottom: 10px;" [disabled]="!(addTaskCenter.checkBean === true && addTaskCenter.checkBeanRes === 'Percentage')"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.expValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkExperience === false"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.rule.perkValue" style="margin-bottom: 10px;" [disabled]="addTaskCenter.checkSkill === false">
                 </div>
-                <div nz-col nzSpan="1" *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" class="span_down right_alignment" style="padding-top: 10px;">
+                <div nz-col nzSpan="1" *ngIf="addTaskCenter.taskBehavior === 'FINISH_TAXIS_ORDER' || addTaskCenter.taskBehavior === 'MOBILE_RECHARGE'" class="right_alignment" style="padding-top: 10px;">
                   <br>%
                 </div>
               </div>
             </div>
             <div *ngIf="addTaskCenter.taskType === 'ACTIVITY'">
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>活动信息</b></div></div>
+              <div nz-row><div nz-col nzSpan="3"><b>活动信息</b></div></div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">活动名称：</div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">活动名称：</div>
+                <div nz-col nzSpan="6">
                   <input nz-input nzSize="default" placeholder="活动名称，最多20字" [(ngModel)]="addTaskCenter.name">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">活动时间：</div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">活动时间：</div>
+                <div nz-col nzSpan="6">
                   <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzShowTime [nzShowToday]="true" [(ngModel)]="addTaskCenter.date" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskCenterAct')"></nz-range-picker>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">活动描述：</div>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">活动描述：</div>
+                <div nz-col nzSpan="6">
                   <textarea rows="4" nz-input [(ngModel)]="addTaskCenter.description"></textarea>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down right_alignment">活动图片：</div>
-                <div nz-col nzSpan="21" class="span_down">
+                <div nz-col nzSpan="3" class="right_alignment">活动图片：</div>
+                <div nz-col nzSpan="21">
                   <nz-upload [(nzFileList)]="fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
                       <i class="anticon anticon-upload"></i><span>上传icon</span>
@@ -1822,14 +1842,14 @@
                 </div>
               </div>
               <div nz-row *ngIf="fileList.length == 1">
-                <div nz-col nzSpan="3" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="3" class="right_alignment"></div>
                 <div nz-col nzSpan="21">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸64*64，限制大小：50k</font>
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>活动跳转</b></div></div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-row><div nz-col nzSpan="3"><b>活动跳转</b></div></div>
+              <div nz-col nzSpan="3">
                 <nz-radio-group [(ngModel)]="addTaskCenter.jumpType">
                   <label nz-radio nzValue="NONE" style="margin-bottom: 20px;">不跳转</label><br>
                   <label nz-radio nzValue="APP" style="margin-bottom: 30px;">跳转到APP</label><br>
@@ -1838,7 +1858,7 @@
                 </nz-radio-group>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="6" class="span_down">
+                <div nz-col nzSpan="6">
                   <nz-select [(ngModel)]="addTaskCenter.jump.page" style="margin-bottom: 20px;margin-top: 35px;" [disabled]="!(addTaskCenter.jumpType === 'APP')">
                     <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="1"></nz-option>
                     <nz-option required [nzLabel]="'个人中心 > 设置-------------------------'" [nzValue]="2"></nz-option>
@@ -1853,15 +1873,15 @@
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.url" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'WEB')"><br>
                   <input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.msg" style="margin-bottom: 20px;" [disabled]="!(addTaskCenter.jumpType === 'DIALOG')">
                 </div>
-                <div nz-col nzSpan="2" class="span_down"><br>&nbsp;</div>
-                <div nz-col nzSpan="2" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
+                <div nz-col nzSpan="2"><br>&nbsp;</div>
+                <div nz-col nzSpan="2" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br>发送话术
                 </div>
-                <div nz-col nzSpan="6" class="span_down" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
+                <div nz-col nzSpan="6" style="margin-top: 5px;" *ngIf="addTaskCenter.jumpType === 'APP' && addTaskCenter.jump.page === 9">
                   <br><input nz-input nzSize="default" [(ngModel)]="addTaskCenter.jump.appMsg">
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="3" class="span_down"><b>活动规则</b></div></div>
+              <div nz-row><div nz-col nzSpan="3"><b>活动规则</b></div></div>
               <div nz-row>
                 <nz-radio-group [(ngModel)]="addTaskCenter.activityRule">
                   <label nz-radio nzValue="recharge">充值活动</label>
@@ -1872,41 +1892,41 @@
                 </nz-radio-group>
               </div>
               <div nz-row *ngFor="let data of addTaskCenter.stepRule; let i=index;">
-                <div nz-col nzSpan="2" class="span_down right_alignment">充值金额=&nbsp;</div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="2" class="right_alignment">充值金额=&nbsp;</div>
+                <div nz-col nzSpan="2">
                   <input nz-input nzSize="default" [(ngModel)]="data.rechargeAmount">
                 </div>
-                <div nz-col nzSpan="3" class="span_down right_alignment">
+                <div nz-col nzSpan="3" class="right_alignment">
                   <label nz-checkbox [(nzChecked)]="data.checkBean">小悟豆</label>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="2">
                   <nz-radio-group [(ngModel)]="data.checkBeanRes">
                     <label nz-radio nzValue="Fixed" style="margin-bottom: 20px;">固定金额</label><br>
                     <label nz-radio nzValue="Percentage">百分比</label>
                   </nz-radio-group>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="2">
                   <input nz-input nzSize="default" [(ngModel)]="data.beanValue" style="margin-bottom: 15px;" [disabled]="!(data.checkBean === true && data.checkBeanRes === 'Fixed')"><br>
                   <input nz-input nzSize="default" [(ngModel)]="data.beanPreValue" [disabled]="!(data.checkBean === true && data.checkBeanRes === 'Percentage')">
                 </div>
-                <div nz-col nzSpan="1" class="span_down" style="padding-top: 15px;">
+                <div nz-col nzSpan="1" style="padding-top: 15px;">
                   <br>&nbsp;%
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <label nz-checkbox [(nzChecked)]="data.checkExperience">经验</label>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="2">
                   <input nz-input nzSize="default" [(ngModel)]="data.expValue" [disabled]="data.checkExperience === false">
                 </div>
-                <div nz-col nzSpan="3" class="span_down right_alignment">
+                <div nz-col nzSpan="3" class="right_alignment">
                   <label nz-checkbox [(nzChecked)]="data.checkSkill">技能点</label>
                 </div>
-                <div nz-col nzSpan="2" class="span_down">
+                <div nz-col nzSpan="2">
                   <input nz-input nzSize="default" [(ngModel)]="data.perkValue" [disabled]="data.checkSkill === false">
                 </div>
                 <div nz-col nzSpan="1">
                 </div>
-                <div nz-col nzSpan="2" class="span_down" *ngIf="i !== 0">
+                <div nz-col nzSpan="2" *ngIf="i !== 0">
                   <button nz-button nzType="primary" (click)="onChange(i, 'deleteStepRule')"><i class="anticon anticon-close-delete"></i>删除</button>
                 </div>
               </div>
@@ -1925,19 +1945,19 @@
           <ng-template #taskLogsTemplate><i class="anticon anticon-scan"></i>任务日志</ng-template>
           <form [formGroup]="searchTaskLogsForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">完成时间：</div>
+              <div nz-col nzSpan="2" class="right_alignment">完成时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taskLogs')"></nz-range-picker>
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">用户ID：</div>
+              <div nz-col nzSpan="2" class="right_alignment">用户ID：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="userId" placeholder="输入任务名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">用户账号：</div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="userPhone" placeholder="输入任务名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">任务名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">任务名称：</div>
               <div nz-col nzSpan="2">
                 <input nz-input formControlName="taskName" placeholder="输入任务名称" nzSize="default">
               </div>

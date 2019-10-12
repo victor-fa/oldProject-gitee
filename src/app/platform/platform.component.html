@@ -55,18 +55,18 @@
 
           <nz-modal [(nzVisible)]="visiable.addLevelOneMenu" nzTitle="新增一级菜单" [nzFooter]="addLevelOneMenuFooter" (nzOnCancel)="hideModal('addLevelOneMenu')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryO.name" placeholder="输入一级菜单" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级排序：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryO.id" placeholder="输入一级排序" nzSize="default">
               </div>
             </div>
@@ -78,18 +78,18 @@
 
           <nz-modal [(nzVisible)]="visiable.editLevelOneMenu" nzTitle="修改一级菜单" [nzFooter]="editLevelOneMenuFooter" (nzOnCancel)="hideModal('editLevelOneMenu')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryO.name" placeholder="输入一级菜单" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级排序：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryO.id" placeholder="输入一级排序" nzSize="default">
               </div>
             </div>
@@ -101,29 +101,29 @@
 
           <nz-modal [(nzVisible)]="visiable.addLevelTwoMenu" nzTitle="新增二级级菜单" [nzFooter]="addLevelTwoMenuFooter" (nzOnCancel)="hideModal('addLevelTwoMenu')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 {{dataCategoryO.name}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 二级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryS.name" placeholder="输入二级菜单" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 二级排序：
               </div>
-              <div nz-col nzSpan="3" class="span_down">
+              <div nz-col nzSpan="3">
                 {{dataCategoryO.id + ' ——'}}
               </div>
-              <div nz-col nzSpan="2" class="span_down">
+              <div nz-col nzSpan="2">
                 <input nz-input [(ngModel)]="dataCategoryS.id" nzSize="default">
               </div>
             </div>
@@ -135,26 +135,26 @@
 
           <nz-modal [(nzVisible)]="visiable.editLevelTwoMenu" nzWidth="650" nzTitle="修改二级级菜单" [nzFooter]="editLevelTwoMenuFooter" (nzOnCancel)="hideModal('editLevelTwoMenu')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 一级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 {{dataCategoryS.parent.name}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 二级菜单：
               </div>
-              <div nz-col nzSpan="20" class="span_down">
+              <div nz-col nzSpan="20">
                 <input nz-input [(ngModel)]="dataCategoryS.name" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 二级排序：
               </div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 <input nz-input [(ngModel)]="dataCategoryS.id" nzSize="default">
               </div>
             </div>
@@ -226,8 +226,8 @@
 
           <nz-modal [(nzVisible)]="visiable.addAccount" nzWidth="950" nzTitle="新建账号" [nzFooter]="addAccountFooter" (nzOnCancel)="hideModal('addAccount')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
-              <div nz-col nzSpan="22" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="22">
                 <nz-radio-group [(ngModel)]="dataUser.customerId">
                   <label nz-col nzSpan="7" nz-radio *ngFor="let data of dataConsumer" [nzValue]="data.appChannel">
                     {{data.appChannel}}
@@ -236,23 +236,23 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户名称：</div>
-              <div nz-col nzSpan="8" class="span_down">{{dataUser.customerId}}</div>
+              <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="8">{{dataUser.customerId}}</div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户账号：</div>
-              <div nz-col nzSpan="8" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">客户账号：</div>
+              <div nz-col nzSpan="8">
                 <input nz-input [(ngModel)]="dataUser.accountName" placeholder="输入客户账号" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">登录密码：</div>
-              <div nz-col nzSpan="8" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">登录密码：</div>
+              <div nz-col nzSpan="8">
                 <input nz-input [(ngModel)]="dataUser.password" placeholder="输入登录密码" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">权限配置：</div>
+              <div nz-col nzSpan="2" class="right_alignment">权限配置：</div>
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
@@ -288,31 +288,31 @@
 
           <nz-modal [(nzVisible)]="visiable.editAccount" nzWidth="950" nzTitle="编辑账号" [nzFooter]="editAccountFooter" (nzOnCancel)="hideModal('editAccount')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
-              <div nz-col nzSpan="22" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="22">
                 {{dataUser.customerId}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户名称：</div>
-              <div nz-col nzSpan="8" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="8">
                 {{dataUser.customerId}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">客户账号：</div>
-              <div nz-col nzSpan="8" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">客户账号：</div>
+              <div nz-col nzSpan="8">
                 {{dataUser.accountName}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">登录密码：</div>
-              <div nz-col nzSpan="8" class="span_down">
+              <div nz-col nzSpan="2" class="right_alignment">登录密码：</div>
+              <div nz-col nzSpan="8">
                 <input nz-input [(ngModel)]="dataUser.password" placeholder="输入登录密码" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">权限配置：</div>
+              <div nz-col nzSpan="2" class="right_alignment">权限配置：</div>
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">

@@ -54,8 +54,8 @@
                 <form [formGroup]="addContentForm">
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*渠道：</div>
-                    <div nz-col nzSpan="12" class="span_down">
+                    <div nz-col nzSpan="5" class="right_alignment">*渠道：</div>
+                    <div nz-col nzSpan="12">
                       {{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}
                     </div>
                     <div nz-col nzSpan="4"></div>
@@ -63,7 +63,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*系统类型：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*系统类型：</div>
                     <div nz-col nzSpan="12">
                       <nz-radio-group [(ngModel)]="contentDate.system_symbol" formControlName="system_symbol">
                         <label nz-radio nzValue="ANDROID">安卓</label>
@@ -75,7 +75,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*标题：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*标题：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="title" [(ngModel)]="contentDate.title" placeholder="请输入标题" nzSize="default">
                     </div>
@@ -84,7 +84,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*副标题：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*副标题：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="sub_title" [(ngModel)]="contentDate.sub_title" placeholder="请输入副标题" nzSize="default">
                     </div>
@@ -93,7 +93,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*版本：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*版本：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="version" [(ngModel)]="contentDate.version" placeholder="请输入版本（不需要输入 V 或 v）" nzSize="default">
                     </div>
@@ -102,7 +102,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*允许的最低版本：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*允许的最低版本：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="version_allowed" [(ngModel)]="contentDate.version_allowed" placeholder="请输入允许的最低版本（不需要输入 V 或 v）" nzSize="default">
                     </div>
@@ -111,7 +111,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*下载链接：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*下载链接：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="file" [(ngModel)]="contentDate.file"
                         placeholder="请输入下载链接" nzSize="default">
@@ -121,7 +121,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*文件大小：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*文件大小：</div>
                     <div nz-col nzSpan="12">
                       <input nz-input formControlName="size" [(ngModel)]="contentDate.size"
                         placeholder="请输入文件大小(单位：kb)" nzSize="default">
@@ -131,7 +131,7 @@
 
                   <div nz-row>
                     <div nz-col nzSpan="3"></div>
-                    <div nz-col nzSpan="5" class="span_down right_alignment">*更新详情：</div>
+                    <div nz-col nzSpan="5" class="right_alignment">*更新详情：</div>
                     <div nz-col nzSpan="12">
                       <textarea rows="4" formControlName="description" [(ngModel)]="contentDate.description" nz-input placeholder="请输入更新详情" (ngModelChange)="onChange('description')"></textarea>
                     </div>
@@ -142,16 +142,16 @@
               </div>
               <div nz-col nzSpan="6" class="content_p">
                 <div nz-row class="top_p">
-                  <div nz-col nzSpan="24" class="span_down"><b>{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}新版本{{contentDate.version}}</b><br>{{contentDate.title}}</div>
+                  <div nz-col nzSpan="24"><b>{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}新版本{{contentDate.version}}</b><br>{{contentDate.title}}</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="24" class="span_down title_p">最新版本：V{{contentDate.version}}<br>更新大小：{{(contentDate.size/1024).toFixed(2)}} MB<br>更新内容：</div>
+                  <div nz-col nzSpan="24" class="title_p">最新版本：V{{contentDate.version}}<br>更新大小：{{(contentDate.size/1024).toFixed(2)}} MB<br>更新内容：</div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="24" class="span_down title_p" [innerHTML]="tempContent"></div>
+                  <div nz-col nzSpan="24" class="title_p" [innerHTML]="tempContent"></div>
                 </div>
                 <div nz-row>
-                  <div nz-col nzSpan="24" class="span_down">
+                  <div nz-col nzSpan="24">
                     <button nz-button nzType="primary" class="bottom_but">立即更新</button>
                   </div>
                 </div>
@@ -172,26 +172,26 @@
             <form [formGroup]="shareForm">
 
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">微信分享</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">微信分享</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">标题：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input maxlength="32" formControlName="wechatTitle" [(ngModel)]="dataShare.wechatTitle" *ngIf="isSaveShareButton" placeholder="输入标题" nzSize="default">
                   {{!isSaveShareButton ? dataShare.wechatTitle : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">内容：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">内容：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <textarea rows="5" nz-input formControlName="wechatContent" [(ngModel)]="dataShare.wechatContent" *ngIf="isSaveShareButton" placeholder="请输入内容" nzSize="default"></textarea>
                   {{!isSaveShareButton ? dataShare.wechatContent : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>
+                <div nz-col nzSpan="2" class="right_alignment"><i class="anticon anticon-add"></i>
                   分享图片：
                 </div>
                 <div nz-col nzSpan="1"></div>
@@ -205,7 +205,7 @@
                 </div>
               </div>
               <div nz-row *ngIf="shareImageUrl01 !== ''">
-                <div nz-col nzSpan="2" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="2" class="right_alignment"></div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="21">
                   <img *ngIf="shareImageUrl01" [src]="shareImageUrl01" class="image-panel">
@@ -213,45 +213,45 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input formControlName="wechatHost" [(ngModel)]="dataShare.wechatHost" *ngIf="isSaveShareButton" placeholder="请输入域名路径" nzSize="default">
                   {{!isSaveShareButton ? dataShare.wechatHost : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input formControlName="wechatUrl" [(ngModel)]="dataShare.wechatUrl" *ngIf="isSaveShareButton" placeholder="请输入跳转链接" nzSize="default">
                   {{!isSaveShareButton ? dataShare.wechatUrl : ''}}
                 </div>
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">复制链接</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">复制链接</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">标题：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">标题：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input maxlength="32" formControlName="linkTitle" [(ngModel)]="dataShare.linkTitle" *ngIf="isSaveShareButton" placeholder="输入标题" nzSize="default">
                   {{!isSaveShareButton ? dataShare.linkTitle : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">域名路径：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">域名路径：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input formControlName="linkHost" [(ngModel)]="dataShare.linkHost" *ngIf="isSaveShareButton" placeholder="输入域名路径" nzSize="default">
                   {{!isSaveShareButton ? dataShare.linkHost : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">跳转链接：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">跳转链接：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input formControlName="linkUrl" [(ngModel)]="dataShare.linkUrl" *ngIf="isSaveShareButton" placeholder="输入跳转链接" nzSize="default">
                   {{!isSaveShareButton ? dataShare.linkUrl : ''}}
                 </div>
@@ -316,7 +316,7 @@
           <nz-modal [(nzVisible)]="visiable.addGuide || visiable.modifyGuide" nzWidth="950" nzTitle="{{isModifyGuideVisible ? '修改模板' : '新增模板'}}" [nzFooter]="addGuideModalFooter" (nzOnCancel)="hideModal('guide')" nzMaskClosable="false">
             <form [formGroup]="addGuideForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   模板名称：
                 </div>
                 <div nz-col nzSpan="12">
@@ -324,10 +324,10 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   模板类型：
                 </div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="12">
                   <nz-radio-group [(ngModel)]="guideDate.type" formControlName="type">
                     <label nz-radio nzValue="BEGINNNER_GUIDE">新手引导</label>
                     <label nz-radio nzValue="percentage_discount" [nzDisabled]="true">活动推荐</label>
@@ -337,84 +337,84 @@
             </form>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 对话配置：
               </div>
-              <div nz-col nzSpan="12" class="span_down">
+              <div nz-col nzSpan="12">
                 APP对用户说的话
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 排序
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 <button nz-button nzType="primary" (click)="doSave('guide_message')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
             <ng-container *ngFor="let item of guideItem.messageArr; let i=index;">
               <div nz-row>
                 <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="12">
                   <textarea rows="3" nz-input [ngModel]="guideItem.messageArr[i].text" (ngModelChange)="onInputChange($event, 'messageText', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <input nz-input [ngModel]="guideItem.messageArr[i].sort" (ngModelChange)="onInputChange($event, 'messageSort', i)" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <button nz-button nzType="primary" (click)="doDelete(i, 'guide_message')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
             </ng-container>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 表单配置：
               </div>
-              <div nz-col nzSpan="12" class="span_down">
+              <div nz-col nzSpan="12">
                 点击后，替用户，在对话框输入对应内容
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 排序
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 <button nz-button nzType="primary" (click)="doSave('guide_button')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
             <ng-container *ngFor="let item of guideItem.buttonArr; let i=index;">
               <div nz-row>
                 <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="12">
                   <textarea rows="3" nz-input [ngModel]="guideItem.buttonArr[i].text" (ngModelChange)="onInputChange($event, 'buttonText', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <input nz-input [ngModel]="guideItem.buttonArr[i].sort" (ngModelChange)="onInputChange($event, 'buttonSort', i)" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <button nz-button nzType="primary" (click)="doDelete(i, 'guide_button')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
             </ng-container>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">
+              <div nz-col nzSpan="4" class="right_alignment">
                 图片配置：
               </div>
-              <div nz-col nzSpan="12" class="span_down">
+              <div nz-col nzSpan="12">
                 点击后，可自动配置跳转方式
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 排序
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 <button nz-button nzType="primary" (click)="doSave('guide_image')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
@@ -430,16 +430,16 @@
                   </nz-upload>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <input nz-input [ngModel]="guideItem.imageArr[i].sort" (ngModelChange)="onInputChange($event, 'imageSort', i)" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <button nz-button nzType="primary" (click)="doDelete(i, 'guide_image')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
               </div>
               <div nz-row *ngIf="fileList.length >= 1">
-                <div nz-col nzSpan="4" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="4" class="right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：702px*400px&nbsp;&nbsp;限制大小：500K</font>
@@ -449,7 +449,7 @@
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   跳转位置：
                 </div>
                 <div nz-col nzSpan="12">
@@ -461,7 +461,7 @@
                 </div>
               </div>
               <div nz-row *ngIf="guideDate.jumpType === 'APP'">
-                <div nz-col nzSpan="4" class="span_down right_alignment">APP标识：</div>
+                <div nz-col nzSpan="4" class="right_alignment">APP标识：</div>
                 <div nz-col nzSpan="20">
                   <nz-select [(ngModel)]="guideDate.appDestinationType" (ngModelChange)="onInputChange($event, 'imageAppDestinationType', i)">
                     <nz-option required [nzLabel]="'个人中心---------------------------------'" [nzValue]="'PERSONAL_CENTER'"></nz-option>
@@ -476,7 +476,7 @@
                 </div>
               </div>
               <div nz-row *ngIf="guideDate.jumpType === 'WEB'">
-                <div nz-col nzSpan="4" class="span_down right_alignment">链接地址：</div>
+                <div nz-col nzSpan="4" class="right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input [(ngModel)]="guideDate.webUrl" (ngModelChange)="onInputChange($event, 'imageWebUrl', i)" placeholder="请输入链接地址" nzSize="default">
                 </div>
@@ -542,7 +542,7 @@
           <nz-modal [(nzVisible)]="visiable.addHelp" nzWidth="1150" nzTitle="新增技能" [nzFooter]="addHelpModalFooter" (nzOnCancel)="hideModal('addHelp')" nzMaskClosable="false">
             <form [formGroup]="addHelpForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>技能名称：
                 </div>
                 <div nz-col nzSpan="16">
@@ -550,7 +550,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment"><i class="anticon anticon-add"></i>
+                <div nz-col nzSpan="4" class="right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>技能icon：
                 </div>
                 <div nz-col nzSpan="16">
@@ -563,17 +563,17 @@
                 </div>
               </div>
               <div nz-row *ngIf="fileList.length == 1">
-                <div nz-col nzSpan="4" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="4" class="right_alignment"></div>
                 <div nz-col nzSpan="16">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：64*64&nbsp;&nbsp;限制大小：150K</font>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   技能类型：
                 </div>
-                <div nz-col nzSpan="16" class="span_down">
+                <div nz-col nzSpan="16">
                   <nz-radio-group [(ngModel)]="helpType" formControlName="type">
                     <label nz-radio nzValue="TRAVEL">出行</label>
                     <label nz-radio nzValue="LIFE">生活</label>
@@ -583,7 +583,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
@@ -591,7 +591,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
@@ -599,15 +599,15 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">技能介绍：</div>
+                <div nz-col nzSpan="4" class="right_alignment">技能介绍：</div>
                 <div nz-col nzSpan="16">
-                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">详情页编辑：</div>
+                <div nz-col nzSpan="4" class="right_alignment">详情页编辑：</div>
                 <div nz-col nzSpan="16">
-                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
             </form>
@@ -620,7 +620,7 @@
           <nz-modal [(nzVisible)]="visiable.modifyHelp" nzWidth="1150" nzTitle="修改技能" [nzFooter]="modifyHelpModalFooter" (nzOnCancel)="hideModal('modifyHelp')" nzMaskClosable="false">
             <form [formGroup]="modifyHelpForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>技能名称：
                 </div>
                 <div nz-col nzSpan="16">
@@ -628,7 +628,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment"><i class="anticon anticon-add"></i>
+                <div nz-col nzSpan="4" class="right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>技能icon：
                 </div>
                 <div nz-col nzSpan="16">
@@ -641,17 +641,17 @@
                 </div>
               </div>
               <div nz-row *ngIf="fileList.length == 1">
-                <div nz-col nzSpan="4" class="span_down right_alignment"></div>
+                <div nz-col nzSpan="4" class="right_alignment"></div>
                 <div nz-col nzSpan="16">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：64*64&nbsp;&nbsp;限制大小：150K</font>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   技能类型：
                 </div>
-                <div nz-col nzSpan="16" class="span_down">
+                <div nz-col nzSpan="16">
                   <nz-radio-group [(ngModel)]="helpType" formControlName="type">
                     <label nz-radio nzValue="TRAVEL">出行</label>
                     <label nz-radio nzValue="LIFE">生活</label>
@@ -661,7 +661,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>技能排序：
                 </div>
                 <div nz-col nzSpan="16">
@@ -669,7 +669,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <font color="red">*</font>外部跳转编辑：
                 </div>
                 <div nz-col nzSpan="16">
@@ -677,15 +677,15 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">技能介绍：</div>
+                <div nz-col nzSpan="4" class="right_alignment">技能介绍：</div>
                 <div nz-col nzSpan="16">
-                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+                  <quill-editor formControlName="describe" [(ngModel)]="helpDate.describe" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">详情页编辑：</div>
+                <div nz-col nzSpan="4" class="right_alignment">详情页编辑：</div>
                 <div nz-col nzSpan="16">
-                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+                  <quill-editor formControlName="details" [(ngModel)]="helpDate.details" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
             </form>
@@ -732,7 +732,7 @@
                   <textarea formControlName="content" [(ngModel)]="dataProtocol" disabled rows="20" nz-input style="background-color: #f5f5f5"></textarea>
                 </div>
                 <div nz-col nzSpan="24" *ngIf="isSaveProtocolButton">
-                  <quill-editor formControlName="content" [(ngModel)]="dataProtocol" [modules]="config" [style]="{height: '350px'}"></quill-editor>
+                  <quill-editor formControlName="content" [(ngModel)]="dataProtocol" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
                 </div>
               </div>
             </form>
@@ -830,8 +830,8 @@
           <nz-modal [(nzVisible)]="visiable.addFlowPoint" nzWidth="750" nzTitle="新增流程点引导" [nzFooter]="addFlowPointModalFooter" (nzOnCancel)="hideModal('addFlowPoint')" nzMaskClosable="false">
             <form [formGroup]="addFlowPointForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="4" class="right_alignment">bot选择：</div>
+                <div nz-col nzSpan="12">
                   <nz-radio-group [(ngModel)]="flowPointDate.botName" formControlName="botName">
                     <label nz-radio nzValue="FLIGHT">机票</label>
                     <label nz-radio nzValue="TRAIN">火车票</label>
@@ -855,14 +855,14 @@
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">流程点名称：</div>
+                <div nz-col nzSpan="4" class="right_alignment">流程点名称：</div>
                 <div nz-col nzSpan="18">
                   <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
                 </div>
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">对应后台话术：</div>
+                <div nz-col nzSpan="4" class="right_alignment">对应后台话术：</div>
                 <div nz-col nzSpan="18">
                   <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
                 </div>
@@ -870,16 +870,16 @@
             </form>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">指引语设置：</div>
-              <div nz-col nzSpan="10" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">指引语设置：</div>
+              <div nz-col nzSpan="10">
                 APP对用户说的话
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 排序
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 <button nz-button nzType="primary" (click)="doSave('flow_guides')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
               <div nz-col nzSpan="2"></div>
@@ -887,15 +887,15 @@
             <ng-container *ngFor="let item of flowPointDate.guides; let i=index;">
               <div nz-row>
                 <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="10" class="span_down">
+                <div nz-col nzSpan="10">
                   <textarea rows="3" nz-input [ngModel]="flowPointDate.guides[i].text" (ngModelChange)="onInputChange($event, 'flowGuide', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <input nz-input [ngModel]="flowPointDate.guides[i].sort" (ngModelChange)="onInputChange($event, 'flowSort', i)" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <button nz-button nzType="primary" (click)="doDelete(i, 'flow_guides')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
                 <div nz-col nzSpan="2"></div>
@@ -913,8 +913,8 @@
           <nz-modal [(nzVisible)]="visiable.modifyFlowPoint" nzWidth="750" nzTitle="修改流程点引导" [nzFooter]="modifyFlowPointModalFooter" (nzOnCancel)="hideModal('modifyFlowPoint')" nzMaskClosable="false">
             <form [formGroup]="modifyFlowPointForm">
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">bot选择：</div>
-                <div nz-col nzSpan="12" class="span_down">
+                <div nz-col nzSpan="4" class="right_alignment">bot选择：</div>
+                <div nz-col nzSpan="12">
                   <nz-radio-group [(ngModel)]="flowPointDate.botName" formControlName="botName">
                     <label nz-radio nzValue="FLIGHT">机票</label>
                     <label nz-radio nzValue="TRAIN">火车票</label>
@@ -938,14 +938,14 @@
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">流程点名称：</div>
+                <div nz-col nzSpan="4" class="right_alignment">流程点名称：</div>
                 <div nz-col nzSpan="18">
                   <input nz-input formControlName="process" [(ngModel)]="flowPointDate.process" placeholder="请输入流程点名称" nzSize="default">
                 </div>
               </div>
 
               <div nz-row>
-                <div nz-col nzSpan="4" class="span_down right_alignment">对应后台话术：</div>
+                <div nz-col nzSpan="4" class="right_alignment">对应后台话术：</div>
                 <div nz-col nzSpan="18">
                   <input nz-input formControlName="botMsg" [(ngModel)]="flowPointDate.botMsg" placeholder="请输入对应后台话术" nzSize="default">
                 </div>
@@ -953,16 +953,16 @@
 
             </form>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down right_alignment">指引语设置：</div>
-              <div nz-col nzSpan="10" class="span_down">
+              <div nz-col nzSpan="4" class="right_alignment">指引语设置：</div>
+              <div nz-col nzSpan="10">
                 APP对用户说的话
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 排序
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 <button nz-button nzType="primary" (click)="doSave('flow_guides')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
               <div nz-col nzSpan="2"></div>
@@ -970,15 +970,15 @@
             <ng-container *ngFor="let item of flowPointDate.guides; let i=index;">
               <div nz-row>
                 <div nz-col nzSpan="4"></div>
-                <div nz-col nzSpan="10" class="span_down">
+                <div nz-col nzSpan="10">
                   <textarea rows="3" nz-input [ngModel]="flowPointDate.guideArr[i]" (ngModelChange)="onInputChange($event, 'flowGuide', i)" nzSize="default"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="4" class="span_down right_alignment">
+                <div nz-col nzSpan="4" class="right_alignment">
                   <input nz-input [ngModel]="i+1" (ngModelChange)="onInputChange($event, 'flowSort', i)" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   <button nz-button nzType="primary" (click)="doDelete(i, 'flow_guides')"><i class="anticon anticon-delete"></i>删除</button>
                 </div>
                 <div nz-col nzSpan="2"></div>
@@ -998,12 +998,12 @@
             <form [formGroup]="qqCustomerForm">
 
               <div nz-row>
-                <div nz-col nzSpan="3" class="span_down" style="font-size: 20px;font-weight: bold;">客服QQ</div>
+                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">客服QQ</div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">QQ号：</div>
+                <div nz-col nzSpan="2" class="spacing right_alignment">QQ号：</div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="9" class="span_down">
+                <div nz-col nzSpan="9">
                   <input nz-input maxlength="32" formControlName="contact_qq" [(ngModel)]="dataQQCustomer" *ngIf="isSaveQQCustomerButton" placeholder="输入QQ号" nzSize="default">
                   {{!isSaveQQCustomerButton ? dataQQCustomer : ''}}
                 </div>

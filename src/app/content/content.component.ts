@@ -56,7 +56,6 @@ export class ContentComponent implements OnInit {
   openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' };
-  config = {};
   dataContent = []; // 内容
   dataScreen = [];  // 首屏
   dataOpen = [];  // 弹窗
@@ -83,7 +82,6 @@ export class ContentComponent implements OnInit {
   ) {
     this.commonService.nav[5].active = true;
     this._initForm();
-    this.config = this.commonService.config;
   }
 
   ngOnInit() {

@@ -8,7 +8,7 @@
           <div nz-row>
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="2" class="spacing right_alignment">
                   订单号：
                 </div>
                 <div nz-col nzSpan="4">
@@ -17,10 +17,10 @@
                 </div>
                 <div nz-col nzSpan="1">
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   报警时间：
                 </div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'taxi')"></nz-range-picker>
                 </div>
 
@@ -134,12 +134,12 @@
         <nz-tab [nzTitle]="voiceTemplate" (nzClick)="changePanel('voice')" *ngIf="commonService.haveMenuPermission('children', 'ASR语音切换')">
           <ng-template #voiceTemplate><i class="anticon anticon-sound"></i>ASR语音切换</ng-template>
           <div nz-row>
-            <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
+            <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
+            <div nz-col nzSpan="2" class="spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
-            <div nz-col nzSpan="9" class="span_down">
+            <div nz-col nzSpan="9">
               <nz-radio-group [(ngModel)]="voiceIOSRadioValue">
                 <label nz-radio nzValue="BAI_DU" [(nzDisabled)]="!isSaveIOSVoiceButton">百度ASR</label>
                 <label nz-radio nzValue="XUN_FEI" [(nzDisabled)]="!isSaveIOSVoiceButton">讯飞ASR</label>
@@ -157,12 +157,12 @@
           </div>
 
           <div nz-row>
-            <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
+            <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
+            <div nz-col nzSpan="2" class="spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
-            <div nz-col nzSpan="9" class="span_down">
+            <div nz-col nzSpan="9">
               <nz-radio-group [(ngModel)]="voiceANDROIDRadioValue">
                 <label nz-radio nzValue="BAI_DU" [(nzDisabled)]="!isSaveANDROIDVoiceButton">百度ASR</label>
                 <label nz-radio nzValue="XUN_FEI" [(nzDisabled)]="!isSaveANDROIDVoiceButton">讯飞ASR</label>
@@ -186,13 +186,13 @@
           <div nz-row>
             <div nz-col nzSpan="22">
               <form [formGroup]="searchOrderStateForm">
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="2" class="spacing right_alignment">
                   订单号：
                 </div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="2" class="spacing right_alignment">
                   订单类型：
                 </div>
                 <div nz-col nzSpan="3">
@@ -207,7 +207,7 @@
                     <nz-option required [nzLabel]="'电影票'" [nzValue]="'MOVIE_ORDER'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down spacing right_alignment">
+                <div nz-col nzSpan="2" class="spacing right_alignment">
                   订单状态：
                 </div>
                 <div nz-col nzSpan="3">
@@ -229,10 +229,10 @@
                     <nz-option *ngIf="taxiOrderType === 'TAXI_ORDER'" required [nzLabel]="'进行中'" [nzValue]="'JINXINGZHONG'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   报警时间：
                 </div>
-                <div nz-col nzSpan="7" class="span_down">
+                <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'orderState')"></nz-range-picker>
                 </div>
 
@@ -315,30 +315,30 @@
           <!-- 弹框 —— 详情 —— 修改状态监控 -->
           <nz-modal [(nzVisible)]="visiable.orderStateSetting" nzWidth="750" nzTitle="修改状态监控" [nzFooter]="orderStateSettingModalFooter" (nzOnCancel)="hideModal('orderStateSetting')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="8" class="span_down right_alignment">
+              <div nz-col nzSpan="8" class="right_alignment">
                 BOT名称：
               </div>
-              <div nz-col nzSpan="10" class="span_down">
+              <div nz-col nzSpan="10">
                 {{currentOrderStateSetting.orderType === 'TRAIN_ORDER' ? '火车' : currentOrderStateSetting.orderType === 'FLIGHT_ORDER' || currentOrderStateSetting.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : currentOrderStateSetting.orderType === 'HOTEL_ORDER' ? '酒店' : currentOrderStateSetting.orderType === 'TAXI_ORDER' ? '打车' : currentOrderStateSetting.orderType === 'EXPRESS_ORDER' ? '闪送' : currentOrderStateSetting.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : currentOrderStateSetting.orderType === 'MOVIE_ORDER' ? '电影票' : currentOrderStateSetting.orderType === 'PAIR_ORDER' ? '恋爱运势' : currentOrderStateSetting.orderType === 'FORTUNE_ORDER' ? '月运势' : currentOrderStateSetting.orderType === 'MUSIC_ORDER' ? '付费音频' : currentOrderStateSetting.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="8" class="span_down right_alignment">
+              <div nz-col nzSpan="8" class="right_alignment">
                 订单状态：
               </div>
-              <div nz-col nzSpan="10" class="span_down">
+              <div nz-col nzSpan="10">
                 {{currentOrderStateSetting.state === 'CHUPIAOZHONG' ? '出票中' : currentOrderStateSetting.state === 'TUIKUANZHONG' ? '退款中' : currentOrderStateSetting.state === 'DAIZHIFU' ? '待支付' : currentOrderStateSetting.state === 'DAICHUXING' ? '待出行' : currentOrderStateSetting.state === 'CHUPIAOSHIBAI' ? '出票失败' : currentOrderStateSetting.state === 'YIQUXIAO' ? '已取消' : currentOrderStateSetting.state === 'YITUIKUAN' ? '已退款' : currentOrderStateSetting.state === 'YICHUXING' ? '已出行' : currentOrderStateSetting.state === 'JIAOYIGUANBI' ? '交易关闭' : currentOrderStateSetting.state === 'GAIQIANZHONG' ? '改签中' : currentOrderStateSetting.state === 'ZHANZUOZHONG' ? '占座中' : currentOrderStateSetting.state === 'QUXIAOZHONG' ? '取消中' : currentOrderStateSetting.state === 'TUIPIAOZHONG' ? '退票中' : currentOrderStateSetting.state === 'CHUPIAOSHIBAITUIKUANZHONG' ? '出票失败退款中' : currentOrderStateSetting.state === 'TUIKUANSHIBAI' ? '退款失败' : currentOrderStateSetting.state === 'SIJIDAODA' ? '司机已到达' : currentOrderStateSetting.state === 'CHAOSHIQUXIAO' ? '超时取消' : ''}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="8" class="span_down right_alignment">
+              <div nz-col nzSpan="8" class="right_alignment">
                 报警阈值1：
               </div>
               <div nz-col nzSpan="8">
                 <input nz-input [(ngModel)]="currentOrderStateSetting.lowTime" placeholder="请输入报警阈值1" nzSize="default">
               </div>
               <div nz-col nzSpan="8">
-                <nz-radio-group [(ngModel)]="currentOrderStateSetting.time1" class="span_down">
+                <nz-radio-group [(ngModel)]="currentOrderStateSetting.time1">
                   <label nz-radio nzValue="0">分钟</label>
                   <label nz-radio nzValue="1">小时</label>
                   <label nz-radio nzValue="2">天</label>
@@ -346,14 +346,14 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="8" class="span_down right_alignment">
+              <div nz-col nzSpan="8" class="right_alignment">
                 报警阈值2：
               </div>
               <div nz-col nzSpan="8">
                 <input nz-input [(ngModel)]="currentOrderStateSetting.highTime" placeholder="请输入报警阈值2" nzSize="default">
               </div>
               <div nz-col nzSpan="8">
-                <nz-radio-group [(ngModel)]="currentOrderStateSetting.time2" class="span_down">
+                <nz-radio-group [(ngModel)]="currentOrderStateSetting.time2">
                   <label nz-radio nzValue="0">分钟</label>
                   <label nz-radio nzValue="1">小时</label>
                   <label nz-radio nzValue="2">天</label>
@@ -375,7 +375,7 @@
           <ng-template #whiteListTemplate><i class="anticon anticon-file-text"></i>白名单管理</ng-template>
           <div nz-row>
             <div nz-col nzSpan="21"></div>
-            <div nz-col nzSpan="3" class="span_down">
+            <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('addWhiteList', '')"><i class="anticon anticon-file-add"></i>新增白名单</button>
             </div>
           </div>
@@ -414,12 +414,12 @@
               <div nz-col nzSpan="24">
                 <textarea rows="6" [(ngModel)]="whiteListDate.keys" nz-input></textarea>
               </div>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
                   <input type="file" (change)="getExcel($event)" multiple="false" />
                 </a>
               </div>
-              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+              <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
             </div>
             <ng-template #whiteListModalFooter>
               <button nz-button nzType="primary" (click)="showModal('codeView')"><i class="anticon anticon-save"></i>确定</button>
@@ -449,7 +449,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="right_alignment span_down">
+              <div nz-col nzSpan="4" class="right_alignment">
                 验证码：
               </div>
               <div nz-col nzSpan="2"></div>

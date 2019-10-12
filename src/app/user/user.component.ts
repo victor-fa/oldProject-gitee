@@ -122,7 +122,6 @@ export class UserComponent implements OnInit {
     { title: '电影票', key: '9' }
   ];
   isSpinning = false;
-  config = {};
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -137,7 +136,6 @@ export class UserComponent implements OnInit {
   ) {
     this.commonService.nav[3].active = true;
     this._initForm();
-    this.config = this.commonService.config;
   }
 
   ngOnInit() {

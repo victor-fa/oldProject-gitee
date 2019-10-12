@@ -62,7 +62,6 @@ export class AppVersionComponent implements OnInit {
   guideItem = { messageArr: [], buttonArr: [], imageArr: [], };
   currentAppId = '';  // 当前默认的APP信息
   templateId = '';  // 帮助管理的模板Id
-  config = {};
   isSaveShareButton = false;
   isSaveProtocolButton = false;
   isSaveQQCustomerButton = false;
@@ -95,7 +94,6 @@ export class AppVersionComponent implements OnInit {
   ) {
     this.commonService.nav[1].active = true;
     this._initForm();
-    this.config = this.commonService.config;
   }
 
   ngOnInit() {

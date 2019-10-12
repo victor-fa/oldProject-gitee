@@ -8,10 +8,10 @@
           <ng-template #dataAppTemplate><i class="anticon anticon-message"></i>对话日志</ng-template>
           <form [formGroup]="searchSessionLogForm" *ngIf="currentPanel === 'sessionLog'">
             <div nz-row>
-              <div nz-col nzSpan="2" class="span_down right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 日期范围：
               </div>
-              <div nz-col nzSpan="7" class="span_down">
+              <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true"
                   [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange('date', $event)">
                 </nz-range-picker>
@@ -58,37 +58,37 @@
                   <div nz-col nzSpan="5">
                     <input nz-input formControlName="uid" [(ngModel)]="uid" placeholder="输入用户ID" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="4" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="4" class="right_alignment" style="letter-spacing: 0px;">
                     会话内意图数&nbsp;<a (click)="chooseSessionCompare($event, 'conpareFirst')" style="letter-spacing: 7px;font-weight: bold;">{{conpareFirst === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="3" style="margin-right: -15px;">
                     <input nz-input formControlName="intentionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="3" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="3" class="right_alignment" style="letter-spacing: 0px;">
                     重复回答&nbsp;<a (click)="chooseSessionCompare($event, 'conpareSecond')" style="letter-spacing: 7px;font-weight: bold;">{{conpareSecond === '<' ? '<' : '>'}}</a>
                   </div>
                   <div nz-col nzSpan="3" style="margin-right: -15px;">
                     <input nz-input formControlName="repetitionNum" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="3" class="span_down right_alignment" style="letter-spacing: 0px;">
+                  <div nz-col nzSpan="3" class="right_alignment" style="letter-spacing: 0px;">
                     响应时长&nbsp;<a (click)="chooseSessionCompare($event, 'conpareThird')" style="letter-spacing: 7px;font-weight: bold;">{{conpareThird === '<' ? '<' : '>'}}</a>&nbsp;
                   </div>
                   <div nz-col nzSpan="2">
                     <input nz-input formControlName="cost" type="text" nzSize="default">
                   </div>
-                  <div nz-col nzSpan="1" class="span_down">&nbsp;ms</div>
+                  <div nz-col nzSpan="1">&nbsp;ms</div>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="1" class="span_down right_alignment" style="letter-spacing: -2px;">标记：</div>
-                <div nz-col nzSpan="3" class="span_down">
+                <div nz-col nzSpan="1" class="right_alignment" style="letter-spacing: -2px;">标记：</div>
+                <div nz-col nzSpan="3">
                   <nz-select [(ngModel)]="sessionLogFlag" formControlName="flag">
                     <nz-option [nzLabel]="'全部'" [nzValue]="0"></nz-option>
                     <nz-option required [nzLabel]="'已标记'" [nzValue]="1"></nz-option>
                     <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment" style="letter-spacing: -2px;">
+                <div nz-col nzSpan="2" class="right_alignment" style="letter-spacing: -2px;">
                   异常回答：
                 </div>
                 <div nz-col nzSpan="3">
@@ -100,7 +100,7 @@
                     <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   账户类型：
                 </div>
                 <div nz-col nzSpan="3">
@@ -108,7 +108,7 @@
                     <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="span_down right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   特殊用户：
                 </div>
                 <div nz-col nzSpan="3">
@@ -131,7 +131,7 @@
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="loadData('sessionLogSearch')"><i class="anticon anticon-search"></i>查询</button>
               </div>
-              <div nz-col nzSpan="15" class="span_down">共搜索到 {{totalSessionLog}} 条数据</div>
+              <div nz-col nzSpan="15">共搜索到 {{totalSessionLog}} 条数据</div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="getExcecl('sessionLog')"><i class="anticon anticon-export"></i>导出</button>
               </div>
@@ -465,12 +465,12 @@
               <textarea rows="6" nz-input nzSize="default" [(ngModel)]="dataSpecialUser.content"></textarea>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" class="span_down">
+              <div nz-col nzSpan="4">
                 <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
                   <input type="file" (change)="getExcel($event)" multiple="false" />
                 </a>
               </div>
-              <div nz-col nzSpan="6" class="span_down" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+              <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
             </div>
             <ng-template #addSpecialUserModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addSpecialUser')"><i class="anticon anticon-save"></i>确定</button>
