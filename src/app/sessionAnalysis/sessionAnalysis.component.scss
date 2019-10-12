@@ -7,11 +7,8 @@
   height: calc(100% - 70px);
   overflow-x: hidden;
   overflow-y: scroll;
-  .search_panel {
-    margin-bottom: 10px;
-    .span_down {
-      line-height: 30px;
-    }
+  .span_down {
+    line-height: 30px;
   }
 
   .spin {

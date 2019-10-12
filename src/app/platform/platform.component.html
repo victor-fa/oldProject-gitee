@@ -6,7 +6,7 @@
 
         <nz-tab [nzTitle]="taggingPlatformTemplate" (nzClick)="changePanel('taggingPlatform')" *ngIf="commonService.haveMenuPermission('children', '文档中心')">
           <ng-template #taggingPlatformTemplate><i class="anticon anticon-code-o"></i>技术文档</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('addLevelOneMenu', '')"><i class="anticon anticon-file-add"></i>新增一级菜单</button>
@@ -54,7 +54,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addLevelOneMenu" nzTitle="新增一级菜单" [nzFooter]="addLevelOneMenuFooter" (nzOnCancel)="hideModal('addLevelOneMenu')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级菜单：
               </div>
@@ -62,7 +62,7 @@
                 <input nz-input [(ngModel)]="dataCategoryO.name" placeholder="输入一级菜单" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级排序：
               </div>
@@ -77,7 +77,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.editLevelOneMenu" nzTitle="修改一级菜单" [nzFooter]="editLevelOneMenuFooter" (nzOnCancel)="hideModal('editLevelOneMenu')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级菜单：
               </div>
@@ -85,7 +85,7 @@
                 <input nz-input [(ngModel)]="dataCategoryO.name" placeholder="输入一级菜单" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级排序：
               </div>
@@ -100,7 +100,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.addLevelTwoMenu" nzTitle="新增二级级菜单" [nzFooter]="addLevelTwoMenuFooter" (nzOnCancel)="hideModal('addLevelTwoMenu')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级菜单：
               </div>
@@ -108,7 +108,7 @@
                 {{dataCategoryO.name}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 二级菜单：
               </div>
@@ -116,7 +116,7 @@
                 <input nz-input [(ngModel)]="dataCategoryS.name" placeholder="输入二级菜单" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 二级排序：
               </div>
@@ -134,7 +134,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.editLevelTwoMenu" nzWidth="650" nzTitle="修改二级级菜单" [nzFooter]="editLevelTwoMenuFooter" (nzOnCancel)="hideModal('editLevelTwoMenu')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 一级菜单：
               </div>
@@ -142,7 +142,7 @@
                 {{dataCategoryS.parent.name}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 二级菜单：
               </div>
@@ -150,7 +150,7 @@
                 <input nz-input [(ngModel)]="dataCategoryS.name" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down right_alignment">
                 二级排序：
               </div>
@@ -165,7 +165,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.editContent" nzWidth="950" nzTitle="编辑内容" [nzFooter]="editContentFooter" (nzOnCancel)="hideModal('editContent')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4">
                 <button nz-button nzType="primary" (click)="goEditor()"><i class="anticon anticon-save"></i>启用Editor编辑器</button>
               </div>
@@ -174,7 +174,7 @@
                 <a href="http://editor.md.ipandao.com/examples/full.html" target="_blank"><button nz-button nzType="primary"><i class="anticon anticon-save"></i>编辑器教程</button></a>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <textarea rows="22" nz-input [(ngModel)]="dataCategoryS.content" placeholder="请输入内容" nzSize="default"></textarea>
               </div>
@@ -189,7 +189,7 @@
 
         <nz-tab [nzTitle]="userTemplate" (nzClick)="changePanel('user')" *ngIf="commonService.haveMenuPermission('children', '客户账号')">
           <ng-template #userTemplate><i class="anticon anticon-user"></i>客户账号</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('addAccount', '')"><i class="anticon anticon-file-add"></i>新建账号</button>
@@ -225,7 +225,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addAccount" nzWidth="950" nzTitle="新建账号" [nzFooter]="addAccountFooter" (nzOnCancel)="hideModal('addAccount')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
               <div nz-col nzSpan="22" class="span_down">
                 <nz-radio-group [(ngModel)]="dataUser.customerId">
@@ -235,26 +235,26 @@
                 </nz-radio-group>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户名称：</div>
               <div nz-col nzSpan="8" class="span_down">{{dataUser.customerId}}</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户账号：</div>
               <div nz-col nzSpan="8" class="span_down">
                 <input nz-input [(ngModel)]="dataUser.accountName" placeholder="输入客户账号" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">登录密码：</div>
               <div nz-col nzSpan="8" class="span_down">
                 <input nz-input [(ngModel)]="dataUser.password" placeholder="输入登录密码" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">权限配置：</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>
@@ -287,34 +287,34 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.editAccount" nzWidth="950" nzTitle="编辑账号" [nzFooter]="editAccountFooter" (nzOnCancel)="hideModal('editAccount')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户ID：</div>
               <div nz-col nzSpan="22" class="span_down">
                 {{dataUser.customerId}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户名称：</div>
               <div nz-col nzSpan="8" class="span_down">
                 {{dataUser.customerId}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">客户账号：</div>
               <div nz-col nzSpan="8" class="span_down">
                 {{dataUser.accountName}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">登录密码：</div>
               <div nz-col nzSpan="8" class="span_down">
                 <input nz-input [(ngModel)]="dataUser.password" placeholder="输入登录密码" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">权限配置：</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-table #permissionTable [nzData]="dataTaggingPlatform" *ngIf="!isSpinning">
                   <thead>

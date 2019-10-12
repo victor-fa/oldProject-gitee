@@ -121,6 +121,7 @@ export class ActivityComponent implements OnInit {
   semdMesCodeText = 60;
   operateObject = { code: '', operater: '18682233554' }; // 操作人
   dateRange = [];
+  dateRangeA = [];
   // resetTaskCenterCheckOptions = [];
 
   constructor(
@@ -199,7 +200,6 @@ export class ActivityComponent implements OnInit {
                 }
               });
             }
-            console.log(this.dataActivity);
             data.allQuantity = count;
           });
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
@@ -266,6 +266,7 @@ export class ActivityComponent implements OnInit {
               item.totalRevNum = (item.pendingRevL !== undefined ? item.pendingRevL.length : 0) + (item.invalidRevL !== undefined ? item.invalidRevL.length : 0) + (item.errorRevL !== undefined ? item.errorRevL.length : 0) + (item.successRevL !== undefined ? item.successRevL.length : 0);
             });
           }
+          console.log(this.dataBatchsend);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'couponInBatchsend') {
@@ -401,21 +402,11 @@ export class ActivityComponent implements OnInit {
       this.endRuleDate = '';
       this.modifyctivityItem = { actName: '', actStartDate: '', actEndDate: '', actRuleDesc: '', actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '', actPageUrl: '' };
     } else if (flag === 'modifyActivity') { // 修改活动
+      console.log(data);
       this.baseInfoId = data.id;
       this.visiable.addActivity  = true;
       this.isModifyModelShow = true;
-      this.modifyctivityItem = {
-        actName: data.actName,
-        actStartDate: data.actStartDate,
-        actEndDate: data.actEndDate,
-        actRuleDesc: data.actRuleDesc,
-        actTypeStart: '',
-        actTypeEnd: '',
-        totalQuantity: '',  // 奖励发放上限
-        perUserQuantity: '',  // 每个用户可领
-        chargeThreshold: '', // 充值额度
-        actPageUrl: ''  // 活动链接
-      };
+      this.modifyctivityItem = { actName: data.actName, actStartDate: data.actStartDate, actEndDate: data.actEndDate, actRuleDesc: data.actRuleDesc, actTypeStart: '', actTypeEnd: '', totalQuantity: '', perUserQuantity: '', chargeThreshold: '', actPageUrl: '' };
       if (data.actTypeBo) { // 针对活动规则配置
         this.modifyctivityItem.actTypeStart = data.actTypeBo.actTypeStartDate + ' ' + data.actTypeBo.actTypeStartTime;
         this.modifyctivityItem.actTypeEnd = data.actTypeBo.actTypeEndDate + ' ' + data.actTypeBo.actTypeEndTime;
@@ -428,15 +419,14 @@ export class ActivityComponent implements OnInit {
         if (data.imageResPos.length > 0) {
           const imageUrl = `${this.commonService.baseUrl}`;
           this.showImageUrl = imageUrl.substring(0, imageUrl.indexOf('/api')) + data.imageResPos[0].relativeUri;
-          const file: any = {
-            name: data.imageResPos[0].originName
-          };
+          const file: any = { name: data.imageResPos[0].originName };
           this.fileList.push(file);
         }
       }
-      if (data.actType) { // 有选择活动模板
-        this.activityRadioValue = data.actType;
-      }
+      this.dateRange = [data.actStartDate, data.actEndDate];
+      this.dateRangeA = [this.modifyctivityItem.actTypeStart, this.modifyctivityItem.actTypeEnd];
+      data.actType ? this.activityRadioValue = data.actType : null; // 有选择活动模板
+      console.log(this.modifyctivityItem);
     } else if (flag === 'addCoupon') { // 新增红包 | 活动奖励
       if (this.baseInfoId === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '基本信息未填写' });
@@ -495,6 +485,7 @@ export class ActivityComponent implements OnInit {
         this.batchsendData.actCouponRulePoL.forEach((item, i) => { tempArr.push(item.couponRulePo.couponName); });
         this.batchsendData.tempCouponName = tempArr;
       }
+      console.log(this.batchsendData);
       this.visiable.detailBatchsend = true;
     } else if (flag === 'addCouponInBatchsend') { // 新增红包 | 活动奖励
       this.visiable.couponInBatchsend = true;

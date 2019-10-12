@@ -5,7 +5,7 @@
       <nz-tabset nzSize="large">
         <nz-tab [nzTitle]="taxiTemplate" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车监控')">
           <ng-template #taxiTemplate><i class="anticon anticon-car"></i>打车监控</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -74,45 +74,45 @@
           <!-- 弹框 —— 详情 —— 打车路径 -->
           <nz-modal [(nzVisible)]="visiable.taxiDetail" nzWidth="1150" nzTitle="打车监控" [nzFooter]="taxiDetailModalFooter" (nzOnCancel)="hideModal('taxi')" nzMaskClosable="false">
               <!-- 打车路径详情 -->
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="8">
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">订单号：</div><div nz-col nzSpan="16">{{currentTaxi.orderId}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">司机电话：</div><div nz-col nzSpan="16">{{currentTaxi.driverPhone}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">用户账号：</div><div nz-col nzSpan="16">{{currentTaxi.userPhone}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">用户昵称：</div><div nz-col nzSpan="16">{{currentTaxi.userNickName}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">打车计价：</div><div nz-col nzSpan="16">{{currentTaxi.nowPrice}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">可用小悟币：</div><div nz-col nzSpan="16">{{currentTaxi.availableAmount}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">可用小悟豆：</div><div nz-col nzSpan="16">{{currentTaxi.availableBeans}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">打车预估价：</div><div nz-col nzSpan="16">{{currentTaxi.estimate_price}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">打车平台：</div><div nz-col nzSpan="16">{{currentTaxi.source ? (currentTaxi.source === 'didi' ? '滴滴平台' : (currentTaxi.source === 'shenzhou' ? '神州平台' : (currentTaxi.source === 'yidao' ? '易到平台' : (currentTaxi.source === 'shouqi' ? '首汽平台' : (currentTaxi.source === 'caocao' ? '曹操' : 'null'))))) : 'null'}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">报警原因：</div><div nz-col nzSpan="16">{{currentTaxi.monitorType !== null ? (currentTaxi.monitorType === 0 ? '余额不足' : (currentTaxi.monitorType === 1 ? '超出预估' : 'null')) : 'null'}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">报警时间：</div><div nz-col nzSpan="16">{{currentTaxi.createDate}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">起始地点：</div><div nz-col nzSpan="16">{{currentTaxi.originName}}</div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="8" class="right_alignment">目标地点：</div><div nz-col nzSpan="16">{{currentTaxi.destinationName}}</div>
                 </div>
               </div>
@@ -133,10 +133,10 @@
 
         <nz-tab [nzTitle]="voiceTemplate" (nzClick)="changePanel('voice')" *ngIf="commonService.haveMenuPermission('children', 'ASR语音切换')">
           <ng-template #voiceTemplate><i class="anticon anticon-sound"></i>ASR语音切换</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9" class="span_down">
@@ -146,7 +146,7 @@
               </nz-radio-group>
             </div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2">
               <button *ngIf="!isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceIOS', '')"><i class="anticon anticon-form"></i>编辑</button>
               <button *ngIf="isSaveIOSVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceIOS', '')"><i class="anticon anticon-save"></i>保存</button>
@@ -156,10 +156,10 @@
             </div>
           </div>
 
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="24" class="span_down" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2" class="span_down spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9" class="span_down">
@@ -169,7 +169,7 @@
               </nz-radio-group>
             </div>
           </div>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2">
               <button *ngIf="!isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('editVoiceANDROID', '')"><i class="anticon anticon-form"></i>编辑</button>
               <button *ngIf="isSaveANDROIDVoiceButton" nz-button nzType="primary" (click)="doSave('saveVoicceANDROID', '')"><i class="anticon anticon-save"></i>保存</button>
@@ -183,7 +183,7 @@
 
         <nz-tab [nzTitle]="orderStateTemplate" (nzClick)="changePanel('orderState')" *ngIf="commonService.haveMenuPermission('children', '订单状态监控')">
           <ng-template #orderStateTemplate><i class="anticon anticon-eye-o"></i>订单状态监控</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="22">
               <form [formGroup]="searchOrderStateForm">
                 <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -314,7 +314,7 @@
 
           <!-- 弹框 —— 详情 —— 修改状态监控 -->
           <nz-modal [(nzVisible)]="visiable.orderStateSetting" nzWidth="750" nzTitle="修改状态监控" [nzFooter]="orderStateSettingModalFooter" (nzOnCancel)="hideModal('orderStateSetting')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="8" class="span_down right_alignment">
                 BOT名称：
               </div>
@@ -322,7 +322,7 @@
                 {{currentOrderStateSetting.orderType === 'TRAIN_ORDER' ? '火车' : currentOrderStateSetting.orderType === 'FLIGHT_ORDER' || currentOrderStateSetting.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : currentOrderStateSetting.orderType === 'HOTEL_ORDER' ? '酒店' : currentOrderStateSetting.orderType === 'TAXI_ORDER' ? '打车' : currentOrderStateSetting.orderType === 'EXPRESS_ORDER' ? '闪送' : currentOrderStateSetting.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : currentOrderStateSetting.orderType === 'MOVIE_ORDER' ? '电影票' : currentOrderStateSetting.orderType === 'PAIR_ORDER' ? '恋爱运势' : currentOrderStateSetting.orderType === 'FORTUNE_ORDER' ? '月运势' : currentOrderStateSetting.orderType === 'MUSIC_ORDER' ? '付费音频' : currentOrderStateSetting.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="8" class="span_down right_alignment">
                 订单状态：
               </div>
@@ -330,7 +330,7 @@
                 {{currentOrderStateSetting.state === 'CHUPIAOZHONG' ? '出票中' : currentOrderStateSetting.state === 'TUIKUANZHONG' ? '退款中' : currentOrderStateSetting.state === 'DAIZHIFU' ? '待支付' : currentOrderStateSetting.state === 'DAICHUXING' ? '待出行' : currentOrderStateSetting.state === 'CHUPIAOSHIBAI' ? '出票失败' : currentOrderStateSetting.state === 'YIQUXIAO' ? '已取消' : currentOrderStateSetting.state === 'YITUIKUAN' ? '已退款' : currentOrderStateSetting.state === 'YICHUXING' ? '已出行' : currentOrderStateSetting.state === 'JIAOYIGUANBI' ? '交易关闭' : currentOrderStateSetting.state === 'GAIQIANZHONG' ? '改签中' : currentOrderStateSetting.state === 'ZHANZUOZHONG' ? '占座中' : currentOrderStateSetting.state === 'QUXIAOZHONG' ? '取消中' : currentOrderStateSetting.state === 'TUIPIAOZHONG' ? '退票中' : currentOrderStateSetting.state === 'CHUPIAOSHIBAITUIKUANZHONG' ? '出票失败退款中' : currentOrderStateSetting.state === 'TUIKUANSHIBAI' ? '退款失败' : currentOrderStateSetting.state === 'SIJIDAODA' ? '司机已到达' : currentOrderStateSetting.state === 'CHAOSHIQUXIAO' ? '超时取消' : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="8" class="span_down right_alignment">
                 报警阈值1：
               </div>
@@ -345,7 +345,7 @@
                 </nz-radio-group>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="8" class="span_down right_alignment">
                 报警阈值2：
               </div>
@@ -373,7 +373,7 @@
 
         <nz-tab [nzTitle]="whiteListTemplate" (nzClick)="changePanel('whiteList')" *ngIf="commonService.haveMenuPermission('children', '生产环境白名单')">
           <ng-template #whiteListTemplate><i class="anticon anticon-file-text"></i>白名单管理</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3" class="span_down">
               <button nz-button nzType="primary" (click)="showModal('addWhiteList', '')"><i class="anticon anticon-file-add"></i>新增白名单</button>
@@ -409,7 +409,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.whiteList" nzWidth="750" nzTitle="新增白名单" [nzFooter]="whiteListModalFooter" (nzOnCancel)="hideModal('addWhiteList')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">可输入添加或以文件批量导入</div>
               <div nz-col nzSpan="24">
                 <textarea rows="6" [(ngModel)]="whiteListDate.keys" nz-input></textarea>
@@ -428,13 +428,13 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.codeView" nzWidth="750" nzTitle="新增白名单" [nzFooter]="codeViewModalFooter" (nzOnCancel)="hideModal('codeView')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24" class="spthumbnailan_down">将添加以下账号为白名单</div>
               <div nz-col nzSpan="24">
                 <textarea rows="6" [(ngModel)]="whiteListDate.keys" nz-input></textarea>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4">
                 <nz-select [(ngModel)]="operateObject.operator">
                   <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
@@ -448,7 +448,7 @@
                 <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="semdMesCodeText !== 60">{{semdMesCodeText === 60 ? '验证' : semdMesCodeText + 's'}}</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment span_down">
                 验证码：
               </div>

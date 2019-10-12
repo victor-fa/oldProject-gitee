@@ -1,7 +1,7 @@
 <app-left-nav></app-left-nav>
 <div class="dataCenter" [ngStyle]="{'left': !commonService.isLeftNavClose ? 'calc(240px)' : 'calc(80px)','width': !commonService.isLeftNavClose ? 'calc(100% - 240px)' : 'calc(100% - 80px)'}">
   <form [formGroup]="searchDataCenterForm">
-    <div nz-row class="search_panel">
+    <div nz-row>
       <div nz-col nzSpan="2">
         <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-question-circle-o"></i>数据说明？</button>
       </div>
@@ -41,13 +41,13 @@
         <nz-tab [nzTitle]="dataAppTemplate" (nzClick)="changePanel('dataApp')" *ngIf="commonService.haveMenuPermission('children', 'App总览')">
           <ng-template #dataAppTemplate><i class="anticon anticon-database"></i>运营数据 <a href="/dataCenter?currentTab=1" target="_blank">-></a></ng-template>
           <div style="background-color: #F2F2F2;">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24" style="margin: 10px 0 0 10px;">核心运营数据</div>
             </div>
-            <div nz-row class="search_panel boldfont">
+            <div nz-row class="boldfont">
               <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px 10px 10px 30px; padding: 10px;">
                 <div nz-col nzSpan="24">
-                  <div nz-row class="search_panel">
+                  <div nz-row>
                     <div nz-col nzSpan="6">
                       活跃用户<br>
                       <p style="font-size: 25px;">{{coreOperation.activeUsers}}</p>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div nz-col nzSpan="24">
-                    <div nz-row class="search_panel">
+                    <div nz-row>
                       <div nz-col nzSpan="6">
                         周留存率<br>
                         <p style="font-size: 25px;">{{coreOperation.weekRetentionUsers !== undefined ? coreOperation.weekRetentionUsers === -1 ? '--' : coreOperation.weekRetentionUsers + '%' : ''}}</p>
@@ -87,7 +87,7 @@
 
               <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px; padding: 10px;">
                 <div nz-col nzSpan="24">
-                  <div nz-row class="search_panel">
+                  <div nz-row>
                     <div nz-col nzSpan="6">
                       总唤醒数<br>
                       <p style="font-size: 25px;">{{coreOperation.totalAwaken}}</p>
@@ -106,7 +106,7 @@
                 </div>
 
                 <div nz-col nzSpan="24">
-                  <div nz-row class="search_panel">
+                  <div nz-row>
                     <div nz-col nzSpan="6">
                       订单请求数<br>
                       <p style="font-size: 25px;">{{coreOperation.orderQuery}}</p>
@@ -1008,7 +1008,7 @@
         </nz-tab>
 
         <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')" nzMaskClosable="false">
-          <div nz-row class="search_panel" style="text-align: center;">
+          <div nz-row style="text-align: center;">
             <div nz-col nzSpan="2">
               <span style="line-height: 30px;">&nbsp;</span><br>
               <ng-container *ngIf="currentPanel === 'dataApp'">
@@ -1093,7 +1093,7 @@
         </nz-modal>
 
         <nz-modal [(nzVisible)]="visiable.orign" nzWidth="950" nzTitle="来源筛选" [nzFooter]="eorignModalFooter" (nzOnCancel)="showSomething('orign')" nzMaskClosable="false">
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2">来源：</div>
             <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allApp', $event)" [(ngModel)]="checkOrign.allApp">全选（APP）</label></div>
             <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allSdk', $event)" [(ngModel)]="checkOrign.allSdk">全选（SDK）</label></div>
@@ -1101,7 +1101,7 @@
             <div nz-col nzSpan="5"><label nz-checkbox (ngModelChange)="onChange('allTest', $event)" [(ngModel)]="checkOrign.allTest">全选（测试）</label></div>
           </div>
           <br>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">手机：</div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.xiaowu">你好小悟</label></div>
@@ -1109,7 +1109,7 @@
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.phone.wotewode">沃特沃德6</label></div>
           </div>
           <br>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">车机：</div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.botai">博泰车机api</label></div>
@@ -1118,21 +1118,21 @@
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.car.tongxingTest">同行者test</label></div>
           </div>
           <br>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">手表：</div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteSdk">维特智能sdk</label></div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.watch.weiteTest">维特智能test</label></div>
           </div>
           <br>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">机器人：</div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaSdk">小哈机器人sdk</label></div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.robot.xiaohaTest">小哈机器人test</label></div>
           </div>
           <br>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="2"></div>
             <div nz-col nzSpan="2">其他：</div>
             <div nz-col nzSpan="5"><label nz-checkbox [(ngModel)]="checkOrign.other.k11Api">k11公共屏幕api</label></div>

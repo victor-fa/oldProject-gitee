@@ -6,20 +6,20 @@
 
         <nz-tab [nzTitle]="informaTemplate" (nzClick)="changePanel('informa')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #informaTemplate><i class="anticon anticon-database"></i>数据</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="8">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Set Name*：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="creTemplateData.case_name" maxlength="20" placeholder="请输入用例名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">File*：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
@@ -28,7 +28,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <button nz-button nzType="primary" (click)="doSave('addInforma')"><i class="anticon anticon-save"></i>提交</button>
                 </div>
@@ -64,36 +64,36 @@
 
         <nz-tab [nzTitle]="creTemplateTemplate" (nzClick)="changePanel('creTemplate')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #creTemplateTemplate><i class="anticon anticon-layout"></i>模板创建</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="8">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Template Task Name*（模板任务名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" maxlength="20" [(ngModel)]="creTaskData.task_name" placeholder="请输入任务名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Channel*（对应控制台上的key或网页url）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="creTaskData.appkey" placeholder="请输入控制台的APPKEY">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Account*（bot名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="creTaskData.bot_name" placeholder="请输入bot名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Set Name*（集合名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="creTaskData.case_id" >
                     <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
@@ -101,7 +101,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <button nz-button nzType="primary" (click)="doSave('addCreTemplate')"><i class="anticon anticon-save"></i>创建</button>
                 </div>
@@ -138,32 +138,32 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.creTemplateModal" nzWidth="1150" nzTitle="{{'导航回归表单解析【' + creTemplateModalData.pk + '】'}}" [nzFooter]="creTemplateModalFooter" (nzOnCancel)="hideModal('creTemplateModal')" nzMaskClosable="false">
-            <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
-            <div nz-row class="search_panel">
+            <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">task type：</div>
               <div nz-col nzSpan="19">
                 模板测试任务
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">channel：</div>
               <div nz-col nzSpan="19">
                 {{creTemplateModalData.fields ? creTemplateModalData.fields.appkey : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">date&time：</div>
               <div nz-col nzSpan="19">
                 {{creTemplateModalData.fields ? creTemplateModalData.fields.task_time : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">sents：</div>
               <div nz-col nzSpan="19">
                 {{creTemplateModalData.fields ? creTemplateModalData.fields.sents : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="20">
               </div>
               <div nz-col nzSpan="2">
@@ -173,7 +173,7 @@
                 <button nz-button nzType="primary" (click)="doSave('addCreTemplateModal')"><i class="anticon anticon-save"></i>执行</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24" class="span_down right_alignment">
                 <nz-table #addCreTemplateModalTable [nzData]="dataTestSubtasks">
                   <thead>
@@ -211,36 +211,36 @@
 
         <nz-tab [nzTitle]="creTaskTemplate" (nzClick)="changePanel('creTask')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #creTaskTemplate><i class="anticon anticon-schedule"></i>任务创建</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="8">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Name*（任务名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" maxlength="20" [(ngModel)]="serialData.task_name" placeholder="请输入任务名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Channel*（对应控制台上的key或网页url）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="serialData.appkey" placeholder="请输入控制台的APPKEY">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Account*（bot名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="serialData.bot_name" placeholder="请输入bot名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Task Type*（任务类型）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.task_type">
                     <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
@@ -249,10 +249,10 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Set Name*（集合名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.case_id" >
                     <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
@@ -260,10 +260,10 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Template Selection（模板选择）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-select [(ngModel)]="serialData.temp_id" >
                     <nz-option [nzLabel]="'———空———'" [nzValue]="''"></nz-option>
@@ -271,7 +271,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
@@ -280,7 +280,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <button nz-button nzType="primary" (click)="doSave('addCreTask')"><i class="anticon anticon-save"></i>创建</button>
                 </div>
@@ -319,38 +319,38 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.creTaskModal" nzWidth="1150" nzTitle="{{'导航自动化测试【' + creTaskModalData.pk + '】'}}" [nzFooter]="creTemplateModalFooter" (nzOnCancel)="hideModal('creTaskModal')" nzMaskClosable="false">
-            <div nz-row class="search_panel"><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
-            <div nz-row class="search_panel">
+            <div nz-row><div nz-col nzSpan="3" class="span_down"><b>任务参数</b></div></div>
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">task type：</div>
               <div nz-col nzSpan="19">
                 {{creTaskModalData.fields ? (creTaskModalData.fields.task_type === 1 ? '自动测试任务' : '回归测试任务') : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">channel：</div>
               <div nz-col nzSpan="19">
                 {{creTaskModalData.fields ? creTaskModalData.fields.appkey : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">account：</div>
               <div nz-col nzSpan="19">
                 {{creTaskModalData.fields ? creTaskModalData.fields.bot_name : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">date&time：</div>
               <div nz-col nzSpan="19">
                 {{creTaskModalData.fields ? creTaskModalData.fields.task_time : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">sents：</div>
               <div nz-col nzSpan="19">
                 {{creTaskModalData.fields ? creTaskModalData.fields.sents : ''}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="20">
               </div>
               <div nz-col nzSpan="2">
@@ -360,7 +360,7 @@
                 <button nz-button nzType="primary" (click)="doSave('addCreTaskModal')"><i class="anticon anticon-save"></i>执行</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24" class="span_down right_alignment">
                 <nz-table #addCreTaskModalTable [nzData]="dataTestSubtasks">
                   <thead>
@@ -397,20 +397,20 @@
 
         <nz-tab [nzTitle]="templateTemplate" (nzClick)="changePanel('template')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
           <ng-template #templateTemplate><i class="anticon anticon-home"></i>模板库</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="8">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Template Name*（模板名）：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <input nz-input nzSize="default" [(ngModel)]="templateData.temp_name" maxlength="20" placeholder="请输入模板名">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24" class="span_down">Template*：</div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button nzType="primary">
@@ -419,7 +419,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="24">
                   <button nz-button nzType="primary" (click)="doSave('addTemplate')"><i class="anticon anticon-save"></i>提交</button>
                 </div>

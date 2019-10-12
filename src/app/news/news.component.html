@@ -6,7 +6,7 @@
 
         <nz-tab [nzTitle]="taggingNewsTemplate" (nzClick)="changePanel('taggingNews')" *ngIf="commonService.haveMenuPermission('children', '人工标注')">
           <ng-template #taggingNewsTemplate><i class="anticon anticon-flag"></i>人工标注</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="taggingNewsSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 标注状态：
@@ -70,7 +70,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.sortSpeech" nzWidth="850" nzTitle="词性分类" [nzFooter]="sortSpeechFooter" (nzOnCancel)="hideModal('sortSpeech')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down right_alignment">
                 标注本页：
               </div>
@@ -83,7 +83,7 @@
                 </nz-radio-group>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-table #sortSpeechTable [nzData]="dataSortSpeech" *ngIf="!isSpinning" [nzShowQuickJumper]="true" [(nzPageIndex)]="pageNum.dataSortPage" (nzPageIndexChange)="onChange($event, 'sortSpeechPage')">
                   <thead>
@@ -120,7 +120,7 @@
 
         <nz-tab [nzTitle]="manualAuditTemplate" (nzClick)="changePanel('manualAudit')" *ngIf="commonService.haveMenuPermission('children', '人工审核')">
           <ng-template #manualAuditTemplate><i class="anticon anticon-schedule"></i>人工审核</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="manualAuditSearchForm">
 
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
@@ -200,7 +200,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.manualAudit" nzWidth="950" nzTitle="审核" [nzFooter]="manualAuditFooter" (nzOnCancel)="hideModal('manualAudit')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 词条名称：
               </div>
@@ -226,7 +226,7 @@
                 <button nz-button nzType="primary" (click)="showModal('manualAuditModel')"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-table #manualAuditModelTable [(nzData)]="dataManualAuditModel" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>
@@ -260,7 +260,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.uploadAudit" nzTitle="上传审核文件" [nzFooter]="uploadMarkedFooter" (nzOnCancel)="hideModal('uploadMarked')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down spacing right_alignment">
                 词性类型：
               </div>
@@ -273,7 +273,7 @@
                 </nz-radio-group>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                   <button nz-button>
@@ -292,7 +292,7 @@
 
         <nz-tab [nzTitle]="newsThesaurusTemplate" (nzClick)="changePanel('newsThesaurus')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
           <ng-template #newsThesaurusTemplate><i class="anticon anticon-global"></i>新闻词库</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="newsThesaurusSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 新闻词库：
@@ -349,7 +349,7 @@
             </tbody>
           </nz-table>
           <ng-template #newsThesaurusFooter>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down">人名：{{paramNewsThesaurus.person}}</div>
               <div nz-col nzSpan="3" class="span_down">地名：{{paramNewsThesaurus.address}}</div>
               <div nz-col nzSpan="3" class="span_down">事件：{{paramNewsThesaurus.event}}</div>
@@ -369,7 +369,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addNewsThesaurus" nzWidth="650" nzTitle="新增词条" [nzFooter]="addNewsThesaurusFooter" (nzOnCancel)="hideModal('addNewsThesaurus')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down spacing right_alignment">
                 词性类型：
               </div>
@@ -382,12 +382,12 @@
                 </nz-radio-group>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <textarea rows="5" nz-input [(ngModel)]="addNewsThesaurusData.content" placeholder="不同词条，使用换行进行区分" nzSize="default"></textarea>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24"> * 添加词条后，将会直接影响新闻BOT，请确认词条属性后，谨慎操作！ </div>
             </div>
             <ng-template #addNewsThesaurusFooter>
@@ -397,22 +397,22 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.addNewsThesaurusResult" nzWidth="750" nzTitle="新增词条结果" [nzFooter]="addNewsThesaurusResultFooter" (nzOnCancel)="hideModal('addNewsThesaurusResult')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="10">
                 成功添加词条&nbsp;&nbsp;{{addNewsThesaurusData.successNum}}
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24" class="span_down spacing right_alignment">
                 <textarea rows="8" nz-input [(ngModel)]="addNewsThesaurusData.success" nzSize="default" [disabled]="true"></textarea>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 重复词条&nbsp;&nbsp;{{addNewsThesaurusData.failNum}}
               </div>
             </div>
-            <div nz-row class="search_panel"  *ngFor="let data of addNewsThesaurusData.failArr; let i=index;">
+            <div nz-row  *ngFor="let data of addNewsThesaurusData.failArr; let i=index;">
               <div nz-col nzSpan="4" class="span_down">
                 {{data.word}}
               </div>
@@ -438,7 +438,7 @@
 
         <nz-tab [nzTitle]="newsNERTemplate" (nzClick)="changePanel('newsNER')" *ngIf="commonService.haveMenuPermission('children', '新闻词库')">
           <ng-template #newsNERTemplate><i class="anticon anticon-bulb"></i>新闻NER</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="newsNERSearchForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 断句库名称：
@@ -488,10 +488,10 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.newsNERTest" nzTitle="断句测试" [nzFooter]="newsNERTestFooter" (nzOnCancel)="hideModal('newsNERTest')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">填写NER测试链接</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24"><input nz-input [(ngModel)]="newsNERDara.nerUrl" placeholder="请输入NER测试链接" nzSize="default"></div>
             </div>
             <ng-template #newsNERTestFooter>
@@ -501,7 +501,7 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.newsNERResult" nzWidth="950" nzTitle="测试结果" [nzFooter]="newsNERResultFooter" (nzOnCancel)="hideModal('newsNERResult')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-table #newsNERResultTable [nzData]="dataNewsNERResult" *ngIf="!isSpinning" [nzShowQuickJumper]="true">
                   <thead>

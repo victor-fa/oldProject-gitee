@@ -5,7 +5,7 @@
       <nz-tabset nzSize="large">
         <nz-tab [nzTitle]="contentTemplate" nzTitle="发文章" (nzClick)="changePanel('content')" *ngIf="commonService.haveMenuPermission('children', '发文章')">
           <ng-template #contentTemplate><i class="anticon anticon-file-text"></i>发文章</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增内容</button>
@@ -55,13 +55,13 @@
           <!-- 弹窗 —— 新增 —— 新增内容 -->
           <nz-modal [(nzVisible)]="visiable.addContent" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideAddModal('content')" nzMaskClosable="false">
             <form [formGroup]="addContentForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input maxlength="25" formControlName="title" [(ngModel)]="emptyAdd[0]" placeholder="请输入标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*类型：</div>
                 <div nz-col nzSpan="22">
                   <nz-select [ngModel]="''" formControlName="type" [(ngModel)]="emptyAdd[1]">
@@ -73,13 +73,13 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">url：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input formControlName="url" [(ngModel)]="emptyAdd[2]" placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2"></div>
                 <div nz-col nzSpan="22">
                   <font color="#A9A9A9">若url不为空，则默认使用url访问文章详情；填数字1~8，文章跳转到APP对应页面，对应关系如下所示
@@ -90,13 +90,13 @@
                     7：个人中心 > 联系我们 > 我的建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8：对话流 > 帮助</font>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*摘要：</div>
                 <div nz-col nzSpan="22">
                   <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="emptyAdd[3]" maxlength="50" placeholder="请输入摘要" nzSize="default"></textarea>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
                 <div nz-col nzSpan="22">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -107,26 +107,26 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row *ngIf="fileList.length == 1">
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="22">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布时间：</div>
                 <div nz-col nzSpan="22">
                   <nz-date-picker nzShowTime formControlName="publishTime" [(ngModel)]="emptyAdd[5]" required [nzFormat]="'yyyy-MM-dd HH:mm'" nzPlaceHolder="请输入发布时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="emptyAdd[6]" placeholder="请输入发布人" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="22">
                   <quill-editor formControlName="content" [(ngModel)]="emptyAdd[4]" [modules]="config" [style]="{height: '350px'}"></quill-editor>
@@ -144,13 +144,13 @@
           <!-- 弹窗 —— 修改 —— 修改内容 -->
           <nz-modal [(nzVisible)]="visiable.modifyContent" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyContentModalFooter" (nzOnCancel)="hideModifyModal('content')" nzMaskClosable="false">
             <form [formGroup]="modifyContentForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*标题：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input maxlength="25" formControlName="title" [(ngModel)]="contentDate.title" placeholder="请输入标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*类型：</div>
                 <div nz-col nzSpan="22">
                   <nz-select [ngModel]="contentDate.type" formControlName="type">
@@ -162,13 +162,13 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">url：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input formControlName="url" [(ngModel)]="contentDate.url" placeholder="若url不为空，则默认使用url访问文章详情" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2"></div>
                 <div nz-col nzSpan="22">
                   <font color="#A9A9A9">若url不为空，则默认使用url访问文章详情；填数字1~8，文章跳转到APP对应页面，对应关系如下所示
@@ -179,13 +179,13 @@
                     7：个人中心 > 联系我们 > 我的建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8：对话流 > 帮助</font>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="spthumbnailan_down right_alignment">*摘要：</div>
                 <div nz-col nzSpan="22">
                   <textarea rows="4" nz-input formControlName="abstractContent" [(ngModel)]="contentDate.abstractContent" maxlength="64" placeholder="请输入摘要" nzSize="default"></textarea>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment"><i class="anticon anticon-add"></i>缩略图：</div>
                 <div nz-col nzSpan="22">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -196,26 +196,26 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+              <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="22">
                   <img [src]="showImageUrl" class="image-panel">
                   <font color="#cccccc">&nbsp;&nbsp;建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布时间：</div>
                 <div nz-col nzSpan="22">
                   <nz-date-picker nzShowTime formControlName="publishTime" [(ngModel)]="contentDate.publishTime" required [nzFormat]="'yyyy-MM-dd HH:mm'" nzPlaceHolder="请输入发布时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment">*发布人：</div>
                 <div nz-col nzSpan="22">
                   <input nz-input maxlength="20" formControlName="pseudonym" [(ngModel)]="contentDate.pseudonym" placeholder="请输入发布人" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="2" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="22">
                   <quill-editor formControlName="content" [(ngModel)]="contentDate.content" [modules]="config" [style]="{height: '350px'}"></quill-editor>
@@ -234,7 +234,7 @@
 
         <nz-tab [nzTitle]="screenTemplate" (nzClick)="changePanel('screen')" *ngIf="commonService.haveMenuPermission('children', '开屏启动')">
           <ng-template #screenTemplate><i class="anticon anticon-desktop"></i>开屏启动</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('screen')"><i class="anticon anticon-file-add"></i>新增开屏</button>
@@ -288,7 +288,7 @@
           <!-- 弹窗 —— 新增 —— 新增开屏 -->
           <nz-modal [(nzVisible)]="visiable.addScreen" nzWidth="750" nzTitle="新增开屏" [nzFooter]="addScreenModalFooter" (nzOnCancel)="hideAddModal('screen')" nzMaskClosable="false">
             <form [formGroup]="addScreenForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>开屏标题：
                 </div>
@@ -297,7 +297,7 @@
                     placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>持续时间：
                 </div>
@@ -306,7 +306,7 @@
                     placeholder="请输入持续时间（单位：s）" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -314,7 +314,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>链接跳转状态：
                 </div>
@@ -326,7 +326,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForScreen === 'APP'">
+              <div nz-row *ngIf="jumpForScreen === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="site" [ngModel]="1">
@@ -341,7 +341,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">跳过状态：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="skip" [ngModel]="'true'">
@@ -350,14 +350,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForScreen === 'HTML'">
+              <div nz-row *ngIf="jumpForScreen === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="screenDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>开屏图片：
                 </div>
@@ -370,7 +370,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row *ngIf="fileList.length == 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
@@ -388,7 +388,7 @@
           <!-- 弹窗 —— 修改 —— 修改开屏 -->
           <nz-modal [(nzVisible)]="visiable.modifyScreen" nzWidth="750" nzTitle="修改开屏" [nzFooter]="modifyScreenModalFooter" (nzOnCancel)="hideModifyModal('screen')" nzMaskClosable="false">
             <form [formGroup]="modifyScreenForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>开屏标题：
                 </div>
@@ -397,7 +397,7 @@
                     placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>持续时间：
                 </div>
@@ -406,7 +406,7 @@
                     placeholder="请输入持续时间" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -414,7 +414,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>链接跳转状态：
                 </div>
@@ -426,7 +426,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="screenDate.jump === 'APP'">
+              <div nz-row *ngIf="screenDate.jump === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="screenDate.site" formControlName="site">
@@ -441,7 +441,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">跳过状态：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="screenDate.skip" formControlName="skip">
@@ -450,14 +450,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="screenDate.jump === 'HTML'">
+              <div nz-row *ngIf="screenDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [ngModel]="screenDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>开屏图片：
                 </div>
@@ -470,7 +470,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+              <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img [src]="showImageUrl" class="image-panel">
@@ -489,7 +489,7 @@
 
         <nz-tab [nzTitle]="openTemplate" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹窗')">
           <ng-template #openTemplate><i class="anticon anticon-scan"></i>首页弹框</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增弹窗</button>
@@ -545,7 +545,7 @@
           <!-- 弹窗 —— 新增 —— 新增弹窗 -->
           <nz-modal [(nzVisible)]="visiable.addOpen" nzWidth="750" nzTitle="新增弹窗" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')" nzMaskClosable="false">
             <form [formGroup]="addOpenForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>弹窗标题：
                 </div>
@@ -553,7 +553,7 @@
                   <input nz-input formControlName="title" [(ngModel)]="openDate.title" placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -565,7 +565,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -573,7 +573,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForOpen === 'APP'">
+              <div nz-row *ngIf="jumpForOpen === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="site" [ngModel]="1">
@@ -588,14 +588,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForOpen === 'HTML'">
+              <div nz-row *ngIf="jumpForOpen === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="openDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>展示规则：</div>
                 <div nz-col nzSpan="16" class="span_down">
                   <nz-radio-group [(ngModel)]="displayModeForOpen" formControlName="displayModeForOpen">
@@ -606,7 +606,7 @@
                   </nz-radio-group>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="displayModeForOpen === 'EVERY_DAY'">
+              <div nz-row *ngIf="displayModeForOpen === 'EVERY_DAY'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>请输入展示次数：</div>
                 <div nz-col nzSpan="11">
                   <input nz-input placeholder="请输入展示次数" formControlName="maxDisplay" nzSize="default">
@@ -614,7 +614,7 @@
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="1" class="span_down right">次</div>
               </div>
-              <!-- <div nz-row class="search_panel">
+              <!-- <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>排序状态：
                 </div>
@@ -623,7 +623,7 @@
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div> -->
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>弹窗图片：
                 </div>
@@ -636,7 +636,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row *ngIf="fileList.length == 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
@@ -654,7 +654,7 @@
           <!-- 弹窗 —— 修改 —— 修改弹窗 -->
           <nz-modal [(nzVisible)]="visiable.modifyOpen" nzWidth="750" nzTitle="修改弹窗" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')" nzMaskClosable="false">
             <form [formGroup]="modifyOpenForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>弹窗标题：
                 </div>
@@ -663,7 +663,7 @@
                     placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -675,7 +675,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -683,7 +683,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="openDate.jump === 'APP'">
+              <div nz-row *ngIf="openDate.jump === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="openDate.site" formControlName="site">
@@ -698,14 +698,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="openDate.jump === 'HTML'">
+              <div nz-row *ngIf="openDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [ngModel]="openDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>展示规则：</div>
                 <div nz-col nzSpan="16" class="span_down">
                   <nz-radio-group [(ngModel)]="displayModeForOpen" formControlName="displayModeForOpen">
@@ -716,7 +716,7 @@
                   </nz-radio-group>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="displayModeForOpen === 'EVERY_DAY'">
+              <div nz-row *ngIf="displayModeForOpen === 'EVERY_DAY'">
                 <div nz-col nzSpan="8" class="span_down right_alignment"><font color="red">*</font>请输入展示次数：</div>
                 <div nz-col nzSpan="11">
                   <input nz-input formControlName="maxDisplay" [ngModel]="openDate.maxDisplay" placeholder="请输入展示次数" nzSize="default">
@@ -724,7 +724,7 @@
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="1" class="span_down right">次</div>
               </div>
-              <!-- <div nz-row class="search_panel">
+              <!-- <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>排序状态：
                 </div>
@@ -733,7 +733,7 @@
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div> -->
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>弹窗图片：
                 </div>
@@ -746,7 +746,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+              <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img [src]="showImageUrl" class="image-panel">
@@ -765,7 +765,7 @@
 
         <nz-tab [nzTitle]="bannerTemplate" (nzClick)="changePanel('banner')" *ngIf="commonService.haveMenuPermission('children', '轮播图')">
           <ng-template #bannerTemplate><i class="anticon anticon-picture"></i>轮播图</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('banner')"><i class="anticon anticon-file-add"></i>新增轮播图</button>
@@ -819,7 +819,7 @@
           <!-- 弹窗 —— 新增 —— 新增轮播图 -->
           <nz-modal [(nzVisible)]="visiable.addBanner" nzWidth="750" nzTitle="新增轮播图" [nzFooter]="addBannerModalFooter" (nzOnCancel)="hideAddModal('banner')" nzMaskClosable="false">
             <form [formGroup]="addBannerForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>轮播图标题：
                 </div>
@@ -828,7 +828,7 @@
                     placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -840,7 +840,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -848,7 +848,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForBanner === 'APP'">
+              <div nz-row *ngIf="jumpForBanner === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="site" [ngModel]="1">
@@ -863,14 +863,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForBanner === 'HTML'">
+              <div nz-row *ngIf="jumpForBanner === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="bannerDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>排序状态：
                 </div>
@@ -879,7 +879,7 @@
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>轮播图片：
                 </div>
@@ -892,7 +892,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row *ngIf="fileList.length == 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
@@ -910,7 +910,7 @@
           <!-- 弹窗 —— 修改 —— 修改轮播图 -->
           <nz-modal [(nzVisible)]="visiable.modifyBanner" nzWidth="750" nzTitle="修改轮播图" [nzFooter]="modifyBannerModalFooter" (nzOnCancel)="hideModifyModal('banner')" nzMaskClosable="false">
             <form [formGroup]="modifyBannerForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>轮播图标题：
                 </div>
@@ -918,7 +918,7 @@
                   <input nz-input formControlName="title" [(ngModel)]="bannerDate.title" placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -930,7 +930,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -938,7 +938,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="bannerDate.jump === 'APP'">
+              <div nz-row *ngIf="bannerDate.jump === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="bannerDate.site" formControlName="site">
@@ -953,14 +953,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="bannerDate.jump === 'HTML'">
+              <div nz-row *ngIf="bannerDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="bannerDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>排序状态：
                 </div>
@@ -969,7 +969,7 @@
                     placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>弹窗图片：
                 </div>
@@ -982,7 +982,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+              <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img [src]="showImageUrl" class="image-panel">
@@ -1001,7 +1001,7 @@
 
         <nz-tab [nzTitle]="personalTemplate" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '个人中心')">
           <ng-template #personalTemplate><i class="anticon anticon-user"></i>个人中心</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showAddModal('personal')"><i class="anticon anticon-file-add"></i>新增广告图</button>
@@ -1053,7 +1053,7 @@
           <!-- 弹窗 —— 新增 —— 新增广告图 -->
           <nz-modal [(nzVisible)]="visiable.addPersonal" nzWidth="750" nzTitle="新增广告图" [nzFooter]="addPersonalModalFooter" (nzOnCancel)="hideAddModal('personal')" nzMaskClosable="false">
             <form [formGroup]="addPersonalForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>广告图标题：
                 </div>
@@ -1062,7 +1062,7 @@
                     placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -1074,7 +1074,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForPersonal === 'APP'">
+              <div nz-row *ngIf="jumpForPersonal === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="site" [ngModel]="1">
@@ -1089,14 +1089,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="jumpForPersonal === 'HTML'">
+              <div nz-row *ngIf="jumpForPersonal === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="personalDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -1104,7 +1104,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="personalDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>广告图片：
                 </div>
@@ -1117,7 +1117,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length == 1">
+              <div nz-row *ngIf="fileList.length == 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img *ngIf="imageUrl" [src]="showImageUrl" class="image-panel">
@@ -1135,7 +1135,7 @@
           <!-- 弹窗 —— 修改 —— 修改广告图 -->
           <nz-modal [(nzVisible)]="visiable.modifyPersonal" nzWidth="750" nzTitle="修改广告图" [nzFooter]="modifyPersonalModalFooter" (nzOnCancel)="hideModifyModal('personal')" nzMaskClosable="false">
             <form [formGroup]="modifyPersonalForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>广告图标题：
                 </div>
@@ -1144,7 +1144,7 @@
                     placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   <font color="red">*</font>跳转位置：
                 </div>
@@ -1156,7 +1156,7 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="personalDate.jump === 'APP'">
+              <div nz-row *ngIf="personalDate.jump === 'APP'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">APP标识：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="personalDate.site" formControlName="site">
@@ -1171,14 +1171,14 @@
                   </nz-select>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="personalDate.jump === 'HTML'">
+              <div nz-row *ngIf="personalDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="span_down right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="url" [(ngModel)]="personalDate.url"
                     placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment">
                   到期时间：
                 </div>
@@ -1186,7 +1186,7 @@
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="personalDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="8" class="span_down right_alignment"><i class="anticon anticon-add"></i>
                   <font color="red">*</font>广告图片：
                 </div>
@@ -1199,7 +1199,7 @@
                   </nz-upload>
                 </div>
               </div>
-              <div nz-row class="search_panel" *ngIf="fileList.length === 1">
+              <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="8" class="span_down right_alignment"></div>
                 <div nz-col nzSpan="12">
                   <img [src]="showImageUrl" class="image-panel">

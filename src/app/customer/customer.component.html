@@ -6,7 +6,7 @@
         <nz-tab [nzTitle]="feedbackTemplate" (nzClick)="changePanel('feedback')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #feedbackTemplate><i class="anticon anticon-swap"></i>用户反馈</ng-template>
           <form [formGroup]="searchFeedBackForm">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 用户账号：
               </div>
@@ -44,7 +44,7 @@
                 </nz-select>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 反馈时间：
               </div>
@@ -105,25 +105,25 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.feedBack" nzWidth="1150" nzTitle="反馈详情" [nzFooter]="feedBackModalFooter" (nzOnCancel)="hideModal('feedBack')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.phone ? tempFeedBack.phone : 'null'}}</div>
               <div nz-col nzSpan="4" class="right_alignment">用户昵称：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.nickName ? tempFeedBack.nickName : 'null'}}</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">反馈时间：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.date ? (tempFeedBack.date | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00') : 'null'}}</div>
               <div nz-col nzSpan="4" class="right_alignment">微信：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.wxNumber ? tempFeedBack.wxNumber : 'null'}}</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">QQ：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.qq ? tempFeedBack.qq : 'null'}}</div>
               <div nz-col nzSpan="4" class="right_alignment">邮箱：</div>
               <div nz-col nzSpan="6">{{tempFeedBack.email ? tempFeedBack.email : 'null'}}</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">处理状态：</div>
               <div nz-col nzSpan="3" *ngIf="!visiable.editStatus">{{tempFeedBack.status === 'SUBMITTED' ? '未处理' : tempFeedBack.status === 'DOING' ? '处理中' : tempFeedBack.status === 'DONE' ? '已完成' : ''}}</div>
               <div nz-col nzSpan="2" *ngIf="!visiable.editStatus">
@@ -143,11 +143,11 @@
                 <button nz-button nzType="default" (click)="hideModal('editStatus')"><i class="anticon anticon-close-circle-o"></i>取消</button>
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">问题描述：</div>
               <div nz-col nzSpan="17">{{tempFeedBack.date | date:'yyyy-MM-dd HH:mm:ss'}}</div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4"></div>
               <div nz-col nzSpan="17">{{tempFeedBack.words ? tempFeedBack.words : 'null'}}</div>
             </div>
@@ -155,30 +155,30 @@
             <ng-container *ngIf="tempFeedBack.dialogues">
               <ng-container *ngIf="tempFeedBack.dialogues.length > 0">
                 <ng-container *ngFor="let item of tempFeedBack.dialogues; let i=index;">
-                  <div nz-row class="search_panel">
+                  <div nz-row>
                     <div nz-col nzSpan="4" class="right_alignment">{{item.userName === 'ADMIN' ? '小悟客服：' : '问题描述：'}}</div>
                     <div nz-col nzSpan="17">{{item.createDate | date:'yyyy-MM-dd HH:mm:ss'}}</div>
                   </div>
-                  <div nz-row class="search_panel">
+                  <div nz-row>
                     <div nz-col nzSpan="4"></div>
                     <div nz-col nzSpan="17">{{item.msg}}</div>
                   </div>
                 </ng-container>
               </ng-container>
             </ng-container>
-            <div nz-row class="search_panel" *ngIf="!visiable.replyUser">
+            <div nz-row *ngIf="!visiable.replyUser">
               <div nz-col nzSpan="4"></div>
               <div nz-col nzSpan="4">
                 <button nz-button nzType="primary" (click)="showModal('', 'replyUser')"><i class="anticon anticon-message"></i>回复用户</button>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="visiable.replyUser">
+            <div nz-row *ngIf="visiable.replyUser">
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="23">
                 <textarea rows="4" nz-input placeholder="输入回复内容" [(ngModel)]="tempFeedBack.messageTemp" nzSize="default"></textarea>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="visiable.replyUser">
+            <div nz-row *ngIf="visiable.replyUser">
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="doSave('editReply')"><i class="anticon anticon-save"></i>提交</button>
@@ -188,7 +188,7 @@
               </div>
             </div>
 
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">上传图片：</div>
               <div nz-col nzSpan="20">
                 <ng-container *ngIf="tempFeedBack.photo">
@@ -201,7 +201,7 @@
             </div>
             <ng-container *ngIf="tempFeedBack.photo && tempFeedBack.photo.length > 0">
               <ng-container *ngIf="tempFeedBack.photo.toString().indexOf('http') > -1">
-                <div nz-row class="search_panel" *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
+                <div nz-row *ngFor="let item of tempFeedBack.photo; let i=index;" style="margin-bottom: 8px;">
                   <div nz-col nzSpan="6"></div>
                   <div nz-col nzSpan="14"><img [src]="item" style="width: 350px;"></div>
                   <div nz-col nzSpan="4"></div>
@@ -216,7 +216,7 @@
 
         <nz-tab [nzTitle]="problemTemplate" (nzClick)="changePanel('problem')" *ngIf="commonService.haveMenuPermission('children', '用户反馈')">
           <ng-template #problemTemplate><i class="anticon anticon-question-circle-o"></i>反馈问题管理</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="22"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="showModal(data, 'addProblem')"><i class="anticon anticon-search"></i>新增问题</button>
@@ -255,15 +255,15 @@
 
           <nz-modal [(nzVisible)]="visiable.addProblem" nzWidth="750" nzTitle="新增问题" [nzFooter]="addProblemModalFooter" (nzOnCancel)="hideModal('addProblem')" nzMaskClosable="false">
             <form [formGroup]="addProblemForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">问题类型：</div>
                 <div nz-col nzSpan="19"><input nz-input placeholder="输入问题类型" [(ngModel)]="dataProblem.name" formControlName="name" nzSize="default"></div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">问题排序：</div>
                 <div nz-col nzSpan="19"><input nz-input placeholder="输入问题排序" [(ngModel)]="dataProblem.sort" formControlName="sort" nzSize="default"></div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">具体问题：</div>
                 <div nz-col nzSpan="19"><textarea rows="4" nz-input placeholder="输入具体问题" [(ngModel)]="dataProblem.concreteProblems" formControlName="concreteProblems" nzSize="default"></textarea></div>
               </div>
@@ -276,15 +276,15 @@
 
           <nz-modal [(nzVisible)]="visiable.editProblem" nzWidth="750" nzTitle="修改问题" [nzFooter]="editProblemModalFooter" (nzOnCancel)="hideModal('editProblem')" nzMaskClosable="false">
             <form [formGroup]="editProblemForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">问题类型：</div>
                 <div nz-col nzSpan="19"><input nz-input [(ngModel)]="dataProblem.name" formControlName="name" placeholder="输入问题类型" nzSize="default"></div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">问题排序：</div>
                 <div nz-col nzSpan="19"><input nz-input [(ngModel)]="dataProblem.sort" formControlName="sort" placeholder="输入问题排序" nzSize="default"></div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="5" class="right_alignment">具体问题：</div>
                 <div nz-col nzSpan="19"><textarea rows="4" nz-input [(ngModel)]="dataProblem.concreteProblems" formControlName="concreteProblems" placeholder="输入具体问题" nzSize="default"></textarea></div>
               </div>
@@ -299,7 +299,7 @@
 
         <nz-tab [nzTitle]="oppositionTemplate" (nzClick)="changePanel('opposition')" *ngIf="commonService.haveMenuPermission('children', '点踩日志')">
           <ng-template #oppositionTemplate><i class="anticon anticon-dislike-o"></i>点踩日志</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="oppositionSearchForm">
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">
                 用户账号：
@@ -361,7 +361,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.opposition" nzWidth="1400" nzTitle="点踩对话日志详情" [nzFooter]="oppositionModalFooter" (nzOnCancel)="hideModal('opposition')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('opposition')"><i class="anticon anticon-download"></i>导出点踩对话日志</button>
               </div>
@@ -369,7 +369,7 @@
 
             <ng-container *ngIf="tempOpposition.session">
               <ng-container *ngFor="let item of tempOpposition.session">
-                <div nz-row class="search_panel" style="background-color: #DFF0D8;">
+                <div nz-row style="background-color: #DFF0D8;">
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-question"></i>
                     用户提问&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -377,7 +377,7 @@
                     {{item.ask}}
                   </div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-exclamation"></i>
                     齐悟回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -385,7 +385,7 @@
                     {{item.cpsAnswer}}
                   </div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-exclamation"></i>
                     子bot回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -403,7 +403,7 @@
 
         <nz-modal [(nzVisible)]="visiable.batchDownload" nzWidth="750" nzTitle="批量导出" [nzFooter]="batchDownloadModalFooter" (nzOnCancel)="hideModal('batchDownload')" nzMaskClosable="false">
           <form [formGroup]="batchDownloadForm">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="6">
                 <nz-radio-group formControlName="selected" [(ngModel)]="currentBatchSelected">
                   <label nz-radio nzValue="1" style="margin-bottom: 32px;">导出最新</label><br>
@@ -412,7 +412,7 @@
                 </nz-radio-group>
               </div>
               <div nz-col nzSpan="18">
-                <div nz-row class="search_panel" style="margin-bottom: 17px;">
+                <div nz-row style="margin-bottom: 17px;">
                   <div nz-col nzSpan="12">
                     <input nz-input nzSize="default" formControlName="number" placeholder="输入数量">
                   </div>
@@ -420,12 +420,12 @@
                     &nbsp;&nbsp;条
                   </div>
                 </div>
-                <div nz-row class="search_panel" style="margin-bottom: 17px;">
+                <div nz-row style="margin-bottom: 17px;">
                   <div nz-col nzSpan="12">
                     <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'batchDownloadFirst')"></nz-range-picker>
                   </div>
                 </div>
-                <div nz-row class="search_panel" style="margin-bottom: 17px;">
+                <div nz-row style="margin-bottom: 17px;">
                   <div nz-col nzSpan="4" class="span_down">
                     用户账号：
                   </div>
@@ -433,7 +433,7 @@
                     <input nz-input formControlName="userPhone" nzSize="default" placeholder="输入用户账号">
                   </div>
                 </div>
-                <div nz-row class="search_panel" style="margin-bottom: 17px;">
+                <div nz-row style="margin-bottom: 17px;">
                   <div nz-col nzSpan="4" class="span_down">
                     时间范围：
                   </div>
@@ -451,7 +451,7 @@
 
         <nz-tab [nzTitle]="agreeTemplate" (nzClick)="changePanel('agree')" *ngIf="commonService.haveMenuPermission('children', '点赞日志')">
           <ng-template #agreeTemplate><i class="anticon anticon-like-o"></i>点赞日志</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="agreeSearchForm">
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">
                 用户账号：
@@ -512,7 +512,7 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.agree" nzWidth="1400" nzTitle="点赞对话日志详情" [nzFooter]="agreeModalFooter" (nzOnCancel)="hideModal('agree')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <button nz-button nzType="primary" (click)="getExcel('agree')"><i class="anticon anticon-download"></i>导出点赞对话日志</button>
               </div>
@@ -520,7 +520,7 @@
 
             <ng-container *ngIf="tempAgree.session">
               <ng-container *ngFor="let item of tempAgree.session">
-                <div nz-row class="search_panel" style="background-color: #DFF0D8;">
+                <div nz-row style="background-color: #DFF0D8;">
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-question"></i>
                     用户提问&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -528,7 +528,7 @@
                     {{item.ask}}
                   </div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-exclamation"></i>
                     齐悟回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -536,7 +536,7 @@
                     {{item.cpsAnswer}}
                   </div>
                 </div>
-                <div nz-row class="search_panel">
+                <div nz-row>
                   <div nz-col nzSpan="24">
                     <i class="anticon anticon-exclamation"></i>
                     子bot回答&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#bfbfbf">{{item.create}}</font>
@@ -554,7 +554,7 @@
 
         <nz-tab [nzTitle]="invoiceTimeTemplate" (nzClick)="changePanel('invoiceTime')" *ngIf="commonService.haveMenuPermission('children', '开票时间管理')">
           <ng-template #invoiceTimeTemplate><i class="anticon anticon-clock-circle-o"></i>开票时间管理</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="searchInvoiceTimeForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 用户账号：
@@ -632,7 +632,7 @@
 
         <nz-tab [nzTitle]="invoiceLogTemplate" (nzClick)="changePanel('invoiceLog')" *ngIf="commonService.haveMenuPermission('children', '开票日志管理')">
           <ng-template #invoiceLogTemplate><i class="anticon anticon-file-text"></i>开票日志管理</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="searchInvoiceLogForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 用户账号：
@@ -708,7 +708,7 @@
 
         <nz-tab [nzTitle]="businessTemplate" (nzClick)="changePanel('business')" *ngIf="commonService.haveMenuPermission('children', '商务合作') && currentAppHeader === 'XIAOWU'">
           <ng-template #businessTemplate><i class="anticon anticon-team"></i>商务合作</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="searchBusinessForm">
               <div nz-col nzSpan="2" class="span_down spacing right_alignment">
                 人名查询：

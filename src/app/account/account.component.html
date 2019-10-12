@@ -5,7 +5,7 @@
       <nz-tabset nzSize="large">
         <nz-tab [nzTitle]="roleTemplate" (nzClick)="changePanel('role')" *ngIf="commonService.haveMenuPermission('children', '权限配置')">
           <ng-template #roleTemplate><i class="anticon anticon-key"></i>权限配置</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21">
             </div>
             <div nz-col nzSpan="3">
@@ -40,7 +40,7 @@
           <!-- 弹框 —— 新增 —— 新增角色 -->
           <nz-modal [(nzVisible)]="visiable.addRole" nzWidth="950" nzTitle="新增角色" [nzFooter]="addModalFooter" (nzOnCancel)="hideModal('addRole')" nzMaskClosable="false">
             <form [formGroup]="roleAddForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色名称：
                 </div>
@@ -48,7 +48,7 @@
                   <input nz-input formControlName="name" maxlength="10" [(ngModel)]="rolesItem.name" placeholder="输入角色名称" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="4" class="span_down spacing">
                   角色描述：
                 </div>
@@ -57,7 +57,7 @@
                 </div>
               </div>
             </form>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down spacing">
                 <font color="red">*</font>权限设置：
               </div>
@@ -68,7 +68,7 @@
                 一般情况仅勾选一个，如果勾选多个则可以切换平台
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <table class="table" *ngIf="allMenu.length > 0">
                   <tr class="tr">
@@ -193,7 +193,7 @@
           <!-- 弹框 —— 修改 —— 修改角色 -->
           <nz-modal [(nzVisible)]="visiable.modifyRole" nzWidth="950" nzTitle="修改角色" [nzFooter]="modifyRoleModalFooter" (nzOnCancel)="hideModal('modifyRole')" nzMaskClosable="false">
             <form [formGroup]="roleModifyForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="4" class="span_down spacing">
                   <font color="red">*</font>角色名称：
                 </div>
@@ -201,7 +201,7 @@
                   <input nz-input formControlName="name" [(ngModel)]="rolesItem.name" maxlength="10" placeholder="输入角色名称" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="4" class="span_down spacing">
                   角色描述：
                 </div>
@@ -210,7 +210,7 @@
                 </div>
               </div>
             </form>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="4" class="span_down spacing">
                 <font color="red">*</font>权限设置：
               </div>
@@ -221,7 +221,7 @@
                 一般情况仅勾选一个，如果勾选多个则可以切换平台
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="24">
                 <table class="table" *ngIf="allMenu.length > 0">
                   <tr class="tr">
@@ -339,7 +339,7 @@
 
         <nz-tab [nzTitle]="customerTemplate" (nzClick)="changePanel('customer')" *ngIf="commonService.haveMenuPermission('children', '员工配置')">
           <ng-template #customerTemplate><i class="anticon anticon-solution"></i>员工配置</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <form [formGroup]="searchCustomerForm">
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 员工姓名：
@@ -411,7 +411,7 @@
           <!-- 弹框 —— 新增 —— 新增员工 -->
           <nz-modal [(nzVisible)]="visiable.addCustomer" nzWidth="750" nzTitle="新增员工" [nzFooter]="addRoleModalFooter" (nzOnCancel)="hideModal('addCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerAddForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                   <font color="red">*</font>员工账号：
                 </div>
@@ -419,7 +419,7 @@
                   <input nz-input formControlName="username" maxlength="12" [(ngModel)]="customerItem.username" placeholder="输入员工账号" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>员工姓名：
                 </div>
@@ -427,7 +427,7 @@
                   <input nz-input formControlName="realname" [(ngModel)]="customerItem.realname" placeholder="输入员工姓名" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>登录密码：
                 </div>
@@ -435,7 +435,7 @@
                   <input nz-input formControlName="password" [(ngModel)]="customerItem.password" type="password" placeholder="输入登录密码" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>角色：
                 </div>
@@ -457,7 +457,7 @@
           <!-- 弹框 —— 修改 —— 修改用户信息 -->
           <nz-modal [(nzVisible)]="visiable.modifyCustomer" nzWidth="750" nzTitle="修改用户信息" [nzFooter]="modifyCustomerModalFooter" (nzOnCancel)="hideModal('modifyCustomer')" nzMaskClosable="false">
             <form [formGroup]="customerModifyForm">
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                   <font color="red">*</font>员工账号：
                 </div>
@@ -465,7 +465,7 @@
                   {{customerItem.username}}
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>员工姓名：
                 </div>
@@ -473,7 +473,7 @@
                   <input nz-input formControlName="realname" [(ngModel)]="customerItem.realname" placeholder="输入员工姓名" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>登录密码：
                 </div>
@@ -481,7 +481,7 @@
                   <input nz-input formControlName="password" [(ngModel)]="customerItem.password" type="password" placeholder="输入登录密码" nzSize="default">
                 </div>
               </div>
-              <div nz-row class="search_panel">
+              <div nz-row>
                 <div nz-col nzSpan="6" class="span_down spacing right_alignment">
                     <font color="red">*</font>角色：
                 </div>
@@ -505,7 +505,7 @@
         <nz-tab [nzTitle]="operationlogTemplate" (nzClick)="changePanel('operationlog')" *ngIf="commonService.haveMenuPermission('children', '操作日志')">
           <ng-template #operationlogTemplate><i class="anticon anticon-file-text"></i>操作日志</ng-template>
           <form [formGroup]="searchOperationlogForm">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 账号：
               </div>
@@ -538,7 +538,7 @@
               </div>
             </div>
 
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="2" class="span_down right_alignment">
                 一级菜单：
               </div>
@@ -607,7 +607,7 @@
 
         <nz-tab [nzTitle]="navConfigTemplate" (nzClick)="changePanel('navConfig')" *ngIf="commonService.haveMenuPermission('children', '导航配置')">
           <ng-template #navConfigTemplate><i class="anticon anticon-schedule"></i>导航页配置</ng-template>
-          <div nz-row class="search_panel">
+          <div nz-row>
             <div nz-col nzSpan="21"></div>
             <div nz-col nzSpan="3">
               <button nz-button nzType="primary" (click)="showModal('addNavConfig', '')"><i class="anticon anticon-file-add"></i>新增类别</button>
@@ -647,19 +647,19 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addNavConfig" nzWidth="1350" nzTitle="新增类别" [nzFooter]="addNavConfigModalFooter" (nzOnCancel)="hideModal('addNavConfig')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
               <div nz-col nzSpan="6" class="span_down">
                 <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
               <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
               <div nz-col nzSpan="21" class="span_down">
                 <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -670,13 +670,13 @@
                 </nz-upload>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length === 1">
+            <div nz-row *ngIf="navConfigItem.fileList.length === 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
                 <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
               <div nz-col nzSpan="3">icon</div>
               <div nz-col nzSpan="3">名称</div>
@@ -687,7 +687,7 @@
                 <button nz-button nzType="primary" (click)="onChange($event, 'addNavConfigItem')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngFor="let data of navConfigItem.elements; let i=index;">
+            <div nz-row *ngFor="let data of navConfigItem.elements; let i=index;">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="3">
                 <nz-upload [(nzFileList)]="data.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -723,19 +723,19 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.modifyNavConfig" nzWidth="1350" nzTitle="修改类别" [nzFooter]="modifyNavConfigModalFooter" (nzOnCancel)="hideModal('modifyNavConfig')" nzMaskClosable="false">
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别名称：</div>
               <div nz-col nzSpan="6" class="span_down">
                 <input nz-input [(ngModel)]="navConfigItem.name" placeholder="请输入名称" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down spacing right_alignment">类别排序：</div>
               <div nz-col nzSpan="6">
                 <input nz-input [(ngModel)]="navConfigItem.order" placeholder="请输入类别排序" nzSize="default">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down right_alignment">icon配置：</div>
               <div nz-col nzSpan="21" class="span_down">
                 <nz-upload [(nzFileList)]="navConfigItem.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -746,13 +746,13 @@
                 </nz-upload>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngIf="navConfigItem.fileList.length == 1">
+            <div nz-row *ngIf="navConfigItem.fileList.length == 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
                 <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
               </div>
             </div>
-            <div nz-row class="search_panel">
+            <div nz-row>
               <div nz-col nzSpan="3" class="span_down right_alignment">网址配置：</div>
               <div nz-col nzSpan="3">icon</div>
               <div nz-col nzSpan="3">名称</div>
@@ -763,7 +763,7 @@
                 <button nz-button nzType="primary" (click)="onChange($event, 'addNavConfigItem')"><i class="anticon anticon-file-add"></i>添加</button>
               </div>
             </div>
-            <div nz-row class="search_panel" *ngFor="let data of navConfigItem.elements; let i=index;">
+            <div nz-row *ngFor="let data of navConfigItem.elements; let i=index;">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="3">
                 <nz-upload [(nzFileList)]="data.fileList" nzMultiple [nzBeforeUpload]="beforeUpload">
