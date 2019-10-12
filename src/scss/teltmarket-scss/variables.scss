@@ -23,11 +23,6 @@
   text-align: right;
 }
 
-// 字间距调整（针对文字较长）
-.spacing {
-  letter-spacing: -1px;
-}
-
 // 全局的progress，适应弹框出来无法识别的情况
 .ant-progress-text {
   color: burlywood;
@@ -48,6 +43,7 @@
   width: 100%;
 }
 
+// 表格的底部样式以及颜色调整
 .ant-table-footer {
   background-color: #fff!important;
   padding: 5px 0px 0px 5px!important;
@@ -81,6 +77,7 @@
   background-color:#F8F8F8;
 }
 
+// 调整所有行的字位置
 .ant-col-1, .ant-col-10, .ant-col-11, .ant-col-12, .ant-col-13, .ant-col-14, .ant-col-15, .ant-col-16, .ant-col-17, .ant-col-18, .ant-col-19, .ant-col-2, .ant-col-20, .ant-col-21, .ant-col-22, .ant-col-23, .ant-col-24, .ant-col-3, .ant-col-4, .ant-col-5, .ant-col-6, .ant-col-7, .ant-col-8, .ant-col-9 {
   line-height: 30px;
 }

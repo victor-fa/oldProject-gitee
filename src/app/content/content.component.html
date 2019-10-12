@@ -11,7 +11,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('content')"><i class="anticon anticon-file-add"></i>新增内容</button>
             </div>
           </div>
-          <nz-table nzBordered #contentTable [nzData]="dataContent" *ngIf="!isSpinning">
+          <nz-table nzBordered #contentTable [nzData]="dataContent" *ngIf="!isSpinning" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -240,7 +240,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('screen')"><i class="anticon anticon-file-add"></i>新增开屏</button>
             </div>
           </div>
-          <nz-table nzBordered #screenTable [nzData]="dataScreen" *ngIf="!isSpinning">
+          <nz-table nzBordered #screenTable [nzData]="dataScreen" *ngIf="!isSpinning" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -495,7 +495,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('open')"><i class="anticon anticon-file-add"></i>新增弹窗</button>
             </div>
           </div>
-          <nz-table nzBordered #openTable [nzData]="dataOpen" *ngIf="!isSpinning">
+          <nz-table nzBordered #openTable [nzData]="dataOpen" *ngIf="!isSpinning" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
@@ -771,7 +771,7 @@
               <button nz-button nzType="primary" (click)="showAddModal('banner')"><i class="anticon anticon-file-add"></i>新增轮播图</button>
             </div>
           </div>
-          <nz-table nzBordered #bannerTable [nzData]="dataBanner" *ngIf="!isSpinning">
+          <nz-table nzBordered #bannerTable [nzData]="dataBanner" *ngIf="!isSpinning" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>

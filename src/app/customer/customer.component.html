@@ -7,13 +7,13 @@
           <ng-template #feedbackTemplate><i class="anticon anticon-swap"></i>用户反馈</ng-template>
           <form [formGroup]="searchFeedBackForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="3">
                 <input nz-input maxlength="32" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 问题类型：
               </div>
               <div nz-col nzSpan="3">
@@ -22,7 +22,7 @@
                   <nz-option required *ngFor="let data of problemInfo; let i=index;" [nzLabel]="data.name" [nzValue]="data.name"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 处理状态：
               </div>
               <div nz-col nzSpan="3">
@@ -33,7 +33,7 @@
                   <nz-option required [nzLabel]="'已完成'" [nzValue]="'DONE'"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 回复状态：
               </div>
               <div nz-col nzSpan="3">
@@ -301,7 +301,7 @@
           <ng-template #oppositionTemplate><i class="anticon anticon-dislike-o"></i>点踩日志</ng-template>
           <div nz-row>
             <form [formGroup]="oppositionSearchForm">
-              <div nz-col nzSpan="3" class="spacing right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="4">
@@ -453,7 +453,7 @@
           <ng-template #agreeTemplate><i class="anticon anticon-like-o"></i>点赞日志</ng-template>
           <div nz-row>
             <form [formGroup]="agreeSearchForm">
-              <div nz-col nzSpan="3" class="spacing right_alignment">
+              <div nz-col nzSpan="3" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="4">
@@ -556,21 +556,21 @@
           <ng-template #invoiceTimeTemplate><i class="anticon anticon-clock-circle-o"></i>开票时间管理</ng-template>
           <div nz-row>
             <form [formGroup]="searchInvoiceTimeForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单号：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="3">
@@ -634,21 +634,21 @@
           <ng-template #invoiceLogTemplate><i class="anticon anticon-file-text"></i>开票日志管理</ng-template>
           <div nz-row>
             <form [formGroup]="searchInvoiceLogForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 用户账号：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单号：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 订单类型：
               </div>
               <div nz-col nzSpan="3">
@@ -710,21 +710,21 @@
           <ng-template #businessTemplate><i class="anticon anticon-team"></i>商务合作</ng-template>
           <div nz-row>
             <form [formGroup]="searchBusinessForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 人名查询：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="name" placeholder="输入人名查询" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 联系内容查询：
               </div>
               <div nz-col nzSpan="2">
                 <input nz-input maxlength="32" formControlName="content" placeholder="输入联系内容查询" nzSize="default">
               </div>
 
-              <div nz-col nzSpan="2" class="spacing right_alignment">
+              <div nz-col nzSpan="2" class="right_alignment">
                 电话号码查询：
               </div>
               <div nz-col nzSpan="3">

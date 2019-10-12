@@ -8,7 +8,7 @@
           <div nz-row>
             <div nz-col nzSpan="19">
               <form [formGroup]="searchTaxiForm">
-                <div nz-col nzSpan="2" class="spacing right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   订单号：
                 </div>
                 <div nz-col nzSpan="4">
@@ -137,7 +137,7 @@
             <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">iOS语音ASR配置</div>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="2" class="spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
+            <div nz-col nzSpan="2" class="right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9">
               <nz-radio-group [(ngModel)]="voiceIOSRadioValue">
@@ -160,7 +160,7 @@
             <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">安卓语音ASR配置</div>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="2" class="spacing right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
+            <div nz-col nzSpan="2" class="right_alignment">{{this.commonService.AppHeaderAllow[this.commonService.currentChanelId]}}</div>
             <div nz-col nzSpan="1"></div>
             <div nz-col nzSpan="9">
               <nz-radio-group [(ngModel)]="voiceANDROIDRadioValue">
@@ -186,13 +186,13 @@
           <div nz-row>
             <div nz-col nzSpan="22">
               <form [formGroup]="searchOrderStateForm">
-                <div nz-col nzSpan="2" class="spacing right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   订单号：
                 </div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="orderId" placeholder="输入订单编号" nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   订单类型：
                 </div>
                 <div nz-col nzSpan="3">
@@ -207,7 +207,7 @@
                     <nz-option required [nzLabel]="'电影票'" [nzValue]="'MOVIE_ORDER'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">
+                <div nz-col nzSpan="2" class="right_alignment">
                   订单状态：
                 </div>
                 <div nz-col nzSpan="3">

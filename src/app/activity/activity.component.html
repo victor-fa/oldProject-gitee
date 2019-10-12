@@ -11,7 +11,7 @@
               <div nz-col nzSpan="9">
                 <nz-range-picker formControlName="date" [nzPlaceHolder]="['创建开始日期', '创建结束日期']" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'coupon')"></nz-range-picker>
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
+              <div nz-col nzSpan="2" class="right_alignment">优惠券品类：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="couponCategory">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -22,11 +22,11 @@
                   <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                 </nz-select>
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">优惠券名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="couponName" placeholder="输入订单编号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
+              <div nz-col nzSpan="2" class="right_alignment">优惠券类型：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="discountType">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -441,11 +441,11 @@
           <ng-template #activityTemplate><i class="anticon anticon-shop"></i>优惠券活动</ng-template>
           <div nz-row>
             <form [formGroup]="searchActivityForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">活动名称：</div>
               <div nz-col nzSpan="5">
                 <input nz-input formControlName="actName" placeholder="请输入渠道" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">活动状态：</div>
+              <div nz-col nzSpan="2" class="right_alignment">活动状态：</div>
               <div nz-col nzSpan="5">
                 <nz-select [ngModel]="''" formControlName="actStatus">
                   <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -803,7 +803,7 @@
                 <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInActivity')"></nz-range-picker>
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券品类：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="couponCategory">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -814,11 +814,11 @@
                     <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券名称：</div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号" nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券类型：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="discountType">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -1041,7 +1041,7 @@
                 <div nz-col nzSpan="7">
                   <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsend')"></nz-range-picker>
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券品类：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券品类：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="couponCategory">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -1052,12 +1052,12 @@
                     <nz-option required [nzLabel]="'打车'" [nzValue]="'taxi'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券名称：</div>
                 <div nz-col nzSpan="3">
                   <input nz-input maxlength="32" formControlName="couponName" placeholder="输入订单编号"
                     nzSize="default">
                 </div>
-                <div nz-col nzSpan="2" class="spacing right_alignment">优惠券类型：</div>
+                <div nz-col nzSpan="2" class="right_alignment">优惠券类型：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [ngModel]="''" formControlName="discountType">
                     <nz-option [nzLabel]="'---无---'" [nzValue]="''"></nz-option>
@@ -1221,11 +1221,11 @@
           <ng-template #couponStatisticsTemplate><i class="anticon anticon-line-chart"></i>优惠券统计</ng-template>
           <div nz-row>
             <form [formGroup]="searchCouponStatisticsForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">活动名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="aaa" placeholder="输入订单编号" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="spacing right_alignment">优惠券名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">优惠券名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="aaa" placeholder="输入优惠券名称" nzSize="default">
               </div>
@@ -1282,7 +1282,7 @@
           <ng-template #beanTemplate><i class="anticon anticon-pay-circle-o"></i>充值送豆</ng-template>
           <div nz-row>
             <form [formGroup]="searchBeanForm">
-              <div nz-col nzSpan="2" class="spacing right_alignment">活动名称：</div>
+              <div nz-col nzSpan="2" class="right_alignment">活动名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input maxlength="32" formControlName="title" placeholder="输入订单编号" nzSize="default">
               </div>
