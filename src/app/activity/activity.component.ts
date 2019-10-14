@@ -741,6 +741,9 @@ export class ActivityComponent implements OnInit {
       } else if (this.addActivityForm.controls['actRuleDesc'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '活动规则未填写' });
         result = false;
+      } else if (this.addActivityForm.controls['actPageUrl'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '活动链接未填写' });
+        result = false;
       }
     } else if (flag === 'addCoupon') {
     } else if (flag === 'modifyCoupon') {
@@ -913,6 +916,7 @@ export class ActivityComponent implements OnInit {
         'actStartDate': this.beginRuleDate.substring(0, this.beginRuleDate.indexOf('@')),
         'actEndDate': this.endRuleDate.substring(0, this.endRuleDate.indexOf('@')),
         'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value,
+        'actPageUrl': this.addActivityForm.controls['actPageUrl'].value,
         'actType': this.activityRadioValue,
         'actTypeBo': actTypeBo
       };
@@ -1406,7 +1410,8 @@ export class ActivityComponent implements OnInit {
               'actName': this.addActivityForm.controls['actName'].value,
               'actStartDate': this.beginBaseInfoDate,
               'actEndDate': this.endBaseInfoDate,
-              'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value
+              'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value,
+              // 'actPageUrl': this.addActivityForm.controls['actPageUrl'].value
             };
             this.activityService.addActivity(activityInput).subscribe(res => {
               if (res.retcode === 0) {

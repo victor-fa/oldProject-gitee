@@ -523,6 +523,14 @@
                 </div>
               </div>
               <div nz-row>
+                <div nz-row>
+                  <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动链接：</div>
+                  <div nz-col nzSpan="7">
+                    <input nz-input [(ngModel)]="modifyctivityItem.actPageUrl" formControlName="actPageUrl" placeholder="请输入活动链接" nzSize="default">
+                  </div>
+                </div>
+              </div>
+              <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动图片：</div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
@@ -536,14 +544,6 @@
                   <button [disabled]="baseInfoId === ''" nz-button nzType="primary" (click)="showModal('preview', '')"><i class="anticon anticon-eye-o"></i>活动页预览</button>
                 </div>
               </div>
-              <div nz-row>
-                <div nz-row>
-                  <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动链接：</div>
-                  <div nz-col nzSpan="7">
-                    <input nz-input [(ngModel)]="modifyctivityItem.actPageUrl" formControlName="actPageUrl" placeholder="请输入活动链接" nzSize="default">
-                  </div>
-                </div>
-              </div>
               <!-- <font color="#cccccc">建议尺寸：110*110&nbsp;&nbsp;限制大小：50K</font> -->
               <div nz-row *ngIf="fileList.length === 1">
                 <div nz-col nzSpan="2" class="right_alignment"></div>
@@ -555,10 +555,10 @@
               <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="activityRadioValue" formControlName="actType">
-                    <label nz-radio nzValue="LoginOneOff">单日登录</label>
-                    <label nz-radio nzValue="LoginDaily">周期登录</label>
-                    <label nz-radio nzValue="ChargeOneOff">单笔充值</label>
-                    <label nz-radio nzValue="ChargeMargin">区间充值</label>
+                    <label nz-radio nzValue="LoginOneOff" [nzDisabled]="isModifyModelShow">单日登录</label>
+                    <label nz-radio nzValue="LoginDaily" [nzDisabled]="isModifyModelShow">周期登录</label>
+                    <label nz-radio nzValue="ChargeOneOff" [nzDisabled]="isModifyModelShow">单笔充值</label>
+                    <label nz-radio nzValue="ChargeMargin" [nzDisabled]="isModifyModelShow">区间充值</label>
                   </nz-radio-group>
                 </div>
               </div>
@@ -570,23 +570,23 @@
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">登录时间约束：</div>
                   <div nz-col nzSpan="7">
-                    <nz-range-picker formControlName="date" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzDisabled]="isModifyModelShow" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2"></div>
                   <div nz-col nzSpan="3">
-                    <nz-select [ngModel]="''" formControlName="temp" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
+                    <nz-select [ngModel]="''" formControlName="temp" [nzDisabled]="isModifyModelShow" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
                       <ng-container *ngFor="let item of actGiftNoArr">
                         <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
                       </ng-container>
@@ -604,23 +604,23 @@
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">登录时间约束：</div>
                   <div nz-col nzSpan="7">
-                    <nz-range-picker formControlName="date" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzDisabled]="isModifyModelShow" [(ngModel)]="dateRangeA" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                   </div>
                 </div>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                 </div>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2"></div>
                   <div nz-col nzSpan="3">
-                    <nz-select [ngModel]="''" formControlName="temp" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
+                    <nz-select [ngModel]="''" formControlName="temp" [nzDisabled]="isModifyModelShow" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
                       <ng-container *ngFor="let item of actGiftNoArr">
                         <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
                       </ng-container>
@@ -638,7 +638,7 @@
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">充值时间约束：</div>
                   <div nz-col nzSpan="7">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzDisabled]="isModifyModelShow" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -646,7 +646,7 @@
                   <div nz-col nzSpan="2" class="right_alignment">充值额度约束：</div>
                   <div nz-col nzSpan="2" class="right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
                   <div nz-col nzSpan="5">
-                    <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.chargeThreshold" formControlName="chargeThreshold" placeholder="请输入充值额度" nzSize="default">
+                    <input nz-input maxlength="9" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.chargeThreshold" formControlName="chargeThreshold" placeholder="请输入充值额度" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2">&nbsp;&nbsp;&nbsp;RMB</div>
                   <div nz-col nzSpan="6"></div>
@@ -655,18 +655,18 @@
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="9" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
+                    <input nz-input maxlength="9" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.totalQuantity" formControlName="totalQuantity" placeholder="请输入奖励发放上限" nzSize="default">
                   </div>
                   <div nz-col nzSpan="8">&nbsp;&nbsp;&nbsp;组</div>
                 </div>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                   <div nz-col nzSpan="7">
-                    <input nz-input maxlength="2" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
+                    <input nz-input maxlength="2" [disabled]="isModifyModelShow" [(ngModel)]="modifyctivityItem.perUserQuantity" formControlName="perUserQuantity" placeholder="请输入每个用户可领" nzSize="default">
                   </div>
                   <div nz-col nzSpan="2">&nbsp;&nbsp;&nbsp;组</div>
                   <div nz-col nzSpan="3">
-                    <nz-select [ngModel]="''" formControlName="temp" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
+                    <nz-select [ngModel]="''" formControlName="temp" [nzDisabled]="isModifyModelShow" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', 0)">
                       <ng-container *ngFor="let item of actGiftNoArr">
                         <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
                       </ng-container>
@@ -684,7 +684,7 @@
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment">充值时间约束：</div>
                   <div nz-col nzSpan="7">
-                    <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
+                    <nz-range-picker formControlName="date" [nzDisabled]="isModifyModelShow" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'rule')" nzShowTime></nz-range-picker>
                     <div *ngIf="isModifyModelShow && modifyctivityItem.actTypeStart!== ''">{{modifyctivityItem.actTypeStart}}&nbsp;&nbsp;至&nbsp;&nbsp;{{modifyctivityItem.actTypeEnd}}</div>
                   </div>
                 </div>
@@ -701,7 +701,7 @@
                       <div nz-col nzSpan="2" class="right_alignment">充值额度约束：</div>
                       <div nz-col nzSpan="2" class="right_alignment">充值额度=&nbsp;&nbsp;&nbsp;</div>
                       <div nz-col nzSpan="5">
-                        <input nz-input maxlength="9" [ngModel]="addMarginArr[i].chargeThreshold" (ngModelChange)="onMarginChange($event, 'chargeThreshold', i)" placeholder="请输入充值额度约束" nzSize="default">
+                        <input nz-input maxlength="9" [disabled]="isModifyModelShow" [ngModel]="addMarginArr[i].chargeThreshold" (ngModelChange)="onMarginChange($event, 'chargeThreshold', i)" placeholder="请输入充值额度约束" nzSize="default">
                       </div>
                       <div nz-col nzSpan="2">&nbsp;&nbsp;&nbsp;RMB</div>
                       <div nz-col nzSpan="8">&nbsp;</div>
@@ -715,18 +715,18 @@
                       </div>
                       <div nz-col nzSpan="2" class="right_alignment">奖励发放上限：</div>
                       <div nz-col nzSpan="7">
-                        <input nz-input maxlength="2" [ngModel]="addMarginArr[i].totalQuantity" (ngModelChange)="onMarginChange($event, 'totalQuantity', i)" placeholder="请输入奖励发放上限" nzSize="default">
+                        <input nz-input maxlength="2" [disabled]="isModifyModelShow" [ngModel]="addMarginArr[i].totalQuantity" (ngModelChange)="onMarginChange($event, 'totalQuantity', i)" placeholder="请输入奖励发放上限" nzSize="default">
                       </div>
                     </div>
                     <div nz-row>
                       <div nz-col nzSpan="2"></div>
                       <div nz-col nzSpan="2" class="right_alignment">每个用户可领：</div>
                       <div nz-col nzSpan="7">
-                        <input nz-input maxlength="2" [ngModel]="addMarginArr[i].perUserQuantity" (ngModelChange)="onMarginChange($event, 'perUserQuantity', i)" placeholder="请输入每个用户可领数额" nzSize="default">
+                        <input nz-input maxlength="2" [disabled]="isModifyModelShow" [ngModel]="addMarginArr[i].perUserQuantity" (ngModelChange)="onMarginChange($event, 'perUserQuantity', i)" placeholder="请输入每个用户可领数额" nzSize="default">
                       </div>
                       <div nz-col nzSpan="1"></div>
                       <div nz-col nzSpan="3">
-                        <nz-select [ngModel]="''" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', i)">
+                        <nz-select [ngModel]="''" [nzDisabled]="isModifyModelShow" [ngModel]="addMarginArr[i].actGiftNo" (ngModelChange)="onMarginChange($event, 'actGiftNo', i)">
                           <ng-container *ngFor="let item of actGiftNoArr">
                             <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
                           </ng-container>

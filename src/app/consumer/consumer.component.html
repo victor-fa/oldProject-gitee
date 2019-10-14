@@ -20,11 +20,11 @@
             </div>
             <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
             <div nz-col nzSpan="3">
-              <input nz-input [(ngModel)]="consumerDate.appChannel" placeholder="输入客户ID" nzSize="default">
+              <input nz-input [(ngModel)]="consumerDate.appChannel" placeholder="输入客户ID" nzSize="default" (keyup.enter)="loadData('consumer')">
             </div>
             <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
             <div nz-col nzSpan="3">
-              <input nz-input [(ngModel)]="consumerDate.appChannelName" placeholder="输入客户名称" nzSize="default">
+              <input nz-input [(ngModel)]="consumerDate.appChannelName" placeholder="输入客户名称" nzSize="default" (keyup.enter)="loadData('consumer')">
             </div>
             <div nz-col nzSpan="4"></div>
             <div nz-col nzSpan="2">
@@ -90,69 +90,51 @@
           <nz-modal [(nzVisible)]="visiable.modifyConsumer" nzWidth="950" nzTitle="修改客户信息" [nzFooter]="modifyConsumerModalFooter" (nzOnCancel)="hideModal('modifyConsumer')" nzMaskClosable="false">
             <form [formGroup]="modifyConsumerForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  key类型：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">key类型：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.officially === true ? '正式key' : '测试key'}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户ID：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户ID：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.appChannel}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户名称：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户名称：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.appChannelName}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  BOT配置文件ID：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">BOT配置文件ID：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.robot}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户联系人手机号：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户联系人手机号：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.phone ? consumerDate.phone : '15111407234'}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  登录类型：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">登录类型：</div>
                 <div nz-col nzSpan="12">
                   {{consumerDate.loginType === 1 ? '需要登录' : '不需要登录'}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  激活次数：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">激活次数：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="maxSnActivation" [(ngModel)]="consumerDate.maxSnActivation" placeholder="请输入激活次数 Key" nzSize="default" *ngIf="consumerDate.officially === false">
                   {{consumerDate.officially === true ? '3' : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  禁用短信通知 ：
-                </div>
-                <div nz-col nzSpan="12">
-                  默认需要订单短信服务，勾选后，表示不需要订单短信通知
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">禁用短信通知 ：</div>
+                <div nz-col nzSpan="12">默认需要订单短信服务，勾选后，表示不需要订单短信通知</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8"></div>
@@ -163,17 +145,13 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  Payment Key：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">Payment Key：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="paymentKey" [(ngModel)]="consumerDate.paymentKey" placeholder="请输入Payment Key" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  短信签名：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">短信签名：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
@@ -188,9 +166,7 @@
           <nz-modal [(nzVisible)]="visiable.addConsumer" nzWidth="950" nzTitle="新增客户信息" [nzFooter]="addConsumerModalFooter" (nzOnCancel)="hideModal('addConsumer')" nzMaskClosable="false">
             <form [formGroup]="addConsumerForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  key类型 <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">key类型 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
                     <label nz-radio [nzValue]="false">测试key</label>
@@ -199,9 +175,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户ID <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户ID <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="appChannel" maxlength="32" [(ngModel)]="consumerDate.appChannel" placeholder="请输入客户ID（即appkey，长度不能超过32位）" nzSize="default">
                 </div>
@@ -211,33 +185,25 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户名称 <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户名称 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="appChannelName" [(ngModel)]="consumerDate.appChannelName" placeholder="请输入客户名称" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  BOT配置文件ID <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">BOT配置文件ID <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="robot" [(ngModel)]="consumerDate.robot" placeholder="请输入BOT配置文件id（不要填.yml文件后缀名）" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  客户联系人手机号 <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">客户联系人手机号 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="phone" [(ngModel)]="consumerDate.phone" placeholder="请输入手机号码（子账号默认手机号）" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  登录类型 <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">登录类型 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="aaa" [(ngModel)]="consumerDate.loginType">
                     <label nz-radio nzValue="1">需要登录</label>
@@ -246,21 +212,15 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  激活次数 <font color="red">*</font>：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">激活次数 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="maxSnActivation" [(ngModel)]="consumerDate.maxSnActivation" placeholder="请输入激活次数 Key" nzSize="default" *ngIf="consumerDate.officially === false">
                   {{consumerDate.officially === true ? '3' : ''}}
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  禁用短信通知 ：
-                </div>
-                <div nz-col nzSpan="12">
-                  默认需要订单短信服务，勾选后，表示不需要订单短信通知
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">禁用短信通知 ：</div>
+                <div nz-col nzSpan="12">默认需要订单短信服务，勾选后，表示不需要订单短信通知</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8"></div>
@@ -271,17 +231,13 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  Payment Key：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">Payment Key：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="paymentKey" [(ngModel)]="consumerDate.paymentKey" placeholder="请输入Payment Key" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  短信签名：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">短信签名：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="smsSign" [(ngModel)]="consumerDate.smsSign" placeholder="请输入短信签名" nzSize="default">
                 </div>
@@ -296,9 +252,7 @@
           <nz-modal [(nzVisible)]="visiable.modifySerial" nzWidth="950" nzTitle="修改序列号" [nzFooter]="modifySerialModalFooter" (nzOnCancel)="hideModal('modifySerial')" nzMaskClosable="false">
             <form [formGroup]="serialSearchForm">
               <div nz-row>
-                <div nz-col nzSpan="2" class="right_alignment">
-                  序列号：
-                </div>
+                <div nz-col nzSpan="2" class="right_alignment">序列号：</div>
                 <div nz-col nzSpan="4">
                   <input nz-input formControlName="sn" placeholder="请输入序列号" nzSize="default">
                 </div>

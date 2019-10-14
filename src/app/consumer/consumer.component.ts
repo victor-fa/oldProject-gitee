@@ -82,11 +82,11 @@ export class ConsumerComponent implements OnInit {
           setTimeout(() => {
             if (this.consumerDate.appChannel !== '') {
               console.log(1);
-              this.dataConsumer = this.dataConsumer.filter(item => item.appChannel === this.consumerDate.appChannel );
+              this.dataConsumer = this.dataConsumer.filter(item => item.appChannel.indexOf(this.consumerDate.appChannel) > -1 );
             }
             if (this.consumerDate.appChannelName !== '') {
               console.log(2);
-              this.dataConsumer = this.dataConsumer.filter(item => item.appChannelName === this.consumerDate.appChannelName );
+              this.dataConsumer = this.dataConsumer.filter(item => item.appChannelName.indexOf(this.consumerDate.appChannelName) > -1  );
             }
             console.log(this.dataConsumer);
           }, 200);
@@ -206,9 +206,11 @@ export class ConsumerComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = false;
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
     } else if (flag === 'modifyConsumer') {
       this.dataMsgArr.map(item => item.checked = false);
       this.visiable.modifyConsumer = false;
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
