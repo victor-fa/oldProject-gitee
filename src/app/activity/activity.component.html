@@ -81,14 +81,14 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addCoupon" nzWidth="1150" nzTitle="新增优惠券" [nzFooter]="addCouponModalFooter" (nzOnCancel)="hideModal('addCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment">红包名称：</div>
               <div nz-col nzSpan="4">
                 <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" placeholder="请输入红包名称" nzSize="default">
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">优惠规则</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-radio-group [(ngModel)]="couponDate.discountType">
@@ -117,10 +117,10 @@
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" class="content-imp">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">时间限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
               <div nz-col nzSpan="5">
@@ -130,9 +130,9 @@
                 </nz-radio-group>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" class="content-imp">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" class="content-imp">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
             <div nz-row *ngIf="couponDate.timeLimitType === 'fix_start_end'">
               <div nz-col nzSpan="2"></div>
@@ -150,9 +150,9 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2">天</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" class="title-imp">
                 <nz-table nzBordered #rowCategoryAddTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -174,19 +174,19 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" class="title-imp">互斥限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" class="content-imp">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则互斥限制
                 在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="24" class="title-imp">红包预览</div>
               <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
@@ -205,14 +205,14 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.modifyCoupon" nzWidth="1150" nzTitle="编辑优惠券" [nzFooter]="modifyCouponModalFooter" (nzOnCancel)="hideModal('modifyCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment">红包名称：</div>
               <div nz-col nzSpan="4">
                 <input nz-input maxlength="12" [(ngModel)]="couponDate.couponName" placeholder="请输入红包名称" nzSize="default">
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">优惠规则</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-radio-group [ngModel]="couponDate.discountType">
@@ -241,10 +241,10 @@
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" class="content-imp">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">时间限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
               <div nz-col nzSpan="5">
@@ -256,9 +256,9 @@
                 {{couponDate.timeLimitStart}}&nbsp;至&nbsp;{{couponDate.timeLimitEnd}}
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" class="content-imp">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" class="content-imp">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
             <div nz-row *ngIf="couponDate.timeLimitType === 'fix_start_end'">
               <div nz-col nzSpan="2"></div>
@@ -276,9 +276,9 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="2">天</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" class="title-imp">
                 <nz-table nzBordered #rowCategoryModifyTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -301,18 +301,18 @@
               </div>
               <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" class="title-imp">互斥限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" class="content-imp">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="24" class="title-imp">红包预览</div>
               <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
@@ -330,11 +330,11 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.previewCoupon" nzWidth="1150" nzTitle="查看优惠券" [nzFooter]="previewCouponModalFooter" (nzOnCancel)="hideModal('previewCoupon')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">红包名称：{{couponDate.couponName}}</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">优惠规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">优惠规则</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-radio-group [ngModel]="'FIX_DISCOUNT'">
@@ -363,10 +363,10 @@
                 </ng-container>
               </div>
               <div nz-col nzSpan="12">
-                <div nz-col nzSpan="10" style="font-size: 12px;color: #A9A9A9">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
+                <div nz-col nzSpan="10" class="content-imp">说明：例如，订单满100减20<br>可以定义阶梯满减规则，例如：订单满100减20；满300减50</div>
               </div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">时间限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">时间限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" style="text-align: center;">有效时间</div>
               <div nz-col nzSpan="5">
@@ -381,13 +381,13 @@
                 </div>
               </div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="7" style="font-size: 12px;color: #A9A9A9">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
+              <div nz-col nzSpan="7" class="content-imp">固定时间，指的是固定开始和结束日期<br>相对时间，指的是从用户领取之日，开始计算</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
+              <div nz-col nzSpan="8" class="content-imp">相对时间-领取后0天，失效日期是用户领取当日的最后1秒<br>相对时间-领取后1天，失效日期是用户领取次日的最后1秒</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">品类限制</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">品类限制</div></div>
             <div nz-row>
-              <div nz-col nzSpan="16" style="font-size: 20px;font-weight: bold;">
+              <div nz-col nzSpan="16" class="title-imp">
                 <nz-table nzBordered #rowCategoryPreviewTable [nzData]="category" [nzShowPagination]="false" (nzCurrentPageDataChange)="currentPageDataCouponChange($event)" (nzPageIndexChange)="refreshCouponStatus()" (nzPageSizeChange)="refreshCouponStatus()" *ngIf="!isSpinning">
                   <thead>
                     <tr>
@@ -409,18 +409,18 @@
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="7" style="font-size: 12px;">1. 默认勾选【全品类】，勾选【全品类】，下方全部勾选<br>2. 也可单独勾选【具体品类】</div>
             </div>
-            <!-- <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">互斥限制</div></div>
+            <!-- <div nz-row><div nz-col nzSpan="24" class="title-imp">互斥限制</div></div>
             <div nz-row>
               <div nz-col nzSpan="5">
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[0].checked" [nzDisabled]="true">{{checkCouponOptions[0].label}}</label><br>
                 <label nz-checkbox [(nzChecked)]="checkCouponOptions[1].checked" [nzDisabled]="true">{{checkCouponOptions[1].label}}</label>
               </div>
-              <div nz-col nzSpan="18" style="font-size: 12px;color: #A9A9A9">
+              <div nz-col nzSpan="18" class="content-imp">
                 默认不勾选，则无任何使用约束<br>勾选-活动不可用，则在全平台（满x减y）活动的情况下，不允许使用<br>勾选-会员可用，则是会员身份方可使用，非会员不可用
               </div>
             </div> -->
             <div nz-row>
-              <div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">红包预览</div>
+              <div nz-col nzSpan="24" class="title-imp">红包预览</div>
               <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
@@ -501,7 +501,7 @@
 
           <nz-modal [(nzVisible)]="visiable.addActivity" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
             <form [formGroup]="addActivityForm">
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
               <div nz-row>
                 <div nz-row>
                   <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
@@ -551,7 +551,7 @@
                   <img *ngIf="showImageUrl" [src]="showImageUrl" class="image-panel">
                 </div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动规则配置</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">活动规则配置</div></div>
               <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="activityRadioValue" formControlName="actType">
@@ -743,7 +743,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="4" style="font-size: 20px;font-weight: bold;">活动奖励配置</div>
+              <div nz-col nzSpan="4" class="title-imp">活动奖励配置</div>
               <div nz-col nzSpan="17"></div>
               <div nz-col nzSpan="3">
                 <button nz-button nzType="primary" (click)="showModal('addCoupon', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
@@ -767,7 +767,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let data of couponNumberTable.data; let i=index;">
-                        <td>{{i === 0 ? item.actGiftNo : ''}}</td>
+                        <td>{{i === 0 ? data.actGiftNo : ''}}</td>
                         <td>{{i+1}}</td>
                         <td>{{data.couponRulePo.couponNo}}</td>
                         <td>{{data.couponRulePo.couponName}}</td>
@@ -777,8 +777,8 @@
                         <td *ngIf="!(data.couponRulePo.timeLimitType === 'fix_start_end' || data.couponRulePo.timeLimitType === 'fix_duration')"></td>
                         <td>{{data.quantity}}</td>
                         <td *ngIf="i === 0">
-                          <button nz-button nzType="primary" (click)="showModal('modifyCoupon', item)"><i class="anticon anticon-form"></i>配置红包</button>
-                          <button nz-button nzType="primary" (click)="doDelete(item.actGiftNo, 'couponList')"><i class="anticon anticon-delete"></i>删除</button>
+                          <button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)"><i class="anticon anticon-form"></i>配置红包</button>
+                          <button nz-button nzType="primary" (click)="doDelete(data.actGiftNo, 'couponList')"><i class="anticon anticon-delete"></i>删除</button>
                         </td>
                         <td *ngIf="i > 0"></td>
                       </tr>
@@ -855,7 +855,7 @@
                   <td>{{data.couponNo}}</td>
                   <td>{{data.couponName}}</td>
                   <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
-                  <td><input nz-input maxlength="3" nzSize="default" [ngModel]="data.number" (ngModelChange)="getCouponNumber($event, data)"></td>
+                  <td><input nz-input maxlength="3" nzSize="default" [ngModel]="data.number" (ngModelChange)="onChange({event: $event, data: data}, 'couponInBatchsend')"></td>
                   <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
                   <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
                 </tr>
@@ -943,91 +943,86 @@
           </div>
 
           <nz-modal [(nzVisible)]="visiable.addBatchsend" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addBatchsendModalFooter" (nzOnCancel)="hideModal('batchsendList')" nzMaskClosable="false">
-            <form [formGroup]="addBatchsendForm">
-              <div nz-row>
-                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">发送对象</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="20" style="color: #a9a9a9">请填写发送的用户手机号，如果需要发送多个，请换行输入</div>
+            <div nz-row>
+              <div nz-col nzSpan="3" class="title-imp">发送对象</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="20" style="color: #a9a9a9">请填写发送的用户手机号，如果需要发送多个，请换行输入</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="12">
+                <textarea rows="5" nz-input [(ngModel)]="batchsendData.pendingRevL" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
               </div>
-              <div nz-row>
-                <div nz-col nzSpan="12">
-                  <textarea rows="5" nz-input formControlName="pendingRevL" [(ngModel)]="batchsendData.pendingRevL" [disabled]="true" placeholder="请输入发送对象手机号" nzSize="default"></textarea>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="3" class="title-imp">附带消息</div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="20" style="color: #a9a9a9">一般适用于奖励/补偿用户</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="3">标题：</div>
+              <div nz-col nzSpan="12">
+                <input nz-input placeholder="请输入标题" [(ngModel)]="batchsendData.title" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="3">类型：</div>
+              <div nz-col nzSpan="12">系统消息</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="3">摘要：</div>
+              <div nz-col nzSpan="12">
+                <input nz-input placeholder="请输入摘要" [(ngModel)]="batchsendData.description" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="3">内容：</div>
+              <div nz-col nzSpan="21">
+                <quill-editor [(ngModel)]="batchsendData.displayMessage" [style]="{height: '350px'}"></quill-editor>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="title-imp">发送奖励配置</div>
+              <div nz-col nzSpan="17"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="showModal('addCouponInBatchsend', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <nz-table nzBordered #couponChooseTable [nzData]="couponListArrInBatchsend" *ngIf="!isSpinning">
+                  <thead>
+                    <tr>
+                      <th>序号</th>
+                      <th>优惠券编号</th>
+                      <th>优惠券名称</th>
+                      <th>优惠券类型</th>
+                      <th>时间限制</th>
+                      <th>数量限制</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of couponChooseTable.data; let i=index;">
+                      <td>{{i+1}}</td>
+                      <td>{{data.couponNo}}</td>
+                      <td>{{data.couponName}}</td>
+                      <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : data.couponCategory === 'taxi' ? '打车' : ''}}</td>
+                      <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
+                      <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
+                      <td *ngIf="!(data.timeLimitType === 'fix_start_end' || data.timeLimitType === 'fix_duration')"></td>
+                      <td>{{data.quantity}}</td>
+                      <td *ngIf="i === 0">
+                        <button nz-button nzType="primary" (click)="showModal('modifyCouponInBatchsend', data)"><i class="anticon anticon-form"></i>配置红包</button>
+                      </td>
+                      <td *ngIf="i > 0"></td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+                <div class="spin" *ngIf="isSpinning">
+                  <nz-spin [nzSize]="'large'"></nz-spin>
                 </div>
               </div>
-              <div nz-row>
-                <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">附带消息</div>
-                <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="20" style="color: #a9a9a9">一般适用于奖励/补偿用户</div>
-              </div>
-              <!-- <div nz-col nzSpan="12">
-                <textarea rows="5" nz-input formControlName="displayMessage" [(ngModel)]="batchsendData.displayMessage" [disabled]="true" placeholder="这里是要写给用户的话" nzSize="default"></textarea>
-              </div> -->
-              <div nz-row>
-                <div nz-col nzSpan="3">标题：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input placeholder="请输入标题" nzSize="default">
-                </div>
-              </div>
-              <div nz-row>
-                <div nz-col nzSpan="3">类型：</div>
-                <div nz-col nzSpan="12">系统消息</div>
-              </div>
-              <div nz-row>
-                <div nz-col nzSpan="3">摘要：</div>
-                <div nz-col nzSpan="12">
-                  <input nz-input placeholder="请输入摘要" nzSize="default">
-                </div>
-              </div>
-              <div nz-row>
-                <div nz-col nzSpan="3">内容：</div>
-                <div nz-col nzSpan="21">
-                  <quill-editor [(ngModel)]="emptyAdd[4]" [modules]="commonService.config" [style]="{height: '350px'}"></quill-editor>
-                </div>
-              </div>
-              <div nz-row>
-                <div nz-col nzSpan="4" style="font-size: 20px;font-weight: bold;">发送奖励配置</div>
-                <div nz-col nzSpan="17"></div>
-                <div nz-col nzSpan="3">
-                  <button nz-button nzType="primary" (click)="showModal('addCouponInBatchsend', '')"><i class="anticon anticon-file-add"></i>新增红包组</button>
-                </div>
-              </div>
-              <div nz-row>
-                <div nz-col nzSpan="24">
-                  <nz-table nzBordered #couponChooseTable [nzData]="couponListArrInBatchsend" *ngIf="!isSpinning">
-                    <thead>
-                      <tr>
-                        <th>序号</th>
-                        <th>优惠券编号</th>
-                        <th>优惠券名称</th>
-                        <th>优惠券类型</th>
-                        <th>时间限制</th>
-                        <th>数量限制</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let data of couponChooseTable.data; let i=index;">
-                        <td>{{i+1}}</td>
-                        <td>{{data.couponNo}}</td>
-                        <td>{{data.couponName}}</td>
-                        <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : data.couponCategory === 'taxi' ? '打车' : ''}}</td>
-                        <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
-                        <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
-                        <td *ngIf="!(data.timeLimitType === 'fix_start_end' || data.timeLimitType === 'fix_duration')"></td>
-                        <td>{{data.quantity}}</td>
-                        <td *ngIf="i === 0">
-                          <button nz-button nzType="primary" (click)="showModal('modifyCoupon', item)"><i class="anticon anticon-form"></i>配置红包</button>
-                        </td>
-                        <td *ngIf="i > 0"></td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                  <div class="spin" *ngIf="isSpinning">
-                    <nz-spin [nzSize]="'large'"></nz-spin>
-                  </div>
-                </div>
-              </div>
-            </form>
+            </div>
             <ng-template #addBatchsendModalFooter>
               <button nz-button nzType="primary" (click)="doSave('batchsendList')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('batchsendList')"><i class="anticon anticon-close-circle-o"></i>取消</button>
@@ -1094,7 +1089,7 @@
                   <td>{{data.couponNo}}</td>
                   <td>{{data.couponName}}</td>
                   <td>{{data.couponCategory === 'all' ? '全品类' : data.couponCategory === 'flight' ? '订机票' : data.couponCategory === 'hotel' ? '订酒店' : data.couponCategory === 'train' ? '订火车' : '打车' }}</td>
-                  <td><input nz-input maxlength="3" nzSize="default" [ngModel]="data.number" (ngModelChange)="getCouponNumber($event, data)"></td>
+                  <td><input nz-input maxlength="3" nzSize="default" [ngModel]="data.number" (ngModelChange)="onChange({event: $event, data: data}, 'couponInBatchsend')"></td>
                   <td *ngIf="data.timeLimitType === 'fix_start_end'">{{data.timeLimitStart | date:'yyyy-MM-dd'}}&nbsp;至&nbsp;{{data.timeLimitEnd | date:'yyyy-MM-dd'}}</td>
                   <td *ngIf="data.timeLimitType === 'fix_duration'">{{data.timeLimitValidDay}}</td>
                 </tr>
@@ -1109,7 +1104,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.detailBatchsend" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModalFooter" (nzOnCancel)="hideModal('detailBatchsend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.detailBatchsend" nzWidth="750" nzTitle="查看发放情况" [nzFooter]="modifyBatchsendModal1Footer" (nzOnCancel)="hideModal('detailBatchsend')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="7" class="spthumbnailan_down">发放对象</div>
               <div nz-col nzSpan="1"></div>
@@ -1166,12 +1161,12 @@
                 </div>
               </div>
             </div>
-            <ng-template #modifyBatchsendModalFooter>
+            <ng-template #modifyBatchsendModal1Footer>
               <button nz-button nzType="default" (click)="hideModal('detailBatchsend')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.batchsend" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModalFooter" (nzOnCancel)="hideModal('batchsend')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.batchsend" nzWidth="950" nzTitle="执行发送" [nzFooter]="batchsendModal2Footer" (nzOnCancel)="hideModal('batchsend')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="6">发送对象(总计x个)</div>
@@ -1197,15 +1192,35 @@
               <div nz-col nzSpan="1"></div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="6"></div>
-              <div nz-col nzSpan="12">点击执行发送后，奖励将直接发送到对应的用户钱包中</div>
-              <div nz-col nzSpan="6"></div>
+              <div nz-col nzSpan="4">
+                <nz-select [(ngModel)]="operateObject.operator">
+                  <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
+                  <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
+                  <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
+                  <nz-option required [nzLabel]="'18682251210'" [nzValue]="'18682251210'"></nz-option>
+                  <nz-option required [nzLabel]="'18819448274'" [nzValue]="'18819448274'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendBatchMsg')" [disabled]="semdMesCodeText !== 60">{{semdMesCodeText === 60 ? '验证' : semdMesCodeText + 's'}}</button>
+              </div>
             </div>
-            <ng-template #batchsendModalFooter>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">验证码：</div>
+              <div nz-col nzSpan="2"></div>
+              <div nz-col nzSpan="2">
+                <input nz-input nzSize="default" [(ngModel)]="operateObject.code">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="24" class="right_alignment">点击执行发送后，奖励将发送到对应的用户钱包中</div>
+            </div>
+            <ng-template #batchsendModal2Footer>
               <div nz-row>
                 <div nz-col nzSpan="8"></div>
                 <div nz-col nzSpan="3">
-                  <button nz-button nzType="primary" (click)="doSave('batchsend')">执行发送</button>
+                  <button nz-button nzType="primary" (click)="doSave('batchsend')" [disabled]="operateObject.code.length !== 4">执行发送</button>
                 </div>
                 <div nz-col nzSpan="3">
                   <button nz-button nzType="default" (click)="hideModal('batchsend')">放弃</button>
@@ -1214,7 +1229,6 @@
               </div>
             </ng-template>
           </nz-modal>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="couponStatisticsTemplate" (nzClick)="changePanel('couponStatistics')" *ngIf="commonService.haveMenuPermission('children', '充值送豆')">
@@ -1334,14 +1348,14 @@
 
           <nz-modal [(nzVisible)]="visiable.addBean" nzWidth="1150" nzTitle="新增活动" [nzFooter]="addBeanModalFooter" (nzOnCancel)="hideModal('addBean')" nzMaskClosable="false">
             <form [formGroup]="addBeanForm">
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input maxlength="12" [(ngModel)]="beanItem.title" formControlName="title" placeholder="请输入活动名称" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+                <div nz-col nzSpan="8" class="content-imp">活动名称，最多20字符，超过20字符，无法继续输入</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
@@ -1349,18 +1363,18 @@
                   <textarea rows="2" formControlName="describe" [(ngModel)]="beanItem.describe" maxlength="50" nz-input placeholder="输入活动文案，不超过100个字符"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+                <div nz-col nzSpan="8" class="content-imp">活动文案，不限字数<br>客户端读取，活动文案</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">活动时间</div></div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
                   <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+                <div nz-col nzSpan="8" class="content-imp">时间精细到，年-月-日，时分秒</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">送豆规则</div></div>
               <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
@@ -1383,7 +1397,7 @@
                 </div>
                 <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
                 <div nz-col nzSpan="2"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+                <div nz-col nzSpan="8" class="content-imp">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
               </div>
             </form>
             <ng-template #addBeanModalFooter>
@@ -1394,14 +1408,14 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyBean" nzWidth="1150" nzTitle="修改活动" [nzFooter]="modifyBeanModalFooter" (nzOnCancel)="hideModal('modifyBean')" nzMaskClosable="false">
             <form [formGroup]="modifyBeanForm">
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
                 <div nz-col nzSpan="9">
                   <input nz-input maxlength="12" [(ngModel)]="beanItem.title" formControlName="title" placeholder="请输入活动名称" nzSize="default">
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+                <div nz-col nzSpan="8" class="content-imp">活动名称，最多20字符，超过20字符，无法继续输入</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
@@ -1409,22 +1423,22 @@
                   <textarea rows="2" formControlName="describe" [(ngModel)]="beanItem.describe" maxlength="50" nz-input placeholder="输入活动文案，不超过100个字符"></textarea>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+                <div nz-col nzSpan="8" class="content-imp">活动文案，不限字数<br>客户端读取，活动文案</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">活动时间</div></div>
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
                 <div nz-col nzSpan="9">
                   <nz-range-picker [nzFormat]="'yyyy-MM-dd HH:mm:ss'" formControlName="date" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="1"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+                <div nz-col nzSpan="8" class="content-imp">时间精细到，年-月-日，时分秒</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="2"></div>
                 <div nz-col nzSpan="22">{{beanItem.beginTime}}&nbsp;&nbsp;~&nbsp;&nbsp;{{beanItem.endTime}}</div>
               </div>
-              <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+              <div nz-row><div nz-col nzSpan="24" class="title-imp">送豆规则</div></div>
               <div nz-row>
                 <div nz-col nzSpan="24">
                   <nz-radio-group [(ngModel)]="radioBeanValue" formControlName="type">
@@ -1447,7 +1461,7 @@
                 </div>
                 <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
                 <div nz-col nzSpan="2"></div>
-                <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+                <div nz-col nzSpan="8" class="content-imp">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
               </div>
             </form>
             <ng-template #modifyBeanModalFooter>
@@ -1457,27 +1471,27 @@
           </nz-modal>
 
           <nz-modal [(nzVisible)]="visiable.searchBean" nzWidth="1150" nzTitle="查看活动" [nzFooter]="searchBeanModalFooter" (nzOnCancel)="hideModal('searchBean')" nzMaskClosable="false">
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">基本信息</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动名称：</div>
               <div nz-col nzSpan="9">{{beanItem.title}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动名称，最多20字符，超过20字符，无法继续输入</div>
+              <div nz-col nzSpan="8" class="content-imp">活动名称，最多20字符，超过20字符，无法继续输入</div>
             </div>
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>活动文案：</div>
               <div nz-col nzSpan="9">{{beanItem.describe}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">活动文案，不限字数<br>客户端读取，活动文案</div>
+              <div nz-col nzSpan="8" class="content-imp">活动文案，不限字数<br>客户端读取，活动文案</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">活动时间</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">活动时间</div></div>
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment"><font color="red">*</font>有效时间：</div>
               <div nz-col nzSpan="9">{{beanItem.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}——{{beanItem.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
               <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">时间精细到，年-月-日，时分秒</div>
+              <div nz-col nzSpan="8" class="content-imp">时间精细到，年-月-日，时分秒</div>
             </div>
-            <div nz-row><div nz-col nzSpan="24" style="font-size: 20px;font-weight: bold;">送豆规则</div></div>
+            <div nz-row><div nz-col nzSpan="24" class="title-imp">送豆规则</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">
                 <nz-radio-group [(ngModel)]="radioBeanValue">
@@ -1493,7 +1507,7 @@
               <div nz-col nzSpan="3">{{radioBeanValue === 'PERCENT_GIFT' ? (beanItem.giftPercent * 100) : beanItem.giftAmount}}</div>
               <div nz-col nzSpan="2">{{radioBeanValue === 'PERCENT_GIFT' ? '%' : ''}}&nbsp;&nbsp;小悟豆</div>
               <div nz-col nzSpan="2"></div>
-              <div nz-col nzSpan="8" style="font-size: 12px;color: #A9A9A9">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
+              <div nz-col nzSpan="8" class="content-imp">说明：完成充值时，充值金额满100送10%，范围0-100%</div>
             </div>
             <ng-template #searchBeanModalFooter>
               <button nz-button nzType="default" (click)="hideModal('searchBean')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
@@ -1579,7 +1593,7 @@
                 <td>
                   <nz-form-item>
                     <nz-form-control>
-                      <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'taskCenter')"></nz-switch>
+                      <nz-switch [(ngModel)]="data.enabled" (click)="onChange(data, 'taskCenter')"></nz-switch>
                     </nz-form-control>
                   </nz-form-item>
                 </td>
@@ -1621,7 +1635,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="4">
-                <nz-select [(ngModel)]="operateObject.operater">
+                <nz-select [(ngModel)]="operateObject.operator">
                   <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
                   <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
                   <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
@@ -1634,12 +1648,13 @@
               </div>
             </div>
             <div nz-row>
+              <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="4" class="right_alignment ">验证码：</div>
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="2"><input nz-input nzSize="default" [(ngModel)]="operateObject.code"></div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="24">提示：勾选任务，重置成功后，已完成该任务的用户，可以再做一次该任务</div>
+              <div nz-col nzSpan="21">提示：勾选任务，重置成功后，已完成该任务的用户，可以再做一次该任务</div>
             </div>
             <ng-template #ensureResetTaskCenterFooter>
               <button nz-button nzType="primary" (click)="doSave('resetTaskCenter', '')" [disabled]="operateObject.code.length !== 4"><i class="anticon anticon-reload"></i>确定重置</button>

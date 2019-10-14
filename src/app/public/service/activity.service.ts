@@ -101,4 +101,12 @@ export class ActivityService extends AppServiceBase {
       .delete<IResponse<any>>(url, this.options);
   }
 
+  /** 获取短信 */
+  sendMsg(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${activityApiUrls.batchsendList}/captcha?operator=${data}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
+    return this.httpClient
+      .post<IResponse<any>>(url, this.options);
+  }
+
 }

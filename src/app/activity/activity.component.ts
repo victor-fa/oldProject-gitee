@@ -86,14 +86,13 @@ export class ActivityComponent implements OnInit {
     { name : '打车', value : 'taxi', checked : true, disabled: false }
   ];
   currentPanel = 'coupon';
-  addBatchsendForm: FormGroup;
   searchCouponInBatchsendForm: FormGroup;
   beginBatchsendDate = '';
   endBatchsendDate = '';
   beginCouponInBatchsendDate = null; // 红包日期选择
   endCouponInBatchsendDate = null;
   allSearchCouponInBatchsendChecked = false; // 用于table多选
-  batchsendData = { 'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': [] };
+  batchsendData = { 'title': '', 'description': '', 'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': '', 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': [] };
   dataSearchCouponInBatchsend = [];
   dataBatchsend = []; // 内容
   couponListArrInBatchsend = []; // 最底部的活动奖励配置数组
@@ -119,7 +118,7 @@ export class ActivityComponent implements OnInit {
     date: []
   };
   semdMesCodeText = 60;
-  operateObject = { code: '', operater: '18682233554' }; // 操作人
+  operateObject = { code: '', operator: '18682233554' }; // 操作人
   dateRange = [];
   dateRangeA = [];
   // resetTaskCenterCheckOptions = [];
@@ -381,7 +380,6 @@ export class ActivityComponent implements OnInit {
     this.searchCouponInActivityForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
     this.addActivityForm = this.fb.group({ actName: [''], date: [''], actRuleDesc: [''], actType: [''], chargeThreshold: [''],
       totalQuantity: [''], perUserQuantity: [''], actGiftNo: [''], temp: [''], actPageUrl: [''] });
-    this.addBatchsendForm = this.fb.group({ pendingRevL: [''], displayMessage: [''], });
     this.searchCouponInBatchsendForm = this.fb.group({ couponName: [''], discountType: [''], couponCategory: [''], date: [''], });
     this.searchBeanForm = this.fb.group({ title: [''], date: [''], });
     this.addBeanForm = this.fb.group({ title: [''], describe: [''], date: [''], type: [''], depositAmount: [''], giftPercent: [''],
@@ -446,6 +444,7 @@ export class ActivityComponent implements OnInit {
       this.couponDate = { 'couponName': '', 'discountType': 'FIX_DISCOUNT', 'discountPrices': [{main: '', content: ''}], 'timeLimitValidDay': '', 'timeLimitType': 'fix_start_end', 'timeLimitStart': '', 'timeLimitEnd': '', 'couponCategory': '', 'mutualExcludeRules': '' };
     } else if (flag === 'modifyCoupon') { // 修改优惠券弹框
       this.visiable.modifyCoupon = true;
+      console.log(data);
       this.cmsId = data.couponId;  // 用于修改
       this.couponDate = data;
       const prices = [];
@@ -473,9 +472,7 @@ export class ActivityComponent implements OnInit {
       this.couponEndDate = data.timeLimitEnd ? data.timeLimitEnd : this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       console.log(this.couponDate);
     } else if (flag === 'addBatchsend') {
-      this.batchsendData = {  // 清空
-        'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': [], 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': []
-      };
+      this.batchsendData = { 'title': '', 'description': '', 'displayMessage': '', 'errorRevL': [], 'invalidRevL': [], 'pendingRevL': '', 'pushRuleId': '', 'pushStatus': '', 'successRevL': '', 'sendTime': '', 'totalRevNum': '', 'actCouponRulePoL': [], 'tempCouponName': [] };  // 清空
       this.loadData('couponInBatchsend');
       this.visiable.addBatchsend = true;
     } else if (flag === 'detail') {
@@ -485,16 +482,17 @@ export class ActivityComponent implements OnInit {
         this.batchsendData.actCouponRulePoL.forEach((item, i) => { tempArr.push(item.couponRulePo.couponName); });
         this.batchsendData.tempCouponName = tempArr;
       }
-      console.log(this.batchsendData);
       this.visiable.detailBatchsend = true;
     } else if (flag === 'addCouponInBatchsend') { // 新增红包 | 活动奖励
       this.visiable.couponInBatchsend = true;
       this.couponListArrInBatchsend = [];
       this.loadData('couponInBatchsend');
+    } else if (flag === 'modifyCouponInBatchsend') { // 配置红包 | 活动奖励
+      this.visiable.couponInBatchsend = true;
     } else if (flag === 'batchsend') { // 批量发送
-      this.finalBatchsendData.pendingRevL = this.addBatchsendForm.controls['pendingRevL'].value.split('\n');
+      this.finalBatchsendData.pendingRevL = this.batchsendData.pendingRevL.split('\n');
       this.finalBatchsendData.actCouponRulePoL = this.couponListArrInBatchsend;
-      this.finalBatchsendData.displayMessage = this.addBatchsendForm.controls['displayMessage'].value;
+      this.finalBatchsendData.displayMessage = this.batchsendData.displayMessage;
       if (this.finalBatchsendData.actCouponRulePoL) {
         const tempArr = [];
         this.finalBatchsendData.actCouponRulePoL.forEach((item, i) => {
@@ -747,11 +745,17 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'addCoupon') {
     } else if (flag === 'modifyCoupon') {
     } else if (flag === 'batchsend') {
-      if (this.addBatchsendForm.controls['pendingRevL'].value === '') {
+      if (this.batchsendData.pendingRevL === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '发送对象未填写' });
         result = false;
-      } else if (this.addBatchsendForm.controls['displayMessage'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '附带信息未选择' });
+      } else if (this.batchsendData.title === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
+        result = false;
+      } else if (this.batchsendData.description === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
+        result = false;
+      } else if (this.batchsendData.displayMessage === '' || this.batchsendData.displayMessage === null) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '内容未填写' });
         result = false;
       } else if (this.couponListArrInBatchsend === []) {
         this.modalService.error({ nzTitle: '提示', nzContent: '发送奖励配置未选择' });
@@ -1045,18 +1049,20 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'batchsendList') {
       let count = 0;
       if (!this.verificationAdd('batchsend')) { return; }
-      this.addBatchsendForm.controls['pendingRevL'].value.split('\n').forEach(item => {
+      this.batchsendData.pendingRevL.split('\n').forEach(item => {
         if (!this.isPoneAvailable(item)) { count++; }
       });
       if (count > 0) {
         this.modalService.error({ nzTitle: '提示', nzContent: '输入的手机号码中有不符合要求的！' });
         return;
       }
+      console.log(this.batchsendData);
       this.showModal('batchsend', '');  // 打开发送弹窗
     } else if (flag === 'couponInBatchsend') { // 保存红包组选择区
       const couponArr = [];
       let checkedCount = 0;
       let quantityCount = 0;
+      console.log(this.dataSearchCouponInBatchsend);
       this.dataSearchCouponInBatchsend.forEach(data => {
         if (data.checked === true) {
           couponArr.push(data);
@@ -1073,15 +1079,13 @@ export class ActivityComponent implements OnInit {
         return;
       }
       this.couponListArrInBatchsend = couponArr;
-      this.visiable.couponInBatchsend = false;
-      this.notification.blank( '提示', '新增红包组成功', { nzStyle: { color : 'green' } });
-      const operationInput = { op_category: '活动管理', op_page: '批量发放', op_name: '新增红包组' };
-      this.commonService.updateOperationlog(operationInput).subscribe();
+      this.hideModal('couponInBatchsend');
+      this.notification.blank( '提示', '处理红包组成功', { nzStyle: { color : 'green' } });
     } else if (flag === 'batchsend') { // 批量发送
       // 调用新增接口
       const batchsendListInput = {
-        'pendingRevL': this.addBatchsendForm.controls['pendingRevL'].value.split('\n'),
-        'displayMessage': this.addBatchsendForm.controls['displayMessage'].value,
+        // 'pendingRevL': this.addBatchsendForm.controls['pendingRevL'].value.split('\n'),
+        // 'displayMessage': this.addBatchsendForm.controls['displayMessage'].value,
         'actCouponRulePoL': this.couponListArrInBatchsend,
       };
       this.batchsendService.addBatchsend(batchsendListInput).subscribe(res => {
@@ -1260,8 +1264,17 @@ export class ActivityComponent implements OnInit {
           } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
         });
       }
+    } else if (flag === 'sendBatchMsg') {
+      this.activityService.sendMsg(this.operateObject.operator).subscribe(res => {
+        if (res.retcode === 0) {
+          this.countDown();
+          this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '批量发放' , op_name: '发送短信' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     } else if (flag === 'sendMsg') {
-      this.taskService.sendMsg(this.operateObject.operater).subscribe(res => {
+      this.taskService.sendMsg(this.operateObject.operator).subscribe(res => {
         if (res.retcode === 0) {
           this.countDown();
           this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
@@ -1272,7 +1285,7 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'resetTaskCenter') {
       const arr = [];
       this.dataTaskCenter.forEach(item => { if (item.checked === true) { arr.push(item.id); } }); // 获取被选中的task
-      const resetInput = { code: this.operateObject.code, phone: this.operateObject.operater, taskIds: arr };
+      const resetInput = { code: this.operateObject.code, phone: this.operateObject.operator, taskIds: arr };
       this.taskService.resetTaskCenter(resetInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '重置成功', { nzStyle: { color : 'green' } });
@@ -1281,7 +1294,7 @@ export class ActivityComponent implements OnInit {
           this.loadData('taskCenter');
           this.hideModal('ensureResetTaskCenter');
           this.hideModal('resetTaskCenter');
-          this.operateObject = { code: '', operater: '18682233554' };
+          this.operateObject = { code: '', operator: '18682233554' };
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -1480,21 +1493,13 @@ export class ActivityComponent implements OnInit {
   // 针对区域重置处理的数组情况
   onMarginChange(value, site, item) {
     if (site === 'chargeThreshold') { // 充值额度门槛
-      this.addMarginArr.forEach(( cell, i ) => {
-        i === item ? cell.chargeThreshold = value : null;
-      });
+      this.addMarginArr.forEach(( cell, i ) => { i === item ? cell.chargeThreshold = value : null; });
     } else if (site === 'totalQuantity') {  // 可发放总数
-      this.addMarginArr.forEach(( cell, i ) => {
-        i === item ? cell.totalQuantity = value : null;
-      });
+      this.addMarginArr.forEach(( cell, i ) => { i === item ? cell.totalQuantity = value : null; });
     } else if (site === 'perUserQuantity') {  // 每个用户可领取数量
-      this.addMarginArr.forEach(( cell, i ) => {
-        i === item ? cell.perUserQuantity = value : null;
-      });
+      this.addMarginArr.forEach(( cell, i ) => { i === item ? cell.perUserQuantity = value : null; });
     } else if (site === 'actGiftNo') {  // 最终选择的红包组
-      this.addMarginArr.forEach(( cell, i ) => {
-        i === item ? cell.actGiftNo = value : null;
-      });
+      this.addMarginArr.forEach(( cell, i ) => { i === item ? cell.actGiftNo = value : null; });
     }
   }
 
@@ -1563,6 +1568,24 @@ export class ActivityComponent implements OnInit {
       this.couponDate.discountPrices.push({main: '', content: ''});
     } else if (flag === 'removeDiscountPrices') {
       this.couponDate.discountPrices.splice(result, 1);
+    } else if (flag === 'taskCenter') {
+      const switchInput = { 'id': result.id, 'enabled': result.enabled };
+      this.taskService.updateSwitch(switchInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        this.loadData('taskCenter');
+      });
+    } else if (flag === 'couponInBatchsend') {
+      console.log(result);
+      this.dataSearchCoupon.forEach(item => {
+        item.couponId === result.data.couponId ? item.quantity = parseInt(result.event) : null;
+      });
+      this.dataSearchCouponInBatchsend.forEach(item => {
+        item.couponId === result.data.couponId ? item.quantity = parseInt(result.event) : null;
+      });
     }
   }
 
@@ -1607,12 +1630,7 @@ export class ActivityComponent implements OnInit {
     this.indeterminate = (!allChecked) && (!allUnChecked);
   }
 
-  getCouponNumber(event, data) {
-    this.dataSearchCoupon.forEach(item => {
-      item.couponId === data.couponId ? item.quantity = parseInt(event) : null;
-    });
-  }
-
+  // 获取互斥限制的数组
   getMutualExcludeRules() {
     let arr = [];
     if (this.checkCouponOptions[0].checked && this.checkCouponOptions[1].checked) {
@@ -1627,30 +1645,12 @@ export class ActivityComponent implements OnInit {
     return arr;
   }
 
-  // 点击switch
-  clickSwitch(data, flag) {
-    if (flag === 'taskCenter') {
-      const switchInput = { 'id': data.id, 'enabled': data.enabled };
-      this.taskService.updateSwitch(switchInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '活动管理', op_page: '任务中心', op_name: '启用/不启用' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-        this.loadData('taskCenter');
-      });
-    }
-  }
-
   // 获取片类限制
   getCheckedCategory() {
     let flag = '';
     let count = 0;
     for (let i = 0; i < this.category.length; i++) {
-      if (this.category[i].checked === true) {
-        flag = this.category[i].value;
-        count++;
-      }
+      if (this.category[i].checked === true) { flag = this.category[i].value; count++; }
     }
     flag = (count === 4 ? 'all' : flag);
     return flag;
@@ -1669,6 +1669,7 @@ export class ActivityComponent implements OnInit {
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
+  // 手机验证
   isPoneAvailable($poneInput) {
     const myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
     return !myreg.test($poneInput) ? false : true;
@@ -1683,10 +1684,7 @@ export class ActivityComponent implements OnInit {
 
   countDown() {
     this.semdMesCodeText--;
-    if (this.semdMesCodeText === 0) {
-      this.semdMesCodeText = 60;
-      return;
-    }
+    if (this.semdMesCodeText === 0) { this.semdMesCodeText = 60; return; }
     setTimeout(() => { this.countDown(); }, 1000);
   }
 

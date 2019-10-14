@@ -10,25 +10,23 @@
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="showModal('explain', '')"><i class="anticon anticon-question-circle-o"></i>数据说明</button>
             </div>
-            <!-- <form [formGroup]="consumerSearchForm">
-              <div nz-col nzSpan="3" class="right_alignment">
-                客户ID：
-              </div>
-              <div nz-col nzSpan="4">
-                <input nz-input formControlName="userPhone" placeholder="输入客户ID" nzSize="default">
-              </div>
-            </form> -->
-            <div nz-col nzSpan="3" class="right_alignment">
-              是否作废：
-            </div>
-            <div nz-col nzSpan="4">
+            <div nz-col nzSpan="2" class="right_alignment">是否作废：</div>
+            <div nz-col nzSpan="2">
               <nz-select [(ngModel)]="consumerDate.available">
                 <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
                 <nz-option [nzLabel]="'未作废'" [nzValue]="'true'"></nz-option>
                 <nz-option [nzLabel]="'已作废'" [nzValue]="'false'"></nz-option>
               </nz-select>
             </div>
-            <div nz-col nzSpan="11"></div>
+            <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
+            <div nz-col nzSpan="3">
+              <input nz-input [(ngModel)]="consumerDate.appChannel" placeholder="输入客户ID" nzSize="default">
+            </div>
+            <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+            <div nz-col nzSpan="3">
+              <input nz-input [(ngModel)]="consumerDate.appChannelName" placeholder="输入客户名称" nzSize="default">
+            </div>
+            <div nz-col nzSpan="4"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('consumer')"><i class="anticon anticon-search"></i>查询</button>
             </div>

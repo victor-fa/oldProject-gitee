@@ -79,7 +79,17 @@ export class ConsumerComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataConsumer = JSON.parse(res.payload);
-          console.log(this.dataConsumer);
+          setTimeout(() => {
+            if (this.consumerDate.appChannel !== '') {
+              console.log(1);
+              this.dataConsumer = this.dataConsumer.filter(item => item.appChannel === this.consumerDate.appChannel );
+            }
+            if (this.consumerDate.appChannelName !== '') {
+              console.log(2);
+              this.dataConsumer = this.dataConsumer.filter(item => item.appChannelName === this.consumerDate.appChannelName );
+            }
+            console.log(this.dataConsumer);
+          }, 200);
           const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
