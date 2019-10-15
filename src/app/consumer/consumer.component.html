@@ -91,39 +91,27 @@
             <form [formGroup]="modifyConsumerForm">
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">key类型：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.officially === true ? '正式key' : '测试key'}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.officially === true ? '正式key' : '测试key'}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">客户ID：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.appChannel}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.appChannel}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">客户名称：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.appChannelName}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.appChannelName}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">BOT配置文件ID：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.robot}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.robot}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">客户联系人手机号：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.phone ? consumerDate.phone : '15111407234'}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.phone ? consumerDate.phone : '15111407234'}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">登录类型：</div>
-                <div nz-col nzSpan="12">
-                  {{consumerDate.loginType === 1 ? '需要登录' : '不需要登录'}}
-                </div>
+                <div nz-col nzSpan="12">{{consumerDate.loginType === 1 ? '需要登录' : '不需要登录'}}</div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">激活次数：</div>
@@ -310,9 +298,7 @@
 
           <nz-modal [(nzVisible)]="visiable.addSerial" nzWidth="950" nzTitle="添加序列号" [nzFooter]="addSerialModalFooter" (nzOnCancel)="hideModal('addSerial')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="24">
-                可以输入或上传文件添加序列号，添加前请务必检查序列号是否正确
-              </div>
+              <div nz-col nzSpan="24">可以输入或上传文件添加序列号，添加前请务必检查序列号是否正确</div>
             </div><div nz-row>
               <div nz-col nzSpan="24">
                 <textarea rows="25" nz-input [(ngModel)]="consumerDate.keys" nzSize="default"></textarea>
@@ -332,21 +318,11 @@
 
           <nz-modal [(nzVisible)]="visiable.voucher" nzTitle="对接凭证" [nzFooter]="voucherModalFooter" (nzOnCancel)="hideModal('voucher')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="24">
-                【appChannel/appKey】{{voucherInfo.appChannel}}
-              </div>
-              <div nz-col nzSpan="24">
-                【appSecret】{{voucherInfo.appSecret}}
-              </div>
-              <div nz-col nzSpan="24">
-                【aesKey】{{voucherInfo.aesKey}}
-              </div>
-              <div nz-col nzSpan="24">
-                【aesIv】{{voucherInfo.aesIv}}
-              </div>
-              <div nz-col nzSpan="24">
-                【privateKey】{{voucherInfo.privateKey}}
-              </div>
+              <div nz-col nzSpan="24">【appChannel/appKey】{{voucherInfo.appChannel}}</div>
+              <div nz-col nzSpan="24">【appSecret】{{voucherInfo.appSecret}}</div>
+              <div nz-col nzSpan="24">【aesKey】{{voucherInfo.aesKey}}</div>
+              <div nz-col nzSpan="24">【aesIv】{{voucherInfo.aesIv}}</div>
+              <div nz-col nzSpan="24">【privateKey】{{voucherInfo.privateKey}}</div>
             </div>
             <ng-template #voucherModalFooter>
               <button nz-button nzType="primary" (click)="doSave('voucher')"><i class="anticon anticon-copy"></i>复制</button>
@@ -356,9 +332,7 @@
 
           <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1110" nzTitle="客户管理数据说明" [nzFooter]="explainModalFooter" (nzOnCancel)="hideModal('explain')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="24">
-                <img [src]="'assets/images/consumer_explain.png'">
-              </div>
+              <div nz-col nzSpan="24"><img [src]="'assets/images/consumer_explain.png'"></div>
             </div>
             <ng-template #explainModalFooter>
               <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
@@ -371,15 +345,11 @@
           <ng-template #callbackTemplate><i class="anticon anticon-rollback"></i>回调地址</ng-template>
           <div nz-row>
             <form [formGroup]="callbackSearchForm">
-              <div nz-col nzSpan="2" class="right_alignment">
-                客户ID：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
               <div nz-col nzSpan="3">
                 <input nz-input placeholder="请输入客户ID" formControlName="appChannel" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单类型：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单类型：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="orderType">
                   <nz-option [nzLabel]="'全部'" [nzValue]="''"></nz-option>
@@ -397,8 +367,7 @@
                 </nz-select>
               </div>
             </form>
-            <div nz-col nzSpan="9">
-            </div>
+            <div nz-col nzSpan="9"></div>
             <div nz-col nzSpan="2">
               <button nz-button nzType="primary" (click)="loadData('callback')"><i class="anticon anticon-search"></i>查询</button>
             </div>
@@ -437,18 +406,13 @@
 
           <nz-modal [(nzVisible)]="visiable.addCallback" nzTitle="新增回调地址" nzWidth="850" [nzFooter]="addCallbackModalFooter" (nzOnCancel)="hideModal('addCallback')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="5" class="right_alignment">
-                客户ID：
-              </div>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
               <div nz-col nzSpan="19">
-                <ng-container *ngIf="dataConsumer.length === 0">
-                  没有新客户ID需要配置
-                </ng-container>
+                <ng-container *ngIf="dataConsumer.length === 0">没有新客户ID需要配置</ng-container>
                 <ng-container *ngIf="dataConsumer.length > 0">
                   <nz-radio-group [(ngModel)]="callbackData.appChannel">
                     <ng-container *ngFor="let data of dataConsumer;">
-                      <label nz-col nzSpan="11" nz-radio [nzValue]="data.appChannel"
-                        (click)="onChange(data, 'appChannel')">{{data.appChannel}}</label>
+                      <label nz-col nzSpan="11" nz-radio [nzValue]="data.appChannel" (click)="onChange(data, 'appChannel')">{{data.appChannel}}</label>
                     </ng-container>
                   </nz-radio-group>
                 </ng-container>
@@ -465,9 +429,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="right_alignment">
-                回调地址：
-              </div>
+              <div nz-col nzSpan="5" class="right_alignment">回调地址：</div>
               <div nz-col nzSpan="19">
                 <input nz-input placeholder="请输入回调地址" [(ngModel)]="callbackData.callbackUrl" nzSize="default">
               </div>
@@ -480,25 +442,17 @@
 
           <nz-modal [(nzVisible)]="visiable.modifyCallback" nzTitle="修改回调地址" [nzFooter]="modifyCallbackModalFooter" (nzOnCancel)="hideModal('modifyCallback')" nzMaskClosable="false">
             <div nz-row>
-              <div nz-col nzSpan="5" class="right_alignment">
-                客户ID：
-              </div>
-              <div nz-col nzSpan="19">
-                {{callbackData.appChannel}}
-              </div>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">{{callbackData.appChannel}}</div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="right_alignment">
-                订单类型：
-              </div>
+              <div nz-col nzSpan="5" class="right_alignment">订单类型：</div>
               <div nz-col nzSpan="19">
                 {{callbackData.orderType === 'TRAIN_ORDER' ? '火车' : callbackData.orderType === 'FLIGHT_ORDER' || callbackData.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : callbackData.orderType === 'HOTEL_ORDER' ? '酒店' : callbackData.orderType === 'TAXI_ORDER' ? '打车' : callbackData.orderType === 'EXPRESS_ORDER' ? '闪送' : callbackData.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : callbackData.orderType === 'MOVIE_ORDER' ? '电影票' : callbackData.orderType === 'PAIR_ORDER' ? '恋爱运势' : callbackData.orderType === 'FORTUNE_ORDER' ? '月运势' : callbackData.orderType === 'MUSIC_ORDER' ? '付费音频' : callbackData.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="5" class="right_alignment">
-                回调地址：
-              </div>
+              <div nz-col nzSpan="5" class="right_alignment">回调地址：</div>
               <div nz-col nzSpan="19">
                 <input nz-input placeholder="请输入回调地址" [(ngModel)]="callbackData.callbackUrl" nzSize="default">
               </div>

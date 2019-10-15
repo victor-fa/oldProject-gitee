@@ -5,15 +5,11 @@
       <div nz-col nzSpan="2">
         <button nz-button nzType="primary" (click)="shouSomething('explain')"><i class="anticon anticon-question-circle-o"></i>数据说明？</button>
       </div>
-      <div nz-col nzSpan="3" class="right_alignment">
-        查询日期范围：
-      </div>
+      <div nz-col nzSpan="3" class="right_alignment">查询日期范围：</div>
       <div nz-col nzSpan="7">
         <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange('date', $event)"></nz-range-picker>
       </div>
-      <div nz-col nzSpan="1" class="right_alignment">
-        渠道：
-      </div>
+      <div nz-col nzSpan="1" class="right_alignment">渠道：</div>
       <div nz-col nzSpan="2">
         <nz-select [(ngModel)]="dataCenterStatus" formControlName="status">
           <nz-option [nzLabel]="'全部'" [nzValue]="'all'"></nz-option>
@@ -48,15 +44,13 @@
               <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px 10px 10px 30px; padding: 10px;">
                 <div nz-col nzSpan="24">
                   <div nz-row>
-                    <div nz-col nzSpan="6">
-                      活跃用户<br>
+                    <div nz-col nzSpan="6">活跃用户<br>
                       <p style="font-size: 25px;">{{coreOperation.activeUsers}}</p>
                     </div>
                     <div nz-col nzSpan="6">
                       <img [src]="'assets/images/icon_activeuser.png'">
                     </div>
-                    <div nz-col nzSpan="6">
-                      订单成交金额<br>
+                    <div nz-col nzSpan="6">订单成交金额<br>
                       <p style="font-size: 25px;">{{coreOperation.totalTurnover !== undefined ? coreOperation.totalTurnover.toFixed(2) : '--'}}</p>
                     </div>
                     <div nz-col nzSpan="6">
@@ -67,15 +61,13 @@
 
                 <div nz-col nzSpan="24">
                     <div nz-row>
-                      <div nz-col nzSpan="6">
-                        周留存率<br>
+                      <div nz-col nzSpan="6">周留存率<br>
                         <p style="font-size: 25px;">{{coreOperation.weekRetentionUsers !== undefined ? coreOperation.weekRetentionUsers === -1 ? '--' : coreOperation.weekRetentionUsers + '%' : ''}}</p>
                       </div>
                       <div nz-col nzSpan="6">
                         <img [src]="'assets/images/icon_weeklyretentionrate.png'">
                       </div>
-                      <div nz-col nzSpan="6">
-                        月留存率<br>
+                      <div nz-col nzSpan="6">月留存率<br>
                         <p style="font-size: 25px;">{{coreOperation.monthRetentionUsers !== undefined ? coreOperation.monthRetentionUsers === -1 ? '--' : coreOperation.monthRetentionUsers + '%' : ''}}</p>
                       </div>
                       <div nz-col nzSpan="6">
@@ -88,15 +80,13 @@
               <div nz-col nzSpan="11" style="background-color: #FFFFFF; margin: 10px; padding: 10px;">
                 <div nz-col nzSpan="24">
                   <div nz-row>
-                    <div nz-col nzSpan="6">
-                      总唤醒数<br>
+                    <div nz-col nzSpan="6">总唤醒数<br>
                       <p style="font-size: 25px;">{{coreOperation.totalAwaken}}</p>
                     </div>
                     <div nz-col nzSpan="6">
                       <img [src]="'assets/images/icon_totalwakeup.png'">
                     </div>
-                    <div nz-col nzSpan="6">
-                      平均日唤醒次数<br>
+                    <div nz-col nzSpan="6">平均日唤醒次数<br>
                       <p style="font-size: 25px;">{{coreOperation.averDailyAwaken}}</p>
                     </div>
                     <div nz-col nzSpan="6">
@@ -107,15 +97,12 @@
 
                 <div nz-col nzSpan="24">
                   <div nz-row>
-                    <div nz-col nzSpan="6">
-                      订单请求数<br>
+                    <div nz-col nzSpan="6">订单请求数<br>
                       <p style="font-size: 25px;">{{coreOperation.orderQuery}}</p>
                     </div>
-                    <div nz-col nzSpan="6">
-                      <img [src]="'assets/images/icon_orderrequest.png'">
+                    <div nz-col nzSpan="6"><img [src]="'assets/images/icon_orderrequest.png'">
                     </div>
-                    <div nz-col nzSpan="6">
-                      下单转化率<br>
+                    <div nz-col nzSpan="6">下单转化率<br>
                       <p style="font-size: 25px;">{{coreOperation.orderCommit !== undefined ? ((coreOperation.orderCommit/coreOperation.orderQuery) * 100).toFixed(2) + '%' : ''}}</p>
                     </div>
                     <div nz-col nzSpan="6">

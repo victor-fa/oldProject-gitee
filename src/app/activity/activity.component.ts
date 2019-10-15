@@ -1411,7 +1411,7 @@ export class ActivityComponent implements OnInit {
               'actStartDate': this.beginBaseInfoDate,
               'actEndDate': this.endBaseInfoDate,
               'actRuleDesc': this.addActivityForm.controls['actRuleDesc'].value,
-              // 'actPageUrl': this.addActivityForm.controls['actPageUrl'].value
+              'actPageUrl': this.addActivityForm.controls['actPageUrl'].value
             };
             this.activityService.addActivity(activityInput).subscribe(res => {
               if (res.retcode === 0) {

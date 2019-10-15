@@ -52,7 +52,6 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹窗 —— 新增 —— 新增内容 -->
           <nz-modal [(nzVisible)]="visiable.addContent" nzWidth="1150" nzTitle="新增内容" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideAddModal('content')" nzMaskClosable="false">
             <form [formGroup]="addContentForm">
               <div nz-row>
@@ -133,7 +132,6 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #addContentModalFooter>
               <button nz-button nzType="primary" (click)="doSave('content')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="primary" (click)="doPreviewContentAdd()"><i class="anticon anticon-eye-o"></i>预览</button>
@@ -141,7 +139,6 @@
             </ng-template>
           </nz-modal>
 
-          <!-- 弹窗 —— 修改 —— 修改内容 -->
           <nz-modal [(nzVisible)]="visiable.modifyContent" nzWidth="1150" nzTitle="修改内容" [nzFooter]="modifyContentModalFooter" (nzOnCancel)="hideModifyModal('content')" nzMaskClosable="false">
             <form [formGroup]="modifyContentForm">
               <div nz-row>
@@ -222,14 +219,12 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #modifyContentModalFooter>
               <button nz-button nzType="primary" (click)="doModify('content')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="primary" (click)="doPreviewContentModify()"><i class="anticon anticon-eye-o"></i>预览</button>
               <button nz-button nzType="default" (click)="hideModifyModal('content')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="screenTemplate" (nzClick)="changePanel('screen')" *ngIf="commonService.haveMenuPermission('children', '开屏启动')">
@@ -285,39 +280,30 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹窗 —— 新增 —— 新增开屏 -->
           <nz-modal [(nzVisible)]="visiable.addScreen" nzWidth="750" nzTitle="新增开屏" [nzFooter]="addScreenModalFooter" (nzOnCancel)="hideAddModal('screen')" nzMaskClosable="false">
             <form [formGroup]="addScreenForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>开屏标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>开屏标题</div>
                 <div nz-col nzSpan="12">
                   <input nz-input maxlength="18" formControlName="title" [(ngModel)]="screenDate.title"
                     placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>持续时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>持续时间：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input maxlength="2" formControlName="duration" [(ngModel)]="screenDate.duration"
                     placeholder="请输入持续时间（单位：s）" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>链接跳转状态：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>链接跳转状态：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="jump" [(ngModel)]="jumpForScreen">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -358,9 +344,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>开屏图片：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>开屏图片：</div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button>
@@ -378,46 +362,34 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #addScreenModalFooter>
               <button nz-button nzType="primary" (click)="doSave('screen')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('screen')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹窗 —— 修改 —— 修改开屏 -->
           <nz-modal [(nzVisible)]="visiable.modifyScreen" nzWidth="750" nzTitle="修改开屏" [nzFooter]="modifyScreenModalFooter" (nzOnCancel)="hideModifyModal('screen')" nzMaskClosable="false">
             <form [formGroup]="modifyScreenForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>开屏标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>开屏标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input maxlength="18" formControlName="title" [ngModel]="screenDate.title"
-                    placeholder="请输入开屏标题" nzSize="default">
+                  <input nz-input maxlength="18" formControlName="title" [ngModel]="screenDate.title" placeholder="请输入开屏标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>持续时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>持续时间：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input maxlength="2" formControlName="duration" [ngModel]="screenDate.duration"
-                    placeholder="请输入持续时间" nzSize="default">
+                  <input nz-input maxlength="2" formControlName="duration" [ngModel]="screenDate.duration" placeholder="请输入持续时间" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="screenDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>链接跳转状态：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>链接跳转状态：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="screenDate.jump" formControlName="jump">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -445,27 +417,22 @@
                 <div nz-col nzSpan="8" class="right_alignment">跳过状态：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="screenDate.skip" formControlName="skip">
-                      <nz-option required [nzLabel]="'可跳过'" [nzValue]="true"></nz-option>
-                      <nz-option required [nzLabel]="'不可跳过'" [nzValue]="false"></nz-option>
+                    <nz-option required [nzLabel]="'可跳过'" [nzValue]="true"></nz-option>
+                    <nz-option required [nzLabel]="'不可跳过'" [nzValue]="false"></nz-option>
                   </nz-select>
                 </div>
               </div>
               <div nz-row *ngIf="screenDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" [ngModel]="screenDate.url"
-                    placeholder="请输入链接地址" nzSize="default">
+                  <input nz-input formControlName="url" [ngModel]="screenDate.url" placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>开屏图片：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>开屏图片：</div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
-                      <i class="anticon anticon-upload"></i><span>选择文件</span>
-                    </button>
+                    <button nz-button><i class="anticon anticon-upload"></i><span>选择文件</span></button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*1154&nbsp;&nbsp;限制大小：500K</font>
                   </nz-upload>
                 </div>
@@ -478,13 +445,11 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #modifyScreenModalFooter>
               <button nz-button nzType="primary" (click)="doModify('screen')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('screen')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="openTemplate" (nzClick)="changePanel('open')" *ngIf="commonService.haveMenuPermission('children', '首页弹窗')">
@@ -503,7 +468,6 @@
                 <th>跳转位置</th>
                 <th>到期时间</th>
                 <th>链接地址</th>
-                <!-- <th>排序状态</th> -->
                 <th>APP标识</th>
                 <th>弹窗图片</th>
                 <th>弹窗规则</th>
@@ -518,7 +482,6 @@
                 <td>{{data.jump === 'DISABLED'? '不跳转' : data.jump === 'HTML' ? '跳转到网页' : '跳转到APP'}}</td>
                 <td>{{data.expireTime}}</td>
                 <td>{{data.url ? data.url !== '' ? data.url : '无' : '无'}}</td>
-                <!-- <td>{{data.order}}</td> -->
                 <td>{{data.site === 1 ? '个人中心' : data.site === 2 ? '个人中心 > 设置' : data.site === 3 ? '个人中心 > 我的订单' : data.site === 4 ? '个人中心 > 常用信息' : data.site === 5 ? '个人中心 > 我的账户 > 充值' : data.site === 6 ? '个人中心 > 我的账户' : data.site === 7 ? '个人中心 > 联系我们 > 我的建议' : data.site === 8 ? '对话流 > 帮助' : '无'}}</td>
                 <td><img [src]="commonService.baseUrl.substring(0, commonService.baseUrl.indexOf('/admin')) + '/v1/cms/main-page-ads/images/' + data.image" class="thumbnail"></td>
                 <td>{{data.displayMode === 'ONCE' ? '仅一次' : data.displayMode === 'EVERY_DAY' ? '每天展示N次' : data.displayMode === 'NO_MORE_AFTER_CHECK' ? '查看后不展示' : data.displayMode === 'EACH_START_UP' ? '每次启动出现' : 'null'}}</td>
@@ -530,10 +493,8 @@
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'open')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'open')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'open')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'open')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -542,21 +503,16 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹窗 —— 新增 —— 新增弹窗 -->
           <nz-modal [(nzVisible)]="visiable.addOpen" nzWidth="750" nzTitle="新增弹窗" [nzFooter]="addOpenModalFooter" (nzOnCancel)="hideAddModal('open')" nzMaskClosable="false">
             <form [formGroup]="addOpenForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>弹窗标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>弹窗标题：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [(ngModel)]="openDate.title" placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select formControlName="jump" [(ngModel)]="jumpForOpen">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -566,9 +522,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -591,8 +545,7 @@
               <div nz-row *ngIf="jumpForOpen === 'HTML'">
                 <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" [(ngModel)]="openDate.url"
-                    placeholder="请输入链接地址" nzSize="default">
+                  <input nz-input formControlName="url" [(ngModel)]="openDate.url" placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row>
@@ -644,29 +597,22 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #addOpenModalFooter>
               <button nz-button nzType="primary" (click)="doSave('open')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('open')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹窗 —— 修改 —— 修改弹窗 -->
           <nz-modal [(nzVisible)]="visiable.modifyOpen" nzWidth="750" nzTitle="修改弹窗" [nzFooter]="modifyOpenModalFooter" (nzOnCancel)="hideModifyModal('open')" nzMaskClosable="false">
             <form [formGroup]="modifyOpenForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>弹窗标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>弹窗标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="title" [ngModel]="openDate.title"
-                    placeholder="请输入弹窗标题" nzSize="default">
+                  <input nz-input formControlName="title" [ngModel]="openDate.title" placeholder="请输入弹窗标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="openDate.jump" formControlName="jump">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -676,9 +622,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="openDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -701,8 +645,7 @@
               <div nz-row *ngIf="openDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" [ngModel]="openDate.url"
-                    placeholder="请输入链接地址" nzSize="default">
+                  <input nz-input formControlName="url" [ngModel]="openDate.url" placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row>
@@ -734,9 +677,7 @@
                 </div>
               </div> -->
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment"><i class="anticon anticon-add"></i>
-                  <font color="red">*</font>弹窗图片：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><i class="anticon anticon-add"></i><font color="red">*</font>弹窗图片：</div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
                     <button nz-button>
@@ -804,10 +745,8 @@
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'banner')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'banner')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'banner')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'banner')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -820,18 +759,13 @@
           <nz-modal [(nzVisible)]="visiable.addBanner" nzWidth="750" nzTitle="新增轮播图" [nzFooter]="addBannerModalFooter" (nzOnCancel)="hideAddModal('banner')" nzMaskClosable="false">
             <form [formGroup]="addBannerForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>轮播图标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>轮播图标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="title" [(ngModel)]="bannerDate.title"
-                    placeholder="请输入轮播图标题" nzSize="default">
+                  <input nz-input formControlName="title" [(ngModel)]="bannerDate.title" placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="''" formControlName="jump" [(ngModel)]="jumpForBanner">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -841,9 +775,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -871,12 +803,9 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>排序状态：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order"
-                    placeholder="请输入排序状态" nzSize="default">
+                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order" placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
               <div nz-row>
@@ -885,9 +814,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
-                      <i class="anticon anticon-upload"></i><span>选择文件</span>
-                    </button>
+                    <button nz-button><i class="anticon anticon-upload"></i><span>选择文件</span></button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
@@ -900,28 +827,22 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #addBannerModalFooter>
               <button nz-button nzType="primary" (click)="doSave('banner')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('banner')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹窗 —— 修改 —— 修改轮播图 -->
           <nz-modal [(nzVisible)]="visiable.modifyBanner" nzWidth="750" nzTitle="修改轮播图" [nzFooter]="modifyBannerModalFooter" (nzOnCancel)="hideModifyModal('banner')" nzMaskClosable="false">
             <form [formGroup]="modifyBannerForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>轮播图标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>轮播图标题：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [(ngModel)]="bannerDate.title" placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="bannerDate.jump" formControlName="jump">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -931,9 +852,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="bannerDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -956,17 +875,13 @@
               <div nz-row *ngIf="bannerDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" [(ngModel)]="bannerDate.url"
-                    placeholder="请输入链接地址" nzSize="default">
+                  <input nz-input formControlName="url" [(ngModel)]="bannerDate.url" placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>排序状态：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>排序状态：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order"
-                    placeholder="请输入排序状态" nzSize="default">
+                  <input nz-input formControlName="order" [(ngModel)]="bannerDate.order" placeholder="请输入排序状态" nzSize="default">
                 </div>
               </div>
               <div nz-row>
@@ -975,9 +890,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
-                      <i class="anticon anticon-upload"></i><span>选择文件</span>
-                    </button>
+                    <button nz-button><i class="anticon anticon-upload"></i><span>选择文件</span></button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
@@ -996,7 +909,6 @@
               <button nz-button nzType="default" (click)="hideModifyModal('banner')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="personalTemplate" (nzClick)="changePanel('personal')" *ngIf="commonService.haveMenuPermission('children', '个人中心')">
@@ -1038,10 +950,8 @@
                   </nz-form-item>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'personal')" style="margin-right: 10px;"><i
-                      class="anticon anticon-form"></i>修改</button>
-                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'personal')" style="margin-right: 10px;"><i
-                      class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showModifyModal(data, 'personal')" style="margin-right: 10px;"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data, 'personal')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -1050,22 +960,16 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <!-- 弹窗 —— 新增 —— 新增广告图 -->
           <nz-modal [(nzVisible)]="visiable.addPersonal" nzWidth="750" nzTitle="新增广告图" [nzFooter]="addPersonalModalFooter" (nzOnCancel)="hideAddModal('personal')" nzMaskClosable="false">
             <form [formGroup]="addPersonalForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>广告图标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>广告图标题：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="title" [(ngModel)]="personalDate.title"
-                    placeholder="请输入轮播图标题" nzSize="default">
+                  <input nz-input formControlName="title" [(ngModel)]="personalDate.title" placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [ngModel]="''" formControlName="jump" [(ngModel)]="jumpForPersonal">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -1097,9 +1001,7 @@
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="personalDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -1110,9 +1012,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
-                      <i class="anticon anticon-upload"></i><span>选择文件</span>
-                    </button>
+                    <button nz-button><i class="anticon anticon-upload"></i><span>选择文件</span></button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
@@ -1125,29 +1025,23 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #addPersonalModalFooter>
               <button nz-button nzType="primary" (click)="doSave('personal')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideAddModal('personal')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹窗 —— 修改 —— 修改广告图 -->
           <nz-modal [(nzVisible)]="visiable.modifyPersonal" nzWidth="750" nzTitle="修改广告图" [nzFooter]="modifyPersonalModalFooter" (nzOnCancel)="hideModifyModal('personal')" nzMaskClosable="false">
             <form [formGroup]="modifyPersonalForm">
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>广告图标题：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>广告图标题：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="title" [(ngModel)]="personalDate.title"
                     placeholder="请输入轮播图标题" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  <font color="red">*</font>跳转位置：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment"><font color="red">*</font>跳转位置：</div>
                 <div nz-col nzSpan="12">
                   <nz-select [(ngModel)]="personalDate.jump" formControlName="jump">
                     <nz-option required [nzLabel]="'不跳转'" [nzValue]="'DISABLED'"></nz-option>
@@ -1174,14 +1068,11 @@
               <div nz-row *ngIf="personalDate.jump === 'HTML'">
                 <div nz-col nzSpan="8" class="right_alignment">链接地址：</div>
                 <div nz-col nzSpan="12">
-                  <input nz-input formControlName="url" [(ngModel)]="personalDate.url"
-                    placeholder="请输入链接地址" nzSize="default">
+                  <input nz-input formControlName="url" [(ngModel)]="personalDate.url" placeholder="请输入链接地址" nzSize="default">
                 </div>
               </div>
               <div nz-row>
-                <div nz-col nzSpan="8" class="right_alignment">
-                  到期时间：
-                </div>
+                <div nz-col nzSpan="8" class="right_alignment">到期时间：</div>
                 <div nz-col nzSpan="12">
                   <nz-date-picker nzShowTime formControlName="expireTime" [(ngModel)]="personalDate.expireTime" required [nzFormat]="'yyyy-MM-dd HH:mm:ss'" nzPlaceHolder="请输入到期时间"></nz-date-picker>
                 </div>
@@ -1192,9 +1083,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                   <nz-upload [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1" nzMultiple [nzBeforeUpload]="beforeUpload">
-                    <button nz-button>
-                      <i class="anticon anticon-upload"></i><span>选择文件</span>
-                    </button>
+                    <button nz-button><i class="anticon anticon-upload"></i><span>选择文件</span></button>
                     <font color="#cccccc">&nbsp;&nbsp;建议尺寸：750*300&nbsp;&nbsp;限制大小：150K</font>
                   </nz-upload>
                 </div>
@@ -1207,7 +1096,6 @@
                 </div>
               </div>
             </form>
-            <!-- 弹窗和底部定制 -->
             <ng-template #modifyPersonalModalFooter>
               <button nz-button nzType="primary" (click)="doModify('personal')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModifyModal('personal')"><i class="anticon anticon-close-circle-o"></i>取消</button>

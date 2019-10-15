@@ -8,9 +8,7 @@
           <ng-template #dataAppTemplate><i class="anticon anticon-message"></i>对话日志</ng-template>
           <form [formGroup]="searchSessionLogForm" *ngIf="currentPanel === 'sessionLog'">
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                日期范围：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">日期范围：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true"
                   [(ngModel)]="dateRange" [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange('date', $event)">
@@ -88,9 +86,7 @@
                     <nz-option required [nzLabel]="'未标记'" [nzValue]="2"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="right_alignment" style="letter-spacing: -2px;">
-                  异常回答：
-                </div>
+                <div nz-col nzSpan="2" class="right_alignment" style="letter-spacing: -2px;">异常回答：</div>
                 <div nz-col nzSpan="3">
                   <nz-select [(ngModel)]="abnormalType" formControlName="abnormalType">
                     <nz-option [nzLabel]="'不筛选'" [nzValue]="''"></nz-option>
@@ -100,17 +96,13 @@
                     <nz-option [nzLabel]="'闲聊兜底话术'" [nzValue]="'FREE_CHAT_SPEECHLESS'"></nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="right_alignment">
-                  账户类型：
-                </div>
+                <div nz-col nzSpan="2" class="right_alignment">账户类型：</div>
                 <div nz-col nzSpan="3">
                   <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择账户类型" [(ngModel)]="accountType" formControlName="accountType">
                     <nz-option *ngFor="let option of listOfOption1" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>
                   </nz-select>
                 </div>
-                <div nz-col nzSpan="2" class="right_alignment">
-                  特殊用户：
-                </div>
+                <div nz-col nzSpan="2" class="right_alignment">特殊用户：</div>
                 <div nz-col nzSpan="3">
                   <nz-select nzMode="tags" style="width: 100%;" nzPlaceHolder="请选择特殊用户" [(ngModel)]="specialUserCategoryIds" formControlName="specialUserCategoryIds">
                     <nz-option *ngFor="let option of listOfOption2" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>

@@ -13,13 +13,9 @@
     <div class="center">
       <div class="title_panel">账号密码登录</div>
       <div nz-row class="cell_panel">
-        <div nz-col nzSpan="2">
-        </div>
-        <div nz-col nzSpan="20">
-          <hr>
-        </div>
-        <div nz-col nzSpan="2">
-        </div>
+        <div nz-col nzSpan="2"></div>
+        <div nz-col nzSpan="20"><hr></div>
+        <div nz-col nzSpan="2"></div>
       </div>
       <form nz-form [formGroup]="loginForm">
         <div nz-row class="cell_panel">
@@ -37,8 +33,7 @@
           </div>
         </div>
         <div nz-row class="cell_panel">
-          <div nz-col nzSpan="2">
-          </div>
+          <div nz-col nzSpan="2"></div>
           <div nz-col nzSpan="20">
             <label nz-form-item>
               <div nz-form-control nzHasFeedback>
@@ -47,19 +42,16 @@
               </div>
             </label>
           </div>
-          <div nz-col nzSpan="2">
-          </div>
+          <div nz-col nzSpan="2"></div>
         </div>
       </form>
       <div id="resultInfo" style="display: none;"></div>
       <div nz-row class="cell_panel">
-        <div nz-col nzSpan="2">
-        </div>
+        <div nz-col nzSpan="2"></div>
         <div nz-col nzSpan="20">
           <button nz-button nzType="primary" nzBlock (click)="onSubmit($event, loginForm)">登录</button>
         </div>
-        <div nz-col nzSpan="2">
-        </div>
+        <div nz-col nzSpan="2"></div>
       </div>
     </div>
   </div>

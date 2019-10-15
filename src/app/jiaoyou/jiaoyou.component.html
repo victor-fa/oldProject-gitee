@@ -8,15 +8,11 @@
           <ng-template #freeTemplate><i class="anticon anticon-pay-circle-o"></i>免费配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchFreeForm">
-              <div nz-col nzSpan="2" class="right_alignment">
-                渠道：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">渠道：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="appChannelId" placeholder="请输入渠道名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                创建时间：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">创建时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'free')"></nz-range-picker>
               </div>
@@ -73,9 +69,7 @@
             <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">渠道名称：</div>
               <div nz-col nzSpan="20">
-                <ng-container *ngIf="checkFreeOptions.length === 0">
-                  没有新渠道需要配置
-                </ng-container>
+                <ng-container *ngIf="checkFreeOptions.length === 0">没有新渠道需要配置</ng-container>
                 <ng-container *ngIf="checkFreeOptions.length > 0">
                   <label nz-checkbox nz-col nzSpan="11" *ngFor="let data of checkFreeOptions;" [(nzChecked)]="data.checked">{{data.value}}</label>
                 </ng-container>
@@ -138,15 +132,11 @@
           <ng-template #skillTemplate><i class="anticon anticon-bulb"></i>付费技能</ng-template>
           <div nz-row>
             <form [formGroup]="searchSkillForm">
-              <div nz-col nzSpan="2" class="right_alignment">
-                付费技能ID：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">付费技能ID：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="skillTypeId" placeholder="请输入付费技能ID" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                创建时间：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">创建时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'skill')"></nz-range-picker>
               </div>
@@ -182,13 +172,11 @@
           <nz-modal [(nzVisible)]="visiable.addSkill" nzWidth="650" nzTitle="新增付费技能" [nzFooter]="addSkillFooter" (nzOnCancel)="hideModal('addSkill')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">付费技能ID<font color="red">*</font>：</div>
-              <div nz-col nzSpan="20">
-                新增后不能修改，不能删除，请谨慎添加
-              </div>
+              <div nz-col nzSpan="20">新增后不能修改，不能删除，请谨慎添加</div>
             </div>
             <div nz-row>
               <div nz-col nzSpan="24">
-                <textarea rows="10" [(ngModel)]="dataSkill.skillTypeIds" nz-input placeholder="请输入付费技能ID"></textarea>
+                <textarea rows="10" [(ngModel)]="dataSkill.skillTypeIds" nz-input placeholder="请输入付费技能ID，可以输入多个，以换行区分"></textarea>
               </div>
             </div>
             <ng-template #addSkillFooter>
@@ -203,21 +191,15 @@
           <ng-template #payTemplate><i class="anticon anticon-pay-circle"></i>付费配置</ng-template>
           <div nz-row>
             <form [formGroup]="searchPayForm">
-              <div nz-col nzSpan="2" class="right_alignment">
-                付费技能名称：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">付费技能名称：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="skillName" placeholder="请输入付费技能名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                渠道：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">渠道：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="appChannelId" [(ngModel)]="appChannelId" placeholder="请输入渠道名称" nzSize="default">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                创建时间：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">创建时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'pay')"></nz-range-picker>
               </div>

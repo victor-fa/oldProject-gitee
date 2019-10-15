@@ -141,9 +141,7 @@
             <div nz-row><div nz-col nzSpan="3"><b>任务参数</b></div></div>
             <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">task type：</div>
-              <div nz-col nzSpan="19">
-                模板测试任务
-              </div>
+              <div nz-col nzSpan="19">模板测试任务</div>
             </div>
             <div nz-row>
               <div nz-col nzSpan="5" class="right_alignment">channel：</div>
@@ -164,8 +162,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="20">
-              </div>
+              <div nz-col nzSpan="20"></div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('getTestSubtasksForCreTemplate')"><i class="anticon anticon-reload"></i>刷新</button>
               </div>
@@ -206,7 +203,6 @@
             </ng-template>
           </nz-modal>
         </nz-tab>
-
 
 
         <nz-tab [nzTitle]="creTaskTemplate" (nzClick)="changePanel('creTask')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
@@ -351,8 +347,7 @@
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="20">
-              </div>
+              <div nz-col nzSpan="20"></div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('getTestSubtasksForCreTask')"><i class="anticon anticon-reload"></i>刷新</button>
               </div>

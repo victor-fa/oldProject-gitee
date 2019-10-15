@@ -7,9 +7,7 @@
           <ng-template #userTemplate><i class="anticon anticon-user"></i>用户信息</ng-template>
           <form [formGroup]="searchUserForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                用户账号：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="userOrderPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
@@ -21,26 +19,20 @@
                   <nz-option required [nzLabel]="'冻结'" nzValue="true"></nz-option>
                 </nz-select>
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                用户ID：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">用户ID：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="userId" placeholder="输入用户ID" nzSize="default">
               </div>
-
               <div nz-col nzSpan="7"></div>
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="loadData('user')"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
-
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment">注册时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userRegister')"></nz-range-picker>
               </div>
-
               <div nz-col nzSpan="2" class="right_alignment">登录时间：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'userLogin')"></nz-range-picker>
@@ -315,23 +307,15 @@
           <ng-template #bookingHypostaticTemplate><i class="anticon anticon-inbox"></i>实体服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                用户账号：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="bookingPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                客户ID：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="channelType" placeholder="输入客户ID" nzSize="default">
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单类型：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单类型：</div>
               <div nz-col nzSpan="2">
                 <nz-select [(ngModel)]="bookingType" formControlName="type">
                   <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
@@ -342,10 +326,7 @@
                   <nz-option required [nzLabel]="'闪送'" [nzValue]="'8'"></nz-option>
                 </nz-select>
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单状态：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单状态：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="status">
                   <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
@@ -368,26 +349,19 @@
                   <nz-option required [nzValue]="'16'" [nzLabel]="'已取消'" *ngIf="bookingType === '8'"></nz-option>
                 </nz-select>
               </div>
-
             </div>
-
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单编号：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单编号：</div>
               <div nz-col nzSpan="3">
                 <input nz-inputbookingOrderId [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default"
                   style="padding: 4px 11px;height: 32px;color: rgba(0,0,0,.65);border: 1px solid #d9d9d9;border-radius: 4px;transition: all .3s;">
               </div>
               <div nz-col nzSpan="2"></div>
-              <div nz-col nzSpan="3" class="right_alignment">
-                订单生成日期：
-              </div>
+              <div nz-col nzSpan="3" class="right_alignment">订单生成日期：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
               <div nz-col nzSpan="5"></div>
-
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="doSearch('booking')"><i class="anticon anticon-search"></i>查询</button>
               </div>
@@ -446,48 +420,33 @@
             <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
             <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === allBookingSize || totalBooking === 0" nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
           </div>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="bookingDigitalTemplate" (nzClick)="changePanel('bookingDigital')" *ngIf="commonService.haveMenuPermission('children', '数字服务订单')">
           <ng-template #bookingDigitalTemplate><i class="anticon anticon-qrcode"></i>数字服务订单</ng-template>
           <form [formGroup]="searchBookingForm">
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                用户账号：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                客户ID：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
               <div nz-col nzSpan="3">
                 <input nz-input formControlName="channelType" placeholder="输入客户ID" nzSize="default">
               </div>
-
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单类型：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单类型：</div>
               <div nz-col nzSpan="7">
                 <nz-tree-select style="width: 250px" [nzDefaultExpandedKeys]="bookingTypeKeys"
                   [nzNodes]="bookingTypeNodes" nzShowSearch nzPlaceHolder="选择订单类型" formControlName="type"
                   [(ngModel)]="bookingType" (ngModelChange)="onChange($event)" ></nz-tree-select>
               </div>
-
             </div>
-
             <div nz-row>
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单编号：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单编号：</div>
               <div nz-col nzSpan="3">
                 <input nz-input [(ngModel)]="bookingOrderId" formControlName="orderId" placeholder="输入订单编号" nzSize="default" class="ant-input">
               </div>
-              <div nz-col nzSpan="2" class="right_alignment">
-                订单状态：
-              </div>
+              <div nz-col nzSpan="2" class="right_alignment">订单状态：</div>
               <div nz-col nzSpan="3">
                 <nz-select [ngModel]="''" formControlName="status">
                   <nz-option [nzLabel]="'--全部--'" [nzValue]="''"></nz-option>
@@ -510,9 +469,7 @@
                   <!-- <nz-option required [nzLabel]="'超时取消'"></nz-option> -->
                 </nz-select>
               </div>
-              <div nz-col nzSpan="3" class="right_alignment">
-                订单生成日期：
-              </div>
+              <div nz-col nzSpan="3" class="right_alignment">订单生成日期：</div>
               <div nz-col nzSpan="7">
                 <nz-range-picker [nzFormat]="'yyyy-MM-dd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'booking')"></nz-range-picker>
               </div>
@@ -520,7 +477,6 @@
               <div nz-col nzSpan="2">
                 <button nz-button nzType="primary" (click)="doSearch('booking')"><i class="anticon anticon-search"></i>查询</button>
               </div>
-
             </div>
           </form>
 
@@ -576,10 +532,8 @@
             <div nz-col nzSpan="6">当前为 {{changeBookingPage}} / {{allBookingSize}} 页 &nbsp;&nbsp; 共 {{totalBooking}} 条</div>
             <div nz-col nzSpan="1"><button [disabled]="changeBookingPage === allBookingSize || totalBooking === 0" nz-button nzType="primary" (click)="nextPage('booking')"><i class="anticon anticon-right"></i></button></div>
           </div>
-
         </nz-tab>
 
-        <!-- 弹框 —— 信息 —— 发票详情 -->
         <nz-modal [(nzVisible)]="visiable.invoice" nzWidth="950" nzTitle="发票详情" [nzFooter]="invoiceDetailModalFooter" (nzOnCancel)="hideModal('InvoiceDetail')" nzMaskClosable="false">
           <div *ngIf="invoiceDetail.invoiceMsg">
             <div nz-row>
@@ -624,23 +578,21 @@
                 </span>
               </div>
             </div>
-          </div><div *ngIf="!invoiceDetail.invoiceMsg">
+          </div>
+          <div *ngIf="!invoiceDetail.invoiceMsg">
             <div nz-row>
               <div nz-col nzSpan="10"></div>
               <div nz-col nzSpan="4">暂无发票详情！</div>
               <div nz-col nzSpan="10"></div>
             </div>
           </div>
-          <!-- 弹框和底部定制 -->
           <ng-template #invoiceDetailModalFooter>
             <button nz-button nzType="default" (click)="hideModal('InvoiceDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
           </ng-template>
         </nz-modal>
 
-        <!-- 弹框 —— 信息 —— 订单详情 -->
         <nz-modal [(nzVisible)]="visiable.bookingDetail" nzWidth="750" nzTitle="订单详情" [nzFooter]="bookingDetailModalFooter" (nzOnCancel)="hideModal('BookingDetail')" nzMaskClosable="false">
           <div nz-row *ngIf="orderId && orderId !== ''"> <div nz-col nzSpan="5" class="right_alignment">订单id：</div> <div nz-col nzSpan="7">{{orderId}}</div> </div>
-
           <!-- 机票信息 -->
           <div *ngIf="isFlightOrder">
             <div nz-row> <div nz-col nzSpan="5" class="right_alignment">目的机场位置：</div> <div nz-col nzSpan="7">{{dataDetail.arr_airport}}</div> <div nz-col nzSpan="5" class="right_alignment">目的城市：</div> <div nz-col nzSpan="7">{{dataDetail.arr_city}}</div> </div>
@@ -816,15 +768,12 @@
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">糯米通取票机：</div> <div nz-col nzSpan="9">{{dataDetail.common}}</div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">二维码取票：</div> <div nz-col nzSpan="9">{{dataDetail.twoDimenCode}}</div> </div>
           </div>
-
-          <!-- 弹框和底部定制 待出行且为酒店时 才可取消订单 -->
           <ng-template #bookingDetailModalFooter>
             <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()"><i class="anticon anticon-close-circle-o"></i>取消订单</button>
             <button nz-button nzType="default" (click)="hideModal('BookingDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
           </ng-template>
         </nz-modal>
 
-        <!-- 弹框 —— 信息 —— 退票申请 -->
         <nz-modal [(nzVisible)]="visiable.refund" nzWidth="950" nzTitle="退票申请" [nzFooter]="refundModalFooter" (nzOnCancel)="hideModal('Refund')" nzMaskClosable="false">
           <div nz-row>
             <div nz-col nzSpan="24">选择退票机票</div>
@@ -910,7 +859,6 @@
             </tbody>
           </nz-table>
 
-          <!-- 弹框 —— 新增 —— 新增发放 -->
           <nz-modal [(nzVisible)]="visiable.adjustAdd" nzWidth="950" nzTitle="新增发放" [nzFooter]="adjustAddModalFooter" (nzOnCancel)="hideModal('adjustAdd')" nzMaskClosable="false">
             <form [formGroup]="addAdjustForm">
               <div nz-row>
@@ -921,7 +869,6 @@
                   正数为增加，负数为减少；若减少的金额大于用户余额，则调整失败
                 </div>
               </div>
-
               <div nz-row>
                 <div nz-col nzSpan="3"></div>
                 <div nz-col nzSpan="21">
@@ -950,7 +897,6 @@
                 </div>
                 <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
               </div>
-
               <div nz-row>
                 <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">附带消息</div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">
@@ -979,7 +925,6 @@
                   <quill-editor formControlName="noticeContent" [(ngModel)]="adjustDetail.noticeContent" [modules]="commonService.config" [style]="{height: '300px'}"></quill-editor>
                 </div>
               </div>
-
               <div nz-row>
                 <div nz-col nzSpan="3" style="font-size: 20px;font-weight: bold;">调整原因</div>
                 <div nz-col nzSpan="20" style="color: #a9a9a9">
@@ -992,16 +937,13 @@
                   <textarea rows="5" nz-input formControlName="adjustReason" [(ngModel)]="adjustDetail.adjustReason" placeholder="请输入调整原因" nzSize="default"></textarea>
                 </div>
               </div>
-
             </form>
-            <!-- 弹框和底部定制 -->
             <ng-template #adjustAddModalFooter>
               <button nz-button nzType="primary" (click)="showModal('adjustSend')"><i class="anticon anticon-save"></i>确定</button>
               <button nz-button nzType="default" (click)="hideModal('adjustAdd')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 发送 —— 执行发送 -->
           <nz-modal [(nzVisible)]="visiable.adjustSend" nzWidth="750" nzTitle="执行发送" [nzFooter]="adjustSendModalFooter" (nzOnCancel)="hideModal('adjustSend')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="7" class="spthumbnailan_down">发送对象（总计x个）</div>
@@ -1039,22 +981,18 @@
             </div>
 
             <div nz-row>
-              <div nz-col nzSpan="4" class="right_alignment">
-                验证码：
-              </div>
+              <div nz-col nzSpan="4" class="right_alignment">验证码：</div>
               <div nz-col nzSpan="2"></div>
               <div nz-col nzSpan="2">
                 <input nz-input nzSize="default" [(ngModel)]="operateObject.code">
               </div>
             </div>
-            <!-- 弹框和底部定制 -->
             <ng-template #adjustSendModalFooter>
               <button nz-button nzType="primary" (click)="doSave('adjustSend')" [disabled]="operateObject.code.length !== 4">执行发送</button>
               <button nz-button nzType="default" (click)="hideModal('adjustSend')">放弃</button>
             </ng-template>
           </nz-modal>
 
-          <!-- 弹框 —— 查看 —— 查看详情 -->
           <nz-modal [(nzVisible)]="visiable.adjustDetail" nzWidth="950" nzTitle="查看详情" [nzFooter]="adjustDetailModalFooter" (nzOnCancel)="hideModal('adjustDetail')" nzMaskClosable="false">
             <div *ngIf="adjustDetail">
               <div nz-row>
@@ -1099,7 +1037,6 @@
                 </div>
                 <div nz-col nzSpan="1"></div>
               </div>
-
               <div nz-row>
                 <div nz-col nzSpan="11" class="spthumbnailan_down">调整原因</div>
                 <div nz-col nzSpan="1"></div>
@@ -1115,7 +1052,6 @@
               <button nz-button nzType="default" (click)="hideModal('adjustDetail')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
             </ng-template>
           </nz-modal>
-
         </nz-tab>
 
         <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
