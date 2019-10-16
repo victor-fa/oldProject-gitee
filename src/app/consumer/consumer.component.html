@@ -71,7 +71,7 @@
                 <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('modifySerial', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('serialBatch', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
@@ -237,7 +237,119 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.modifySerial" nzWidth="950" nzTitle="修改序列号" [nzFooter]="modifySerialModalFooter" (nzOnCancel)="hideModal('modifySerial')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.serialBatch" nzWidth="950" nzTitle="序列号批次" [nzFooter]="serialBatchModalFooter" (nzOnCancel)="hideModal('serialBatch')" nzMaskClosable="false">
+            <form [formGroup]="serialBatchSearchForm">
+              <div nz-row>
+                <div nz-col nzSpan="3" class="right_alignment">序列号批次：</div>
+                <div nz-col nzSpan="4">
+                  <input nz-input formControlName="groupName" placeholder="请输入序列号批次" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2">
+                  <button nz-button nzType="primary" (click)="loadData('serialBatch')"><i class="anticon anticon-search"></i>查询</button>
+                </div>
+                <div nz-col nzSpan="11"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('addSerialBatch')"><i class="anticon anticon-plus"></i>添加批次</button>
+                </div>
+              </div>
+            </form>
+            <nz-table nzBordered #serialBatchTable [nzData]="dataSerialBatch" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>批次名称</th>
+                  <th>批次状态</th>
+                  <th>测试时间</th>
+                  <th>序列号数量</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of serialBatchTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.type === 'TEST' ? '测试' : '正式'}}</td>
+                  <td>{{data.testStartDate | date:'yyyyMMdd'}}-{{data.testEndDate | date:'yyyyMMdd'}}</td>
+                  <td>{{data.count}}</td>
+                  <td>
+                    <button nz-button nzType="primary" (click)="showModal('modifySerialBatch', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
+                    <button nz-button nzType="primary" (click)="showModal('modifySerial', data)"><i class="anticon anticon-plus"></i>添加序列号</button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #serialBatchModalFooter>
+              <div nz-row>
+                <div nz-col nzSpan="3">客户ID：</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{serialBatchData.appChannel}}</div>
+                <div nz-col nzSpan="2">客户名称：</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{serialBatchData.appChannelName}}</div>
+                <div nz-col nzSpan="3">序列号数量：</div>
+                <div nz-col nzSpan="1" class="left_alignment">{{dataSerialBatch.length}}</div>
+                <div nz-col nzSpan="2">激活次数：</div>
+                <div nz-col nzSpan="2" class="left_alignment">{{serialBatchData.maxSnActivation}}</div>
+              </div>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addSerialBatch" nzWidth="750" nzTitle="新增序列号批次" [nzFooter]="addSerialBatchModalFooter" (nzOnCancel)="hideModal('addSerialBatch')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">批次名称：</div>
+              <div nz-col nzSpan="18">
+                <input nz-input [(ngModel)]="serialBatchData.name" placeholder="请输入批次名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">批次状态：</div>
+              <div nz-col nzSpan="20">
+                <nz-radio-group [(ngModel)]="serialBatchData.type">
+                  <label nz-radio [nzValue]="'TEST'">测试key</label>
+                  <label nz-radio [nzValue]="'FORMAL'">正式key</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">测试时间：</div>
+              <div nz-col nzSpan="20">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'serialBatch')"></nz-range-picker>
+              </div>
+            </div>
+            <ng-template #addSerialBatchModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addSerialBatch')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addSerialBatch')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifySerialBatch" nzWidth="750" nzTitle="修改序列号批次" [nzFooter]="modifySerialBatchModalFooter" (nzOnCancel)="hideModal('modifySerialBatch')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">批次名称：</div>
+              <div nz-col nzSpan="18">
+                <input nz-input [(ngModel)]="serialBatchData.name" placeholder="请输入批次名称" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">批次状态：</div>
+              <div nz-col nzSpan="20">
+                <nz-radio-group [(ngModel)]="serialBatchData.type">
+                  <label nz-radio [nzValue]="'TEST'">测试key</label>
+                  <label nz-radio [nzValue]="'FORMAL'">正式key</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="4" class="right_alignment">测试时间：</div>
+              <div nz-col nzSpan="20">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" [(ngModel)]="dateRange" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'serialBatch')"></nz-range-picker>
+              </div>
+            </div>
+            <ng-template #modifySerialBatchModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifySerialBatch')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifySerialBatch')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifySerial" nzWidth="950" nzTitle="序列号" [nzFooter]="modifySerialModalFooter" (nzOnCancel)="hideModal('modifySerial')" nzMaskClosable="false">
             <form [formGroup]="serialSearchForm">
               <div nz-row>
                 <div nz-col nzSpan="2" class="right_alignment">序列号：</div>
@@ -248,9 +360,12 @@
                 <div nz-col nzSpan="2">
                   <button nz-button nzType="primary" (click)="loadData('modifySerial')"><i class="anticon anticon-search"></i>查询</button>
                 </div>
-                <div nz-col nzSpan="13"></div>
-                <div nz-col nzSpan="2">
-                  <button nz-button nzType="primary" (click)="showModal('addSerial')"><i class="anticon anticon-file-add"></i>添加</button>
+                <div nz-col nzSpan="9"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('deleteSerialM')"><i class="anticon anticon-delete"></i>批量删除</button>
+                </div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('addSerial')"><i class="anticon anticon-plus"></i>添加序列号</button>
                 </div>
               </div>
             </form>
@@ -260,6 +375,7 @@
                   <th>序号</th>
                   <th>序列号</th>
                   <th>已激活次数</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody>
@@ -267,13 +383,16 @@
                   <td>{{i+1}}</td>
                   <td>{{data.sn}}</td>
                   <td>{{data.count}}</td>
+                  <td>
+                    <button nz-button nzType="primary" (click)="showModal('deleteSerial', data.id)"><i class="anticon anticon-delete"></i>删除</button>
+                  </td>
                 </tr>
               </tbody>
             </nz-table>
             <ng-template #modifySerialModalFooter>
               <div nz-row>
                 <div nz-col nzSpan="3">客户ID：</div>
-                <div nz-col nzSpan="5" class="left_alignment">{{serialData.appChannel}}</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{serialData.appChannelId}}</div>
                 <div nz-col nzSpan="2">客户名称：</div>
                 <div nz-col nzSpan="3" class="left_alignment">{{serialData.appChannelName}}</div>
                 <div nz-col nzSpan="3">序列号数量：</div>
@@ -281,18 +400,6 @@
                 <div nz-col nzSpan="2">激活次数：</div>
                 <div nz-col nzSpan="2" class="left_alignment">{{serialData.maxSnActivation}}</div>
               </div>
-            </ng-template>
-          </nz-modal>
-
-          <nz-modal [(nzVisible)]="visiable.editSerial" nzTitle="修改序列号" [nzFooter]="editSerialModalFooter" (nzOnCancel)="hideModal('editSerial')" nzMaskClosable="false">
-            <div nz-row>
-              <div nz-col nzSpan="24">
-                <input nz-input [(ngModel)]="editSerialData" nzSize="default" placeholder="请输入序列号">
-              </div>
-            </div>
-            <ng-template #editSerialModalFooter>
-              <button nz-button nzType="primary" (click)="doSave('addConsumer')"><i class="anticon anticon-save"></i>确定</button>
-              <button nz-button nzType="default" (click)="hideModal('editSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 
@@ -313,6 +420,26 @@
             <ng-template #addSerialModalFooter>
               <button nz-button nzType="primary" (click)="doSave('addSerial')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('addSerial')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.deleteSerial" nzWidth="950" nzTitle="批量删除序列号" [nzFooter]="deleteSerialModalFooter" (nzOnCancel)="hideModal('deleteSerialM')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="24">可以输入或上传文件添加序列号，添加前请务必检查序列号是否正确</div>
+            </div><div nz-row>
+              <div nz-col nzSpan="24">
+                <textarea rows="25" nz-input [(ngModel)]="consumerDate.keys" nzSize="default"></textarea>
+              </div>
+              <div nz-col nzSpan="3">
+                <a href="javascript:;" class="a-upload"><i class="anticon anticon-upload"></i>上传文件
+                  <input type="file" (change)="getExcel($event)" multiple="false" />
+                </a>
+              </div>
+              <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
+            </div>
+            <ng-template #deleteSerialModalFooter>
+              <button nz-button nzType="primary" (click)="showModal('deleteSerialBatch', '')"><i class="anticon anticon-delete"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('deleteSerialM')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

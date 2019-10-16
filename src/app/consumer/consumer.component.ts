@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -18,19 +18,22 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
   modifyConsumerForm: FormGroup;
   serialSearchForm: FormGroup;
   callbackSearchForm: FormGroup;
+  serialBatchSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
+  dataSerialBatch = [];
+  serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   isSpinning = false;
-  serialData = {appChannel: ''};
+  serialData = {appChannelId: '', groupId: ''};
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
@@ -38,6 +41,9 @@ export class ConsumerComponent implements OnInit {
   dataCallback = [];
   callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
   pageNum = { dataConsumerPage: 1 };
+  dateRange = [];
+  serialBatchStartDate = null;
+  serialBatchEndDate = null;
   orderTypeItem = [
     {key: 'FLIGHT_RETURN_ORDER', value: '机票', visiable: true},
     {key: 'TRAIN_ORDER', value: '火车', visiable: true},
@@ -55,7 +61,8 @@ export class ConsumerComponent implements OnInit {
     private modalService: NzModalService,
     private consumerService: ConsumerService,
     private notification: NzNotificationService,
-    private _clipboardService: ClipboardService
+    private _clipboardService: ClipboardService,
+    private datePipe: DatePipe,
   ) {
     this.commonService.nav[9].active = true;
     this._initForm();
@@ -95,7 +102,7 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'modifySerial') {
-      const serialInput = { sn: this.serialSearchForm.controls['sn'].value, appChannel: this.serialData.appChannel };
+      const serialInput = { sn: this.serialSearchForm.controls['sn'].value, appChannel: this.serialData.appChannelId, groupId: this.serialData.groupId };
       console.log(serialInput);
       this.consumerService.getSerialList(serialInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
@@ -134,6 +141,15 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataCallback);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'serialBatch') {
+      const input = { appChannel: this.serialBatchData.appChannel, groupName: this.serialBatchSearchForm.controls['groupName'].value };
+      this.consumerService.getSerialBatch(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataSerialBatch = JSON.parse(res.payload);
+          console.log(this.dataSerialBatch);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -143,6 +159,7 @@ export class ConsumerComponent implements OnInit {
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''], officially: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
     this.callbackSearchForm = this.fb.group({ appChannel: [''], orderType: [''] });
+    this.serialBatchSearchForm = this.fb.group({ groupName: [''] });
   }
 
   // 弹窗
@@ -170,10 +187,14 @@ export class ConsumerComponent implements OnInit {
       this.visiable.modifyConsumer = true;
     } else if (flag === 'modifySerial') {
       this.serialData = data;
+      this.serialData.groupId = data.id;
+      console.log(this.serialData);
       this.loadData('modifySerial');
       this.visiable.modifySerial = true;
     } else if (flag === 'addSerial') {
       this.visiable.addSerial = true;
+    } else if (flag === 'deleteSerialM') {
+      this.visiable.deleteSerial = true;
     } else if (flag === 'explain') {
       this.visiable.explain = true;
     } else if (flag === 'voucher') {
@@ -197,8 +218,24 @@ export class ConsumerComponent implements OnInit {
       this.callbackData = data;
       console.log(this.callbackData);
       this.visiable.modifyCallback = true;
-    } else if (flag === 'deleteCallback') {
-      this.modalService.confirm({ nzTitle: '提示', nzContent: '您确定要删除该信息？', nzOkText: '确定', nzOnOk: () => this.doDelete(data, flag) });
+    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch') {
+      this.modalService.confirm({
+        nzTitle: '提示',
+        nzContent: flag === 'deleteSerialBatch' ? '确认删除该序列号吗？删除后，该序列号将不可激活，请谨慎操作' : '您确定要删除该信息？',
+        nzOkText: '确定',
+        nzOnOk: () => this.doDelete(data, flag) });
+    } else if (flag === 'serialBatch') {
+      this.serialBatchData = data;
+      this.loadData('serialBatch');
+      this.visiable.serialBatch = true;
+    } else if (flag === 'addSerialBatch') {
+      this.visiable.addSerialBatch = true;
+    } else if (flag === 'modifySerialBatch') {
+      this.serialBatchData.name = data.name;
+      this.serialBatchData.type = data.type;
+      this.serialBatchData.id = data.id;
+      this.dateRange = [data.testStartDate, data.testEndDate];
+      this.visiable.modifySerialBatch = true;
     }
   }
 
@@ -216,6 +253,8 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'addSerial') {
       this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
       this.visiable.addSerial = false;
+    } else if (flag === 'deleteSerialM') {
+      this.visiable.deleteSerial = false;
     } else if (flag === 'explain') {
       this.visiable.explain = false;
     } else if (flag === 'voucher') {
@@ -227,6 +266,18 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifyCallback') {
       this.callbackData = {appChannel: '', orderType: '', callbackUrl: '', id: ''};
       this.visiable.modifyCallback = false;
+    } else if (flag === 'serialBatch') {
+      this.visiable.serialBatch = false;
+    } else if (flag === 'addSerialBatch') {
+      this.serialBatchData.name = '';
+      this.serialBatchData.type = '';
+      this.visiable.addSerialBatch = false;
+    } else if (flag === 'modifySerialBatch') {
+      this.serialBatchData.name = '';
+      this.serialBatchData.type = '';
+      this.serialBatchData.id = '';
+      this.dateRange = [null, null];
+      this.visiable.modifySerialBatch = false;
     }
   }
 
@@ -316,7 +367,7 @@ export class ConsumerComponent implements OnInit {
         if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
       });
       arr = this.unique(arr); // 去重
-      const keysInput = { id: this.serialData.appChannel, keys: arr, };
+      const keysInput = { id: this.serialData.appChannelId, keys: arr, groupId: this.serialData.groupId };
       this.consumerService.addKey(keysInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -345,7 +396,39 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('modifyCallback');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addSerialBatch') {
+      const input = {
+        appChannelId: this.serialBatchData.appChannel,
+        name: this.serialBatchData.name,
+        testStartDate: this.serialBatchStartDate,
+        testEndDate: this.serialBatchEndDate,
+        type: this.serialBatchData.type
+      };
+      this.consumerService.addSerialBatch(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '添加成功', { nzStyle: { color : 'green' } });
+          this.loadData('serialBatch');
+          this.hideModal('addSerialBatch');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifySerialBatch') {
+      const input = {
+        appChannelId: this.serialBatchData.appChannel,
+        name: this.serialBatchData.name,
+        id: this.serialBatchData.id,
+        testStartDate: this.serialBatchStartDate,
+        testEndDate: this.serialBatchEndDate,
+        type: this.serialBatchData.type
+      };
+      this.consumerService.modifySerialBatch(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('serialBatch');
+          this.hideModal('modifySerialBatch');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
+
   }
 
   // 删除
@@ -357,6 +440,32 @@ export class ConsumerComponent implements OnInit {
           const operationInput = { op_category: '客户管理', op_page: '回调地址', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('callback');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteSerial') {
+      const input = {appChannelId: this.serialData.appChannelId, id: id};
+      this.consumerService.deleteSerial(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('modifySerial');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteSerialBatch') {
+      let arr = [];
+      this.consumerDate.keys.split('\n').forEach(item => {
+        if (item !== '' && item.replace(/ /g,'') !== '') { arr.push(item); }
+      });
+      arr = this.unique(arr); // 去重
+      const input = { appChannelId: this.serialData.appChannelId, keys: arr, groupId: this.serialData.groupId };
+      this.consumerService.deleteSerialBatch(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '批量除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('deleteSerialM');
+          this.loadData('modifySerial');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -434,6 +543,15 @@ export class ConsumerComponent implements OnInit {
       const arr = [];
       this.dataCallback.forEach(item => { item.appChannel === ac ? arr.push(item.orderTypeName) : null });
       arr.length === 0 ? this.orderTypeItem.map(item => { item.visiable = true }) : (this.orderTypeItem.map(item => { arr.indexOf(item.value) > -1 ? item.visiable = false : null }) )
+    } else if (flag === 'serialBatch') {
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.serialBatchStartDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.serialBatchEndDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.serialBatchStartDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.serialBatchEndDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
+      if (this.serialBatchStartDate === null) { this.serialBatchStartDate = null; this.serialBatchEndDate = null; }
     }
   }
 

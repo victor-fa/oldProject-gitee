@@ -76,8 +76,8 @@ export enum customerApiUrls {
 export enum consumerApiUrls {
   /** 客户管理 */
   consumerList = '/customer/channel',
-  /** 客户管理 序列号 */
-  consumerKey = '/guest/key',
+  /** 客户管理 序列号批次 */
+  serialBatch = '/guest/key-groups',
   /** 客户管理 对接凭证 */
   voucher = '/channel/account',
   /** 客户管理 短信通知 */
@@ -112,6 +112,9 @@ export enum activityApiUrls {
   couponList = '/couponrule',
   /** 重置送豆 */
   xiaowubeanList = '/wallet/promotions',
+  /** 优惠券统计 */
+  actdatasList = '/actdatas',
+
 }
 
 /** 数据中心模块 */

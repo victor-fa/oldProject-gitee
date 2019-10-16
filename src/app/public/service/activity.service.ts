@@ -37,6 +37,18 @@ export class ActivityService extends AppServiceBase {
       .get<IResponse<any>>(url, this.options);
   }
 
+  /** 获取优惠券统计 */
+  getCouponStatistics(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${activityApiUrls.actdatasList}?pageSize=999`
+    + (data.actName ? '&actName=' + data.actName : '')
+    + (data.couponName ? '&couponName=' + data.couponName : '')
+    + (data.actStartDate && data.actStartDate !== null ? '&actStartDate=' + data.actStartDate : '')
+    + (data.actEndDate && data.actEndDate !== null ? '&actEndDate=' + data.actEndDate : '');
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
   /** 获取新增后的红包信息 */
   getNewCouponList(actRuleId): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${activityApiUrls.activityList}/gift?actRuleId=${actRuleId}`;

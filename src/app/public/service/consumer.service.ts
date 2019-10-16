@@ -57,10 +57,18 @@ export class ConsumerService extends AppServiceBase {
 
   /** 添加key */
   addKey(data): Observable<IResponse<any>> {
-    const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerKey}`;
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}/${data.groupId}/keys`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'App-Channel-Id': data.id }) };
     return this.httpClient
       .post<IResponse<any>>(url, data.keys, this.options);
+  }
+
+  /** 删除 */
+  deleteSerial(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/guest/keys/${data.id}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannelId }) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
   }
 
   /** 获取所有列表 */
@@ -109,7 +117,7 @@ export class ConsumerService extends AppServiceBase {
 
   /** 获取所有列表 */
   getSerialList(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${consumerApiUrls.consumerKey}?pageSize=9999`;
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}/${data.groupId}/keys?pageSize=9999`;
     url += data.sn ? '&sn=' + data.sn : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
     return this.httpClient
@@ -154,6 +162,39 @@ export class ConsumerService extends AppServiceBase {
   deleteCallback(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.callback}/${data}`;
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
+  /** 获取所有列表 */
+  getSerialBatch(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}?size=999`;
+    url += data.groupName ? '&groupName=' + data.groupName : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannel }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 添加 */
+  addSerialBatch(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannelId }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 修改 */
+  modifySerialBatch(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}/${data.id}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannelId }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, data, this.options);
+  }
+
+  /** 删除 */
+  deleteSerialBatch(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.serialBatch}/${data.groupId}/keys/batch`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': data.appChannelId }), body: data.keys };
     return this.httpClient
       .delete<IResponse<any>>(url, this.options);
   }

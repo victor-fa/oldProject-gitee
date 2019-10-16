@@ -36,6 +36,7 @@ export class ActivityComponent implements OnInit {
   searchCouponStatisticsForm: FormGroup;
   dataActivity = []; // 活动
   dataSearchCoupon = [];
+  daraCouponStatistics = [];
   beginBaseInfoDate = ''; // 基本信息日期选择
   endBaseInfoDate = '';
   beginRuleDate = ''; // 模板1日期选择
@@ -106,6 +107,8 @@ export class ActivityComponent implements OnInit {
   modifyBeanForm: FormGroup;
   beginBeanDate = null;
   endBeanDate = null;
+  beginCouponStaticDate = null;
+  endCouponStaticDate = null;
   radioBeanValue = 'PERCENT_GIFT';  // 单选
   templateId = '';
   tabsetJson = { currentNum: 0, param: '' };
@@ -360,6 +363,23 @@ export class ActivityComponent implements OnInit {
       const operationInput = { op_category: '活动管理', op_page: '任务日志', op_name: '访问' };
       this.commonService.updateOperationlog(operationInput).subscribe();
       this.isSpinning = false;
+    } else if (flag === 'couponStatistics') {
+      const input = {
+        actName: this.searchCouponStatisticsForm.controls['actName'].value,
+        couponName: this.searchCouponStatisticsForm.controls['couponName'].value,
+        actStartDate: this.beginCouponStaticDate,
+        actEndDate: this.endCouponStaticDate,
+      };
+      this.activityService.getCouponStatistics(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.daraCouponStatistics = JSON.parse(res.payload).content;
+          console.log(this.daraCouponStatistics);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+      const operationInput = { op_category: '活动管理', op_page: '优惠券统计', op_name: '访问' };
+      this.commonService.updateOperationlog(operationInput).subscribe();
+      this.isSpinning = false;
     }
   }
 
@@ -388,7 +408,7 @@ export class ActivityComponent implements OnInit {
       giftAmount: [''], });
     this.searchTaskCenterForm = this.fb.group({ name: [''], type: [''], date: [''] });
     this.searchTaskLogsForm = this.fb.group({ date: [''], userId: [''], userPhone: [''], taskName: [''] });
-    this.searchCouponStatisticsForm = this.fb.group({ aaa: [''], date: [''] });
+    this.searchCouponStatisticsForm = this.fb.group({ actName: [''], couponName: [''], date: [''] });
   }
 
   // 弹框
@@ -1538,7 +1558,7 @@ export class ActivityComponent implements OnInit {
           this.beginBeanDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBeanDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
         }
       }
-    }if (flag === 'taskCenter') {
+    } else if (flag === 'taskCenter') {
       if (result === []) { this.beginTaskCenterDate = ''; this.endTaskCenterDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') {
         if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
@@ -1591,6 +1611,15 @@ export class ActivityComponent implements OnInit {
       this.dataSearchCouponInBatchsend.forEach(item => {
         item.couponId === result.data.couponId ? item.quantity = parseInt(result.event) : null;
       });
+    } else if (flag === 'couponStatistics') {
+      if (result === []) { this.beginCouponStaticDate = ''; this.endCouponStaticDate = ''; return; }
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.beginCouponStaticDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endCouponStaticDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+        } else {
+          this.beginCouponStaticDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endCouponStaticDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+        }
+      }
     }
   }
 

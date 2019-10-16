@@ -71,7 +71,7 @@
                 <td *ngIf="!data.timeLimitType">null</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyCoupon', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="showModal('previewCoupon', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button nz-button nzType="primary" (click)="showModal('previewCoupon', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
               </tr>
             </tbody>
@@ -1237,15 +1237,15 @@
             <form [formGroup]="searchCouponStatisticsForm">
               <div nz-col nzSpan="2" class="right_alignment">活动名称：</div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="aaa" placeholder="输入订单编号" nzSize="default">
+                <input nz-input formControlName="actName" placeholder="输入订单编号" nzSize="default">
               </div>
               <div nz-col nzSpan="2" class="right_alignment">优惠券名称：</div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="aaa" placeholder="输入优惠券名称" nzSize="default">
+                <input nz-input formControlName="couponName" placeholder="输入优惠券名称" nzSize="default">
               </div>
               <div nz-col nzSpan="1"></div>
               <div nz-col nzSpan="7">
-                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'searchBean')" nzShowTime></nz-range-picker>
+                <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd HH:mm:ss'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponStatistics')" nzShowTime></nz-range-picker>
               </div>
               <div nz-col nzSpan="4"></div>
               <div nz-col nzSpan="2">
@@ -1253,15 +1253,15 @@
               </div>
             </form>
           </div>
-          <nz-table nzBordered #rowCouponStatisticsTable [nzData]="couponStatisticsData" [nzSimple]="true" [(nzPageSize)]="couponStatisticsPageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table nzBordered #rowCouponStatisticsTable [nzData]="daraCouponStatistics" [nzSimple]="true" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
                 <th>序号</th>
                 <th>活动名称</th>
-                <!-- <th>活动时间</th> -->
+                <th>活动时间</th>
                 <th>优惠券编号</th>
                 <th>优惠券名称</th>
-                <!-- <th>有效时间</th> -->
+                <th>有效时间</th>
                 <th>领取量</th>
                 <th>使用量</th>
                 <th>未使用量</th>
@@ -1273,17 +1273,17 @@
             <tbody>
               <tr *ngFor="let data of rowCouponStatisticsTable.data; let i=index;">
                 <td>{{i+1}}</td>
-                <td>{{data.title}}</td>
-                <!-- <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}</td> -->
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
-                <!-- <td>{{data.beginTime | date:'yyyy-MM-dd HH:mm:ss'}}</td> -->
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
-                <td>{{data.describe}}</td>
+                <td>{{data.actName}}</td>
+                <td>{{data.actStartDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.couponNo}}</td>
+                <td>{{data.couponName}}</td>
+                <td>{{data.actEndDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.receivedCount}}</td>
+                <td>{{data.usedCount}}</td>
+                <td>{{data.totalCount - data.usedCount}}</td>
+                <td>{{(data.receivedCount / data.totalCount)*100}}</td>
+                <td>{{(data.usedCount / data.totalCount)*100}}</td>
+                <td>{{((data.totalCount - data.usedCount) / data.totalCount)*100}}</td>
               </tr>
             </tbody>
           </nz-table>
@@ -1337,7 +1337,7 @@
                 <td>{{data.createTime}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('searchBean', data)" style="margin-right: 10px;"><i class="anticon anticon-eye-o"></i>查看</button>
-                  <button nz-button nzType="primary" (click)="showModal('modifyBean', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
+                  <button nz-button nzType="primary" (click)="showModal('modifyBean', data)"><i class="anticon anticon-form"></i>编辑</button>
                 </td>
               </tr>
             </tbody>
