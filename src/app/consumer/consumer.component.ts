@@ -18,7 +18,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -55,6 +55,7 @@ export class ConsumerComponent implements OnInit {
     {key: 'MUSIC_ORDER', value: '付费音频', visiable: true},
     {key: 'JIAOYOU_GAME_ORDER', value: '交游天下游戏', visiable: true}
   ];
+  deleteSerialResult = { successSns: '', failSns: '' };
   constructor(
     private fb: FormBuilder,
     public commonService: CommonService,
@@ -236,6 +237,8 @@ export class ConsumerComponent implements OnInit {
       this.serialBatchData.id = data.id;
       this.dateRange = [data.testStartDate, data.testEndDate];
       this.visiable.modifySerialBatch = true;
+    } else if (flag === 'deleteSerialResult') {
+      this.visiable.deleteSerialResult = true;
     }
   }
 
@@ -278,6 +281,10 @@ export class ConsumerComponent implements OnInit {
       this.serialBatchData.id = '';
       this.dateRange = [null, null];
       this.visiable.modifySerialBatch = false;
+    } else if (flag === 'deleteSerialResult') {
+      this.deleteSerialResult = { successSns: '', failSns: '' };
+      this.loadData('modifySerial');
+      this.visiable.deleteSerialResult = false;
     }
   }
 
@@ -465,7 +472,11 @@ export class ConsumerComponent implements OnInit {
           const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('deleteSerialM');
-          this.loadData('modifySerial');
+          const result = JSON.parse(res.payload);
+          this.deleteSerialResult.successSns = result.successSns.join('\n');
+          this.deleteSerialResult.failSns = result.failSns.join('\n');
+          console.log(this.deleteSerialResult);
+          this.showModal('deleteSerialResult', '');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
