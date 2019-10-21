@@ -113,7 +113,7 @@
               </div>
             </div>
             <div style="border-top: 10px solid #FFF"></div>
-            <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
+            <nz-table #rowDataAppSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2800px', y: '520px'}" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -140,7 +140,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+                <tr *ngFor="let data of rowDataAppSelectionTable.data; let i=index;">
                   <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                   <td nzWidth="100px" nzLeft="68px">{{data.date | date:'yy-MM-dd'}}</td>
                   <td nzWidth="100px" *ngIf="checkDataOptions.dataApp[0].checked">{{data.dailyInstallation }}</td>
@@ -170,7 +170,7 @@
 
         <nz-tab [nzTitle]="overviewTemplate" (nzClick)="changePanel('overview')" *ngIf="commonService.haveMenuPermission('children', 'BOT总览')">
           <ng-template #overviewTemplate><i class="anticon anticon-pie-chart"></i>BOT总览 <a href="/dataCenter?currentTab=3" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowOverviewSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2400px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -191,7 +191,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowOverviewSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[0].checked">{{data.bot }}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.overview[1].checked">{{data.totalUsers === 0 || data.total === 0 ? 0 : ((data.totalUsers/data.total) * 100).toFixed(2) }}</td>
@@ -219,7 +219,7 @@
 
         <nz-tab [nzTitle]="keepAppTemplate" (nzClick)="changePanel('keepApp')" *ngIf="commonService.haveMenuPermission('children', 'App留存')">
           <ng-template #keepAppTemplate><i class="anticon anticon-heart-o"></i>App留存 <a href="/dataCenter?currentTab=2" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowKeepAppSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -246,7 +246,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowKeepAppSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="60px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.keepApp[0].checked">{{data.day1RetentionUsers >= 0 ? data.day1RetentionUsers : 'null' }}</td>
@@ -284,7 +284,7 @@
 
         <nz-tab [nzTitle]="productTemplate" (nzClick)="changePanel('product')" *ngIf="commonService.haveMenuPermission('children', '产品权限')">
           <ng-template #productTemplate><i class="anticon anticon-trophy"></i>产品权限 <a href="/dataCenter?currentTab=4" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowProductSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -302,7 +302,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowProductSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.product[0].checked">{{data.locationPermission}}</td>
@@ -322,7 +322,7 @@
 
         <nz-tab [nzTitle]="errorTemplate" (nzClick)="changePanel('error')" *ngIf="commonService.haveMenuPermission('children', '异常表述')">
           <ng-template #errorTemplate><i class="anticon anticon-exception"></i>异常表述 <a href="/dataCenter?currentTab=5" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3600px', y:'520px'}" *ngIf="!isSpinning">
+          <nz-table #rowErrorSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3600px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -350,7 +350,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowErrorSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="63px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[0].checked">{{data.botException1Count}}</td>
@@ -363,7 +363,6 @@
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[7].checked">{{data.botException6Count}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">{{data.botException11Count}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[8].checked">{{data.botException12Count}}</td>
-
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[9].checked">{{data.botException1Users}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[10].checked">{{data.botException2Users}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.error[11].checked">{{data.botException8Users}}</td>
@@ -381,7 +380,7 @@
 
         <nz-tab [nzTitle]="ticketTemplate" (nzClick)="changePanel('ticket')" *ngIf="commonService.haveMenuPermission('children', '机票BOT')">
           <ng-template #ticketTemplate><i class="anticon anticon-idcard"></i>机票BOT <a href="/dataCenter?currentTab=6" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowTicketSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -408,7 +407,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowTicketSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.ticket[0].checked">{{data.awakFlightUsers}}</td>
@@ -437,7 +436,7 @@
 
         <nz-tab [nzTitle]="trainTemplate" (nzClick)="changePanel('train')" *ngIf="commonService.haveMenuPermission('children', '火车BOT')">
           <ng-template #trainTemplate><i class="anticon anticon-credit-card"></i>火车BOT <a href="/dataCenter?currentTab=7" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowTrainSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -464,7 +463,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowTrainSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.train[0].checked">{{data.awakTrainUsers}}</td>
@@ -493,7 +492,7 @@
 
         <nz-tab [nzTitle]="hotelTemplate" (nzClick)="changePanel('hotel')" *ngIf="commonService.haveMenuPermission('children', '酒店BOT')">
           <ng-template #hotelTemplate><i class="anticon anticon-home"></i>酒店BOT <a href="/dataCenter?currentTab=8" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
+          <nz-table #rowHotelSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'3500px', y:'520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -520,7 +519,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowHotelSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="85px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.hotel[0].checked">{{data.awakHotelUsers}}</td>
@@ -549,7 +548,7 @@
 
         <nz-tab [nzTitle]="weatherTemplate" (nzClick)="changePanel('weather')" *ngIf="commonService.haveMenuPermission('children', '天气BOT')">
           <ng-template #weatherTemplate><i class="anticon anticon-cloud-o"></i>天气BOT <a href="/dataCenter?currentTab=9" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowWeatherSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x: '1800px',y: '520px'}" *ngIf="!isSpinning">
             <thead nzWidth="100px">
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -564,7 +563,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowWeatherSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="105px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.weather[0].checked">{{data.awakWeatherUsers}}</td>
@@ -581,7 +580,7 @@
 
         <nz-tab [nzTitle]="navigateTemplate" (nzClick)="changePanel('navigate')" *ngIf="commonService.haveMenuPermission('children', '导航BOT')">
           <ng-template #navigateTemplate><i class="anticon anticon-environment-o"></i>导航BOT <a href="/dataCenter?currentTab=10" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowNavigateSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -603,7 +602,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowNavigateSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="83px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.navigate[0].checked">{{data.awakNavigationUsers }}</td>
@@ -627,7 +626,7 @@
 
         <nz-tab [nzTitle]="taxiTemplate" (nzClick)="changePanel('taxi')" *ngIf="commonService.haveMenuPermission('children', '打车BOT')">
           <ng-template #taxiTemplate><i class="anticon anticon-car"></i>打车BOT <a href="/dataCenter?currentTab=11" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowTaxiSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -660,7 +659,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowTaxiSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="50px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.taxi[0].checked">{{data.awakTaxisUsers}}</td>
@@ -695,7 +694,7 @@
 
         <nz-tab [nzTitle]="musicTemplate" (nzClick)="changePanel('music')" *ngIf="commonService.haveMenuPermission('children', '音乐BOT')">
           <ng-template #musicTemplate><i class="anticon anticon-sound"></i>音乐BOT <a href="/dataCenter?currentTab=12" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'1600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowMusicSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'1600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -713,7 +712,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowMusicSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="74px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.music[0].checked">{{data.awakMusicUsers}}</td>
@@ -733,7 +732,7 @@
 
         <nz-tab [nzTitle]="horoscopeTemplate" (nzClick)="changePanel('horoscope')" *ngIf="commonService.haveMenuPermission('children', '星座BOT')">
           <ng-template #horoscopeTemplate><i class="anticon anticon-star-o"></i>星座BOT <a href="/dataCenter?currentTab=13" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowHoroscopeSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -761,7 +760,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowHoroscopeSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="74px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.horoscope[0].checked">{{data.awakHoroscopeUsers}}</td>
@@ -791,7 +790,7 @@
 
         <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充话费BOT')">
           <ng-template #rechargeTemplate><i class="anticon anticon-phone"></i>充话费BOT <a href="/dataCenter?currentTab=14" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowRechargeSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -805,7 +804,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowRechargeSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.recharge[0].checked">{{data.awakRechargeUsers}}</td>
@@ -821,7 +820,7 @@
 
         <nz-tab [nzTitle]="errandTemplate" (nzClick)="changePanel('errand')" *ngIf="commonService.haveMenuPermission('children', '闪送BOT')">
           <ng-template #errandTemplate><i class="anticon anticon-rocket"></i>闪送BOT <a href="/dataCenter?currentTab=15" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowErrandSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -839,7 +838,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowErrandSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="74px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.errand[0].checked">{{data.awakErrandUsers}}</td>
@@ -859,7 +858,7 @@
 
         <nz-tab [nzTitle]="movieTemplate" (nzClick)="changePanel('movie')" *ngIf="commonService.haveMenuPermission('children', '电影票BOT')">
           <ng-template #movieTemplate><i class="anticon anticon-barcode"></i>电影票BOT <a href="/dataCenter?currentTab=16" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
+          <nz-table #rowMovieSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" [nzScroll]="{x:'2600px', y: '520px'}" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -881,7 +880,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowMovieSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" nzLeft="74px">{{data.date | date:'yy-MM-dd'}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.movie[0].checked">{{data.awakMoviesUsers}}</td>
@@ -905,7 +904,7 @@
 
         <nz-tab [nzTitle]="ttsTemplate" (nzClick)="changePanel('tts')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
           <ng-template #ttsTemplate><i class="anticon anticon-api"></i>APP功能BOT <a href="/dataCenter?currentTab=17" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowTtsSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -916,7 +915,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowTtsSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.tts[0].checked">{{data.date}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.tts[1].checked">{{data.ttsSwitchUsers}}</td>
@@ -929,7 +928,7 @@
 
         <nz-tab [nzTitle]="reminderTemplate" (nzClick)="changePanel('reminder')" *ngIf="commonService.haveMenuPermission('children', '事项提醒BOT')">
           <ng-template #reminderTemplate><i class="anticon anticon-mobile"></i>事项提醒BOT <a href="/dataCenter?currentTab=18" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <nz-table #rowReminderSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -944,7 +943,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowReminderSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.reminder[0].checked">{{data.date}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.reminder[1].checked">{{data.awakMatterUsers}}</td>
@@ -960,9 +959,8 @@
         </nz-tab>
 
         <nz-tab [nzTitle]="newsTemplate" (nzClick)="changePanel('news')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
-        <!-- <nz-tab [nzTitle]="newzTemplate" (nzClick)="changePanel('news')"> -->
-          <ng-template #newsTemplate><i class="anticon anticon-api"></i>新闻BOT <a href="/dataCenter?currentTab=19" target="_blank">-></a></ng-template>
-          <nz-table #rowSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+          <ng-template #newsTemplate><i class="anticon anticon-notification"></i>新闻BOT <a href="/dataCenter?currentTab=19" target="_blank">-></a></ng-template>
+          <nz-table #rowNewsSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
             <thead>
               <tr>
                 <th nzWidth="50px" nzLeft="0px">序号</th>
@@ -978,7 +976,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionTable.data; let i=index;">
+              <tr *ngFor="let data of rowNewsSelectionTable.data; let i=index;">
                 <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.news[0].checked">{{data.date}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.news[1].checked">{{data.awakNewsUsers}}</td>
@@ -989,6 +987,34 @@
                 <td nzWidth="100px" *ngIf="checkDataOptions.news[6].checked">{{data.newsTypeNotCount}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.news[7].checked">{{data.newsLimitTimeCount}}</td>
                 <td nzWidth="100px" *ngIf="checkDataOptions.news[8].checked">{{data.newsHotSearchCount}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
+        <nz-tab [nzTitle]="equipTemplate" (nzClick)="changePanel('equip')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
+          <ng-template #equipTemplate><i class="anticon anticon-dashboard"></i>设备接入BOT <a href="/dataCenter?currentTab=20" target="_blank">-></a></ng-template>
+          <nz-table #rowEquipSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px" nzLeft="0px">序号</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[0].checked">客户名称</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[1].checked">客户类型</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[2].checked">设备名称</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[3].checked">统计方式</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[4].checked">历史累计总数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.equip[5].checked">新增数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowEquipSelectionTable.data; let i=index;">
+                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[0].checked">{{data.manufacture}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[1].checked">{{data.manufactureType}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[2].checked">{{data.deviceName ? data.deviceName : '--'}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[3].checked">{{data.countMode ? data.countMode : '--'}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[4].checked">{{data.bluetoothLinkCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.equip[5].checked">{{data.dailyBluetoothLink}}</td>
               </tr>
             </tbody>
           </nz-table>

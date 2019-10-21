@@ -15,10 +15,10 @@ export class CommonService extends AppServiceBase {
   // currentServer = 'http://xiaowu.centaurstech.com'; // 切换服务器地址为正式
 
   baseUrl = this.currentServer + '/api/admin';  // chrome浏览器不安全下使用
-  // baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问】
-  // baseUrl = 'http://192.168.1.250:3000/api/admin';  // nginx正式前端地址【局域网访问】
-  // baseUrl = 'http://192.168.4.100:5000/api/admin';  // nginx正式前端地址【博士研发部专用访问】
-  // baseUrl = 'http://192.168.4.100:5999/api/admin';  // nginx测试前端地址【博士研发部专用访问】
+  // baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问.account_dist.】
+  // baseUrl = 'http://192.168.1.250:3000/api/admin';  // nginx正式前端地址【局域网访问.xiaowu_dist.】
+  // baseUrl = 'http://192.168.4.100:5000/api/admin';  // nginx正式前端地址【外网访问.vpn_dist.】
+  // baseUrl = 'http://192.168.4.100:5999/api/admin';  // nginx测试前端地址【外网访问.vpn_test_dist.】
   dataCenterUrl = this.currentServer + ':46004/api';  // 数据中心【衡锐】
   taxiRouteUrl = this.currentServer + ':41005/api';  // 打车路径【宇辉】
   nerRouteUrl = 'http://aliyun-sz3.chewrobot.com:41011';  // 新闻NER【宇辉】

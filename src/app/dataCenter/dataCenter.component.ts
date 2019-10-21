@@ -76,6 +76,7 @@ export class DataCenterComponent implements OnInit {
       'tts': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
       'reminder': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
       'news': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
+      'equip': [{ 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }, { 'checked': true }],
     };
   }
 
@@ -107,6 +108,7 @@ export class DataCenterComponent implements OnInit {
       case 17: this.currentPanel = 'tts'; break;
       case 18: this.currentPanel = 'reminder'; break;
       case 19: this.currentPanel = 'news'; break;
+      case 20: this.currentPanel = 'equip'; break;
       default: break;
     }
     this.doSearch('dataCenter');
@@ -137,6 +139,7 @@ export class DataCenterComponent implements OnInit {
       case 'tts': flag = 'tts-switch'; break;
       case 'reminder': flag = 'matter-bot'; break;
       case 'news': flag = 'news-bot'; break;
+      case 'equip': flag = 'bluetooth-link'; break;
       default: break;
     }
     this.isSpinning = true; // loading
@@ -285,7 +288,8 @@ export class DataCenterComponent implements OnInit {
      flag === 'product' ? '产品权限' : flag === 'error' ? '异常表述' : flag === 'ticket' ? '机票BOT' : flag === 'train' ? '火车BOT'
      : flag === 'hotel' ? '酒店BOT' : flag === 'weather' ? '天气BOT' : flag === 'navigate' ? '导航BOT' : flag === 'taxi' ? '打车BOT' :
      flag === 'music' ? '音乐BOT' : flag === 'horoscope' ? '星座BOT' : flag === 'recharge' ? '闪送BOT' : flag === 'errand' ? '充话费BOT' :
-      flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : flag === 'reminder' ? '事项提醒BOT' : flag === 'news' ? '新闻BOT' : '';
+      flag === 'movie' ? '电影BOT' : flag === 'tts' ? '语音切换BOT' : flag === 'reminder' ? '事项提醒BOT' : flag === 'news' ? '新闻BOT' :
+       flag === 'equip' ? '设备接入BOT' : '';
   }
 
   // 选择对话日志的业务类型
