@@ -18,6 +18,7 @@ export class CommonService extends AppServiceBase {
   // baseUrl = 'http://192.168.1.250:4000/api/admin';  // nginx测试前端地址【局域网访问】
   // baseUrl = 'http://192.168.1.250:3000/api/admin';  // nginx正式前端地址【局域网访问】
   // baseUrl = 'http://192.168.4.100:5000/api/admin';  // nginx正式前端地址【博士研发部专用访问】
+  // baseUrl = 'http://192.168.4.100:5999/api/admin';  // nginx测试前端地址【博士研发部专用访问】
   dataCenterUrl = this.currentServer + ':46004/api';  // 数据中心【衡锐】
   taxiRouteUrl = this.currentServer + ':41005/api';  // 打车路径【宇辉】
   nerRouteUrl = 'http://aliyun-sz3.chewrobot.com:41011';  // 新闻NER【宇辉】

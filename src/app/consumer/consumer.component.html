@@ -392,13 +392,13 @@
             <ng-template #modifySerialModalFooter>
               <div nz-row>
                 <div nz-col nzSpan="3">客户ID：</div>
-                <div nz-col nzSpan="5" class="left_alignment">{{serialData.appChannelId}}</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{serialBatchData.appChannel}}</div>
                 <div nz-col nzSpan="2">客户名称：</div>
-                <div nz-col nzSpan="3" class="left_alignment">{{serialData.appChannelName}}</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{serialBatchData.appChannelName}}</div>
                 <div nz-col nzSpan="3">序列号数量：</div>
-                <div nz-col nzSpan="1" class="left_alignment">{{dataSerial.length}}</div>
+                <div nz-col nzSpan="1" class="left_alignment">{{dataSerialBatch.length}}</div>
                 <div nz-col nzSpan="2">激活次数：</div>
-                <div nz-col nzSpan="2" class="left_alignment">{{serialData.maxSnActivation}}</div>
+                <div nz-col nzSpan="2" class="left_alignment">{{serialBatchData.maxSnActivation}}</div>
               </div>
             </ng-template>
           </nz-modal>

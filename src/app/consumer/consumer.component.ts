@@ -468,15 +468,19 @@ export class ConsumerComponent implements OnInit {
       const input = { appChannelId: this.serialData.appChannelId, keys: arr, groupId: this.serialData.groupId };
       this.consumerService.deleteSerialBatch(input).subscribe(res => {
         if (res.retcode === 0) {
-          this.notification.blank( '提示', '批量除成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '客户管理', op_page: '客户管理', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.hideModal('deleteSerialM');
           const result = JSON.parse(res.payload);
           this.deleteSerialResult.successSns = result.successSns.join('\n');
           this.deleteSerialResult.failSns = result.failSns.join('\n');
+          if (this.deleteSerialResult.successSns === '' && this.deleteSerialResult.failSns === '') {
+            this.modalService.error({ nzTitle: '提示', nzContent: '您删除的序列号不在该序列号批次中，请重新检查！' });
+            this.hideModal('deleteSerialResult');
+          } else {
+            this.showModal('deleteSerialResult', '');
+          }
           console.log(this.deleteSerialResult);
-          this.showModal('deleteSerialResult', '');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
