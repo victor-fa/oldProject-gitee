@@ -55,6 +55,7 @@
                 <th>注册时间</th>
                 <th>上次登录时间</th>
                 <th>用户状态</th>
+                <th>APP版本</th>
                 <th>充值记录</th>
                 <th>开票记录</th>
                 <th>消费记录</th>
@@ -76,7 +77,8 @@
                 <td>{{data.registerAt | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td><a (click)="showModal('latestLoginAt', data)">{{data.latestLoginAt | date:'yyyy-MM-dd HH:mm:ss' }}</a></td>
                 <td>{{data.locked === true ? '冻结' : data.locked === false ? '正常' : 'null' }}</td>
-                <td><a (click)="showModal('goRecharge', data)">查看</a></td>
+                <td>--</td>
+                <td><a (click)="showModal('goBusiness', data)">查看</a></td>
                 <td><a (click)="showModal('goInvoice', data)">查看</a></td>
                 <td><a (click)="showModal('goBooking', data)">查看</a></td>
                 <td><a (click)="showModal('userCommon', data)">查看</a></td>
@@ -1054,48 +1056,80 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab [nzTitle]="rechargeTemplate" (nzClick)="changePanel('recharge')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
-          <ng-template #rechargeTemplate><i class="anticon anticon-red-envelope"></i>充值记录</ng-template>
-          <form [formGroup]="searchRechargeForm">
+        <nz-tab [nzTitle]="businessTemplate" (nzClick)="changePanel('business')" *ngIf="commonService.haveMenuPermission('children', '充值记录')">
+          <ng-template #businessTemplate><i class="anticon anticon-bank"></i>交易记录</ng-template>
+          <form [formGroup]="searchBusinessForm">
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="phone" [(ngModel)]="rechargePhone" placeholder="输入用户账号" nzSize="default">
+                <input nz-input formControlName="phone" [(ngModel)]="businessPhone" placeholder="输入用户账号" nzSize="default">
               </div>
-              <div nz-col nzSpan="1"></div>
-              <div nz-col nzSpan="2" class="right_alignment">充值时间：</div>
-              <div nz-col nzSpan="7">
-                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'recharge')"></nz-range-picker>
-              </div>
-              <div nz-col nzSpan="6"></div>
+              <div nz-col nzSpan="2" class="right_alignment">交易类型：</div>
               <div nz-col nzSpan="3">
-                <button nz-button nzType="primary" (click)="loadData('recharge')"><i class="anticon anticon-search"></i>查询</button>
+                <nz-select formControlName="businessType">
+                  <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
+                  <nz-option required [nzLabel]="'机票'" nzValue="FLIGHT"></nz-option>
+                  <nz-option required [nzLabel]="'火车'" nzValue="TRAIN"></nz-option>
+                  <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
+                  <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
+                  <nz-option required [nzLabel]="'充话费'" nzValue="PHONE_CHARGE"></nz-option>
+                  <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
+                  <nz-option required [nzLabel]="'配对'" nzValue="PAIR"></nz-option>
+                  <nz-option required [nzLabel]="'算命'" nzValue="FORTUNE"></nz-option>
+                  <nz-option required [nzLabel]="'速运'" nzValue="EXPRESS"></nz-option>
+                  <nz-option required [nzLabel]="'电影票'" nzValue="MOVIE"></nz-option>
+                  <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
+                  <nz-option required [nzLabel]="'钱包'" nzValue="WALLET"></nz-option>
+                  <nz-option required [nzLabel]="'任务'" nzValue="TASK"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="2" class="right_alignment">交易方式：</div>
+              <div nz-col nzSpan="3">
+                <nz-select formControlName="tradeMode">
+                  <nz-option required [nzLabel]="'全部'" nzValue=""></nz-option>
+                  <nz-option required [nzLabel]="'微信'" nzValue="WECHAT"></nz-option>
+                  <nz-option required [nzLabel]="'支付宝'" nzValue="ALI"></nz-option>
+                  <nz-option required [nzLabel]="'小悟币'" nzValue="COIN"></nz-option>
+                  <nz-option required [nzLabel]="'小悟豆'" nzValue="BEAN"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" [nzPlaceHolder]="['交易开始日期', '交易结束日期']" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'business')"></nz-range-picker>
+              </div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="loadData('business')"><i class="anticon anticon-search"></i>查询</button>
               </div>
             </div>
           </form>
 
-          <nz-table nzBordered #rowSelectionRechargeTable [nzData]="rechargeData" [nzSimple]="true">
+          <nz-table nzBordered #rowSelectionBusinessTable [nzData]="businessData" [nzSimple]="true" [nzScroll]="{x:'1800px'}">
             <thead>
               <tr>
                 <th>序号</th>
                 <th>用户账号</th>
                 <th>用户昵称</th>
-                <th>充值小悟币</th>
-                <th>赠送小悟豆</th>
-                <th>支付方式</th>
-                <th>充值状态</th>
-                <th>充值时间</th>
+                <th>交易类型</th>
+                <th>交易状态</th>
+                <th>交易方式</th>
+                <th>交易金额</th>
+                <th>交易小悟币</th>
+                <th>交易小悟豆</th>
+                <th>订单号</th>
+                <th>交易时间</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of rowSelectionRechargeTable.data; let i=index;">
+              <tr *ngFor="let data of rowSelectionBusinessTable.data; let i=index;">
                 <td>{{i+1}}</td>
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
+                <td>{{data.xxx}}</td>
+                <td>{{data.xxx}}</td>
+                <td>{{data.xxx}}</td>
+                <td>{{data.xxx}}</td>
                 <td>{{data.amount}}</td>
                 <td>{{data.presentAmount ? data.presentAmount * 100 : '0'}}</td>
-                <td>{{data.paymentType === 'WECHAT_PAY' ? '微信支付' : data.paymentType === 'ALI_PAY' ? '支付宝支付' : 'null'}}</td>
-                <td>{{data.status === 'WAITING_FOR_PAY' ? '待支付' : data.status === 'paid' ? '已支付' : data.status === 'DEPOSITED' ? '已充值' : 'null' }}</td>
+                <td>{{data.xxx}}</td>
                 <td>{{data.createTime }}</td>
               </tr>
             </tbody>

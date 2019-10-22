@@ -1699,7 +1699,11 @@ export class ActivityComponent implements OnInit {
   changePanel(flag): void {
     flag !== this.currentPanel ? this.loadData(flag) : null;
     this.currentPanel = flag;
-    const operationInput = { op_category: '活动管理', op_page: flag === 'coupon' ? '权限配置' : flag === 'activity' ? '活动管理' : flag === 'batchsendList' ? '批量发放' : flag === 'bean' ? '充值送豆' : flag === 'taskCenter' ? '任务中心' : flag === 'taskCenter' ? '任务日志' : '', op_name: '访问' };
+    const operationInput = {
+      op_category: '活动管理',
+      op_page: flag === 'coupon' ? '优惠券配置' : flag === 'activity' ? '优惠券活动' : flag === 'batchsendList' ? '批量发放' : flag === 'couponStatistics' ? '优惠券统计' : flag === 'taskCenter' ? '任务中心' : flag === 'taskCenter' ? '任务日志' : flag === 'bean' ? '充值送豆' : '',
+      op_name: '访问'
+    };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

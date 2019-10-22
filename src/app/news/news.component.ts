@@ -550,8 +550,8 @@ export class NewsComponent implements OnInit {
     if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
     const operationInput = {
-      op_category: '内容管理',
-      op_page: flag === 'taggingNews' ? '新闻词库' : flag === 'manualAudit' ? '人工审核' : flag === 'newsThesaurus' ? '新闻词库' : flag === 'newsNER' ? '新闻NER' : '',
+      op_category: '新闻词库',
+      op_page: flag === 'taggingNews' ? '人工标注' : flag === 'manualAudit' ? '人工审核' : flag === 'newsThesaurus' ? '新闻词库' : flag === 'newsNER' ? '新闻NER' : '',
       op_name: '访问'
     };
     this.commonService.updateOperationlog(operationInput).subscribe();

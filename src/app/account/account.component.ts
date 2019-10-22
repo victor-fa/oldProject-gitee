@@ -609,7 +609,11 @@ export class AccountComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '权限后台', op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : flag === 'navConfig' ? '导航页配置' : '', op_name: '访问' };
+    const operationInput = {
+      op_category: '权限后台',
+      op_page: flag === 'role' ? '权限配置' : flag === 'customer' ? '员工配置' : flag === 'operationlog' ? '操作日志' : flag === 'navConfig' ? '导航页配置' : '',
+      op_name: '访问'
+    };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

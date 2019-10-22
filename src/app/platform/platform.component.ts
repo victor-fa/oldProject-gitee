@@ -372,11 +372,7 @@ export class PlatformComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = {
-      op_category: '开放平台',
-      op_page: flag === 'taggingPlatform' ? '开放平台' : flag === 'user' ? '客户账号' : '',
-      op_name: '访问'
-    };
+    const operationInput = { op_category: '开放平台', op_page: flag === 'taggingPlatform' ? '开放平台' : flag === 'user' ? '客户账号' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

@@ -615,7 +615,10 @@ export class CustomerComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '客服中心', op_page: flag === 'feedback' ? '用户反馈' : flag === 'opposition' ? '点踩日志' : flag === 'agree' ? '点赞日志' : '', op_name: '访问' };
+    const operationInput = {
+      op_category: '客服中心',
+      op_page: flag === 'feedback' ? '用户反馈' : flag === 'problem' ? '反馈问题管理' : flag === 'opposition' ? '点踩日志' : flag === 'agree' ? '点赞日志' : flag === 'invoiceTime' ? '开票时间管理' : flag === 'invoiceLog' ? '开票日志管理' : flag === 'business' ? '商务合作' : '',
+      op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

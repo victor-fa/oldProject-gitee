@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
   orderStatus = '';
   searchBookingForm: FormGroup;  // 查询表单
   addAdjustForm: FormGroup;  // 新增数据调整
-  searchRechargeForm: FormGroup;  // 查询充值记录
+  searchBusinessForm: FormGroup;  // 查询充值记录
   searchInvoiceForm: FormGroup; // 查询开票记录
   isFlightOrder = false;
   isHotelOrder = false;
@@ -71,8 +71,8 @@ export class UserComponent implements OnInit {
   endBookingDate = '';
   beginAdjustDate = '';
   endAdjustDate = '';
-  beginRechargeDate = '';
-  endRechargeDate = '';
+  beginBusinessDate = '';
+  endBusinessDate = '';
   beginInvoiceDate = '';
   endInvoiceDate = '';
   begUserRegisterDate = ''; // 用户时间
@@ -88,13 +88,13 @@ export class UserComponent implements OnInit {
   invoiceType = '';
   invoiceState = '';
   tabsetJson = { currentNum: 0, param: '' };
-  rechargeData = [];
+  businessData = [];
   invoiceData = [];
   invoiceItem = {};
   latestLoginData = [];
   commonUserId = '';  // 常用信息的用户id
   userInfoCommonData = [];
-  rechargePhone = ''; // 用户管理跳充值记录传值
+  businessPhone = ''; // 用户管理跳充值记录传值
   invoicePhone = ''; // 用户管理跳开票记录传值
   bookingPhone = ''; // 用户管理跳实体服务订单传值
   bookingOrderId = ''; // 跳实体服务订单传值
@@ -141,7 +141,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     const tabFlag = [{label: '用户信息', value: 'user'}, {label: '实体订单管理', value: 'bookingHypostatic'},
     {label: '数字服务订单', value: 'bookingDigital'},  {label: '数据调整', value: 'adjust'},
-    {label: '充值记录', value: 'recharge'}, {label: '开票记录', value: 'invoice'}
+    {label: '充值记录', value: 'business'}, {label: '开票记录', value: 'invoice'}
   ];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
@@ -254,16 +254,18 @@ export class UserComponent implements OnInit {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
       });
-    } else if (flag === 'recharge') {
-      const rechargeInput = {
-        beginTime: this.beginRechargeDate, endTime: this.endRechargeDate,
-        phone: this.searchRechargeForm.controls['phone'].value
+    } else if (flag === 'business') {
+      const businessInput = {
+        beginTime: this.beginBusinessDate, endTime: this.endBusinessDate,
+        phone: this.searchBusinessForm.controls['phone'].value,
+        businessType: this.searchBusinessForm.controls['businessType'].value,
+        tradeMode: this.searchBusinessForm.controls['tradeMode'].value
       };
-      this.invoiceService.getRechargeListForUser(rechargeInput).subscribe(res => {
+      this.invoiceService.getBusinessListForUser(businessInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.rechargeData = JSON.parse(res.payload).reverse();
-          console.log(this.rechargeData);
+          this.businessData = JSON.parse(res.payload).reverse();
+          console.log(this.businessData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
         }
@@ -420,7 +422,7 @@ export class UserComponent implements OnInit {
     this.searchBookingForm = this.fb.group({ date: [''], type: [''], status: [''], orderId: [''], phone: [''], channelType: [''] });
     this.addAdjustForm = this.fb.group({ adjustAmount: [''], adjustReason: [''], adjustType: [''], code: [''],
       noticeAbstract: [''], noticeContent: [''], noticeTitle: [''], operater: [''], users: [''], });
-    this.searchRechargeForm = this.fb.group({ phone: [''], date: [''], });
+    this.searchBusinessForm = this.fb.group({ phone: [''], businessType: [''], tradeMode: [''], date: [''], });
     this.searchInvoiceForm = this.fb.group({ phone: [''], date: [''], type: [''], state: [''], });
   }
 
@@ -748,9 +750,9 @@ export class UserComponent implements OnInit {
       this.invoiceItem = data;
       console.log(this.invoiceItem);
       this.visiable.invoiceDetail = true;
-    } if (flag === 'goRecharge') {  // 查看充值
-      this.rechargePhone = data.account;
-      setTimeout(() => { this.loadData('recharge'); }, 1000);
+    } if (flag === 'goBusiness') {  // 查看充值
+      this.businessPhone = data.account;
+      setTimeout(() => { this.loadData('business'); }, 1000);
       this.tabsetJson.currentNum = 4;
     } if (flag === 'goInvoice') {  // 查看开票
       this.invoicePhone = data.account;
@@ -1017,7 +1019,7 @@ export class UserComponent implements OnInit {
     this.bookingType = '';  // 重置公用的订票类型
     if (flag !== this.currentPanel) { this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户管理' : flag === 'booking' ? '订单查询' : '', op_name: '访问' };
+    const operationInput = { op_category: '用户管理', op_page: flag === 'user' ? '用户信息' : flag === 'bookingHypostaticTemplate' ? '实体订单管理' : flag === 'bookingDigital' ? '数字服务订单' : flag === 'adjust' ? '数据调整' : flag === 'business' ? '交易记录' : flag === 'invoice' ? '开票记录' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
@@ -1038,15 +1040,15 @@ export class UserComponent implements OnInit {
         this.endAdjustDate = this.datePipe.transform(result[1], 'yyyy-MM-dd');
       }
       if (this.beginAdjustDate === null || this.endAdjustDate === null) { this.beginAdjustDate = null; this.endAdjustDate = null; }
-    } else if (flag === 'recharge') {
+    } else if (flag === 'business') {
       if (result[0] !== '' || result[1] !== '') {
         if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
-          this.beginRechargeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endRechargeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
+          this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd' + ' 00:00:00'); this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd' + ' 23:59:59');
         } else {
-          this.beginRechargeDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endRechargeDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
+          this.beginBusinessDate = this.datePipe.transform(result[0], 'yyyy-MM-dd HH:mm:ss'); this.endBusinessDate = this.datePipe.transform(result[1], 'yyyy-MM-dd HH:mm:ss');
         }
       }
-      if (this.beginRechargeDate === null || this.endRechargeDate === null) { this.beginRechargeDate = null; this.endRechargeDate = null; }
+      if (this.beginBusinessDate === null || this.endBusinessDate === null) { this.beginBusinessDate = null; this.endBusinessDate = null; }
     } else if (flag === 'invoice') {
       if (result[0] !== '' || result[1] !== '') {
         this.beginInvoiceDate = this.datePipe.transform(result[0], 'yyyy-MM-dd ') + '00:00:00';

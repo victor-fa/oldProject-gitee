@@ -1231,7 +1231,7 @@
           </nz-modal>
         </nz-tab>
 
-        <nz-tab [nzTitle]="couponStatisticsTemplate" (nzClick)="changePanel('couponStatistics')" *ngIf="commonService.haveMenuPermission('children', '充值送豆')">
+        <nz-tab [nzTitle]="couponStatisticsTemplate" (nzClick)="changePanel('couponStatistics')" *ngIf="commonService.haveMenuPermission('children', '优惠券活动')">
           <ng-template #couponStatisticsTemplate><i class="anticon anticon-line-chart"></i>优惠券统计</ng-template>
           <div nz-row>
             <form [formGroup]="searchCouponStatisticsForm">

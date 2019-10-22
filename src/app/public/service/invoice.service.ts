@@ -73,9 +73,11 @@ export class InvoiceService extends AppServiceBase {
   }
 
   /** 获取所有列表 */
-  getRechargeListForUser(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/deposit-history?pageSize=9999`;
+  getBusinessListForUser(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${userApiUrls.mgmtList}/bills?pageSize=9999`;
     url += data.phone ? '&phone=' + data.phone : '';
+    url += data.businessType ? '&businessType=' + data.businessType : '';
+    url += data.tradeMode ? '&tradeMode=' + data.tradeMode : '';
     url += data.beginTime && data.beginTime !== null ? '&beginTime=' + data.beginTime : '';
     url += data.endTime && data.endTime !== null ? '&endTime=' + data.endTime : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };

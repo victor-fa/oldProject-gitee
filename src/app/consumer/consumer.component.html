@@ -483,7 +483,7 @@
 
         </nz-tab>
 
-        <nz-tab [nzTitle]="callbackTemplate" (nzClick)="changePanel('callback')" *ngIf="commonService.haveMenuPermission('children', '客户管理')">
+        <nz-tab [nzTitle]="callbackTemplate" (nzClick)="changePanel('callback')" *ngIf="commonService.haveMenuPermission('children', '订单回调地址')">
           <ng-template #callbackTemplate><i class="anticon anticon-rollback"></i>回调地址</ng-template>
           <div nz-row>
             <form [formGroup]="callbackSearchForm">

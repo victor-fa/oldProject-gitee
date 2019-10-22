@@ -981,7 +981,10 @@ export class AppVersionComponent implements OnInit {
     if (flag !== 'share') { this.isSaveShareButton = false; }
     if (flag !== 'qqCustomer') { this.isSaveQQCustomerButton = false; }
     this.currentPanel = flag;
-    const operationInput = { op_category: 'APP管理', op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '客服QQ' : flag === 'qqCustomer' ? '协议管理' : '', op_name: '访问' };
+    const operationInput = {
+      op_category: 'APP管理',
+      op_page: flag === 'content' ? '版本更新' : flag === 'share' ? '分享文案' : flag === 'guide' ? '引导语模板' : flag === 'help' ? '帮助管理' : flag === 'protocol'  ? '协议管理' : flag === 'flowPoint'  ? '流程点引导' : flag === 'qqCustomer' ? '客服QQ' : '',
+      op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

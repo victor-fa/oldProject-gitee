@@ -414,7 +414,7 @@ export class JiaoyouComponent implements OnInit {
     this.currentPanel = flag;
     const operationInput = {
       op_category: '交游天下',
-      op_page: flag === 'free' ? '免费配置' : flag === 'user' ? '付费配置' : '',
+      op_page: flag === 'free' ? '免费配置' : flag === 'skill' ? '付费技能' : flag === 'pay' ? '付费配置' : '',
       op_name: '访问'
     };
     this.commonService.updateOperationlog(operationInput).subscribe();
