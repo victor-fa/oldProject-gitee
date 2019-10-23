@@ -1109,7 +1109,6 @@
                 <th>用户账号</th>
                 <th>用户昵称</th>
                 <th>交易类型</th>
-                <th>交易状态</th>
                 <th>交易方式</th>
                 <th>交易金额</th>
                 <th>交易小悟币</th>
@@ -1123,13 +1122,16 @@
                 <td>{{i+1}}</td>
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
-                <td>{{data.xxx}}</td>
-                <td>{{data.xxx}}</td>
-                <td>{{data.xxx}}</td>
-                <td>{{data.xxx}}</td>
-                <td>{{data.amount}}</td>
-                <td>{{data.presentAmount ? data.presentAmount * 100 : '0'}}</td>
-                <td>{{data.xxx}}</td>
+                <td>{{data.businessType === 'FLIGHT' ? '机票' : data.businessType === 'TRAIN' ? '火车' : data.businessType === 'HOTEL' ? '酒店' :
+                   data.businessType === 'TAXI' ? '打车' : data.businessType === 'PHONE_CHARGE' ? '充话费' : data.businessType === 'HOROSCOPE' ? '星座' :
+                   data.businessType === 'PAIR' ? '配对' : data.businessType === 'FORTUNE' ? '算命' : data.businessType === 'EXPRESS' ? '速运' :
+                   data.businessType === 'MOVIE' ? '电影票' : data.businessType === 'MUSIC' ? '音乐' : data.businessType === 'WALLET' ? '钱包' :
+                   data.businessType === 'TASK' ? '任务' : ''}}</td>
+                <td>{{data.paymentType === 'WECHAT_PAY' ? '微信' : data.paymentType === 'ALI_PAY' ? '支付宝' : data.currencyType === 'RMB' ? '人民币' : data.currencyType === 'BEAN' ? '小悟豆' : data.currencyType === 'COIN' ? '小悟币' : '' }}</td>
+                <td>{{data.paymentType === 'WECHAT_PAY' || data.paymentType === 'ALI_PAY' ? data.amount : data.currencyType === 'RMB' ? data.amount : '/'}}</td>
+                <td>{{(data.paymentType === 'WALLET_PAY' || !data.paymentType) && data.currencyType === 'COIN' ? data.amount : '/'}}</td>
+                <td>{{(data.paymentType === 'WALLET_PAY' || !data.paymentType) && data.currencyType === 'BEAN' ? data.amount : '/'}}</td>
+                <td>{{data.businessId}}</td>
                 <td>{{data.createTime }}</td>
               </tr>
             </tbody>
