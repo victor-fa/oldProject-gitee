@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'consumer', loadChildren: './consumer/consumer.module#ConsumerModule'},
   { path: 'news', loadChildren: './news/news.module#NewsModule'},
   { path: 'sessionAnalysis', loadChildren: './sessionAnalysis/sessionAnalysis.module#SessionAnalysisModule'},
-  { path: 'regression', loadChildren: './regression/regression.module#RegressionModule'},
+  // { path: 'regression', loadChildren: './regression/regression.module#RegressionModule'},
   { path: 'platform', loadChildren: './platform/platform.module#PlatformModule'},
   { path: 'markdown', loadChildren: './markdown/markdown.module#MarkdownModule'},
   { path: 'jiaoyou', loadChildren: './jiaoyou/jiaoyou.module#JiaoyouModule'},

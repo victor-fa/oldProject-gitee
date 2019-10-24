@@ -104,13 +104,13 @@
           </span>
         </a>
       </li>
-      <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', commonService.currentServer.indexOf('account') > -1 ? '对话分析' : '回归工具')" [ngClass]="{'active_panel': commonService.nav[11].active}">
+      <!-- <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', commonService.currentServer.indexOf('account') > -1 ? '对话分析' : '回归工具')" [ngClass]="{'active_panel': commonService.nav[11].active}">
         <a class="common-button" routerLink="/regression" routerLinkActive="active">
           <span title>
             <i class="anticon anticon-tool"></i><span>回归工具</span>
           </span>
         </a>
-      </li>
+      </li> -->
       <li nz-menu-item nz-tooltip *ngIf="haveMenuPermission('menu', '开放平台')" [ngClass]="{'active_panel': commonService.nav[12].active}">
         <a class="common-button" routerLink="/platform" routerLinkActive="active">
           <span title>
