@@ -268,8 +268,8 @@ export class JiaoyouComponent implements OnInit {
     if (flag === 'addPay') {
       if (data.skillName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写付费技能名称' }); result = false; }
       if (data.appChannelId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
-      if (this.dataPay.single === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
-      if (this.dataPay.skillPrice === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
+      // if (this.dataPay.single === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
+      // if (this.dataPay.skillPrice === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
     }
     return result;
   }
