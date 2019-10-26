@@ -179,10 +179,8 @@ export class JiaoyouComponent implements OnInit {
           item !== '0' ? skillPrice.push(item + ','+ this.dataPay.skillPrice[item]) : null;
         });
         this.dataPay.skillPrice = skillPrice.join('\n');
-        this.dataPay.needPay = true;
-      } else {
-        this.dataPay.needPay = false;
       }
+      this.dataPay.needPay = this.dataPay.freeMode === 'BY_SKILL' ? false : true;
       console.log(this.dataPay);
       this.visiable.editPay = true;
     } else if (flag === 'deleteFree' || flag === 'deletePay') {
@@ -268,6 +266,9 @@ export class JiaoyouComponent implements OnInit {
     if (flag === 'addPay') {
       if (data.skillName === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未填写付费技能名称' }); result = false; }
       if (data.appChannelId === '') { this.modalService.error({ nzTitle: '提示', nzContent: '未选择渠道名称' }); result = false; }
+      if (data.freeMode === 'BY_SKILL') {
+        if (!data.freeCount) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写免费次数' }); result = false; }
+      }
       // if (this.dataPay.single === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写单次进入游戏的价格' }); result = false; }
       // if (this.dataPay.skillPrice === '' && this.dataPay.needPay === true) { this.modalService.error({ nzTitle: '提示', nzContent: '未填写周期进入定价' }); result = false; }
     }
@@ -309,7 +310,7 @@ export class JiaoyouComponent implements OnInit {
       let tempArr = [];
       tempArr = this.dataPay.skillPrice.split('\n');
       const tempJson = {};
-      tempJson[0 + ''] = Number(this.dataPay.single);
+      this.dataPay.single !== '' ? tempJson[0 + ''] = Number(this.dataPay.single) : null; // 单次为空时，不给0加内容
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
@@ -331,7 +332,7 @@ export class JiaoyouComponent implements OnInit {
       let tempArr = [];
       tempArr = this.dataPay.skillPrice.split('\n');
       const tempJson = {};
-      tempJson[0 + ''] = Number(this.dataPay.single);
+      this.dataPay.single !== '' ? tempJson[0 + ''] = Number(this.dataPay.single) : null; // 单次为空时，不给0加内容
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
