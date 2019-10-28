@@ -341,6 +341,7 @@ export class ConsumerComponent implements OnInit {
         'maxSnActivation': this.addConsumerForm.controls['officially'].value === true ? '3' : this.addConsumerForm.controls['maxSnActivation'].value,
         'orderTypes': orderTypes
       };
+      console.log(consumerInput);
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });

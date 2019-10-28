@@ -28,7 +28,7 @@ export class JiaoyouComponent implements OnInit {
   freeData = [];
   dataFree = {id: '', appChannelIds: '', channelType: 'CUSTOMER', freeCount: '', freeMode: 'BY_ACCOUNT'};
   payData = [];
-  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
+  dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true, pay: true };
   skillData = [];
   dataSkill = {skillTypeIds: ''};
   searchFreeForm: FormGroup;
@@ -180,7 +180,7 @@ export class JiaoyouComponent implements OnInit {
         });
         this.dataPay.skillPrice = skillPrice.join('\n');
       }
-      this.dataPay.needPay = this.dataPay.freeMode === 'BY_SKILL' ? false : true;
+      this.dataPay.needPay = this.dataPay.pay;
       console.log(this.dataPay);
       this.visiable.editPay = true;
     } else if (flag === 'deleteFree' || flag === 'deletePay') {
@@ -239,12 +239,12 @@ export class JiaoyouComponent implements OnInit {
       this.loadData('free');
       this.visiable.editFree = false;
     } else if (flag === 'addPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true, pay: true };
       this.checkPayOptions = [];
       this.loadData('pay');
       this.visiable.addPay = false;
     } else if (flag === 'editPay') {
-      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true };
+      this.dataPay = {id: '', appChannelId: '', freeCount: '', freeMode: 'BY_ACCOUNT', single: '', skillName: '', skillPrice: '', tempSkillPrice: '', skillTypeId: '', needPay: true, pay: true };
       this.loadData('pay');
       this.visiable.editPay = false;
     } else if (flag === 'addSkill') {
@@ -336,7 +336,7 @@ export class JiaoyouComponent implements OnInit {
       for (let i = 0; i < tempArr.length; i++) {
         tempJson[tempArr[i].split(',')[0] + ''] = Number(tempArr[i].split(',')[1]);
       }
-      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson };
+      const payInput = { id: this.dataPay.id, freeCount: this.dataPay.freeCount, freeMode: this.dataPay.freeMode, skillPrice: tempJson, pay: this.dataPay.needPay };
       payInput.freeCount === '' || payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeCount : null;
       payInput.freeMode === 'BY_ACCOUNT' ? delete payInput.freeMode : null;
       this.dataPay.needPay === false ? delete payInput.skillPrice : null;
