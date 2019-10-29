@@ -750,14 +750,14 @@
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">下单时间：</div> <div nz-col nzSpan="9">{{dataDetail.createTime}}</div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">订单状态：</div> <div nz-col nzSpan="9">{{dataDetail.state === 0 ? '待支付' : dataDetail.state === 3 ? '出票中' : dataDetail.state === 7 ? '出票失败' : dataDetail.state === 8 ? '待放映' : dataDetail.state === 8 ? '已放映' : 'null'}}</div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">取票序列号：</div> <div nz-col nzSpan="9">
-              {{dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '序号' ? dataDetail.front[0].value : '' : ''}}
-              {{dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '序号' ? dataDetail.front[1].value : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '序号' ? dataDetail.front[0].value : '' : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '序号' ? dataDetail.front[1].value : '' : '' : ''}}
             </div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">取票验证码：</div> <div nz-col nzSpan="9">
-              {{dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '验票码' ? dataDetail.front[0].value : '' : ''}}
-              {{dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '验票码' ? dataDetail.front[1].value : '' : ''}}
-              {{dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '取票码' ? dataDetail.front[0].value : '' : ''}}
-              {{dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '取票码' ? dataDetail.front[1].value : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '验票码' ? dataDetail.front[0].value : '' : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '验票码' ? dataDetail.front[1].value : '' : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[0] && dataDetail.front[0].text ? dataDetail.front[0].text === '取票码' ? dataDetail.front[0].value : '' : '' : ''}}
+              {{dataDetail.front ? dataDetail.front[1] && dataDetail.front[1].text ? dataDetail.front[1].text === '取票码' ? dataDetail.front[1].value : '' : '' : ''}}
             </div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">取票方式：</div> <div nz-col nzSpan="9">
               {{dataDetail.twoDimenCode !== '' ? '二维码取票' : ''}}&nbsp;
