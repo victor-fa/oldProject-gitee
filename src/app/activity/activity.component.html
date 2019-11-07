@@ -111,8 +111,8 @@
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
                     <div nz-col nzSpan="2">元</div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
+                    <!-- <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
+                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div> -->
                   </div>
                 </ng-container>
               </div>
@@ -187,14 +187,13 @@
             </div> -->
             <div nz-row>
               <div nz-col nzSpan="24" class="title-imp">红包预览</div>
-              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 175px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
-                  <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
-                  <div>满{{couponDate.xxxxx}}元可用</div>
+                  <div>限{{getCheckedCategory()}}使用</div>
+                  <div>满{{couponDate.discountPrices[0].main}}元可用</div>
                   <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
-                  <!-- <div>有效期至：{{couponEndDate | date:'yyyy-MM-dd hh:mm:ss'}}</div> -->
-                  <div>有效期至：{{couponEndDate}}</div>
+                  <div *ngIf="couponEndDate">有效期至：{{couponEndDate | date:'yyyy-MM-dd hh:mm:ss'}}</div>
                 </div>
               </div>
             </div>
@@ -235,8 +234,8 @@
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
                     <div nz-col nzSpan="2">元</div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
+                    <!-- <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
+                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div> -->
                   </div>
                 </ng-container>
               </div>
@@ -313,13 +312,13 @@
             </div> -->
             <div nz-row>
               <div nz-col nzSpan="24" class="title-imp">红包预览</div>
-              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 175px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
-                  <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
-                  <!-- <div>满{{couponDate.thresholdPrice}}元可用</div> -->
+                  <div>限{{getCheckedCategory()}}使用</div>
+                  <div>满{{couponDate.discountPrices[0].main}}元可用</div>
                   <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
-                  <div>有效期至：{{couponEndDate}}</div>
+                  <div *ngIf="couponEndDate">有效期至：{{couponEndDate | date:'yyyy-MM-dd hh:mm:ss'}}</div>
                 </div>
               </div>
             </div>
@@ -357,8 +356,8 @@
                       <input nz-input [(ngModel)]="item.content" nzSize="default">
                     </div>
                     <div nz-col nzSpan="2">元</div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
-                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div>
+                    <!-- <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'removeDiscountPrices')"><i class="anticon anticon-delete"></i>删除</button></div>
+                    <div nz-col nzSpan="4"><button nz-button nzType="primary" (click)="onChange(i, 'addDiscountPrices')"><i class="anticon anticon-plus"></i>添加</button></div> -->
                   </div>
                 </ng-container>
               </div>
@@ -421,13 +420,13 @@
             </div> -->
             <div nz-row>
               <div nz-col nzSpan="24" class="title-imp">红包预览</div>
-              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 209px; padding: 18px;">
+              <div nz-col nzSpan="10" style="background-image: url('assets/images/couponBg.png'); background-size: 85% 90%; background-repeat: no-repeat; width: 469px; height: 175px; padding: 18px;">
                 <div>
                   <div style="color: #01C44E;">{{couponDate.couponName}}</div>
-                  <div>限{{couponDate.couponCategory === 'all' ? '全品类' : couponDate.couponCategory === 'flight' ? '订机票' : couponDate.couponCategory === 'hotel' ? '订酒店' : couponDate.couponCategory === 'train' ? '订火车' : '打车' }}使用</div>
-                  <!-- <div>满{{couponDate.thresholdPrice}}元可用</div> -->
+                  <div>限{{getCheckedCategory()}}使用</div>
+                  <div>满{{couponDate.discountPrices[0].main}}元可用</div>
                   <div>{{couponDate.mutualExcludeRules === [] ? '不可与任何活动叠加使用' : couponDate.mutualExcludeRules }}</div>
-                  <div>有效期至：{{couponEndDate}}</div>
+                  <div *ngIf="couponEndDate">有效期至：{{couponEndDate | date:'yyyy-MM-dd hh:mm:ss'}}</div>
                 </div>
               </div>
             </div>
@@ -490,7 +489,7 @@
                 <td>{{data.ctime | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyActivity', data)" style="margin-right: 10px;"><i class="anticon anticon-form"></i>编辑</button>
-                  <button nz-button nzType="primary" (click)="doDelete(data, 'activity')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
+                  <button nz-button nzType="primary" (click)="showDeleteModal(data.id, 'activity')" style="margin-right: 10px;"><i class="anticon anticon-delete"></i>删除</button>
                 </td>
               </tr>
             </tbody>
@@ -499,7 +498,7 @@
             <nz-spin [nzSize]="'large'"></nz-spin>
           </div>
 
-          <nz-modal [(nzVisible)]="visiable.addActivity" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addActivity" nzWidth="1550" nzTitle="{{isModifyModelShow ? '修改活动' : '新增活动`'}}" [nzFooter]="addContentModalFooter" (nzOnCancel)="hideModal('activity')" nzMaskClosable="false">
             <form [formGroup]="addActivityForm">
               <div nz-row><div nz-col nzSpan="24" class="title-imp">基本信息</div></div>
               <div nz-row>
@@ -1034,7 +1033,7 @@
               <form [formGroup]="searchCouponInBatchsendForm">
                 <div nz-col nzSpan="2" class="right_alignment">创建日期范围：</div>
                 <div nz-col nzSpan="7">
-                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsend')"></nz-range-picker>
+                  <nz-range-picker formControlName="date" [nzFormat]="'yyyy-MM-dd'" [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'couponInBatchsendDate')"></nz-range-picker>
                 </div>
                 <div nz-col nzSpan="2" class="right_alignment">优惠券品类：</div>
                 <div nz-col nzSpan="3">

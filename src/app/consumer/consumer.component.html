@@ -607,6 +607,154 @@
 
         </nz-tab>
 
+
+        <nz-tab [nzTitle]="musicTemplate" (nzClick)="changePanel('music')" *ngIf="commonService.haveMenuPermission('children', '订单回调地址')">
+          <ng-template #musicTemplate><i class="anticon anticon-sound"></i>音频管理</ng-template>
+          <div nz-row>
+            <form [formGroup]="musicSearchForm">
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户ID" formControlName="appChannel" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户名称" formControlName="aaa" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="right_alignment">创建时间：</div>
+              <div nz-col nzSpan="7">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'music')"></nz-range-picker>
+              </div>
+            </form>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('music')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addMusic', data)"><i class="anticon anticon-file-add"></i>新增配置</button>
+            </div>
+          </div>
+          <nz-table nzBordered #musicTable [nzData]="dataMusic" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>客户ID</th>
+                <th>客户名称</th>
+                <th>接入SDK</th>
+                <th>是否小悟</th>
+                <th>音乐</th>
+                <th>懒人听书</th>
+                <th>口袋故事</th>
+                <th>喜马拉雅</th>
+                <th>创建时间</th>
+                <th>操作人</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of musicTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.appChannel}}</td>
+                <td>{{data.customerName}}</td>
+                <td>{{data.useSDK === true ? '是' : '否'}}</td>
+                <td>{{data.xiaoWu === true ? '是' : '否'}}</td>
+                <td>{{data.musicAccess === true ? '是' : '否'}}</td>
+                <td>{{data.lanRenAccess === true ? '是' : '否'}}</td>
+                <td>{{data.koudaiAccess === true ? '是' : '否'}}</td>
+                <td>{{data.xmlyAccess === true ? '是' : '否'}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.operator}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyMusic', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteMusic', data.appChannel)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addMusic" nzTitle="新增配置" [nzFooter]="addMusicModalFooter" (nzOnCancel)="hideModal('addMusic')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">
+                  <input nz-input placeholder="请输入客户ID" [(ngModel)]="musicData.appChannel" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">接入SDK：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="musicData.useSDK">
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="true">是</label>
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="false">否</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">是否小悟：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="musicData.xiaoWu">
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="true">是</label>
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="false">否</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">音频资源：</div>
+              <label nz-col nzSpan="9" nz-checkbox [(ngModel)]="musicData.musicAccess">音乐</label>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.lanRenAccess">懒人听书</label>
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="5"></div>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.koudaiAccess">口袋故事</label>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.xmlyAccess">喜马拉雅</label>
+            </div>
+            <ng-template #addMusicModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addMusic')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addMusic')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyMusic" nzTitle="修改配置" [nzFooter]="modifyMusicModalFooter" (nzOnCancel)="hideModal('modifyMusic')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">{{musicData.appChannel}}</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">接入SDK：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="musicData.useSDK">
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="true">是</label>
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="false">否</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">是否小悟：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="musicData.xiaoWu">
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="true">是</label>
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="false">否</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">音频资源：</div>
+              <label nz-col nzSpan="9" nz-checkbox [(ngModel)]="musicData.musicAccess">音乐</label>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.lanRenAccess">懒人听书</label>
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="5"></div>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.koudaiAccess">口袋故事</label>
+              <label nz-col nzSpan="9" nz-checkbox [(nzChecked)]="musicData.xmlyAccess">喜马拉雅</label>
+            </div>
+            <ng-template #modifyMusicModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyMusic')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyMusic')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>

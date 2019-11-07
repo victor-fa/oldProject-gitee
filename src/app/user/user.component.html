@@ -430,7 +430,7 @@
             <div nz-row>
               <div nz-col nzSpan="2" class="right_alignment">用户账号：</div>
               <div nz-col nzSpan="3">
-                <input nz-input formControlName="phone" placeholder="输入用户账号" nzSize="default">
+                <input nz-input [(ngModel)]="bookingPhone" formControlName="phone" placeholder="输入用户账号" nzSize="default">
               </div>
               <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
               <div nz-col nzSpan="3">
@@ -1073,13 +1073,13 @@
                   <nz-option required [nzLabel]="'酒店'" nzValue="HOTEL"></nz-option>
                   <nz-option required [nzLabel]="'打车'" nzValue="TAXI"></nz-option>
                   <nz-option required [nzLabel]="'充话费'" nzValue="PHONE_CHARGE"></nz-option>
-                  <nz-option required [nzLabel]="'星座'" nzValue="HOROSCOPE"></nz-option>
-                  <nz-option required [nzLabel]="'配对'" nzValue="PAIR"></nz-option>
-                  <nz-option required [nzLabel]="'算命'" nzValue="FORTUNE"></nz-option>
-                  <nz-option required [nzLabel]="'速运'" nzValue="EXPRESS"></nz-option>
+                  <!-- <nz-option required [nzLabel]="'星座运势'" nzValue="HOROSCOPE"></nz-option> -->
+                  <nz-option required [nzLabel]="'恋爱运势'" nzValue="PAIR"></nz-option>
+                  <nz-option required [nzLabel]="'月运势'" nzValue="FORTUNE"></nz-option>
+                  <nz-option required [nzLabel]="'闪送'" nzValue="EXPRESS"></nz-option>
                   <nz-option required [nzLabel]="'电影票'" nzValue="MOVIE"></nz-option>
                   <nz-option required [nzLabel]="'音乐'" nzValue="MUSIC"></nz-option>
-                  <nz-option required [nzLabel]="'钱包'" nzValue="WALLET"></nz-option>
+                  <nz-option required [nzLabel]="'充值'" nzValue="WALLET"></nz-option>
                   <nz-option required [nzLabel]="'任务'" nzValue="TASK"></nz-option>
                 </nz-select>
               </div>
@@ -1123,15 +1123,15 @@
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
                 <td>{{data.businessType === 'FLIGHT' ? '机票' : data.businessType === 'TRAIN' ? '火车' : data.businessType === 'HOTEL' ? '酒店' :
-                   data.businessType === 'TAXI' ? '打车' : data.businessType === 'PHONE_CHARGE' ? '充话费' : data.businessType === 'HOROSCOPE' ? '星座' :
-                   data.businessType === 'PAIR' ? '配对' : data.businessType === 'FORTUNE' ? '算命' : data.businessType === 'EXPRESS' ? '速运' :
-                   data.businessType === 'MOVIE' ? '电影票' : data.businessType === 'MUSIC' ? '音乐' : data.businessType === 'WALLET' ? '钱包' :
+                   data.businessType === 'TAXI' ? '打车' : data.businessType === 'PHONE_CHARGE' ? '充话费' :
+                   data.businessType === 'PAIR' ? '恋爱运势' : data.businessType === 'FORTUNE' ? '月运势' : data.businessType === 'EXPRESS' ? '闪送' :
+                   data.businessType === 'MOVIE' ? '电影票' : data.businessType === 'MUSIC' ? '音乐' : data.businessType === 'WALLET' ? '充值' :
                    data.businessType === 'TASK' ? '任务' : ''}}</td>
                 <td>{{data.paymentType === 'WECHAT_PAY' ? '微信' : data.paymentType === 'ALI_PAY' ? '支付宝' : data.currencyType === 'RMB' ? '人民币' : data.currencyType === 'BEAN' ? '小悟豆' : data.currencyType === 'COIN' ? '小悟币' : '' }}</td>
                 <td>{{data.paymentType === 'WECHAT_PAY' || data.paymentType === 'ALI_PAY' ? data.amount : data.currencyType === 'RMB' ? data.amount : '/'}}</td>
                 <td>{{(data.paymentType === 'WALLET_PAY' || !data.paymentType) && data.currencyType === 'COIN' ? data.amount : '/'}}</td>
                 <td>{{(data.paymentType === 'WALLET_PAY' || !data.paymentType) && data.currencyType === 'BEAN' ? data.amount : '/'}}</td>
-                <td>{{data.businessId}}</td>
+                <td><a [ngStyle]="{'color': data.businessType === 'WALLET' || data.businessType === 'TASK' ? '#000' : '#1890ff', 'cursor': data.businessType === 'WALLET' || data.businessType === 'TASK' ? 'none' : 'pointer' }" (click)="showModal('recordGoOrder', data)">{{data.businessId}}</a></td>
                 <td>{{data.createTime }}</td>
               </tr>
             </tbody>

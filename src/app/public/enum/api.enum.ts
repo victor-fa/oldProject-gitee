@@ -84,6 +84,8 @@ export enum consumerApiUrls {
   sms = '/channel/sms',
   /** 客户管理 短信通知 */
   callback = '/callback/url',
+  /** 客户管理 音频管理 */
+  musicList = '/priority/music',
 }
 
 /** 运维后台 */

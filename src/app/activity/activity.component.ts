@@ -633,8 +633,9 @@ export class ActivityComponent implements OnInit {
       this.fileList.length = 0;
       this.imageUrl = '';
       this.showImageUrl = '';
-      this.beginBaseInfoDate = '';
-      this.endBaseInfoDate = '';
+      this.beginBaseInfoDate = null;
+      this.endBaseInfoDate = null;
+      this.dateRange = [];
       this.activityRadioValue = 'LoginOneOff';  //
       this.baseInfoId = ''; // 清空Id
       this.actGiftNoArr = [{ value: '', label: '---无---' }]; // 重置数组，因为接口返回全部
@@ -958,6 +959,7 @@ export class ActivityComponent implements OnInit {
       const couponArr = [];
       let checkedCount = 0;
       let quantityCount = 0;
+      console.log(this.dataSearchCoupon);
       this.dataSearchCoupon.forEach(data => {
         if (data.checked === true) {
           couponArr.push(data);
@@ -1021,16 +1023,17 @@ export class ActivityComponent implements OnInit {
           'couponCategory': this.getCheckedCategory(),
         };
       }
+      console.log(this.couponDate);
       console.log(couponInput);
-      this.couponService.addCoupon(couponInput).subscribe(res => {
-        if (res.retcode === 0) {
-          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
-          this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModal('addCoupon');
-          this.loadData('coupon');
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      });
+      // this.couponService.addCoupon(couponInput).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //     this.hideModal('addCoupon');
+      //     this.loadData('coupon');
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      // });
     } else if (flag === 'modifyCoupon') {
       if (!this.verificationAdd('modifyCoupon')) { return; }
       let couponInput = {};
@@ -1381,7 +1384,7 @@ export class ActivityComponent implements OnInit {
   // 删除操作
   doDelete(data, flag) {
     if (flag === 'activity') {
-      this.activityService.deleteActivity(data.id).subscribe(res => {
+      this.activityService.deleteActivity(data).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '活动管理', op_page: '活动管理', op_name: '删除活动' };
@@ -1546,7 +1549,7 @@ export class ActivityComponent implements OnInit {
     } else if (flag === 'baseInfo') {  // 基本信息的活动时间
       if (result === []) { this.beginBatchsendDate = ''; this.endBatchsendDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') { this.beginBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd') + 'T00:00:00.000Z'; this.endBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd') + 'T23:59:59.000Z'; }
-    } else if (flag === 'couponInBatchsend') { // 红包 活动奖励查询 时间
+    } else if (flag === 'couponInBatchsendDate') { // 红包 活动奖励查询 时间
       if (result === []) { this.beginCouponInBatchsendDate = ''; this.endCouponInBatchsendDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') { this.beginCouponInBatchsendDate = this.datePipe.transform(result[0], 'yyyy-MM-dd'); this.endCouponInBatchsendDate = this.datePipe.transform(result[1], 'yyyy-MM-dd'); }
     } else if (flag === 'searchBean') {
@@ -1681,13 +1684,8 @@ export class ActivityComponent implements OnInit {
 
   // 获取片类限制
   getCheckedCategory() {
-    let flag = '';
-    let count = 0;
-    for (let i = 0; i < this.category.length; i++) {
-      if (this.category[i].checked === true) { flag = this.category[i].value; count++; }
-    }
-    flag = (count === 4 ? 'all' : flag);
-    return flag;
+    const result = this.category.filter(item => item.checked === true).map(item => item.value);
+    return result.length === 4 ? 'all' : result.toString();
   }
 
   // 转换 url 的 & 字符

@@ -7,6 +7,7 @@ import { CommonService } from '../public/service/common.service';
 import { ConsumerService } from '../public/service/consumer.service';
 import { ClipboardService } from 'ngx-clipboard';
 import * as XLSX from 'xlsx';
+import { MusicService } from '../public/service/music.service';
 
 registerLocaleData(zh);
 
@@ -18,7 +19,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -26,14 +27,17 @@ export class ConsumerComponent implements OnInit {
   serialSearchForm: FormGroup;
   callbackSearchForm: FormGroup;
   serialBatchSearchForm: FormGroup;
+  musicSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
   dataSerialBatch = [];
+  dataMusic = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
+  musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 0, checked: false}, {name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
@@ -61,6 +65,7 @@ export class ConsumerComponent implements OnInit {
     public commonService: CommonService,
     private modalService: NzModalService,
     private consumerService: ConsumerService,
+    private musicService: MusicService,
     private notification: NzNotificationService,
     private _clipboardService: ClipboardService,
     private datePipe: DatePipe,
@@ -70,7 +75,7 @@ export class ConsumerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const tabFlag = [{label: '客户管理', value: 'consumer'}];
+    const tabFlag = [{label: '客户管理', value: 'consumer'}, {label: '回调地址', value: 'callback'}, {label: '音频管理 ', value: 'music'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -151,6 +156,15 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataSerialBatch);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'music') {
+      const input = { appChannel: this.musicSearchForm.controls['appChannel'].value };
+      this.musicService.getMusicList(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataMusic = JSON.parse(res.message);
+          console.log(this.dataMusic);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -161,6 +175,7 @@ export class ConsumerComponent implements OnInit {
     this.serialSearchForm = this.fb.group({ sn: [''] });
     this.callbackSearchForm = this.fb.group({ appChannel: [''], orderType: [''] });
     this.serialBatchSearchForm = this.fb.group({ groupName: [''] });
+    this.musicSearchForm = this.fb.group({ appChannel: [''], aaa: [''], date: [''] });
   }
 
   // 弹窗
@@ -219,10 +234,10 @@ export class ConsumerComponent implements OnInit {
       this.callbackData = data;
       console.log(this.callbackData);
       this.visiable.modifyCallback = true;
-    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch') {
+    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch' || flag === 'deleteMusic') {
       this.modalService.confirm({
         nzTitle: '提示',
-        nzContent: flag === 'deleteSerialBatch' ? '确认删除该序列号吗？删除后，该序列号将不可激活，请谨慎操作' : '您确定要删除该信息？',
+        nzContent: flag === 'deleteSerialBatch' ? '确认删除该序列号吗？删除后，该序列号将不可激活，请谨慎操作' : flag === 'deleteMusic' ? '确定删除该数据吗？' : '您确定要删除该信息？',
         nzOkText: '确定',
         nzOnOk: () => this.doDelete(data, flag) });
     } else if (flag === 'serialBatch') {
@@ -239,6 +254,11 @@ export class ConsumerComponent implements OnInit {
       this.visiable.modifySerialBatch = true;
     } else if (flag === 'deleteSerialResult') {
       this.visiable.deleteSerialResult = true;
+    } else if (flag === 'addMusic') {
+      this.visiable.addMusic = true;
+    } else if (flag === 'modifyMusic') {
+      this.musicData = {appChannel: data.appChannel, useSDK: data.useSDK, xiaoWu: data.xiaoWu, koudaiAccess: data.koudaiAccess, lanRenAccess: data.lanRenAccess, musicAccess: data.musicAccess, xmlyAccess: data.xmlyAccess};
+      this.visiable.modifyMusic = true;
     }
   }
 
@@ -285,6 +305,12 @@ export class ConsumerComponent implements OnInit {
       this.deleteSerialResult = { successSns: '', failSns: '' };
       this.loadData('modifySerial');
       this.visiable.deleteSerialResult = false;
+    } else if (flag === 'addMusic') {
+      this.musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
+      this.visiable.addMusic = false;
+    } else if (flag === 'modifyMusic') {
+      this.musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
+      this.visiable.modifyMusic = false;
     }
   }
 
@@ -435,8 +461,44 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('modifySerialBatch');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addMusic') {
+      const input = {
+        appChannel: this.musicData.appChannel,
+        useSDK: this.musicData.useSDK,
+        xiaoWu: this.musicData.xiaoWu,
+        koudaiAccess: this.musicData.koudaiAccess,
+        lanRenAccess: this.musicData.lanRenAccess,
+        musicAccess: this.musicData.musicAccess,
+        xmlyAccess: this.musicData.xmlyAccess,
+        createTime: new Date(),
+        operator: localStorage.getItem('currentUser'),
+      };
+      console.log(input);
+      this.musicService.addMusic(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '添加成功', { nzStyle: { color : 'green' } });
+          this.loadData('music');
+          this.hideModal('addMusic');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyMusic') {
+      const input = {
+        appChannel: this.musicData.appChannel,
+        useSDK: this.musicData.useSDK,
+        xiaoWu: this.musicData.xiaoWu,
+        koudaiAccess: this.musicData.koudaiAccess,
+        lanRenAccess: this.musicData.lanRenAccess,
+        musicAccess: this.musicData.musicAccess,
+        xmlyAccess: this.musicData.xmlyAccess,
+      };
+      this.musicService.modifyMusic(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('music');
+          this.hideModal('modifyMusic');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
-
   }
 
   // 删除
@@ -482,6 +544,15 @@ export class ConsumerComponent implements OnInit {
             this.showModal('deleteSerialResult', '');
           }
           console.log(this.deleteSerialResult);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteMusic') {
+      this.musicService.deleteMusic(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '音频管理', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('music');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -606,7 +677,7 @@ export class ConsumerComponent implements OnInit {
   changePanel(flag): void {
     if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : '', op_name: '访问' };
+    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : flag === 'music' ? '音频管理' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

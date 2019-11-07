@@ -264,7 +264,7 @@ export class UserComponent implements OnInit {
       this.invoiceService.getBusinessListForUser(businessInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.businessData = JSON.parse(res.payload).reverse();
+          this.businessData = JSON.parse(res.payload);
           console.log(this.businessData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -769,11 +769,23 @@ export class UserComponent implements OnInit {
     } if (flag === 'goBookingFromTaxi') {
       this.bookingOrderId = data;
       setTimeout(() => { this.doSearch('booking'); }, 1000);
-      this.tabsetJson.currentNum = 1; // 实体服务订单
+      this.tabsetJson.currentNum = 1;
+    } if (flag === 'goDigitalFromTaxi') {  //
+      this.bookingOrderId = data;
+      setTimeout(() => { this.doSearch('booking'); }, 1000);
+      this.tabsetJson.currentNum = 2;
     } if (flag === 'goUserFromOperate') {
       this.userOrderPhone = data;
       setTimeout(() => { this.loadData('user'); }, 1000);
       this.tabsetJson.currentNum = 0; // 用户管理
+    } if (flag === 'recordGoOrder') {
+      if (['FLIGHT', 'TRAIN', 'HOTEL', 'TAXI', 'EXPRESS'].indexOf(data.businessType) > -1) {
+        this.showModal('goBookingFromTaxi', data.businessId);
+      } else if (['PHONE_CHARGE', 'PAIR', 'FORTUNE', 'MOVIE', 'MUSIC'].indexOf(data.businessType) > -1) {
+        this.showModal('goDigitalFromTaxi', data.businessId);
+      } else if (['WALLET', 'TASK'].indexOf(data.businessType) > -1) {
+
+      }
     }
   }
 
@@ -1111,6 +1123,8 @@ export class UserComponent implements OnInit {
     };
     reader.readAsBinaryString(target.files[0]);
   }
+
+
 
   // 去重
   unique(arr) {
