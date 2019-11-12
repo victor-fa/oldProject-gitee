@@ -53,6 +53,7 @@ export class UserComponent implements OnInit {
   isPhoneBillOrder = false;
   isConstellationOrder = false;
   isMovieOrder = false;
+  isPayMusicOrder = false;
   lastBookingId = 0;
   firstBookingId = 0;
   totalBooking = 0;
@@ -102,7 +103,7 @@ export class UserComponent implements OnInit {
   userOrderPhone = ''; // 运维后台跳用户信息
   userLocked = '';  // 用户状态下拉
   bookingType = '';
-  bookingTypeKeys = ['', '5', '6', '7', '8'];
+  bookingTypeKeys = ['', '5', '6', '10', '7', '8'];
   bookingTypeNodes = [
     { title: '全部', key: '' },
     { title: '充话费', key: '5' },
@@ -110,6 +111,12 @@ export class UserComponent implements OnInit {
       children: [
         {title: '快速脱单', key: 'APP_SINGLE', },
         {title: '情侣合盘', key: 'APP_COUPLE', }
+      ]
+    },
+    { title: '付费音频', key: '10',
+      children: [
+        {title: '懒人听书', key: 'LAZY_BOOK', },
+        {title: '口袋故事', key: 'KOU_DAI', }
       ]
     },
     { title: '月运势', key: '7',
@@ -595,104 +602,56 @@ export class UserComponent implements OnInit {
           const operationInput = { op_category: '用户管理', op_page: '订单查询' , op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           console.log(JSON.parse(res.payload));
+          this.isFlightOrder = false;
+          this.isHotelOrder = false;
+          this.isTrainOrder = false;
+          this.isTaxiOrder = false;
+          this.isDeliveryOrder = false;
+          this.isPhoneBillOrder = false;
+          this.isConstellationOrder = false;
+          this.isMovieOrder = false;
+          this.isPayMusicOrder = false;
           if (JSON.parse(res.payload).flightOrderReturn) {
             this.dataDetail = JSON.parse(res.payload).flightOrderReturn;
             this.isFlightOrder = true;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).hotelOrder) {
             this.dataDetail = JSON.parse(res.payload).hotelOrder;
-            this.isFlightOrder = false;
             this.isHotelOrder = true;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).trainOrderReturn) {
             this.dataDetail = JSON.parse(res.payload).trainOrderReturn;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
             this.isTrainOrder = true;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).taxiOrderDetailResponse) {
             this.dataDetail = JSON.parse(res.payload).taxiOrderDetailResponse;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
             this.isTaxiOrder = true;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).expressOrderDetailResponse) {
             this.dataDetail = JSON.parse(res.payload).expressOrderDetailResponse;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
             this.isDeliveryOrder = true;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).phoneChargeOrder) {
             this.dataDetail = JSON.parse(res.payload).phoneChargeOrder;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
             this.isPhoneBillOrder = true;
-            this.isConstellationOrder = false;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).pairOrder) {
             this.dataDetail = JSON.parse(res.payload).pairOrder;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
             this.isConstellationOrder = true;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).fortuneOrder) {
             this.dataDetail = JSON.parse(res.payload).fortuneOrder;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
             this.isConstellationOrder = true;
-            this.isMovieOrder = false;
           }
           if (JSON.parse(res.payload).movieOrder) {
             this.dataDetail = JSON.parse(res.payload).movieOrder;
-            this.isFlightOrder = false;
-            this.isHotelOrder = false;
-            this.isTrainOrder = false;
-            this.isTaxiOrder = false;
-            this.isDeliveryOrder = false;
-            this.isPhoneBillOrder = false;
-            this.isConstellationOrder = false;
             this.isMovieOrder = true;
+          }
+          if (JSON.parse(res.payload).musicOrder) {
+            const tempRes = JSON.parse(res.payload).musicOrder;
+            tempRes.nickname = data.nickname;
+            this.dataDetail = tempRes;
+            this.isPayMusicOrder = true;
           }
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });

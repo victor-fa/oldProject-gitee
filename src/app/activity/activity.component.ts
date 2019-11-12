@@ -1025,15 +1025,15 @@ export class ActivityComponent implements OnInit {
       }
       console.log(this.couponDate);
       console.log(couponInput);
-      // this.couponService.addCoupon(couponInput).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
-      //     const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //     this.hideModal('addCoupon');
-      //     this.loadData('coupon');
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      // });
+      this.couponService.addCoupon(couponInput).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '活动管理', op_page: '优惠券', op_name: '新增' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.hideModal('addCoupon');
+          this.loadData('coupon');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     } else if (flag === 'modifyCoupon') {
       if (!this.verificationAdd('modifyCoupon')) { return; }
       let couponInput = {};

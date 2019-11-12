@@ -506,7 +506,7 @@
                 <td>{{data.nickname}}</td>
                 <td>{{data.channelType}}</td>
                 <td>{{data.state === 0 ? '待支付' : data.state === 1 ? '充值中' :  data.state === 2 ? '待放映' : data.state === 3 ? '已完成' : data.state === 5 ? '充值失败 退款中' : data.state === 6 ? '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? '交易关闭' : data.state === 13 ? '充值失败 退款中' : 'null' }}</td>
-                <td>{{data.orderType === 5 ? '充话费' : data.orderType === 6 ? (data.flightType === 'APP_SINGLE' ? '快速脱单' : data.flightType === 'APP_COUPLE' ? '情侣合盘' : '恋爱运势') : data.orderType === 7 ? (data.flightType === 'APP_SUBSCRIPTION30' ? '30天运势' : data.flightType === 'APP_SUBSCRIPTION60' ? '60天运势' : data.flightType === 'APP_SUBSCRIPTION90' ? '90天运势' : '快速脱单') : data.orderType === 9 ? '电影票' : 'null'}}</td>
+                <td>{{data.orderType === 5 ? '充话费' : data.orderType === 6 ? (data.flightType === 'APP_SINGLE' ? '快速脱单' : data.flightType === 'APP_COUPLE' ? '情侣合盘' : '恋爱运势') : data.orderType === 7 ? (data.flightType === 'APP_SUBSCRIPTION30' ? '30天运势' : data.flightType === 'APP_SUBSCRIPTION60' ? '60天运势' : data.flightType === 'APP_SUBSCRIPTION90' ? '90天运势' : '快速脱单') : data.orderType === 9 ? '电影票' : data.orderType === 10 ? (data.supplyType === 4 ? '口袋故事' : (data.supplyType === 5 ? '懒人听书' : '付费音频')) : 'null'}}</td>
                 <td>{{data.createTime}}</td>
                 <td>{{data.total}}</td>
                 <td>{{data.paymentType === 1 ? '支付宝' : data.paymentType === 2 ? '微信' : data.paymentType === 3 ? (data.currencyTypeOfWallet === 1 ? '小悟币' : '小悟豆') : 'null' }}</td>
@@ -770,6 +770,21 @@
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">糯米通取票机：</div> <div nz-col nzSpan="9">{{dataDetail.common}}</div> </div>
             <div nz-row> <div nz-col nzSpan="11" class="right_alignment">二维码取票：</div> <div nz-col nzSpan="9">{{dataDetail.twoDimenCode}}</div> </div>
           </div>
+
+          <!-- 付费音频订单信息 -->
+          <div *ngIf="isPayMusicOrder">
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">用户账号：</div> <div nz-col nzSpan="7">{{dataDetail.contactPhone}}</div> <div nz-col nzSpan="5" class="right_alignment">用户昵称：</div> <div nz-col nzSpan="7">{{dataDetail.nickname}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">供应商订单号：</div> <div nz-col nzSpan="7">{{dataDetail.actualId}}</div> <div nz-col nzSpan="5" class="right_alignment">内部订单号：</div> <div nz-col nzSpan="7">{{dataDetail.orderId}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">订单创建时间：</div> <div nz-col nzSpan="7">{{dataDetail.createTime}}</div> <div nz-col nzSpan="5" class="right_alignment">订单支付时间：</div> <div nz-col nzSpan="7">{{dataDetail.paymentTimestamp | date:'yyyy-MM-dd'}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">订单金额：</div> <div nz-col nzSpan="7">{{dataDetail.amount}}元</div> <div nz-col nzSpan="5" class="right_alignment">订单状态：</div> <div nz-col nzSpan="7">{{dataDetail.state === 0 ? '待支付' : dataDetail.state === 3 ? '已完成' : dataDetail.state === 7 ? '已取消' : dataDetail.state === 8 ? '交易关闭' : 'null'}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">订单类型：</div> <div nz-col nzSpan="7">付费音频</div> <div nz-col nzSpan="5" class="right_alignment">供应商：</div> <div nz-col nzSpan="7">{{(dataDetail.sourceType.index === 4 ? '口袋故事' : (dataDetail.sourceType.index === 5 ? '懒人听书' : '付费音频'))}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">购买方式：</div> <div nz-col nzSpan="7">{{dataDetail.actualId}}</div> <div nz-col nzSpan="5" class="right_alignment">音频id：</div> <div nz-col nzSpan="7">{{dataDetail.goodsId}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">音频名称：</div> <div nz-col nzSpan="7">{{dataDetail.workName}}</div> <div nz-col nzSpan="5" class="right_alignment">音频子id：</div> <div nz-col nzSpan="7">{{dataDetail.goodsResId}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">音频集数：</div> <div nz-col nzSpan="7">{{dataDetail.allEpisodes}}</div> <div nz-col nzSpan="5" class="right_alignment">起始集数：</div> <div nz-col nzSpan="7">{{dataDetail.startEpisode}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">结束集数：</div> <div nz-col nzSpan="7">{{dataDetail.endEpisode}}</div> <div nz-col nzSpan="5" class="right_alignment">单价：</div> <div nz-col nzSpan="7">{{dataDetail.originalFee}}</div> </div>
+            <div nz-row> <div nz-col nzSpan="5" class="right_alignment">购买数量：</div> <div nz-col nzSpan="7">{{dataDetail.quantity}}</div> </div>
+          </div>
+
           <ng-template #bookingDetailModalFooter>
             <button *ngIf="isHotelOrder && orderStatus===2" nz-button nzType="primary" (click)="cancleHotelOrder()"><i class="anticon anticon-close-circle-o"></i>取消订单</button>
             <button nz-button nzType="default" (click)="hideModal('BookingDetail')"><i class="anticon anticon-close-circle-o"></i>取消</button>
