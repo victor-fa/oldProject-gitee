@@ -31,7 +31,7 @@ export class ConsumerService extends AppServiceBase {
   /** 添加单个 */
   addConsumer(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}`;
-    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}&officially=${data.officially}&maxSnActivation=${data.maxSnActivation}`;
+    const body = `appChannelId=${data.appChannel}&appChannelName=${data.appChannelName}&loginType=${data.loginType}&robot=${data.robot}&phone=${data.phone}&officially=${data.officially}&maxSnActivation=${data.maxSnActivation}&needGuestKey=${data.needGuestKey}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
@@ -100,7 +100,7 @@ export class ConsumerService extends AppServiceBase {
   /** 修改激活次数 */
   modifyActivation(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
-    const body = `appChannel=${data.id}&maxSnActivation=${data.maxSnActivation}&phone=${data.phone}`;
+    const body = `appChannel=${data.id}&maxSnActivation=${data.maxSnActivation}&phone=${data.phone}&needGuestKey=${data.needGuestKey}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);
@@ -109,7 +109,7 @@ export class ConsumerService extends AppServiceBase {
   /** 修改作废标记 */
   modifyAvailable(data): Observable<IResponse<any>> {
     const url = `${this.commonService.baseUrl}${consumerApiUrls.consumerList}/${data.id}`;
-    const body = `available=${data.available}&phone=${data.phone}`;
+    const body = `available=${data.available}&phone=${data.phone}&needGuestKey=${data.needGuestKey}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
     return this.httpClient
       .put<IResponse<any>>(url, body, this.options);

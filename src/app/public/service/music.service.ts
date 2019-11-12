@@ -22,7 +22,7 @@ export class MusicService extends AppServiceBase {
   /** 获取所有列表 */
   getMusicList(data): Observable<IResponse<any>> {
     let url = `${this.commonService.baseUrl}${consumerApiUrls.musicList}`;
-    url += data.appChannel && data.appChannel !== '' ? '?appChannel=' + data.appChannel : '';
+    url += data.appChannel && data.appChannel !== '' ? '/' + data.appChannel : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);

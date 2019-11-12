@@ -42,6 +42,7 @@
                 <th>客户名称</th>
                 <th>APP key</th>
                 <th>key类型</th>
+                <th>后台校验</th>
                 <th>APP Secret</th>
                 <th>Client ID</th>
                 <th>登录类型</th>
@@ -62,6 +63,7 @@
                 <td>{{data.appChannelName}}</td>
                 <td>{{data.appKey}}</td>
                 <td>{{data.officially === true ? '正式key' : '测试key'}}</td>
+                <td>{{data.needGuestKey === false ? '不需要后台校验' : '需要后台校验'}}</td>
                 <td>{{data.appSecret}}</td>
                 <td>{{data.clientId}}</td>
                 <td>{{data.loginType === 0 ? '不需要登录' : '需要登录'}}</td>
@@ -92,6 +94,15 @@
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">key类型：</div>
                 <div nz-col nzSpan="12">{{consumerDate.officially === true ? '正式key' : '测试key'}}</div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8" class="right_alignment">后台校验：</div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="needGuestKey" [(ngModel)]="consumerDate.needGuestKey">
+                    <label nz-radio [nzValue]="true">需要后台校验</label>
+                    <label nz-radio [nzValue]="false">不需要后台校验</label>
+                  </nz-radio-group>
+                </div>
               </div>
               <div nz-row>
                 <div nz-col nzSpan="8" class="right_alignment">客户ID：</div>
@@ -159,6 +170,15 @@
                   <nz-radio-group formControlName="officially" [(ngModel)]="consumerDate.officially">
                     <label nz-radio [nzValue]="false">测试key</label>
                     <label nz-radio [nzValue]="true">正式key</label>
+                  </nz-radio-group>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col nzSpan="8" class="right_alignment">后台校验 <font color="red">*</font>：</div>
+                <div nz-col nzSpan="12">
+                  <nz-radio-group formControlName="needGuestKey" [(ngModel)]="consumerDate.needGuestKey">
+                    <label nz-radio [nzValue]="true">需要后台校验</label>
+                    <label nz-radio [nzValue]="false">不需要后台校验</label>
                   </nz-radio-group>
                 </div>
               </div>
