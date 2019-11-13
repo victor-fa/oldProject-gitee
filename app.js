@@ -24,7 +24,8 @@ var routes = require('./routes/index'),
 	admins = require('./routes/admins'),
 	gallery = require('./routes/gallery'),
 	image = require('./routes/image'),
-	getCount = require('./routes/download');
+	getCount = require('./routes/download'),
+	user_query=require('./routes/users_query');
 
 const fileUpload = require('express-fileupload');
 
@@ -140,6 +141,11 @@ app.use('/admin', UserService.ensureAuthenticated, UserGroupPolicy.ensureManager
 app.use('/gallery', UserService.ensureAuthenticated, UserGroupPolicy.accessToGallery, gallery);
 app.use('/image', UserService.ensureAuthenticated, image);
 app.use('/download', getCount);
+
+/**
+ * 专供外部调用
+ */
+app.use('/user_query',user_query);
 
 // Set Port
 app.set('port', port);
