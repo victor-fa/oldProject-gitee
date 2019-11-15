@@ -46,7 +46,8 @@ export class ContentService extends AppServiceBase {
   /** 添加单个内容 */
   addContent(data): Observable<IResponse<any>> {
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader')}) };
-    const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
+    let body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
+    body += (data.phones !== '' ? ('&phones=' + data.phones) : '');
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}`;
     return this.httpClient
       .post<IResponse<any>>(url, body, this.options);
@@ -54,7 +55,8 @@ export class ContentService extends AppServiceBase {
 
   /** 修改单个内容 */
   updateContent(data): Observable<IResponse<any>> {
-    const body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
+    let body = `title=${data.title}&url=${data.url}&content=${data.content}&abstractContent=${data.abstractContent}&pseudonym=${data.pseudonym}&publishTime=${data.publishTime}&type=${data.type}&thumbnail=${data.thumbnail}`;
+    body += (data.phones !== '' ? ('&phones=' + data.phones) : '');
     const url = `${this.commonService.baseUrl}${cmsApiUrls.contentList}/${data.id}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient

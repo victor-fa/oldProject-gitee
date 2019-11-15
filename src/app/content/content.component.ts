@@ -12,6 +12,7 @@ import { LocalizationService } from '../public/service/localization.service';
 import { OpenService } from '../public/service/open.service';
 import { ScreenService } from '../public/service/screen.service';
 import { PersonalService } from '../public/service/personal.service';
+import { join } from 'path';
 
 registerLocaleData(zh);
 
@@ -27,7 +28,8 @@ registerLocaleData(zh);
 export class ContentComponent implements OnInit {
 
   visiable = {addContent: false, modifyContent: false, addScreen: false, modifyScreen: false, addOpen: false,
-    modifyOpen: false, addBanner: false, modifyBanner: false, addPersonal: false, modifyPersonal: false };
+    modifyOpen: false, addBanner: false, modifyBanner: false, addPersonal: false, modifyPersonal: false,
+    changePhone: false };
   avatarUrl: string;
   addContentForm: FormGroup;
   addScreenForm: FormGroup;
@@ -51,7 +53,7 @@ export class ContentComponent implements OnInit {
   imageUrl = '';
   showImageUrl = '';
   currentPanel = 'content';  // 当前面板 默认内容管理
-  contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };
+  contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '', 'groupSend': 'all', 'phones': '' };
   screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };
   openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
   bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };
@@ -104,6 +106,7 @@ export class ContentComponent implements OnInit {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
           this.dataContent = JSON.parse(res.payload).reverse();
+          console.log(this.dataContent);
           const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
           this.commonService.updateOperationlog(operationInput).subscribe();
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
@@ -151,7 +154,7 @@ export class ContentComponent implements OnInit {
 
   private _initForm(): void {
     this.addContentForm = this.fb.group({
-      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
+      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''], groupSend: ['']
     });
     this.addScreenForm = this.fb.group({ title: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
     this.addOpenForm = this.fb.group({
@@ -160,7 +163,7 @@ export class ContentComponent implements OnInit {
     this.addBannerForm = this.fb.group({ jump: [''], title: [''], site: [''], order: [''], url: [''], expireTime: [''] });
     this.addPersonalForm = this.fb.group({ jump: [''], title: [''], site: [''], url: [''], expireTime: [''] });
     this.modifyContentForm = this.fb.group({
-      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''],
+      title: [''], type: [''], url: [''], abstractContent: [''], content: [''], publishTime: [''], pseudonym: [''], groupSend: ['']
     });
     this.modifyScreenForm = this.fb.group({ title: [''], jump: [''], site: [''], skip: [''], duration: [''], url: [''], expireTime: [''] });
     this.modifyOpenForm = this.fb.group({
@@ -171,22 +174,114 @@ export class ContentComponent implements OnInit {
   }
 
   // 弹窗
-  showAddModal(flag) {
-    if (flag === 'content') {
+  showModal(flag, data) {
+    if (flag === 'addContent') {
       this.visiable.addContent = true;
-      this.contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '' };  // 清空
-    } else if (flag === 'screen') {
+      this.contentDate = { 'title': '', 'type': '', 'url': '', 'abstractContent': '', 'content': '', 'publishTime': '', 'pseudonym': '', 'groupSend': 'all', 'phones': '' };  // 清空
+    } else if (flag === 'addScreen') {
       this.visiable.addScreen = true;
       this.screenDate = { 'title': '', 'site': '', 'enabled': '', 'jump': '', 'image': '', 'skip': '', 'duration': '', 'url': '', 'expireTime': '' };  // 清空
-    } else if (flag === 'open') {
+    } else if (flag === 'addOpen') {
       this.visiable.addOpen = true;
       this.openDate = { 'title': '', 'enabled': '', 'jump': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' };  // 清空
-    } else if (flag === 'banner') {
+    } else if (flag === 'addBanner') {
       this.visiable.addBanner = true;
       this.bannerDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'order': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
-    } else if (flag === 'personal') {
+    } else if (flag === 'addPersonal') {
       this.visiable.addPersonal = true;
       this.personalDate = { 'title': '', 'jump': '', 'enabled': '', 'site': '', 'image': '', 'url': '', 'expireTime': '' }; // 清空
+    } else if (flag === 'changePhone') {
+      this.visiable.changePhone = true;
+      return;
+    } else if (flag === 'modifyContent') {
+      const id = data.id;
+      this.visiable.modifyContent = true;
+      this.cmsId = id;  // 用于修改
+      this.contentService.getContent(id).subscribe(res => {
+        // 处理异常处理
+        this.contentDate = JSON.parse(res.payload);
+        this.contentDate.phones = data.phones.join('\n');
+        this.contentDate.groupSend = data.phones ? 'part' : 'all';
+        const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        this.contentDate.url = this.dotranUrl(JSON.parse(res.payload).url);
+        this.imageUrl = JSON.parse(res.payload).thumbnail;
+        const file: any = {
+          name: JSON.parse(res.payload).thumbnail
+        };
+        this.fileList.push(file);
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/notices/thumbnails/${this.imageUrl}`;
+        console.log(this.contentDate);
+      });
+      return;
+    } else if (flag === 'modifyScreen') {
+      const id = data.id;
+      this.visiable.modifyScreen = true;
+      this.cmsId = id;  // 用于修改
+      this.screenService.getScreen(id).subscribe(res => {
+        // 处理异常处理
+        this.screenDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '开屏弹窗', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        this.screenDate.url = JSON.parse(res.payload).url;
+        this.imageUrl = JSON.parse(res.payload).image;
+        const file: any = {
+          name: JSON.parse(res.payload).image
+        };
+        this.fileList.push(file);
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/start-page-ads/images/${this.imageUrl}`;
+      });
+      return;
+    } else if (flag === 'modifyOpen') {
+      const id = data.id;
+      this.visiable.modifyOpen = true;
+      this.cmsId = id;  // 用于修改
+      this.displayModeForOpen = data.displayMode;
+      this.openService.getOpen(id).subscribe(res => {
+        // 处理异常处理
+        this.openDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        this.openDate.url = JSON.parse(res.payload).url;
+        this.imageUrl = JSON.parse(res.payload).image;
+        const file: any = {
+          name: JSON.parse(res.payload).image
+        };
+        this.fileList.push(file);
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/main-page-ads/images/${this.imageUrl}`;
+      });
+      return;
+    } else if (flag === 'modifyBanner') {
+      const id = data.id;
+      this.visiable.modifyBanner = true;
+      this.cmsId = id;  // 用于修改
+      this.bannerService.getBanner(id).subscribe(res => {
+        // 处理异常处理
+        this.bannerDate = JSON.parse(res.payload);
+        const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        this.bannerDate.url = JSON.parse(res.payload).url;
+        this.imageUrl = JSON.parse(res.payload).image;
+        const file: any = {
+          name: JSON.parse(res.payload).image
+        };
+        this.fileList.push(file);
+        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/banner-ads/images/${this.imageUrl}`;
+      });
+      return;
+    } else if (flag === 'modifyPersonal') {
+      const id = data.id;
+      this.visiable.modifyPersonal = true;
+      this.cmsId = id;  // 用于修改
+      // 处理异常处理
+      this.personalDate = data;
+      this.imageUrl = data.image;
+      const file: any = {
+        name: data.image
+      };
+      this.fileList.push(file);
+      this.showImageUrl = `${this.imageUrl}`;
+      return;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
@@ -194,27 +289,40 @@ export class ContentComponent implements OnInit {
     this.emptyAdd = ['', '', '', '', '', '', ''];
   }
 
-  hideAddModal(flag) {
-    if (flag === 'content') {
+  hideModal(flag) {
+    if (flag === 'addContent') {
       this.visiable.addContent = false;
-    } else if (flag === 'screen') {
+    } else if (flag === 'addScreen') {
       this.visiable.addScreen = false;
-    } else if (flag === 'open') {
+    } else if (flag === 'addOpen') {
       this.visiable.addOpen = false;
-    } else if (flag === 'banner') {
+    } else if (flag === 'addBanner') {
       this.visiable.addBanner = false;
-    } else if (flag === 'personal') {
+    } else if (flag === 'addPersonal') {
       this.visiable.addPersonal = false;
+    } else if (flag === 'changePhone') {
+      this.visiable.changePhone = false;
+      return;
+    } else if (flag === 'modifyContent') {
+      this.visiable.modifyContent = false;
+    } else if (flag === 'modifyScreen') {
+      this.visiable.modifyScreen = false;
+    } else if (flag === 'modifyOpen') {
+      this.visiable.modifyOpen = false;
+    } else if (flag === 'modifyBanner') {
+      this.visiable.modifyBanner = false;
+    } else if (flag === 'modifyPersonal') {
+      this.visiable.modifyPersonal = false;
     }
     this.fileList.splice(0, this.fileList.length);
     this.imageUrl = '';
     this.showImageUrl = '';
   }
 
-  // 封装验证新增
-  verificationAdd(flag): boolean {
+  // 封装验证
+  verification(flag): boolean {
     let result = true;
-    if (flag === 'content') {
+    if (flag === 'addContent') {
       if (this.addContentForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
         result = false;
@@ -230,8 +338,13 @@ export class ContentComponent implements OnInit {
       } else if (this.addContentForm.controls['publishTime'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
         result = false;
+      } else if (this.contentDate.groupSend === 'part') {
+        if (this.contentDate.phones === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '群发用户为部分用户时，请点击\'查看用户\'按钮，填写指定用户' });
+          result = false;
+        }
       }
-    } else if (flag === 'screen') {
+    } else if (flag === 'addScreen') {
       if (this.addScreenForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '开屏标题未填写' });
         result = false;
@@ -242,7 +355,7 @@ export class ContentComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '链接跳转状态未选择' });
         result = false;
       }
-    } else if (flag === 'open') {
+    } else if (flag === 'addOpen') {
       if (this.addOpenForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '弹窗标题未填写' });
         result = false;
@@ -250,11 +363,7 @@ export class ContentComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
         result = false;
       }
-      // } else if (this.addOpenForm.controls['order'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
-      //   result = false;
-      // }
-    } else if (flag === 'banner') {
+    } else if (flag === 'addBanner') {
       if (this.addBannerForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
         result = false;
@@ -265,11 +374,71 @@ export class ContentComponent implements OnInit {
         this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
         result = false;
       }
-    } else if (flag === 'banner') {
+    } else if (flag === 'addPersonal') {
       if (this.addPersonalForm.controls['title'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
         result = false;
       } else if (this.addPersonalForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      }
+    } else if (flag === 'modifyContent') {
+      if (this.modifyContentForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
+        result = false;
+      } else if (this.modifyContentForm.controls['type'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
+        result = false;
+      } else if (this.modifyContentForm.controls['pseudonym'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
+        result = false;
+      } else if (this.modifyContentForm.controls['abstractContent'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
+        result = false;
+      } else if (this.modifyContentForm.controls['publishTime'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
+        result = false;
+      } else if (this.contentDate.groupSend === 'part') {
+        if (this.contentDate.phones === '') {
+          this.modalService.error({ nzTitle: '提示', nzContent: '群发用户为部分用户时，请点击\'查看用户\'按钮，填写指定用户' });
+          result = false;
+        }
+      }
+    } else if (flag === 'modifyScreen') {
+      if (this.modifyScreenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '开屏标题未填写' });
+        result = false;
+      } else if (this.modifyScreenForm.controls['duration'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '持续时间未填写' });
+        result = false;
+      } else if (this.modifyScreenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '链接跳转状态未选择' });
+        result = false;
+      }
+    } else if (flag === 'modifyOpen') {
+      if (this.modifyOpenForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '弹窗标题未填写' });
+        result = false;
+      } else if (this.modifyOpenForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      }
+    } else if (flag === 'modifyBanner') {
+      if (this.modifyBannerForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
+        result = false;
+      } else if (this.modifyBannerForm.controls['jump'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
+        result = false;
+      } else if (this.modifyBannerForm.controls['order'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
+        result = false;
+      }
+    } else if (flag === 'modifyPersonal') {
+      if (this.modifyPersonalForm.controls['title'].value === '') {
+        this.modalService.error({ nzTitle: '提示', nzContent: '广告图标题未填写' });
+        result = false;
+      } else if (this.modifyPersonalForm.controls['jump'].value === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
         result = false;
       }
@@ -290,8 +459,8 @@ export class ContentComponent implements OnInit {
 
   // 新增操作
   doSave(flag): void {
-    if (flag === 'content') {
-      if (!this.verificationAdd('content')) { return; }
+    if (flag === 'addContent') {
+      if (!this.verification('addContent')) { return; }
       const contentInput = {
         'title': this.addContentForm.controls['title'].value,
         'url': this.dotranUrl(this.addContentForm.controls['url'].value),
@@ -300,19 +469,20 @@ export class ContentComponent implements OnInit {
         'pseudonym': this.addContentForm.controls['pseudonym'].value,
         'publishTime': this.datePipe.transform(this.addContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
         'type': this.addContentForm.controls['type'].value,
-        'thumbnail': this.imageUrl
+        'thumbnail': this.imageUrl,
+        'phones': this.contentDate.phones.replace(/ /g, '').replace(/\n/g, ',')
       };
       this.contentService.addContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('content');
+          this.hideModal('addContent');
           this.loadData('content');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'screen') {
-      if (!this.verificationAdd('screen')) { return; }
+    } else if (flag === 'addScreen') {
+      if (!this.verification('addScreen')) { return; }
       const screenInput = {
         'enabled': false, // 默认不可启用
         'title': this.addScreenForm.controls['title'].value,
@@ -329,12 +499,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('screen');
+          this.hideModal('addScreen');
           this.loadData('screen');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'open') {
-      if (!this.verificationAdd('open')) { return; }
+    } else if (flag === 'addOpen') {
+      if (!this.verification('addOpen')) { return; }
       const maxDisplay = this.addOpenForm.controls['maxDisplay'].value;
       const openInput = {
         'enabled': false, // 默认不可启用
@@ -353,12 +523,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('open');
+          this.hideModal('addOpen');
           this.loadData('open');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'banner') {
-      if (!this.verificationAdd('banner')) { return; }
+    } else if (flag === 'addBanner') {
+      if (!this.verification('addBanner')) { return; }
       const bannerInput = {
         'enabled': false, // 默认不可启用
         'title': this.addBannerForm.controls['title'].value,
@@ -374,12 +544,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('banner');
+          this.hideModal('addBanner');
           this.loadData('banner');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'personal') {
-      if (!this.verificationAdd('personal')) { return; }
+    } else if (flag === 'addPersonal') {
+      if (!this.verification('addPersonal')) { return; }
       const personalInput = {
         'enabled': false, // 默认不可启用
         'title': this.addPersonalForm.controls['title'].value,
@@ -394,211 +564,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '个人中心', op_name: '新增' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideAddModal('personal');
+          this.hideModal('addPersonal');
           this.loadData('personal');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    }
-  }
-
-  // 封装验证修改表单
-  verificationModify(flag): boolean {
-    let result = true;
-    if (flag === 'content') {
-      if (this.modifyContentForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '标题未填写' });
-        result = false;
-      } else if (this.modifyContentForm.controls['type'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '类型未选择' });
-        result = false;
-      } else if (this.modifyContentForm.controls['pseudonym'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '发布人未填写' });
-        result = false;
-      } else if (this.modifyContentForm.controls['abstractContent'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '摘要未填写' });
-        result = false;
-      } else if (this.modifyContentForm.controls['publishTime'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '发布时间未选择' });
-        result = false;
-      }
-    } else if (flag === 'screen') {
-      if (this.modifyScreenForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '开屏标题未填写' });
-        result = false;
-      } else if (this.modifyScreenForm.controls['duration'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '持续时间未填写' });
-        result = false;
-      } else if (this.modifyScreenForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '链接跳转状态未选择' });
-        result = false;
-      }
-    } else if (flag === 'open') {
-      if (this.modifyOpenForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '弹窗标题未填写' });
-        result = false;
-      } else if (this.modifyOpenForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
-        result = false;
-      }
-      // } else if (this.modifyOpenForm.controls['order'].value === '') {
-      //   this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
-      //   result = false;
-      // }
-    } else if (flag === 'banner') {
-      if (this.modifyBannerForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '轮播图标题未填写' });
-        result = false;
-      } else if (this.modifyBannerForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
-        result = false;
-      } else if (this.modifyBannerForm.controls['order'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '排序状态未填写' });
-        result = false;
-      }
-    } else if (flag === 'personal') {
-      if (this.modifyPersonalForm.controls['title'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '广告图标题未填写' });
-        result = false;
-      } else if (this.modifyPersonalForm.controls['jump'].value === '') {
-        this.modalService.error({ nzTitle: '提示', nzContent: '跳转位置未选择' });
-        result = false;
-      }
-    }
-    if (this.fileList.length !== 1) {
-      this.modalService.error({ nzTitle: '提示', nzContent: '未上传图片' });
-      result = false;
-    }
-    return result;
-  }
-
-  // 预览修改
-  doPreviewContentModify() {
-    if (!this.verificationModify('content')) { return; }
-    const url = this.modifyContentForm.controls['url'].value;
-    if (url) {
-      url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
-    } else {
-      const title = '<h1><strong>' + this.modifyContentForm.controls['title'].value + '</strong></h1>';
-      const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
-          + this.modifyContentForm.controls['pseudonym'].value + '</span>'
-          + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-          + this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
-          + '</p><p><br></p>';
-      this.localizationService.setPreview = title + pseudonym + this.modifyContentForm.controls['content'].value;
-      window.open('preview');
-    }
-  }
-
-  // 修改 - 弹窗
-  showModifyModal(data, flag) {
-    if (flag === 'content') {
-      const id = data.id;
-      this.visiable.modifyContent = true;
-      this.cmsId = id;  // 用于修改
-      this.contentService.getContent(id).subscribe(res => {
-        // 处理异常处理
-        this.contentDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.contentDate.url = this.dotranUrl(JSON.parse(res.payload).url);
-        this.imageUrl = JSON.parse(res.payload).thumbnail;
-        const file: any = {
-          name: JSON.parse(res.payload).thumbnail
-        };
-        this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/notices/thumbnails/${this.imageUrl}`;
-      });
-    } else if (flag === 'screen') {
-      const id = data.id;
-      this.visiable.modifyScreen = true;
-      this.cmsId = id;  // 用于修改
-      this.screenService.getScreen(id).subscribe(res => {
-        // 处理异常处理
-        this.screenDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '开屏弹窗', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.screenDate.url = JSON.parse(res.payload).url;
-        this.imageUrl = JSON.parse(res.payload).image;
-        const file: any = {
-          name: JSON.parse(res.payload).image
-        };
-        this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/start-page-ads/images/${this.imageUrl}`;
-      });
-    } else if (flag === 'open') {
-      const id = data.id;
-      this.visiable.modifyOpen = true;
-      this.cmsId = id;  // 用于修改
-      this.displayModeForOpen = data.displayMode;
-      this.openService.getOpen(id).subscribe(res => {
-        // 处理异常处理
-        this.openDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.openDate.url = JSON.parse(res.payload).url;
-        this.imageUrl = JSON.parse(res.payload).image;
-        const file: any = {
-          name: JSON.parse(res.payload).image
-        };
-        this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/main-page-ads/images/${this.imageUrl}`;
-      });
-    } else if (flag === 'banner') {
-      const id = data.id;
-      this.visiable.modifyBanner = true;
-      this.cmsId = id;  // 用于修改
-      this.bannerService.getBanner(id).subscribe(res => {
-        // 处理异常处理
-        this.bannerDate = JSON.parse(res.payload);
-        const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '访问' };
-        this.commonService.updateOperationlog(operationInput).subscribe();
-        this.bannerDate.url = JSON.parse(res.payload).url;
-        this.imageUrl = JSON.parse(res.payload).image;
-        const file: any = {
-          name: JSON.parse(res.payload).image
-        };
-        this.fileList.push(file);
-        this.showImageUrl = `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/v1/cms/banner-ads/images/${this.imageUrl}`;
-      });
-    } else if (flag === 'personal') {
-      const id = data.id;
-      this.visiable.modifyPersonal = true;
-      this.cmsId = id;  // 用于修改
-      // 处理异常处理
-      this.personalDate = data;
-      this.imageUrl = data.image;
-      const file: any = {
-        name: data.image
-      };
-      this.fileList.push(file);
-      this.showImageUrl = `${this.imageUrl}`;
-    }
-
-  }
-
-  hideModifyModal(flag) {
-    if (flag === 'content') {
-      this.visiable.modifyContent = false;
-    } else if (flag === 'screen') {
-      this.visiable.modifyScreen = false;
-    } else if (flag === 'open') {
-      this.visiable.modifyOpen = false;
-    } else if (flag === 'banner') {
-      this.visiable.modifyBanner = false;
-    } else if (flag === 'personal') {
-      this.visiable.modifyPersonal = false;
-    }
-    this.fileList.splice(0, this.fileList.length);
-    this.imageUrl = '';
-    this.showImageUrl = '';
-  }
-
-  // 修改操作
-  doModify(flag) {
-    if (flag === 'content') {
-      if (!this.verificationModify('content')) {
-        return;
-      }
+    } else if (flag === 'modifyContent') {
+      if (!this.verification('modifyContent')) { return; }
       const contentInput = {
         'id': this.cmsId,
         'title': this.modifyContentForm.controls['title'].value,
@@ -608,19 +579,20 @@ export class ContentComponent implements OnInit {
         'pseudonym': this.modifyContentForm.controls['pseudonym'].value,
         'publishTime': this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss'),
         'type': this.modifyContentForm.controls['type'].value,
-        'thumbnail': this.imageUrl
+        'thumbnail': this.imageUrl,
+        'phones': this.contentDate.phones.replace(/ /g, '').replace(/\n/g, ',')
       };
       this.contentService.updateContent(contentInput).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '内容发布', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('content');
+          this.hideModal('modifyContent');
           this.loadData('content');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'screen') {
-      if (!this.verificationModify('screen')) {
+    } else if (flag === 'modifyScreen') {
+      if (!this.verification('modifyScreen')) {
         return;
       }
       const jump = this.modifyScreenForm.controls['jump'].value;
@@ -640,12 +612,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('screen');
+          this.hideModal('modifyScreen');
           this.loadData('screen');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'open') {
-      if (!this.verificationModify('open')) {
+    } else if (flag === 'modifyOpen') {
+      if (!this.verification('modifyOpen')) {
         return;
       }
       const jump = this.modifyOpenForm.controls['jump'].value;
@@ -667,12 +639,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '首页弹窗', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('open');
+          this.hideModal('modifyOpen');
           this.loadData('open');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'banner') {
-      if (!this.verificationModify('banner')) {
+    } else if (flag === 'modifyBanner') {
+      if (!this.verification('modifyBanner')) {
         return;
       }
       const jump = this.modifyBannerForm.controls['jump'].value;
@@ -691,12 +663,12 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('banner');
+          this.hideModal('modifyBanner');
           this.loadData('banner');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
-    } else if (flag === 'personal') {
-      if (!this.verificationModify('personal')) {
+    } else if (flag === 'modifyPersonal') {
+      if (!this.verification('modifyPersonal')) {
         return;
       }
       const jump = this.modifyPersonalForm.controls['jump'].value;
@@ -715,10 +687,28 @@ export class ContentComponent implements OnInit {
           this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
           const operationInput = { op_category: '内容管理', op_page: '轮播图', op_name: '修改' };
           this.commonService.updateOperationlog(operationInput).subscribe();
-          this.hideModifyModal('personal');
+          this.hideModal('modifyPersonal');
           this.loadData('personal');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    }
+  }
+
+  // 预览修改
+  doPreviewContentModify() {
+    if (!this.verification('modifyContent')) { return; }
+    const url = this.modifyContentForm.controls['url'].value;
+    if (url) {
+      url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
+    } else {
+      const title = '<h1><strong>' + this.modifyContentForm.controls['title'].value + '</strong></h1>';
+      const pseudonym = '<p><strong>﻿</strong></p><p>创建人：<span style="color: rgb(102, 163, 224);">'
+          + this.modifyContentForm.controls['pseudonym'].value + '</span>'
+          + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+          + this.datePipe.transform(this.modifyContentForm.controls['publishTime'].value, 'yyyy-MM-dd HH:mm:ss')
+          + '</p><p><br></p>';
+      this.localizationService.setPreview = title + pseudonym + this.modifyContentForm.controls['content'].value;
+      window.open('preview');
     }
   }
 
@@ -830,7 +820,7 @@ export class ContentComponent implements OnInit {
 
   // 预览新增
   doPreviewContentAdd() {
-    if (!this.verificationAdd('content')) { return; }
+    if (!this.verification('addContent')) { return; }
     const url = this.addContentForm.controls['url'].value;
     if (url) {
       url.indexOf('`') !== -1 ? window.open(this.dotranUrl(url)) : window.open(url) ;
