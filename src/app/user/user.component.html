@@ -1215,7 +1215,7 @@
                 <td>{{data.nickname}}</td>
                 <td>{{data.invoicePrice}}</td>
                 <td>{{data.invoiceMsg.email}}</td>
-                <td>{{data.orderType === 'FlightOrder' ? '机票' : data.orderType === 'HotelOrder' ? '酒店' : data.orderType === 'TaxiOrder' ? '打车' : data.orderType === 'ExpressOrde' ? '闪送' : 'null' }}</td>
+                <td>{{data.orderType === 'FlightOrder' ? '机票' : data.orderType === 'HotelOrder' ? '酒店' : data.orderType === 'TaxiOrder' ? '打车' : data.orderType === 'FlashOrder' ? '闪送' : 'null' }}</td>
                 <td>{{data.state === 0 ? '开票失败' : data.state === 1 ? '已开票' : data.state === 2 ? '开票中' : data.state === 3 ? '待开票' : 'null'}}</td>
                 <td>{{data.createTime}}</td>
                 <td>
@@ -1236,7 +1236,7 @@
             </div>
             <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">开票状态：</div> <div nz-col nzSpan="8">{{invoiceItem.state === 0 ? '开票失败' : invoiceItem.state === 1 ? '已开票' : invoiceItem.state === 2 ? '开票中' : invoiceItem.state === 3 ? '待开票' : 'null'}}</div>
-              <div nz-col nzSpan="4" class="right_alignment">开票类型：</div> <div nz-col nzSpan="8">{{invoiceItem.orderType === 'FlightOrder' ? '机票' : invoiceItem.orderType === 'HotelOrder' ? '酒店' : invoiceItem.orderType === 'TaxiOrder' ? '打车' : invoiceItem.orderType === 'ExpressOrde' ? '闪送' : 'null'}}</div>
+              <div nz-col nzSpan="4" class="right_alignment">开票类型：</div> <div nz-col nzSpan="8">{{invoiceItem.orderType === 'FlightOrder' ? '机票' : invoiceItem.orderType === 'HotelOrder' ? '酒店' : invoiceItem.orderType === 'TaxiOrder' ? '打车' : invoiceItem.orderType === 'FlashOrder' ? '闪送' : 'null'}}</div>
             </div>
             <div *ngIf="invoiceItem.invoiceMsg">
               <div nz-row>

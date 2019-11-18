@@ -147,9 +147,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const tabFlag = [{label: '用户信息', value: 'user'}, {label: '实体订单管理', value: 'bookingHypostatic'},
-    {label: '数字服务订单', value: 'bookingDigital'},  {label: '数据调整', value: 'adjust'},
-    {label: '充值记录', value: 'business'}, {label: '开票记录', value: 'invoice'}
-  ];
+      {label: '数字服务订单', value: 'bookingDigital'},  {label: '数据调整', value: 'adjust'},
+      {label: '充值记录', value: 'business'}, {label: '开票记录', value: 'invoice'}
+    ];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -185,7 +185,7 @@ export class UserComponent implements OnInit {
       this.userService.getUserInfoList(userInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.userData = JSON.parse(res.payload);
+          this.userData = JSON.parse(res.payload).reverse();
           console.log(this.userData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
@@ -283,7 +283,6 @@ export class UserComponent implements OnInit {
         phone: this.searchInvoiceForm.controls['phone'].value,
         orderType: this.invoiceType, state: this.invoiceState,
       };
-      console.log(invoiceInput);
       this.invoiceService.getInvoiceListForUser(invoiceInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
@@ -330,11 +329,10 @@ export class UserComponent implements OnInit {
       const latestLoginInput = {
         userId: this.latestLoginInfo,
       };
-      console.log(latestLoginInput);
       this.userService.getLatestLogin(latestLoginInput).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.latestLoginData = JSON.parse(res.payload).reverse();
+          this.latestLoginData = JSON.parse(res.payload);
           console.log(this.latestLoginData);
         } else {
           this.modalService.confirm({ nzTitle: '提示', nzContent: res.message });
