@@ -1020,6 +1020,34 @@
           </nz-table>
         </nz-tab>
 
+        <nz-tab [nzTitle]="musicsdkTemplate" (nzClick)="changePanel('musicsdk')" *ngIf="commonService.haveMenuPermission('children', 'APP功能BOT')">
+          <ng-template #musicsdkTemplate><i class="anticon anticon-api"></i>音乐SDK埋点 <a href="/dataCenter?currentTab=21" target="_blank">-></a></ng-template>
+          <nz-table #rowMusicsdkSelectionTable nzBordered [nzData]="commonDataCenter" [nzSimple]="true" [(nzPageSize)]="pageSize" [nzShowPagination]="false" *ngIf="!isSpinning">
+            <thead>
+              <tr>
+                <th nzWidth="50px" nzLeft="0px">序号</th>
+                <th nzWidth="100px" nzLeft="68px">时间</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.musicsdk[0].checked">appkey</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.musicsdk[1].checked">新增激活数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.musicsdk[2].checked">日调用总数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.musicsdk[3].checked">总激活数</th>
+                <th nzWidth="100px" *ngIf="checkDataOptions.musicsdk[4].checked">总调用次数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of rowMusicsdkSelectionTable.data; let i=index;">
+                <td nzWidth="50px" nzLeft="0px">{{i+1}}</td>
+                <td nzWidth="100px" nzLeft="68px">{{data.date | date:'yy-MM-dd'}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.musicsdk[0].checked">{{data.appKey}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.musicsdk[1].checked">{{data.dailyNewActivationCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.musicsdk[2].checked">{{data.dailyBroadcastCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.musicsdk[3].checked">{{data.newActivationCount}}</td>
+                <td nzWidth="100px" *ngIf="checkDataOptions.musicsdk[4].checked">{{data.broadcastCount}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </nz-tab>
+
         <nz-modal [(nzVisible)]="visiable.explain" nzWidth="1050" nzTitle="{{currentTitle}}数据说明" [nzFooter]="ecplainModalFooter" (nzOnCancel)="hideSomething('explain')" nzMaskClosable="false">
           <div nz-row style="text-align: center;">
             <div nz-col nzSpan="2">
