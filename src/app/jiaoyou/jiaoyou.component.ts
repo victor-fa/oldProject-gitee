@@ -182,6 +182,7 @@ export class JiaoyouComponent implements OnInit {
       }
       this.dataPay.needPay = this.dataPay.pay;
       this.dataPay.needPay === false ? this.dataPay.skillPrice = '' : null;
+      this.dataPay.needPay === false ? this.dataPay.single = '' : null;
       console.log(this.dataPay);
       this.visiable.editPay = true;
     } else if (flag === 'deleteFree' || flag === 'deletePay') {

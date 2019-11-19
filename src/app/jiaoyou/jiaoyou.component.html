@@ -233,7 +233,7 @@
                 <td>{{data.appChannelId}}</td>
                 <td>{{data.freeMode === 'BY_ACCOUNT' ? '按账号计算' : data.freeMode === 'BY_SKILL' ? '按游戏计算' : ''}}</td>
                 <td>{{data.freeCount}}</td>
-                <td>￥{{data.single ? data.single : 0}}/次</td>
+                <td>￥{{data.pay === true ? (data.single ? data.single : 0) : 0}}/次</td>
                 <td nzTitle="{{data.pay === true ? (data.multiple ? data.multiple : '0') : '0'}}" nzPlacement="bottom" nz-tooltip>
                   <a>{{data.pay === true ? (data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : '0') : '0'}}</a>
                 </td>
