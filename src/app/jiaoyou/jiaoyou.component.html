@@ -221,6 +221,7 @@
                 <th>免费次数</th>
                 <th>单次进入定价</th>
                 <th>周期进入定价</th>
+                <th>是否需要付费</th>
                 <th>创建时间</th>
                 <th>操作</th>
               </tr>
@@ -233,9 +234,10 @@
                 <td>{{data.freeMode === 'BY_ACCOUNT' ? '按账号计算' : data.freeMode === 'BY_SKILL' ? '按游戏计算' : ''}}</td>
                 <td>{{data.freeCount}}</td>
                 <td>￥{{data.single ? data.single : 0}}/次</td>
-                <td nzTitle="{{data.multiple ? data.multiple : '0'}}" nzPlacement="bottom" nz-tooltip>
-                  <a>{{data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : '0'}}</a>
+                <td nzTitle="{{data.pay === true ? (data.multiple ? data.multiple : '0') : '0'}}" nzPlacement="bottom" nz-tooltip>
+                  <a>{{data.pay === true ? (data.multiple ? data.multiple.length > 12 ? data.multiple.substring(0, 12) + '…' : data.multiple : '0') : '0'}}</a>
                 </td>
+                <td>{{data.pay === true ? '需要' : '不需要'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('editPay', data)" style="margin-right: 10px"><i class="anticon anticon-edit"></i>修改</button>
