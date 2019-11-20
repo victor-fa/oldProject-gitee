@@ -85,7 +85,7 @@ router.get('/manage/api/reset', function (req, res) {
 
 // API:转发到上传配置页面
 router.get('/manage/api/upload',function(req, res){
-	res.render('admin/cases-upload', {
+	res.render('admin/config-file-upload', {
 		css: ['/css/qw/app.css']
 	});
 });
@@ -93,7 +93,7 @@ router.get('/manage/api/upload',function(req, res){
 
 // API:转发到新建配置页面
 router.get('/manage/api/new',function(req, res){
-	res.render('admin/cases-new', {
+	res.render('admin/config-file-create', {
 		css: ['/css/qw/app.css']
 	});
 });
