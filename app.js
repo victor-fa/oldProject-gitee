@@ -1,4 +1,4 @@
-var express = require('express'),
+const express = require('express'),
 	path = require('path'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
@@ -9,13 +9,17 @@ var express = require('express'),
 	passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
 	favicon = require('serve-favicon'),
-	port = process.env.PORT || 10010;	
+	port = process.env.PORT || 10010;
+
+const redis = require('redis');
+let RedisStore = require('connect-redis')(session);
+let client = redis.createClient();
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/chewtool', { useNewUrlParser: true });
 
 var UserService = require('./services/user'),
-	UserGroupPolicy = require('./services/group_policy')
+	UserGroupPolicy = require('./services/group_policy');
 
 var routes = require('./routes/index'),
 	users = require('./routes/users'),
@@ -86,6 +90,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
 app.use(session({
+	store: new RedisStore({ client }),
 	secret: 'chewrobot-tool-secret',
 	saveUninitialized: true,
 	resave: true
