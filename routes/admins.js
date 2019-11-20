@@ -415,7 +415,8 @@ function updateApp(attr,callbackfunciton){
 
 function getAppBySecret(attr,callbackfunciton){
 	//http.get("http://localhost" + '/api/admin/get-app?'+ attr, function(res) {
-	https.get(config.deploy_domain_name + '/api/admin/get-app?'+ attr, function(res) {
+	request.get(config.deploy_domain_name + '/api/admin/get-app?'+ attr)
+	.on('response', function(res) {
 		var datas = [];
         var size = 0;
 		console.log('get2');
