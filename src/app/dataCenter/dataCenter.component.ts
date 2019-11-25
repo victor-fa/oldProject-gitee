@@ -142,7 +142,7 @@ export class DataCenterComponent implements OnInit {
       case 'reminder': flag = 'matter-bot'; break;
       case 'news': flag = 'news-bot'; break;
       case 'equip': flag = 'bluetooth-link'; break;
-      case 'musicsdk': flag = 'music_sdk'; break;
+      case 'musicsdk': flag = 'music-sdk'; break;
       default: break;
     }
     this.isSpinning = true; // loading
