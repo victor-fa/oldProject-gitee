@@ -252,13 +252,17 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.changePhone" nzTitle="查看用户" (nzOnCancel)="hideModal('changePhone')" nzMaskClosable="false" [nzFooter]="null">
+          <nz-modal [(nzVisible)]="visiable.changePhone" nzTitle="查看用户" (nzOnCancel)="hideModal('changePhone')" nzMaskClosable="false" [nzFooter]="changePhoneModalFooter">
             <div nz-row><div nz-col nzSpan="24" class="spthumbnailan_down">已选择以下用户</div></div>
             <div nz-row>
               <div nz-col nzSpan="24">
                 <textarea rows="4" nz-input [(ngModel)]="contentDate.phones" placeholder="请输入指定用户，通过换行区分用户" nzSize="default"></textarea>
               </div>
             </div>
+            <ng-template #changePhoneModalFooter>
+              <button nz-button nzType="primary" (click)="hideModal('changePhone')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('changePhone')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
           </nz-modal>
         </nz-tab>
 

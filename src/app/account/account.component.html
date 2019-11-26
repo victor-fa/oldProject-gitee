@@ -673,7 +673,7 @@
             <div nz-row *ngIf="navConfigItem.fileList.length === 1">
               <div nz-col nzSpan="3"></div>
               <div nz-col nzSpan="21">
-                <img *ngIf="navConfigItem.iconFileId" [src]="'http://account-center-test.chewrobot.com/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
+                <img *ngIf="navConfigItem.iconFileId" [src]="commonService.currentServer + '/api/shortcut/resources/icons/' + navConfigItem.iconFileId" class="image-panel">
               </div>
             </div>
             <div nz-row>

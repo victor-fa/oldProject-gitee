@@ -554,7 +554,7 @@
                 <td>{{data.appChannel}}</td>
                 <td>{{data.orderType === 'TRAIN_ORDER' ? '火车' : data.orderType === 'FLIGHT_ORDER' || data.orderType === 'FLIGHT_RETURN_ORDER' ? '机票' : data.orderType === 'HOTEL_ORDER' ? '酒店' : data.orderType === 'TAXI_ORDER' ? '打车' : data.orderType === 'EXPRESS_ORDER' ? '闪送' : data.orderType === 'PHONE_CHARGE_ORDER' ? '充话费' : data.orderType === 'MOVIE_ORDER' ? '电影票' : data.orderType === 'PAIR_ORDER' ? '恋爱运势' : data.orderType === 'FORTUNE_ORDER' ? '月运势' : data.orderType === 'MUSIC_ORDER' ? '付费音频' : data.orderType === 'JIAOYOU_GAME_ORDER' ? '交游天下游戏' : ''}}</td>
                 <td>{{data.callbackUrl}}</td>
-                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.createTime ? (data.createTime | date:'yyyy-MM-dd HH:mm:ss') : null}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyCallback', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteCallback', data.id)"><i class="anticon anticon-delete"></i>删除</button>
@@ -680,7 +680,7 @@
                 <td>{{data.lanRenAccess === true ? '是' : '否'}}</td>
                 <td>{{data.koudaiAccess === true ? '是' : '否'}}</td>
                 <td>{{data.xmlyAccess === true ? '是' : '否'}}</td>
-                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.createTime && data.createTime !== 'null' ? (data.createTime | date:'yyyy-MM-dd HH:mm:ss') : null}}</td>
                 <td>{{data.operator}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyMusic', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
@@ -770,6 +770,276 @@
             <ng-template #modifyMusicModalFooter>
               <button nz-button nzType="primary" (click)="doSave('modifyMusic')"><i class="anticon anticon-save"></i>保存</button>
               <button nz-button nzType="default" (click)="hideModal('modifyMusic')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
+
+        <nz-tab [nzTitle]="bluetoothTemplate" (nzClick)="changePanel('bluetooth')" *ngIf="commonService.haveMenuPermission('children', '订单回调地址')">
+          <ng-template #bluetoothTemplate><i class="anticon anticon-disconnect"></i>蓝牙设备</ng-template>
+          <div nz-row>
+            <form [formGroup]="bluetoothSearchForm">
+              <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户名称" formControlName="customerName" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="right_alignment">设备类型：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入设备类型" formControlName="deviceType" nzSize="default">
+              </div>
+            </form>
+            <div nz-col nzSpan="9"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('bluetooth')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addBluetooth', data)"><i class="anticon anticon-file-add"></i>新增设备</button>
+            </div>
+          </div>
+          <nz-table nzBordered #bluetoothTable [nzData]="dataBluetooth" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>客户名称</th>
+                <th>设备类型</th>
+                <th>设备key</th>
+                <th>logo</th>
+                <th>功能说明</th>
+                <th>功能Icon1</th>
+                <th>功能Icon2</th>
+                <th>功能Icon3</th>
+                <th>是否支持BLE</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of bluetoothTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.customerName}}</td>
+                <td>{{data.deviceType}}</td>
+                <td>{{data.deviceKey}}</td>
+                <td><img *ngIf="data.logo && data.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.logo" class="image-panel"></td>
+                <td>{{data.functionDesc}}</td>
+                <td><img *ngIf="data.functionIcon1 && data.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon1" class="image-panel"></td>
+                <td><img *ngIf="data.functionIcon2 && data.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon2" class="image-panel"></td>
+                <td><img *ngIf="data.functionIcon3 && data.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon3" class="image-panel"></td>
+                <td>{{data.supportBle === true ? '支持' : '不支持'}}</td>
+                <td>{{data.createTime}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyBluetooth', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('deleteBluetooth', data.id)"><i class="anticon anticon-delete"></i>删除</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addBluetooth" nzWidth="950" nzTitle="新增设备" [nzFooter]="addBluetoothModalFooter" (nzOnCancel)="hideModal('addBluetooth')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="19">
+                  <input nz-input placeholder="请输入客户名称" [(ngModel)]="bluetoothData.customerName" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">设备类型：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="bluetoothData.deviceType">
+                  <label nz-col *ngFor="let item of bluetoothData.deviceTypeList" nzSpan="10" nz-radio [nzValue]="item.deviceName">{{item.deviceName}}</label>
+                  <label nz-col nzSpan="10" nz-radio [nzValue]="'new'">新增设备类型</label>
+                </nz-radio-group>
+                <input nz-input *ngIf="bluetoothData.deviceType === 'new'" placeholder="请输入新的设备类型" [(ngModel)]="bluetoothData.newDeviceType" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">支持BLE：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="bluetoothData.supportBle">
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="true">支持</label>
+                    <label nz-col nzSpan="10" nz-radio [nzValue]="false">不支持</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">设备logo：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileLogo" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('logo')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileLogo.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon1：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon1" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon1')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon1.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon1" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon2：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon2" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon2')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon2.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon2" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon3：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon3" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon3')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon3.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon3" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能说明：</div>
+              <div nz-col nzSpan="19">
+                <textarea rows="5" nz-input placeholder="请输入功能说明，选填" [(ngModel)]="bluetoothData.functionDesc" nzSize="default"></textarea>
+              </div>
+            </div>
+            <ng-template #addBluetoothModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addBluetooth')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addBluetooth')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyBluetooth" nzWidth="950" nzTitle="修改设备" [nzFooter]="modifyBluetoothModalFooter" (nzOnCancel)="hideModal('modifyBluetooth')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="19">
+                {{bluetoothData.customerName}}
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">设备类型：</div>
+              <div nz-col nzSpan="19">
+                {{bluetoothData.deviceType}}
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">支持BLE：</div>
+              <div nz-col nzSpan="19">
+                {{bluetoothData.supportBle && bluetoothData.supportBle === true ? '支持' : '不支持'}}
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">设备logo：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileLogo" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('logo')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileLogo.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon1：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon1" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon1')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon1.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon1" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon2：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon2" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon2')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon2.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon2" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能Icon3：</div>
+              <div nz-col nzSpan="19">
+                <nz-upload [(nzFileList)]="bluetoothData.fileIcon3" nzMultiple [nzBeforeUpload]="beforeUpload">
+                  <button nz-button nzType="primary" (click)="choosePng('icon3')">
+                    <i class="anticon anticon-upload"></i><span>上传文件</span>
+                  </button>
+                  &nbsp;&nbsp支持.jpg .png
+                </nz-upload>
+              </div>
+            </div>
+            <div nz-row *ngIf="bluetoothData.fileIcon3.length == 1">
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="19">
+                <img *ngIf="bluetoothData.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon3" class="image-panel">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">功能说明：</div>
+              <div nz-col nzSpan="19">
+                <textarea rows="5" nz-input placeholder="请输入功能说明，选填" [(ngModel)]="bluetoothData.functionDesc" nzSize="default"></textarea>
+              </div>
+            </div>
+            <ng-template #modifyBluetoothModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyBluetooth')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyBluetooth')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

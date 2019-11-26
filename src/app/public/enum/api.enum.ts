@@ -86,6 +86,10 @@ export enum consumerApiUrls {
   callback = '/callback/url',
   /** 客户管理 音频管理 */
   musicList = '/priority/music',
+  /** 客户管理 蓝牙设备 */
+  bluetoothList = '/cms/bluetooth',
+  /** 客户管理 蓝牙设备类型 */
+  deviceType = '/cms/bluetooth/deviceType',
 }
 
 /** 运维后台 */

@@ -2,12 +2,15 @@ import { registerLocaleData, DatePipe } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService, UploadFile, NzMessageService } from 'ng-zorro-antd';
 import { CommonService } from '../public/service/common.service';
 import { ConsumerService } from '../public/service/consumer.service';
 import { ClipboardService } from 'ngx-clipboard';
 import * as XLSX from 'xlsx';
 import { MusicService } from '../public/service/music.service';
+import { BluetoothService } from '../public/service/bluetooth.service';
+import { HttpRequest, HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
+import { filter } from 'rxjs/operators';
 
 registerLocaleData(zh);
 
@@ -19,7 +22,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -28,16 +31,19 @@ export class ConsumerComponent implements OnInit {
   callbackSearchForm: FormGroup;
   serialBatchSearchForm: FormGroup;
   musicSearchForm: FormGroup;
+  bluetoothSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
   dataSerialBatch = [];
+  dataBluetooth = [];
   dataMusic = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
+  bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 0, checked: false}, {name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
@@ -66,7 +72,10 @@ export class ConsumerComponent implements OnInit {
     private modalService: NzModalService,
     private consumerService: ConsumerService,
     private musicService: MusicService,
+    private bluetoothService: BluetoothService,
+    private msg: NzMessageService,
     private notification: NzNotificationService,
+    private http: HttpClient,
     private _clipboardService: ClipboardService,
     private datePipe: DatePipe,
   ) {
@@ -75,7 +84,7 @@ export class ConsumerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const tabFlag = [{label: '客户管理', value: 'consumer'}, {label: '回调地址', value: 'callback'}, {label: '音频管理 ', value: 'music'}];
+    const tabFlag = [{label: '客户管理', value: 'consumer'}, {label: '回调地址', value: 'callback'}, {label: '音频管理 ', value: 'music'}, {label: '蓝牙设备', value: 'bluetooth'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -170,6 +179,23 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataMusic);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'bluetooth') {
+      const input = { customerName: this.bluetoothSearchForm.controls['customerName'].value, deviceType: this.bluetoothSearchForm.controls['deviceType'].value };
+      this.bluetoothService.getBluetoothList(input).subscribe(res => {
+        if (res[0].retcode === 0 && res[0].status === 200) {
+          this.isSpinning = false;
+          this.dataBluetooth = JSON.parse(res[0].message);
+          console.log(this.dataBluetooth);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res[0].message }); }
+      });
+    } else if (flag === 'deviceType') {
+      this.bluetoothService.getDeviceTypeList().subscribe(res => {
+        if (res[0].retcode === 0 && res[0].status === 200) {
+          this.isSpinning = false;
+          this.bluetoothData.deviceTypeList = JSON.parse(res[0].message);
+          console.log(this.bluetoothData);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res[0].message }); }
+      });
     }
   }
 
@@ -181,6 +207,7 @@ export class ConsumerComponent implements OnInit {
     this.callbackSearchForm = this.fb.group({ appChannel: [''], orderType: [''] });
     this.serialBatchSearchForm = this.fb.group({ groupName: [''] });
     this.musicSearchForm = this.fb.group({ appChannel: [''], aaa: [''], date: [''] });
+    this.bluetoothSearchForm = this.fb.group({ customerName: [''], deviceType: [''] });
   }
 
   // 弹窗
@@ -240,7 +267,7 @@ export class ConsumerComponent implements OnInit {
       this.callbackData = data;
       console.log(this.callbackData);
       this.visiable.modifyCallback = true;
-    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch' || flag === 'deleteMusic') {
+    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch' || flag === 'deleteMusic' || flag === 'deleteBluetooth') {
       this.modalService.confirm({
         nzTitle: '提示',
         nzContent: flag === 'deleteSerialBatch' ? '确认删除该序列号吗？删除后，该序列号将不可激活，请谨慎操作' : flag === 'deleteMusic' ? '确定删除该数据吗？' : '您确定要删除该信息？',
@@ -265,6 +292,30 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifyMusic') {
       this.musicData = {appChannel: data.appChannel, useSDK: data.useSDK, xiaoWu: data.xiaoWu, koudaiAccess: data.koudaiAccess, lanRenAccess: data.lanRenAccess, musicAccess: data.musicAccess, xmlyAccess: data.xmlyAccess};
       this.visiable.modifyMusic = true;
+    } else if (flag === 'addBluetooth') {
+      this.loadData('deviceType');
+      this.visiable.addBluetooth = true;
+    } else if (flag === 'modifyBluetooth') {
+      this.bluetoothData = {
+        id: data.id,
+        customerName: data.customerName,
+        deviceType: data.deviceType,
+        functionDesc: data.functionDesc,
+        functionIcon1: data.functionIcon1,
+        functionIcon2: data.functionIcon2,
+        functionIcon3: data.functionIcon3,
+        logo: data.logo,
+        supportBle: data.supportBle,
+        fileLogo: (data.logo.length > 0) ? [{}] : [],
+        fileIcon1: (data.functionIcon1.length > 0) ? [{}] : [],
+        fileIcon2: (data.functionIcon2.length > 0) ? [{}] : [],
+        fileIcon3: (data.functionIcon3.length > 0) ? [{}] : [],
+        currentImage: '',
+        deviceTypeList: [],
+        newDeviceType: ''
+      };
+      console.log(this.bluetoothData);
+      this.visiable.modifyBluetooth = true;
     }
   }
 
@@ -317,6 +368,12 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifyMusic') {
       this.musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
       this.visiable.modifyMusic = false;
+    } else if (flag === 'addBluetooth') {
+      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+      this.visiable.addBluetooth = false;
+    } else if (flag === 'modifyBluetooth') {
+      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+      this.visiable.modifyBluetooth = false;
     }
   }
 
@@ -506,6 +563,44 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('modifyMusic');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addBluetooth') {
+      const input = {
+        customerName: this.bluetoothData.customerName,
+        deviceType: this.bluetoothData.deviceType === 'new' ? this.bluetoothData.newDeviceType : this.bluetoothData.deviceType,
+        functionDesc: this.bluetoothData.functionDesc,
+        functionIcon1: this.bluetoothData.functionIcon1,
+        functionIcon2: this.bluetoothData.functionIcon2,
+        functionIcon3: this.bluetoothData.functionIcon3,
+        logo: this.bluetoothData.logo,
+        supportBle: this.bluetoothData.supportBle,
+      };
+      console.log(input);
+      this.bluetoothService.addBluetooth(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('bluetooth');
+          this.hideModal('addBluetooth');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyBluetooth') {
+      const input = {
+        id: this.bluetoothData.id,
+        customerName: this.bluetoothData.customerName,
+        deviceType: this.bluetoothData.deviceType,
+        functionDesc: this.bluetoothData.functionDesc,
+        functionIcon1: this.bluetoothData.functionIcon1,
+        functionIcon2: this.bluetoothData.functionIcon2,
+        functionIcon3: this.bluetoothData.functionIcon3,
+        logo: this.bluetoothData.logo,
+        supportBle: this.bluetoothData.supportBle,
+      };
+      this.bluetoothService.modifyBluetooth(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('bluetooth');
+          this.hideModal('modifyBluetooth');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -561,6 +656,15 @@ export class ConsumerComponent implements OnInit {
           const operationInput = { op_category: '客户管理', op_page: '音频管理', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('music');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteBluetooth') {
+      this.bluetoothService.deleteBluetooth(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '蓝牙设备', op_name: '删除' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+          this.loadData('bluetooth');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -681,11 +785,78 @@ export class ConsumerComponent implements OnInit {
     return a;
   }
 
+  // 用于区分
+  choosePng(flag) {
+    this.bluetoothData.currentImage = flag;
+  }
+
+  // 上传image
+  beforeUpload = (file: UploadFile): boolean => {
+    const suffix = file.name.substring(file.name.lastIndexOf('.'), file.name.length);
+    const isPng = suffix === '.png' || suffix === '.jpeg' || suffix === '.jpg' || suffix === '.ico' ? true : false;
+    const isMoreThanTen = file.size < 512000 ? true : false;
+    if (!isPng) {
+      this.msg.error('您只能上传.png、.jpeg、.jpg、.ico、文件');
+    } else if (!isMoreThanTen) {
+      this.msg.error('您只能上传不超过500K文件');
+    } else {
+      console.log(this.bluetoothData);
+      if (this.bluetoothData.currentImage === 'logo') {
+        this.bluetoothData.fileLogo.push(file);
+      } else if (this.bluetoothData.currentImage === 'icon1') {
+        this.bluetoothData.fileIcon1.push(file);
+      } else if (this.bluetoothData.currentImage === 'icon2') {
+        this.bluetoothData.fileIcon2.push(file);
+      } else if (this.bluetoothData.currentImage === 'icon3') {
+        this.bluetoothData.fileIcon3.push(file);
+      }
+      this.handleUpload();
+    }
+    return false;
+  }
+
+  // 点击上传
+  handleUpload(): void {
+    const formData = new FormData();
+    if (this.bluetoothData.currentImage === 'logo') {
+      this.bluetoothData.fileLogo.forEach((file: any) => { formData.append('image', file); });
+    } else if (this.bluetoothData.currentImage === 'icon1') {
+      this.bluetoothData.fileIcon1.forEach((file: any) => { formData.append('image', file); });
+    } else if (this.bluetoothData.currentImage === 'icon2') {
+      this.bluetoothData.fileIcon2.forEach((file: any) => { formData.append('image', file); });
+    } else if (this.bluetoothData.currentImage === 'icon3') {
+      this.bluetoothData.fileIcon3.forEach((file: any) => { formData.append('image', file); });
+    }
+    const req = new HttpRequest('POST', `${this.commonService.currentServer}/api/cms/bluetooth/images`, formData, {
+      reportProgress: true,
+      headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader'), 'Authorization': localStorage.getItem('token') })
+    });
+    this.http
+      .request(req)
+      .pipe(filter(e => e instanceof HttpResponse))
+      .subscribe((event: HttpResponse<{ code: any, data: any, msg: any }> | any) => {
+        if (event.body.retcode === 0) {
+          if (this.bluetoothData.currentImage === 'logo') {
+            this.bluetoothData.logo = event.body.payload;
+          } else if (this.bluetoothData.currentImage === 'icon1') {
+            this.bluetoothData.functionIcon1 = event.body.payload;
+          } else if (this.bluetoothData.currentImage === 'icon2') {
+            this.bluetoothData.functionIcon2 = event.body.payload;
+          } else if (this.bluetoothData.currentImage === 'icon3') {
+            this.bluetoothData.functionIcon3 = event.body.payload;
+          }
+          this.notification.success( '提示', '上传成功' );
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
+        formData.delete('image');
+      }, err => { formData.delete('image'); }
+    );
+  }
+
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : flag === 'music' ? '音频管理' : '', op_name: '访问' };
+    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : flag === 'music' ? '音频管理' : flag === 'bluetooth' ? '蓝牙设备' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 
