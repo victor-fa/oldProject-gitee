@@ -820,13 +820,13 @@
                 <td>{{data.customerName}}</td>
                 <td>{{data.deviceType}}</td>
                 <td>{{data.deviceKey}}</td>
-                <td><img *ngIf="data.logo && data.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.logo" class="image-panel"></td>
+                <td><img *ngIf="data.logo && data.logo" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + data.logo" class="image-panel"></td>
                 <td>{{data.functionDesc}}</td>
-                <td><img *ngIf="data.functionIcon1 && data.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon1" class="image-panel"></td>
-                <td><img *ngIf="data.functionIcon2 && data.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon2" class="image-panel"></td>
-                <td><img *ngIf="data.functionIcon3 && data.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + data.functionIcon3" class="image-panel"></td>
+                <td><img *ngIf="data.deviceIcon1 && data.deviceIcon1" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + data.deviceIcon1" class="image-panel"></td>
+                <td><img *ngIf="data.deviceIcon2 && data.deviceIcon2" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + data.deviceIcon2" class="image-panel"></td>
+                <td><img *ngIf="data.deviceIcon3 && data.deviceIcon3" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + data.deviceIcon3" class="image-panel"></td>
                 <td>{{data.supportBle === true ? '支持' : '不支持'}}</td>
-                <td>{{data.createTime}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('modifyBluetooth', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
                   <button nz-button nzType="primary" (click)="showModal('deleteBluetooth', data.id)"><i class="anticon anticon-delete"></i>删除</button>
@@ -878,7 +878,7 @@
             <div nz-row *ngIf="bluetoothData.fileLogo.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
+                <img *ngIf="bluetoothData.logo" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -895,7 +895,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon1.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon1" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon1" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon1" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -912,7 +912,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon2.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon2" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon2" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon2" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -929,7 +929,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon3.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon3" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon3" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon3" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -977,7 +977,7 @@
             <div nz-row *ngIf="bluetoothData.fileLogo.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.logo" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
+                <img *ngIf="bluetoothData.logo" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.logo" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -994,7 +994,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon1.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon1" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon1" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon1" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon1" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -1011,7 +1011,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon2.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon2" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon2" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon2" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon2" class="image-panel">
               </div>
             </div>
             <div nz-row>
@@ -1028,7 +1028,7 @@
             <div nz-row *ngIf="bluetoothData.fileIcon3.length == 1">
               <div nz-col nzSpan="5"></div>
               <div nz-col nzSpan="19">
-                <img *ngIf="bluetoothData.functionIcon3" [src]="commonService.currentServer + '/api/cms/bluetooth/images/' + bluetoothData.functionIcon3" class="image-panel">
+                <img *ngIf="bluetoothData.deviceIcon3" [src]="this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin')) + '/cms/bluetooth/images/' + bluetoothData.deviceIcon3" class="image-panel">
               </div>
             </div>
             <div nz-row>

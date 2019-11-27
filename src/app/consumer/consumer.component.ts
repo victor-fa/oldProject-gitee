@@ -43,7 +43,7 @@ export class ConsumerComponent implements OnInit {
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
-  bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+  bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', deviceIcon1: '', deviceIcon2: '', deviceIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 0, checked: false}, {name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
@@ -182,19 +182,19 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'bluetooth') {
       const input = { customerName: this.bluetoothSearchForm.controls['customerName'].value, deviceType: this.bluetoothSearchForm.controls['deviceType'].value };
       this.bluetoothService.getBluetoothList(input).subscribe(res => {
-        if (res[0].retcode === 0 && res[0].status === 200) {
+        if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataBluetooth = JSON.parse(res[0].message);
+          this.dataBluetooth = JSON.parse(res.payload).reverse();
           console.log(this.dataBluetooth);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res[0].message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'deviceType') {
       this.bluetoothService.getDeviceTypeList().subscribe(res => {
-        if (res[0].retcode === 0 && res[0].status === 200) {
+        if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.bluetoothData.deviceTypeList = JSON.parse(res[0].message);
+          this.bluetoothData.deviceTypeList = JSON.parse(res.payload);
           console.log(this.bluetoothData);
-        } else { this.modalService.error({ nzTitle: '提示', nzContent: res[0].message }); }
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
   }
@@ -301,15 +301,15 @@ export class ConsumerComponent implements OnInit {
         customerName: data.customerName,
         deviceType: data.deviceType,
         functionDesc: data.functionDesc,
-        functionIcon1: data.functionIcon1,
-        functionIcon2: data.functionIcon2,
-        functionIcon3: data.functionIcon3,
-        logo: data.logo,
+        deviceIcon1: data.deviceIcon1,
+        deviceIcon2: data.deviceIcon2,
+        deviceIcon3: data.deviceIcon3,
+        logo: data.logo ? data.logo : '',
         supportBle: data.supportBle,
-        fileLogo: (data.logo.length > 0) ? [{}] : [],
-        fileIcon1: (data.functionIcon1.length > 0) ? [{}] : [],
-        fileIcon2: (data.functionIcon2.length > 0) ? [{}] : [],
-        fileIcon3: (data.functionIcon3.length > 0) ? [{}] : [],
+        fileLogo: data.logo ? ((data.logo.length > 0) ? [{}] : []) : [],
+        fileIcon1: data.deviceIcon1 ? ((data.deviceIcon1.length > 0) ? [{}] : []) : [],
+        fileIcon2: data.deviceIcon2 ? ((data.deviceIcon2.length > 0) ? [{}] : []) : [],
+        fileIcon3: data.deviceIcon3 ? ((data.deviceIcon3.length > 0) ? [{}] : []) : [],
         currentImage: '',
         deviceTypeList: [],
         newDeviceType: ''
@@ -369,10 +369,10 @@ export class ConsumerComponent implements OnInit {
       this.musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
       this.visiable.modifyMusic = false;
     } else if (flag === 'addBluetooth') {
-      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', deviceIcon1: '', deviceIcon2: '', deviceIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
       this.visiable.addBluetooth = false;
     } else if (flag === 'modifyBluetooth') {
-      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', functionIcon1: '', functionIcon2: '', functionIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+      this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', deviceIcon1: '', deviceIcon2: '', deviceIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
       this.visiable.modifyBluetooth = false;
     }
   }
@@ -568,9 +568,9 @@ export class ConsumerComponent implements OnInit {
         customerName: this.bluetoothData.customerName,
         deviceType: this.bluetoothData.deviceType === 'new' ? this.bluetoothData.newDeviceType : this.bluetoothData.deviceType,
         functionDesc: this.bluetoothData.functionDesc,
-        functionIcon1: this.bluetoothData.functionIcon1,
-        functionIcon2: this.bluetoothData.functionIcon2,
-        functionIcon3: this.bluetoothData.functionIcon3,
+        deviceIcon1: this.bluetoothData.deviceIcon1,
+        deviceIcon2: this.bluetoothData.deviceIcon2,
+        deviceIcon3: this.bluetoothData.deviceIcon3,
         logo: this.bluetoothData.logo,
         supportBle: this.bluetoothData.supportBle,
       };
@@ -588,9 +588,9 @@ export class ConsumerComponent implements OnInit {
         customerName: this.bluetoothData.customerName,
         deviceType: this.bluetoothData.deviceType,
         functionDesc: this.bluetoothData.functionDesc,
-        functionIcon1: this.bluetoothData.functionIcon1,
-        functionIcon2: this.bluetoothData.functionIcon2,
-        functionIcon3: this.bluetoothData.functionIcon3,
+        deviceIcon1: this.bluetoothData.deviceIcon1,
+        deviceIcon2: this.bluetoothData.deviceIcon2,
+        deviceIcon3: this.bluetoothData.deviceIcon3,
         logo: this.bluetoothData.logo,
         supportBle: this.bluetoothData.supportBle,
       };
@@ -827,7 +827,7 @@ export class ConsumerComponent implements OnInit {
     } else if (this.bluetoothData.currentImage === 'icon3') {
       this.bluetoothData.fileIcon3.forEach((file: any) => { formData.append('image', file); });
     }
-    const req = new HttpRequest('POST', `${this.commonService.currentServer}/api/cms/bluetooth/images`, formData, {
+    const req = new HttpRequest('POST', `${this.commonService.baseUrl.substring(0, this.commonService.baseUrl.indexOf('/admin'))}/cms/bluetooth/images`, formData, {
       reportProgress: true,
       headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader'), 'Authorization': localStorage.getItem('token') })
     });
@@ -839,11 +839,11 @@ export class ConsumerComponent implements OnInit {
           if (this.bluetoothData.currentImage === 'logo') {
             this.bluetoothData.logo = event.body.payload;
           } else if (this.bluetoothData.currentImage === 'icon1') {
-            this.bluetoothData.functionIcon1 = event.body.payload;
+            this.bluetoothData.deviceIcon1 = event.body.payload;
           } else if (this.bluetoothData.currentImage === 'icon2') {
-            this.bluetoothData.functionIcon2 = event.body.payload;
+            this.bluetoothData.deviceIcon2 = event.body.payload;
           } else if (this.bluetoothData.currentImage === 'icon3') {
-            this.bluetoothData.functionIcon3 = event.body.payload;
+            this.bluetoothData.deviceIcon3 = event.body.payload;
           }
           this.notification.success( '提示', '上传成功' );
         } else { this.modalService.error({ nzTitle: '提示', nzContent: event.body.message, }); }
