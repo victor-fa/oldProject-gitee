@@ -11,6 +11,7 @@ import { MusicService } from '../public/service/music.service';
 import { BluetoothService } from '../public/service/bluetooth.service';
 import { HttpRequest, HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
+import { ConsumerAccountService } from '../public/service/consumerAccount.service';
 
 registerLocaleData(zh);
 
@@ -22,7 +23,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -32,18 +33,23 @@ export class ConsumerComponent implements OnInit {
   serialBatchSearchForm: FormGroup;
   musicSearchForm: FormGroup;
   bluetoothSearchForm: FormGroup;
+  accountSearchForm: FormGroup;
+  capitalSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
   dataSerialBatch = [];
   dataBluetooth = [];
+  dataAccount = [];
+  dataCapital = [];
   dataMusic = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
   bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', deviceIcon1: '', deviceIcon2: '', deviceIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
+  accountData = {customerId: '', customerIds: [], email: '', phoneNum: '18682233554', code: '', balanceThresholds: '', countDown: 60, recharge: '', accountBalance: '' };
   editSerialData = '';
   voucherInfo = {appChannel: '', appSecret: '', aesKey: '', aesIv: '', privateKey: '', };
   dataMsgArr = [{name: '机票', value: 0, checked: false}, {name: '机票', value: 1, checked: false}, {name: '火车', value: 2, checked: false}, {name: '酒店', value: 3, checked: false}, {name: '打车', value: 4, checked: false}, {name: '充话费', value: 5, checked: false}, {name: '星座', value: 6, checked: false}, {name: '电影票', value: 9, checked: false}, {name: '付费音频', value: 10, checked: false}, {name: '闪送', value: 8, checked: false}];
@@ -54,6 +60,8 @@ export class ConsumerComponent implements OnInit {
   dateRange = [];
   serialBatchStartDate = null;
   serialBatchEndDate = null;
+  capitalStartDate = null;
+  capitalEndDate = null;
   orderTypeItem = [
     {key: 'FLIGHT_RETURN_ORDER', value: '机票', visiable: true},
     {key: 'TRAIN_ORDER', value: '火车', visiable: true},
@@ -73,6 +81,7 @@ export class ConsumerComponent implements OnInit {
     private consumerService: ConsumerService,
     private musicService: MusicService,
     private bluetoothService: BluetoothService,
+    private consumerAccountService: ConsumerAccountService,
     private msg: NzMessageService,
     private notification: NzNotificationService,
     private http: HttpClient,
@@ -84,7 +93,7 @@ export class ConsumerComponent implements OnInit {
   }
 
   ngOnInit() {
-    const tabFlag = [{label: '客户管理', value: 'consumer'}, {label: '回调地址', value: 'callback'}, {label: '音频管理 ', value: 'music'}, {label: '蓝牙设备', value: 'bluetooth'}];
+    const tabFlag = [{label: '客户管理', value: 'consumer'}, {label: '回调地址', value: 'callback'}, {label: '音频管理 ', value: 'music'}, {label: '蓝牙设备', value: 'bluetooth'}, {label: '客户账户', value: 'account'}];
     let targetFlag = 0;
     for (let i = 0; i < tabFlag.length; i++) {
       if (this.commonService.haveMenuPermission('children', tabFlag[i].label)) {targetFlag = i; break; }
@@ -196,6 +205,36 @@ export class ConsumerComponent implements OnInit {
           console.log(this.bluetoothData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'account') {
+      const input = { customerId: this.accountSearchForm.controls['customerId'].value, customerName: this.accountSearchForm.controls['customerName'].value };
+      this.consumerAccountService.getConsumerAccountList(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataAccount = JSON.parse(res.payload).reverse();
+          console.log(this.dataAccount);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'customerId') {
+      this.consumerAccountService.getCustomerIdList().subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.accountData.customerIds = JSON.parse(res.payload);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'capital') {
+      const input = {
+        customerId: this.accountData.customerId,
+        orderType: this.capitalSearchForm.controls['orderType'].value,
+        timeStart: this.capitalStartDate,
+        timeEnd: this.capitalEndDate,
+      };
+      this.consumerAccountService.getCapitalList(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataCapital = JSON.parse(res.payload);
+          console.log(this.dataCapital);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -208,6 +247,8 @@ export class ConsumerComponent implements OnInit {
     this.serialBatchSearchForm = this.fb.group({ groupName: [''] });
     this.musicSearchForm = this.fb.group({ appChannel: [''], aaa: [''], date: [''] });
     this.bluetoothSearchForm = this.fb.group({ customerName: [''], deviceType: [''] });
+    this.accountSearchForm = this.fb.group({ customerId: [''], customerName: [''] });
+    this.capitalSearchForm = this.fb.group({ orderType: [''], date: [''] });
   }
 
   // 弹窗
@@ -316,6 +357,50 @@ export class ConsumerComponent implements OnInit {
       };
       console.log(this.bluetoothData);
       this.visiable.modifyBluetooth = true;
+    } else if (flag === 'addAccount') {
+      this.loadData('customerId');  // 获取客户ID列表
+      this.visiable.addAccount = true;
+    } else if (flag === 'modifyAccount') {
+      this.accountData = {
+        customerId: data.customerId,
+        customerIds: this.accountData.customerIds,
+        email: data.email,
+        phoneNum: '18682233554',
+        code: '',
+        balanceThresholds: data.balanceThresholds,
+        countDown: 60,
+        recharge: '',
+        accountBalance: ''
+      };
+      this.visiable.modifyAccount = true;
+    } else if (flag === 'recharge') {
+      this.accountData = {
+        customerId: data.customerId,
+        customerIds: [],
+        email: '',
+        phoneNum: '18682233554',
+        code: '',
+        balanceThresholds: '',
+        countDown: 60,
+        recharge: '',
+        accountBalance: data.accountBalance
+      };
+      this.visiable.recharge = true;
+    } else if (flag === 'capital') {
+      this.accountData = {
+        customerId: data.customerId,
+        customerIds: [],
+        email: '',
+        phoneNum: '18682233554',
+        code: '',
+        balanceThresholds: '',
+        countDown: 60,
+        recharge: '',
+        accountBalance: data.accountBalance
+      };
+      this.loadData('capital');
+      console.log(this.accountData);
+      this.visiable.capital = true;
     }
   }
 
@@ -374,6 +459,17 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'modifyBluetooth') {
       this.bluetoothData = {id: '', customerName: '', deviceType: '', functionDesc: '', deviceIcon1: '', deviceIcon2: '', deviceIcon3: '', logo: '', supportBle: '', fileLogo: [], fileIcon1: [], fileIcon2: [], fileIcon3: [], currentImage: '', deviceTypeList: [], newDeviceType: '' };
       this.visiable.modifyBluetooth = false;
+    } else if (flag === 'addAccount') {
+      this.accountData = {customerId: '', customerIds: [], email: '', phoneNum: '18682233554', code: '', balanceThresholds: '', countDown: 60, recharge: '', accountBalance: '' };
+      this.visiable.addAccount = false;
+    } else if (flag === 'modifyAccount') {
+      this.accountData = {customerId: '', customerIds: [], email: '', phoneNum: '18682233554', code: '', balanceThresholds: '', countDown: 60, recharge: '', accountBalance: '' };
+      this.visiable.modifyAccount = false;
+    } else if (flag === 'recharge') {
+      this.accountData = {customerId: '', customerIds: [], email: '', phoneNum: '18682233554', code: '', balanceThresholds: '', countDown: 60, recharge: '', accountBalance: '' };
+      this.visiable.recharge = false;
+    } else if (flag === 'capital') {
+      this.visiable.capital = false;
     }
   }
 
@@ -601,6 +697,60 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('modifyBluetooth');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addAccount') {
+      const input = {
+        customerId: this.accountData.customerId,
+        email: this.accountData.email,
+        phoneNum: this.accountData.phoneNum,
+        code: this.accountData.code,
+        balanceThresholds: this.accountData.balanceThresholds,
+      };
+      this.consumerAccountService.addConsumerAccount(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('account');
+          this.hideModal('addAccount');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'modifyAccount') {
+      const input = {
+        customerId: this.accountData.customerId,
+        email: this.accountData.email,
+        phoneNum: this.accountData.phoneNum,
+        code: this.accountData.code,
+        balanceThresholds: this.accountData.balanceThresholds,
+      };
+      this.consumerAccountService.modifyConsumerAccount(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          this.loadData('account');
+          this.hideModal('modifyAccount');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'sendMsg') {
+      this.consumerAccountService.sendMsg(this.accountData.phoneNum).subscribe(res => {
+        if (res.retcode === 0) {
+          this.countDown();
+          this.notification.blank( '提示', '发送成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '客户账户' , op_name: '发送短信' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'recharge') {
+      const input = {
+        customerId: this.accountData.customerId,
+        amount: this.accountData.recharge,
+        phoneNum: this.accountData.phoneNum,
+        code: this.accountData.code,
+      };
+      console.log(input);
+      this.consumerAccountService.rechargeAccount(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('account');
+          this.hideModal('recharge');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -751,6 +901,15 @@ export class ConsumerComponent implements OnInit {
         }
       }
       if (this.serialBatchStartDate === null) { this.serialBatchStartDate = null; this.serialBatchEndDate = null; }
+    } else if (flag === 'capital') {
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.capitalStartDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.capitalEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        } else {
+          this.capitalStartDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.capitalEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        }
+      }
+      if (this.capitalStartDate === null) { this.capitalStartDate = null; this.capitalEndDate = null; }
     }
   }
 
@@ -852,11 +1011,18 @@ export class ConsumerComponent implements OnInit {
     );
   }
 
+  // 倒计时
+  countDown() {
+    this.accountData.countDown--;
+    if (this.accountData.countDown === 0) { this.accountData.countDown = 60; return; }
+    setTimeout(() => { this.countDown(); }, 1000);
+  }
+
   // 切换面板
   changePanel(flag): void {
     if (flag !== this.currentPanel) {this.loadData(flag); }
     this.currentPanel = flag;
-    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : flag === 'music' ? '音频管理' : flag === 'bluetooth' ? '蓝牙设备' : '', op_name: '访问' };
+    const operationInput = { op_category: '客户管理', op_page: flag === 'consumer' ? '客户管理' : flag === 'callback' ? '回调地址' : flag === 'music' ? '音频管理' : flag === 'bluetooth' ? '蓝牙设备' : flag === 'account' ? '客户账户' : '', op_name: '访问' };
     this.commonService.updateOperationlog(operationInput).subscribe();
   }
 

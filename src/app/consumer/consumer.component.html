@@ -1045,6 +1045,266 @@
 
         </nz-tab>
 
+
+        <nz-tab [nzTitle]="accountTemplate" (nzClick)="changePanel('account')" *ngIf="commonService.haveMenuPermission('children', '订单回调地址')">
+          <ng-template #accountTemplate><i class="anticon anticon-wallet"></i>客户账户</ng-template>
+          <div nz-row>
+            <form [formGroup]="accountSearchForm">
+              <div nz-col nzSpan="2" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户ID" formControlName="customerId" nzSize="default">
+              </div>
+              <div nz-col nzSpan="2" class="right_alignment">客户名称：</div>
+              <div nz-col nzSpan="3">
+                <input nz-input placeholder="请输入客户名称" formControlName="customerName" nzSize="default">
+              </div>
+            </form>
+            <div nz-col nzSpan="9"></div>
+            <div nz-col nzSpan="2">
+              <button nz-button nzType="primary" (click)="loadData('account')"><i class="anticon anticon-search"></i>查询</button>
+            </div>
+            <div nz-col nzSpan="3">
+              <button nz-button nzType="primary" (click)="showModal('addAccount', data)"><i class="anticon anticon-file-add"></i>新增账户</button>
+            </div>
+          </div>
+          <nz-table nzBordered #accountTable [nzData]="dataAccount" *ngIf="!isSpinning" [nzScroll]="{x:'2100px'}">
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>客户ID</th>
+                <th>客户名称</th>
+                <th>账户余额</th>
+                <th>最近充值</th>
+                <th>最近充值时间</th>
+                <th>联系邮箱</th>
+                <th>创建人</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of accountTable.data; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.customerId}}</td>
+                <td>{{data.customerName}}</td>
+                <td>{{data.accountBalance}}</td>
+                <td>{{data.latestRecharge}}</td>
+                <td>{{data.latestRechargeTime | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
+                <td>{{data.email}}</td>
+                <td>{{data.operator}}</td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss':'GMT+16:00'}}</td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('modifyAccount', data)" style="margin-right: 10px"><i class="anticon anticon-form"></i>修改</button>
+                  <button nz-button nzType="primary" (click)="showModal('recharge', data)" style="margin-right: 10px"><i class="anticon anticon-delete"></i>充值</button>
+                  <button nz-button nzType="primary" (click)="showModal('capital', data)"><i class="anticon anticon-delete"></i>资金流水</button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+          <div class="spin" *ngIf="isSpinning">
+            <nz-spin [nzSize]="'large'"></nz-spin>
+          </div>
+
+          <nz-modal [(nzVisible)]="visiable.addAccount" nzWidth="950" nzTitle="新增账户" [nzFooter]="addAccountModalFooter" (nzOnCancel)="hideModal('addAccount')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">
+                <nz-radio-group [(ngModel)]="accountData.customerId">
+                  <label nz-col *ngFor="let item of accountData.customerIds" nzSpan="10" nz-radio [nzValue]="item">{{item}}</label>
+                </nz-radio-group>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">联系邮箱：</div>
+              <div nz-col nzSpan="10">
+                  <input nz-input placeholder="请输入联系邮箱" [(ngModel)]="accountData.email" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="8">邮箱必填，可以及时通知用户账号的变动</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">余额阈值：</div>
+              <div nz-col nzSpan="10">
+                <input nz-input placeholder="请输入余额阈值" [(ngModel)]="accountData.balanceThresholds" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="1">元</div>
+              <div nz-col nzSpan="7">当余额低于设置的阈值时，则发邮件给该客户</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">验证码：</div>
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="accountData.phoneNum">
+                  <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
+                  <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
+                  <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
+                  <nz-option required [nzLabel]="'18682251210'" [nzValue]="'18682251210'"></nz-option>
+                  <nz-option required [nzLabel]="'18819448274'" [nzValue]="'18819448274'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="accountData.countDown !== 60">{{accountData.countDown === 60 ? '获取验证码' : accountData.countDown + 's'}}</button>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="3">
+                <input nz-input nzSize="default" placeholder="请输入验证码" [(ngModel)]="accountData.code">
+              </div>
+            </div>
+            <ng-template #addAccountModalFooter>
+                <!-- [disabled]="accountData.code.length !== 4" -->
+              <button nz-button nzType="primary" (click)="doSave('addAccount')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('addAccount')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.modifyAccount" nzWidth="950" nzTitle="修改账户" [nzFooter]="modifyAccountModalFooter" (nzOnCancel)="hideModal('modifyAccount')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">{{accountData.customerId}}</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">联系邮箱：</div>
+              <div nz-col nzSpan="10">
+                  <input nz-input placeholder="请输入联系邮箱" [(ngModel)]="accountData.email" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="8">邮箱必填，可以及时通知用户账号的变动</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">余额阈值：</div>
+              <div nz-col nzSpan="10">
+                <input nz-input placeholder="请输入余额阈值" [(ngModel)]="accountData.balanceThresholds" nzSize="default">
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="1">元</div>
+              <div nz-col nzSpan="7">当余额低于设置的阈值时，则发邮件给该客户</div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">验证码：</div>
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="accountData.phoneNum">
+                  <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
+                  <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
+                  <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
+                  <nz-option required [nzLabel]="'18682251210'" [nzValue]="'18682251210'"></nz-option>
+                  <nz-option required [nzLabel]="'18819448274'" [nzValue]="'18819448274'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="accountData.countDown !== 60">{{accountData.countDown === 60 ? '获取验证码' : accountData.countDown + 's'}}</button>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="3">
+                <input nz-input nzSize="default" placeholder="请输入验证码" [(ngModel)]="accountData.code">
+              </div>
+            </div>
+            <ng-template #modifyAccountModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('modifyAccount')"><i class="anticon anticon-save"></i>保存</button>
+              <button nz-button nzType="default" (click)="hideModal('modifyAccount')"><i class="anticon anticon-close-circle-o"></i>取消</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.recharge" nzWidth="750" nzTitle="充值" [nzFooter]="rechargeModalFooter" (nzOnCancel)="hideModal('recharge')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">客户ID：</div>
+              <div nz-col nzSpan="19">{{accountData.customerId}}</div>
+            </div>
+            <div nz-row>
+                <div nz-col nzSpan="5" class="right_alignment">账户余额：</div>
+                <div nz-col nzSpan="19">{{accountData.accountBalance}}</div>
+              </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">账户充值：</div>
+              <div nz-col nzSpan="19">
+                <input nz-input placeholder="请输入钱包金额，单位元" [(ngModel)]="accountData.recharge" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5" class="right_alignment">验证码：</div>
+              <div nz-col nzSpan="3">
+                <nz-select [(ngModel)]="accountData.phoneNum">
+                  <nz-option required [nzLabel]="'18682233554'" [nzValue]="'18682233554'"></nz-option>
+                  <nz-option required [nzLabel]="'18665310035'" [nzValue]="'18665310035'"></nz-option>
+                  <nz-option required [nzLabel]="'18516609441'" [nzValue]="'18516609441'"></nz-option>
+                  <nz-option required [nzLabel]="'18682251210'" [nzValue]="'18682251210'"></nz-option>
+                  <nz-option required [nzLabel]="'18819448274'" [nzValue]="'18819448274'"></nz-option>
+                </nz-select>
+              </div>
+              <div nz-col nzSpan="1"></div>
+              <div nz-col nzSpan="3">
+                <button nz-button nzType="primary" (click)="doSave('sendMsg')" [disabled]="accountData.countDown !== 60">{{accountData.countDown === 60 ? '获取验证码' : accountData.countDown + 's'}}</button>
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="5"></div>
+              <div nz-col nzSpan="3">
+                <input nz-input nzSize="default" placeholder="请输入验证码" [(ngModel)]="accountData.code">
+              </div>
+            </div>
+            <ng-template #rechargeModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('recharge')"><i class="anticon anticon-save"></i>确定充值</button>
+              <button nz-button nzType="default" (click)="hideModal('recharge')"><i class="anticon anticon-close-circle-o"></i>放弃充值</button>
+            </ng-template>
+          </nz-modal>
+
+
+          <nz-modal [(nzVisible)]="visiable.capital" nzWidth="950" nzTitle="资金流水" [nzFooter]="capitalModalFooter" (nzOnCancel)="hideModal('capital')" nzMaskClosable="false">
+           <div nz-row>
+              <form [formGroup]="capitalSearchForm">
+                <div nz-col nzSpan="2" class="right_alignment">订单类型：</div>
+                <div nz-col nzSpan="3">
+                  <input nz-input placeholder="请输入订单类型" formControlName="orderType" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="right_alignment">时间范围：</div>
+                <div nz-col nzSpan="7">
+                    <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" [(ngModel)]="dateRange" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'capital')"></nz-range-picker>
+                </div>
+              </form>
+              <div nz-col nzSpan="8"></div>
+              <div nz-col nzSpan="2">
+                <button nz-button nzType="primary" (click)="loadData('capital')"><i class="anticon anticon-search"></i>查询</button>
+              </div>
+            </div>
+            <nz-table nzBordered #capitalTable [nzData]="dataCapital.trades" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>订单类型</th>
+                  <th>订单金额</th>
+                  <th>订单号</th>
+                  <th>下单时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of capitalTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.orderType}}</td>
+                  <td>{{data.orderAmount}}</td>
+                  <td>{{data.orderNo}}</td>
+                  <td>{{data.tradeTime}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #capitalModalFooter>
+              <div nz-row>
+                <div nz-col nzSpan="3">客户ID：</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{accountData.customerId}}</div>
+                <div nz-col nzSpan="2">余额：</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{accountData.accountBalance}}</div>
+                <div nz-col nzSpan="3">消费总额：</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{dataCapital.consumeAmount}}</div>
+              </div>
+            </ng-template>
+          </nz-modal>
+
+        </nz-tab>
+
       </nz-tabset>
     </nz-card-tab>
   </nz-card>
