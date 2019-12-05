@@ -23,7 +23,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -35,7 +35,8 @@ export class ConsumerComponent implements OnInit {
   bluetoothSearchForm: FormGroup;
   accountSearchForm: FormGroup;
   capitalSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
+  apiWhiteListSearchForm: FormGroup;
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
@@ -43,8 +44,10 @@ export class ConsumerComponent implements OnInit {
   dataBluetooth = [];
   dataAccount = [];
   dataCapital = [];
+  dataApiWhite = [];
   dataMusic = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
+  apiWhiteData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
@@ -235,6 +238,22 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataCapital);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'apiWhiteList') {
+      const input = {
+        page: this.apiWhiteData.page,
+        appChannel: this.apiWhiteData.appChannel,
+        businessId: this.apiWhiteListSearchForm.controls['businessId'].value,
+        id: this.apiWhiteListSearchForm.controls['id'].value,
+      };
+      this.consumerAccountService.getApiWhiteListList(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataApiWhite = JSON.parse(res.payload).accounts;
+          this.apiWhiteData.total = JSON.parse(res.payload).amount;
+          this.apiWhiteData.totalPage = Math.ceil(JSON.parse(res.payload).amount / 10);
+          console.log(this.dataApiWhite);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -249,15 +268,16 @@ export class ConsumerComponent implements OnInit {
     this.bluetoothSearchForm = this.fb.group({ customerName: [''], deviceType: [''] });
     this.accountSearchForm = this.fb.group({ customerId: [''], customerName: [''] });
     this.capitalSearchForm = this.fb.group({ orderType: [''], date: [''] });
+    this.apiWhiteListSearchForm = this.fb.group({ businessId: [''], id: [''] });
   }
 
   // 弹窗
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
       this.consumerDate = {
         appChannel: data.appChannel,
         appChannelName: data.appChannelName,
@@ -271,6 +291,7 @@ export class ConsumerComponent implements OnInit {
         available: '',
         maxSnActivation: data.maxSnActivation,
         needGuestKey: (data.needGuestKey !== undefined ? data.needGuestKey : true),
+        xxxxType: '1'
       };
       console.log(this.consumerDate);
       this.loadData('orderType');
@@ -308,7 +329,7 @@ export class ConsumerComponent implements OnInit {
       this.callbackData = data;
       console.log(this.callbackData);
       this.visiable.modifyCallback = true;
-    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch' || flag === 'deleteMusic' || flag === 'deleteBluetooth') {
+    } else if (flag === 'deleteCallback' || flag === 'deleteSerial' || flag === 'deleteSerialBatch' || flag === 'deleteMusic' || flag === 'deleteBluetooth' || flag === 'deleteApiWhiteList') {
       this.modalService.confirm({
         nzTitle: '提示',
         nzContent: flag === 'deleteSerialBatch' ? '确认删除该序列号吗？删除后，该序列号将不可激活，请谨慎操作' : flag === 'deleteMusic' ? '确定删除该数据吗？' : '您确定要删除该信息？',
@@ -401,6 +422,12 @@ export class ConsumerComponent implements OnInit {
       this.loadData('capital');
       console.log(this.accountData);
       this.visiable.capital = true;
+    } else if (flag === 'apiWhiteList') {
+      this.apiWhiteData.appChannel = data.appChannel;
+      this.loadData('apiWhiteList');  // 获取API白名单
+      this.visiable.apiWhiteList = true;
+    } else if (flag === 'addApiWhiteList') {
+      this.visiable.addApiWhiteList = true;
     }
   }
 
@@ -408,15 +435,15 @@ export class ConsumerComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = false;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
     } else if (flag === 'modifyConsumer') {
       this.dataMsgArr.map(item => item.checked = false);
       this.visiable.modifyConsumer = false;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
       this.visiable.addSerial = false;
     } else if (flag === 'deleteSerialM') {
       this.visiable.deleteSerial = false;
@@ -470,6 +497,10 @@ export class ConsumerComponent implements OnInit {
       this.visiable.recharge = false;
     } else if (flag === 'capital') {
       this.visiable.capital = false;
+    } else if (flag === 'apiWhiteList') {
+      this.visiable.apiWhiteList = false;
+    } else if (flag === 'addApiWhiteList') {
+      this.visiable.addApiWhiteList = false;
     }
   }
 
@@ -751,6 +782,19 @@ export class ConsumerComponent implements OnInit {
           this.hideModal('recharge');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'addApiWhiteList') {
+      const input = {
+        appChannel: this.apiWhiteData.appChannel,
+        count: this.apiWhiteData.count,
+      };
+      console.log(input);
+      this.consumerAccountService.addApiWhiteList(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('apiWhiteList');
+          this.hideModal('addApiWhiteList');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -815,6 +859,13 @@ export class ConsumerComponent implements OnInit {
           const operationInput = { op_category: '客户管理', op_page: '蓝牙设备', op_name: '删除' };
           this.commonService.updateOperationlog(operationInput).subscribe();
           this.loadData('bluetooth');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'deleteApiWhiteList') {
+      this.consumerAccountService.deleteApiWhiteList(id).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '删除成功', { nzStyle: { color : 'green' } });
+          this.loadData('apiWhiteList');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }

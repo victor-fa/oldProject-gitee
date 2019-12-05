@@ -92,6 +92,8 @@ export enum consumerApiUrls {
   deviceType = '/cms/bluetooth/deviceType',
   /** 客户管理 蓝牙设备类型 */
   consumerAccountList = '/cms/account',
+  /** 客户管理 API白名单 */
+  apiWhiteList = '/channel/subaccount',
 }
 
 /** 运维后台 */

@@ -52,6 +52,7 @@
                 <th>短信签名</th>
                 <th>创建时间</th>
                 <th>序列号</th>
+                <th>API白名单</th>
                 <th>对接凭证</th>
                 <th>操作</th>
               </tr>
@@ -74,6 +75,9 @@
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('serialBatch', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                </td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('apiWhiteList', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
@@ -389,7 +393,7 @@
                 </div>
               </div>
             </form>
-            <nz-table nzBordered #consumerTable [nzData]="dataSerial" *ngIf="!isSpinning">
+            <nz-table nzBordered #serialTable [nzData]="dataSerial" *ngIf="!isSpinning">
               <thead>
                 <tr>
                   <th>序号</th>
@@ -399,7 +403,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of consumerTable.data; let i=index;">
+                <tr *ngFor="let data of serialTable.data; let i=index;">
                   <td>{{i+1}}</td>
                   <td>{{data.sn}}</td>
                   <td>{{data.count}}</td>
@@ -458,7 +462,7 @@
               <div nz-col nzSpan="6" style="margin-top: 15px;">支持.CSV，.xls，.xlsx</div>
             </div>
             <ng-template #deleteSerialModalFooter>
-              <button nz-button nzType="primary" (click)="showModal('deleteSerialBatch', '')"><i class="anticon anticon-delete"></i>确定</button>
+              <button nz-button nzType="primary" (click)="showModal('deleteSerialBatch', '')"><i class="anticon anticon-save"></i>确定</button>
               <button nz-button nzType="default" (click)="hideModal('deleteSerialM')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
@@ -498,6 +502,71 @@
             </div>
             <ng-template #explainModalFooter>
               <button nz-button nzType="default" (click)="hideModal('explain')"><i class="anticon anticon-close-circle-o"></i>关闭</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.apiWhiteList" nzWidth="950" nzTitle="API白名单" [nzFooter]="null" (nzOnCancel)="hideModal('apiWhiteList')" nzMaskClosable="false">
+            <form [formGroup]="apiWhiteListSearchForm">
+              <div nz-row>
+                <div nz-col nzSpan="3" class="right_alignment">API白名单：</div>
+                <div nz-col nzSpan="6">
+                  <input nz-input formControlName="id" placeholder="请输入API白名单" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="right_alignment">来源：</div>
+                <div nz-col nzSpan="6">
+                  <input nz-input formControlName="businessId" placeholder="请输入来源" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2">
+                  <button nz-button nzType="primary" (click)="loadData('apiWhiteList')"><i class="anticon anticon-search"></i>查询</button>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('addApiWhiteList')"><i class="anticon anticon-plus"></i>添加白名单</button>
+                </div>
+              </div>
+            </form>
+            <nz-table nzBordered #apiWhiteListTable [nzData]="dataApiWhite" *ngIf="!isSpinning" [nzShowPagination]="false">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>API白名单号</th>
+                  <th>来源</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of apiWhiteListTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.id}}</td>
+                  <td>{{data.businessId}}</td>
+                  <td>
+                    <button nz-button nzType="primary" (click)="showModal('deleteApiWhiteList', data.id)"><i class="anticon anticon-delete"></i>删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <div nz-row>
+              <div nz-col nzSpan="14"></div>
+              <div nz-col nzSpan="3" class="right_alignment">总数：{{apiWhiteData.total}}</div>
+              <div nz-col nzSpan="3" class="right_alignment">总页数：{{apiWhiteData.totalPage}}</div>
+              <div nz-col nzSpan="3" class="right_alignment">跳转页码：</div>
+              <div nz-col nzSpan="1">
+                <input nz-input [(ngModel)]="apiWhiteData.page" (change)="loadData('apiWhiteList')" nzSize="default">
+              </div>
+            </div>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addApiWhiteList" nzTitle="添加白名单" [nzFooter]="addApiWhiteListModalFooter" (nzOnCancel)="hideModal('addApiWhiteList')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="6" class="right_alignment">添加数量：</div>
+              <div nz-col nzSpan="18">
+                <input nz-input placeholder="请输入数量" [(ngModel)]="apiWhiteData.count" nzSize="default">
+              </div>
+            </div>
+            <ng-template #addApiWhiteListModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addApiWhiteList')"><i class="anticon anticon-save"></i>确定</button>
+              <button nz-button nzType="default" (click)="hideModal('addApiWhiteList')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
           </nz-modal>
 

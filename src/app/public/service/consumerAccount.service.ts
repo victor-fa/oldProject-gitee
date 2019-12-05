@@ -84,4 +84,32 @@ export class ConsumerAccountService extends AppServiceBase {
       .post<IResponse<any>>(url, body, this.options);
   }
 
+  /** API白名单 */
+  getApiWhiteListList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.apiWhiteList}?page=${data.page}`;
+    url += data.appChannel && data.appChannel !== '' ? '&appChannel=' + data.appChannel : '';
+    url += data.businessId && data.businessId !== '' ? '&businessId=' + data.businessId : '';
+    url += data.id && data.id !== '' ? '&id=' + data.id : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 新增 */
+  addApiWhiteList(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.apiWhiteList}`;
+    let body = `appChannel=${data.appChannel}&count=${data.count}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 删除 */
+  deleteApiWhiteList(id): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.apiWhiteList}/${id}`;
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .delete<IResponse<any>>(url, this.options);
+  }
+
 }

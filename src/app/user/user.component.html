@@ -376,6 +376,7 @@
                 <th>序号</th>
                 <th>用户账号</th>
                 <th>用户昵称</th>
+                <th>用户ID</th>
                 <th>客户ID</th>
                 <th>订单状态</th>
                 <th>订单类型</th>
@@ -392,6 +393,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
+                <td>{{data.userId}}</td>
                 <td>{{data.channelType}}</td>
                 <td>{{data.state === 0 ? '待支付' : data.state === 1 ? bookingType === '3' ? '等待酒店确认' : bookingType === '8' ? '已接单' : '出票中' : data.state === 2 ? bookingType === '4' ? '已接单' : bookingType === '8' ? '配送中' : '待出行' : data.state === 3 ? bookingType === '4' || bookingType === '8' ? '已完成' : '已出行' : data.state === 4 ? '出票失败' : data.state === 5 ? '退款中' : data.state === 6 ? bookingType === '8' ? '交易失败' : '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? bookingType === '3' ? '预定失败' : '交易关闭' : data.state === 9 ? '改签中' : data.state === 10 ? bookingType === '4' ? '呼叫中' : bookingType === '8' ? '等待接单' : '占座中' : data.state === 11 ? '取消中' : data.state === 12 ? bookingType === '3' ? '退订中' : '退票中' : data.state === 13 ? bookingType === '3' ? '预订失败 退款中' : bookingType === '8' ? '交易失败 退款中' : '出票失败 退票中' : data.state === 14 ? '' : data.state === 15 ? bookingType === '4' ? '司机抵达' : '已到达寄件地址' : data.state === 16 ? '已取消' : 'null' }}</td>
                 <td>{{data.orderType === 0 || data.orderType === 1 ? '机票' : data.orderType === 2 ? '火车' : data.orderType === 3 ? '酒店' : data.orderType === 4 ? '打车' : data.orderType === 8 ? '闪送' : 'null'}}</td>
@@ -488,6 +490,7 @@
                 <th>序号</th>
                 <th>用户账号</th>
                 <th>用户昵称</th>
+                <th>用户ID</th>
                 <th>客户ID</th>
                 <th>订单状态</th>
                 <th>订单类型</th>
@@ -504,6 +507,7 @@
                 <td>{{i+1}}</td>
                 <td>{{data.account}}</td>
                 <td>{{data.nickname}}</td>
+                <td>{{data.userId}}</td>
                 <td>{{data.channelType}}</td>
                 <td>{{data.state === 0 ? '待支付' : data.state === 1 ? '充值中' :  data.state === 2 ? '待放映' : data.state === 3 ? '已完成' : data.state === 5 ? '充值失败 退款中' : data.state === 6 ? '已退款' : data.state === 7 ? '已取消' : data.state === 8 ? '交易关闭' : data.state === 13 ? '充值失败 退款中' : 'null' }}</td>
                 <td>{{data.orderType === 5 ? '充话费' : data.orderType === 6 ? (data.flightType === 'APP_SINGLE' ? '快速脱单' : data.flightType === 'APP_COUPLE' ? '情侣合盘' : '恋爱运势') : data.orderType === 7 ? (data.flightType === 'APP_SUBSCRIPTION30' ? '30天运势' : data.flightType === 'APP_SUBSCRIPTION60' ? '60天运势' : data.flightType === 'APP_SUBSCRIPTION90' ? '90天运势' : '快速脱单') : data.orderType === 9 ? '电影票' : data.orderType === 10 ? (data.supplyType === 4 ? '口袋故事' : (data.supplyType === 5 ? '懒人听书' : '付费音频')) : 'null'}}</td>
