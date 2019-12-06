@@ -25,7 +25,7 @@
 >/usr/share/nginx/html/acmt-front
 
 ## 备注
-> 数据中心由于不是放在account-center项目中，所以无法想用ssl证书
+> 数据中心由于不是放在account-center项目中，所以无法使用ssl证书
 
 > 正式环境下，除了数据中心访问的是http，其他都是https
 
@@ -35,3 +35,6 @@
 > 目前测试环境以及正式环境的后台都放置在sz2服务器上，具体看'sz2上具体的服务器路径'
 
 > ![区别](https://gitlab.com/yiwangcentaurs/account-center-manager/raw/stormfa/src/assets/images/%E5%8C%BA%E5%88%AB%E6%AD%A3%E5%BC%8F%E7%8E%AF%E5%A2%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83.png "")
+
+## 模块解释（src/app目录）
+>目录对应路由
