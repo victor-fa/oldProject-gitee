@@ -112,4 +112,12 @@ export class ConsumerAccountService extends AppServiceBase {
       .delete<IResponse<any>>(url, this.options);
   }
 
+  /** 导出 */
+  exportSerial(groupId): Observable<Blob> {
+    const url = `${this.commonService.baseUrl}/guest/activation/file/${groupId}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), responseType: 'blob' };
+    return this.httpClient
+      .get<Blob>(url, this.options);
+  }
+
 }

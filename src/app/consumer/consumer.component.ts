@@ -428,6 +428,27 @@ export class ConsumerComponent implements OnInit {
       this.visiable.apiWhiteList = true;
     } else if (flag === 'addApiWhiteList') {
       this.visiable.addApiWhiteList = true;
+    } else if (flag === 'exportSerial') { // 导出
+      if (!data.keyCountActivated || data.keyCountActivated === 0) {
+        this.modalService.error({ nzTitle: '提示', nzContent: '该客户ID当前无已激活序列号' });
+        return;
+      }
+      this.consumerAccountService.exportSerial(data.id).subscribe(res => {
+        console.log(res);
+        const blob = new Blob([res], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.id = 'tempId';
+        document.body.appendChild(a);
+        a.download = data.appChannelId + '_已激活序列号.csv';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        const tempA = document.getElementById('tempId');
+        const operationInput = { op_category: '客户管理', op_page: data.appChannelId + '_已激活序列号' , op_name: '下载' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (tempA) {
+          tempA.parentNode.removeChild(tempA);
+        }
+      }, error => { console.log(error); });
     }
   }
 
