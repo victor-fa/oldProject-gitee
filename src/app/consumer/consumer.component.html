@@ -46,12 +46,14 @@
                 <th>APP Secret</th>
                 <th>Client ID</th>
                 <th>登录类型</th>
-                <th>BOT名称</th>
+                <th>BOT接入名称</th>
+                <th>激活类型</th>
                 <th>激活次数</th>
                 <th>Payment Key</th>
                 <th>短信签名</th>
                 <th>创建时间</th>
                 <th>序列号</th>
+                <th>注册设备</th>
                 <th>API白名单</th>
                 <th>对接凭证</th>
                 <th>操作</th>
@@ -69,12 +71,16 @@
                 <td>{{data.clientId}}</td>
                 <td>{{data.loginType === 0 ? '不需要登录' : '需要登录'}}</td>
                 <td>{{data.robot}}</td>
+                <td>{{data.xxxxx}}</td>
                 <td>{{data.maxSnActivation}}</td>
                 <td>{{data.paymentKey ? data.paymentKey : 'null'}}</td>
                 <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
                 <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('serialBatch', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                </td>
+                <td>
+                  <button nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('apiWhiteList', data)"><i class="anticon anticon-eye-o"></i>查看</button>
@@ -549,7 +555,7 @@
                 </tr>
               </tbody>
             </nz-table>
-            <div nz-row>
+            <div nz-row style="margin-top: 10px;">
               <div nz-col nzSpan="14"></div>
               <div nz-col nzSpan="3" class="right_alignment">总数：{{apiWhiteData.total}}</div>
               <div nz-col nzSpan="3" class="right_alignment">总页数：{{apiWhiteData.totalPage}}</div>
@@ -571,6 +577,66 @@
               <button nz-button nzType="primary" (click)="doSave('addApiWhiteList')"><i class="anticon anticon-save"></i>确定</button>
               <button nz-button nzType="default" (click)="hideModal('addApiWhiteList')"><i class="anticon anticon-close-circle-o"></i>取消</button>
             </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.registerDevice" nzWidth="950" nzTitle="API白名单" [nzFooter]="null" (nzOnCancel)="hideModal('registerDevice')" nzMaskClosable="false">
+            <form [formGroup]="registerDeviceSearchForm">
+              <div nz-row>
+                <div nz-col nzSpan="3" class="right_alignment">AndroidID：</div>
+                <div nz-col nzSpan="6">
+                  <input nz-input formControlName="androidId" placeholder="请输入AndroidID" nzSize="default">
+                </div>
+                <div nz-col nzSpan="2" class="right_alignment">激活时间：</div>
+                <div nz-col nzSpan="6">
+                  <nz-range-picker [nzFormat]="'yyyyMMdd'" formControlName="date" nzShowTime [nzShowToday]="true" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'registerDevice')"></nz-range-picker>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2">
+                  <button nz-button nzType="primary" (click)="loadData('registerDevice')"><i class="anticon anticon-search"></i>查询</button>
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('downloadRegisterDevice')"><i class="anticon anticon-plus"></i>批量导出</button>
+                </div>
+              </div>
+            </form>
+            <nz-table nzBordered #registerDeviceTable [nzData]="dataRegisterDevice" *ngIf="!isSpinning" [nzShowPagination]="false">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>AndroidID</th>
+                  <th>SN序列号</th>
+                  <th>IMEI</th>
+                  <th>MAC</th>
+                  <th>激活时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of registerDeviceTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.id}}</td>
+                  <td>{{data.businessId}}</td>
+                  <td>{{data.businessId}}</td>
+                  <td>{{data.businessId}}</td>
+                  <td>{{data.businessId}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <div nz-row style="margin-top: 10px;">
+              <div nz-col nzSpan="14"></div>
+              <div nz-col nzSpan="3" class="right_alignment">总数：{{registerDeviceData.total}}</div>
+              <div nz-col nzSpan="3" class="right_alignment">总页数：{{registerDeviceData.totalPage}}</div>
+              <div nz-col nzSpan="3" class="right_alignment">跳转页码：</div>
+              <div nz-col nzSpan="1">
+                <input nz-input [(ngModel)]="registerDeviceData.page" (change)="loadData('registerDevice')" nzSize="default">
+              </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="6">客户ID：honeybot-sdk-test</div>
+              <div nz-col nzSpan="6">客户名称：小哈机器人</div>
+              <div nz-col nzSpan="6">总注册设备数：3000000</div>
+              <div nz-col nzSpan="6">今日新增设备数：3</div>
+            </div>
           </nz-modal>
 
         </nz-tab>

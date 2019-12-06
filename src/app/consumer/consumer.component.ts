@@ -23,7 +23,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false, registerDevice: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -36,6 +36,7 @@ export class ConsumerComponent implements OnInit {
   accountSearchForm: FormGroup;
   capitalSearchForm: FormGroup;
   apiWhiteListSearchForm: FormGroup;
+  registerDeviceSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
   addSerialData = {};
   dataConsumer = []; // 客户
@@ -46,8 +47,10 @@ export class ConsumerComponent implements OnInit {
   dataCapital = [];
   dataApiWhite = [];
   dataMusic = [];
+  dataRegisterDevice = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   apiWhiteData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
+  registerDeviceData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
@@ -254,6 +257,8 @@ export class ConsumerComponent implements OnInit {
           console.log(this.dataApiWhite);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
+    } else if (flag === 'registerDevice') {
+      // 注册设备
     }
   }
 
@@ -269,6 +274,7 @@ export class ConsumerComponent implements OnInit {
     this.accountSearchForm = this.fb.group({ customerId: [''], customerName: [''] });
     this.capitalSearchForm = this.fb.group({ orderType: [''], date: [''] });
     this.apiWhiteListSearchForm = this.fb.group({ businessId: [''], id: [''] });
+    this.registerDeviceSearchForm = this.fb.group({ androidId: [''], date: [''] });
   }
 
   // 弹窗
@@ -449,6 +455,10 @@ export class ConsumerComponent implements OnInit {
           tempA.parentNode.removeChild(tempA);
         }
       }, error => { console.log(error); });
+    } else if (flag === 'registerDevice') {
+      this.visiable.registerDevice = true;
+    } else if (flag === 'downloadRegisterDevice') {
+      // 注册设备
     }
   }
 
@@ -522,6 +532,8 @@ export class ConsumerComponent implements OnInit {
       this.visiable.apiWhiteList = false;
     } else if (flag === 'addApiWhiteList') {
       this.visiable.addApiWhiteList = false;
+    } else if (flag === 'registerDevice') {
+      this.visiable.registerDevice = false;
     }
   }
 
