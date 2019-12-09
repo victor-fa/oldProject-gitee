@@ -47,14 +47,12 @@
                 <th>Client ID</th>
                 <th>登录类型</th>
                 <th>BOT接入名称</th>
+                <th>接入方式</th>
                 <th>激活类型</th>
-                <th>激活次数</th>
-                <th>Payment Key</th>
-                <th>短信签名</th>
-                <th>创建时间</th>
-                <th>序列号</th>
+                <th>sn序列号</th>
                 <th>注册设备</th>
                 <th>API白名单</th>
+                <th>创建时间</th>
                 <th>对接凭证</th>
                 <th>操作</th>
               </tr>
@@ -71,20 +69,22 @@
                 <td>{{data.clientId}}</td>
                 <td>{{data.loginType === 0 ? '不需要登录' : '需要登录'}}</td>
                 <td>{{data.robot}}</td>
-                <td>{{data.xxxxx}}</td>
-                <td>{{data.maxSnActivation}}</td>
-                <td>{{data.paymentKey ? data.paymentKey : 'null'}}</td>
-                <td>{{data.smsSignType ? data.smsSignType : 'null'}}</td>
-                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{data.accessMode}}</td>
+                <td>{{data.accessMode === 'API' ? '\\' : data.activationMode}}</td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('serialBatch', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button *ngIf="data.accessMode === 'SDK' && (data.activationMode ? true : (data.activationMode === 'SN_WHITE_LIST' ? true : false))" nz-button nzType="primary" (click)="showModal('serialBatch', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <span *ngIf="data.accessMode === 'API' || data.activationMode === 'DYNAMIC_REGISTER'">\</span>
                 </td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <!-- <button *ngIf="data.accessMode === 'SDK' && data.activationMode === 'DYNAMIC_REGISTER'" nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <span *ngIf="data.accessMode === 'API' || (data.activationMode ? true : (data.activationMode === 'SN_WHITE_LIST' ? true : false))">\</span> -->
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('apiWhiteList', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <button *ngIf="data.accessMode === 'API'" nz-button nzType="primary" (click)="showModal('apiWhiteList', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <span *ngIf="data.accessMode === 'SDK'">\</span>
                 </td>
+                <td>{{data.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
                   <button nz-button nzType="primary" (click)="showModal('voucher', data)"><i class="anticon anticon-eye-o"></i>查看</button>
                 </td>
@@ -278,7 +278,10 @@
                 <div nz-col nzSpan="2">
                   <button nz-button nzType="primary" (click)="loadData('serialBatch')"><i class="anticon anticon-search"></i>查询</button>
                 </div>
-                <div nz-col nzSpan="11"></div>
+                <div nz-col nzSpan="8"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('superSerial')"><i class="anticon anticon-plus"></i>管理超级sn</button>
+                </div>
                 <div nz-col nzSpan="3">
                   <button nz-button nzType="primary" (click)="showModal('addSerialBatch')"><i class="anticon anticon-plus"></i>添加批次</button>
                 </div>
@@ -579,7 +582,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.registerDevice" nzWidth="950" nzTitle="API白名单" [nzFooter]="null" (nzOnCancel)="hideModal('registerDevice')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.registerDevice" nzWidth="950" nzTitle="注册设备" [nzFooter]="null" (nzOnCancel)="hideModal('registerDevice')" nzMaskClosable="false">
             <form [formGroup]="registerDeviceSearchForm">
               <div nz-row>
                 <div nz-col nzSpan="3" class="right_alignment">AndroidID：</div>
@@ -596,7 +599,7 @@
                 </div>
                 <div nz-col nzSpan="1"></div>
                 <div nz-col nzSpan="3">
-                  <button nz-button nzType="primary" (click)="showModal('downloadRegisterDevice')"><i class="anticon anticon-plus"></i>批量导出</button>
+                  <button nz-button nzType="primary" (click)="showModal('downloadRegisterDevice', data)"><i class="anticon anticon-plus"></i>批量导出</button>
                 </div>
               </div>
             </form>
@@ -614,29 +617,100 @@
               <tbody>
                 <tr *ngFor="let data of registerDeviceTable.data; let i=index;">
                   <td>{{i+1}}</td>
-                  <td>{{data.id}}</td>
-                  <td>{{data.businessId}}</td>
-                  <td>{{data.businessId}}</td>
-                  <td>{{data.businessId}}</td>
-                  <td>{{data.businessId}}</td>
+                  <td>{{data.androidId}}</td>
+                  <td>{{data.sn}}</td>
+                  <td>{{data.imei}}</td>
+                  <td>{{data.mac}}</td>
+                  <td>{{data.createTime}}</td>
                 </tr>
               </tbody>
             </nz-table>
             <div nz-row style="margin-top: 10px;">
-              <div nz-col nzSpan="14"></div>
-              <div nz-col nzSpan="3" class="right_alignment">总数：{{registerDeviceData.total}}</div>
-              <div nz-col nzSpan="3" class="right_alignment">总页数：{{registerDeviceData.totalPage}}</div>
+              <div nz-col nzSpan="20"></div>
+              <div nz-col nzSpan="3" class="right_alignment">总条数：{{registerDeviceData.totalPage}}</div>
               <div nz-col nzSpan="3" class="right_alignment">跳转页码：</div>
               <div nz-col nzSpan="1">
-                <input nz-input [(ngModel)]="registerDeviceData.page" (change)="loadData('registerDevice')" nzSize="default">
+                <input nz-input [(ngModel)]="registerDeviceData.pageNo" (change)="loadData('registerDevice')" nzSize="default">
               </div>
             </div>
             <div nz-row>
-              <div nz-col nzSpan="6">客户ID：honeybot-sdk-test</div>
-              <div nz-col nzSpan="6">客户名称：小哈机器人</div>
-              <div nz-col nzSpan="6">总注册设备数：3000000</div>
-              <div nz-col nzSpan="6">今日新增设备数：3</div>
+              <div nz-col nzSpan="8">客户ID：{{registerDeviceData.appChannel}}</div>
+              <div nz-col nzSpan="8">客户名称：{{registerDeviceData.appChannelName}}</div>
+              <div nz-col nzSpan="4">总注册设备数：{{registerDeviceData.allCount}}</div>
+              <div nz-col nzSpan="4">今日新增设备数：{{registerDeviceData.todayCount}}</div>
             </div>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.downloadRegisterDevice" nzTitle="批量导出" [nzFooter]="downloadRegisterDeviceModalFooter" (nzOnCancel)="hideModal('downloadRegisterDevice')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="6" class="right_alignment">按时间导出：</div>
+              <div nz-col nzSpan="18">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'downloadRegisterDevice')"></nz-range-picker>
+              </div>
+            </div>
+            <ng-template #downloadRegisterDeviceModalFooter>
+              <button nz-button nzType="primary" (click)="showModal('doDownloadRegisterDevice', '')"><i class="anticon anticon-save"></i>确定导出</button>
+              <button nz-button nzType="default" (click)="hideModal('downloadRegisterDevice')"><i class="anticon anticon-close-circle-o"></i>放弃导出</button>
+            </ng-template>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.superSerial" nzWidth="950" nzTitle="管理超级sn" [nzFooter]="superSerialModalFooter" (nzOnCancel)="hideModal('superSerial')" nzMaskClosable="false">
+            <form [formGroup]="superSerialSearchForm">
+              <div nz-row>
+                <div nz-col nzSpan="3" class="right_alignment">序列号批次：</div>
+                <div nz-col nzSpan="4">
+                  <input nz-input formControlName="sn" placeholder="请输入序列号批次" nzSize="default">
+                </div>
+                <div nz-col nzSpan="1"></div>
+                <div nz-col nzSpan="2">
+                  <button nz-button nzType="primary" (click)="loadData('superSerial')"><i class="anticon anticon-search"></i>查询</button>
+                </div>
+                <div nz-col nzSpan="11"></div>
+                <div nz-col nzSpan="3">
+                  <button nz-button nzType="primary" (click)="showModal('addSuperSerial')"><i class="anticon anticon-plus"></i>添加超级sn</button>
+                </div>
+              </div>
+            </form>
+            <nz-table nzBordered #superSerialTable [nzData]="dataSuperSerial" *ngIf="!isSpinning">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>超级sn序列号</th>
+                  <th>创建人</th>
+                  <th>创建时间</th>
+                  <th>有效时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of superSerialTable.data; let i=index;">
+                  <td>{{i+1}}</td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.type}}</td>
+                  <td>{{data.testStartDate | date:'yyyyMMdd'}}-{{data.testEndDate | date:'yyyyMMdd'}}</td>
+                  <td>{{data.keyCount}}</td>
+                  <td>
+                    <nz-form-item>
+                      <nz-form-control>
+                        <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'superSerial')"></nz-switch>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <ng-template #superSerialModalFooter>
+              <div nz-row>
+                <div nz-col nzSpan="3">客户ID：</div>
+                <div nz-col nzSpan="5" class="left_alignment">{{superSerialData.appChannel}}</div>
+                <div nz-col nzSpan="2">客户名称：</div>
+                <div nz-col nzSpan="3" class="left_alignment">{{superSerialData.appChannelName}}</div>
+                <div nz-col nzSpan="3">序列号数量：</div>
+                <div nz-col nzSpan="1" class="left_alignment">{{dataSuperSerial.length}}</div>
+                <div nz-col nzSpan="2">激活次数：</div>
+                <div nz-col nzSpan="2" class="left_alignment">{{superSerialData.maxSnActivation}}</div>
+              </div>
+            </ng-template>
           </nz-modal>
 
         </nz-tab>

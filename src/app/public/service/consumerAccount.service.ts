@@ -112,12 +112,44 @@ export class ConsumerAccountService extends AppServiceBase {
       .delete<IResponse<any>>(url, this.options);
   }
 
+  /** 获取所有列表 */
+  getRegisterDevice(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/guest/activation?pageNo=${data.pageNo}`;
+    url += data.appChannelId && data.appChannelId !== '' ? '&appChannelId=' + data.appChannelId : '';
+    url += data.androidId && data.androidId !== '' ? '&androidId=' + data.androidId : '';
+    url += data.startTime && data.startTime !== '' ? '&startTime=' + data.startTime : '';
+    url += data.endTime && data.endTime !== '' ? '&endTime=' + data.endTime : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 导出 */
+  exportRegisterDevice(data): Observable<Blob> {
+    let url = `${this.commonService.baseUrl}/guest/activation/file?page=1`;
+    url += data.appChannelId && data.appChannelId !== '' ? '&appChannelId=' + data.appChannelId : '';
+    url += data.startTime && data.startTime !== '' ? '&startTime=' + data.startTime : '';
+    url += data.endTime && data.endTime !== '' ? '&endTime=' + data.endTime : '';
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), responseType: 'blob' };
+    return this.httpClient
+      .get<Blob>(url, this.options);
+  }
+
   /** 导出 */
   exportSerial(groupId): Observable<Blob> {
     const url = `${this.commonService.baseUrl}/guest/activation/file/${groupId}`;
     this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/vnd.ms-excel;charset=UTF-8;', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }), responseType: 'blob' };
     return this.httpClient
       .get<Blob>(url, this.options);
+  }
+
+  /** 获取所有列表 */
+  getSuperSerial(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}/guest/key/super?appChannelId=${data.appChannelId}`;
+    url += data.sn && data.sn !== '' ? '&sn=' + data.sn : '';
+    this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .get<IResponse<any>>(url, this.options);
   }
 
 }

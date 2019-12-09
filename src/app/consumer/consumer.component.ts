@@ -23,7 +23,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false, registerDevice: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false, registerDevice: false, superSerial: false, downloadRegisterDevice: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -37,6 +37,7 @@ export class ConsumerComponent implements OnInit {
   capitalSearchForm: FormGroup;
   apiWhiteListSearchForm: FormGroup;
   registerDeviceSearchForm: FormGroup;
+  superSerialSearchForm: FormGroup;
   consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
   addSerialData = {};
   dataConsumer = []; // 客户
@@ -48,9 +49,11 @@ export class ConsumerComponent implements OnInit {
   dataApiWhite = [];
   dataMusic = [];
   dataRegisterDevice = [];
+  dataSuperSerial = [];
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   apiWhiteData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
-  registerDeviceData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
+  registerDeviceData = { pageNo: 1, allCount: 0, todayCount: 0, totalPage: 0, appChannel: '', androidId: '', appChannelName: '' };
+  superSerialData = {};
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
@@ -68,6 +71,10 @@ export class ConsumerComponent implements OnInit {
   serialBatchEndDate = null;
   capitalStartDate = null;
   capitalEndDate = null;
+  registerStrtDate = null;
+  registerEndDate = null;
+  downloadRegisterStrtDate = null;
+  downloadRegisterEndDate = null;
   orderTypeItem = [
     {key: 'FLIGHT_RETURN_ORDER', value: '机票', visiable: true},
     {key: 'TRAIN_ORDER', value: '火车', visiable: true},
@@ -258,7 +265,35 @@ export class ConsumerComponent implements OnInit {
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     } else if (flag === 'registerDevice') {
-      // 注册设备
+      const input = {
+        pageNo: this.registerDeviceData.pageNo, appChannelId: this.registerDeviceData.appChannel,
+        androidId: this.registerDeviceSearchForm.controls['androidId'].value,
+        startTime: this.registerStrtDate, endTime: this.registerEndDate,
+      };
+      this.consumerAccountService.getRegisterDevice(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataRegisterDevice = JSON.parse(res.payload).guestActivation;
+          this.registerDeviceData.allCount = JSON.parse(res.payload).allCount;
+          this.registerDeviceData.todayCount = JSON.parse(res.payload).todayCount;
+          this.registerDeviceData.totalPage = JSON.parse(res.payload).totalPage;
+          console.log(this.dataRegisterDevice);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'superSerial') {
+      const input = {
+        appChannelId: this.registerDeviceData.appChannel,
+        sv: this.superSerialSearchForm.controls['sn'].value,
+      };
+      this.consumerAccountService.getSuperSerial(input).subscribe(res => {
+        if (res.retcode === 0 && res.status === 200) {
+          this.isSpinning = false;
+          this.dataSuperSerial = JSON.parse(res.payload);
+          // this.superSerialData.allCount = JSON.parse(res.payload).allCount;
+          // this.superSerialData.todayCount = JSON.parse(res.payload).todayCount;
+          console.log(this.dataSuperSerial);
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
     }
   }
 
@@ -275,6 +310,7 @@ export class ConsumerComponent implements OnInit {
     this.capitalSearchForm = this.fb.group({ orderType: [''], date: [''] });
     this.apiWhiteListSearchForm = this.fb.group({ businessId: [''], id: [''] });
     this.registerDeviceSearchForm = this.fb.group({ androidId: [''], date: [''] });
+    this.superSerialSearchForm = this.fb.group({ sn: [''] });
   }
 
   // 弹窗
@@ -449,16 +485,43 @@ export class ConsumerComponent implements OnInit {
         a.href = URL.createObjectURL(blob);
         a.click();
         const tempA = document.getElementById('tempId');
-        const operationInput = { op_category: '客户管理', op_page: data.appChannelId + '_已激活序列号' , op_name: '下载' };
+        const operationInput = { op_category: '客户管理', op_page: data.appChannelId + '已激活序列号' , op_name: '下载' };
         this.commonService.updateOperationlog(operationInput).subscribe();
         if (tempA) {
           tempA.parentNode.removeChild(tempA);
         }
       }, error => { console.log(error); });
     } else if (flag === 'registerDevice') {
+      console.log(data);
+      this.registerDeviceData.appChannel = data.appChannel;
+      this.registerDeviceData.appChannelName = data.appChannelName;
+      this.loadData('registerDevice');
       this.visiable.registerDevice = true;
     } else if (flag === 'downloadRegisterDevice') {
-      // 注册设备
+      this.visiable.downloadRegisterDevice = true;
+    } else if (flag === 'doDownloadRegisterDevice') {
+      if (this.registerDeviceData.allCount === 0) { this.modalService.error({ nzTitle: '提示', nzContent: '该客户ID当前无注册设备' }); return; }
+      const input = {
+        appChannelId: this.registerDeviceData.appChannel, startTime: this.downloadRegisterStrtDate, endTime: this.downloadRegisterEndDate,
+      };
+      this.consumerAccountService.exportRegisterDevice(input).subscribe(res => {
+        console.log(res);
+        const blob = new Blob([res], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.id = 'tempId';
+        document.body.appendChild(a);
+        a.download = this.registerDeviceData.appChannel + '_注册设备.csv';
+        a.href = URL.createObjectURL(blob);
+        a.click();
+        const tempA = document.getElementById('tempId');
+        const operationInput = { op_category: '客户管理', op_page: '注册设备' , op_name: '下载' };
+        this.commonService.updateOperationlog(operationInput).subscribe();
+        if (tempA) { tempA.parentNode.removeChild(tempA); }
+        this.hideModal('downloadRegisterDevice');
+      }, error => { console.log(error); });
+    } else if (flag === 'superSerial') {
+      this.loadData('superSerial');
+      this.visiable.superSerial = true;
     }
   }
 
@@ -533,7 +596,15 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'addApiWhiteList') {
       this.visiable.addApiWhiteList = false;
     } else if (flag === 'registerDevice') {
+      this.dateRange = [null, null];
+      this.loadData('consumer');
       this.visiable.registerDevice = false;
+    } else if (flag === 'superSerial') {
+      this.visiable.superSerial = false;
+    } else if (flag === 'downloadRegisterDevice') {
+      this.dateRange = [null, null];
+      this.loadData('registerDevice');
+      this.visiable.downloadRegisterDevice = false;
     }
   }
 
@@ -994,6 +1065,24 @@ export class ConsumerComponent implements OnInit {
         }
       }
       if (this.capitalStartDate === null) { this.capitalStartDate = null; this.capitalEndDate = null; }
+    } else if (flag === 'registerDevice') {
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.registerStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.registerEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        } else {
+          this.registerStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.registerEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        }
+      }
+      if (this.registerStrtDate === null) { this.registerStrtDate = null; this.registerEndDate = null; }
+    } else if (flag === 'downloadRegisterDevice') {
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.downloadRegisterStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.downloadRegisterEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        } else {
+          this.downloadRegisterStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.downloadRegisterEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        }
+      }
+      if (this.downloadRegisterStrtDate === null) { this.downloadRegisterStrtDate = null; this.downloadRegisterEndDate = null; }
     }
   }
 
@@ -1094,6 +1183,20 @@ export class ConsumerComponent implements OnInit {
       }, err => { formData.delete('image'); }
     );
   }
+
+  // 点击switch
+  clickSwitch(data, flag) {
+    if (flag === 'superSerial') {
+      // this.screenService.updateSwitch(data).subscribe(res => {
+      //   if (res.retcode === 0) {
+      //     this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+      //     const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '启用/不启用' };
+      //     this.commonService.updateOperationlog(operationInput).subscribe();
+      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      //   this.loadData('screen');
+      // });
+    }
+  };
 
   // 倒计时
   countDown() {
