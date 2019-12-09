@@ -23,7 +23,7 @@ registerLocaleData(zh);
 
 export class ConsumerComponent implements OnInit {
 
-  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false, registerDevice: false, superSerial: false, downloadRegisterDevice: false };
+  visiable = {addConsumer: false, modifyConsumer: false, modifySerial: false, addSerial: false, deleteSerial: false, explain: false, voucher: false, addCallback: false, modifyCallback: false, serialBatch: false, addSerialBatch: false, modifySerialBatch: false, deleteSerialResult: false, addMusic: false, modifyMusic: false, addBluetooth: false, modifyBluetooth: false, addAccount: false, modifyAccount: false, recharge: false, capital: false, apiWhiteList: false, addApiWhiteList: false, registerDevice: false, superSerial: false, downloadRegisterDevice: false, addSuperSerial: false };
   currentPanel = 'skill';
   consumerSearchForm: FormGroup;
   addConsumerForm: FormGroup;
@@ -53,7 +53,7 @@ export class ConsumerComponent implements OnInit {
   serialBatchData = { appChannel: '', name: '', type: '', id: '' };
   apiWhiteData = { totalPage: 0, total: 0, accounts:[], page: 1, appChannel: '', count: '' };
   registerDeviceData = { pageNo: 1, allCount: 0, todayCount: 0, totalPage: 0, appChannel: '', androidId: '', appChannelName: '' };
-  superSerialData = {};
+  superSerialData = { sn: '', total: 0, appChannelId: '' };
   isSpinning = false;
   serialData = {appChannelId: '', groupId: ''};
   musicData = {appChannel: '', useSDK: false, xiaoWu: false, koudaiAccess: false, lanRenAccess: false, musicAccess: false, xmlyAccess: false};
@@ -75,6 +75,8 @@ export class ConsumerComponent implements OnInit {
   registerEndDate = null;
   downloadRegisterStrtDate = null;
   downloadRegisterEndDate = null;
+  addSuperSerialStrtDate = null;
+  addSuperSerialEndDate = null;
   orderTypeItem = [
     {key: 'FLIGHT_RETURN_ORDER', value: '机票', visiable: true},
     {key: 'TRAIN_ORDER', value: '火车', visiable: true},
@@ -282,16 +284,16 @@ export class ConsumerComponent implements OnInit {
       });
     } else if (flag === 'superSerial') {
       const input = {
-        appChannelId: this.registerDeviceData.appChannel,
-        sv: this.superSerialSearchForm.controls['sn'].value,
+        appChannelId: this.serialBatchData.appChannel,
+        sn: this.superSerialSearchForm.controls['sn'].value,
       };
       this.consumerAccountService.getSuperSerial(input).subscribe(res => {
         if (res.retcode === 0 && res.status === 200) {
           this.isSpinning = false;
-          this.dataSuperSerial = JSON.parse(res.payload);
-          // this.superSerialData.allCount = JSON.parse(res.payload).allCount;
-          // this.superSerialData.todayCount = JSON.parse(res.payload).todayCount;
+          this.dataSuperSerial = JSON.parse(JSON.parse(res.payload).superGuestKeys).content;
+          this.superSerialData.total = JSON.parse(res.payload).count;
           console.log(this.dataSuperSerial);
+          console.log(this.superSerialData);
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -522,6 +524,9 @@ export class ConsumerComponent implements OnInit {
     } else if (flag === 'superSerial') {
       this.loadData('superSerial');
       this.visiable.superSerial = true;
+    } else if (flag === 'addSuperSerial') {
+      this.superSerialData.appChannelId = this.serialBatchData.appChannel;
+      this.visiable.addSuperSerial = true;
     }
   }
 
@@ -605,6 +610,8 @@ export class ConsumerComponent implements OnInit {
       this.dateRange = [null, null];
       this.loadData('registerDevice');
       this.visiable.downloadRegisterDevice = false;
+    } else if (flag === 'addSuperSerial') {
+      this.visiable.addSuperSerial = false;
     }
   }
 
@@ -878,7 +885,6 @@ export class ConsumerComponent implements OnInit {
         phoneNum: this.accountData.phoneNum,
         code: this.accountData.code,
       };
-      console.log(input);
       this.consumerAccountService.rechargeAccount(input).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
@@ -891,12 +897,26 @@ export class ConsumerComponent implements OnInit {
         appChannel: this.apiWhiteData.appChannel,
         count: this.apiWhiteData.count,
       };
-      console.log(input);
       this.consumerAccountService.addApiWhiteList(input).subscribe(res => {
         if (res.retcode === 0) {
           this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
           this.loadData('apiWhiteList');
           this.hideModal('addApiWhiteList');
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+      });
+    } else if (flag === 'addSuperSerial') {
+      const input = {
+        sn: this.superSerialData.sn,
+        appChannelId: this.superSerialData.appChannelId,
+        startTime: this.addSuperSerialStrtDate,
+        endTime: this.addSuperSerialEndDate
+      };
+      console.log(input);
+      this.consumerAccountService.addSuperSerial(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '新增成功', { nzStyle: { color : 'green' } });
+          this.loadData('superSerial');
+          this.hideModal('addSuperSerial');
         } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
       });
     }
@@ -1083,6 +1103,15 @@ export class ConsumerComponent implements OnInit {
         }
       }
       if (this.downloadRegisterStrtDate === null) { this.downloadRegisterStrtDate = null; this.downloadRegisterEndDate = null; }
+    } else if (flag === 'addSuperSerial') {
+      if (result[0] !== '' || result[1] !== '') {
+        if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
+          this.addSuperSerialStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.addSuperSerialEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        } else {
+          this.addSuperSerialStrtDate = this.datePipe.transform(result[0], 'yyyyMMdd'); this.addSuperSerialEndDate = this.datePipe.transform(result[1], 'yyyyMMdd');
+        }
+      }
+      if (this.addSuperSerialStrtDate === null) { this.addSuperSerialStrtDate = null; this.addSuperSerialEndDate = null; }
     }
   }
 
@@ -1187,14 +1216,15 @@ export class ConsumerComponent implements OnInit {
   // 点击switch
   clickSwitch(data, flag) {
     if (flag === 'superSerial') {
-      // this.screenService.updateSwitch(data).subscribe(res => {
-      //   if (res.retcode === 0) {
-      //     this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
-      //     const operationInput = { op_category: '内容管理', op_page: '开屏启动', op_name: '启用/不启用' };
-      //     this.commonService.updateOperationlog(operationInput).subscribe();
-      //   } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
-      //   this.loadData('screen');
-      // });
+      const input = { appChannelId: this.serialBatchData.appChannel, available: data.available, sn: data.sn };
+      this.consumerAccountService.updateSwitch(input).subscribe(res => {
+        if (res.retcode === 0) {
+          this.notification.blank( '提示', '修改成功', { nzStyle: { color : 'green' } });
+          const operationInput = { op_category: '客户管理', op_page: '修改超级sn有效性', op_name: '启用/不启用' };
+          this.commonService.updateOperationlog(operationInput).subscribe();
+        } else { this.modalService.error({ nzTitle: '提示', nzContent: res.message }); }
+        this.loadData('superSerial');
+      });
     }
   };
 

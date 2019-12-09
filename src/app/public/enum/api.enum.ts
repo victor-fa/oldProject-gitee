@@ -94,6 +94,8 @@ export enum consumerApiUrls {
   consumerAccountList = '/cms/account',
   /** 客户管理 API白名单 */
   apiWhiteList = '/channel/subaccount',
+  /** 客户管理 超级sn */
+  guestList = '/guest/key/super',
 }
 
 /** 运维后台 */

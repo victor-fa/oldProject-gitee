@@ -145,11 +145,29 @@ export class ConsumerAccountService extends AppServiceBase {
 
   /** 获取所有列表 */
   getSuperSerial(data): Observable<IResponse<any>> {
-    let url = `${this.commonService.baseUrl}/guest/key/super?appChannelId=${data.appChannelId}`;
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.guestList}?appChannelId=${data.appChannelId}`;
     url += data.sn && data.sn !== '' ? '&sn=' + data.sn : '';
     this.setOption = { headers: new HttpHeaders({ 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
     return this.httpClient
       .get<IResponse<any>>(url, this.options);
+  }
+
+  /** 新增 */
+  addSuperSerial(data): Observable<IResponse<any>> {
+    let url = `${this.commonService.baseUrl}${consumerApiUrls.guestList}`;
+    let body = `appChannelId=${data.appChannelId}&sn=${data.sn}&startTime=${data.startTime}&endTime=${data.endTime}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .post<IResponse<any>>(url, body, this.options);
+  }
+
+  /** 修改启用状态 */
+  updateSwitch(data): Observable<IResponse<any>> {
+    const url = `${this.commonService.baseUrl}${consumerApiUrls.guestList}`;
+    const body = `sn=${data.sn}&appChannelId=${data.appChannelId}&available=${data.available}`;
+    this.setOption = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'App-Channel-Id': localStorage.getItem('currentAppHeader') }) };
+    return this.httpClient
+      .put<IResponse<any>>(url, body, this.options);
   }
 
 }

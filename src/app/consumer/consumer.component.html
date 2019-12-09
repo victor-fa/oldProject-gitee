@@ -76,9 +76,8 @@
                   <span *ngIf="data.accessMode === 'API' || data.activationMode === 'DYNAMIC_REGISTER'">\</span>
                 </td>
                 <td>
-                  <button nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
-                  <!-- <button *ngIf="data.accessMode === 'SDK' && data.activationMode === 'DYNAMIC_REGISTER'" nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
-                  <span *ngIf="data.accessMode === 'API' || (data.activationMode ? true : (data.activationMode === 'SN_WHITE_LIST' ? true : false))">\</span> -->
+                  <button *ngIf="data.accessMode === 'SDK' && data.activationMode === 'DYNAMIC_REGISTER'" nz-button nzType="primary" (click)="showModal('registerDevice', data)"><i class="anticon anticon-eye-o"></i>查看</button>
+                  <span *ngIf="data.accessMode === 'API' || (data.activationMode ? true : (data.activationMode === 'SN_WHITE_LIST' ? true : false))">\</span>
                 </td>
                 <td>
                   <button *ngIf="data.accessMode === 'API'" nz-button nzType="primary" (click)="showModal('apiWhiteList', data)"><i class="anticon anticon-eye-o"></i>查看</button>
@@ -329,7 +328,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.addSerialBatch" nzWidth="750" nzTitle="新增序列号批次" [nzFooter]="addSerialBatchModalFooter" (nzOnCancel)="hideModal('addSerialBatch')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.addSerialBatch" nzTitle="新增序列号批次" [nzFooter]="addSerialBatchModalFooter" (nzOnCancel)="hideModal('addSerialBatch')" nzMaskClosable="false">
             <div nz-row>
               <div nz-col nzSpan="4" class="right_alignment">批次名称：</div>
               <div nz-col nzSpan="18">
@@ -654,7 +653,7 @@
             </ng-template>
           </nz-modal>
 
-          <nz-modal [(nzVisible)]="visiable.superSerial" nzWidth="950" nzTitle="管理超级sn" [nzFooter]="superSerialModalFooter" (nzOnCancel)="hideModal('superSerial')" nzMaskClosable="false">
+          <nz-modal [(nzVisible)]="visiable.superSerial" nzWidth="950" nzTitle="管理超级sn" [nzFooter]="null" (nzOnCancel)="hideModal('superSerial')" nzMaskClosable="false">
             <form [formGroup]="superSerialSearchForm">
               <div nz-row>
                 <div nz-col nzSpan="3" class="right_alignment">序列号批次：</div>
@@ -667,7 +666,7 @@
                 </div>
                 <div nz-col nzSpan="11"></div>
                 <div nz-col nzSpan="3">
-                  <button nz-button nzType="primary" (click)="showModal('addSuperSerial')"><i class="anticon anticon-plus"></i>添加超级sn</button>
+                  <button nz-button nzType="primary" (click)="showModal('addSuperSerial', '')"><i class="anticon anticon-plus"></i>添加超级sn</button>
                 </div>
               </div>
             </form>
@@ -685,31 +684,38 @@
               <tbody>
                 <tr *ngFor="let data of superSerialTable.data; let i=index;">
                   <td>{{i+1}}</td>
-                  <td>{{data.name}}</td>
-                  <td>{{data.type}}</td>
-                  <td>{{data.testStartDate | date:'yyyyMMdd'}}-{{data.testEndDate | date:'yyyyMMdd'}}</td>
-                  <td>{{data.keyCount}}</td>
+                  <td>{{data.sn}}</td>
+                  <td>{{data.operator}}</td>
+                  <td>{{data.createTime}}</td>
+                  <td>{{data.validTimeEnd}}</td>
                   <td>
                     <nz-form-item>
                       <nz-form-control>
-                        <nz-switch [(ngModel)]="data.enabled" (click)="clickSwitch(data, 'superSerial')"></nz-switch>
+                        <nz-switch [(ngModel)]="data.available" (click)="clickSwitch(data, 'superSerial')"></nz-switch>
                       </nz-form-control>
                     </nz-form-item>
                   </td>
                 </tr>
               </tbody>
             </nz-table>
-            <ng-template #superSerialModalFooter>
-              <div nz-row>
-                <div nz-col nzSpan="3">客户ID：</div>
-                <div nz-col nzSpan="5" class="left_alignment">{{superSerialData.appChannel}}</div>
-                <div nz-col nzSpan="2">客户名称：</div>
-                <div nz-col nzSpan="3" class="left_alignment">{{superSerialData.appChannelName}}</div>
-                <div nz-col nzSpan="3">序列号数量：</div>
-                <div nz-col nzSpan="1" class="left_alignment">{{dataSuperSerial.length}}</div>
-                <div nz-col nzSpan="2">激活次数：</div>
-                <div nz-col nzSpan="2" class="left_alignment">{{superSerialData.maxSnActivation}}</div>
+          </nz-modal>
+
+          <nz-modal [(nzVisible)]="visiable.addSuperSerial" nzTitle="批量导出" [nzFooter]="addSuperSerialModalFooter" (nzOnCancel)="hideModal('addSuperSerial')" nzMaskClosable="false">
+            <div nz-row>
+              <div nz-col nzSpan="6" class="right_alignment">超级sn：</div>
+              <div nz-col nzSpan="18">
+                <input nz-input placeholder="请输入超级sn" [(ngModel)]="superSerialData.sn" nzSize="default">
               </div>
+            </div>
+            <div nz-row>
+              <div nz-col nzSpan="6" class="right_alignment">有效时间：</div>
+              <div nz-col nzSpan="18">
+                <nz-range-picker [nzFormat]="'yyyyMMdd'" nzShowTime [nzShowToday]="true" [(ngModel)]="dateRange" ngModel [nzRanges]="commonService.dateSearch" (ngModelChange)="onChange($event, 'addSuperSerial')"></nz-range-picker>
+              </div>
+            </div>
+            <ng-template #addSuperSerialModalFooter>
+              <button nz-button nzType="primary" (click)="doSave('addSuperSerial')"><i class="anticon anticon-save"></i>确定导出</button>
+              <button nz-button nzType="default" (click)="hideModal('addSuperSerial')"><i class="anticon anticon-close-circle-o"></i>放弃导出</button>
             </ng-template>
           </nz-modal>
 
