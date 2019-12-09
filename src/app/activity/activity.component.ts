@@ -1571,6 +1571,7 @@ export class ActivityComponent implements OnInit {
         }
       }
     } else if (flag === 'taskCenterAct') {
+      console.log('taskCenterChecked');
       if (result === []) { this.beginTaskCenterActDate = ''; this.endTaskCenterActDate = ''; return; }
       if (result[0] !== '' || result[1] !== '') {
         if (this.datePipe.transform(result[0], 'HH:mm:ss') === this.datePipe.transform(result[1], 'HH:mm:ss')) {
@@ -1596,7 +1597,7 @@ export class ActivityComponent implements OnInit {
       this.couponDate.discountPrices.push({main: '', content: ''});
     } else if (flag === 'removeDiscountPrices') {
       this.couponDate.discountPrices.splice(result, 1);
-    } else if (flag === 'taskCenter') {
+    } else if (flag === 'taskCenterChecked') {
       const switchInput = { 'id': result.id, 'enabled': result.enabled };
       this.taskService.updateSwitch(switchInput).subscribe(res => {
         if (res.retcode === 0) {
