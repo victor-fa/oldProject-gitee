@@ -150,8 +150,8 @@
                 <div nz-col nzSpan="8" class="right_alignment">激活模式 <font color="red">*</font>：</div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="activationMode" [(ngModel)]="consumerDate.activationMode">
-                    <label nz-radio nzValue="SN_WHITE_LIST">SN_WHITE_LIST</label>
-                    <label nz-radio nzValue="DYNAMIC_REGISTER">DYNAMIC_REGISTER</label>
+                    <label nz-radio nzValue="SN_WHITE_LIST">sn白名单</label>
+                    <label nz-radio nzValue="DYNAMIC_REGISTER">动态注册</label>
                   </nz-radio-group>
                 </div>
               </div>
@@ -237,15 +237,15 @@
                 <div nz-col nzSpan="8" class="right_alignment">接入方式：</div>
                 <div nz-col nzSpan="12">{{consumerDate.accessMode}}</div>
               </div>
-              <div nz-row>
+              <div nz-row *ngIf="consumerDate.accessMode === 'SDK'">
                 <div nz-col nzSpan="8" class="right_alignment">激活模式：</div>
                 <div nz-col nzSpan="12">{{consumerDate.activationMode === 'SN_WHITE_LIST' ? 'sn白名单' : consumerDate.activationMode === 'DYNAMIC_REGISTER' ? '动态注册' : null}}</div>
               </div>
-              <div nz-row>
+              <div nz-row *ngIf="consumerDate.accessMode === 'SDK' && consumerDate.activationMode === 'SN_WHITE_LIST'">
                 <div nz-col nzSpan="8" class="right_alignment">key类型：</div>
                 <div nz-col nzSpan="12">{{consumerDate.officially === true ? '正式key' : '测试key'}}</div>
               </div>
-              <div nz-row>
+              <div nz-row *ngIf="consumerDate.accessMode === 'SDK' && consumerDate.activationMode === 'SN_WHITE_LIST'">
                 <div nz-col nzSpan="8" class="right_alignment">后台校验：</div>
                 <div nz-col nzSpan="12">
                   <nz-radio-group formControlName="needGuestKey" [(ngModel)]="consumerDate.needGuestKey">
@@ -254,7 +254,7 @@
                   </nz-radio-group>
                 </div>
               </div>
-              <div nz-row>
+              <div nz-row *ngIf="consumerDate.accessMode === 'SDK' && consumerDate.activationMode === 'SN_WHITE_LIST'">
                 <div nz-col nzSpan="8" class="right_alignment">激活次数：</div>
                 <div nz-col nzSpan="12">
                   <input nz-input formControlName="maxSnActivation" [(ngModel)]="consumerDate.maxSnActivation" placeholder="请输入激活次数 Key" nzSize="default" *ngIf="consumerDate.officially === false">
