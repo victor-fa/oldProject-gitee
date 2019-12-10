@@ -38,7 +38,7 @@ export class ConsumerComponent implements OnInit {
   apiWhiteListSearchForm: FormGroup;
   registerDeviceSearchForm: FormGroup;
   superSerialSearchForm: FormGroup;
-  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
+  consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };
   addSerialData = {};
   dataConsumer = []; // 客户
   dataSerial = [];
@@ -301,7 +301,7 @@ export class ConsumerComponent implements OnInit {
 
   private _initForm(): void {
     this.consumerSearchForm = this.fb.group({ userPhone: [''], jump: [''], skip: [''], site: [''], duration: [''], url: [''], expireTime: [''] });
-    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''], needGuestKey: [''] });
+    this.addConsumerForm = this.fb.group({ appChannel: [''], appChannelName: [''], robot: [''], paymentKey: [''], smsSign: [''], aaa: [''], keys: [''], phone: [''], officially: [''], maxSnActivation: [''], needGuestKey: [''], accessMode: [''], activationMode: [''] });
     this.modifyConsumerForm = this.fb.group({ paymentKey: [''], smsSign: [''], keys: [''], maxSnActivation: [''], officially: [''], needGuestKey: [''] });
     this.serialSearchForm = this.fb.group({ sn: [''] });
     this.callbackSearchForm = this.fb.group({ appChannel: [''], orderType: [''] });
@@ -319,9 +319,9 @@ export class ConsumerComponent implements OnInit {
   showModal(flag, data) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = true;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };  // 清空
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };  // 清空
     } else if (flag === 'modifyConsumer') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };
       this.consumerDate = {
         appChannel: data.appChannel,
         appChannelName: data.appChannelName,
@@ -335,7 +335,9 @@ export class ConsumerComponent implements OnInit {
         available: '',
         maxSnActivation: data.maxSnActivation,
         needGuestKey: (data.needGuestKey !== undefined ? data.needGuestKey : true),
-        xxxxType: '1'
+        xxxxType: '1',
+        accessMode: data.accessMode,
+        activationMode: data.activationMode
       };
       console.log(this.consumerDate);
       this.loadData('orderType');
@@ -534,15 +536,15 @@ export class ConsumerComponent implements OnInit {
   hideModal(flag) {
     if (flag === 'addConsumer') {
       this.visiable.addConsumer = false;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };
     } else if (flag === 'modifyConsumer') {
       this.dataMsgArr.map(item => item.checked = false);
       this.visiable.modifyConsumer = false;
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };
     } else if (flag === 'modifySerial') {
       this.visiable.modifySerial = false;
     } else if (flag === 'addSerial') {
-      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1' };
+      this.consumerDate = { 'appChannel': '', 'appChannelName': '', 'robot': '', 'loginType': '1', 'paymentKey': '', 'smsSign': '', 'keys': '', 'phone': '', 'officially': false, 'available': '', 'maxSnActivation': '', 'needGuestKey': false, 'xxxxType': '1', 'accessMode': 'SDK', 'activationMode': 'SN_WHITE_LIST' };
       this.visiable.addSerial = false;
     } else if (flag === 'deleteSerialM') {
       this.visiable.deleteSerial = false;
@@ -635,12 +637,13 @@ export class ConsumerComponent implements OnInit {
       } else if (!(/^\w{3,32}$/.test(robot))) {
         this.modalService.error({ nzTitle: '提示', nzContent: 'BBOT配置文件ID只允许出现下划线，a-zA-Z0-9' });
         result = false;
-      } else if (this.addConsumerForm.controls['officially'].value === false) {
-        if (this.addConsumerForm.controls['maxSnActivation'].value === '') {
-          this.modalService.error({ nzTitle: '提示', nzContent: '激活次数未填写' });
-          result = false;
-        }
       }
+      // else if (this.addConsumerForm.controls['officially'].value === false) {
+      //   if (this.addConsumerForm.controls['maxSnActivation'].value === '') {
+      //     this.modalService.error({ nzTitle: '提示', nzContent: '激活次数未填写' });
+      //     result = false;
+      //   }
+      // }
     } else if (flag === 'addSerial') {
       if (this.consumerDate.keys === '' || this.consumerDate.keys.length === 0 || this.consumerDate.keys.replace(/ /g,'') === '') {
         this.modalService.error({ nzTitle: '提示', nzContent: '序列号不得为空' });
@@ -667,8 +670,19 @@ export class ConsumerComponent implements OnInit {
         'officially': this.addConsumerForm.controls['officially'].value,
         'maxSnActivation': this.addConsumerForm.controls['officially'].value === true ? '3' : this.addConsumerForm.controls['maxSnActivation'].value,
         'orderTypes': orderTypes,
-        'needGuestKey': this.addConsumerForm.controls['needGuestKey'].value
+        'needGuestKey': this.addConsumerForm.controls['needGuestKey'].value,
+        'accessMode': this.addConsumerForm.controls['accessMode'].value,
+        'activationMode': this.addConsumerForm.controls['activationMode'].value
       };
+      if (this.consumerDate.accessMode === 'API') {
+        delete consumerInput.officially;
+        delete consumerInput.maxSnActivation;
+        delete consumerInput.needGuestKey;
+      }
+      if (this.consumerDate.activationMode === 'DYNAMIC_REGISTER') {
+        delete consumerInput.maxSnActivation;
+        delete consumerInput.needGuestKey;
+      }
       console.log(consumerInput);
       this.consumerService.addConsumer(consumerInput).subscribe(res => {
         if (res.retcode === 0) {
@@ -694,7 +708,7 @@ export class ConsumerComponent implements OnInit {
         'officially': this.consumerDate.officially,
         'maxSnActivation': this.consumerDate.officially === true ? '3' : this.modifyConsumerForm.controls['maxSnActivation'].value,
         'orderTypes': orderTypes,
-        'needGuestKey': this.modifyConsumerForm.controls['needGuestKey'].value
+        'needGuestKey': this.modifyConsumerForm.controls['needGuestKey'].value,
       };
       this.addPaymengSms(consumerInput);
     } else if (flag === 'addSerial') {
