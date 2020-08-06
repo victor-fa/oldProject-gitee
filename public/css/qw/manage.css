@@ -1,0 +1,87 @@
+a:hover {
+    text-decoration: none;
+}
+
+.qw-users {
+    margin: 5px;
+}
+
+.qw-users-list {
+    margin: 5px;
+}
+
+.qw-active-text {
+    color: green
+}
+
+.qw-inactive-text {
+    color: red
+}
+
+.list-group-item-heading {
+    position: relative;
+    height: 24px;
+    width: 100%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+.list-group-item-detail {
+    position: relative;
+}
+
+.list-group-item-detail-single {
+    margin-top: 20px;
+}
+
+.list-group-item-heading-username {
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 10px;
+    color: #337ab7;
+    left: 20px;
+}
+
+.list-group-item-heading-right {
+    position: absolute;
+    top: 4px;
+    right: 0px;
+}
+
+.qw-users-list {
+    position: relative;
+}
+
+.qw-users-list p {
+    color: #999999;
+}
+
+.list-group-item-text-data {
+    display: inline-block;
+    position: absolute;
+    color: #777777;
+    left: 130px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.user-app-list-data {
+    display: inline-block;
+    position: absolute;
+    left: 130px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.list-group-item-text-data {
+    padding-left: 10px;
+    width: 50%;
+}
+
+.user-app-list-item {
+    position: relative;
+}
+
+.user-app-list-item-right {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+}

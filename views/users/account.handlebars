@@ -1,0 +1,118 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                账户信息
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-gear"></i> 账户信息
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>当前APP接入信息</small>
+    </h1>
+    <!-- /.row -->
+
+    <div class="alert alert-success account-item-frame">
+        <p>
+            <strong>APPKEY: </strong> <span id="appkey" class="account-item-left">{{user.appkey}}</span>
+            <br>
+            <strong>APPSECRET: </strong> <span id="appsecret" class="account-item-left">{{user.appsecret}}</span>
+        </p>
+    </div>
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>个人信息</small>
+    </h1>
+    <!-- /.row -->
+
+    <div>
+        <div class="form-group">
+            <label for="name"><b>姓名</b></label>
+            <input type="text" class="form-control" id="name" placeholder="{{user.name}}" name="name" disabled>
+        </div>
+        <div class="form-group">
+            <label for="company"><b>公司名称</b></label>
+            <input type="text" class="form-control" id="company" placeholder="{{user.company}}" name="company" disabled>
+        </div>
+        <div class="form-group">
+            <label for="mobile"><b>手机号</b></label>
+            <input type="text" class="form-control" id="mobile" placeholder="{{user.phone}}" name="mobile" disabled>
+        </div>
+        <div class="form-group">
+            <label for="email"><b>电子邮箱</b></label>
+            <input type="text" class="form-control" id="email" placeholder="{{user.email}}" name="email" disabled>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>密码修改</small>
+    </h1>
+
+    <!-- /.row -->
+    {{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}} {{#if error_msg}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{error_msg}}
+    </div>
+    {{/if}} {{#if error}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{error}}
+    </div>
+    {{/if}}
+    {{#if errors}} {{#each errors}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
+    </div>
+    {{/each}} {{/if}}
+    <div>
+        <input type="hidden" value="{{img}}" id="temp_img">
+        <form method="post" id="form-pwd" action="/users/account" role="form">
+            <div class="form-group">
+                <label for="oldPwd"><b>原始密码</b></label>
+                <input type="password" class="form-control" id="oldPwd" placeholder="原始密码" name="oldPwd" required>
+            </div>
+            <div class="form-group">
+                <label for="newPwd"><b>新密码</b></label>
+                <input type="password" class="form-control" id="newPwd" placeholder="新密码（不少于 8 位）" name="newPwd" required>
+            </div>
+            <div class="form-group">
+                <label for="newPwd2"><b>新密码确认</b></label>
+                <input type="password" class="form-control" id="newPwd2" placeholder="密码确认" name="newPwd2" required>
+            </div>
+            <div class="form-group">
+                <label for="vcode_parent">验证码</label>
+                <div  id="vcode_parent" style="display: flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;">
+                    <div class="col-md-2" style="padding-left:0px;min-width:150px;">
+                        <input type="text" class="form-control" id="vcode" name="vcode" placeholder="Vcode">
+                    </div>
+                    <div class="col-md-4" style="display: flex;align-items: center;padding-left:0px;" id="vcode_container">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary clearfix" id="btn_submit">确认修改</button>
+        </form>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

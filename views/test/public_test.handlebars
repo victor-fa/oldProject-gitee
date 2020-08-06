@@ -1,0 +1,116 @@
+<div id="qw_dialog_box">
+    <button type="button" class="btn btn-success" style="position: absolute;left: 307px;top: 63px;" onclick="randomUidAndRefresh()">
+        刷新对话 </button>
+    <div class="dialog_window">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="scroll-chat-box">
+                    <ul class="chat-list">
+                    </ul>
+                </div>
+                <div class="input-box">
+                    <span class="input-i">@</span>
+                    <input type="text" class="chat-input" placeholder="你是谁">
+                </div>
+            </div>
+            <div class="col-md-5" id="qiwu-logo">
+                <div class="data-area">
+                    <div class="input-area-container">
+                        <textarea class="chat-data" disabled>附加数据</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CDN -->
+<script src="//lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<!-- Cookie factory -->
+<script type="text/javascript" src="/js/util/cookie_factory.js"></script>
+
+<!-- MD5 util -->
+<script type="text/javascript" src="/js/util/md5.min.js"></script>
+
+<!-- String replaceAll util -->
+<script type="text/javascript" src="/js/util/string_util.js"></script>
+
+<script>
+    // App information
+    var appkey = '{{appkey}}'
+    var appsecret = '{{appsecret}}'
+
+    var nickname = '{{name}}'
+
+    function randomUid() {
+        uid = 'Public.Test.' + Math.random()
+        setCookie('uid', uid, 100)
+    }
+
+    function randomUidAndRefresh() {
+        randomUid();
+        location.reload();
+    }
+
+    var uid = getCookie('uid')
+    if (uid == '') {
+        randomUid();
+    }
+</script>
+
+<!-- Core function script -->
+<script type="text/javascript" src="/js/qw/core.js"></script>
+<script type="text/javascript" src="/endpoint.js"></script>
+
+<!-- Overrides on_send_question and on_receive_answer functions in demo.js -->
+<script>
+    var sendTime = 0;
+
+    function on_send_question(ask) {
+        $('<li class="me-message">\
+	        <span class="me-message-content">' + new Date().toLocaleString()
+            + '<br>' + ask + '</span>\
+	    </li>').appendTo(".chat-list");
+
+        $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+
+        sendTime = new Date().getTime();
+    }
+
+    function on_receive_answer(reply) {
+        reply = reply.replaceAll('\n', '<br />')
+        $('<li class="qw-message">\
+			<div class="qw-avator"></div>\
+			<div class="qw-message-content">' + new Date().toLocaleString()
+            + ' - ' + (new Date().getTime() - sendTime)
+            + '<br>' + reply + '</div>\
+		</li>').appendTo(".chat-list");
+        $(".chat-list").scrollTop($(".chat-list")[0].scrollHeight);
+    }
+
+    function on_recieve_data(data) {
+        $(".chat-data").text(JSON.stringify(data, null, 4))
+    }
+
+    function send_hello() {
+        ask_question('你好')
+    }
+</script>
+
+<!-- Add listener to input box and send HELLO when page is ready -->
+<script>
+    $(".chat-input").keydown(function (e) {
+        if (e.keyCode == 13) {
+            var question = $(".chat-input").val();
+            $(".chat-input").val("");
+
+            ask_question(question)
+        }
+    })
+
+    $(document).ready(function () {
+        send_hello()
+    })
+</script>

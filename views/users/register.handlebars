@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                新用户
+            </h1>
+            <ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-user" aria-hidden="true"></i> 新用户注册
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+    {{#if errors}} {{#each errors}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
+    </div>
+    {{/each}} {{/if}}
+    <input type="hidden" value="{{img}}" id="temp_img">
+    <form method="post" action="/users/register" role="form">
+        <div class="form-group">
+            <label for="">用户名</label><span style="color: red">*</span>
+            <input type="text" class="form-control" placeholder="Username" name="username" value="{{user_info.username}}">
+        </div>
+        <div class="form-group">
+            <label for="">真实姓名</label><span style="color: red">*</span>
+            <input type="text" class="form-control" placeholder="Name" name="name" value="{{user_info.name}}">
+        </div>
+        <div class="form-group">
+            <label for="">电子邮箱</label><span style="color: red">*</span>
+            <input type="text" class="form-control" placeholder="Email" name="email" value="{{user_info.email}}">
+        </div>
+        <div class="form-group">
+            <label for="">密码</label><span style="color: red">*</span>
+            <input type="password" class="form-control" placeholder="Password" name="password">
+        </div>
+        <div class="form-group">
+            <label for="">密码确认</label><span style="color: red">*</span>
+            <input type="password" class="form-control" placeholder="Password" name="password2">
+        </div>
+        <div class="form-group">
+            <label for="">联系电话</label><span style="color: red">*</span>
+            <input type="text" class="form-control" placeholder="Phone" name="phone" value="{{user_info.phone}}">
+        </div>
+        <div class="form-group">
+            <label for="">公司名称</label><span style="color: red">*</span>
+            <input type="text" class="form-control" placeholder="Company" name="company" value="{{user_info.company}}">
+        </div>
+        <div class="form-group">
+            <label for="vcode_parent">验证码</label>
+            <div  id="vcode_parent" style="display: flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;">
+                <div class="col-md-2" style="padding-left:0px;min-width:150px;">
+                    <input type="text" class="form-control" id="vcode" name="vcode" placeholder="Vcode">
+                </div>
+                <div class="col-md-4" style="display: flex;align-items: center;padding-left:0px;" id="vcode_container">
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default clearfix" id="btn_submit">Submit</button>
+    </form>
+</div>

@@ -1,0 +1,49 @@
+.list-group-item {
+    position: relative;
+}
+
+.log-id {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    color: #ddd;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: right;
+}
+
+.log-id-pound {
+    margin-right: 5px;
+}
+
+.log-time {
+    color: #ccc;
+}
+
+.log-app {
+    color: #999;
+}
+
+.log-nickname {
+    color: #777;
+    font-weight: bold;
+}
+
+#log-page-size {
+    display: inline-block;
+    float: right;
+    text-align: right;
+}
+
+#log-page-size select {
+    display: inline;
+    width: 50px;
+}
+
+#log-page-size label {
+    display: inline;
+}
+
+#log-page-size-select {
+    min-width: 80px;
+}

@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                APP管理
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> APP添加
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+	
+	{{#if errors}} {{#each errors}}
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-info" aria-hidden="true"></i> {{msg}}
+    </div>
+    {{/each}} {{/if}}
+	{{#if success_msg}}
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+    </div>
+    {{/if}}
+
+    <form method="post" action="/admin/manage/api/app-add" role="form">
+        <input type="hidden" name="s_url" value="{{s_url}}">
+        <div class="form-group">
+            <label for="appname">Name</label>
+            <input type="text" class="form-control" id="appname" name="appname" placeholder="Appname">
+        </div>
+		<div class="form-group">
+            <label for="appkey">AppKey</label>
+            <input type="text" class="form-control" id="appkey" name="appkey" placeholder="Appkey">
+        </div>
+        <!-- div class="form-group">
+            <label for="appsecret">AppSecret</label>
+            <input type="password" class="form-control" id="appsecret" name="appsecret" placeholder="Appsecret">
+        </div -->
+		<div class="form-group">
+            <label for="">Robot</label>
+            <div id="robot_radio_container" style="padding: 3% 5%;background-color:#f5f5f5">
+                <input type="hidden" id="robot" value="{{appinfo.robot}}">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+    <div id="temp_radio_template" class="hidden">
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" id="temp_robot" value="$value$" name="robot">$value$
+            </label>
+        </div>
+    </div>
+    <div id="temp_radio_template_checked" class="hidden">
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" id="temp_robot" value="$value$" name="robot" checked>$value$
+            </label>
+        </div>
+    </div>
+
+    
+</div>
+
+<!-- CDN -->
+<script src="//lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script>
+
+<script>
+    $(document).on('click', '#temp_robot', function(e) {
+        const tempName = e.currentTarget.defaultValue;
+        $('#appname').val(tempName);
+        $('#appkey').val(tempName.replace(/_/g,"-"));
+    });
+</script>
+<!-- /.container-fluid -->

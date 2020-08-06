@@ -1,0 +1,68 @@
+<div class="container-fluid">
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            相册管理
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> 相册管理
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Alert -->
+{{#if success_msg}}
+<div class="alert alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <i class="fa fa-check" aria-hidden="true"></i> {{success_msg}}
+</div>
+{{/if}} {{#if error_msg}}
+<div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <i class="fa fa-close" aria-hidden="true"></i> {{error_msg}}
+</div>
+{{/if}} {{#if error}}
+<div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <i class="fa fa-close" aria-hidden="true"></i> {{error}}
+</div>
+{{/if}}
+<!-- /.alert -->
+
+<div class="row">
+    <h1 class="page-header">
+        <small>创建相册</small>
+    </h1>
+    <div class="alert alert-success user-app-list-item">
+        <form method="post" action="/image/album" role="form">
+            <div class="form-group">
+                <label for="new-album">相册名称</label>
+                <input class="list-group-item-text-data" type="text" class="form-control" id="new-album" name="album_name" placeholder="NAME">
+                <button type="submit" class="btn btn-sm btn-warning">添加</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <h1 class="page-header">
+        <small>目前相册</small>
+    </h1>
+    <div class="col-sm-12">
+            <ul class="list-group" id="app-list">
+                {{#each user.albums}}
+                <a href="/gallery/{{../user.username}}_{{this}}" class="list-group-item app-list-item app-list-item-frame" album_name="{{this}}">
+                <span class="app-index"># {{@index}}</span>
+                <strong>相册名称: </strong> <span class="app-list-item-left app-appkey">{{this}}</span><br>
+                </a> {{/each}}
+            </ul>
+        </div>
+</div>
+</div>

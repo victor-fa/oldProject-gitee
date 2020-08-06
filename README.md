@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 齐悟产品官网
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
@@ -27,3 +28,12 @@ Before running the tests make sure you are serving the app via `ng serve`.
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+=======
+<<<<<<< HEAD
+# chewrobot-tool
+[齐悟用户管理工具](https://robot-service.centaurstech.com)
+=======
+# account-center-manager1
+
+>>>>>>> 9f136a417f5ae07117d0691cf884fb0972d662f4
+>>>>>>> a1ab520082ef1725a4a405e80ae1ff66da009966

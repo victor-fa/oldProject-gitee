@@ -1,0 +1,38 @@
+.list-group-item {
+    position: relative;
+}
+
+.log-id {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    color: #ddd;
+
+    font-weight: bold;
+    font-size: 30px;
+    text-align: right;
+
+}
+
+.log-id-pound {
+    margin-right: 5px;
+}
+
+.log-time {
+    color: #ccc;
+}
+
+.log-action {
+    color: #999;
+}
+
+.log-msg {
+    display: inline-block;
+    margin-right: 70px;
+    margin-top: 5px;
+    color: #555;
+}
+
+.ask {
+    background-color: #dff0d8;
+}

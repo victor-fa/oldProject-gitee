@@ -1,0 +1,78 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                APP管理
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-fw fa-cubes" aria-hidden="true"></i> APP管理
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>当前APP接入信息</small>
+    </h1>
+    <!-- /.row -->
+
+    {{#ifCond user.appkey '&&' user.appsecret}}
+    <div class="alert alert-success app-list-item-frame">
+        <p>
+            <strong>APPKEY: </strong> <span id="appkey" class="app-list-item-left">{{user.appkey}}</span>
+            <br>
+            <strong>APPSECRET: </strong> <span id="appsecret" class="app-list-item-left">{{user.appsecret}}</span>
+        </p>
+        <br>
+        <a href="{{chatapi}}/test?appkey={{user.appkey}}&appsecret={{user.appsecret}}&name={{user.name}}" target="_blank">公共链接</a>
+    </div>
+    {{else}}
+    <div class="alert alert-danger app-list-item-frame">
+        <p>
+            <strong>APPKEY: </strong> <span id="appkey" class="app-list-item-left">{{#if user.appkey}}{{user.appkey}}{{else}}无{{/if}}</span>
+            <br>
+            <strong>APPSECRET: </strong> <span id="appsecret" class="app-list-item-left">{{#if user.appsecret}}{{user.appsecret}}{{else}}无{{/if}}</span>
+        </p>
+    </div>
+    {{/ifCond}}
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small>可选APP列表</small>
+    </h1>
+
+    <div class="alert alert-info alert-dismissable">
+        <p>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-info-circle"></i> 请点击下列APP进行关联。如有问题请联系管理员。
+        </p>
+    </div>
+
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ul class="list-group" id="app-list">
+                {{#each user.applist}}
+                <a  class="list-group-item app-list-item app-list-item-frame" style="cursor:pointer" appkey="{{this.appkey}}" appsecret="{{this.appsecret}}" onclick="alert('切换到{{this.appkey}}');">
+                <span class="app-index"># {{@index}}</span>
+                <strong>APPKEY: </strong> <span class="app-list-item-left app-appkey">{{this.appkey}}</span><br>
+                <strong>APPSECRET: </strong> <span class="app-list-item-left app-appsecret">{{this.appsecret}}</span>
+                </a> {{/each}}
+            </ul>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <span id="user-id">{{user._id}}</span>
+    </div>
+</div>
+<!-- /.container-fluid -->

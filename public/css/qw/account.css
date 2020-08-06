@@ -1,0 +1,8 @@
+.account-item-frame {
+    position: relative;
+}
+
+.account-item-left {
+    position: absolute;
+    left: 130px;
+}

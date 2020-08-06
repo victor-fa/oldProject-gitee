@@ -1,0 +1,80 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                对话日志
+                <small>详情</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <i class="fa fa-dashboard"></i> <a href="/">控制台</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-file-text"></i> <a href="/log/log">对话日志</a>
+                </li>
+                <li class="active">
+                    <i class="fa fa-comments-o"></i> 对话详情
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div id="log-alert-1" hidden>
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-close"></i> AJAX请求失败，请检查网络。
+        </div>
+    </div>
+    <div id="log-alert-2" hidden>
+        <div class="alert alert-info alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-info-circle"></i> <strong>使用遇到疑问？</strong>请联系<a href="https://www.linkedin.com/in/fangzhoulong/"
+                class="alert-link">技术人员</a>寻求帮助！
+        </div>
+    </div>
+    <!-- /.log-alert -->
+
+    <!-- Page Heading -->
+    <h1 class="page-header">
+        <small id="log-result-header"></small>
+        <div id="download">
+            <a class="btn btn-primary disabled">下载日志</a>
+        </div>
+    </h1>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="list-group" id="log-result-context">
+            </ul>
+        </div>
+    </div>
+
+    <div id="log-result-temp-ask" style="display: none">
+        <li class="list-group-item ask">
+            <span class="log-id"><span class="log-id-pound">#</span>$id$</span>
+            <span class="log-action"><i class="fa fa-question" aria-hidden="true"></i> $action$　</span>
+            <span class="log-time">$timestamp$</span>&nbsp;<span class="log-time">　$append$　</span><br>
+            <span class="log-msg">$msg$</span>
+        </li>
+    </div>
+
+    <div id="log-result-temp-answer" style="display: none">
+        <li class="list-group-item">
+            <span class="log-id"><span class="log-id-pound">#</span>$id$</span>
+            <span class="log-action"><i class="fa fa-info" aria-hidden="true"></i> $action$　</span>
+            <span class="log-time">$timestamp$</span>&nbsp;<span class="log-time">　$append$　</span><br>
+            <span class="log-msg">$msg$</span>
+        </li>
+    </div>
+
+    <div style="display:none">
+        <span id="appkey">{{user.appkey}}</span>
+        <span id="appsecret">{{user.appsecret}}</span>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
