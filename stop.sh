@@ -1,1 +1,0 @@
-forever stop frontend-server
